@@ -1,0 +1,30 @@
+{
+  "name": "onboard",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "packageManager": "pnpm@11.20.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:up": "docker compose up -d postgres",
+    "db:migrate": "pnpm --filter @onboard/api run db:migrate",
+    "db:seed": "pnpm --filter @onboard/api run db:seed",
+    "db:seed-locations": "pnpm --filter @onboard/api run db:seed-locations",
+    "dataset:export": "pnpm --filter @onboard/api run dataset:export",
+    "dataset:import": "pnpm --filter @onboard/api run dataset:import",
+    "dataset:validate": "pnpm --filter @onboard/api run dataset:validate"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.9",
+    "turbo": "^2.11.3",
+    "typescript": "~6.0.0"
+  }
+}

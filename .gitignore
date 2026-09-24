@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.next/
+out/
+.turbo/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.DS_Store
+next-env.d.ts
+uploads/
+.claude/settings.local.json
+test-results/
+playwright-report/
+backups/
