@@ -1,0 +1,10 @@
+[Unit]
+Description=Onboard VN nightly Postgres backup
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+# Set REPO_DIR to the checkout path on the host, e.g. /home/onboard/onboard.
+Environment=REPO_DIR=/home/onboard/onboard
+ExecStart=/bin/bash ${REPO_DIR}/deploy/backup.sh

@@ -1,0 +1,9 @@
+# Copy to config.yml (not committed) after `cloudflared tunnel create onboard`.
+# Route DNS: `cloudflared tunnel route dns onboard your-domain.com`.
+tunnel: onboard
+credentials-file: /etc/cloudflared/onboard.json
+
+ingress:
+  - hostname: your-domain.com
+    service: http://127.0.0.1:8080
+  - service: http_status:404

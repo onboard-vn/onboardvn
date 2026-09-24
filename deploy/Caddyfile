@@ -1,0 +1,26 @@
+{
+	servers {
+		# Tailscale Funnel / cloudflared reach Caddy from the Docker gateway (private range).
+		trusted_proxies static private_ranges
+		trusted_proxies_strict
+		client_ip_headers X-Forwarded-For
+	}
+}
+
+:8080 {
+	handle /health {
+		reverse_proxy api:8787
+	}
+
+	handle /api/* {
+		reverse_proxy api:8787 {
+			header_up X-Forwarded-For {client_ip}
+		}
+	}
+
+	handle {
+		reverse_proxy web:3000 {
+			header_up X-Forwarded-For {client_ip}
+		}
+	}
+}
