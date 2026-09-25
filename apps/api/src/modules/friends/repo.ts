@@ -129,15 +129,18 @@ export async function findRequest(fromUserId: string, toUserId: string, executor
   return row;
 }
 
+/** Returns true only if this call inserted the row (false when a conflicting row already existed). */
 export async function insertRequest(
   fromUserId: string,
   toUserId: string,
   executor: Executor = db,
-): Promise<void> {
-  await executor
+): Promise<boolean> {
+  const rows = await executor
     .insert(friendRequests)
     .values({ fromUserId, toUserId, status: 'pending' })
-    .onConflictDoNothing();
+    .onConflictDoNothing()
+    .returning({ fromUserId: friendRequests.fromUserId });
+  return rows.length > 0;
 }
 
 export async function deleteRequest(

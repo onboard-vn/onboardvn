@@ -42,6 +42,7 @@ export async function generateMetadata({ params }: PageProps<'/u/[username]'>): 
   return {
     title: `${label} (@${profile.username}) · ${SITE_NAME}`,
     alternates: { canonical: `${SITE_URL}/u/${profile.username}` },
+    ...(profile.hidden ? { robots: { index: false, follow: false } } : {}),
   };
 }
 

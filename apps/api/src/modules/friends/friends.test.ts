@@ -1,10 +1,11 @@
 import { randomUUID } from 'node:crypto';
 import { inArray } from 'drizzle-orm';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { createApp } from '../../app.js';
 import { auth } from '../../auth/better-auth.js';
 import { db, pool } from '../../db/client.js';
 import { users } from '../../db/schema/index.js';
+import { onMailSent } from '../../lib/mailer/index.js';
 
 const app = createApp({ auth, rateLimit: false });
 const stamp = Date.now();
@@ -398,6 +399,125 @@ describe('concurrent cross requests', () => {
     expect(rachelOut.items).toHaveLength(0);
 
     await db.delete(users).where(inArray(users.email, [quinn.email, rachel.email]));
+  });
+});
+
+describe('block races and duplicate-email guard', () => {
+  it('rejects accepting once the sender got blocked meanwhile, leaving no friendship', async () => {
+    const oliver = account('oliver');
+    const paula = account('paula');
+    cookie[oliver.username] = await signUpVerified(oliver);
+    cookie[paula.username] = await signUpVerified(paula);
+    userId[oliver.username] = await loadUserId(oliver.username);
+    userId[paula.username] = await loadUserId(paula.username);
+
+    await app.request('/api/friends/requests', {
+      method: 'POST',
+      headers: api(cookie[oliver.username]!),
+      body: JSON.stringify({ username: paula.username }),
+    });
+
+    const block = await app.request('/api/blocks', {
+      method: 'POST',
+      headers: api(cookie[paula.username]!),
+      body: JSON.stringify({ userId: userId[oliver.username] }),
+    });
+    expect(block.status).toBe(204);
+
+    const accept = await app.request(`/api/friends/requests/${userId[oliver.username]}/accept`, {
+      method: 'POST',
+      headers: { origin: 'http://localhost:3000', cookie: cookie[paula.username]! },
+    });
+    expect(accept.status).toBe(403);
+
+    const paulaFriends = (await (
+      await app.request('/api/friends', {
+        headers: { origin: 'http://localhost:3000', cookie: cookie[paula.username]! },
+      })
+    ).json()) as { items: { username: string | null }[] };
+    expect(paulaFriends.items.some((f) => f.username === oliver.username)).toBe(false);
+
+    await db.delete(users).where(inArray(users.email, [oliver.email, paula.email]));
+  });
+
+  it('leaves no pending request and no friendship when a block races a send', async () => {
+    const quentin = account('quentin');
+    const rose = account('rose');
+    cookie[quentin.username] = await signUpVerified(quentin);
+    cookie[rose.username] = await signUpVerified(rose);
+    userId[quentin.username] = await loadUserId(quentin.username);
+    userId[rose.username] = await loadUserId(rose.username);
+
+    await Promise.all([
+      app.request('/api/blocks', {
+        method: 'POST',
+        headers: api(cookie[rose.username]!),
+        body: JSON.stringify({ userId: userId[quentin.username] }),
+      }),
+      app.request('/api/friends/requests', {
+        method: 'POST',
+        headers: api(cookie[quentin.username]!),
+        body: JSON.stringify({ username: rose.username }),
+      }),
+    ]);
+
+    const roseFriends = (await (
+      await app.request('/api/friends', {
+        headers: { origin: 'http://localhost:3000', cookie: cookie[rose.username]! },
+      })
+    ).json()) as { items: unknown[] };
+    expect(roseFriends.items).toHaveLength(0);
+
+    const quentinOut = (await (
+      await app.request('/api/friends/requests?dir=out', {
+        headers: { origin: 'http://localhost:3000', cookie: cookie[quentin.username]! },
+      })
+    ).json()) as { items: unknown[] };
+    expect(quentinOut.items).toHaveLength(0);
+
+    await db.delete(users).where(inArray(users.email, [quentin.email, rose.email]));
+  });
+
+  it('sends the friend-request email only once across duplicate POSTs', async () => {
+    const mallory = account('mallory');
+    const nancy = account('nancy');
+    cookie[mallory.username] = await signUpVerified(mallory);
+    cookie[nancy.username] = await signUpVerified(nancy);
+
+    await app.request('/api/me/privacy', {
+      method: 'PATCH',
+      headers: api(cookie[nancy.username]!),
+      body: JSON.stringify({ emailOnFriendRequest: true }),
+    });
+
+    const sentTo: string[] = [];
+    const unsubscribe = onMailSent((message) => {
+      if (message.to === nancy.email) sentTo.push(message.to);
+    });
+
+    try {
+      const first = await app.request('/api/friends/requests', {
+        method: 'POST',
+        headers: api(cookie[mallory.username]!),
+        body: JSON.stringify({ username: nancy.username }),
+      });
+      expect(await first.json()).toEqual({ status: 'pending' });
+
+      const second = await app.request('/api/friends/requests', {
+        method: 'POST',
+        headers: api(cookie[mallory.username]!),
+        body: JSON.stringify({ username: nancy.username }),
+      });
+      expect(await second.json()).toEqual({ status: 'pending' });
+
+      await vi.waitFor(() => expect(sentTo).toHaveLength(1));
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      expect(sentTo).toHaveLength(1);
+    } finally {
+      unsubscribe();
+    }
+
+    await db.delete(users).where(inArray(users.email, [mallory.email, nancy.email]));
   });
 });
 

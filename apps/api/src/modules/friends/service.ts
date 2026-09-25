@@ -16,6 +16,10 @@ function notFound(): never {
   throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy người dùng');
 }
 
+function forbiddenBlocked(): never {
+  throw new ApiError('FORBIDDEN', 403, 'Không thể thực hiện thao tác với người dùng này');
+}
+
 async function requireUserById(userId: string) {
   const row = await repo.getUserPrivacy(userId);
   if (!row) notFound();
@@ -26,12 +30,6 @@ async function requireUserByUsername(username: string) {
   const row = await repo.findUserByUsername(username.toLowerCase());
   if (!row) notFound();
   return row;
-}
-
-async function assertNotBlocked(actorId: string, otherId: string): Promise<void> {
-  if (await isBlocked(actorId, otherId)) {
-    throw new ApiError('FORBIDDEN', 403, 'Không thể thực hiện thao tác với người dùng này');
-  }
 }
 
 export async function getFriendCodeService(userId: string): Promise<FriendCodeDto> {
@@ -60,9 +58,10 @@ export async function confirmInviteService(
   if (target.id === actorId) {
     throw new ApiError('VALIDATION_FAILED', 422, 'Không thể tự kết bạn với chính mình');
   }
-  await assertNotBlocked(actorId, target.id);
 
   await db.transaction(async (tx) => {
+    await repo.lockPair(tx, actorId, target.id);
+    if (await isBlocked(actorId, target.id, tx)) forbiddenBlocked();
     await repo.insertFriendship(actorId, target.id, tx);
     await repo.deleteRequestsBetween(actorId, target.id, tx);
   });
@@ -83,10 +82,11 @@ export async function sendFriendRequestService(
   if (target.id === actorId) {
     throw new ApiError('VALIDATION_FAILED', 422, 'Không thể tự gửi lời mời cho chính mình');
   }
-  await assertNotBlocked(actorId, target.id);
 
+  let created = false;
   const result = await db.transaction(async (tx) => {
     await repo.lockPair(tx, actorId, target.id);
+    if (await isBlocked(actorId, target.id, tx)) forbiddenBlocked();
 
     if (await areFriends(actorId, target.id, tx)) return { status: 'accepted' as const };
 
@@ -113,11 +113,11 @@ export async function sendFriendRequestService(
       throw new ApiError('CONFLICT', 409, 'Bạn đang có quá nhiều lời mời đang chờ');
     }
 
-    await repo.insertRequest(actorId, target.id, tx);
+    created = await repo.insertRequest(actorId, target.id, tx);
     return { status: 'pending' as const };
   });
 
-  if (result.status === 'pending' && target.emailOnFriendRequest) {
+  if (result.status === 'pending' && created && target.emailOnFriendRequest) {
     mailer
       .send({ to: target.email, ...friendRequestEmail(actor.name, `${env.WEB_ORIGIN}/friends`) })
       .catch((err: unknown) => logger.error({ err }, 'friend request email failed'));
@@ -138,9 +138,11 @@ export async function acceptFriendRequestService(
   actorId: string,
   fromUserId: string,
 ): Promise<void> {
-  const request = await repo.findRequest(fromUserId, actorId);
-  if (!request || request.status !== 'pending') notFound();
   await db.transaction(async (tx) => {
+    await repo.lockPair(tx, actorId, fromUserId);
+    if (await isBlocked(actorId, fromUserId, tx)) forbiddenBlocked();
+    const request = await repo.findRequest(fromUserId, actorId, tx);
+    if (!request || request.status !== 'pending') notFound();
     await repo.insertFriendship(actorId, fromUserId, tx);
     await repo.deleteRequestsBetween(actorId, fromUserId, tx);
   });
@@ -187,6 +189,7 @@ export async function blockUserService(actorId: string, targetUserId: string): P
   }
   await requireUserById(targetUserId);
   await db.transaction(async (tx) => {
+    await repo.lockPair(tx, actorId, targetUserId);
     await repo.insertBlock(actorId, targetUserId, tx);
     await repo.deleteFriendship(actorId, targetUserId, tx);
     await repo.deleteRequestsBetween(actorId, targetUserId, tx);
