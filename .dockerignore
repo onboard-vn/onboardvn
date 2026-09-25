@@ -12,4 +12,5 @@
 docs/*
 !docs/references.md
 plans
+branding
 apps/web/public/**/*.map

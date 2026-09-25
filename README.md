@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="apps/web/public/brand/logo-horizontal-dark.png">
+    <img src="apps/web/public/brand/logo-horizontal.png" alt="OnBoardVN" width="420">
+  </picture>
+</p>
+
 # OnBoardVN
 
 > Vietnam's Open Board Game Community · Cộng đồng board game mở của Việt Nam
