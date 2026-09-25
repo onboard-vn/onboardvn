@@ -48,9 +48,10 @@ export async function SiteHeader() {
             <SignOutButton />
           </div>
         ) : (
-          <Link href="/login" className="text-sm font-medium">
-            Đăng nhập
-          </Link>
+          <div className="flex items-center gap-3 text-sm font-medium">
+            <Link href="/login">Đăng nhập</Link>
+            <Link href="/dang-ky">Đăng ký</Link>
+          </div>
         )}
       </div>
     </header>

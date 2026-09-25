@@ -93,7 +93,8 @@ test('scans a barcode with a fake camera and adds the game to a cafe inventory',
   });
 
   await page.goto('/login');
-  await page.getByLabel('Email').fill(STAFF_EMAIL);
+  await page.getByRole('tab', { name: 'Mã qua email' }).click();
+  await page.getByLabel('Email', { exact: true }).fill(STAFF_EMAIL);
   await page.getByRole('button', { name: 'Gửi mã đăng nhập' }).click();
 
   await expect(page.getByLabel(/Mã gửi tới/)).toBeVisible();

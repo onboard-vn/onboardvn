@@ -15,6 +15,8 @@ export const users = pgTable('users', {
   role: text('role', { enum: ['user', 'maintainer', 'admin'] })
     .default('user')
     .notNull(),
+  username: text('username').unique(),
+  displayUsername: text('display_username'),
 });
 
 export const sessions = pgTable(
