@@ -7,3 +7,9 @@ export async function requireStaff(): Promise<CurrentUser> {
   if (!user || user.role === 'user') redirect('/login');
   return user;
 }
+
+export async function requireAdmin(): Promise<CurrentUser> {
+  const user = await getCurrentUser();
+  if (!user || user.role !== 'admin') redirect('/login');
+  return user;
+}

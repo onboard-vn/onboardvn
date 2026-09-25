@@ -141,7 +141,12 @@ export default async function CafeDetailPage(props: PageProps<'/cafes/[slug]'>) 
 
       {tab === 'games' ? (
         <section aria-label="Tủ game">
-          <h2 className="mb-3 text-sm font-medium">Kho game ({cafe.inventory.length})</h2>
+          <div className="mb-3 flex items-center justify-between gap-2">
+            <h2 className="text-sm font-medium">Kho game ({cafe.inventory.length})</h2>
+            <Link href={`/cafes/${slug}/contribute`} className="text-sm underline">
+              Đóng góp game
+            </Link>
+          </div>
           {cafe.inventory.length === 0 ? (
             <p className="text-muted-foreground text-sm">Chưa có game nào trong kho.</p>
           ) : (

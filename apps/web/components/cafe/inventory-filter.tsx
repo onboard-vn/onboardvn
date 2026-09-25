@@ -88,7 +88,14 @@ export function InventoryFilter({ inventory }: { inventory: CafeInventoryItemDto
                 href={`/games/${item.slug}`}
                 className="hover:border-foreground/40 flex items-center justify-between gap-2 rounded-lg border p-3 text-sm"
               >
-                <span>{item.nameVi || item.nameEn}</span>
+                <span className="flex items-center gap-2">
+                  {item.nameVi || item.nameEn}
+                  {item.community ? (
+                    <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-800">
+                      Cộng đồng đóng góp
+                    </span>
+                  ) : null}
+                </span>
                 {item.copies > 1 ? (
                   <span className="text-muted-foreground text-xs">x{item.copies}</span>
                 ) : null}

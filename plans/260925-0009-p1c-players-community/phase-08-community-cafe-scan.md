@@ -1,7 +1,7 @@
 ---
 phase: 8
 title: "Cộng đồng quét kho quán"
-status: pending
+status: completed
 effort: "2d"
 dependencies: [1, 7]
 ---

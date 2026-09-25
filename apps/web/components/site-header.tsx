@@ -63,6 +63,11 @@ export async function SiteHeader() {
               </Link>
             </>
           ) : null}
+          {user && user.role === 'admin' ? (
+            <Link href="/admin/contributions" className="text-sm font-medium">
+              Đóng góp cộng đồng
+            </Link>
+          ) : null}
         </div>
         {user ? (
           <div className="flex items-center gap-3 text-sm">

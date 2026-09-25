@@ -12,6 +12,7 @@ interface InventoryItem {
   nameVi: string | null;
   nameEn: string;
   copies: number;
+  community: boolean;
 }
 
 interface GameSearchResult {
@@ -31,7 +32,9 @@ export function InventoryManager({
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [results, setResults] = useState<GameSearchResult[]>([]);
+  const [communityOnly, setCommunityOnly] = useState(false);
   const inventoryIds = new Set(inventory.map((i) => i.gameId));
+  const visibleInventory = communityOnly ? inventory.filter((i) => i.community) : inventory;
 
   async function onSearch(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -75,14 +78,53 @@ export function InventoryManager({
     router.refresh();
   }
 
+  async function onConfirm(gameId: string) {
+    setPending(true);
+    setError(null);
+    try {
+      const res = await api.api.cafes[':id'].games[':gameId'].confirm.$post({
+        param: { id: cafeId, gameId },
+      });
+      if (!res.ok) {
+        const json = (await res.json().catch(() => null)) as {
+          error?: { message?: string };
+        } | null;
+        setError(json?.error?.message ?? 'Không xác nhận được game');
+        return;
+      }
+      router.refresh();
+    } catch {
+      setError('Mất kết nối, thử lại sau');
+    } finally {
+      setPending(false);
+    }
+  }
+
   return (
     <div className="flex flex-col gap-3 rounded-lg border p-4">
-      <h2 className="text-sm font-medium">Kho game ({inventory.length})</h2>
+      <div className="flex items-center justify-between gap-2">
+        <h2 className="text-sm font-medium">Kho game ({inventory.length})</h2>
+        <label className="flex items-center gap-1.5 text-xs">
+          <input
+            type="checkbox"
+            checked={communityOnly}
+            onChange={(e) => setCommunityOnly(e.target.checked)}
+          />
+          Chỉ đóng góp cộng đồng
+        </label>
+      </div>
 
       <ul className="flex flex-col gap-1 text-sm">
-        {inventory.map((item) => (
+        {visibleInventory.map((item) => (
           <li key={item.gameId} className="flex items-center justify-between gap-2">
-            <span>{item.nameVi || item.nameEn}</span>
+            <span className="flex items-center gap-2">
+              {item.nameVi || item.nameEn}
+              {item.community ? (
+                <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-800">
+                  Cộng đồng đóng góp
+                </span>
+              ) : null}
+            </span>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
@@ -91,6 +133,17 @@ export function InventoryManager({
                 className="h-8 w-16"
                 onBlur={(e) => onCopiesChange(item.gameId, Number(e.target.value))}
               />
+              {item.community ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="xs"
+                  disabled={pending}
+                  onClick={() => onConfirm(item.gameId)}
+                >
+                  Xác nhận
+                </Button>
+              ) : null}
               <Button
                 type="button"
                 variant="ghost"
@@ -98,13 +151,15 @@ export function InventoryManager({
                 disabled={pending}
                 onClick={() => onRemove(item.gameId)}
               >
-                Xóa
+                Gỡ
               </Button>
             </div>
           </li>
         ))}
-        {inventory.length === 0 ? (
-          <li className="text-muted-foreground">Chưa có game nào trong kho.</li>
+        {visibleInventory.length === 0 ? (
+          <li className="text-muted-foreground">
+            {communityOnly ? 'Chưa có đóng góp cộng đồng nào.' : 'Chưa có game nào trong kho.'}
+          </li>
         ) : null}
       </ul>
 
