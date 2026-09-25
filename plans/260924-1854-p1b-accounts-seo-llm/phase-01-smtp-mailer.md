@@ -1,7 +1,7 @@
 ---
 phase: 1
 title: "SMTP mailer"
-status: pending
+status: completed
 effort: "0.5d"
 ---
 # Phase 1: SMTP mailer

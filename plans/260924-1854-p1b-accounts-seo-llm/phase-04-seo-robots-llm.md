@@ -1,7 +1,7 @@
 ---
 phase: 4
 title: "SEO + robot + LLM"
-status: pending
+status: completed
 effort: "2d"
 ---
 # Phase 4: SEO + robot + LLM

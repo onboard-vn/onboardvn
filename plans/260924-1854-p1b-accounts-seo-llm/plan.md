@@ -1,7 +1,7 @@
 ---
 title: "P1b – Tài khoản username/mật khẩu + SEO/robot/LLM"
 description: "Đăng ký username+mật khẩu (bắt buộc email, SMTP), liên kết username BGG, robots/sitemap/JSON-LD/llms.txt/OpenAPI"
-status: pending
+status: in-progress
 priority: P1
 effort: "5-6d"
 tags: [auth, seo, llm, pre-mvp]
