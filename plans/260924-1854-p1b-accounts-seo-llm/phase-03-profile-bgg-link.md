@@ -1,7 +1,7 @@
 ---
 phase: 3
 title: "Hồ sơ + liên kết username BGG"
-status: pending
+status: completed
 effort: "0.5d"
 dependencies: [2]
 ---
@@ -15,3 +15,9 @@ dependencies: [2]
 - `immutableUsername`? hoặc cho đổi username có giới hạn; thêm `displayUsernameValidator` (chặn tên dành riêng, độ dài).
 - Sign-up đang đặt `name = username`: nơi công khai hiển thị `users.name` sẽ lộ username — cho sửa tên hiển thị ở `/tai-khoan`.
 - `/is-username-available` bật mặc định (30/phút) — cân nhắc tắt hoặc siết rate limit.
+
+## Kết quả
+- Cho đổi username (không `immutableUsername`); `displayUsername` phải khớp username (chỉ khác hoa/thường) — `auth/profile-guard.ts`.
+- BGG username unique theo `lower()` (migration 0008); chưa xác minh quyền sở hữu BGG (chấp nhận, ai liên kết trước giữ tên).
+- Không cho tự đặt `image` qua `/update-user`; `name` 1-100 ký tự.
+- `/is-username-available`: giữ mặc định.
