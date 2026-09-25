@@ -45,6 +45,7 @@ const baseCafe: CafePublicDetailDto = {
   venueType: 'boardgame_cafe',
   openingHours: { mon: [{ open: '08:00', close: '22:00' }] },
   inventory: [],
+  photos: [],
 };
 
 describe('escapeJsonLdScript', () => {

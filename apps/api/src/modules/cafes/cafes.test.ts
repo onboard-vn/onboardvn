@@ -469,6 +469,88 @@ describe('cafes directory', () => {
     expect(manageBody.items.some((c) => c.id === cafe.id)).toBe(true);
   });
 
+  it('hides media and non-fanpage links for a public_info_only café, exposes fanpage', async () => {
+    const { json: cafe } = await createCafe(
+      baseCafeBody({
+        consentStatus: 'public_info_only',
+        sourceUrl: 'https://example.test',
+        links: { fanpage: 'https://facebook.com/test', maps: 'https://maps.test/x' },
+      }),
+    );
+    await db
+      .update(cafes)
+      .set({ logoPath: 'cafes/logos/x.png', coverPath: 'cafes/covers/x.png' })
+      .where(eq(cafes.id, cafe.id));
+
+    const res = await publicApp.request(`/api/cafes/${cafe.slug}`);
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as {
+      logoUrl?: string | null;
+      coverUrl?: string | null;
+      photos: unknown[];
+      links?: { fanpage?: string; maps?: string };
+    };
+    expect(body.logoUrl).toBeUndefined();
+    expect(body.coverUrl).toBeUndefined();
+    expect(body.photos).toEqual([]);
+    expect(body.links?.fanpage).toBe('https://facebook.com/test');
+    expect(body.links?.maps).toBeUndefined();
+  });
+
+  it('hides media and non-fanpage links for a public_info_only café in the list DTO too', async () => {
+    const { json: cafe } = await createCafe(
+      baseCafeBody({
+        consentStatus: 'public_info_only',
+        sourceUrl: 'https://example.test',
+        links: { fanpage: 'https://facebook.com/test', maps: 'https://maps.test/x' },
+      }),
+    );
+    await db
+      .update(cafes)
+      .set({ logoPath: 'cafes/logos/x.png', coverPath: 'cafes/covers/x.png' })
+      .where(eq(cafes.id, cafe.id));
+
+    const listRes = await publicApp.request(`/api/cafes?province=${PROVINCE_A.slug}&pageSize=50`);
+    const listBody = (await listRes.json()) as {
+      items: {
+        id: string;
+        logoUrl?: string | null;
+        coverUrl?: string | null;
+        links?: { fanpage?: string; maps?: string };
+      }[];
+    };
+    const item = listBody.items.find((c) => c.id === cafe.id);
+    expect(item?.logoUrl).toBeUndefined();
+    expect(item?.coverUrl).toBeUndefined();
+    expect(item?.links?.fanpage).toBe('https://facebook.com/test');
+    expect(item?.links?.maps).toBeUndefined();
+  });
+
+  it('hides non-fanpage links for a public_info_only café in the game-finder DTO', async () => {
+    const { json: cafe } = await createCafe(
+      baseCafeBody({
+        consentStatus: 'public_info_only',
+        sourceUrl: 'https://example.test',
+        links: { fanpage: 'https://facebook.com/test', maps: 'https://maps.test/x' },
+      }),
+    );
+    const game = await createGame(`Game Finder Privacy ${Date.now()}`);
+    await maintainerApp.request(`/api/cafes/${cafe.id}/games`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ gameId: game.id }),
+    });
+
+    const res = await publicApp.request(`/api/games/${game.slug}/cafes`);
+    const body = (await res.json()) as {
+      id: string;
+      links?: { fanpage?: string; maps?: string };
+    }[];
+    const item = body.find((c) => c.id === cafe.id);
+    expect(item?.links?.fanpage).toBe('https://facebook.com/test');
+    expect(item?.links?.maps).toBeUndefined();
+  });
+
   it('returns 200 for a legacy/malformed openingHours row (defensive read, never throws)', async () => {
     const { json: cafe } = await createCafe(baseCafeBody());
     await db

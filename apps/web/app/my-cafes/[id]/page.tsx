@@ -4,6 +4,7 @@ import { notFound, redirect } from 'next/navigation';
 import { InventoryManager } from '@/app/admin/cafes/inventory-manager';
 import { getCurrentUser, serverApi } from '@/lib/api-server';
 import { SITE_NAME } from '@/lib/site';
+import { CafeMediaForm } from './cafe-media-form';
 import { OwnerCafeForm } from './cafe-info-form';
 import { StaffForm } from './staff-form';
 
@@ -45,6 +46,13 @@ export default async function MyCafeDetailPage(props: PageProps<'/my-cafes/[id]'
           </Link>
         </div>
       </div>
+
+      <CafeMediaForm
+        cafeId={cafe.id}
+        logoUrl={cafe.logoUrl}
+        coverUrl={cafe.coverUrl}
+        photos={cafe.photos}
+      />
 
       <OwnerCafeForm
         initial={{

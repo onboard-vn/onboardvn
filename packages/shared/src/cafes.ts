@@ -19,13 +19,77 @@ export const cafeFeeModelEnum = z.enum([
 ]);
 export type CafeFeeModel = z.infer<typeof cafeFeeModelEnum>;
 
+const HTTP_PROTOCOL = /^https?$/;
+
+/** No DOM/Node `URL` type is available in this package's tsconfig (it's consumed by both a
+ * browser and a Node app), so hostnames are extracted with a regex instead. Only ever called on
+ * a string that already passed `z.url()`, so the match is guaranteed. */
+function hostnameOf(url: string): string {
+  return url
+    .replace(/^https?:\/\//i, '')
+    .replace(/^www\./i, '')
+    .match(/^[^/?#]+/)![0];
+}
+
+/** `hosts`, when given, restricts the URL to those exact hosts or their `www.` variant — used
+ * where the target platform is known (fanpage/instagram/tiktok), so a lookalike or unrelated
+ * domain is rejected rather than silently accepted as a "social link". */
+function socialUrlSchema(hosts?: string[]) {
+  return z
+    .url({ protocol: HTTP_PROTOCOL })
+    .max(500)
+    .refine((url) => !hosts || hosts.includes(hostnameOf(url)), {
+      message: `URL phải thuộc ${hosts?.join(' hoặc ')}`,
+    });
+}
+
+/** VN mobile number: optional +84/84/0 prefix, then a 9-digit subscriber number starting 3/5/7/8/9. */
+const VN_PHONE_RE = /^(\+?84|0)(3|5|7|8|9)\d{8}$/;
+
+const zaloSchema = z
+  .string()
+  .trim()
+  .max(200)
+  .superRefine((value, ctx) => {
+    const digits = value.replace(/[^0-9+]/g, '');
+    if (VN_PHONE_RE.test(digits)) return;
+
+    const parsed = z.url({ protocol: HTTP_PROTOCOL }).safeParse(value);
+    if (parsed.success && hostnameOf(value) === 'zalo.me') return;
+
+    ctx.addIssue({
+      code: 'custom',
+      message: 'Zalo phải là số điện thoại Việt Nam hợp lệ hoặc link zalo.me',
+    });
+  });
+
 const cafeLinksSchema = z
   .object({
-    fanpage: z.url().max(500).optional(),
-    maps: z.url().max(500).optional(),
+    fanpage: socialUrlSchema(['facebook.com', 'fb.com']).optional(),
+    instagram: socialUrlSchema(['instagram.com']).optional(),
+    tiktok: socialUrlSchema(['tiktok.com']).optional(),
+    /** Zalo contact: either a VN phone number or a zalo.me link. */
+    zalo: zaloSchema.optional(),
+    website: socialUrlSchema().optional(),
+    maps: socialUrlSchema().optional(),
   })
   .optional();
 export type CafeLinks = z.infer<typeof cafeLinksSchema>;
+
+export const cafePhotoCaptionSchema = z.object({ caption: z.string().trim().max(140).optional() });
+export type CafePhotoCaptionInput = z.infer<typeof cafePhotoCaptionSchema>;
+
+export const cafePhotoReorderSchema = z.object({ photoIds: z.array(z.uuid()).min(1).max(30) });
+export type CafePhotoReorderInput = z.infer<typeof cafePhotoReorderSchema>;
+
+export const CAFE_PHOTO_MAX_COUNT = 30;
+
+export interface CafePhotoDto {
+  id: string;
+  url: string;
+  caption: string | null;
+  sortOrder: number;
+}
 
 /** Tri-state: `true`/`false` are known answers, `null` means "chưa rõ" (default for imported data). */
 const triState = z.boolean().nullable();
@@ -316,6 +380,12 @@ export const cafeGameBulkInputSchema = z.object({
 });
 export type CafeGameBulkInput = z.infer<typeof cafeGameBulkInputSchema>;
 
+export interface CafeInventoryCategoryDto {
+  id: string;
+  name: string;
+  nameVi: string | null;
+}
+
 export interface CafeInventoryItemDto {
   gameId: string;
   slug: string;
@@ -323,6 +393,10 @@ export interface CafeInventoryItemDto {
   nameEn: string;
   imageUrl: string | null;
   copies: number;
+  minPlayers: number | null;
+  maxPlayers: number | null;
+  playMinutes: number | null;
+  categories: CafeInventoryCategoryDto[];
 }
 
 export interface CafeMaintainerInventoryItemDto extends CafeInventoryItemDto {
@@ -349,6 +423,9 @@ export interface CafePublicSummaryDto {
   venueType: VenueType;
   /** Undefined for a `public_info_only` café (hours aren't public yet). */
   openStatus?: CafeOpenStatus;
+  /** Undefined for a `public_info_only` café — media isn't public yet. */
+  logoUrl?: string | null;
+  coverUrl?: string | null;
 }
 
 /** `amenities`/`feeModel`/`feeNote`/`openStatus` are `undefined` for a `public_info_only` café —
@@ -359,6 +436,8 @@ export interface CafePublicDetailDto extends CafePublicSummaryDto {
   feeModel?: CafeFeeModel;
   feeNote?: string | null;
   inventory: CafeInventoryItemDto[];
+  /** Empty for a `public_info_only` café — media isn't public yet. */
+  photos: CafePhotoDto[];
 }
 
 export interface CafeMaintainerDto extends CafePublicDetailDto {

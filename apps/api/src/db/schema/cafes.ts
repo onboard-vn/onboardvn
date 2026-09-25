@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import type { CafeAmenities, CafeOpeningHours } from '@onboard/shared';
+import type { CafeAmenities, CafeLinks, CafeOpeningHours } from '@onboard/shared';
 import {
   index,
   jsonb,
@@ -32,7 +32,9 @@ export const cafes = pgTable(
     lat: numeric({ precision: 9, scale: 6 }),
     lng: numeric({ precision: 9, scale: 6 }),
     openingHours: jsonb().$type<CafeOpeningHours>(),
-    links: jsonb().$type<{ fanpage?: string; maps?: string }>(),
+    links: jsonb().$type<CafeLinks>(),
+    logoPath: text(),
+    coverPath: text(),
     sourceUrl: text(),
     consentStatus: text({ enum: ['granted', 'pending', 'public_info_only', 'declined'] }).notNull(),
     consentNote: text(),
@@ -84,13 +86,34 @@ export const cafeGames = pgTable(
   ],
 );
 
+export const cafePhotos = pgTable(
+  'cafe_photos',
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    cafeId: uuid()
+      .notNull()
+      .references(() => cafes.id, { onDelete: 'cascade' }),
+    path: text().notNull(),
+    caption: text(),
+    sortOrder: smallint().notNull().default(0),
+    uploadedBy: text().references(() => users.id),
+    createdAt: timestamp().defaultNow().notNull(),
+  },
+  (table) => [index('cafe_photos_cafe_id_idx').on(table.cafeId, table.sortOrder)],
+);
+
 export const cafesRelations = relations(cafes, ({ one, many }) => ({
   province: one(provinces, { fields: [cafes.provinceCode], references: [provinces.code] }),
   ward: one(wards, { fields: [cafes.wardCode], references: [wards.code] }),
   inventory: many(cafeGames),
+  photos: many(cafePhotos),
 }));
 
 export const cafeGamesRelations = relations(cafeGames, ({ one }) => ({
   cafe: one(cafes, { fields: [cafeGames.cafeId], references: [cafes.id] }),
   game: one(games, { fields: [cafeGames.gameId], references: [games.id] }),
+}));
+
+export const cafePhotosRelations = relations(cafePhotos, ({ one }) => ({
+  cafe: one(cafes, { fields: [cafePhotos.cafeId], references: [cafes.id] }),
 }));

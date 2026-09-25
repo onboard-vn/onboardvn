@@ -4,28 +4,77 @@ import {
   cafeGameBulkInputSchema,
   cafeGameCopiesSchema,
   cafeGameInputSchema,
+  cafePhotoCaptionSchema,
+  cafePhotoReorderSchema,
   cafeUpdateSchema,
   idAndGameIdParamSchema,
+  idAndPhotoIdParamSchema,
   idParamSchema,
 } from '@onboard/shared';
 import { Hono } from 'hono';
+import { bodyLimit } from 'hono/body-limit';
 import { requireCafeRole } from '../../auth/cafe-role.js';
 import { requireRole } from '../../auth/middleware.js';
+import { ApiError } from '../../lib/errors.js';
 import { zValidator } from '../../lib/validator.js';
 import type { AppEnv } from '../../types.js';
 import {
+  addCafePhotoService,
   addGameToCafeService,
   bulkAddGamesToCafeService,
   createCafeService,
+  deleteCafeCoverService,
+  deleteCafeLogoService,
+  deleteCafePhotoService,
   deleteCafeService,
   getCafeBySlugService,
   getCafeForManageService,
   getCafeForOwnerService,
   listCafesService,
   removeGameFromCafeService,
+  reorderCafePhotosService,
+  setCafeCoverService,
+  setCafeLogoService,
   updateCafeGameCopiesService,
   updateCafeService,
 } from './service.js';
+
+const MAX_MEDIA_UPLOAD_BYTES = 5 * 1024 * 1024;
+
+/** Rejects an oversized body before it's fully buffered by `parseBody`. */
+const mediaBodyLimit = bodyLimit({
+  maxSize: MAX_MEDIA_UPLOAD_BYTES,
+  onError: () => {
+    throw new ApiError('BAD_REQUEST', 413, 'File quá lớn (tối đa 5MB)');
+  },
+});
+
+async function readImageFile(c: { req: { parseBody: () => Promise<unknown> } }): Promise<{
+  file: File;
+}> {
+  const body = (await c.req.parseBody()) as Record<string, unknown>;
+  const file = body.file;
+  if (!(file instanceof File)) throw new ApiError('VALIDATION_FAILED', 422, 'Thiếu file ảnh');
+  return { file };
+}
+
+/** Same as {@link readImageFile} but also validates the optional `caption` field against
+ * {@link cafePhotoCaptionSchema} (trim, ≤140 chars) instead of accepting any string. */
+async function readPhotoUpload(c: {
+  req: { parseBody: () => Promise<unknown> };
+}): Promise<{ file: File; caption?: string }> {
+  const body = (await c.req.parseBody()) as Record<string, unknown>;
+  const file = body.file;
+  if (!(file instanceof File)) throw new ApiError('VALIDATION_FAILED', 422, 'Thiếu file ảnh');
+
+  const parsed = cafePhotoCaptionSchema.safeParse({
+    caption: typeof body.caption === 'string' ? body.caption : undefined,
+  });
+  if (!parsed.success) {
+    throw new ApiError('VALIDATION_FAILED', 422, 'Chú thích ảnh không hợp lệ (tối đa 140 ký tự)');
+  }
+  return { file, caption: parsed.data.caption };
+}
 
 /** Café-scoped owner/staff never touch `sourceUrl`/`consentStatus`/`consentNote` via PATCH;
  * those change only through the dedicated consent endpoint. Silently dropped rather than
@@ -163,5 +212,75 @@ export const cafeRoutes = new Hono<AppEnv>()
         addedVia,
       );
       return c.json(result);
+    },
+  )
+  .post(
+    '/:id/logo',
+    requireCafeRole('owner', 'staff'),
+    zValidator('param', idParamSchema),
+    mediaBodyLimit,
+    async (c) => {
+      const { file } = await readImageFile(c);
+      const cafe = await setCafeLogoService(c.req.param('id'), file);
+      return c.json(cafe);
+    },
+  )
+  .delete(
+    '/:id/logo',
+    requireCafeRole('owner', 'staff'),
+    zValidator('param', idParamSchema),
+    async (c) => {
+      const cafe = await deleteCafeLogoService(c.req.param('id'));
+      return c.json(cafe);
+    },
+  )
+  .post(
+    '/:id/cover',
+    requireCafeRole('owner', 'staff'),
+    zValidator('param', idParamSchema),
+    mediaBodyLimit,
+    async (c) => {
+      const { file } = await readImageFile(c);
+      const cafe = await setCafeCoverService(c.req.param('id'), file);
+      return c.json(cafe);
+    },
+  )
+  .delete(
+    '/:id/cover',
+    requireCafeRole('owner', 'staff'),
+    zValidator('param', idParamSchema),
+    async (c) => {
+      const cafe = await deleteCafeCoverService(c.req.param('id'));
+      return c.json(cafe);
+    },
+  )
+  .post(
+    '/:id/photos',
+    requireCafeRole('owner', 'staff'),
+    zValidator('param', idParamSchema),
+    mediaBodyLimit,
+    async (c) => {
+      const { file, caption } = await readPhotoUpload(c);
+      const cafe = await addCafePhotoService(c.req.param('id'), file, caption, c.var.user.id);
+      return c.json(cafe, 201);
+    },
+  )
+  .patch(
+    '/:id/photos/reorder',
+    requireCafeRole('owner', 'staff'),
+    zValidator('param', idParamSchema),
+    zValidator('json', cafePhotoReorderSchema),
+    async (c) => {
+      const cafe = await reorderCafePhotosService(c.req.param('id'), c.req.valid('json').photoIds);
+      return c.json(cafe);
+    },
+  )
+  .delete(
+    '/:id/photos/:photoId',
+    requireCafeRole('owner', 'staff'),
+    zValidator('param', idAndPhotoIdParamSchema),
+    async (c) => {
+      const cafe = await deleteCafePhotoService(c.req.param('id'), c.req.param('photoId'));
+      return c.json(cafe);
     },
   );

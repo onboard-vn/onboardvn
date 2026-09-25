@@ -1,13 +1,15 @@
 import type {
   CafeCreateInput,
   CafeGameAddedVia,
+  CafeLinks,
   CafeOpeningHours,
   CafeUpdateInput,
   VenueType,
 } from '@onboard/shared';
 import { and, asc, count, eq, inArray, ne, type SQL, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
-import { cafeGames, cafes, games, provinces, wards } from '../../db/schema/index.js';
+import { cafeGames, cafePhotos, cafes, games, provinces, wards } from '../../db/schema/index.js';
+import { ApiError } from '../../lib/errors.js';
 import { publicCafeWhere } from './visibility.js';
 
 export type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
@@ -40,12 +42,6 @@ export interface CafeListOptions {
   /** Staff-only: also match `public_info_only` cafés against attribute filters (see below). */
   showAll?: boolean;
 }
-
-const cafeWithRelations = {
-  province: true,
-  ward: true,
-  inventory: { with: { game: true } },
-} as const;
 
 export type CafeFullRow = NonNullable<Awaited<ReturnType<typeof findCafeFullById>>>;
 
@@ -94,6 +90,8 @@ const cafeListSelection = {
   lat: cafes.lat,
   lng: cafes.lng,
   links: cafes.links,
+  logoPath: cafes.logoPath,
+  coverPath: cafes.coverPath,
   consentStatus: cafes.consentStatus,
   venueType: cafes.venueType,
   openingHours: cafes.openingHours,
@@ -112,7 +110,9 @@ export interface CafeListRow {
   legacyDistrict: string | null;
   lat: string | null;
   lng: string | null;
-  links: { fanpage?: string; maps?: string } | null;
+  links: CafeLinks | null;
+  logoPath: string | null;
+  coverPath: string | null;
   consentStatus: 'granted' | 'pending' | 'public_info_only' | 'declined';
   venueType: VenueType;
   openingHours: CafeOpeningHours | null;
@@ -158,12 +158,32 @@ export async function listAllCafesForFilter(
   return selectCafeList(buildWhere(filter, opts)).limit(OPEN_NOW_CANDIDATE_CAP);
 }
 
+const inventoryGameWith = {
+  with: { game: { with: { categories: { with: { category: true as const } } } } },
+};
+
 export function findCafeFullBySlug(slug: string) {
-  return db.query.cafes.findFirst({ where: eq(cafes.slug, slug), with: cafeWithRelations });
+  return db.query.cafes.findFirst({
+    where: eq(cafes.slug, slug),
+    with: {
+      province: true,
+      ward: true,
+      inventory: inventoryGameWith,
+      photos: { orderBy: [asc(cafePhotos.sortOrder)] },
+    },
+  });
 }
 
 export function findCafeFullById(id: string) {
-  return db.query.cafes.findFirst({ where: eq(cafes.id, id), with: cafeWithRelations });
+  return db.query.cafes.findFirst({
+    where: eq(cafes.id, id),
+    with: {
+      province: true,
+      ward: true,
+      inventory: inventoryGameWith,
+      photos: { orderBy: [asc(cafePhotos.sortOrder)] },
+    },
+  });
 }
 
 export async function slugExists(slug: string): Promise<boolean> {
@@ -313,5 +333,91 @@ export function findCafesForGame(gameId: string) {
   return db.query.cafeGames.findMany({
     where: eq(cafeGames.gameId, gameId),
     with: { cafe: { with: { province: true, ward: true } } },
+  });
+}
+
+export async function cafeExists(id: string): Promise<boolean> {
+  const [row] = await db.select({ id: cafes.id }).from(cafes).where(eq(cafes.id, id)).limit(1);
+  return Boolean(row);
+}
+
+/** Cafés table row only — no inventory/photos join — for callers that just need core columns
+ * (e.g. merging PATCH input against current values). */
+export function findCafeRowById(id: string) {
+  return db.query.cafes.findFirst({ where: eq(cafes.id, id) });
+}
+
+export function findCafeMediaPaths(id: string) {
+  return db.query.cafes.findFirst({
+    where: eq(cafes.id, id),
+    columns: { id: true, logoPath: true, coverPath: true },
+  });
+}
+
+export async function updateCafeMediaPath(
+  id: string,
+  field: 'logoPath' | 'coverPath',
+  path: string | null,
+): Promise<void> {
+  await db
+    .update(cafes)
+    .set({ [field]: path })
+    .where(eq(cafes.id, id));
+}
+
+/** Serializes photo-count-then-insert per café with `SELECT ... FOR UPDATE` on the café row, so
+ * two concurrent uploads can never both pass the cap check and land the café over it. */
+export async function lockCafeAndInsertPhoto(
+  cafeId: string,
+  maxCount: number,
+  values: { cafeId: string; path: string; caption: string | null; uploadedBy: string },
+): Promise<void> {
+  await db.transaction(async (tx) => {
+    await tx.execute(sql`select id from ${cafes} where id = ${cafeId} for update`);
+
+    const countRows = await tx
+      .select({ total: count() })
+      .from(cafePhotos)
+      .where(eq(cafePhotos.cafeId, cafeId));
+    const total = countRows[0]?.total ?? 0;
+    if (total >= maxCount) {
+      throw new ApiError('VALIDATION_FAILED', 422, `Chỉ được tối đa ${maxCount} ảnh`);
+    }
+
+    await tx.insert(cafePhotos).values({ ...values, sortOrder: total });
+  });
+}
+
+export function findCafePhoto(id: string) {
+  return db.query.cafePhotos.findFirst({ where: eq(cafePhotos.id, id) });
+}
+
+export function listCafePhotos(cafeId: string) {
+  return db.query.cafePhotos.findMany({
+    where: eq(cafePhotos.cafeId, cafeId),
+    orderBy: asc(cafePhotos.sortOrder),
+  });
+}
+
+export async function listCafePhotoPaths(cafeId: string): Promise<string[]> {
+  const rows = await db
+    .select({ path: cafePhotos.path })
+    .from(cafePhotos)
+    .where(eq(cafePhotos.cafeId, cafeId));
+  return rows.map((r) => r.path);
+}
+
+export async function deleteCafePhoto(id: string): Promise<void> {
+  await db.delete(cafePhotos).where(eq(cafePhotos.id, id));
+}
+
+export async function reorderCafePhotos(cafeId: string, photoIds: string[]): Promise<void> {
+  await db.transaction(async (tx) => {
+    for (const [index, photoId] of photoIds.entries()) {
+      await tx
+        .update(cafePhotos)
+        .set({ sortOrder: index })
+        .where(and(eq(cafePhotos.id, photoId), eq(cafePhotos.cafeId, cafeId)));
+    }
   });
 }

@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { getOpenStatus, mergeCafeHourRanges, type CafeOpeningHours } from './cafes.js';
+import {
+  cafeCreateSchema,
+  getOpenStatus,
+  mergeCafeHourRanges,
+  type CafeOpeningHours,
+} from './cafes.js';
 
 // All timestamps below are UTC instants; Asia/Saigon is UTC+7 with no DST.
 function vnTime(isoUtc: string): Date {
@@ -128,5 +133,78 @@ describe('mergeCafeHourRanges', () => {
       { open: '08:00', close: '11:00' },
       { open: '18:00', close: '22:00' },
     ]);
+  });
+});
+
+function validCafeBody(links: unknown) {
+  return {
+    name: 'Quán Test',
+    provinceCode: 'p1',
+    wardCode: 'w1',
+    addressLine: '1 Đường Test',
+    consentStatus: 'granted',
+    links,
+  };
+}
+
+describe('cafe links schema', () => {
+  it('accepts fanpage/instagram/tiktok/zalo/website/maps together', () => {
+    const result = cafeCreateSchema.safeParse(
+      validCafeBody({
+        fanpage: 'https://facebook.com/test',
+        instagram: 'https://instagram.com/test',
+        tiktok: 'https://tiktok.com/@test',
+        zalo: '0901234567',
+        website: 'https://example.test',
+        maps: 'https://maps.google.com/?q=test',
+      }),
+    );
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts a zalo.me link for zalo (not just a phone number)', () => {
+    const result = cafeCreateSchema.safeParse(
+      validCafeBody({ zalo: 'https://zalo.me/0901234567' }),
+    );
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects an invalid URL for instagram', () => {
+    const result = cafeCreateSchema.safeParse(validCafeBody({ instagram: 'not-a-url' }));
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects a javascript: URL for any link field', () => {
+    for (const field of ['fanpage', 'instagram', 'tiktok', 'website', 'maps'] as const) {
+      const result = cafeCreateSchema.safeParse(validCafeBody({ [field]: 'javascript:alert(1)' }));
+      expect(result.success).toBe(false);
+    }
+  });
+
+  it('rejects a data: URL', () => {
+    const result = cafeCreateSchema.safeParse(validCafeBody({ website: 'data:text/html,x' }));
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects a non-facebook host for fanpage', () => {
+    const result = cafeCreateSchema.safeParse(validCafeBody({ fanpage: 'https://evil.test/x' }));
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects a non-instagram host for instagram', () => {
+    const result = cafeCreateSchema.safeParse(
+      validCafeBody({ instagram: 'https://facebook.com/x' }),
+    );
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects a non-VN-phone, non-zalo.me value for zalo', () => {
+    const result = cafeCreateSchema.safeParse(validCafeBody({ zalo: '+1 555 123 4567' }));
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects a non-zalo.me URL for zalo', () => {
+    const result = cafeCreateSchema.safeParse(validCafeBody({ zalo: 'https://evil.test/x' }));
+    expect(result.success).toBe(false);
   });
 });

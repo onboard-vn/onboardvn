@@ -6,3 +6,4 @@ export const idAndCodeParamSchema = z.object({
   id: z.uuid(),
   code: z.string().trim().min(6).max(20),
 });
+export const idAndPhotoIdParamSchema = z.object({ id: z.uuid(), photoId: z.uuid() });

@@ -1,6 +1,12 @@
 'use client';
 
-import type { CafeAmenities, CafeFeeModel, CafeOpeningHours, VenueType } from '@onboard/shared';
+import type {
+  CafeAmenities,
+  CafeFeeModel,
+  CafeLinks,
+  CafeOpeningHours,
+  VenueType,
+} from '@onboard/shared';
 import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import { AmenitiesFields } from '@/components/cafe/amenities-fields';
@@ -18,7 +24,7 @@ export interface OwnerCafeFormInitial {
   addressLine: string;
   legacyDistrict: string | null;
   openingHours?: CafeOpeningHours;
-  links?: { fanpage?: string; maps?: string };
+  links?: CafeLinks;
   venueType: VenueType;
   amenities?: CafeAmenities;
   feeModel?: CafeFeeModel;
@@ -49,8 +55,21 @@ export function OwnerCafeForm({ initial }: { initial: OwnerCafeFormInitial }) {
       return v !== '' ? v : null;
     };
     const fanpageRaw = String(data.get('fanpage') ?? '').trim();
+    const instagramRaw = String(data.get('instagram') ?? '').trim();
+    const tiktokRaw = String(data.get('tiktok') ?? '').trim();
+    const zaloRaw = String(data.get('zalo') ?? '').trim();
+    const websiteRaw = String(data.get('website') ?? '').trim();
     const mapsRaw = String(data.get('maps') ?? '').trim();
     const feeNoteRaw = String(data.get('feeNote') ?? '').trim();
+    const links: CafeLinks = {
+      fanpage: fanpageRaw || undefined,
+      instagram: instagramRaw || undefined,
+      tiktok: tiktokRaw || undefined,
+      zalo: zaloRaw || undefined,
+      website: websiteRaw || undefined,
+      maps: mapsRaw || undefined,
+    };
+    const hasAnyLink = Object.values(links).some((v) => v !== undefined);
 
     const res = await api.api.cafes[':id'].$patch({
       param: { id: initial.id },
@@ -63,10 +82,7 @@ export function OwnerCafeForm({ initial }: { initial: OwnerCafeFormInitial }) {
         feeModel,
         feeNote: feeNoteRaw || null,
         openingHours: hours ?? null,
-        links:
-          fanpageRaw || mapsRaw
-            ? { fanpage: fanpageRaw || undefined, maps: mapsRaw || undefined }
-            : null,
+        links: hasAnyLink ? links : null,
       },
     });
 
@@ -119,14 +135,33 @@ export function OwnerCafeForm({ initial }: { initial: OwnerCafeFormInitial }) {
         </select>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="fanpage">Fanpage</Label>
-          <Input id="fanpage" name="fanpage" defaultValue={initial.links?.fanpage ?? ''} />
-        </div>
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="maps">Link chỉ đường</Label>
-          <Input id="maps" name="maps" defaultValue={initial.links?.maps ?? ''} />
+      <div className="flex flex-col gap-2 border-t pt-4">
+        <h3 className="text-sm font-medium">Mạng xã hội &amp; liên hệ</h3>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="fanpage">Fanpage</Label>
+            <Input id="fanpage" name="fanpage" defaultValue={initial.links?.fanpage ?? ''} />
+          </div>
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="instagram">Instagram</Label>
+            <Input id="instagram" name="instagram" defaultValue={initial.links?.instagram ?? ''} />
+          </div>
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="tiktok">TikTok</Label>
+            <Input id="tiktok" name="tiktok" defaultValue={initial.links?.tiktok ?? ''} />
+          </div>
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="zalo">Zalo (SĐT hoặc link)</Label>
+            <Input id="zalo" name="zalo" defaultValue={initial.links?.zalo ?? ''} />
+          </div>
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="website">Website</Label>
+            <Input id="website" name="website" defaultValue={initial.links?.website ?? ''} />
+          </div>
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="maps">Link chỉ đường</Label>
+            <Input id="maps" name="maps" defaultValue={initial.links?.maps ?? ''} />
+          </div>
         </div>
       </div>
 

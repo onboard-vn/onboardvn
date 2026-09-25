@@ -210,7 +210,7 @@ test('admin invites an owner who accepts, grants consent, edits hours, then a se
   await ownerAPage.getByRole('button', { name: 'Thêm 4 game vào kho' }).click();
   await expect(ownerAPage.getByText('Đã áp dụng 4 dòng.')).toBeVisible();
 
-  await publicPage.goto(`/cafes/${cafeASlug}`);
+  await publicPage.goto(`/cafes/${cafeASlug}?tab=games`);
   await expect(publicPage.getByText('Kho game (4)')).toBeVisible();
 
   // Owner B: accept, then decline -> café disappears from public site.

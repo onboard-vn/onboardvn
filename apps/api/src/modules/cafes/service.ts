@@ -6,23 +6,40 @@ import type {
   CafeGameAddedVia,
   CafeGameInput,
   CafeInventoryItemDto,
+  CafeLinks,
   CafeListResponse,
   CafeMaintainerDto,
   CafeMaintainerInventoryItemDto,
   CafeOwnerDto,
   CafeOwnerInventoryItemDto,
+  CafePhotoDto,
   CafePublicDetailDto,
   CafePublicSummaryDto,
   CafeUpdateInput,
 } from '@onboard/shared';
-import { getOpenStatus } from '@onboard/shared';
+import { CAFE_PHOTO_MAX_COUNT, getOpenStatus } from '@onboard/shared';
+import sharp from 'sharp';
 import { ApiError } from '../../lib/errors.js';
+import { sniffImageMime } from '../../lib/image-mime.js';
 import { storage } from '../../lib/storage/index.js';
 import * as locationsRepo from '../locations/repo.js';
 import { slugify } from '../games/slug.js';
 import * as repo from './repo.js';
 import type { CafeFullRow, CafeListRow } from './repo.js';
 import { isPubliclyVisibleCafe } from './visibility.js';
+
+const PUBLIC_LINK_KEYS = ['fanpage'] as const;
+
+/** Only `fanpage` is public for a `public_info_only` café — the rest (maps, instagram, tiktok,
+ * zalo, website) follow the same visibility as amenities/hours. */
+function visibleLinks(links: CafeLinks, hideDetails: boolean): CafeLinks {
+  if (!links || !hideDetails) return links;
+  const result: CafeLinks = {};
+  for (const key of PUBLIC_LINK_KEYS) {
+    if (links[key] !== undefined) result[key] = links[key];
+  }
+  return Object.keys(result).length > 0 ? result : undefined;
+}
 
 function toPublicSummaryFromListRow(row: CafeListRow, forceShowAll = false): CafePublicSummaryDto {
   const hideDetails = !forceShowAll && row.consentStatus === 'public_info_only';
@@ -38,11 +55,22 @@ function toPublicSummaryFromListRow(row: CafeListRow, forceShowAll = false): Caf
     legacyDistrict: hideDetails ? null : row.legacyDistrict,
     lat: hideDetails || row.lat === null ? null : Number(row.lat),
     lng: hideDetails || row.lng === null ? null : Number(row.lng),
-    links: row.links ?? undefined,
+    links: visibleLinks(row.links ?? undefined, hideDetails),
     gameCount: row.gameCount,
     verified: row.consentStatus === 'granted',
     venueType: row.venueType,
     openStatus: hideDetails ? undefined : getOpenStatus(row.openingHours, new Date()),
+    logoUrl: hideDetails ? undefined : row.logoPath ? storage.url(row.logoPath) : null,
+    coverUrl: hideDetails ? undefined : row.coverPath ? storage.url(row.coverPath) : null,
+  };
+}
+
+function toPhotoDto(row: CafeFullRow['photos'][number]): CafePhotoDto {
+  return {
+    id: row.id,
+    url: storage.url(row.path),
+    caption: row.caption,
+    sortOrder: row.sortOrder,
   };
 }
 
@@ -54,6 +82,14 @@ function toInventoryDto(row: CafeFullRow['inventory'][number]): CafeInventoryIte
     nameEn: row.game.nameEn,
     imageUrl: row.game.imageKey ? storage.url(row.game.imageKey) : null,
     copies: row.copies,
+    minPlayers: row.game.minPlayers,
+    maxPlayers: row.game.maxPlayers,
+    playMinutes: row.game.playMinutes,
+    categories: row.game.categories.map((gc) => ({
+      id: gc.category.id,
+      name: gc.category.name,
+      nameVi: gc.category.nameVi,
+    })),
   };
 }
 
@@ -77,7 +113,7 @@ function toPublicDetail(row: CafeFullRow, forceShowAll = false): CafePublicDetai
     legacyDistrict: hideDetails ? null : row.legacyDistrict,
     lat: hideDetails || row.lat === null ? null : Number(row.lat),
     lng: hideDetails || row.lng === null ? null : Number(row.lng),
-    links: row.links ?? undefined,
+    links: visibleLinks(row.links ?? undefined, hideDetails),
     gameCount: row.inventory.length,
     verified: row.consentStatus === 'granted',
     venueType: row.venueType,
@@ -86,7 +122,10 @@ function toPublicDetail(row: CafeFullRow, forceShowAll = false): CafePublicDetai
     amenities: hideDetails ? undefined : (row.amenities ?? undefined),
     feeModel: hideDetails ? undefined : row.feeModel,
     feeNote: hideDetails ? undefined : row.feeNote,
+    logoUrl: hideDetails ? undefined : row.logoPath ? storage.url(row.logoPath) : null,
+    coverUrl: hideDetails ? undefined : row.coverPath ? storage.url(row.coverPath) : null,
     inventory: row.inventory.map(toInventoryDto),
+    photos: hideDetails ? [] : row.photos.map(toPhotoDto),
   };
 }
 
@@ -265,7 +304,7 @@ export async function updateCafeService(
   id: string,
   input: CafeUpdateInput,
 ): Promise<CafeMaintainerDto> {
-  const existing = await repo.findCafeFullById(id);
+  const existing = await repo.findCafeRowById(id);
   if (!existing) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
 
   const mergedProvinceCode = input.provinceCode ?? existing.provinceCode;
@@ -287,9 +326,22 @@ export async function updateCafeService(
 }
 
 export async function deleteCafeService(id: string): Promise<void> {
-  const existing = await repo.findCafeFullById(id);
+  const existing = await repo.findCafeMediaPaths(id);
   if (!existing) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
+  const photoPaths = await repo.listCafePhotoPaths(id);
+
+  // `cafe_photos` cascades on delete, so the file paths are grabbed above before the row (and
+  // its FK-cascaded siblings) are gone; the on-disk files are removed only after that commits.
   await repo.deleteCafeRow(id);
+
+  const paths = [existing.logoPath, existing.coverPath, ...photoPaths].filter(
+    (p): p is string => p !== null,
+  );
+  await Promise.all(
+    paths.map((path) =>
+      storage.delete(path).catch((err) => console.error(`Failed to delete café file ${path}`, err)),
+    ),
+  );
 }
 
 export async function addGameToCafeService(
@@ -297,8 +349,8 @@ export async function addGameToCafeService(
   input: CafeGameInput,
   userId: string,
 ): Promise<CafeMaintainerDto> {
-  const existing = await repo.findCafeFullById(cafeId);
-  if (!existing) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
+  const exists = await repo.cafeExists(cafeId);
+  if (!exists) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
 
   const gameExists = await repo.gameExists(input.gameId);
   if (!gameExists) throw new ApiError('VALIDATION_FAILED', 422, 'Game không hợp lệ');
@@ -342,14 +394,160 @@ export async function bulkAddGamesToCafeService(
   userId: string,
   addedVia: CafeGameAddedVia = 'manual',
 ): Promise<BulkAddGamesResult> {
-  const existing = await repo.findCafeFullById(cafeId);
-  if (!existing) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
+  const exists = await repo.cafeExists(cafeId);
+  if (!exists) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
 
   const uniqueIds = [...new Set(gameIds)];
   const allExist = await repo.gameIdsExist(uniqueIds);
   if (!allExist) throw new ApiError('VALIDATION_FAILED', 422, 'Danh sách game có mục không hợp lệ');
 
   return repo.bulkInsertCafeGames(cafeId, uniqueIds, userId, addedVia);
+}
+
+const MAX_MEDIA_BYTES = 5 * 1024 * 1024;
+const MAX_INPUT_PIXELS = 4e7;
+const MAX_OUTPUT_DIMENSION = 2048;
+const WEBP_QUALITY = 82;
+
+/** Validates size + real (magic-byte sniffed) MIME, then re-encodes to WebP via `sharp`: this
+ * strips all metadata (EXIF/GPS included — `sharp` only carries it over with `.withMetadata()`,
+ * which we never call), auto-rotates from the original EXIF orientation before stripping it, and
+ * caps both input decode size and output dimensions. */
+async function readAndValidateImage(file: File): Promise<Uint8Array> {
+  if (file.size > MAX_MEDIA_BYTES) throw new ApiError('VALIDATION_FAILED', 422, 'Ảnh vượt quá 5MB');
+
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const mime = sniffImageMime(bytes);
+  if (!mime) throw new ApiError('VALIDATION_FAILED', 422, 'Chỉ chấp nhận ảnh JPEG/PNG/WEBP');
+
+  try {
+    return await sharp(bytes, { limitInputPixels: MAX_INPUT_PIXELS })
+      .rotate()
+      .resize({
+        width: MAX_OUTPUT_DIMENSION,
+        height: MAX_OUTPUT_DIMENSION,
+        fit: 'inside',
+        withoutEnlargement: true,
+      })
+      .webp({ quality: WEBP_QUALITY })
+      .toBuffer();
+  } catch {
+    throw new ApiError(
+      'VALIDATION_FAILED',
+      422,
+      'Ảnh không hợp lệ hoặc vượt quá kích thước cho phép',
+    );
+  }
+}
+
+async function setCafeMedia(
+  cafeId: string,
+  field: 'logoPath' | 'coverPath',
+  folder: 'logos' | 'covers',
+  file: File,
+): Promise<void> {
+  const existing = await repo.findCafeMediaPaths(cafeId);
+  if (!existing) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
+
+  const webp = await readAndValidateImage(file);
+  const key = `cafes/${folder}/${cafeId}/${crypto.randomUUID()}.webp`;
+  await storage.put(key, webp, 'image/webp');
+  await repo.updateCafeMediaPath(cafeId, field, key);
+
+  const previousPath = field === 'logoPath' ? existing.logoPath : existing.coverPath;
+  if (previousPath && previousPath !== key) await storage.delete(previousPath);
+}
+
+export async function setCafeLogoService(cafeId: string, file: File): Promise<CafeOwnerDto> {
+  await setCafeMedia(cafeId, 'logoPath', 'logos', file);
+  return getCafeForOwnerService(cafeId);
+}
+
+export async function setCafeCoverService(cafeId: string, file: File): Promise<CafeOwnerDto> {
+  await setCafeMedia(cafeId, 'coverPath', 'covers', file);
+  return getCafeForOwnerService(cafeId);
+}
+
+async function deleteCafeMedia(cafeId: string, field: 'logoPath' | 'coverPath'): Promise<void> {
+  const existing = await repo.findCafeMediaPaths(cafeId);
+  if (!existing) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
+
+  const path = field === 'logoPath' ? existing.logoPath : existing.coverPath;
+  await repo.updateCafeMediaPath(cafeId, field, null);
+  if (path) await storage.delete(path);
+}
+
+export async function deleteCafeLogoService(cafeId: string): Promise<CafeOwnerDto> {
+  await deleteCafeMedia(cafeId, 'logoPath');
+  return getCafeForOwnerService(cafeId);
+}
+
+export async function deleteCafeCoverService(cafeId: string): Promise<CafeOwnerDto> {
+  await deleteCafeMedia(cafeId, 'coverPath');
+  return getCafeForOwnerService(cafeId);
+}
+
+export async function addCafePhotoService(
+  cafeId: string,
+  file: File,
+  caption: string | undefined,
+  userId: string,
+): Promise<CafeOwnerDto> {
+  const exists = await repo.cafeExists(cafeId);
+  if (!exists) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
+
+  // Re-encoding happens before the lock is taken — only the cheap count+insert runs while held.
+  const webp = await readAndValidateImage(file);
+
+  const key = `cafes/photos/${cafeId}/${crypto.randomUUID()}.webp`;
+  await storage.put(key, webp, 'image/webp');
+
+  try {
+    await repo.lockCafeAndInsertPhoto(cafeId, CAFE_PHOTO_MAX_COUNT, {
+      cafeId,
+      path: key,
+      caption: caption ?? null,
+      uploadedBy: userId,
+    });
+  } catch (err) {
+    await storage.delete(key);
+    throw err;
+  }
+
+  return getCafeForOwnerService(cafeId);
+}
+
+export async function deleteCafePhotoService(
+  cafeId: string,
+  photoId: string,
+): Promise<CafeOwnerDto> {
+  const photo = await repo.findCafePhoto(photoId);
+  if (!photo || photo.cafeId !== cafeId) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy ảnh');
+
+  await repo.deleteCafePhoto(photoId);
+  try {
+    await storage.delete(photo.path);
+  } catch (err) {
+    console.error(`Failed to delete café photo file ${photo.path}`, err);
+  }
+
+  return getCafeForOwnerService(cafeId);
+}
+
+export async function reorderCafePhotosService(
+  cafeId: string,
+  photoIds: string[],
+): Promise<CafeOwnerDto> {
+  const existingPhotos = await repo.listCafePhotos(cafeId);
+  const existingIds = new Set(existingPhotos.map((p) => p.id));
+  const sameSet =
+    photoIds.length === existingIds.size && photoIds.every((id) => existingIds.has(id));
+  if (!sameSet) {
+    throw new ApiError('VALIDATION_FAILED', 422, 'Danh sách ảnh không khớp với kho ảnh hiện tại');
+  }
+
+  await repo.reorderCafePhotos(cafeId, photoIds);
+  return getCafeForOwnerService(cafeId);
 }
 
 export async function getCafesForGameService(gameId: string): Promise<CafeForGameDto[]> {
@@ -365,7 +563,7 @@ export async function getCafesForGameService(gameId: string): Promise<CafeForGam
         provinceName: row.cafe.province.name,
         wardName: row.cafe.ward.name,
         addressLine: row.cafe.addressLine,
-        links: hideDetails ? { fanpage: row.cafe.links?.fanpage } : (row.cafe.links ?? undefined),
+        links: visibleLinks(row.cafe.links ?? undefined, hideDetails),
         copies: row.copies,
       };
     });
