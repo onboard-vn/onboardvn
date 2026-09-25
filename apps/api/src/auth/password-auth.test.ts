@@ -104,7 +104,7 @@ describe('username + password auth', () => {
       () =>
         post('/request-password-reset', {
           email: `nobody-${stamp}@example.test`,
-          redirectTo: 'http://localhost:3000/dat-lai-mat-khau',
+          redirectTo: 'http://localhost:3000/reset-password',
         }),
       0,
     );
@@ -143,7 +143,7 @@ describe('username + password auth', () => {
     const [res, sent] = await captureMail(() =>
       post('/request-password-reset', {
         email,
-        redirectTo: 'http://localhost:3000/dat-lai-mat-khau',
+        redirectTo: 'http://localhost:3000/reset-password',
       }),
     );
     expect(res.status).toBe(200);
@@ -163,7 +163,7 @@ describe('username + password auth', () => {
     const [, sent] = await captureMail(() =>
       post('/request-password-reset', {
         email,
-        redirectTo: 'http://localhost:3000/dat-lai-mat-khau',
+        redirectTo: 'http://localhost:3000/reset-password',
       }),
     );
     const token = linkIn(sent[0]!).pathname.split('/').pop()!;

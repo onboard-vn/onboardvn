@@ -28,7 +28,7 @@ export function SiteFooter() {
           </a>
         </span>
         <span aria-hidden>·</span>
-        <Link href="/nguon-tham-khao" className="underline">
+        <Link href="/credits" className="underline">
           Nguồn tham khảo
         </Link>
       </div>

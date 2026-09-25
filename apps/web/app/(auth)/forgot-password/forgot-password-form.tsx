@@ -19,7 +19,7 @@ export function ForgotPasswordForm() {
     const ok = await run(() =>
       authClient.requestPasswordReset({
         email,
-        redirectTo: `${window.location.origin}/dat-lai-mat-khau`,
+        redirectTo: `${window.location.origin}/reset-password`,
       }),
     );
     if (ok) setSent(true);

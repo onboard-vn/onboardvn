@@ -119,7 +119,7 @@ export async function sendFriendRequestService(
 
   if (result.status === 'pending' && target.emailOnFriendRequest) {
     mailer
-      .send({ to: target.email, ...friendRequestEmail(actor.name, `${env.WEB_ORIGIN}/ban-be`) })
+      .send({ to: target.email, ...friendRequestEmail(actor.name, `${env.WEB_ORIGIN}/friends`) })
       .catch((err: unknown) => logger.error({ err }, 'friend request email failed'));
   }
 

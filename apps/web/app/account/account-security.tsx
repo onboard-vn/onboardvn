@@ -108,7 +108,7 @@ export function AccountSecurity() {
               size="sm"
               disabled={pending}
               onClick={() =>
-                run(() => authClient.linkSocial({ provider: 'google', callbackURL: '/tai-khoan' }))
+                run(() => authClient.linkSocial({ provider: 'google', callbackURL: '/account' }))
               }
             >
               Liên kết Google

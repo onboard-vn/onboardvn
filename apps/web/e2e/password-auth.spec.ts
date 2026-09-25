@@ -21,14 +21,14 @@ test.afterAll(async () => {
 });
 
 test('signs up with username + password, then signs in with the username', async ({ page }) => {
-  await page.goto('/dang-ky');
+  await page.goto('/signup');
   await page.getByLabel('Tên đăng nhập').fill(USERNAME);
   await page.getByLabel('Email').fill(EMAIL);
   await page.getByLabel('Mật khẩu', { exact: true }).fill(PASSWORD);
   await page.getByLabel('Nhập lại mật khẩu').fill(PASSWORD);
   await page.getByRole('button', { name: 'Đăng ký' }).click();
 
-  await expect(page).toHaveURL(/\/kiem-tra-email/);
+  await expect(page).toHaveURL(/\/check-email/);
   await expect(page.getByText(EMAIL)).toBeVisible();
 
   await page.goto('/login');

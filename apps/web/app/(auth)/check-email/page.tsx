@@ -6,7 +6,7 @@ import { SITE_NAME } from '@/lib/site';
 
 export const metadata: Metadata = { title: `Kiểm tra email · ${SITE_NAME}` };
 
-export default async function CheckEmailPage({ searchParams }: PageProps<'/kiem-tra-email'>) {
+export default async function CheckEmailPage({ searchParams }: PageProps<'/check-email'>) {
   const { email } = await searchParams;
   return (
     <AuthPage>

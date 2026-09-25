@@ -43,7 +43,7 @@ function QrScanSection() {
   function onDetect(raw: string) {
     try {
       const url = new URL(raw, window.location.origin);
-      if (url.origin !== window.location.origin || !/^\/ket-ban\/[^/]+$/.test(url.pathname)) {
+      if (url.origin !== window.location.origin || !/^\/invite\/[^/]+$/.test(url.pathname)) {
         setError('Mã QR không hợp lệ');
         return;
       }
@@ -257,7 +257,7 @@ function BlockedTab() {
   );
 }
 
-export function BanBeTabs() {
+export function FriendsTabs() {
   const [tab, setTab] = useState<Tab>('friends');
 
   return (

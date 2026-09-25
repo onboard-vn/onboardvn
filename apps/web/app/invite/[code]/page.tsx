@@ -13,13 +13,13 @@ async function fetchPreview(code: string) {
 
 export const metadata: Metadata = { title: `Kết bạn · ${SITE_NAME}`, robots: { index: false } };
 
-export default async function InvitePage({ params }: PageProps<'/ket-ban/[code]'>) {
+export default async function InvitePage({ params }: PageProps<'/invite/[code]'>) {
   const { code } = await params;
   const preview = await fetchPreview(code);
   if (!preview) notFound();
 
   const user = await getCurrentUser();
-  if (!user) redirect(`/login?next=${encodeURIComponent(`/ket-ban/${code}`)}`);
+  if (!user) redirect(`/login?next=${encodeURIComponent(`/invite/${code}`)}`);
 
   const isSelf = user.id === preview.id;
 

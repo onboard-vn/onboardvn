@@ -53,7 +53,7 @@ export function CafeFilters({
     const province = provinces.find((p) => p.code === provinceCode);
     const ward = wards.find((w) => w.code === wardCode);
     const params = new URLSearchParams();
-    if (province) params.set('tinh', province.slug);
+    if (province) params.set('province', province.slug);
     if (ward) params.set('phuong', ward.slug);
     router.push(params.size ? `/cafes?${params.toString()}` : '/cafes');
   }

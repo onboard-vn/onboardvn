@@ -39,10 +39,10 @@ describe('entry builders', () => {
     ]);
   });
 
-  it('provinceEntries links to the real /cafes?tinh= listing', () => {
+  it('provinceEntries links to the real /cafes?province= listing', () => {
     expect(provinceEntries(siteUrl, ['ho-chi-minh'])).toEqual([
       {
-        url: 'https://onboard.j2teamnnl.com/cafes?tinh=ho-chi-minh',
+        url: 'https://onboard.j2teamnnl.com/cafes?province=ho-chi-minh',
         changeFrequency: 'weekly',
         priority: 0.5,
       },

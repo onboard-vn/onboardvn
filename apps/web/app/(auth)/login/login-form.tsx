@@ -115,10 +115,10 @@ export function LoginForm({ notice, next }: { notice?: string; next?: string | n
               Đăng nhập
             </Button>
             <div className="flex justify-between text-sm">
-              <Link href="/quen-mat-khau" className="underline">
+              <Link href="/forgot-password" className="underline">
                 Quên mật khẩu?
               </Link>
-              <Link href="/dang-ky" className="underline">
+              <Link href="/signup" className="underline">
                 Tạo tài khoản
               </Link>
             </div>

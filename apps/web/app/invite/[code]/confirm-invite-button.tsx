@@ -32,7 +32,7 @@ export function ConfirmInviteButton({ code }: { code: string }) {
     return (
       <div className="flex flex-col gap-2">
         <p className="text-sm">Đã kết bạn.</p>
-        <Link href="/ban-be" className={buttonVariants()}>
+        <Link href="/friends" className={buttonVariants()}>
           Xem danh sách bạn bè
         </Link>
       </div>

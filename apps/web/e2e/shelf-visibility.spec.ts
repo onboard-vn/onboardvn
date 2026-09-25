@@ -29,13 +29,13 @@ let gameId: string;
 const gameName = `E2E Shelf Game ${stamp}`;
 
 async function signUp(page: Page, acc: Account) {
-  await page.goto('/dang-ky');
+  await page.goto('/signup');
   await page.getByLabel('Tên đăng nhập').fill(acc.username);
   await page.getByLabel('Email').fill(acc.email);
   await page.getByLabel('Mật khẩu', { exact: true }).fill(password);
   await page.getByLabel('Nhập lại mật khẩu').fill(password);
   await page.getByRole('button', { name: 'Đăng ký' }).click();
-  await expect(page).toHaveURL(/\/kiem-tra-email/);
+  await expect(page).toHaveURL(/\/check-email/);
 }
 
 async function signIn(page: Page, acc: Account) {

@@ -23,13 +23,13 @@ const dave = account('friend_d');
 let client: Client;
 
 async function signUp(page: Page, acc: Account) {
-  await page.goto('/dang-ky');
+  await page.goto('/signup');
   await page.getByLabel('Tên đăng nhập').fill(acc.username);
   await page.getByLabel('Email').fill(acc.email);
   await page.getByLabel('Mật khẩu', { exact: true }).fill(password);
   await page.getByLabel('Nhập lại mật khẩu').fill(password);
   await page.getByRole('button', { name: 'Đăng ký' }).click();
-  await expect(page).toHaveURL(/\/kiem-tra-email/);
+  await expect(page).toHaveURL(/\/check-email/);
 }
 
 async function signIn(page: Page, acc: Account) {
@@ -75,17 +75,17 @@ test('A opens B invite link and they become friends; C requests D and D accepts'
   await signIn(cPage, carol);
   await signIn(dPage, dave);
 
-  await bPage.goto('/tai-khoan');
-  const inviteText = await bPage.getByText(/\/ket-ban\//).innerText();
+  await bPage.goto('/account');
+  const inviteText = await bPage.getByText(/\/invite\//).innerText();
   const inviteUrl = new URL(inviteText.trim());
 
   await aPage.goto(inviteUrl.pathname);
   await aPage.getByRole('button', { name: 'Xác nhận kết bạn' }).click();
   await expect(aPage.getByText('Đã kết bạn.')).toBeVisible();
 
-  await aPage.goto('/ban-be');
+  await aPage.goto('/friends');
   await expect(aPage.getByText(bob.username, { exact: false })).toBeVisible();
-  await bPage.goto('/ban-be');
+  await bPage.goto('/friends');
   await expect(bPage.getByText(alice.username, { exact: false })).toBeVisible();
 
   await cPage.goto(`/u/${dave.username}`);
@@ -95,12 +95,12 @@ test('A opens B invite link and they become friends; C requests D and D accepts'
   await dPage.goto('/');
   await expect(dPage.getByRole('banner').getByText('1', { exact: true })).toBeVisible();
 
-  await dPage.goto('/ban-be');
+  await dPage.goto('/friends');
   await dPage.getByRole('tab', { name: 'Lời mời' }).click();
   await expect(dPage.getByText(carol.username, { exact: false })).toBeVisible();
   await dPage.getByRole('button', { name: 'Chấp nhận' }).click();
   await expect(dPage.getByText('Không có lời mời nào.')).toBeVisible();
 
-  await dPage.goto('/ban-be');
+  await dPage.goto('/friends');
   await expect(dPage.getByText(carol.username, { exact: false })).toBeVisible();
 });

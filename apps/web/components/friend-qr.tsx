@@ -25,7 +25,7 @@ export function FriendQr() {
 
   useEffect(() => {
     if (!code) return;
-    const url = `${window.location.origin}/ket-ban/${code}`;
+    const url = `${window.location.origin}/invite/${code}`;
     QRCode.toString(url, { type: 'svg', margin: 1, width: 220 })
       .then(setSvg)
       .catch(() => setError('Không tạo được mã QR'));
@@ -57,7 +57,7 @@ export function FriendQr() {
       )}
       {code ? (
         <p className="text-center text-xs break-all text-muted-foreground">
-          {typeof window !== 'undefined' ? `${window.location.origin}/ket-ban/${code}` : null}
+          {typeof window !== 'undefined' ? `${window.location.origin}/invite/${code}` : null}
         </p>
       ) : null}
       <Button type="button" variant="outline" size="sm" disabled={pending} onClick={rotate}>

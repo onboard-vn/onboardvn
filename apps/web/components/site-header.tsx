@@ -23,13 +23,13 @@ export async function SiteHeader() {
             Quán
           </Link>
           {user ? (
-            <Link href="/ban-be" className="flex items-center gap-1.5 text-sm font-medium">
+            <Link href="/friends" className="flex items-center gap-1.5 text-sm font-medium">
               Bạn bè
               <FriendRequestBadge />
             </Link>
           ) : null}
           {user ? (
-            <Link href="/tu-game" className="text-sm font-medium">
+            <Link href="/shelf" className="text-sm font-medium">
               Tủ game
             </Link>
           ) : null}
@@ -56,7 +56,7 @@ export async function SiteHeader() {
               // eslint-disable-next-line @next/next/no-img-element -- external avatar hosts vary
               <img src={user.image} alt="" className="size-7 rounded-full" />
             ) : null}
-            <Link href="/tai-khoan" className="hover:underline">
+            <Link href="/account" className="hover:underline">
               {user.name}
             </Link>
             <span className="rounded bg-muted px-1.5 py-0.5 text-xs">{ROLE_LABEL[user.role]}</span>
@@ -65,7 +65,7 @@ export async function SiteHeader() {
         ) : (
           <div className="flex items-center gap-3 text-sm font-medium">
             <Link href="/login">Đăng nhập</Link>
-            <Link href="/dang-ky">Đăng ký</Link>
+            <Link href="/signup">Đăng ký</Link>
           </div>
         )}
       </div>

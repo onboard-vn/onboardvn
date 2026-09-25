@@ -3,11 +3,11 @@ import { safeNextPath } from './safe-next';
 
 describe('safeNextPath', () => {
   it('accepts a normal same-origin path with query', () => {
-    expect(safeNextPath('/ban-be?tab=x')).toBe('/ban-be?tab=x');
+    expect(safeNextPath('/friends?tab=x')).toBe('/friends?tab=x');
   });
 
   it('accepts a bare path', () => {
-    expect(safeNextPath('/ket-ban/abc')).toBe('/ket-ban/abc');
+    expect(safeNextPath('/invite/abc')).toBe('/invite/abc');
   });
 
   it('rejects undefined/empty', () => {

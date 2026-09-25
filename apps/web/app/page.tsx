@@ -6,7 +6,7 @@ import { SITE_NAME, SITE_SLOGAN } from '@/lib/site';
 const ACTIONS = [
   { href: '/cafes', label: 'Tìm quán', variant: 'default' },
   { href: '/games', label: 'Tìm game', variant: 'outline' },
-  { href: '/dang-ky', label: 'Tham gia cộng đồng', variant: 'outline' },
+  { href: '/signup', label: 'Tham gia cộng đồng', variant: 'outline' },
 ] as const;
 
 export default function Home() {

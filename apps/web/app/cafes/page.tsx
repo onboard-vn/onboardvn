@@ -12,7 +12,7 @@ function firstValue(value: string | string[] | undefined): string | undefined {
 
 export default async function CafesPage(props: PageProps<'/cafes'>) {
   const sp = await props.searchParams;
-  const tinh = firstValue(sp.tinh);
+  const tinh = firstValue(sp.province) ?? firstValue(sp.tinh);
   const phuong = firstValue(sp.phuong);
   const page = firstValue(sp.page);
 
@@ -78,7 +78,7 @@ export default async function CafesPage(props: PageProps<'/cafes'>) {
         <nav className="flex items-center justify-center gap-2 text-sm">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
             const params = new URLSearchParams();
-            if (tinh) params.set('tinh', tinh);
+            if (tinh) params.set('province', tinh);
             if (phuong) params.set('phuong', phuong);
             params.set('page', String(p));
             return (

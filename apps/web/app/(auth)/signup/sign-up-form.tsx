@@ -34,7 +34,7 @@ export function SignUpForm() {
         callbackURL: `${window.location.origin}/`,
       }),
     );
-    if (ok) router.push(`/kiem-tra-email?email=${encodeURIComponent(email)}`);
+    if (ok) router.push(`/check-email?email=${encodeURIComponent(email)}`);
   }
 
   return (

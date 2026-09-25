@@ -29,10 +29,10 @@ export function cafeEntries(siteUrl: string, slugs: string[]): MetadataRoute.Sit
   }));
 }
 
-/** `/cafes?tinh=<slug>` is the real province listing (see `app/cafes/page.tsx`); no dedicated route exists. */
+/** `/cafes?province=<slug>` is the real province listing (see `app/cafes/page.tsx`); no dedicated route exists. */
 export function provinceEntries(siteUrl: string, provinceSlugs: string[]): MetadataRoute.Sitemap {
   return provinceSlugs.map((slug) => ({
-    url: `${siteUrl}/cafes?tinh=${encodeURIComponent(slug)}`,
+    url: `${siteUrl}/cafes?province=${encodeURIComponent(slug)}`,
     changeFrequency: 'weekly',
     priority: 0.5,
   }));

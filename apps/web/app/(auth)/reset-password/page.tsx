@@ -5,7 +5,7 @@ import { SITE_NAME } from '@/lib/site';
 
 export const metadata: Metadata = { title: `Đặt lại mật khẩu · ${SITE_NAME}` };
 
-export default async function ResetPasswordPage({ searchParams }: PageProps<'/dat-lai-mat-khau'>) {
+export default async function ResetPasswordPage({ searchParams }: PageProps<'/reset-password'>) {
   const { token, error } = await searchParams;
   return (
     <AuthPage>

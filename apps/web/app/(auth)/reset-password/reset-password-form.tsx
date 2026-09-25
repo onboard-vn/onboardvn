@@ -63,7 +63,7 @@ export function ResetPasswordForm({ token }: { token: string | null }) {
         ) : (
           <p className="text-sm">
             Liên kết không hợp lệ hoặc đã hết hạn.{' '}
-            <Link href="/quen-mat-khau" className="underline">
+            <Link href="/forgot-password" className="underline">
               Gửi lại liên kết
             </Link>
           </p>
