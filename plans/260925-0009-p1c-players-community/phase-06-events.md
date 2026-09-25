@@ -1,7 +1,7 @@
 ---
 phase: 6
 title: "Kèo: session → nhiều bàn (lõi Kèo)"
-status: pending
+status: completed
 effort: "4d"
 dependencies: [1, 2]
 ---

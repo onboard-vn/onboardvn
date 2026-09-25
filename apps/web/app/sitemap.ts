@@ -3,6 +3,7 @@ import { SITE_URL } from '@/lib/env';
 import { memoizeTtl } from '@/lib/seo/memoize-ttl';
 import {
   cafeEntries,
+  eventEntries,
   gameEntries,
   MAX_URLS_PER_SITEMAP,
   provinceEntries,
@@ -10,6 +11,7 @@ import {
 } from '@/lib/seo/sitemap';
 import {
   fetchAllCafeSlugs,
+  fetchAllEventSlugs,
   fetchAllGameSlugs,
   fetchAllProvinceSlugs,
 } from '@/lib/seo/sitemap-data';
@@ -18,16 +20,18 @@ import {
 export const dynamic = 'force-dynamic';
 
 const loadEntries = memoizeTtl(async (): Promise<MetadataRoute.Sitemap> => {
-  const [gameSlugs, cafeSlugs, provinceSlugs] = await Promise.all([
+  const [gameSlugs, cafeSlugs, provinceSlugs, eventSlugs] = await Promise.all([
     fetchAllGameSlugs(),
     fetchAllCafeSlugs(),
     fetchAllProvinceSlugs(),
+    fetchAllEventSlugs(),
   ]);
   return [
     ...staticEntries(SITE_URL),
     ...gameEntries(SITE_URL, gameSlugs),
     ...cafeEntries(SITE_URL, cafeSlugs),
     ...provinceEntries(SITE_URL, provinceSlugs),
+    ...eventEntries(SITE_URL, eventSlugs),
   ].slice(0, MAX_URLS_PER_SITEMAP);
 }, 3_600_000);
 

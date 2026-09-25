@@ -113,6 +113,13 @@
       "when": 1790341242758,
       "tag": "0015_meetups",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1790344651658,
+      "tag": "0016_admin_audit_log",
+      "breakpoints": true
     }
   ]
 }

@@ -24,6 +24,17 @@ export async function fetchAllCafeSlugs(client: PublicApiClient = publicApi()): 
   return items.map((c) => c.slug);
 }
 
+/** The anonymous `GET /events` list only returns upcoming `public` meetups (see `events/service.ts`). */
+export async function fetchAllEventSlugs(client: PublicApiClient = publicApi()): Promise<string[]> {
+  const items = await fetchAllPages(async (page) => {
+    const res = await client.api.events.$get({
+      query: { page: String(page), pageSize: String(DEFAULT_PAGE_SIZE) },
+    });
+    return res.ok ? await res.json() : null;
+  });
+  return items.map((m) => m.slug);
+}
+
 export async function fetchAllProvinceSlugs(
   client: PublicApiClient = publicApi(),
 ): Promise<string[]> {

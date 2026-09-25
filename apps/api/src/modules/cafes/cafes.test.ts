@@ -604,4 +604,16 @@ describe('cafes directory', () => {
     };
     expect(detail.openingHours.mon).toEqual([{ open: '10:00', close: '22:00' }]);
   });
+
+  it('q filter matches by name, accent-insensitively', async () => {
+    const { json: cafe } = await createCafe(
+      baseCafeBody({ name: `Cà Phê Board Game Số ${Date.now()}` }),
+    );
+    const res = await publicApp.request(
+      `/api/cafes?province=${PROVINCE_A.slug}&q=${encodeURIComponent('ca phe')}&pageSize=50`,
+    );
+    expect(res.status).toBe(200);
+    const { items } = (await res.json()) as { items: { id: string }[] };
+    expect(items.some((c) => c.id === cafe.id)).toBe(true);
+  });
 });

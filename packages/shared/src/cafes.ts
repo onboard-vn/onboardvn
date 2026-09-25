@@ -347,6 +347,7 @@ const boolQueryParam = z
   .transform((v) => (v === undefined ? undefined : v === 'true'));
 
 export const cafeFilterSchema = z.object({
+  q: z.string().trim().min(1).max(100).optional(),
   province: z.string().trim().optional(),
   ward: z.string().trim().optional(),
   venueType: venueTypeEnum.optional(),

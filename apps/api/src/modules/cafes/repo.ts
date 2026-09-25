@@ -15,6 +15,7 @@ import { publicCafeWhere } from './visibility.js';
 export type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
 
 export interface CafeListFilter {
+  q?: string;
   provinceCode?: string;
   wardCodes?: string[];
   venueType?: VenueType;
@@ -67,6 +68,11 @@ function buildWhere(
     ...extra,
   ].filter((c): c is SQL => c !== undefined);
   if (!opts.includePending) conditions.push(publicCafeWhere());
+  if (filter.q) {
+    conditions.push(
+      sql`unaccent_immutable(${cafes.name}) ilike unaccent_immutable(${`%${filter.q}%`})`,
+    );
+  }
   if (filter.provinceCode) conditions.push(eq(cafes.provinceCode, filter.provinceCode));
   if (filter.wardCodes) conditions.push(inArray(cafes.wardCode, filter.wardCodes));
   if (filter.venueType) conditions.push(eq(cafes.venueType, filter.venueType));

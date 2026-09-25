@@ -4,6 +4,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createApp } from '../../app.js';
 import { db, pool } from '../../db/client.js';
 import {
+  adminAuditLog,
   cafes,
   friendships,
   games,
@@ -550,6 +551,82 @@ describe('update validation', () => {
     });
     expect(res.status).toBe(422);
   });
+
+  it('rejects a PATCH that sends both cafeId and addressLine', async () => {
+    const { json } = await createMeetup(creatorApp);
+    const res = await patch(creatorApp, `/api/events/${json.id}`, {
+      cafeId,
+      addressLine: '1 Ambiguous St',
+    });
+    expect(res.status).toBe(422);
+  });
+
+  it('switches café → address when cafeId: null is sent alongside the new address', async () => {
+    const { json } = await createMeetup(creatorApp);
+    const res = await patch(creatorApp, `/api/events/${json.id}`, {
+      cafeId: null,
+      addressLine: '1 New Address St',
+      provinceCode: PROVINCE.code,
+    });
+    expect(res.status).toBe(200);
+    const detail = (await res.json()) as {
+      cafe: unknown;
+      addressLine: string | null;
+      locationLabel: string;
+    };
+    expect(detail.cafe).toBeNull();
+    expect(detail.addressLine).toBe('1 New Address St');
+  });
+
+  it('switches address → café when a new cafeId is sent', async () => {
+    const created = await post(creatorApp, '/api/events', {
+      title: 'Kèo địa chỉ tự do',
+      startsAt: futureDate(3),
+      addressLine: '2 Old Address St',
+      provinceCode: PROVINCE.code,
+    });
+    const { id } = (await created.json()) as { id: string };
+    createdMeetupIds.add(id);
+
+    const res = await patch(creatorApp, `/api/events/${id}`, { cafeId });
+    expect(res.status).toBe(200);
+    const detail = (await res.json()) as {
+      cafe: { id: string } | null;
+      addressLine: string | null;
+    };
+    expect(detail.cafe?.id).toBe(cafeId);
+    expect(detail.addressLine).toBeNull();
+  });
+
+  it('clears description, endsAt and capacity when the PATCH sends explicit null', async () => {
+    const startsAt = futureDate(5);
+    const created = await post(creatorApp, '/api/events', {
+      title: 'Kèo có mô tả',
+      description: 'Mô tả ban đầu',
+      startsAt,
+      endsAt: futureDate(5, 21),
+      cafeId,
+      provinceCode: PROVINCE.code,
+      capacity: 10,
+    });
+    const { id } = (await created.json()) as { id: string };
+    createdMeetupIds.add(id);
+
+    const res = await patch(creatorApp, `/api/events/${id}`, {
+      description: null,
+      endsAt: null,
+      capacity: null,
+    });
+    expect(res.status).toBe(200);
+    const detail = (await res.json()) as {
+      description: string | null;
+      endsAt: string | null;
+      capacity: number | null;
+    };
+    expect(detail.description).toBeNull();
+    expect(detail.endsAt).toBeNull();
+    expect(detail.capacity).toBeNull();
+  });
 });
 
 describe('/me/events', () => {
@@ -756,5 +833,48 @@ describe('public-only rate limit', () => {
     const j = (await privateStillWorks.json()) as { id: string };
     createdMeetupIds.add(j.id);
     await db.delete(users).where(eq(users.id, limited.id));
+  });
+});
+
+describe('admin routes', () => {
+  it('lets staff cancel any meetup, blocks regular users', async () => {
+    const staff = { ...user('staff'), role: 'admin' as const };
+    await db.insert(users).values(staff).onConflictDoNothing({ target: users.id });
+    const staffApp = createApp({ auth: fakeAuth(staff), rateLimit: false });
+
+    const created = await post(creatorApp, '/api/events', {
+      title: 'Kèo cần admin xóa',
+      startsAt: futureDate(4),
+      cafeId,
+      provinceCode: PROVINCE.code,
+    });
+    expect(created.status).toBe(201);
+    const meetup = (await created.json()) as { id: string; slug: string };
+    createdMeetupIds.add(meetup.id);
+
+    const forbidden = await del(strangerApp, `/api/events-admin/${meetup.id}`);
+    expect(forbidden.status).toBe(403);
+
+    const list = await staffApp.request('/api/events-admin');
+    expect(list.status).toBe(200);
+    const { items } = (await list.json()) as { items: { id: string }[] };
+    expect(items.some((m) => m.id === meetup.id)).toBe(true);
+
+    const cancelled = await del(staffApp, `/api/events-admin/${meetup.id}`);
+    expect(cancelled.status).toBe(204);
+
+    const detail = await creatorApp.request(`/api/events/${meetup.slug}`);
+    expect(detail.status).toBe(200);
+    expect(((await detail.json()) as { status: string }).status).toBe('cancelled');
+
+    const audit = await db
+      .select()
+      .from(adminAuditLog)
+      .where(and(eq(adminAuditLog.targetId, meetup.id), eq(adminAuditLog.action, 'meetup.cancel')));
+    expect(audit).toHaveLength(1);
+    expect(audit[0]?.actorUserId).toBe(staff.id);
+
+    await db.delete(adminAuditLog).where(eq(adminAuditLog.targetId, meetup.id));
+    await db.delete(users).where(eq(users.id, staff.id));
   });
 });

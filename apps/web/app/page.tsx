@@ -6,6 +6,7 @@ import { SITE_NAME, SITE_SLOGAN } from '@/lib/site';
 const ACTIONS = [
   { href: '/map', label: 'Tìm quán', variant: 'default' },
   { href: '/games', label: 'Tìm game', variant: 'outline' },
+  { href: '/events', label: 'Tìm người cùng chơi', variant: 'outline' },
   { href: '/signup', label: 'Tham gia cộng đồng', variant: 'outline' },
 ] as const;
 

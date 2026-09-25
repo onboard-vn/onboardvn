@@ -110,6 +110,19 @@ export const meetupParticipants = pgTable(
   ],
 );
 
+/** Generic staff-action audit trail; started with `meetup.cancel` from `/admin/events`, reusable
+ * for future staff actions (`targetType`/`targetId` keep it un-normalized on purpose). */
+export const adminAuditLog = pgTable('admin_audit_log', {
+  id: uuid().primaryKey().defaultRandom(),
+  actorUserId: text()
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  action: text().notNull(),
+  targetType: text().notNull(),
+  targetId: text().notNull(),
+  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+});
+
 export const meetupsRelations = relations(meetups, ({ one, many }) => ({
   cafe: one(cafes, { fields: [meetups.cafeId], references: [cafes.id] }),
   province: one(provinces, { fields: [meetups.provinceCode], references: [provinces.code] }),

@@ -615,6 +615,20 @@ export async function countGoing(
   return row?.value ?? 0;
 }
 
+/** 1-based FIFO rank among `waitlist` participants (earliest `waitlistedAt`, tie-broken by
+ * `userId`) — `null` when `userId` isn't currently on the waitlist. */
+export async function waitlistPosition(meetupId: string, userId: string): Promise<number | null> {
+  const rows = await db
+    .select({ userId: meetupParticipants.userId })
+    .from(meetupParticipants)
+    .where(
+      and(eq(meetupParticipants.meetupId, meetupId), eq(meetupParticipants.status, 'waitlist')),
+    )
+    .orderBy(asc(meetupParticipants.waitlistedAt), asc(meetupParticipants.userId));
+  const index = rows.findIndex((r) => r.userId === userId);
+  return index === -1 ? null : index + 1;
+}
+
 /** FIFO: earliest `waitlistedAt`, tie-broken by `userId`. Row-locked within the caller's
  * transaction so two concurrent seat-frees can't promote the same person twice. */
 export function nextWaitlisted(tx: Tx, meetupId: string): Promise<ParticipantRow | undefined> {
@@ -714,6 +728,7 @@ export async function calendarAggregate(
   viewerId: string | null,
   start: Date,
   end: Date,
+  provinceCode?: string,
 ): Promise<CalendarRow[]> {
   const dayExpr = sql<string>`to_char(${meetups.startsAt} at time zone 'Asia/Saigon', 'YYYY-MM-DD')`;
   const where = and(
@@ -721,6 +736,7 @@ export async function calendarAggregate(
     gte(meetups.startsAt, start),
     lt(meetups.startsAt, end),
     visibleMeetupsWhere(viewerId),
+    ...(provinceCode ? [eq(meetups.provinceCode, provinceCode)] : []),
   );
   const rows = await db
     .select({

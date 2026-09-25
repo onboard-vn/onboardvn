@@ -13,7 +13,7 @@ import {
   rsvpInputSchema,
 } from '@onboard/shared';
 import { Hono, type Context, type Next } from 'hono';
-import { requireUser } from '../../auth/middleware.js';
+import { requireRole, requireUser } from '../../auth/middleware.js';
 import { userRateLimit } from '../../lib/user-rate-limit.js';
 import { zValidator } from '../../lib/validator.js';
 import type { AppEnv } from '../../types.js';
@@ -40,7 +40,8 @@ export const eventRoutes = ({ rateLimit }: EventRoutesOptions) =>
   new Hono<AppEnv>()
     .get('/calendar', zValidator('query', meetupCalendarQuerySchema), async (c) => {
       const viewerId = c.var.user?.id ?? null;
-      return c.json(await service.getCalendarService(viewerId, c.req.valid('query').month));
+      const { month, provinceCode } = c.req.valid('query');
+      return c.json(await service.getCalendarService(viewerId, month, provinceCode));
     })
     .get('/', zValidator('query', meetupFilterSchema), async (c) => {
       const viewerId = c.var.user?.id ?? null;
@@ -184,3 +185,17 @@ export const eventRoutes = ({ rateLimit }: EventRoutesOptions) =>
 export const meEventsRoutes = new Hono<AppEnv>().get('/', requireUser, async (c) => {
   return c.json(await service.getMyEventsService(c.var.user.id));
 });
+
+export const adminEventRoutes = new Hono<AppEnv>()
+  .get('/', requireRole('maintainer', 'admin'), async (c) => {
+    return c.json(await service.adminListMeetupsService());
+  })
+  .delete(
+    '/:id',
+    requireRole('maintainer', 'admin'),
+    zValidator('param', idParamSchema),
+    async (c) => {
+      await service.adminCancelMeetupService(c.req.valid('param').id, c.var.user.id);
+      return c.body(null, 204);
+    },
+  );

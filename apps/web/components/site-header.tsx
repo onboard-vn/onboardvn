@@ -25,6 +25,9 @@ export async function SiteHeader() {
           <Link href="/map" className="text-sm font-medium">
             Bản đồ
           </Link>
+          <Link href="/events" className="text-sm font-medium">
+            Kèo
+          </Link>
           {user ? (
             <Link href="/friends" className="flex items-center gap-1.5 text-sm font-medium">
               Bạn bè
@@ -54,6 +57,9 @@ export async function SiteHeader() {
               </Link>
               <Link href="/admin/categories" className="text-sm font-medium">
                 Thể loại
+              </Link>
+              <Link href="/admin/events" className="text-sm font-medium">
+                Quản lý Kèo
               </Link>
             </>
           ) : null}

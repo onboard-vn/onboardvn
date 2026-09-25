@@ -163,6 +163,7 @@ function toOwnerDto(row: CafeFullRow): CafeOwnerDto {
 
 async function resolveListFilter(filter: CafeFilter): Promise<repo.CafeListFilter | null> {
   const base: repo.CafeListFilter = {
+    q: filter.q,
     venueType: filter.venueType,
     byog: filter.byog,
     food: filter.food,

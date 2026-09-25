@@ -92,7 +92,11 @@ export const meetupUpdateSchema = z
       message: 'Giờ kết thúc phải sau giờ bắt đầu',
       path: ['endsAt'],
     },
-  );
+  )
+  .refine((input) => !(input.cafeId != null && input.addressLine != null), {
+    message: 'Không thể vừa chọn quán vừa nhập địa chỉ',
+    path: ['addressLine'],
+  });
 export type MeetupUpdateInput = z.infer<typeof meetupUpdateSchema>;
 
 export const meetupFilterSchema = z.object({
@@ -100,6 +104,12 @@ export const meetupFilterSchema = z.object({
   wardCode: z.string().min(1).optional(),
   cafeId: z.uuid().optional(),
   from: z.iso.datetime().optional(),
+  /** Asia/Saigon calendar day (`YYYY-MM-DD`) — when set, overrides `from` with that day's VN
+   * range instead of "now onward", so past days clicked from the calendar still list. */
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Định dạng ngày phải là YYYY-MM-DD')
+    .optional(),
   page: z.coerce.number().int().positive().default(1),
   pageSize: z.coerce.number().int().positive().max(50).default(20),
 });
@@ -107,6 +117,7 @@ export type MeetupFilter = z.infer<typeof meetupFilterSchema>;
 
 export const meetupCalendarQuerySchema = z.object({
   month: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/, 'Định dạng tháng phải là YYYY-MM'),
+  provinceCode: z.string().min(1).optional(),
 });
 export type MeetupCalendarQuery = z.infer<typeof meetupCalendarQuerySchema>;
 
@@ -176,6 +187,8 @@ export const meetupDetailDtoSchema = meetupSummaryDtoSchema.extend({
   description: z.string().nullable(),
   tables: z.array(meetupTableDtoSchema),
   viewerStatus: participantStatusEnum.nullable(),
+  /** 1-based FIFO rank; only set when `viewerStatus === 'waitlist'`. */
+  waitlistPosition: z.number().int().nullable(),
 });
 export type MeetupDetailDto = z.infer<typeof meetupDetailDtoSchema>;
 

@@ -39,3 +39,12 @@ export function provinceEntries(siteUrl: string, provinceSlugs: string[]): Metad
     priority: 0.5,
   }));
 }
+
+/** `slugs` must already be upcoming, public meetups — the anonymous `GET /events` list enforces that. */
+export function eventEntries(siteUrl: string, slugs: string[]): MetadataRoute.Sitemap {
+  return slugs.map((slug) => ({
+    url: `${siteUrl}/events/${slug}`,
+    changeFrequency: 'daily',
+    priority: 0.5,
+  }));
+}

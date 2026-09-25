@@ -17,11 +17,16 @@ export default async function AccountPage() {
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-6 py-10">
       <div className="flex items-baseline justify-between">
         <h1 className="text-2xl font-semibold">Tài khoản</h1>
-        {user.username ? (
-          <Link href={`/u/${user.username}`} className="text-sm underline">
-            Xem hồ sơ công khai
+        <div className="flex gap-3 text-sm">
+          <Link href="/events/mine" className="underline">
+            Kèo của tôi
           </Link>
-        ) : null}
+          {user.username ? (
+            <Link href={`/u/${user.username}`} className="underline">
+              Xem hồ sơ công khai
+            </Link>
+          ) : null}
+        </div>
       </div>
       <ProfileForm
         initial={{

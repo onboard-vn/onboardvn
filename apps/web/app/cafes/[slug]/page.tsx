@@ -10,6 +10,7 @@ import { OpeningHoursTable } from '@/components/cafe/opening-hours-table';
 import { PhotoGallery } from '@/components/cafe/photo-gallery';
 import { serverApi } from '@/lib/api-server';
 import { SITE_URL } from '@/lib/env';
+import { formatVnDateTime } from '@/lib/events-time';
 import { isFacebookFanpageUrl } from '@/lib/cafe-fanpage';
 import { parseCafeTab } from '@/lib/cafe-tabs';
 import { cafeJsonLd } from '@/lib/seo/json-ld';
@@ -150,9 +151,14 @@ export default async function CafeDetailPage(props: PageProps<'/cafes/[slug]'>) 
       ) : null}
 
       {tab === 'events' ? (
-        <section aria-label="Sự kiện">
-          <h2 className="mb-3 text-sm font-medium">Sự kiện</h2>
-          <p className="text-muted-foreground text-sm">Chưa có kèo.</p>
+        <section aria-label="Sự kiện" className="flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-medium">Sự kiện</h2>
+            <Link href={`/events/new?cafe=${slug}`} className="text-sm underline">
+              Tạo kèo tại đây
+            </Link>
+          </div>
+          <CafeEventsList cafeId={cafe.id} />
         </section>
       ) : null}
 
@@ -163,5 +169,25 @@ export default async function CafeDetailPage(props: PageProps<'/cafes/[slug]'>) 
         </section>
       ) : null}
     </main>
+  );
+}
+
+async function CafeEventsList({ cafeId }: { cafeId: string }) {
+  const res = await (await serverApi()).api.events.$get({ query: { cafeId } });
+  const items = res.ok ? (await res.json()).items : [];
+
+  if (items.length === 0) return <p className="text-muted-foreground text-sm">Chưa có kèo.</p>;
+
+  return (
+    <ul className="flex flex-col gap-2">
+      {items.map((meetup) => (
+        <li key={meetup.id}>
+          <Link href={`/events/${meetup.slug}`} className="block rounded-lg border p-3 text-sm">
+            <p className="font-medium">{meetup.title}</p>
+            <p className="text-muted-foreground text-xs">{formatVnDateTime(meetup.startsAt)}</p>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

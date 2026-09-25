@@ -1,5 +1,6 @@
 import type { CafePublicDetailDto } from '@onboard/shared';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { buildMapsUrl, buildZaloUrl } from '@/lib/cafe-links';
 import { VENUE_TYPE_LABELS, openStatusLabel } from '@/lib/cafe-labels';
@@ -95,9 +96,9 @@ export function CafeHeader({ cafe }: { cafe: CafePublicDetailDto }) {
             Nhắn Zalo
           </a>
         ) : null}
-        <span title="Sắp có" aria-disabled="true" className={actionLinkClass(true)}>
+        <Link href={`/events/new?cafe=${cafe.slug}`} className={actionLinkClass()}>
           Tạo kèo tại đây
-        </span>
+        </Link>
       </div>
     </div>
   );

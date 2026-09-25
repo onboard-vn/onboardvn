@@ -16,9 +16,9 @@ import type {
   MeetupUpdateInput,
   RsvpInput,
 } from '@onboard/shared';
-import { and, eq, gte } from 'drizzle-orm';
+import { and, eq, gte, lt, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
-import { meetups } from '../../db/schema/index.js';
+import { adminAuditLog, meetups } from '../../db/schema/index.js';
 import { env } from '../../lib/env.js';
 import { ApiError } from '../../lib/errors.js';
 import { areFriends, canView, isBlocked } from '../../lib/visibility.js';
@@ -209,11 +209,17 @@ async function toDetailDto(row: MeetupRow, viewerId: string | null): Promise<Mee
     seatedUsers: (seatedByTable.get(t.id) ?? []).map(mask),
   }));
 
+  const waitlistPosition =
+    viewerParticipant?.status === 'waitlist'
+      ? await repo.waitlistPosition(row.id, viewerId!)
+      : null;
+
   return {
     ...summaryFromParts(row, goingCount, location, mask(creatorRow)),
     description: row.description,
     tables: tableDtos,
     viewerStatus: viewerParticipant?.status ?? null,
+    waitlistPosition,
   };
 }
 
@@ -395,6 +401,36 @@ export async function cancelMeetupService(meetupId: string, userId: string): Pro
   await repo.updateMeetup(meetupId, { status: 'cancelled' });
 }
 
+export async function adminCancelMeetupService(
+  meetupId: string,
+  actorUserId: string,
+): Promise<void> {
+  const row = await repo.findMeetupById(meetupId);
+  if (!row) notFound();
+  await db.transaction(async (tx) => {
+    await repo.updateMeetup(meetupId, { status: 'cancelled' }, tx);
+    await tx.insert(adminAuditLog).values({
+      actorUserId,
+      action: 'meetup.cancel',
+      targetType: 'meetup',
+      targetId: meetupId,
+    });
+  });
+}
+
+export async function adminListMeetupsService(): Promise<MeetupListResponse> {
+  const { ids, total } = await repo.listMeetupIds({
+    where: sql`true`,
+    page: 1,
+    pageSize: 50,
+    upcomingFirst: true,
+  });
+  const rowsById = await repo.findMeetupsByIds(ids);
+  const rows = ids.flatMap((id) => (rowsById.has(id) ? [rowsById.get(id)!] : []));
+  const items = await toSummaryDtos(rows, null);
+  return { items, page: 1, pageSize: items.length, total };
+}
+
 export async function rotateInviteCodeService(
   meetupId: string,
   userId: string,
@@ -461,7 +497,15 @@ export async function listMeetupsService(
   if (filter.provinceCode) clauses.push(eq(meetups.provinceCode, filter.provinceCode));
   if (filter.wardCode) clauses.push(eq(meetups.wardCode, filter.wardCode));
   if (filter.cafeId) clauses.push(eq(meetups.cafeId, filter.cafeId));
-  clauses.push(gte(meetups.startsAt, filter.from ? new Date(filter.from) : new Date()));
+  if (filter.date) {
+    // Asia/Saigon calendar day → UTC range, so a calendar day click lists exactly that day's
+    // meetups (incl. past days), instead of "from now onward".
+    const dayStart = new Date(`${filter.date}T00:00:00+07:00`);
+    const dayEnd = new Date(dayStart.getTime() + 24 * 60 * 60 * 1000);
+    clauses.push(gte(meetups.startsAt, dayStart), lt(meetups.startsAt, dayEnd));
+  } else {
+    clauses.push(gte(meetups.startsAt, filter.from ? new Date(filter.from) : new Date()));
+  }
   const where = and(...clauses)!;
 
   const { ids, total } = await repo.listMeetupIds({
@@ -492,11 +536,12 @@ export async function getMyEventsService(userId: string): Promise<MeetupListResp
 export async function getCalendarService(
   viewerId: string | null,
   month: string,
+  provinceCode?: string,
 ): Promise<MeetupCalendarDay[]> {
   const [y, m] = month.split('-').map(Number);
   const start = new Date(Date.UTC(y!, m! - 1, 1, -7, 0, 0));
   const end = new Date(Date.UTC(y!, m!, 1, -7, 0, 0));
-  const rows = await repo.calendarAggregate(viewerId, start, end);
+  const rows = await repo.calendarAggregate(viewerId, start, end, provinceCode);
   return rows.map((r) => ({
     date: r.date,
     players: r.players,
