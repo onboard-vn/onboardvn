@@ -1,47 +1,58 @@
 ---
 phase: 6
-title: "Sự kiện (lõi Kèo)"
+title: "Kèo: session → nhiều bàn (lõi Kèo)"
 status: pending
-effort: "2.5d"
-dependencies: [1, 5]
+effort: "3.5d"
+dependencies: [1, 2]
 ---
-# Phase 6: Sự kiện (lõi Kèo)
+# Phase 6: Kèo — session → nhiều bàn
 
 ## Context
-- **Đã chốt: sự kiện = Kèo** (1 tính năng). Phase này là lõi Kèo của vision (public/private, địa bàn, RSVP, link mời Zalo); roadmap không còn giai đoạn Kèo riêng. UI có thể gọi "Kèo" (chốt copy lúc làm).
-- Địa bàn 2 cấp tỉnh → xã (docs/architecture.md, mục Admin units); quán tham chiếu `cafes.id`.
+- **Đã chốt: sự kiện = Kèo** (1 tính năng, roadmap không còn giai đoạn Kèo riêng). **Model (chốt 2026-09-25)**: 1 Kèo = 1 **session** (ngày, địa điểm) chứa **1..n bàn**; mỗi bàn có host, game, ghế, người ngồi, người mang game (tham chiếu app club ngoài, xem [report](../reports/planner-260925-1407-club-app-reference-integration.md)).
+- Chạy **trước phase 3, 5** theo thứ tự thực thi (plan.md) → phase này **không** tạo `clubId`, visibility `club`, `plays.meetupId`; phase 5 và 3 thêm sau.
+- Tái dùng: `canView`/`areFriends` (apps/api/src/lib/visibility.ts:16), `user_games` PK(userId,gameId) (apps/api/src/db/schema/shelf.ts:5-20), filter tỉnh/xã `apps/web/app/cafes/cafe-filters.tsx`. Địa bàn 2 cấp tỉnh → xã (docs/architecture.md, mục Admin units).
 
 ## Requirements
-- Tạo sự kiện: tiêu đề, mô tả, thời gian bắt đầu (+ kết thúc tùy chọn), game dự kiến (0-n), địa điểm = quán **hoặc** địa chỉ tự do + tỉnh/xã, sức chứa tùy chọn.
-- `visibility`: `public` (liệt kê + lọc theo tỉnh/xã), `friends` (bạn của người tạo), `club` (thành viên club), `private` (chỉ ai có link mời).
-- RSVP: `going|maybe|declined`; hết chỗ → `waitlist`. Người tạo mời bạn bè (status `invited`).
-- Link mời có token → chia sẻ Zalo (nút share + Open Graph meta).
-- Sau sự kiện: "Ghi ván từ sự kiện" → play-form điền sẵn người tham gia, `plays.eventId`.
-- Hủy sự kiện (status `cancelled`), người tham gia thấy trạng thái.
-- Feed: "X sẽ tham gia sự kiện Y" (theo visibility sự kiện).
+- **Session**: tiêu đề, mô tả, `startsAt` (+ `endsAt` tùy chọn), địa điểm = quán (`cafeId`, quán không `pending`) **hoặc** địa chỉ tự do + tỉnh/xã, `capacity` tùy chọn (tổng người `going`).
+- `visibility`: `public` (liệt kê + lọc tỉnh/xã) | `friends` (bạn người tạo) | `private` (chỉ ai có link mời); `club` thêm ở phase 5.
+- **Bàn (table)**: 1..n / session. Mỗi bàn: host (user), game tùy chọn, `seats` tùy chọn (2-20), người mang game tùy chọn, ghi chú. Người tạo session hoặc participant `going` tạo bàn → tự thành host và ngồi bàn đó. Host sửa/xóa bàn mình; người tạo session sửa/xóa mọi bàn. Xóa bàn → người ngồi về "chưa chọn bàn".
+- **Mang game từ tủ**: chọn game → nếu `broughtByUserId` set thì `(broughtByUserId, gameId)` phải có trong `user_games` lúc ghi (validate, không FK). Chỉ chính user hoặc host bàn (chọn từ tủ của người ngồi bàn) gán. Game bị gỡ khỏi tủ sau đó → bàn giữ nguyên (snapshot).
+- **RSVP ở session**: `going|maybe|declined`; hết `capacity` → `waitlist`; người tạo mời bạn bè → `invited`. **Chọn bàn tùy chọn** chỉ khi `going`; bàn đầy `seats` → 409. Rời session → rời bàn.
+- **Calendar tháng**: `/events?view=calendar` — mỗi ngày (Asia/Saigon): `players` = số user distinct `going` + host, `tables` = số bàn, chỉ đếm session viewer thấy được, bỏ `cancelled`. Component dùng lại cho club (phase 5).
+- Link mời có token → chia sẻ Zalo (share + Open Graph). Hủy session (`status=cancelled`), người tham gia thấy trạng thái.
+- Feed "X sẽ tham gia Kèo Y" → thêm nhánh ở phase 4 (chạy sau), theo visibility session.
+- "Ghi ván từ Kèo" (prefill người ngồi cùng bàn, `plays.meetupId`, `plays.meetupTableId`) → làm ở phase 3.
 
 ## Data
-- `events(id, slug, title, description, startsAt timestamptz, endsAt null, cafeId null, addressLine null, provinceCode, wardCode null, capacity null, visibility, clubId null, inviteCode unique, status 'scheduled'|'cancelled', createdBy, createdAt, updatedAt)`; index (provinceCode, startsAt), (clubId).
-- `event_games(eventId, gameId)` PK.
-- `event_participants(eventId, userId, status, respondedAt)` PK; index userId.
-- `plays` thêm `eventId null on delete set null`.
-- Thời gian lưu UTC, hiển thị Asia/Saigon.
+- `meetups(id uuid, slug unique, title, description null, startsAt timestamptz, endsAt null, cafeId null, addressLine null, provinceCode, wardCode null, capacity smallint null, visibility default 'public', inviteCode unique, status 'scheduled'|'cancelled', createdBy, createdAt, updatedAt)`; CHECK `cafeId` hoặc `addressLine`; index (provinceCode, startsAt), (startsAt).
+- `meetup_tables(id uuid, meetupId cascade, hostUserId, gameId null → games set null, seats smallint null CHECK 2..20, broughtByUserId null → users set null, note null, position smallint, createdAt)`; index (meetupId), (hostUserId), (broughtByUserId).
+- `meetup_participants(meetupId cascade, userId cascade, status 'going'|'maybe'|'declined'|'waitlist'|'invited', tableId null → meetup_tables set null, respondedAt)` PK(meetupId,userId); index (userId), (tableId).
+- Giới hạn 1-30 bàn/session. Thời gian lưu UTC, hiển thị Asia/Saigon. Bảng đặt tên `meetups*` vì export `sessions` đã là bảng Better Auth (apps/api/src/db/schema/auth.ts:42); "session" chỉ là thuật ngữ nghiệp vụ.
+
+## Data flow
+Form tạo → `POST /events` (session + bàn đầu tuỳ chọn, 1 transaction) → người khác mở `/events/[slug]` (`canView` + code) → `POST /events/:id/rsvp` (lock session, đếm capacity) → `POST /events/:id/tables/:tableId/seat` (lock bàn, đếm seats) → calendar/stats đọc aggregate (không bảng thống kê).
 
 ## Files
-- Create: `apps/api/src/db/schema/events.ts`, `apps/api/src/modules/events/{routes,service,repo,events.test}.ts`, `packages/shared/src/events.ts`, `apps/web/app/su-kien/{page.tsx,moi/page.tsx,[slug]/page.tsx,[slug]/sua/page.tsx}`, `apps/web/app/su-kien/moi-tham-gia/[code]/page.tsx`.
-- Modify: `apps/api/src/db/schema/plays.ts` (eventId), `apps/api/src/modules/plays/service.ts`, `apps/web/components/play-form.tsx` (prefill), `apps/api/src/modules/profiles/repo.ts` (feed), `apps/web/app/clubs/[slug]/page.tsx` (danh sách sự kiện), đăng ký; sitemap (chỉ sự kiện public sắp tới) nếu P1b có `sitemap.ts`.
+- Create: `apps/api/src/db/schema/meetups.ts`, `apps/api/src/modules/events/{routes,service,repo,events.test}.ts`, `packages/shared/src/events.ts`.
+- Create web: `apps/web/app/events/{page.tsx,new/page.tsx,[slug]/page.tsx,[slug]/edit/page.tsx}`, `apps/web/app/events/join/[code]/page.tsx`, `apps/web/components/{session-calendar,session-table-card,shelf-game-picker}.tsx`.
+- Modify: đăng ký schema/route/shared; `apps/web/app/sitemap.ts` (session public sắp tới).
 
 ## API
-- `GET /events?provinceCode=&wardCode=&from=&cafeId=` (public, sắp diễn ra), `GET /me/events`, `POST /events`, `GET /events/:slug` (kiểm visibility; có `?code=` cho private), `PATCH/DELETE /events/:id` (creator), `POST /events/:id/rsvp {status, code?}`, `POST /events/:id/invite {userIds}` (chỉ bạn bè), `POST /events/:id/invite-code/rotate`.
-- RSVP trong transaction + `SELECT ... FOR UPDATE` trên event để đếm capacity.
+- `GET /events?provinceCode=&wardCode=&from=&cafeId=` (public sắp tới), `GET /events/calendar?month=YYYY-MM` → `[{date, players, tables, meetupIds}]`, `GET /me/events`.
+- `POST /events`, `GET /events/:slug` (`?code=` cho private), `PATCH/DELETE /events/:id` (creator), `POST /events/:id/invite {userIds}` (chỉ bạn bè), `POST /events/:id/invite-code/rotate`.
+- `POST /events/:id/rsvp {status, tableId?, code?}`.
+- `POST /events/:id/tables`, `PATCH/DELETE /events/:id/tables/:tableId` (host|creator), `POST/DELETE /events/:id/tables/:tableId/seat` (chính mình).
+- RSVP: transaction + `SELECT ... FOR UPDATE` session; chọn bàn: `FOR UPDATE` bàn.
 
 ## Steps
-1. Schema + migration. 2. Service visibility (dùng `canView` + club membership + code). 3. RSVP/capacity. 4. Web list + filter tỉnh/xã (tái dùng filter của `apps/web/app/cafes/cafe-filters.tsx`), chi tiết, form, share. 5. Tích hợp play-form + feed.
+1. Schema + migration. 2. Service visibility (`canView` + code). 3. RSVP/capacity + bàn/seats + validate brought-from-shelf. 4. Calendar aggregate (GROUP BY ngày theo `AT TIME ZONE 'Asia/Saigon'`). 5. Web list/calendar/chi tiết (danh sách bàn)/form/share.
 
 ## Validation
-- Test: private không có code → 404; club event với non-member → 404; capacity 2, người thứ 3 → waitlist; RSVP đồng thời không vượt capacity; list public chỉ trả sự kiện public tương lai; cancelled vẫn xem được, không RSVP được.
-- E2E headless: tạo sự kiện public → user khác mở link → RSVP going.
+- Test: private không code → 404; capacity 2, người thứ 3 → waitlist; RSVP đồng thời không vượt capacity; bàn 4 ghế, người thứ 5 → 409; ngồi bàn khi `maybe` → 422; mang game không có trong tủ → 422; xóa bàn → người ngồi `tableId=null`; host A sửa bàn của B → 403; cancelled xem được, không RSVP/tạo bàn; calendar: 2 session cùng ngày (3 bàn, 7 người distinct) → `{players:7, tables:3}`, session `friends` không đếm với người lạ; list public chỉ trả public tương lai; DTO không có email.
+- E2E headless: tạo Kèo 2 bàn → user khác mở link → RSVP going + chọn bàn → calendar hiện ngày đó.
 
 ## Risks
-- Race capacity (M×M) → row lock. Spam sự kiện public (M×M) → rate limit 10/ngày/user; admin gỡ qua `apps/web/app/admin/events/page.tsx`.
-- Rollback: drop cột `plays.eventId`, bảng events*.
+- Race capacity/seats (M×M) → row lock + test đồng thời.
+- Lộ session qua calendar (M×H) → calendar dùng cùng filter visibility với list; test.
+- Spam Kèo public (M×M) → rate limit 10/ngày/user; admin gỡ qua `apps/web/app/admin/events/page.tsx`.
+- Rollback: drop `meetup_participants`, `meetup_tables`, `meetups`; route/web mới gỡ độc lập (chưa phase nào phụ thuộc lúc chạy).
