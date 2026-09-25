@@ -36,8 +36,10 @@ Compose project riêng `onboard`, network riêng — không đụng container kh
    BETTER_AUTH_SECRET=<chuỗi ngẫu nhiên >=32 ký tự>
    BETTER_AUTH_URL=https://<host>.ts.net
    WEB_ORIGIN=https://<host>.ts.net
-   # Bắt buộc cho MVP: chưa có SMTP thì Google là cách đăng nhập duy nhất (kể cả admin).
-   # Redirect URI: https://<host>/api/auth/callback/google
+   # Bắt buộc: thiếu thì api/migrate không khởi động (email xác minh, OTP, reset mật khẩu).
+   SMTP_URL=smtps://<user>:<app-password>@smtp.gmail.com:465
+   MAIL_FROM=Onboard VN <<user>@gmail.com>
+   # Tùy chọn: đăng nhập Google. Redirect URI: https://<host>/api/auth/callback/google
    GOOGLE_CLIENT_ID=
    GOOGLE_CLIENT_SECRET=
    LOG_LEVEL=info
@@ -50,6 +52,11 @@ Compose project riêng `onboard`, network riêng — không đụng container kh
    ```
 
    `UPLOADS_DIR` phải khớp path volume mount trong `compose.prod.yml` (mặc định `/data/uploads`, đã tạo sẵn owned bởi non-root user trong image). `GAMEUPC_BASE_URL`/`GAMEUPC_API_KEY` để trống nếu chưa tích hợp GameUPC (tính năng tra cứu barcode qua provider ngoài sẽ bị bỏ qua, chỉ dùng dữ liệu local). `TRUST_PROXY=true` đã set sẵn cho service `api` trong `compose.prod.yml` vì Caddy là ingress duy nhất phía trước; khi chạy dev (không qua Caddy) giữ giá trị mặc định `false`.
+
+   **SMTP** (`SMTP_URL` dạng URL nodemailer, ký tự đặc biệt trong mật khẩu phải URL-encode):
+   - Gmail app password (0đ, ~500 mail/ngày): bật 2FA cho tài khoản Google → *Security → App passwords* → tạo mật khẩu 16 ký tự → `smtps://<user>%40gmail.com:<app-password>@smtp.gmail.com:465`. `MAIL_FROM` phải là chính địa chỉ Gmail đó (Gmail ghi đè sender khác).
+   - Brevo (free ~300 mail/ngày) / Resend (free ~100 mail/ngày, cần verify domain): lấy SMTP credentials trong dashboard → `smtp://<login>:<smtp-key>@smtp-relay.brevo.com:587` hoặc `smtps://resend:<api-key>@smtp.resend.com:465`; `MAIL_FROM` dùng domain đã verify.
+   - `SITE_URL` của `web` lấy từ `WEB_ORIGIN` (canonical, sitemap, robots).
 
 4. Pull image và dựng stack:
 

@@ -1,5 +1,4 @@
-import { env } from '../lib/env.js';
-import { logger } from '../lib/logger.js';
+import { mailer, otpEmail } from '../lib/mailer/index.js';
 
 export interface OtpMessage {
   email: string;
@@ -10,14 +9,13 @@ export interface OtpMessage {
 type OtpListener = (message: OtpMessage) => void;
 const listeners = new Set<OtpListener>();
 
-/** Test/dev hook: real SMTP transport replaces this sink before public launch. */
+/** Test/dev hook: observe OTPs without parsing the email body. */
 export const onOtpSent = (listener: OtpListener): (() => void) => {
   listeners.add(listener);
   return () => listeners.delete(listener);
 };
 
 export async function sendOtpEmail(message: OtpMessage): Promise<void> {
-  const otp = env.NODE_ENV === 'production' ? '[redacted]' : message.otp;
-  logger.info({ email: message.email, otp, type: message.type }, 'email OTP (console transport)');
+  await mailer.send({ to: message.email, ...otpEmail(message.otp, message.type) });
   for (const listener of listeners) listener(message);
 }

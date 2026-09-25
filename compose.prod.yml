@@ -50,6 +50,8 @@ services:
       UPLOADS_DIR: ${UPLOADS_DIR:-/data/uploads}
       GAMEUPC_BASE_URL: ${GAMEUPC_BASE_URL:-}
       GAMEUPC_API_KEY: ${GAMEUPC_API_KEY:-}
+      SMTP_URL: ${SMTP_URL:?SMTP_URL is required}
+      MAIL_FROM: ${MAIL_FROM:?MAIL_FROM is required}
     command: ['node', 'dist/db/migrate.js']
 
   api:
@@ -77,6 +79,7 @@ services:
     environment:
       NODE_ENV: production
       API_INTERNAL_URL: http://api:${PORT:-8787}
+      SITE_URL: ${WEB_ORIGIN:?WEB_ORIGIN is required}
 
   caddy:
     image: caddy:2-alpine

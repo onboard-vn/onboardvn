@@ -35,13 +35,16 @@
     "drizzle-orm": "^0.45.3",
     "hono": "^4.13.9",
     "hono-rate-limiter": "^0.5.4",
+    "nodemailer": "^10.0.10",
     "pg": "^8.23.0",
     "pino": "^10.3.1",
     "zod": "^4.6.5"
   },
   "devDependencies": {
     "@onboard/config": "workspace:*",
+    "@readme/openapi-parser": "^9.0.0",
     "@types/node": "^22.0.0",
+    "@types/nodemailer": "^8.0.2",
     "@types/pg": "^8.23.1",
     "drizzle-kit": "^0.31.11",
     "eslint": "^9.39.5",
