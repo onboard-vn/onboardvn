@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { serverApi } from '@/lib/api-server';
 import { CafeFilters } from './cafe-filters';
+import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Quán · Onboard VN' };
+export const metadata: Metadata = { title: `Quán · ${SITE_NAME}` };
 
 function firstValue(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;

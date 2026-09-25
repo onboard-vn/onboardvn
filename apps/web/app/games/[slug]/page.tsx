@@ -7,6 +7,7 @@ import { getCurrentUser, serverApi } from '@/lib/api-server';
 import { SITE_URL } from '@/lib/env';
 import { gameJsonLd } from '@/lib/seo/json-ld';
 import { parseVideoEmbed } from '@/lib/video-embed';
+import { SITE_NAME } from '@/lib/site';
 
 const DESCRIPTION_LABEL = {
   original: 'Mô tả do cộng đồng viết · CC BY-SA 4.0',
@@ -17,10 +18,10 @@ const CATEGORY_GROUP_LABEL = { category: 'Thể loại', mechanic: 'Cơ chế' }
 export async function generateMetadata(props: PageProps<'/games/[slug]'>): Promise<Metadata> {
   const { slug } = await props.params;
   const res = await (await serverApi()).api.games[':slug'].$get({ param: { slug } });
-  if (!res.ok) return { title: `${slug} · Onboard VN` };
+  if (!res.ok) return { title: `${slug} · ${SITE_NAME}` };
   const game = await res.json();
 
-  const title = `${game.nameVi || game.nameEn} · Onboard VN`;
+  const title = `${game.nameVi || game.nameEn} · ${SITE_NAME}`;
   const description = game.descriptionVi
     ? game.descriptionVi.slice(0, 160)
     : `Thông tin, số người chơi, thời gian chơi và nơi có thể chơi ${game.nameVi || game.nameEn}.`;

@@ -7,7 +7,7 @@ export function SiteFooter() {
         <span>
           Code{' '}
           <a
-            href="https://github.com/onboard-vn/onboard"
+            href="https://github.com/onboard-vn/onboardvn"
             target="_blank"
             rel="noreferrer"
             className="underline"
@@ -19,7 +19,7 @@ export function SiteFooter() {
         <span>
           Dữ liệu{' '}
           <a
-            href="https://github.com/onboard-vn/dataset"
+            href="https://github.com/onboard-vn/onboardvn"
             target="_blank"
             rel="noreferrer"
             className="underline"

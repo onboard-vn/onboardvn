@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button';
 import { serverApi } from '@/lib/api-server';
 import { requireStaff } from '@/lib/require-staff';
 import { DeleteGameButton } from './delete-game-button';
+import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Quản lý game · Onboard VN' };
+export const metadata: Metadata = { title: `Quản lý game · ${SITE_NAME}` };
 
 export default async function AdminGamesPage() {
   await requireStaff();

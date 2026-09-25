@@ -63,10 +63,10 @@ export function buildOpenApiDocument(siteUrl: string): Record<string, unknown> {
   return {
     openapi: '3.0.3',
     info: {
-      title: 'Onboard VN API',
+      title: 'OnBoardVN API',
       version: '1.0.0',
       description:
-        'API công khai (chỉ đọc) cho danh bạ quán board game và kho game Onboard VN. ' +
+        'API công khai (chỉ đọc) cho danh bạ quán board game và kho game OnBoardVN. ' +
         'Dữ liệu mở giấy phép CC0/CC BY-SA 4.0 — xem /developers.',
       license: { name: 'AGPL-3.0-only', url: 'https://www.gnu.org/licenses/agpl-3.0.html' },
     },

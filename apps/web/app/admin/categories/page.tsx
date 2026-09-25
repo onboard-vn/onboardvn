@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button';
 import { serverApi } from '@/lib/api-server';
 import { requireStaff } from '@/lib/require-staff';
 import { DeleteCategoryButton } from './delete-category-button';
+import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Quản lý thể loại · Onboard VN' };
+export const metadata: Metadata = { title: `Quản lý thể loại · ${SITE_NAME}` };
 
 const KIND_LABEL = { category: 'Thể loại', mechanic: 'Cơ chế' } as const;
 

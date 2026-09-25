@@ -5,8 +5,9 @@ import { requireStaff } from '@/lib/require-staff';
 import { BarcodeManager } from '../../barcode-manager';
 import { GameForm } from '../../game-form';
 import { RevisionsList } from '../../revisions-list';
+import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Sửa game · Onboard VN' };
+export const metadata: Metadata = { title: `Sửa game · ${SITE_NAME}` };
 
 export default async function EditGamePage(props: PageProps<'/admin/games/[slug]/edit'>) {
   await requireStaff();

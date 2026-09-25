@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { requireStaff } from '@/lib/require-staff';
 import { CategoryForm } from '../category-form';
+import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Thêm thể loại · Onboard VN' };
+export const metadata: Metadata = { title: `Thêm thể loại · ${SITE_NAME}` };
 
 export default async function NewCategoryPage() {
   await requireStaff();

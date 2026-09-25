@@ -1,6 +1,6 @@
 # Nguồn tham khảo
 
-Onboard VN học **pattern và ý tưởng kiến trúc/UX** từ các dự án dưới đây, không sao chép mã nguồn, mô tả, hay hình ảnh của họ. Xem chi tiết khảo sát trong `plans/reports/`.
+OnBoardVN học **pattern và ý tưởng kiến trúc/UX** từ các dự án dưới đây, không sao chép mã nguồn, mô tả, hay hình ảnh của họ. Xem chi tiết khảo sát trong `plans/reports/`.
 
 ## Board Game Wikia
 
@@ -12,7 +12,7 @@ Nền tảng cộng đồng board game Việt Nam đang hoạt động: danh b�
 
 Chi tiết: `plans/reports/researcher-260924-1650-boardgamewikia-xia.md`.
 
-Onboard VN học ý tưởng tính năng (kho game theo quán, sự kiện, tủ game cá nhân) và chủ động khác biệt: mã nguồn mở, dữ liệu mở CC BY-SA, hỗ trợ kèo riêng tư, quét mã vạch nạp kho.
+OnBoardVN học ý tưởng tính năng (kho game theo quán, sự kiện, tủ game cá nhân) và chủ động khác biệt: mã nguồn mở, dữ liệu mở CC BY-SA, hỗ trợ kèo riêng tư, quét mã vạch nạp kho.
 
 ## ShelfScan
 
@@ -35,7 +35,7 @@ Chi tiết dùng trong Phase 5 (quét mã vạch), xác minh 2026-09-24:
 - Server dev/test: `https://api.gameupc.com/test` (dữ liệu bị xoá định kỳ, dùng key test công khai `test_test_test_test_test`). Server prod: `https://api.gameupc.com/v1` (xin key riêng qua email, chưa có trong MVP).
 - Provider tùy chọn: chỉ bật khi cả `GAMEUPC_BASE_URL` và `GAMEUPC_API_KEY` được set ở `apps/api`; MVP không set → tính năng quét mã chỉ dùng danh mục nội bộ + gắn tay, không gọi GameUPC.
 - Chỉ lưu `bggId` + tên gợi ý từ GameUPC để hiển thị, không lưu/hiển thị ảnh hay mô tả từ `bgg_info` (tránh vấn đề bản quyền ảnh/mô tả BGG).
-- Cơ chế "submit ngược" (crowdsourced vote): khi người quét xác nhận một gợi ý đúng, Onboard VN gọi `POST /upc/{code}/bgg_id/{bggId}` với `user_id` giả danh `onboard-<userId>` để đóng góp vào độ tin cậy chung của cộng đồng GameUPC (theo tài liệu GameUPC, cần ~2 vote không mâu thuẫn để một mapping UPC↔BGG được coi là "verified").
+- Cơ chế "submit ngược" (crowdsourced vote): khi người quét xác nhận một gợi ý đúng, OnBoardVN gọi `POST /upc/{code}/bgg_id/{bggId}` với `user_id` giả danh `onboard-<userId>` để đóng góp vào độ tin cậy chung của cộng đồng GameUPC (theo tài liệu GameUPC, cần ~2 vote không mâu thuẫn để một mapping UPC↔BGG được coi là "verified").
 
 ## Đơn vị hành chính (tỉnh/phường)
 
@@ -45,6 +45,6 @@ Dữ liệu tỉnh/thành và phường/xã sau cải cách 2 cấp (07/2025) l�
 
 ## BoardGameGeek (BGG)
 
-Nếu tích hợp BGG, Onboard VN chỉ lưu **`bgg_id` và link** tới trang BGG tương ứng — **không copy mô tả game hay hình ảnh** của BGG vào dữ liệu của mình. XML API v2 hiện yêu cầu Bearer token phía server (không còn free-for-all hoàn toàn public).
+Nếu tích hợp BGG, OnBoardVN chỉ lưu **`bgg_id` và link** tới trang BGG tương ứng — **không copy mô tả game hay hình ảnh** của BGG vào dữ liệu của mình. XML API v2 hiện yêu cầu Bearer token phía server (không còn free-for-all hoàn toàn public).
 
 - https://boardgamegeek.com/xmlapi2

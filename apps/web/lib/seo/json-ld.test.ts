@@ -53,7 +53,7 @@ describe('escapeJsonLdScript', () => {
 
 describe('gameJsonLd', () => {
   it('builds a schema.org Game with player range, age and BGG sameAs', () => {
-    const jsonLd = gameJsonLd(baseGame, 'https://onboard.vn/games/ma-soi');
+    const jsonLd = gameJsonLd(baseGame, 'https://onboard.j2teamnnl.com/games/ma-soi');
     expect(jsonLd).toMatchObject({
       '@context': 'https://schema.org',
       '@type': 'Game',
@@ -67,7 +67,7 @@ describe('gameJsonLd', () => {
   it('omits numberOfPlayers/typicalAgeRange/sameAs when the data is missing', () => {
     const jsonLd = gameJsonLd(
       { ...baseGame, minPlayers: null, maxPlayers: null, minAge: null, bggUrl: null },
-      'https://onboard.vn/games/ma-soi',
+      'https://onboard.j2teamnnl.com/games/ma-soi',
     );
     expect(jsonLd.numberOfPlayers).toBeUndefined();
     expect(jsonLd.typicalAgeRange).toBeUndefined();
@@ -77,7 +77,7 @@ describe('gameJsonLd', () => {
 
 describe('cafeJsonLd', () => {
   it('builds a schema.org EntertainmentBusiness with address, geo, hours and fanpage', () => {
-    const jsonLd = cafeJsonLd(baseCafe, 'https://onboard.vn/cafes/quan-abc');
+    const jsonLd = cafeJsonLd(baseCafe, 'https://onboard.j2teamnnl.com/cafes/quan-abc');
     expect(jsonLd).toMatchObject({
       '@type': 'EntertainmentBusiness',
       name: 'Quán ABC',
@@ -97,7 +97,7 @@ describe('cafeJsonLd', () => {
   it('omits geo/openingHours for a public_info_only cafe (already redacted by the API)', () => {
     const jsonLd = cafeJsonLd(
       { ...baseCafe, lat: null, lng: null, legacyDistrict: null, openingHours: undefined },
-      'https://onboard.vn/cafes/quan-abc',
+      'https://onboard.j2teamnnl.com/cafes/quan-abc',
     );
     expect(jsonLd.geo).toBeUndefined();
     expect(jsonLd.openingHours).toBeUndefined();

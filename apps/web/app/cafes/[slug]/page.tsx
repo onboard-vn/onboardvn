@@ -5,14 +5,15 @@ import { JsonLdScript } from '@/components/json-ld-script';
 import { serverApi } from '@/lib/api-server';
 import { SITE_URL } from '@/lib/env';
 import { cafeJsonLd } from '@/lib/seo/json-ld';
+import { SITE_NAME } from '@/lib/site';
 
 export async function generateMetadata(props: PageProps<'/cafes/[slug]'>): Promise<Metadata> {
   const { slug } = await props.params;
   const res = await (await serverApi()).api.cafes[':slug'].$get({ param: { slug } });
-  if (!res.ok) return { title: `${slug} · Onboard VN` };
+  if (!res.ok) return { title: `${slug} · ${SITE_NAME}` };
   const cafe = await res.json();
 
-  const title = `${cafe.name} · Onboard VN`;
+  const title = `${cafe.name} · ${SITE_NAME}`;
   const description = `Quán board game ${cafe.name} tại ${cafe.wardName}, ${cafe.provinceName} — kho ${cafe.gameCount} game.`;
 
   return {

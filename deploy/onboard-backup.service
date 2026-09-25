@@ -1,5 +1,5 @@
 [Unit]
-Description=Onboard VN nightly Postgres backup
+Description=OnBoardVN nightly Postgres backup
 After=docker.service
 Requires=docker.service
 

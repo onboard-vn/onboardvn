@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { buildLlmsFullTxt, buildLlmsTxt } from './llms';
 
-const siteUrl = 'https://onboard.vn';
+const siteUrl = 'https://onboard.j2teamnnl.com';
 
 describe('buildLlmsTxt', () => {
   it('links to docs, dataset, OpenAPI and license', () => {
     const text = buildLlmsTxt(siteUrl);
-    expect(text).toContain('https://onboard.vn/developers');
-    expect(text).toContain('https://onboard.vn/api/openapi.json');
-    expect(text).toContain('https://github.com/onboard-vn/dataset');
+    expect(text).toContain('https://onboard.j2teamnnl.com/developers');
+    expect(text).toContain('https://onboard.j2teamnnl.com/api/openapi.json');
+    expect(text).toContain('https://github.com/onboard-vn/onboardvn');
     expect(text).toContain('AGPL-3.0-only');
     expect(text).toContain('CC BY-SA 4.0');
   });
@@ -25,9 +25,11 @@ describe('buildLlmsFullTxt', () => {
 
   it('lists games (preferring nameVi) and cafes as markdown links', () => {
     const text = buildLlmsFullTxt(siteUrl, games, cafes);
-    expect(text).toContain('[Ma Sói](https://onboard.vn/games/ma-soi)');
-    expect(text).toContain('[Catan](https://onboard.vn/games/catan)');
-    expect(text).toContain('[Quán ABC](https://onboard.vn/cafes/quan-abc) — Phường 1, TP.HCM');
+    expect(text).toContain('[Ma Sói](https://onboard.j2teamnnl.com/games/ma-soi)');
+    expect(text).toContain('[Catan](https://onboard.j2teamnnl.com/games/catan)');
+    expect(text).toContain(
+      '[Quán ABC](https://onboard.j2teamnnl.com/cafes/quan-abc) — Phường 1, TP.HCM',
+    );
   });
 
   it('truncates and marks truncation once the byte cap is reached', () => {

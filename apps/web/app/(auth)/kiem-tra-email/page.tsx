@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { AuthPage } from '@/components/auth-page';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Kiểm tra email · Onboard VN' };
+export const metadata: Metadata = { title: `Kiểm tra email · ${SITE_NAME}` };
 
 export default async function CheckEmailPage({ searchParams }: PageProps<'/kiem-tra-email'>) {
   const { email } = await searchParams;

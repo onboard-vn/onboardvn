@@ -4,8 +4,9 @@ import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/api-server';
 import { AccountSecurity } from './account-security';
 import { ProfileForm } from './profile-form';
+import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Tài khoản · Onboard VN', robots: { index: false } };
+export const metadata: Metadata = { title: `Tài khoản · ${SITE_NAME}`, robots: { index: false } };
 
 export default async function AccountPage() {
   const user = await getCurrentUser();

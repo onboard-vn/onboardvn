@@ -25,7 +25,7 @@ import { toCsv, toJson } from './csv.js';
 
 const FACTS_README = `# facts/
 
-Dữ liệu sự kiện/dữ kiện khách quan do Onboard VN tạo ra (tên game, số người chơi, thời gian
+Dữ liệu sự kiện/dữ kiện khách quan do OnBoardVN tạo ra (tên game, số người chơi, thời gian
 chơi, độ khó, thể loại, mã vạch) — **không kèm mô tả sáng tạo**.
 
 ## Giấy phép: CC0 1.0 Universal (Public Domain Dedication)

@@ -2,10 +2,11 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { marked } from 'marked';
 import type { Metadata } from 'next';
+import { SITE_NAME } from '@/lib/site';
 
 export const dynamic = 'force-static';
 
-export const metadata: Metadata = { title: 'Nguồn tham khảo · Onboard VN' };
+export const metadata: Metadata = { title: `Nguồn tham khảo · ${SITE_NAME}` };
 
 // Rendered once at build time from a repo-owned markdown file, so we trust its content
 // (no user input reaches this path) instead of adding a sanitizer dependency.

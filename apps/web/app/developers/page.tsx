@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
+import { SITE_NAME } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Lập trình viên · Onboard VN',
-  description: 'API công khai, dataset mở và giấy phép của Onboard VN.',
+  title: `Lập trình viên · ${SITE_NAME}`,
+  description: `API công khai, dataset mở và giấy phép của ${SITE_NAME}.`,
 };
 
 export default function DevelopersPage() {
@@ -11,7 +12,7 @@ export default function DevelopersPage() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Lập trình viên</h1>
         <p className="text-muted-foreground mt-2 text-sm">
-          Onboard VN mở API đọc dữ liệu và dataset thô để cộng đồng, nhà nghiên cứu và các công cụ
+          {SITE_NAME} mở API đọc dữ liệu và dataset thô để cộng đồng, nhà nghiên cứu và các công cụ
           AI có thể dùng lại.
         </p>
       </div>
@@ -37,12 +38,12 @@ export default function DevelopersPage() {
           phép:
         </p>
         <a
-          href="https://github.com/onboard-vn/dataset"
+          href="https://github.com/onboard-vn/onboardvn"
           target="_blank"
           rel="noreferrer"
           className="text-sm font-medium underline"
         >
-          github.com/onboard-vn/dataset
+          github.com/onboard-vn/onboardvn
         </a>
       </section>
 

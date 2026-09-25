@@ -1,5 +1,7 @@
-const DATASET_URL = 'https://github.com/onboard-vn/dataset';
-const SOURCE_URL = 'https://github.com/onboard-vn/onboard';
+import { SITE_NAME } from '../site';
+
+const DATASET_URL = 'https://github.com/onboard-vn/onboardvn';
+const SOURCE_URL = DATASET_URL;
 
 /** ~500KB cap so `llms-full.txt` stays a reasonable single fetch for an LLM crawler. */
 export const MAX_LLMS_FULL_BYTES = 500_000;
@@ -9,7 +11,7 @@ function byteLength(text: string): number {
 }
 
 export function buildLlmsTxt(siteUrl: string): string {
-  return `# Onboard VN
+  return `# ${SITE_NAME}
 
 > Nền tảng cộng đồng board game Việt Nam: danh bạ quán board game, kho game (barcode scan), hướng tới người chơi (player-centric).
 > Mã nguồn mở AGPL-3.0-only. Dữ liệu mở: facts/ CC0 1.0, mô tả & quán CC BY-SA 4.0, admin-units/ MIT.

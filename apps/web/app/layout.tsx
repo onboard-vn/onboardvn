@@ -3,6 +3,7 @@ import { Be_Vietnam_Pro } from 'next/font/google';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { SITE_URL } from '@/lib/env';
+import { SITE_NAME } from '@/lib/site';
 import { cn } from '@/lib/utils';
 import './globals.css';
 
@@ -14,7 +15,7 @@ const beVietnamPro = Be_Vietnam_Pro({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'Onboard VN',
+  title: SITE_NAME,
   description: 'Nền tảng board game cộng đồng Việt Nam',
 };
 

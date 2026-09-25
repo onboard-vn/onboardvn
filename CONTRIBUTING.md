@@ -1,6 +1,6 @@
-# Đóng góp cho Onboard VN
+# Đóng góp cho OnBoardVN
 
-Cảm ơn bạn quan tâm đóng góp cho Onboard VN. Tài liệu này mô tả quy trình đóng góp mã nguồn và dữ liệu.
+Cảm ơn bạn quan tâm đóng góp cho OnBoardVN. Tài liệu này mô tả quy trình đóng góp mã nguồn và dữ liệu.
 
 ## Giấy phép
 
@@ -72,4 +72,4 @@ Không mở issue công khai cho lỗ hổng bảo mật — xem [SECURITY.md](S
 
 ## English summary
 
-Onboard VN uses **DCO, not a CLA** — sign every commit with `git commit -s`. No CLA means the project cannot relicense the AGPL-3.0-only codebase later without consent from every contributor. Use Conventional Commits. Before opening a PR, run `pnpm lint typecheck test build` (matches CI in `.github/workflows/ci.yml`) and `pnpm format`. Code is AGPL-3.0-only; dataset facts are CC0, descriptions/cafés CC BY-SA 4.0, admin units MIT. Report security vulnerabilities privately per [SECURITY.md](SECURITY.md), not via public issues.
+OnBoardVN uses **DCO, not a CLA** — sign every commit with `git commit -s`. No CLA means the project cannot relicense the AGPL-3.0-only codebase later without consent from every contributor. Use Conventional Commits. Before opening a PR, run `pnpm lint typecheck test build` (matches CI in `.github/workflows/ci.yml`) and `pnpm format`. Code is AGPL-3.0-only; dataset facts are CC0, descriptions/cafés CC BY-SA 4.0, admin units MIT. Report security vulnerabilities privately per [SECURITY.md](SECURITY.md), not via public issues.

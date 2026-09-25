@@ -3,8 +3,9 @@ import { notFound } from 'next/navigation';
 import { serverApi } from '@/lib/api-server';
 import { requireStaff } from '@/lib/require-staff';
 import { CategoryForm } from '../../category-form';
+import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Sửa thể loại · Onboard VN' };
+export const metadata: Metadata = { title: `Sửa thể loại · ${SITE_NAME}` };
 
 export default async function EditCategoryPage(props: PageProps<'/admin/categories/[id]/edit'>) {
   await requireStaff();

@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button';
 import { serverApi } from '@/lib/api-server';
 import { requireStaff } from '@/lib/require-staff';
 import { DeleteCafeButton } from './delete-cafe-button';
+import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Quản lý quán · Onboard VN' };
+export const metadata: Metadata = { title: `Quản lý quán · ${SITE_NAME}` };
 
 export default async function AdminCafesPage() {
   await requireStaff();

@@ -4,8 +4,9 @@ import { serverApi } from '@/lib/api-server';
 import { requireStaff } from '@/lib/require-staff';
 import { CafeForm } from '../../cafe-form';
 import { InventoryManager } from '../../inventory-manager';
+import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Sửa quán · Onboard VN' };
+export const metadata: Metadata = { title: `Sửa quán · ${SITE_NAME}` };
 
 export default async function EditCafePage(props: PageProps<'/admin/cafes/[id]/edit'>) {
   await requireStaff();

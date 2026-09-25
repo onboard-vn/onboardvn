@@ -20,7 +20,7 @@ describe('parseEnv SMTP', () => {
       ...base,
       NODE_ENV: 'production',
       SMTP_URL: 'smtps://user:pass@smtp.gmail.com:465',
-      MAIL_FROM: 'Onboard VN <no-reply@example.test>',
+      MAIL_FROM: 'OnBoardVN <no-reply@example.test>',
     });
     expect(env.SMTP_URL).toBe('smtps://user:pass@smtp.gmail.com:465');
   });

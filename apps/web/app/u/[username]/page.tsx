@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { publicApi } from '@/lib/api-public';
 import { SITE_URL } from '@/lib/env';
+import { SITE_NAME } from '@/lib/site';
 
 async function fetchProfile(username: string) {
   const res = await publicApi().api.users[':username'].$get({ param: { username } });
@@ -12,9 +13,9 @@ async function fetchProfile(username: string) {
 
 export async function generateMetadata({ params }: PageProps<'/u/[username]'>): Promise<Metadata> {
   const profile = await fetchProfile((await params).username);
-  if (!profile) return { title: 'Không tìm thấy · Onboard VN' };
+  if (!profile) return { title: `Không tìm thấy · ${SITE_NAME}` };
   return {
-    title: `${profile.name} (@${profile.username}) · Onboard VN`,
+    title: `${profile.name} (@${profile.username}) · ${SITE_NAME}`,
     alternates: { canonical: `${SITE_URL}/u/${profile.username}` },
   };
 }

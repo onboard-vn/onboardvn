@@ -1,6 +1,6 @@
 ---
 name: Báo lỗi
-about: Báo cáo một lỗi trong Onboard VN
+about: Báo cáo một lỗi trong OnBoardVN
 title: '[bug] '
 labels: bug
 ---

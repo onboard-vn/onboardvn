@@ -1,6 +1,6 @@
 import type { MailContent } from './types.js';
 
-const BRAND = 'Onboard VN';
+const BRAND = 'OnBoardVN';
 
 function escapeHtml(value: string): string {
   return value

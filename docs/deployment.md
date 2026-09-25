@@ -2,6 +2,8 @@
 
 Chạy production trên máy Linux nhà (alias SSH `vps`, Ubuntu 24.04, Docker 29, Tailscale có sẵn). Images build trên GitHub Actions → GHCR; máy nhà chỉ `pull`, không build trên server.
 
+Site công khai hiện tại (subdomain tạm thời): https://onboard.j2teamnnl.com. Tên miền riêng dự kiến trong tương lai: `onboardvn.com` (chưa mua, chưa cấu hình — xem giai đoạn 2 bên dưới).
+
 ## Kiến trúc
 
 ```
@@ -38,7 +40,7 @@ Compose project riêng `onboard`, network riêng — không đụng container kh
    WEB_ORIGIN=https://<host>.ts.net
    # Bắt buộc: thiếu thì api/migrate không khởi động (email xác minh, OTP, reset mật khẩu).
    SMTP_URL=smtps://<user>:<app-password>@smtp.gmail.com:465
-   MAIL_FROM=Onboard VN <<user>@gmail.com>
+   MAIL_FROM=OnBoardVN <<user>@gmail.com>
    # Tùy chọn: đăng nhập Google. Redirect URI: https://<host>/api/auth/callback/google
    GOOGLE_CLIENT_ID=
    GOOGLE_CLIENT_SECRET=

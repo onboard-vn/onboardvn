@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import { serverApi } from '@/lib/api-server';
 import { requireStaff } from '@/lib/require-staff';
 import { CafeForm } from '../cafe-form';
+import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Thêm quán · Onboard VN' };
+export const metadata: Metadata = { title: `Thêm quán · ${SITE_NAME}` };
 
 export default async function NewCafePage() {
   await requireStaff();

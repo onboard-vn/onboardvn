@@ -1,6 +1,25 @@
-# Onboard VN
+# OnBoardVN
 
-Nền tảng cộng đồng board game Việt Nam: danh bạ quán café board game, kho game (barcode scan qua GameUPC), sự kiện/kèo chơi, hướng tới người chơi (player-centric) thay vì chỉ phục vụ quán. Mã nguồn mở AGPL-3.0-only, dữ liệu mở: dữ kiện `facts/` CC0, mô tả và quán CC BY-SA 4.0, địa bàn `admin-units/` MIT. Tự host được qua Tailscale Funnel.
+> Vietnam's Open Board Game Community · Cộng đồng board game mở của Việt Nam
+
+<a id="readme-in-english"></a>
+
+## README in English
+
+**OnBoardVN** — Vietnam's Open Board Game Community. A player-centric platform for Vietnam's board game scene: a directory of board-game cafés, a personal game shelf (barcode scan via GameUPC), and events/meetups — built for players first, not just cafés.
+
+- **Stack**: pnpm monorepo + Turborepo · `apps/web` (Next.js 16 App Router + Tailwind) · `apps/api` (Hono on Node 22) · `apps/mobile` (Expo, planned) · `packages/shared` (zod schemas) · `packages/config` (shared tsconfig/eslint).
+- **Quickstart**: see the [Quickstart](#quickstart) section below (Vietnamese steps, same commands: `pnpm i`, `pnpm db:up`, `pnpm db:migrate`, `pnpm dev`).
+- **License**: source is [GNU AGPL-3.0-only](LICENSE); catalog data (never player data) is CC0 (`facts/`), CC BY-SA 4.0 (descriptions/cafés), MIT (`admin-units/`).
+- **Contributing**: see [CONTRIBUTING.md](CONTRIBUTING.md) (DCO, no CLA) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+The rest of this README is in Vietnamese.
+
+---
+
+## Tiếng Việt
+
+Nền tảng cộng đồng board game Việt Nam: danh bạ quán café board game, kho game (barcode scan qua GameUPC), sự kiện/kèo chơi, hướng tới người chơi (player-centric) thay vì chỉ phục vụ quán. Mã nguồn mở AGPL-3.0-only, dữ liệu catalog mở (không gồm dữ liệu người chơi): dữ kiện `facts/` CC0, mô tả và quán CC BY-SA 4.0, địa bàn `admin-units/` MIT. Tự host được qua Tailscale Funnel.
 
 ## Monorepo layout
 
@@ -78,7 +97,7 @@ Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy trình đóng góp (DCO,
 Việc tạo GitHub organization `onboard-vn` và các repo con **không** được thực hiện tự động bởi agent — maintainer cần tự làm thủ công:
 
 1. Tạo organization `onboard-vn` trên GitHub.
-2. Tạo repo `onboard` (repo chính, monorepo này) trong org.
-3. Tạo repo `dataset` (facts CC0; mô tả, quán CC BY-SA 4.0; admin-units MIT).
+2. Tạo repo `onboardvn` (repo chính, monorepo này) trong org.
+3. (Tùy chọn, chưa cần ngay) Tách repo `dataset` riêng nếu sau này muốn export dữ liệu ra khỏi monorepo (facts CC0; mô tả, quán CC BY-SA 4.0; admin-units MIT) — hiện tại dataset export nằm trong `onboardvn` (xem `apps/api/src/dataset/`).
 4. Tạo repo `.github` (community health files dùng chung cho toàn org, nếu muốn override cấp từng repo).
 5. Cấu hình quyền truy cập, private vulnerability reporting, và branch protection cho `main` theo nhu cầu.

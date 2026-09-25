@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { serverApi } from '@/lib/api-server';
 import { GameFilters, type GameFiltersValues } from './game-filters';
+import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Danh mục game · Onboard VN' };
+export const metadata: Metadata = { title: `Danh mục game · ${SITE_NAME}` };
 
 const FILTER_KEYS = ['q', 'players', 'maxTime', 'maxWeight', 'categoryId'] as const;
 

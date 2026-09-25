@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getCurrentUser } from '@/lib/api-server';
+import { SITE_NAME } from '@/lib/site';
 import { SignOutButton } from './sign-out-button';
 
 const ROLE_LABEL = { user: 'Thành viên', maintainer: 'Maintainer', admin: 'Admin' } as const;
@@ -12,7 +13,7 @@ export async function SiteHeader() {
       <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6">
         <div className="flex items-center gap-4">
           <Link href="/" className="font-semibold">
-            Onboard VN
+            {SITE_NAME}
           </Link>
           <Link href="/games" className="text-sm font-medium">
             Game

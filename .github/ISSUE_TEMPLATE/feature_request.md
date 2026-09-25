@@ -1,6 +1,6 @@
 ---
 name: Đề xuất tính năng
-about: Đề xuất tính năng hoặc cải tiến mới cho Onboard VN
+about: Đề xuất tính năng hoặc cải tiến mới cho OnBoardVN
 title: '[feature] '
 labels: enhancement
 ---
