@@ -196,6 +196,11 @@ async function exportCafes(outDir: string): Promise<void> {
       links: row.links ? JSON.stringify(row.links) : null,
       sourceUrl: publicOnly ? null : row.sourceUrl,
       consentStatus: row.consentStatus,
+      venueType: row.venueType,
+      feeModel: publicOnly ? null : row.feeModel,
+      feeNote: publicOnly ? null : row.feeNote,
+      amenities: publicOnly || !row.amenities ? null : JSON.stringify(row.amenities),
+      openingHours: publicOnly || !row.openingHours ? null : JSON.stringify(row.openingHours),
     };
   });
 

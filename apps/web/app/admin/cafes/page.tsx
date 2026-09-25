@@ -18,7 +18,7 @@ export default async function AdminCafesPage() {
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-6 py-10">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">Quản lý quán ({total})</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Quản lý địa điểm chơi ({total})</h1>
         <Button render={<Link href="/admin/cafes/new" />}>Thêm quán</Button>
       </div>
 

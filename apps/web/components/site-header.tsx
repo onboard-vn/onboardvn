@@ -20,7 +20,7 @@ export async function SiteHeader() {
             Game
           </Link>
           <Link href="/cafes" className="text-sm font-medium">
-            Quán
+            Địa điểm chơi
           </Link>
           {user ? (
             <Link href="/friends" className="flex items-center gap-1.5 text-sm font-medium">
@@ -35,7 +35,7 @@ export async function SiteHeader() {
           ) : null}
           {user && user.cafeMembershipCount > 0 ? (
             <Link href="/my-cafes" className="text-sm font-medium">
-              Quán của tôi
+              Địa điểm chơi của tôi
             </Link>
           ) : null}
           {user && user.role !== 'user' ? (
@@ -44,7 +44,7 @@ export async function SiteHeader() {
                 Quản lý game
               </Link>
               <Link href="/admin/cafes" className="text-sm font-medium">
-                Quản lý quán
+                Quản lý địa điểm chơi
               </Link>
               <Link href="/admin/scan" className="text-sm font-medium">
                 Quét mã

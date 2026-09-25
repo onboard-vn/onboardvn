@@ -8,7 +8,7 @@ import { OwnerCafeForm } from './cafe-info-form';
 import { StaffForm } from './staff-form';
 
 export const metadata: Metadata = {
-  title: `Quản lý quán · ${SITE_NAME}`,
+  title: `Quản lý địa điểm chơi · ${SITE_NAME}`,
   robots: { index: false },
 };
 
@@ -54,6 +54,10 @@ export default async function MyCafeDetailPage(props: PageProps<'/my-cafes/[id]'
           legacyDistrict: cafe.legacyDistrict,
           openingHours: cafe.openingHours,
           links: cafe.links,
+          venueType: cafe.venueType,
+          amenities: cafe.amenities,
+          feeModel: cafe.feeModel,
+          feeNote: cafe.feeNote,
         }}
       />
       <InventoryManager cafeId={cafe.id} inventory={cafe.inventory} />

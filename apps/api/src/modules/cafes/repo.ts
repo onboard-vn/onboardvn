@@ -1,5 +1,11 @@
-import type { CafeCreateInput, CafeGameAddedVia, CafeUpdateInput } from '@onboard/shared';
-import { and, asc, count, eq, inArray, sql } from 'drizzle-orm';
+import type {
+  CafeCreateInput,
+  CafeGameAddedVia,
+  CafeOpeningHours,
+  CafeUpdateInput,
+  VenueType,
+} from '@onboard/shared';
+import { and, asc, count, eq, inArray, ne, type SQL, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import { cafeGames, cafes, games, provinces, wards } from '../../db/schema/index.js';
 import { publicCafeWhere } from './visibility.js';
@@ -9,11 +15,30 @@ export type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
 export interface CafeListFilter {
   provinceCode?: string;
   wardCodes?: string[];
+  venueType?: VenueType;
+  byog?: boolean;
+  food?: boolean;
+  privateRoom?: boolean;
+  largeTables?: boolean;
+  /** feeModel in ('free', 'with_drink'). */
+  free?: boolean;
+}
+
+/** Tri-state containment filter: `true`/`false` match rows explicitly set that way; unset only
+ * matches when `value` is `undefined` (filter not requested). */
+function amenityFilter(
+  field: 'byogAllowed' | 'foodAvailable' | 'privateRoom' | 'largeTables',
+  value: boolean | undefined,
+): SQL | undefined {
+  if (value === undefined) return undefined;
+  return sql`${cafes.amenities} @> ${JSON.stringify({ [field]: value })}::jsonb`;
 }
 
 export interface CafeListOptions {
   /** Staff-only: include cafés awaiting consent, which are otherwise never public. */
   includePending?: boolean;
+  /** Staff-only: also match `public_info_only` cafés against attribute filters (see below). */
+  showAll?: boolean;
 }
 
 const cafeWithRelations = {
@@ -24,13 +49,56 @@ const cafeWithRelations = {
 
 export type CafeFullRow = NonNullable<Awaited<ReturnType<typeof findCafeFullById>>>;
 
-function buildWhere(filter: CafeListFilter, includePending: boolean | undefined) {
-  const conditions = [];
-  if (!includePending) conditions.push(publicCafeWhere());
+const ATTRIBUTE_FILTER_KEYS = [
+  'venueType',
+  'byog',
+  'food',
+  'privateRoom',
+  'largeTables',
+  'free',
+] as const;
+
+function buildWhere(filter: CafeListFilter, opts: CafeListOptions) {
+  const conditions = [
+    amenityFilter('byogAllowed', filter.byog),
+    amenityFilter('foodAvailable', filter.food),
+    amenityFilter('privateRoom', filter.privateRoom),
+    amenityFilter('largeTables', filter.largeTables),
+  ].filter((c): c is SQL => c !== undefined);
+  if (!opts.includePending) conditions.push(publicCafeWhere());
   if (filter.provinceCode) conditions.push(eq(cafes.provinceCode, filter.provinceCode));
   if (filter.wardCodes) conditions.push(inArray(cafes.wardCode, filter.wardCodes));
+  if (filter.venueType) conditions.push(eq(cafes.venueType, filter.venueType));
+  if (filter.free) conditions.push(inArray(cafes.feeModel, ['free', 'with_drink']));
+  // A public_info_only café doesn't expose amenities/fee publicly, so it must never match an
+  // attribute filter for a non-staff caller — only venueType is public for those cafés.
+  const hasNonVenueTypeAttributeFilter = ATTRIBUTE_FILTER_KEYS.slice(1).some(
+    (key) => filter[key] !== undefined,
+  );
+  if (!opts.showAll && hasNonVenueTypeAttributeFilter) {
+    conditions.push(ne(cafes.consentStatus, 'public_info_only'));
+  }
   return conditions.length ? and(...conditions) : undefined;
 }
+
+const cafeListSelection = {
+  id: cafes.id,
+  slug: cafes.slug,
+  name: cafes.name,
+  provinceCode: cafes.provinceCode,
+  provinceName: provinces.name,
+  wardCode: cafes.wardCode,
+  wardName: wards.name,
+  addressLine: cafes.addressLine,
+  legacyDistrict: cafes.legacyDistrict,
+  lat: cafes.lat,
+  lng: cafes.lng,
+  links: cafes.links,
+  consentStatus: cafes.consentStatus,
+  venueType: cafes.venueType,
+  openingHours: cafes.openingHours,
+  gameCount: sql<number>`count(${cafeGames.gameId})::int`,
+} as const;
 
 export interface CafeListRow {
   id: string;
@@ -46,7 +114,21 @@ export interface CafeListRow {
   lng: string | null;
   links: { fanpage?: string; maps?: string } | null;
   consentStatus: 'granted' | 'pending' | 'public_info_only' | 'declined';
+  venueType: VenueType;
+  openingHours: CafeOpeningHours | null;
   gameCount: number;
+}
+
+function selectCafeList(where: SQL | undefined) {
+  return db
+    .select(cafeListSelection)
+    .from(cafes)
+    .innerJoin(provinces, eq(provinces.code, cafes.provinceCode))
+    .innerJoin(wards, eq(wards.code, cafes.wardCode))
+    .leftJoin(cafeGames, eq(cafeGames.cafeId, cafes.id))
+    .where(where)
+    .groupBy(cafes.id, provinces.name, wards.name)
+    .orderBy(sql`count(${cafeGames.gameId}) desc`, asc(cafes.name));
 }
 
 export async function listCafes(
@@ -55,39 +137,25 @@ export async function listCafes(
   pageSize: number,
   opts: CafeListOptions = {},
 ): Promise<{ rows: CafeListRow[]; total: number }> {
-  const where = buildWhere(filter, opts.includePending);
+  const where = buildWhere(filter, opts);
 
   const [rows, totalRows] = await Promise.all([
-    db
-      .select({
-        id: cafes.id,
-        slug: cafes.slug,
-        name: cafes.name,
-        provinceCode: cafes.provinceCode,
-        provinceName: provinces.name,
-        wardCode: cafes.wardCode,
-        wardName: wards.name,
-        addressLine: cafes.addressLine,
-        legacyDistrict: cafes.legacyDistrict,
-        lat: cafes.lat,
-        lng: cafes.lng,
-        links: cafes.links,
-        consentStatus: cafes.consentStatus,
-        gameCount: sql<number>`count(${cafeGames.gameId})::int`,
-      })
-      .from(cafes)
-      .innerJoin(provinces, eq(provinces.code, cafes.provinceCode))
-      .innerJoin(wards, eq(wards.code, cafes.wardCode))
-      .leftJoin(cafeGames, eq(cafeGames.cafeId, cafes.id))
-      .where(where)
-      .groupBy(cafes.id, provinces.name, wards.name)
-      .orderBy(sql`count(${cafeGames.gameId}) desc`, asc(cafes.name))
+    selectCafeList(where)
       .limit(pageSize)
       .offset((page - 1) * pageSize),
     db.select({ total: count() }).from(cafes).where(where),
   ]);
 
   return { rows, total: totalRows[0]?.total ?? 0 };
+}
+
+/** Unpaginated variant for the `openNow` filter (evaluated in JS per row by the service). */
+const OPEN_NOW_CANDIDATE_CAP = 1000; // dataset is small; caps worst-case JS work per request.
+export async function listAllCafesForFilter(
+  filter: CafeListFilter,
+  opts: CafeListOptions = {},
+): Promise<CafeListRow[]> {
+  return selectCafeList(buildWhere(filter, opts)).limit(OPEN_NOW_CANDIDATE_CAP);
 }
 
 export function findCafeFullBySlug(slug: string) {
@@ -127,6 +195,10 @@ function toCafeValues(input: CafeUpdateInput) {
     ...(input.sourceUrl !== undefined && { sourceUrl: input.sourceUrl }),
     ...(input.consentStatus !== undefined && { consentStatus: input.consentStatus }),
     ...(input.consentNote !== undefined && { consentNote: input.consentNote }),
+    ...(input.venueType !== undefined && { venueType: input.venueType }),
+    ...(input.amenities !== undefined && { amenities: input.amenities }),
+    ...(input.feeModel !== undefined && { feeModel: input.feeModel }),
+    ...(input.feeNote !== undefined && { feeNote: input.feeNote }),
   };
 }
 
@@ -151,6 +223,10 @@ export async function insertCafe(
       sourceUrl: input.sourceUrl,
       consentStatus: input.consentStatus,
       consentNote: input.consentNote,
+      ...(input.venueType !== undefined && { venueType: input.venueType }),
+      ...(input.amenities !== undefined && { amenities: input.amenities }),
+      ...(input.feeModel !== undefined && { feeModel: input.feeModel }),
+      ...(input.feeNote !== undefined && { feeNote: input.feeNote }),
     })
     .returning();
   return row!;

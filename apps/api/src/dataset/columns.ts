@@ -38,6 +38,11 @@ export const CAFE_COLUMNS = [
   'links',
   'sourceUrl',
   'consentStatus',
+  'venueType',
+  'feeModel',
+  'feeNote',
+  'amenities',
+  'openingHours',
 ] as const;
 
 export const CAFE_GAME_COLUMNS = ['cafeSlug', 'gameSlug', 'copies', 'addedVia'] as const;

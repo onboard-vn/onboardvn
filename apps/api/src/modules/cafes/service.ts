@@ -15,6 +15,7 @@ import type {
   CafePublicSummaryDto,
   CafeUpdateInput,
 } from '@onboard/shared';
+import { getOpenStatus } from '@onboard/shared';
 import { ApiError } from '../../lib/errors.js';
 import { storage } from '../../lib/storage/index.js';
 import * as locationsRepo from '../locations/repo.js';
@@ -40,6 +41,8 @@ function toPublicSummaryFromListRow(row: CafeListRow, forceShowAll = false): Caf
     links: row.links ?? undefined,
     gameCount: row.gameCount,
     verified: row.consentStatus === 'granted',
+    venueType: row.venueType,
+    openStatus: hideDetails ? undefined : getOpenStatus(row.openingHours, new Date()),
   };
 }
 
@@ -77,7 +80,12 @@ function toPublicDetail(row: CafeFullRow, forceShowAll = false): CafePublicDetai
     links: row.links ?? undefined,
     gameCount: row.inventory.length,
     verified: row.consentStatus === 'granted',
+    venueType: row.venueType,
+    openStatus: hideDetails ? undefined : getOpenStatus(row.openingHours, new Date()),
     openingHours: hideDetails ? undefined : (row.openingHours ?? undefined),
+    amenities: hideDetails ? undefined : (row.amenities ?? undefined),
+    feeModel: hideDetails ? undefined : row.feeModel,
+    feeNote: hideDetails ? undefined : row.feeNote,
     inventory: row.inventory.map(toInventoryDto),
   };
 }
@@ -110,25 +118,58 @@ function toOwnerDto(row: CafeFullRow): CafeOwnerDto {
   };
 }
 
-async function resolveListFilter(
-  filter: CafeFilter,
-): Promise<{ provinceCode?: string; wardCodes?: string[] } | null> {
+async function resolveListFilter(filter: CafeFilter): Promise<repo.CafeListFilter | null> {
+  const base: repo.CafeListFilter = {
+    venueType: filter.venueType,
+    byog: filter.byog,
+    food: filter.food,
+    privateRoom: filter.privateRoom,
+    largeTables: filter.largeTables,
+    free: filter.free,
+  };
+
   if (!filter.province) {
     if (filter.ward) {
       throw new ApiError('VALIDATION_FAILED', 422, 'Cần chọn tỉnh/thành trước khi lọc theo phường');
     }
-    return {};
+    return base;
   }
 
   const province = await locationsRepo.findProvinceBySlug(filter.province);
   if (!province) return null;
 
-  if (!filter.ward) return { provinceCode: province.code };
+  if (!filter.ward) return { ...base, provinceCode: province.code };
 
   const wardRows = await locationsRepo.findWardsByProvinceAndSlug(province.code, filter.ward);
   if (wardRows.length === 0) return null;
 
-  return { provinceCode: province.code, wardCodes: wardRows.map((w) => w.code) };
+  return { ...base, provinceCode: province.code, wardCodes: wardRows.map((w) => w.code) };
+}
+
+/** `openNow` can't be expressed against per-day JSON ranges in SQL, so it fetches the full
+ * (small) filtered café set, computes {@link getOpenStatus} per row in JS, then paginates. */
+async function listCafesOpenNow(
+  resolved: repo.CafeListFilter,
+  filter: CafeFilter,
+  opts: { includePending?: boolean; showAll?: boolean },
+): Promise<CafeListResponse> {
+  const allRows = await repo.listAllCafesForFilter(resolved, opts);
+  const now = new Date();
+  const openRows = allRows.filter((row) => {
+    // public_info_only cafés don't expose hours publicly, so openNow must never match them.
+    if (!opts.showAll && row.consentStatus === 'public_info_only') return false;
+    const status = getOpenStatus(row.openingHours, now).state;
+    return status === 'open' || status === 'closing_soon';
+  });
+
+  const start = (filter.page - 1) * filter.pageSize;
+  const pageRows = openRows.slice(start, start + filter.pageSize);
+  return {
+    items: pageRows.map((row) => toPublicSummaryFromListRow(row, opts.showAll)),
+    page: filter.page,
+    pageSize: filter.pageSize,
+    total: openRows.length,
+  };
 }
 
 export async function listCafesService(
@@ -137,6 +178,8 @@ export async function listCafesService(
 ): Promise<CafeListResponse> {
   const resolved = await resolveListFilter(filter);
   if (!resolved) return { items: [], page: filter.page, pageSize: filter.pageSize, total: 0 };
+
+  if (filter.openNow) return listCafesOpenNow(resolved, filter, opts);
 
   const { rows, total } = await repo.listCafes(resolved, filter.page, filter.pageSize, opts);
   return {
@@ -193,6 +236,18 @@ function assertConsentSourceUrl(consentStatus: string, sourceUrl: string | undef
   }
 }
 
+/** BYOG cafés default `byogAllowed` to true unless the caller explicitly set it (or cleared
+ * amenities entirely with `null`). */
+function withByogDefault<T extends CafeCreateInput['amenities'] | null>(
+  venueType: CafeCreateInput['venueType'],
+  amenities: T,
+): T {
+  if (venueType !== 'byog_cafe' || amenities === null || amenities?.byogAllowed !== undefined) {
+    return amenities;
+  }
+  return { ...amenities, byogAllowed: true } as T;
+}
+
 export async function createCafeService(
   input: CafeCreateInput,
   userId: string,
@@ -200,8 +255,9 @@ export async function createCafeService(
   await assertWardInProvince(input.provinceCode, input.wardCode);
   assertConsentSourceUrl(input.consentStatus, input.sourceUrl);
 
+  const amenities = withByogDefault(input.venueType, input.amenities);
   const slug = await repo.findAvailableSlug(slugify(input.name));
-  const created = await repo.insertCafe({ ...input, slug, createdBy: userId });
+  const created = await repo.insertCafe({ ...input, amenities, slug, createdBy: userId });
   return getCafeManageDtoOrThrow(created.id);
 }
 
@@ -222,7 +278,11 @@ export async function updateCafeService(
   const mergedSourceUrl = input.sourceUrl !== undefined ? input.sourceUrl : existing.sourceUrl;
   assertConsentSourceUrl(mergedConsentStatus, mergedSourceUrl);
 
-  await repo.updateCafeRow(id, input);
+  const mergedVenueType = input.venueType ?? existing.venueType;
+  const amenities =
+    input.amenities !== undefined ? withByogDefault(mergedVenueType, input.amenities) : undefined;
+
+  await repo.updateCafeRow(id, { ...input, ...(amenities !== undefined && { amenities }) });
   return getCafeManageDtoOrThrow(id);
 }
 

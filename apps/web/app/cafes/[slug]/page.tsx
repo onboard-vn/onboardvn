@@ -2,9 +2,16 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { JsonLdScript } from '@/components/json-ld-script';
+import { OpeningHoursTable } from '@/components/cafe/opening-hours-table';
 import { serverApi } from '@/lib/api-server';
 import { SITE_URL } from '@/lib/env';
 import { cafeJsonLd } from '@/lib/seo/json-ld';
+import {
+  AMENITY_KEYS,
+  AMENITY_LABELS,
+  FEE_MODEL_LABELS,
+  VENUE_TYPE_LABELS,
+} from '@/lib/cafe-labels';
 import { SITE_NAME } from '@/lib/site';
 
 export async function generateMetadata(props: PageProps<'/cafes/[slug]'>): Promise<Metadata> {
@@ -43,21 +50,48 @@ export default async function CafeDetailPage(props: PageProps<'/cafes/[slug]'>) 
             </span>
           ) : null}
         </h1>
+        <p className="text-muted-foreground text-sm">{VENUE_TYPE_LABELS[cafe.venueType]}</p>
         <p className="text-muted-foreground text-sm">
           {cafe.addressLine}, {cafe.wardName}, {cafe.provinceName}
           {cafe.legacyDistrict ? ` (${cafe.legacyDistrict})` : ''}
         </p>
       </div>
 
-      {cafe.openingHours && Object.keys(cafe.openingHours).length > 0 ? (
+      {cafe.amenities ? (
         <div className="text-sm">
-          <h2 className="font-medium">Giờ mở cửa</h2>
-          <ul className="text-muted-foreground mt-1">
-            {Object.entries(cafe.openingHours).map(([key, value]) => (
-              <li key={key}>{String(value)}</li>
+          <h2 className="font-medium">Tiện ích</h2>
+          <ul className="mt-1 grid grid-cols-1 gap-x-4 gap-y-1 sm:grid-cols-2">
+            {AMENITY_KEYS.filter((key) => cafe.amenities?.[key] != null).map((key) => (
+              <li key={key} className="text-muted-foreground">
+                {AMENITY_LABELS[key]}: {cafe.amenities?.[key] ? 'Có' : 'Không'}
+              </li>
             ))}
+            {cafe.amenities.privateRoomCapacity != null ? (
+              <li className="text-muted-foreground">
+                Sức chứa phòng riêng: {cafe.amenities.privateRoomCapacity}
+              </li>
+            ) : null}
+            {cafe.amenities.maxGroupSize != null ? (
+              <li className="text-muted-foreground">
+                Sức chứa nhóm tối đa: {cafe.amenities.maxGroupSize}
+              </li>
+            ) : null}
           </ul>
         </div>
+      ) : null}
+
+      {cafe.feeModel ? (
+        <p className="text-sm">
+          <span className="font-medium">Chi phí: </span>
+          <span className="text-muted-foreground">
+            {FEE_MODEL_LABELS[cafe.feeModel]}
+            {cafe.feeNote ? ` — ${cafe.feeNote}` : ''}
+          </span>
+        </p>
+      ) : null}
+
+      {cafe.openingHours ? (
+        <OpeningHoursTable hours={cafe.openingHours} openStatus={cafe.openStatus} />
       ) : null}
 
       {cafe.links?.fanpage || cafe.links?.maps ? (

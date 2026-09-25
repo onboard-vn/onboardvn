@@ -239,4 +239,25 @@ describe('dataset import - cafes', () => {
     const row = await db.query.cafes.findFirst({ where: eq(cafes.slug, declinedSlug) });
     expect(row?.consentStatus).toBe('declined');
   });
+
+  it('imports venueType, feeModel, amenities and structured openingHours', async () => {
+    const slug = `ds-cafe-venue-${suffix}`;
+    createdCafeSlugs.push(slug);
+    const amenities = JSON.stringify({ byogAllowed: true, wifi: true });
+    const openingHours = JSON.stringify({ mon: [{ open: '08:00', close: '22:00' }] });
+    const header =
+      'slug,name,provinceCode,wardCode,addressLine,legacyDistrict,lat,lng,links,sourceUrl,consentStatus,venueType,feeModel,feeNote,amenities,openingHours';
+    const csv = `${header}\n${slug},Cafe Venue,${PROVINCE.code},${WARD.code},123 Test St,,,,,,granted,byog_cafe,free,Miễn phí ngồi,"${amenities.replaceAll('"', '""')}","${openingHours.replaceAll('"', '""')}"`;
+
+    const result = await importCafesCsv(csv, { apply: true });
+    expect(result.errors).toEqual([]);
+    expect(result.rows).toEqual([{ line: 2, slug, action: 'create' }]);
+
+    const row = await db.query.cafes.findFirst({ where: eq(cafes.slug, slug) });
+    expect(row?.venueType).toBe('byog_cafe');
+    expect(row?.feeModel).toBe('free');
+    expect(row?.feeNote).toBe('Miễn phí ngồi');
+    expect(row?.amenities).toEqual({ byogAllowed: true, wifi: true });
+    expect(row?.openingHours).toEqual({ mon: [{ open: '08:00', close: '22:00' }] });
+  });
 });

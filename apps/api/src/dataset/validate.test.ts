@@ -17,7 +17,7 @@ const FILES: Record<string, string> = {
   'admin-units/wards.csv': 'code,provinceCode,name,slug\n',
   'descriptions/games.csv': 'slug,descriptionVi,descriptionSource\n',
   'cafes/cafes.csv':
-    'slug,name,provinceCode,wardCode,addressLine,legacyDistrict,lat,lng,links,sourceUrl,consentStatus\n',
+    'slug,name,provinceCode,wardCode,addressLine,legacyDistrict,lat,lng,links,sourceUrl,consentStatus,venueType,feeModel,feeNote,amenities,openingHours\n',
   'cafes/cafe_games.csv': 'cafeSlug,gameSlug,copies,addedVia\n',
 };
 

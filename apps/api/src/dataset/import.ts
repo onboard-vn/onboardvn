@@ -361,6 +361,11 @@ interface RawCafeRow {
   links?: string;
   sourceUrl?: string;
   consentStatus?: string;
+  venueType?: string;
+  feeModel?: string;
+  feeNote?: string;
+  amenities?: string;
+  openingHours?: string;
 }
 
 interface CafePlanItem {
@@ -398,6 +403,28 @@ export async function importCafesCsv(
       }
     }
 
+    let amenities: unknown;
+    const amenitiesRaw = blankToUndefined(raw.amenities);
+    if (amenitiesRaw !== undefined) {
+      try {
+        amenities = JSON.parse(amenitiesRaw);
+      } catch {
+        errors.push({ line, field: 'amenities', message: 'JSON không hợp lệ' });
+        continue;
+      }
+    }
+
+    let openingHours: unknown;
+    const openingHoursRaw = blankToUndefined(raw.openingHours);
+    if (openingHoursRaw !== undefined) {
+      try {
+        openingHours = JSON.parse(openingHoursRaw);
+      } catch {
+        errors.push({ line, field: 'openingHours', message: 'JSON không hợp lệ' });
+        continue;
+      }
+    }
+
     const parsed = cafeCreateSchema.safeParse({
       name: blankToUndefined(raw.name),
       provinceCode: blankToUndefined(raw.provinceCode),
@@ -409,6 +436,11 @@ export async function importCafesCsv(
       links,
       sourceUrl: blankToUndefined(raw.sourceUrl),
       consentStatus: blankToUndefined(raw.consentStatus),
+      venueType: blankToUndefined(raw.venueType),
+      feeModel: blankToUndefined(raw.feeModel),
+      feeNote: blankToUndefined(raw.feeNote),
+      amenities,
+      openingHours,
     });
 
     if (!parsed.success) {

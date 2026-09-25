@@ -165,6 +165,45 @@ describe('dataset export', () => {
     expect(descriptionsCsv).toContain(`ma-soi-${suffix}`);
     expect(descriptionsCsv).not.toContain(`perm-only-${suffix}`);
 
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it('exposes venueType but hides amenities/feeModel/feeNote/openingHours for public_info_only', async () => {
+    const [infoOnlyCafe] = await db
+      .insert(cafes)
+      .values({
+        slug: `quan-info-only-${suffix}`,
+        name: 'Quán Info Only',
+        provinceCode: PROVINCE.code,
+        wardCode: WARD.code,
+        addressLine: '321 Test',
+        consentStatus: 'public_info_only',
+        sourceUrl: 'https://example.test',
+        venueType: 'byog_cafe',
+        feeModel: 'hourly',
+        feeNote: 'Không được xuất vì public_info_only',
+        amenities: { wifi: true },
+        openingHours: { mon: [{ open: '08:00', close: '22:00' }] },
+      })
+      .returning();
+    cafeIds.push(infoOnlyCafe!.id);
+
+    const dir = `/tmp/onboard-dataset-test-d-${suffix}`;
+    await exportDataset(dir);
+    const cafesCsv = await readFile(join(dir, 'cafes/cafes.csv'), 'utf8');
+    const row = cafesCsv.split('\n').find((line) => line.includes(`quan-info-only-${suffix}`));
+
+    expect(row).toContain('byog_cafe');
+    expect(row).not.toContain('Không được xuất');
+    expect(row).not.toContain('hourly');
+    expect(row).not.toContain('08:00');
+
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it('leaks no PII columns anywhere', async () => {
+    const dir = `/tmp/onboard-dataset-test-c-${suffix}`;
+    await exportDataset(dir);
     const allFiles = await listFilesRecursive(dir);
     for (const file of allFiles) {
       if (!file.endsWith('.csv') && !file.endsWith('.json')) continue;

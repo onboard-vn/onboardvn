@@ -1,3 +1,4 @@
+import { cafeAmenitiesSchema, cafeFeeModelEnum, venueTypeEnum } from '@onboard/shared';
 import { z } from 'zod';
 
 /**
@@ -61,6 +62,31 @@ export const cafeLinksDtoSchema = z
   .object({ fanpage: z.url().optional(), maps: z.url().optional() })
   .optional();
 
+export const venueTypeDtoSchema = venueTypeEnum;
+export const cafeFeeModelDtoSchema = cafeFeeModelEnum;
+export const cafeAmenitiesDtoSchema = cafeAmenitiesSchema;
+
+const cafeHourRangeDtoSchema = z.object({ open: z.string(), close: z.string() });
+
+export const cafeOpeningHoursDtoSchema = z
+  .object({
+    mon: z.array(cafeHourRangeDtoSchema).optional(),
+    tue: z.array(cafeHourRangeDtoSchema).optional(),
+    wed: z.array(cafeHourRangeDtoSchema).optional(),
+    thu: z.array(cafeHourRangeDtoSchema).optional(),
+    fri: z.array(cafeHourRangeDtoSchema).optional(),
+    sat: z.array(cafeHourRangeDtoSchema).optional(),
+    sun: z.array(cafeHourRangeDtoSchema).optional(),
+    note: z.string().optional(),
+  })
+  .optional();
+
+export const cafeOpenStatusDtoSchema = z.object({
+  state: z.enum(['open', 'closing_soon', 'closed', 'unknown']),
+  until: z.string().optional(),
+  nextOpen: z.object({ day: z.string(), time: z.string() }).optional(),
+});
+
 export const cafeInventoryItemDtoSchema = z.object({
   gameId: z.uuid(),
   slug: z.string(),
@@ -85,10 +111,15 @@ export const cafePublicSummaryDtoSchema = z.object({
   links: cafeLinksDtoSchema,
   gameCount: z.number().int(),
   verified: z.boolean(),
+  venueType: venueTypeDtoSchema,
+  openStatus: cafeOpenStatusDtoSchema.optional(),
 });
 
 export const cafePublicDetailDtoSchema = cafePublicSummaryDtoSchema.extend({
-  openingHours: z.record(z.string(), z.string()).optional(),
+  openingHours: cafeOpeningHoursDtoSchema,
+  amenities: cafeAmenitiesDtoSchema.optional(),
+  feeModel: cafeFeeModelDtoSchema.optional(),
+  feeNote: z.string().nullable().optional(),
   inventory: z.array(cafeInventoryItemDtoSchema),
 });
 

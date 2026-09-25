@@ -2,12 +2,22 @@ import { eq, inArray } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createApp } from '../../app.js';
 import { db, pool } from '../../db/client.js';
-import { cafeGames, cafes, games, provinces, users, wards } from '../../db/schema/index.js';
+import {
+  cafeGames,
+  cafeMembers,
+  cafes,
+  games,
+  provinces,
+  users,
+  wards,
+} from '../../db/schema/index.js';
 import { fakeAuth, fakeUser } from '../../test/fake-auth.js';
 
 const maintainer = fakeUser('maintainer');
+const owner = { ...fakeUser('user'), id: 'u-cafes-owner', email: 'u-cafes-owner@example.test' };
 const maintainerApp = createApp({ auth: fakeAuth(maintainer), rateLimit: false });
 const userApp = createApp({ auth: fakeAuth(fakeUser('user')), rateLimit: false });
+const ownerApp = createApp({ auth: fakeAuth(owner), rateLimit: false });
 const publicApp = createApp({ auth: fakeAuth(null), rateLimit: false });
 
 const PROVINCE_A = { code: 'p4-t1', name: 'Tỉnh Test A', slug: 'p4-tinh-test-a' };
@@ -39,12 +49,17 @@ beforeAll(async () => {
     .insert(users)
     .values({ ...maintainer, role: 'maintainer' })
     .onConflictDoNothing({ target: users.id });
+  await db
+    .insert(users)
+    .values({ ...owner, username: owner.id })
+    .onConflictDoNothing({ target: users.id });
   await db.insert(provinces).values([PROVINCE_A, PROVINCE_B]).onConflictDoNothing();
   await db.insert(wards).values([WARD_A1, WARD_A2, WARD_B1]).onConflictDoNothing();
 });
 
 afterAll(async () => {
   if (createdCafeIds.length > 0) {
+    await db.delete(cafeMembers).where(inArray(cafeMembers.cafeId, createdCafeIds));
     await db.delete(cafeGames).where(inArray(cafeGames.cafeId, createdCafeIds));
     await db.delete(cafes).where(inArray(cafes.id, createdCafeIds));
   }
@@ -54,6 +69,7 @@ afterAll(async () => {
   await db.delete(wards).where(inArray(wards.code, [WARD_A1.code, WARD_A2.code, WARD_B1.code]));
   await db.delete(provinces).where(inArray(provinces.code, [PROVINCE_A.code, PROVINCE_B.code]));
   await db.delete(users).where(eq(users.id, maintainer.id));
+  await db.delete(users).where(eq(users.id, owner.id));
   await pool.end();
 });
 
@@ -276,5 +292,214 @@ describe('cafes directory', () => {
 
     const detailRes = await publicApp.request(`/api/cafes/${granted.slug}`);
     expect(((await detailRes.json()) as { verified: boolean }).verified).toBe(true);
+  });
+
+  it('hides amenities/feeModel/feeNote/openingHours/openStatus for public_info_only but shows venueType', async () => {
+    const { json: cafe } = await createCafe(
+      baseCafeBody({
+        consentStatus: 'public_info_only',
+        sourceUrl: 'https://example.test',
+        venueType: 'byog_cafe',
+        feeModel: 'hourly',
+        feeNote: 'không được lộ ra ngoài',
+        amenities: { wifi: true },
+        openingHours: { mon: [{ open: '08:00', close: '22:00' }] },
+      }),
+    );
+
+    const res = await publicApp.request(`/api/cafes/${cafe.slug}`);
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as Record<string, unknown>;
+    expect(body.venueType).toBe('byog_cafe');
+    expect(body.amenities).toBeUndefined();
+    expect(body.feeModel).toBeUndefined();
+    expect(body.feeNote).toBeUndefined();
+    expect(body.openStatus).toBeUndefined();
+    expect(body.openingHours).toBeUndefined();
+
+    const textRes = await publicApp.request(`/api/cafes/${cafe.slug}`);
+    expect(await textRes.text()).not.toContain('không được lộ ra ngoài');
+
+    const manageRes = await maintainerApp.request(`/api/cafes/${cafe.id}/manage`);
+    const manageBody = (await manageRes.json()) as Record<string, unknown>;
+    // byog_cafe defaults byogAllowed to true on top of the explicit wifi:true.
+    expect(manageBody.amenities).toEqual({ wifi: true, byogAllowed: true });
+    expect(manageBody.feeModel).toBe('hourly');
+  });
+
+  it('defaults byogAllowed to true for a byog_cafe when unset', async () => {
+    const { json: cafe } = await createCafe(baseCafeBody({ venueType: 'byog_cafe' }));
+    const manageRes = await maintainerApp.request(`/api/cafes/${cafe.id}/manage`);
+    const body = (await manageRes.json()) as { amenities: { byogAllowed: boolean | null } };
+    expect(body.amenities.byogAllowed).toBe(true);
+  });
+
+  it('rejects an invalid amenities value (maxGroupSize out of range)', async () => {
+    const res = await maintainerApp.request('/api/cafes', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(baseCafeBody({ amenities: { maxGroupSize: 500 } })),
+    });
+    expect(res.status).toBe(422);
+  });
+
+  it('filters cafes by venueType, byog and free', async () => {
+    const { json: byogCafe } = await createCafe(
+      baseCafeBody({ venueType: 'byog_cafe', feeModel: 'free' }),
+    );
+    const { json: regularCafe } = await createCafe(
+      baseCafeBody({ venueType: 'boardgame_cafe', feeModel: 'hourly' }),
+    );
+
+    const venueTypeRes = await publicApp.request(
+      `/api/cafes?province=${PROVINCE_A.slug}&venueType=byog_cafe&pageSize=50`,
+    );
+    const venueTypeBody = (await venueTypeRes.json()) as { items: { id: string }[] };
+    expect(venueTypeBody.items.some((c) => c.id === byogCafe.id)).toBe(true);
+    expect(venueTypeBody.items.some((c) => c.id === regularCafe.id)).toBe(false);
+
+    const byogRes = await publicApp.request(
+      `/api/cafes?province=${PROVINCE_A.slug}&byog=true&pageSize=50`,
+    );
+    const byogBody = (await byogRes.json()) as { items: { id: string }[] };
+    expect(byogBody.items.some((c) => c.id === byogCafe.id)).toBe(true);
+    expect(byogBody.items.some((c) => c.id === regularCafe.id)).toBe(false);
+
+    const freeRes = await publicApp.request(
+      `/api/cafes?province=${PROVINCE_A.slug}&free=true&pageSize=50`,
+    );
+    const freeBody = (await freeRes.json()) as { items: { id: string }[] };
+    expect(freeBody.items.some((c) => c.id === byogCafe.id)).toBe(true);
+    expect(freeBody.items.some((c) => c.id === regularCafe.id)).toBe(false);
+  });
+
+  it('filters cafes by openNow', async () => {
+    const { json: openCafe } = await createCafe(
+      baseCafeBody({
+        openingHours: { mon: [], tue: [], wed: [], thu: [], fri: [], sat: [], sun: [] },
+      }),
+    );
+    // A café with an all-day range (00:00-00:00 == 24h) is always open right now.
+    const allDay = { open: '00:00', close: '00:00' };
+    await maintainerApp.request(`/api/cafes/${openCafe.id}`, {
+      method: 'PATCH',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        openingHours: {
+          mon: [allDay],
+          tue: [allDay],
+          wed: [allDay],
+          thu: [allDay],
+          fri: [allDay],
+          sat: [allDay],
+          sun: [allDay],
+        },
+      }),
+    });
+    const { json: closedCafe } = await createCafe(baseCafeBody());
+
+    const res = await publicApp.request(
+      `/api/cafes?province=${PROVINCE_A.slug}&openNow=true&pageSize=50`,
+    );
+    const body = (await res.json()) as { items: { id: string }[] };
+    expect(body.items.some((c) => c.id === openCafe.id)).toBe(true);
+    expect(body.items.some((c) => c.id === closedCafe.id)).toBe(false);
+  });
+
+  it('owner/staff PATCH can update venueType/amenities/feeModel but not consentStatus', async () => {
+    const { json: cafe } = await createCafe(baseCafeBody());
+    await db.insert(cafeMembers).values({ cafeId: cafe.id, userId: owner.id, role: 'owner' });
+
+    const res = await ownerApp.request(`/api/cafes/${cafe.id}`, {
+      method: 'PATCH',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        venueType: 'event_space',
+        amenities: { wifi: true, maxGroupSize: 20 },
+        feeModel: 'per_person',
+        feeNote: 'Vé vào cổng',
+        consentStatus: 'declined',
+      }),
+    });
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as Record<string, unknown>;
+    expect(body.venueType).toBe('event_space');
+    expect(body.feeModel).toBe('per_person');
+    expect(body.consentStatus).not.toBe('declined');
+
+    await db.delete(cafeMembers).where(eq(cafeMembers.cafeId, cafe.id));
+  });
+
+  it('excludes a public_info_only café from attribute filters for anonymous, but staff still see it', async () => {
+    const { json: cafe } = await createCafe(
+      baseCafeBody({
+        consentStatus: 'public_info_only',
+        sourceUrl: 'https://example.test',
+        venueType: 'byog_cafe',
+        feeModel: 'free',
+        amenities: { foodAvailable: true, privateRoom: true, largeTables: true },
+        openingHours: {
+          mon: [{ open: '00:00', close: '00:00' }],
+          tue: [{ open: '00:00', close: '00:00' }],
+          wed: [{ open: '00:00', close: '00:00' }],
+          thu: [{ open: '00:00', close: '00:00' }],
+          fri: [{ open: '00:00', close: '00:00' }],
+          sat: [{ open: '00:00', close: '00:00' }],
+          sun: [{ open: '00:00', close: '00:00' }],
+        },
+      }),
+    );
+
+    const base = `province=${PROVINCE_A.slug}&pageSize=50`;
+    for (const q of [
+      'byog=true',
+      'food=true',
+      'privateRoom=true',
+      'largeTables=true',
+      'free=true',
+      'openNow=true',
+    ]) {
+      const res = await publicApp.request(`/api/cafes?${base}&${q}`);
+      const body = (await res.json()) as { items: { id: string }[] };
+      expect(body.items.some((c) => c.id === cafe.id)).toBe(false);
+    }
+
+    const manageRes = await maintainerApp.request(`/api/cafes/manage?${base}&byog=true`);
+    const manageBody = (await manageRes.json()) as { items: { id: string }[] };
+    expect(manageBody.items.some((c) => c.id === cafe.id)).toBe(true);
+  });
+
+  it('returns 200 for a legacy/malformed openingHours row (defensive read, never throws)', async () => {
+    const { json: cafe } = await createCafe(baseCafeBody());
+    await db
+      .update(cafes)
+      .set({ openingHours: { mon: '8:00-22:00' } as never })
+      .where(eq(cafes.id, cafe.id));
+
+    const listRes = await publicApp.request(`/api/cafes?province=${PROVINCE_A.slug}&pageSize=50`);
+    expect(listRes.status).toBe(200);
+
+    const detailRes = await publicApp.request(`/api/cafes/${cafe.slug}`);
+    expect(detailRes.status).toBe(200);
+    const detail = (await detailRes.json()) as { openStatus: { state: string } };
+    expect(detail.openStatus.state).toBe('unknown');
+  });
+
+  it('merges touching ranges on save (10-14 + 14-22 becomes a single 10-22 range)', async () => {
+    const { json: cafe } = await createCafe(
+      baseCafeBody({
+        openingHours: {
+          mon: [
+            { open: '10:00', close: '14:00' },
+            { open: '14:00', close: '22:00' },
+          ],
+        },
+      }),
+    );
+    const detailRes = await publicApp.request(`/api/cafes/${cafe.slug}`);
+    const detail = (await detailRes.json()) as {
+      openingHours: { mon: { open: string; close: string }[] };
+    };
+    expect(detail.openingHours.mon).toEqual([{ open: '10:00', close: '22:00' }]);
   });
 });

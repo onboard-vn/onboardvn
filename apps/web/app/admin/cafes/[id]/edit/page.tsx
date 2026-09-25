@@ -8,7 +8,7 @@ import { MembersSection } from '../members';
 import { OwnerInviteSection } from '../owner-invite';
 import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: `Sửa quán · ${SITE_NAME}` };
+export const metadata: Metadata = { title: `Sửa địa điểm chơi · ${SITE_NAME}` };
 
 export default async function EditCafePage(props: PageProps<'/admin/cafes/[id]/edit'>) {
   await requireStaff();
@@ -36,7 +36,7 @@ export default async function EditCafePage(props: PageProps<'/admin/cafes/[id]/e
 
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-6 py-10">
-      <h1 className="text-2xl font-semibold tracking-tight">Sửa quán</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">Sửa địa điểm chơi</h1>
       <CafeForm
         provinces={provinces}
         initialWards={initialWards}

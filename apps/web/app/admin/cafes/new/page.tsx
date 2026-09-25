@@ -4,7 +4,7 @@ import { requireStaff } from '@/lib/require-staff';
 import { CafeForm } from '../cafe-form';
 import { SITE_NAME } from '@/lib/site';
 
-export const metadata: Metadata = { title: `Thêm quán · ${SITE_NAME}` };
+export const metadata: Metadata = { title: `Thêm địa điểm chơi · ${SITE_NAME}` };
 
 export default async function NewCafePage() {
   await requireStaff();
@@ -14,7 +14,7 @@ export default async function NewCafePage() {
 
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-6 py-10">
-      <h1 className="text-2xl font-semibold tracking-tight">Thêm quán</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">Thêm địa điểm chơi</h1>
       <CafeForm provinces={provinces} />
     </main>
   );

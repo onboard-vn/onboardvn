@@ -1,4 +1,5 @@
 import { relations } from 'drizzle-orm';
+import type { CafeAmenities, CafeOpeningHours } from '@onboard/shared';
 import {
   index,
   jsonb,
@@ -14,33 +15,53 @@ import { users } from './auth.js';
 import { games } from './games.js';
 import { provinces, wards } from './locations.js';
 
-export const cafes = pgTable('cafes', {
-  id: uuid().primaryKey().defaultRandom(),
-  slug: text().notNull().unique(),
-  name: text().notNull(),
-  provinceCode: text()
-    .notNull()
-    .references(() => provinces.code),
-  wardCode: text()
-    .notNull()
-    .references(() => wards.code),
-  addressLine: text().notNull(),
-  legacyDistrict: text(),
-  lat: numeric({ precision: 9, scale: 6 }),
-  lng: numeric({ precision: 9, scale: 6 }),
-  openingHours: jsonb().$type<Record<string, string>>(),
-  links: jsonb().$type<{ fanpage?: string; maps?: string }>(),
-  sourceUrl: text(),
-  consentStatus: text({ enum: ['granted', 'pending', 'public_info_only', 'declined'] }).notNull(),
-  consentNote: text(),
-  verifiedAt: timestamp(),
-  createdBy: text().references(() => users.id),
-  createdAt: timestamp().defaultNow().notNull(),
-  updatedAt: timestamp()
-    .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
-});
+export const cafes = pgTable(
+  'cafes',
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    slug: text().notNull().unique(),
+    name: text().notNull(),
+    provinceCode: text()
+      .notNull()
+      .references(() => provinces.code),
+    wardCode: text()
+      .notNull()
+      .references(() => wards.code),
+    addressLine: text().notNull(),
+    legacyDistrict: text(),
+    lat: numeric({ precision: 9, scale: 6 }),
+    lng: numeric({ precision: 9, scale: 6 }),
+    openingHours: jsonb().$type<CafeOpeningHours>(),
+    links: jsonb().$type<{ fanpage?: string; maps?: string }>(),
+    sourceUrl: text(),
+    consentStatus: text({ enum: ['granted', 'pending', 'public_info_only', 'declined'] }).notNull(),
+    consentNote: text(),
+    verifiedAt: timestamp(),
+    createdBy: text().references(() => users.id),
+    venueType: text({ enum: ['boardgame_cafe', 'byog_cafe', 'event_space'] })
+      .notNull()
+      .default('boardgame_cafe'),
+    amenities: jsonb().$type<CafeAmenities>(),
+    feeModel: text({
+      enum: ['free', 'with_drink', 'hourly', 'per_person', 'game_rental', 'unknown'],
+    })
+      .notNull()
+      .default('unknown'),
+    feeNote: text(),
+    createdAt: timestamp().defaultNow().notNull(),
+    updatedAt: timestamp()
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [
+    index('cafes_venue_type_idx').on(table.venueType),
+    index('cafes_fee_model_idx').on(table.feeModel),
+    // Supports the `byog`/`food`/`privateRoom`/`largeTables` tri-state containment filters
+    // (`amenities @> '{"byogAllowed":true}'`), the only amenity lookups the API performs.
+    index('cafes_amenities_gin_idx').using('gin', table.amenities.op('jsonb_path_ops')),
+  ],
+);
 
 export const cafeGames = pgTable(
   'cafe_games',

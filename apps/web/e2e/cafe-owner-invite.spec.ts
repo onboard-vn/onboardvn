@@ -182,7 +182,11 @@ test('admin invites an owner who accepts, grants consent, edits hours, then a se
   await expect(ownerAPage.getByText('granted')).toBeVisible();
 
   await ownerAPage.goto(`/my-cafes/${cafeAId}`);
-  await ownerAPage.getByLabel('Giờ mở cửa').fill('9:00–23:00 hằng ngày');
+  const mondayBlock = ownerAPage.getByTestId('hours-day-mon');
+  await mondayBlock.getByRole('button', { name: '+ Thêm khung giờ' }).click();
+  await mondayBlock.getByLabel('Giờ mở cửa Thứ Hai').fill('09:00');
+  await mondayBlock.getByLabel('Giờ đóng cửa Thứ Hai').fill('23:00');
+  await mondayBlock.getByRole('button', { name: 'Áp dụng cho mọi ngày' }).click();
   await ownerAPage.getByRole('button', { name: 'Lưu thay đổi' }).click();
   // Wait for the PATCH to actually resolve, not just for the click to fire — otherwise the
   // publicPage navigation below can race the write and load the café before it's persisted.
@@ -190,7 +194,7 @@ test('admin invites an owner who accepts, grants consent, edits hours, then a se
 
   const publicPage = await (await browser.newContext()).newPage();
   await publicPage.goto(`/cafes/${cafeASlug}`);
-  await expect(publicPage.getByText('9:00–23:00 hằng ngày')).toBeVisible();
+  await expect(publicPage.getByText('09:00–23:00').first()).toBeVisible();
 
   // Import kho CSV: 5 rows, one unmatched name is skipped automatically (no game selected).
   await ownerAPage.goto(`/my-cafes/${cafeAId}/import`);

@@ -121,7 +121,7 @@ test('scans a barcode with a fake camera and adds the game to a cafe inventory',
     () => (window as unknown as { __getUserMediaCalls: number }).__getUserMediaCalls,
   );
 
-  await page.getByLabel('Quán').click();
+  await page.getByLabel('Địa điểm chơi').click();
   await page.getByRole('option', { name: 'E2E Scan Cafe' }).click();
 
   await page.getByRole('button', { name: /Thêm \d+ game vào kho/ }).click();

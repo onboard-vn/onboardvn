@@ -33,7 +33,9 @@ export default async function OwnerInvitePage({ params }: PageProps<'/my-cafes/i
 
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center gap-4 px-6 py-10 text-center">
-      <h1 className="text-xl font-semibold">Lời mời làm chủ quán &quot;{preview.cafeName}&quot;</h1>
+      <h1 className="text-xl font-semibold">
+        Lời mời làm chủ địa điểm chơi &quot;{preview.cafeName}&quot;
+      </h1>
 
       {preview.status !== 'valid' ? (
         <p className="text-muted-foreground text-sm">{STATUS_MESSAGE[preview.status]}</p>

@@ -297,14 +297,14 @@ export function ScanSession({
       <div className="flex flex-col gap-3 rounded-lg border p-4">
         <div className="flex flex-wrap items-center gap-3">
           <label className="text-sm font-medium" htmlFor="cafe-select">
-            Quán
+            Địa điểm chơi
           </label>
           <Select
             value={cafeId}
             onValueChange={(value) => setCafeId(typeof value === 'string' ? value : undefined)}
           >
             <SelectTrigger id="cafe-select">
-              <SelectValue placeholder="Chọn quán" />
+              <SelectValue placeholder="Chọn địa điểm chơi" />
             </SelectTrigger>
             <SelectContent>
               {cafes.map((c) => (

@@ -42,7 +42,8 @@ const baseCafe: CafePublicDetailDto = {
   links: { fanpage: 'https://facebook.com/quanabc' },
   gameCount: 2,
   verified: true,
-  openingHours: { mon: '08:00-22:00' },
+  venueType: 'boardgame_cafe',
+  openingHours: { mon: [{ open: '08:00', close: '22:00' }] },
   inventory: [],
 };
 
@@ -91,17 +92,24 @@ describe('cafeJsonLd', () => {
         addressCountry: 'VN',
       },
       geo: { '@type': 'GeoCoordinates', latitude: 10.123, longitude: 106.456 },
-      openingHours: ['08:00-22:00'],
+      openingHoursSpecification: [
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: 'https://schema.org/Monday',
+          opens: '08:00',
+          closes: '22:00',
+        },
+      ],
       sameAs: 'https://facebook.com/quanabc',
     });
   });
 
-  it('omits geo/openingHours for a public_info_only cafe (already redacted by the API)', () => {
+  it('omits geo/openingHoursSpecification for a public_info_only cafe (already redacted by the API)', () => {
     const jsonLd = cafeJsonLd(
       { ...baseCafe, lat: null, lng: null, legacyDistrict: null, openingHours: undefined },
       'https://onboard.j2teamnnl.com/cafes/quan-abc',
     );
     expect(jsonLd.geo).toBeUndefined();
-    expect(jsonLd.openingHours).toBeUndefined();
+    expect(jsonLd.openingHoursSpecification).toBeUndefined();
   });
 });

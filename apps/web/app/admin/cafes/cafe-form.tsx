@@ -1,12 +1,21 @@
 'use client';
 
-import type { CafeCreateInput } from '@onboard/shared';
+import type {
+  CafeAmenities,
+  CafeCreateInput,
+  CafeFeeModel,
+  CafeOpeningHours,
+  VenueType,
+} from '@onboard/shared';
 import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
+import { AmenitiesFields } from '@/components/cafe/amenities-fields';
+import { OpeningHoursEditor } from '@/components/cafe/opening-hours-editor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { FEE_MODEL_LABELS, VENUE_TYPE_LABELS } from '@/lib/cafe-labels';
 import { api } from '@/lib/api';
 
 interface Province {
@@ -30,11 +39,15 @@ export interface CafeFormInitial {
   legacyDistrict: string | null;
   lat: number | null;
   lng: number | null;
-  openingHours?: Record<string, string>;
+  openingHours?: CafeOpeningHours;
   links?: { fanpage?: string; maps?: string };
   sourceUrl: string | null;
   consentStatus: 'granted' | 'pending' | 'public_info_only' | 'declined';
   consentNote: string | null;
+  venueType: VenueType;
+  amenities?: CafeAmenities;
+  feeModel?: CafeFeeModel;
+  feeNote?: string | null;
 }
 
 const CONSENT_OPTIONS = [
@@ -60,6 +73,10 @@ export function CafeForm({
   const [wardCode, setWardCode] = useState(initial?.wardCode ?? '');
   const [wards, setWards] = useState<Ward[]>(initialWards);
   const [consentStatus, setConsentStatus] = useState(initial?.consentStatus ?? 'granted');
+  const [venueType, setVenueType] = useState<VenueType>(initial?.venueType ?? 'boardgame_cafe');
+  const [amenities, setAmenities] = useState<CafeAmenities>(initial?.amenities ?? {});
+  const [feeModel, setFeeModel] = useState<CafeFeeModel>(initial?.feeModel ?? 'unknown');
+  const [hours, setHours] = useState<CafeOpeningHours>(initial?.openingHours);
 
   async function onProvinceChange(code: string) {
     setProvinceCode(code);
@@ -92,7 +109,7 @@ export function CafeForm({
 
     const fanpageRaw = String(data.get('fanpage') ?? '').trim();
     const mapsRaw = String(data.get('maps') ?? '').trim();
-    const openingHoursText = String(data.get('openingHours') ?? '').trim();
+    const feeNoteRaw = String(data.get('feeNote') ?? '').trim();
 
     const body = {
       name: str('name') ?? '',
@@ -102,7 +119,7 @@ export function CafeForm({
       legacyDistrict: str('legacyDistrict'),
       lat: num('lat'),
       lng: num('lng'),
-      openingHours: openingHoursText ? { general: openingHoursText } : initial ? null : undefined,
+      openingHours: hours ?? (initial ? null : undefined),
       links:
         fanpageRaw || mapsRaw
           ? { fanpage: fanpageRaw || undefined, maps: mapsRaw || undefined }
@@ -112,6 +129,10 @@ export function CafeForm({
       sourceUrl: str('sourceUrl'),
       consentStatus,
       consentNote: str('consentNote'),
+      venueType,
+      amenities,
+      feeModel,
+      feeNote: feeNoteRaw || (initial ? null : undefined),
     };
 
     const res = initial
@@ -221,13 +242,19 @@ export function CafeForm({
       </div>
 
       <div className="flex flex-col gap-1">
-        <Label htmlFor="openingHours">Giờ mở cửa</Label>
-        <Input
-          id="openingHours"
-          name="openingHours"
-          placeholder="Vd: 8:00–22:00 hằng ngày"
-          defaultValue={initial?.openingHours?.general ?? ''}
-        />
+        <Label htmlFor="venueType">Loại địa điểm</Label>
+        <select
+          id="venueType"
+          value={venueType}
+          onChange={(e) => setVenueType(e.target.value as VenueType)}
+          className="border-input h-9 rounded-md border bg-transparent px-3 text-sm dark:bg-input/30"
+        >
+          {Object.entries(VENUE_TYPE_LABELS).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -241,7 +268,47 @@ export function CafeForm({
         </div>
       </div>
 
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2 border-t pt-4">
+        <h2 className="text-sm font-medium">Tiêu chí</h2>
+        <AmenitiesFields value={amenities} onChange={setAmenities} />
+      </div>
+
+      <div className="flex flex-col gap-2 border-t pt-4">
+        <h2 className="text-sm font-medium">Cách tính phí</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="feeModel">Hình thức</Label>
+            <select
+              id="feeModel"
+              value={feeModel}
+              onChange={(e) => setFeeModel(e.target.value as CafeFeeModel)}
+              className="border-input h-9 rounded-md border bg-transparent px-3 text-sm dark:bg-input/30"
+            >
+              {Object.entries(FEE_MODEL_LABELS).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="feeNote">Ghi chú giá</Label>
+            <Input
+              id="feeNote"
+              name="feeNote"
+              maxLength={120}
+              defaultValue={initial?.feeNote ?? ''}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2 border-t pt-4">
+        <h2 className="text-sm font-medium">Giờ mở cửa</h2>
+        <OpeningHoursEditor value={hours} onChange={setHours} />
+      </div>
+
+      <div className="flex flex-col gap-1 border-t pt-4">
         <Label htmlFor="consentStatus">Trạng thái đồng ý (provenance) *</Label>
         <select
           id="consentStatus"
