@@ -9,6 +9,7 @@ export function staticEntries(siteUrl: string): MetadataRoute.Sitemap {
     { url: `${siteUrl}/games`, changeFrequency: 'daily', priority: 0.8 },
     { url: `${siteUrl}/cafes`, changeFrequency: 'daily', priority: 0.8 },
     { url: `${siteUrl}/developers`, changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${siteUrl}/data-sources`, changeFrequency: 'monthly', priority: 0.3 },
   ];
 }
 
@@ -20,7 +21,7 @@ export function gameEntries(siteUrl: string, slugs: string[]): MetadataRoute.Sit
   }));
 }
 
-/** `slugs` must already exclude pending cafés — the public `/api/cafes` list enforces that. */
+/** `slugs` must already exclude pending/declined cafés — the public `/api/cafes` list enforces that. */
 export function cafeEntries(siteUrl: string, slugs: string[]): MetadataRoute.Sitemap {
   return slugs.map((slug) => ({
     url: `${siteUrl}/cafes/${slug}`,

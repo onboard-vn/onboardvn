@@ -78,6 +78,13 @@
       "when": 1790313063073,
       "tag": "0010_user_games",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1790322806736,
+      "tag": "0011_cafe_owners",
+      "breakpoints": true
     }
   ]
 }

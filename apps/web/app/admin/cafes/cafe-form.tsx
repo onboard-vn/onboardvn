@@ -33,7 +33,7 @@ export interface CafeFormInitial {
   openingHours?: Record<string, string>;
   links?: { fanpage?: string; maps?: string };
   sourceUrl: string | null;
-  consentStatus: 'granted' | 'pending' | 'public_info_only';
+  consentStatus: 'granted' | 'pending' | 'public_info_only' | 'declined';
   consentNote: string | null;
 }
 
@@ -41,6 +41,7 @@ const CONSENT_OPTIONS = [
   { value: 'granted', label: 'Đã đồng ý (granted)' },
   { value: 'pending', label: 'Chờ xác nhận (pending)' },
   { value: 'public_info_only', label: 'Chỉ thông tin công khai (public_info_only)' },
+  { value: 'declined', label: 'Đã từ chối hiển thị (declined)' },
 ] as const;
 
 export function CafeForm({

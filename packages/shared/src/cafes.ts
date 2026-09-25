@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-export const cafeConsentStatusEnum = z.enum(['granted', 'pending', 'public_info_only']);
+export const cafeConsentStatusEnum = z.enum(['granted', 'pending', 'public_info_only', 'declined']);
 export type CafeConsentStatus = z.infer<typeof cafeConsentStatusEnum>;
 
-export const cafeGameAddedViaEnum = z.enum(['manual', 'scan']);
+export const cafeGameAddedViaEnum = z.enum(['manual', 'scan', 'import']);
 export type CafeGameAddedVia = z.infer<typeof cafeGameAddedViaEnum>;
 
 const cafeLinksSchema = z
@@ -111,6 +111,8 @@ export interface CafePublicSummaryDto {
   lng: number | null;
   links: CafeLinks;
   gameCount: number;
+  /** true only when consentStatus === 'granted' — owner explicitly verified and opted in. */
+  verified: boolean;
 }
 
 export interface CafePublicDetailDto extends CafePublicSummaryDto {
@@ -139,6 +141,21 @@ export interface CafeMaintainerListResponse {
   page: number;
   pageSize: number;
   total: number;
+}
+
+/** Owner/staff-facing café DTO: same fields as the maintainer DTO but never exposes who added a
+ * given inventory row (only admins see community-contribution identity). */
+export interface CafeOwnerInventoryItemDto extends CafeInventoryItemDto {
+  addedVia: CafeGameAddedVia;
+}
+
+/** consentNote carries the owner's private decline reason for admins only — never sent to the
+ * owner/staff who wrote it, and never writable through the owner PATCH route. */
+export interface CafeOwnerDto extends CafePublicDetailDto {
+  sourceUrl: string | null;
+  consentStatus: CafeConsentStatus;
+  verifiedAt: string | null;
+  inventory: CafeOwnerInventoryItemDto[];
 }
 
 export interface CafeForGameDto {

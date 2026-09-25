@@ -9,6 +9,8 @@ import type {
   CafeListResponse,
   CafeMaintainerDto,
   CafeMaintainerInventoryItemDto,
+  CafeOwnerDto,
+  CafeOwnerInventoryItemDto,
   CafePublicDetailDto,
   CafePublicSummaryDto,
   CafeUpdateInput,
@@ -19,6 +21,7 @@ import * as locationsRepo from '../locations/repo.js';
 import { slugify } from '../games/slug.js';
 import * as repo from './repo.js';
 import type { CafeFullRow, CafeListRow } from './repo.js';
+import { isPubliclyVisibleCafe } from './visibility.js';
 
 function toPublicSummaryFromListRow(row: CafeListRow, forceShowAll = false): CafePublicSummaryDto {
   const hideDetails = !forceShowAll && row.consentStatus === 'public_info_only';
@@ -36,6 +39,7 @@ function toPublicSummaryFromListRow(row: CafeListRow, forceShowAll = false): Caf
     lng: hideDetails || row.lng === null ? null : Number(row.lng),
     links: row.links ?? undefined,
     gameCount: row.gameCount,
+    verified: row.consentStatus === 'granted',
   };
 }
 
@@ -72,6 +76,7 @@ function toPublicDetail(row: CafeFullRow, forceShowAll = false): CafePublicDetai
     lng: hideDetails || row.lng === null ? null : Number(row.lng),
     links: row.links ?? undefined,
     gameCount: row.inventory.length,
+    verified: row.consentStatus === 'granted',
     openingHours: hideDetails ? undefined : (row.openingHours ?? undefined),
     inventory: row.inventory.map(toInventoryDto),
   };
@@ -86,6 +91,22 @@ function toMaintainerDto(row: CafeFullRow): CafeMaintainerDto {
     verifiedAt: row.verifiedAt ? row.verifiedAt.toISOString() : null,
     createdBy: row.createdBy,
     inventory: row.inventory.map(toMaintainerInventoryDto),
+  };
+}
+
+function toOwnerInventoryDto(row: CafeFullRow['inventory'][number]): CafeOwnerInventoryItemDto {
+  return { ...toInventoryDto(row), addedVia: row.addedVia };
+}
+
+/** Owner/staff view of a café: same as the maintainer DTO but never exposes `addedBy` or the
+ * admin-only `consentNote` (decline reason). */
+function toOwnerDto(row: CafeFullRow): CafeOwnerDto {
+  return {
+    ...toPublicDetail(row, true),
+    sourceUrl: row.sourceUrl,
+    consentStatus: row.consentStatus,
+    verifiedAt: row.verifiedAt ? row.verifiedAt.toISOString() : null,
+    inventory: row.inventory.map(toOwnerInventoryDto),
   };
 }
 
@@ -129,7 +150,7 @@ export async function listCafesService(
 /** Pending cafés (no publishing consent yet) are hidden from the public detail page. */
 export async function getCafeBySlugService(slug: string): Promise<CafePublicDetailDto> {
   const row = await repo.findCafeFullBySlug(slug);
-  if (!row || row.consentStatus === 'pending') {
+  if (!row || !isPubliclyVisibleCafe(row.consentStatus)) {
     throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
   }
   return toPublicDetail(row);
@@ -143,6 +164,12 @@ async function getCafeManageDtoOrThrow(id: string): Promise<CafeMaintainerDto> {
 
 export async function getCafeForManageService(id: string): Promise<CafeMaintainerDto> {
   return getCafeManageDtoOrThrow(id);
+}
+
+export async function getCafeForOwnerService(id: string): Promise<CafeOwnerDto> {
+  const row = await repo.findCafeFullById(id);
+  if (!row) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
+  return toOwnerDto(row);
 }
 
 async function assertWardInProvince(provinceCode: string, wardCode: string): Promise<void> {
@@ -268,7 +295,7 @@ export async function bulkAddGamesToCafeService(
 export async function getCafesForGameService(gameId: string): Promise<CafeForGameDto[]> {
   const rows = await repo.findCafesForGame(gameId);
   return rows
-    .filter((row) => row.cafe.consentStatus !== 'pending')
+    .filter((row) => isPubliclyVisibleCafe(row.cafe.consentStatus))
     .map((row) => {
       const hideDetails = row.cafe.consentStatus === 'public_info_only';
       return {

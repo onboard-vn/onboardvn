@@ -222,4 +222,21 @@ describe('dataset import - cafes', () => {
     const row = await db.query.cafes.findFirst({ where: eq(cafes.slug, grantedSlug) });
     expect(row?.consentStatus).toBe('granted');
   });
+
+  it('never republishes a declined café', async () => {
+    const declinedSlug = `ds-cafe-declined-${suffix}`;
+    createdCafeSlugs.push(declinedSlug);
+    const createCsv = `slug,name,provinceCode,wardCode,addressLine,legacyDistrict,lat,lng,links,sourceUrl,consentStatus\n${declinedSlug},Cafe Declined,${PROVINCE.code},${WARD.code},123 Test St,,,,,https://example.com/source,declined`;
+    const createResult = await importCafesCsv(createCsv, { apply: true });
+    expect(createResult.errors).toEqual([]);
+    expect(createResult.rows).toEqual([{ line: 2, slug: declinedSlug, action: 'create' }]);
+
+    const republishCsv = `slug,name,provinceCode,wardCode,addressLine,legacyDistrict,lat,lng,links,sourceUrl,consentStatus\n${declinedSlug},Cafe Declined,${PROVINCE.code},${WARD.code},123 Test St,,,,,https://example.com/source,public_info_only`;
+    const republishResult = await importCafesCsv(republishCsv, { apply: true });
+    expect(republishResult.errors).toEqual([]);
+    expect(republishResult.rows).toEqual([{ line: 2, slug: declinedSlug, action: 'skip' }]);
+
+    const row = await db.query.cafes.findFirst({ where: eq(cafes.slug, declinedSlug) });
+    expect(row?.consentStatus).toBe('declined');
+  });
 });

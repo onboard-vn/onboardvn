@@ -15,6 +15,7 @@ import {
   createBarcodeProviderFromEnv,
   type BarcodeProvider,
 } from './modules/barcodes/gameupc-client.js';
+import { cafeOwnerRoutes } from './modules/cafe-owners/routes.js';
 import { cafeRoutes } from './modules/cafes/routes.js';
 import { categoryRoutes } from './modules/categories/routes.js';
 import { blockRoutes, friendRoutes } from './modules/friends/routes.js';
@@ -49,6 +50,7 @@ export function createApp({
     .route('/categories', categoryRoutes)
     .route('/locations', locationRoutes)
     .route('/cafes', cafeRoutes)
+    .route('/', cafeOwnerRoutes)
     .route('/barcodes', barcodeRoutes(barcodeProvider))
     .route('/barcodes/local', localBarcodeRoutes)
     .route('/openapi.json', openApiRoutes);

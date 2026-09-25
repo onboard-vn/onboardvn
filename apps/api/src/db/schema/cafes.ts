@@ -31,7 +31,7 @@ export const cafes = pgTable('cafes', {
   openingHours: jsonb().$type<Record<string, string>>(),
   links: jsonb().$type<{ fanpage?: string; maps?: string }>(),
   sourceUrl: text(),
-  consentStatus: text({ enum: ['granted', 'pending', 'public_info_only'] }).notNull(),
+  consentStatus: text({ enum: ['granted', 'pending', 'public_info_only', 'declined'] }).notNull(),
   consentNote: text(),
   verifiedAt: timestamp(),
   createdBy: text().references(() => users.id),
@@ -53,7 +53,7 @@ export const cafeGames = pgTable(
       .references(() => games.id, { onDelete: 'cascade' }),
     copies: smallint().default(1).notNull(),
     addedBy: text().references(() => users.id),
-    addedVia: text({ enum: ['manual', 'scan'] })
+    addedVia: text({ enum: ['manual', 'scan', 'import'] })
       .notNull()
       .default('manual'),
   },

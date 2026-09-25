@@ -31,6 +31,10 @@ export function SiteFooter() {
         <Link href="/credits" className="underline">
           Nguồn tham khảo
         </Link>
+        <span aria-hidden>·</span>
+        <Link href="/data-sources" className="underline">
+          Nguồn dữ liệu &amp; yêu cầu sửa/gỡ
+        </Link>
       </div>
     </footer>
   );

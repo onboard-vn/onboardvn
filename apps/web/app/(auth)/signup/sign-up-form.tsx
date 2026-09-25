@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { authClient } from '@/lib/auth-client';
 import { useAuthAction } from '@/lib/use-auth-action';
 
-export function SignUpForm() {
+export function SignUpForm({ next }: { next?: string | null }) {
   const router = useRouter();
   const { error, pending, run, setError } = useAuthAction();
 
@@ -31,10 +31,14 @@ export function SignUpForm() {
         password,
         username,
         name: username,
-        callbackURL: `${window.location.origin}/`,
+        callbackURL: `${window.location.origin}${next || '/'}`,
       }),
     );
-    if (ok) router.push(`/check-email?email=${encodeURIComponent(email)}`);
+    if (ok) {
+      const params = new URLSearchParams({ email });
+      if (next) params.set('next', next);
+      router.push(`/check-email?${params.toString()}`);
+    }
   }
 
   return (

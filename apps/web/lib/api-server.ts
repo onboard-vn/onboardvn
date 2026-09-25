@@ -28,6 +28,7 @@ export interface CurrentUser {
   playsVisibility: PrivacyLevel;
   friendsVisibility: PrivacyLevel;
   emailOnFriendRequest: boolean;
+  cafeMembershipCount: number;
 }
 
 export async function getCurrentUser(): Promise<CurrentUser | null> {

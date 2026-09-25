@@ -4,6 +4,8 @@ import { serverApi } from '@/lib/api-server';
 import { requireStaff } from '@/lib/require-staff';
 import { CafeForm } from '../../cafe-form';
 import { InventoryManager } from '../../inventory-manager';
+import { MembersSection } from '../members';
+import { OwnerInviteSection } from '../owner-invite';
 import { SITE_NAME } from '@/lib/site';
 
 export const metadata: Metadata = { title: `Sửa quán · ${SITE_NAME}` };
@@ -13,15 +15,19 @@ export default async function EditCafePage(props: PageProps<'/admin/cafes/[id]/e
   const { id } = await props.params;
 
   const client = await serverApi();
-  const [cafeRes, provincesRes] = await Promise.all([
+  const [cafeRes, provincesRes, invitesRes, membersRes] = await Promise.all([
     client.api.cafes[':id'].manage.$get({ param: { id } }),
     client.api.locations.provinces.$get(),
+    client.api.cafes[':id']['owner-invites'].$get({ param: { id } }),
+    client.api.cafes[':id'].members.$get({ param: { id } }),
   ]);
 
   if (cafeRes.status === 404) notFound();
   if (!cafeRes.ok) throw new Error('Không tải được quán');
 
   const cafe = await cafeRes.json();
+  const invites = invitesRes.ok ? (await invitesRes.json()).items : [];
+  const members = membersRes.ok ? (await membersRes.json()).items : [];
   const provinces = provincesRes.ok ? (await provincesRes.json()).items : [];
   const wardsRes = await client.api.locations.provinces[':code'].wards.$get({
     param: { code: cafe.provinceCode },
@@ -31,8 +37,17 @@ export default async function EditCafePage(props: PageProps<'/admin/cafes/[id]/e
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-6 py-10">
       <h1 className="text-2xl font-semibold tracking-tight">Sửa quán</h1>
-      <CafeForm provinces={provinces} initialWards={initialWards} initial={cafe} />
+      <CafeForm
+        provinces={provinces}
+        initialWards={initialWards}
+        initial={{
+          ...cafe,
+          consentNote: 'consentNote' in cafe ? (cafe.consentNote as string | null) : null,
+        }}
+      />
       <InventoryManager cafeId={cafe.id} inventory={cafe.inventory} />
+      <OwnerInviteSection cafeId={cafe.id} initialInvites={invites} />
+      <MembersSection cafeId={cafe.id} initialMembers={members} />
     </main>
   );
 }

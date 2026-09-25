@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
-import { asc, eq, ne } from 'drizzle-orm';
+import { asc, eq } from 'drizzle-orm';
 import { db } from '../db/client.js';
 import {
   cafeGames,
@@ -11,6 +11,7 @@ import {
   provinces,
   wards,
 } from '../db/schema/index.js';
+import { publicCafeWhere } from '../modules/cafes/visibility.js';
 import {
   ADMIN_UNIT_PROVINCE_COLUMNS,
   ADMIN_UNIT_WARD_COLUMNS,
@@ -177,7 +178,7 @@ async function exportDescriptions(outDir: string): Promise<void> {
 
 async function exportCafes(outDir: string): Promise<void> {
   const rows = await db.query.cafes.findMany({
-    where: ne(cafes.consentStatus, 'pending'),
+    where: publicCafeWhere(),
     orderBy: [asc(cafes.slug)],
   });
 
@@ -211,7 +212,7 @@ async function exportCafes(outDir: string): Promise<void> {
     .from(cafeGames)
     .innerJoin(cafes, eq(cafes.id, cafeGames.cafeId))
     .innerJoin(games, eq(games.id, cafeGames.gameId))
-    .where(ne(cafes.consentStatus, 'pending'))
+    .where(publicCafeWhere())
     .orderBy(asc(cafes.slug), asc(games.slug));
 
   await writeFileDeterministic(

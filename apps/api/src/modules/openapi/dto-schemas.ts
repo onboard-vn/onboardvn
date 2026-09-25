@@ -84,6 +84,7 @@ export const cafePublicSummaryDtoSchema = z.object({
   lng: z.number().nullable(),
   links: cafeLinksDtoSchema,
   gameCount: z.number().int(),
+  verified: z.boolean(),
 });
 
 export const cafePublicDetailDtoSchema = cafePublicSummaryDtoSchema.extend({

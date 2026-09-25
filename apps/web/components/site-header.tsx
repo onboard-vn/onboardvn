@@ -33,6 +33,11 @@ export async function SiteHeader() {
               Tủ game
             </Link>
           ) : null}
+          {user && user.cafeMembershipCount > 0 ? (
+            <Link href="/my-cafes" className="text-sm font-medium">
+              Quán của tôi
+            </Link>
+          ) : null}
           {user && user.role !== 'user' ? (
             <>
               <Link href="/admin/games" className="text-sm font-medium">

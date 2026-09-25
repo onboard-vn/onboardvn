@@ -5,7 +5,13 @@ import { createSmtpMailer } from './smtp.js';
 import type { Mailer, MailMessage } from './types.js';
 
 export type { Mailer, MailContent, MailMessage } from './types.js';
-export { friendRequestEmail, otpEmail, resetPasswordEmail, verifyEmail } from './templates.js';
+export {
+  cafeConsentDeclinedEmail,
+  friendRequestEmail,
+  otpEmail,
+  resetPasswordEmail,
+  verifyEmail,
+} from './templates.js';
 
 type MailListener = (message: MailMessage) => void;
 const listeners = new Set<MailListener>();

@@ -64,7 +64,7 @@ beforeAll(async () => {
 
   await db.insert(gameCategories).values({ gameId: ccGame!.id, categoryId: category!.id });
 
-  const [grantedCafe, pendingCafe] = await db
+  const [grantedCafe, pendingCafe, declinedCafe] = await db
     .insert(cafes)
     .values([
       {
@@ -84,13 +84,22 @@ beforeAll(async () => {
         addressLine: '456 Test',
         consentStatus: 'pending',
       },
+      {
+        slug: `quan-tu-choi-${suffix}`,
+        name: 'Quán Từ Chối',
+        provinceCode: PROVINCE.code,
+        wardCode: WARD.code,
+        addressLine: '789 Test',
+        consentStatus: 'declined',
+      },
     ])
     .returning();
-  cafeIds.push(grantedCafe!.id, pendingCafe!.id);
+  cafeIds.push(grantedCafe!.id, pendingCafe!.id, declinedCafe!.id);
 
   await db.insert(cafeGames).values([
     { cafeId: grantedCafe!.id, gameId: ccGame!.id, copies: 2 },
     { cafeId: pendingCafe!.id, gameId: ccGame!.id, copies: 1 },
+    { cafeId: declinedCafe!.id, gameId: ccGame!.id, copies: 1 },
   ]);
 });
 
@@ -146,9 +155,11 @@ describe('dataset export', () => {
     const cafesCsv = await readFile(join(dir, 'cafes/cafes.csv'), 'utf8');
     expect(cafesCsv).toContain(`quan-mo-${suffix}`);
     expect(cafesCsv).not.toContain(`quan-cho-duyet-${suffix}`);
+    expect(cafesCsv).not.toContain(`quan-tu-choi-${suffix}`);
 
     const cafeGamesCsv = await readFile(join(dir, 'cafes/cafe_games.csv'), 'utf8');
     expect(cafeGamesCsv).not.toContain(`quan-cho-duyet-${suffix}`);
+    expect(cafeGamesCsv).not.toContain(`quan-tu-choi-${suffix}`);
 
     const descriptionsCsv = await readFile(join(dir, 'descriptions/games.csv'), 'utf8');
     expect(descriptionsCsv).toContain(`ma-soi-${suffix}`);

@@ -1,7 +1,8 @@
 import type { CafeCreateInput, CafeGameAddedVia, CafeUpdateInput } from '@onboard/shared';
-import { and, asc, count, eq, inArray, ne, sql } from 'drizzle-orm';
+import { and, asc, count, eq, inArray, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import { cafeGames, cafes, games, provinces, wards } from '../../db/schema/index.js';
+import { publicCafeWhere } from './visibility.js';
 
 export type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
 
@@ -25,7 +26,7 @@ export type CafeFullRow = NonNullable<Awaited<ReturnType<typeof findCafeFullById
 
 function buildWhere(filter: CafeListFilter, includePending: boolean | undefined) {
   const conditions = [];
-  if (!includePending) conditions.push(ne(cafes.consentStatus, 'pending'));
+  if (!includePending) conditions.push(publicCafeWhere());
   if (filter.provinceCode) conditions.push(eq(cafes.provinceCode, filter.provinceCode));
   if (filter.wardCodes) conditions.push(inArray(cafes.wardCode, filter.wardCodes));
   return conditions.length ? and(...conditions) : undefined;
@@ -44,7 +45,7 @@ export interface CafeListRow {
   lat: string | null;
   lng: string | null;
   links: { fanpage?: string; maps?: string } | null;
-  consentStatus: 'granted' | 'pending' | 'public_info_only';
+  consentStatus: 'granted' | 'pending' | 'public_info_only' | 'declined';
   gameCount: number;
 }
 

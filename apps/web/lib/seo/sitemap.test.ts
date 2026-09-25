@@ -4,13 +4,14 @@ import { cafeEntries, gameEntries, provinceEntries, staticEntries } from './site
 describe('entry builders', () => {
   const siteUrl = 'https://onboard.j2teamnnl.com';
 
-  it('staticEntries lists the home, catalog and developers pages', () => {
+  it('staticEntries lists the home, catalog, developers and data-sources pages', () => {
     const urls = staticEntries(siteUrl).map((e) => e.url);
     expect(urls).toEqual([
       'https://onboard.j2teamnnl.com',
       'https://onboard.j2teamnnl.com/games',
       'https://onboard.j2teamnnl.com/cafes',
       'https://onboard.j2teamnnl.com/developers',
+      'https://onboard.j2teamnnl.com/data-sources',
     ]);
   });
 

@@ -236,4 +236,45 @@ describe('cafes directory', () => {
     });
     expect(res.status).toBe(403);
   });
+
+  it('hides a declined cafe from the public list, detail and game finder, but staff still see it', async () => {
+    const { json: cafe } = await createCafe(
+      baseCafeBody({ consentStatus: 'declined', sourceUrl: 'https://example.test' }),
+    );
+    const game = await createGame(`Declined Cafe Game ${Date.now()}`);
+    await maintainerApp.request(`/api/cafes/${cafe.id}/games`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ gameId: game.id }),
+    });
+
+    const detailRes = await publicApp.request(`/api/cafes/${cafe.slug}`);
+    expect(detailRes.status).toBe(404);
+
+    const listRes = await publicApp.request(`/api/cafes?province=${PROVINCE_A.slug}`);
+    const listBody = (await listRes.json()) as { items: { id: string }[] };
+    expect(listBody.items.some((c) => c.id === cafe.id)).toBe(false);
+
+    const gameCafesRes = await publicApp.request(`/api/games/${game.slug}/cafes`);
+    const gameCafesBody = (await gameCafesRes.json()) as { id: string }[];
+    expect(gameCafesBody.some((c) => c.id === cafe.id)).toBe(false);
+
+    const manageRes = await maintainerApp.request(`/api/cafes/${cafe.id}/manage`);
+    expect(manageRes.status).toBe(200);
+  });
+
+  it('exposes `verified` only for a granted cafe on both list and detail (also read by sitemap/llms)', async () => {
+    const { json: granted } = await createCafe(baseCafeBody({ consentStatus: 'granted' }));
+    const { json: infoOnly } = await createCafe(
+      baseCafeBody({ consentStatus: 'public_info_only', sourceUrl: 'https://example.test' }),
+    );
+
+    const listRes = await publicApp.request(`/api/cafes?province=${PROVINCE_A.slug}&pageSize=50`);
+    const listBody = (await listRes.json()) as { items: { id: string; verified: boolean }[] };
+    expect(listBody.items.find((c) => c.id === granted.id)?.verified).toBe(true);
+    expect(listBody.items.find((c) => c.id === infoOnly.id)?.verified).toBe(false);
+
+    const detailRes = await publicApp.request(`/api/cafes/${granted.slug}`);
+    expect(((await detailRes.json()) as { verified: boolean }).verified).toBe(true);
+  });
 });

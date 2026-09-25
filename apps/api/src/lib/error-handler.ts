@@ -11,6 +11,14 @@ export const errorHandler: ErrorHandler<AppEnv> = (err, c) => {
     const body: ApiErrorBody = { error: { code: 'BAD_REQUEST', message: err.message } };
     return c.json(body, err.status);
   }
+  // Postgres 22P02 (invalid_text_representation): malformed input reaching a typed column
+  // (e.g. a non-UUID id) that slipped past request validation. Client error, not a 500.
+  if (err && typeof err === 'object' && 'code' in err && err.code === '22P02') {
+    const body: ApiErrorBody = {
+      error: { code: 'VALIDATION_FAILED', message: 'Dữ liệu không hợp lệ' },
+    };
+    return c.json(body, 422);
+  }
   logger.error({ err, requestId: c.get('requestId') }, 'unhandled error');
   const body: ApiErrorBody = { error: { code: 'INTERNAL', message: 'Lỗi hệ thống' } };
   return c.json(body, 500);

@@ -35,7 +35,14 @@ export default async function CafeDetailPage(props: PageProps<'/cafes/[slug]'>) 
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10">
       <JsonLdScript data={cafeJsonLd(cafe, `${SITE_URL}/cafes/${slug}`)} />
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">{cafe.name}</h1>
+        <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
+          {cafe.name}
+          {cafe.verified ? (
+            <span className="rounded bg-emerald-100 px-1.5 py-0.5 text-xs font-medium text-emerald-800">
+              Đã xác minh
+            </span>
+          ) : null}
+        </h1>
         <p className="text-muted-foreground text-sm">
           {cafe.addressLine}, {cafe.wardName}, {cafe.provinceName}
           {cafe.legacyDistrict ? ` (${cafe.legacyDistrict})` : ''}
@@ -90,6 +97,16 @@ export default async function CafeDetailPage(props: PageProps<'/cafes/[slug]'>) 
           </ul>
         )}
       </div>
+
+      {!cafe.verified ? (
+        <p className="text-muted-foreground text-xs">
+          Thông tin quán tổng hợp từ nguồn công khai, chưa được chủ quán xác nhận.{' '}
+          <Link href="/data-sources" className="underline">
+            Nguồn dữ liệu &amp; yêu cầu sửa/gỡ
+          </Link>
+          .
+        </p>
+      ) : null}
     </main>
   );
 }

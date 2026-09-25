@@ -1,4 +1,5 @@
 export * from './barcodes.js';
+export * from './cafe-owners.js';
 export * from './cafes.js';
 export * from './common.js';
 export * from './errors.js';

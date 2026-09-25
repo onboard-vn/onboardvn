@@ -432,11 +432,13 @@ export async function importCafesCsv(
     const existing = await cafesRepo.findCafeFullBySlug(slug);
     const downgradesGranted =
       existing?.consentStatus === 'granted' && parsed.data.consentStatus !== 'granted';
+    // Owner/admin declined this café through the UI; imports never re-publish it.
+    const declinedByOwner = existing?.consentStatus === 'declined';
 
     plan.push({
       line,
       slug,
-      action: downgradesGranted ? 'skip' : existing ? 'update' : 'create',
+      action: downgradesGranted || declinedByOwner ? 'skip' : existing ? 'update' : 'create',
       existingId: existing?.id,
       values: parsed.data,
     });
@@ -514,7 +516,7 @@ interface CafeGamePlanItem {
   cafeId: string;
   gameId: string;
   copies: number;
-  addedVia: 'manual' | 'scan';
+  addedVia: 'manual' | 'scan' | 'import';
 }
 
 export async function importCafeGamesCsv(

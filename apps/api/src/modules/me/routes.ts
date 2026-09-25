@@ -1,6 +1,7 @@
 import { privacyUpdateSchema } from '@onboard/shared';
 import { Hono } from 'hono';
 import { requireUser } from '../../auth/middleware.js';
+import { countMyMembershipsService } from '../cafe-owners/service.js';
 import {
   getFriendCodeService,
   rotateFriendCodeService,
@@ -10,7 +11,7 @@ import { zValidator } from '../../lib/validator.js';
 import type { AppEnv } from '../../types.js';
 
 export const meRoutes = new Hono<AppEnv>()
-  .get('/', requireUser, (c) => {
+  .get('/', requireUser, async (c) => {
     const {
       id,
       name,
@@ -25,6 +26,7 @@ export const meRoutes = new Hono<AppEnv>()
       friendsVisibility,
       emailOnFriendRequest,
     } = c.var.user;
+    const cafeMembershipCount = await countMyMembershipsService(id);
     return c.json({
       user: {
         id,
@@ -39,6 +41,7 @@ export const meRoutes = new Hono<AppEnv>()
         playsVisibility,
         friendsVisibility,
         emailOnFriendRequest,
+        cafeMembershipCount,
       },
     });
   })

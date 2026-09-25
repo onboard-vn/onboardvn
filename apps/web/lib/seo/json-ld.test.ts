@@ -41,6 +41,7 @@ const baseCafe: CafePublicDetailDto = {
   lng: 106.456,
   links: { fanpage: 'https://facebook.com/quanabc' },
   gameCount: 2,
+  verified: true,
   openingHours: { mon: '08:00-22:00' },
   inventory: [],
 };

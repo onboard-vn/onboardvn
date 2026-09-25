@@ -89,3 +89,17 @@ export function friendRequestEmail(fromName: string, url: string): MailContent {
     footer: 'Bạn nhận được email này vì đã bật thông báo lời mời kết bạn trong cài đặt.',
   });
 }
+
+export function cafeConsentDeclinedEmail(
+  cafeName: string,
+  reason: string | undefined,
+): MailContent {
+  return render('Chủ quán từ chối hiển thị', {
+    heading: `Chủ quán "${cafeName}" đã từ chối hiển thị công khai`,
+    lines: [
+      `Quán "${cafeName}" vừa được chủ quán đặt về trạng thái từ chối hiển thị và đã bị ẩn khỏi các trang công khai.`,
+      ...(reason ? [`Lý do: ${reason}`] : []),
+    ],
+    footer: 'Vào /admin/cafes để xem chi tiết.',
+  });
+}
