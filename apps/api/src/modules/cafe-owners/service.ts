@@ -6,12 +6,16 @@ import type {
   CafeOwnerInviteCreatedDto,
   CafeOwnerInviteDto,
   CafeOwnerInvitePreviewDto,
+  InventoryImportApplyInput,
+  InventoryImportApplyResponse,
+  InventoryImportDryRunResponse,
 } from '@onboard/shared';
 import { db } from '../../db/client.js';
 import { env } from '../../lib/env.js';
 import { ApiError } from '../../lib/errors.js';
 import { logger } from '../../lib/logger.js';
 import { cafeConsentDeclinedEmail, mailer } from '../../lib/mailer/index.js';
+import { matchInventoryRows, MAX_IMPORT_ROWS, parseInventoryCsv } from './inventory-import.js';
 import * as repo from './repo.js';
 
 const INVITE_TTL_MS = 30 * 24 * 60 * 60 * 1000;
@@ -186,4 +190,57 @@ export async function listMyMembershipsService(userId: string): Promise<CafeMemb
     role: row.role as CafeMembershipDto['role'],
     consentStatus: row.consentStatus,
   }));
+}
+
+export async function dryRunInventoryImportService(
+  cafeId: string,
+  csvContent: string,
+): Promise<InventoryImportDryRunResponse> {
+  const cafe = await repo.findCafeMinimal(cafeId);
+  if (!cafe) notFound();
+
+  let parsed: ReturnType<typeof parseInventoryCsv>;
+  try {
+    parsed = parseInventoryCsv(csvContent);
+  } catch {
+    throw new ApiError('VALIDATION_FAILED', 422, 'File CSV không hợp lệ');
+  }
+  if (parsed.tooManyRows) {
+    throw new ApiError('VALIDATION_FAILED', 422, `Tối đa ${MAX_IMPORT_ROWS} dòng`);
+  }
+
+  const rows = await matchInventoryRows(parsed.rows);
+  return { rows };
+}
+
+export async function applyInventoryImportService(
+  cafeId: string,
+  actorId: string,
+  input: InventoryImportApplyInput,
+): Promise<InventoryImportApplyResponse> {
+  const cafe = await repo.findCafeMinimal(cafeId);
+  if (!cafe) notFound();
+
+  // Dedupe by gameId: later rows in the payload win over earlier ones for the same game.
+  const byGameId = new Map<string, number>();
+  for (const row of input.rows) {
+    if (row.gameId) byGameId.set(row.gameId, row.copies);
+  }
+  const items = [...byGameId.entries()].map(([gameId, copies]) => ({ gameId, copies }));
+  if (items.length === 0) {
+    throw new ApiError('VALIDATION_FAILED', 422, 'Không có dòng nào được chọn để áp dụng');
+  }
+
+  const existingIds = await repo.findExistingGameIds(items.map((i) => i.gameId));
+  const missing = items.filter((i) => !existingIds.has(i.gameId));
+  if (missing.length > 0) {
+    throw new ApiError('VALIDATION_FAILED', 422, 'Có game không tồn tại trong danh mục');
+  }
+
+  await db.transaction(async (tx) => {
+    await repo.upsertCafeGamesTx(tx, cafeId, items);
+    await repo.insertInventoryImportAudit(tx, cafeId, actorId, items.length);
+  });
+
+  return { rowsApplied: items.length };
 }

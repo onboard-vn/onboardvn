@@ -23,11 +23,13 @@ export function OwnerCafeForm({ initial }: { initial: OwnerCafeFormInitial }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setPending(true);
     setError(null);
+    setSaved(false);
 
     const data = new FormData(e.currentTarget);
     const str = (key: string) => {
@@ -58,6 +60,7 @@ export function OwnerCafeForm({ initial }: { initial: OwnerCafeFormInitial }) {
       setError(json?.error?.message ?? 'Có lỗi xảy ra, thử lại sau');
       return;
     }
+    setSaved(true);
     router.refresh();
   }
 
@@ -106,6 +109,7 @@ export function OwnerCafeForm({ initial }: { initial: OwnerCafeFormInitial }) {
       </div>
 
       <FormError message={error} />
+      {saved ? <p className="text-sm text-muted-foreground">Đã lưu.</p> : null}
 
       <Button type="submit" disabled={pending}>
         Lưu thay đổi

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { serverApi } from '@/lib/api-server';
 import { requireStaff } from '@/lib/require-staff';
-import { ScanSession } from './scan-session';
+import { ScanSession } from '@/components/scan-session';
 import { SITE_NAME } from '@/lib/site';
 
 export const metadata: Metadata = { title: `Quét mã vạch · ${SITE_NAME}` };

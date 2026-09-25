@@ -1,6 +1,7 @@
 import { relations, sql } from 'drizzle-orm';
 import {
   index,
+  integer,
   pgTable,
   primaryKey,
   text,
@@ -54,6 +55,18 @@ export const cafeOwnerInvites = pgTable(
   ],
 );
 
+export const cafeInventoryImports = pgTable('cafe_inventory_imports', {
+  id: uuid().primaryKey().defaultRandom(),
+  cafeId: uuid()
+    .notNull()
+    .references(() => cafes.id, { onDelete: 'cascade' }),
+  userId: text()
+    .notNull()
+    .references(() => users.id),
+  rowsApplied: integer().notNull(),
+  createdAt: timestamp().defaultNow().notNull(),
+});
+
 export const cafeMembersRelations = relations(cafeMembers, ({ one }) => ({
   cafe: one(cafes, { fields: [cafeMembers.cafeId], references: [cafes.id] }),
   user: one(users, { fields: [cafeMembers.userId], references: [users.id] }),
@@ -61,4 +74,9 @@ export const cafeMembersRelations = relations(cafeMembers, ({ one }) => ({
 
 export const cafeOwnerInvitesRelations = relations(cafeOwnerInvites, ({ one }) => ({
   cafe: one(cafes, { fields: [cafeOwnerInvites.cafeId], references: [cafes.id] }),
+}));
+
+export const cafeInventoryImportsRelations = relations(cafeInventoryImports, ({ one }) => ({
+  cafe: one(cafes, { fields: [cafeInventoryImports.cafeId], references: [cafes.id] }),
+  user: one(users, { fields: [cafeInventoryImports.userId], references: [users.id] }),
 }));

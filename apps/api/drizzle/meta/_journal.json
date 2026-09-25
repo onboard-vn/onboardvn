@@ -85,6 +85,13 @@
       "when": 1790322806736,
       "tag": "0011_cafe_owners",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1790326490291,
+      "tag": "0012_cafe_inventory_imports",
+      "breakpoints": true
     }
   ]
 }

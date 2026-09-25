@@ -1,6 +1,10 @@
 'use client';
 
-import type { BarcodeLookupResult, GameUpcCandidate } from '@onboard/shared';
+import type {
+  BarcodeLookupResult,
+  GameUpcCandidate,
+  LocalBarcodeLookupResult,
+} from '@onboard/shared';
 import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import { BarcodeScanner } from '@/components/barcode-scanner';
@@ -35,6 +39,12 @@ interface ScanEntry {
   error?: string;
 }
 
+/** 'provider' (default, /admin/scan): looks up GameUPC and lets maintainers teach the system a
+ * new barcode<->game link. 'local' (café-scoped /my-cafes/.../scan): owners/staff aren't allowed
+ * to call the maintainer-only barcode/link endpoints, so lookup only checks barcodes already
+ * linked locally and picking a game just stages it for bulk-add, without linking the barcode. */
+type ScanLookupMode = 'local' | 'provider';
+
 const NETWORK_ERROR = 'Mất kết nối, thử lại sau';
 
 async function errorMessage(res: Response): Promise<string | undefined> {
@@ -48,15 +58,22 @@ function displayName(g: { nameVi: string | null; nameEn: string }): string {
 
 function ScanEntryRow({
   entry,
+  lookup,
   onLinked,
 }: {
   entry: ScanEntry;
+  lookup: ScanLookupMode;
   onLinked: (code: string, game: ResolvedGame) => void;
 }) {
   const [pending, setPending] = useState(false);
   const [linkError, setLinkError] = useState<string | null>(null);
 
   async function link(gameId: string, gameName: string, submitUpstream: boolean) {
+    // Owners can't call the maintainer-only /barcodes/:code/link endpoint — just stage the pick.
+    if (lookup === 'local') {
+      onLinked(entry.code, { id: gameId, name: gameName });
+      return;
+    }
     setPending(true);
     setLinkError(null);
     try {
@@ -136,7 +153,13 @@ function ScanEntryRow({
   );
 }
 
-export function ScanSession({ cafes }: { cafes: CafeOption[] }) {
+export function ScanSession({
+  cafes,
+  lookup = 'provider',
+}: {
+  cafes: CafeOption[];
+  lookup?: ScanLookupMode;
+}) {
   const router = useRouter();
   const [entries, setEntries] = useState<ScanEntry[]>([]);
   const [cafeId, setCafeId] = useState<string | undefined>(cafes[0]?.id);
@@ -145,7 +168,7 @@ export function ScanSession({ cafes }: { cafes: CafeOption[] }) {
   const [bulkError, setBulkError] = useState<string | null>(null);
   const [manualCode, setManualCode] = useState('');
 
-  async function lookup(code: string) {
+  async function lookupCode(code: string) {
     setEntries((prev) => {
       if (prev.some((e) => e.code === code)) return prev;
       return [{ code, status: 'loading' }, ...prev];
@@ -155,6 +178,30 @@ export function ScanSession({ cafes }: { cafes: CafeOption[] }) {
       setEntries((prev) =>
         prev.map((e) => (e.code === code ? { ...e, status: 'error', error } : e)),
       );
+
+    if (lookup === 'local') {
+      let localRes: Awaited<ReturnType<(typeof api.api.barcodes.local)[':code']['$get']>>;
+      try {
+        localRes = await api.api.barcodes.local[':code'].$get({ param: { code } });
+      } catch {
+        markError(NETWORK_ERROR);
+        return;
+      }
+      if (!localRes.ok) {
+        markError(await errorMessage(localRes));
+        return;
+      }
+      const body = (await localRes.json()) as LocalBarcodeLookupResult;
+      setEntries((prev) =>
+        prev.map((e) => {
+          if (e.code !== code) return e;
+          return body.game
+            ? { ...e, status: 'local', game: { id: body.game.id, name: displayName(body.game) } }
+            : { ...e, status: 'unknown' };
+        }),
+      );
+      return;
+    }
 
     let res: Awaited<ReturnType<(typeof api.api.barcodes)[':code']['$get']>>;
     try {
@@ -187,7 +234,7 @@ export function ScanSession({ cafes }: { cafes: CafeOption[] }) {
   }
 
   function onDetect(code: string) {
-    void lookup(code);
+    void lookupCode(code);
   }
 
   function onManualSubmit(e: FormEvent<HTMLFormElement>) {
@@ -195,7 +242,7 @@ export function ScanSession({ cafes }: { cafes: CafeOption[] }) {
     const code = manualCode.trim();
     if (!code) return;
     setManualCode('');
-    void lookup(code);
+    void lookupCode(code);
   }
 
   function onLinked(code: string, game: ResolvedGame) {
@@ -284,7 +331,7 @@ export function ScanSession({ cafes }: { cafes: CafeOption[] }) {
 
       <ul className="flex flex-col gap-2">
         {entries.map((entry) => (
-          <ScanEntryRow key={entry.code} entry={entry} onLinked={onLinked} />
+          <ScanEntryRow key={entry.code} entry={entry} lookup={lookup} onLinked={onLinked} />
         ))}
         {entries.length === 0 ? (
           <li className="text-muted-foreground text-sm">Chưa quét mã nào trong phiên này.</li>

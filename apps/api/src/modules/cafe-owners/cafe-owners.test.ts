@@ -5,6 +5,7 @@ import { createApp } from '../../app.js';
 import { db, pool } from '../../db/client.js';
 import {
   cafeGames,
+  cafeInventoryImports,
   cafeMembers,
   cafeOwnerInvites,
   cafes,
@@ -501,6 +502,200 @@ describe('staff invites and memberships', () => {
     expect(listBody.items).toContainEqual(
       expect.objectContaining({ cafeId: cafe.id, role: 'owner' }),
     );
+  });
+});
+
+describe('inventory import', () => {
+  const importSuffix = Date.now();
+  let catanGame: { id: string; slug: string };
+  let keptGame: { id: string; slug: string };
+
+  beforeAll(async () => {
+    const inserted = await db
+      .insert(games)
+      .values([
+        { slug: `imp-catan-${importSuffix}`, nameEn: 'Catan', nameVi: 'Đảo Catan' },
+        { slug: `imp-kept-${importSuffix}`, nameEn: 'Kept Game' },
+      ])
+      .returning();
+    catanGame = inserted[0]!;
+    keptGame = inserted[1]!;
+  });
+
+  afterAll(async () => {
+    await db.delete(games).where(inArray(games.id, [catanGame.id, keptGame.id]));
+  });
+
+  async function seedOwner(cafeId: string) {
+    await db.insert(cafeMembers).values({ cafeId, userId: ownerA.id, role: 'owner' });
+  }
+
+  it('dry-run via multipart file classifies matched/suggested/unmatched and never writes', async () => {
+    const cafe = await createCafe();
+    await seedOwner(cafe.id);
+
+    const csv = ['name,nameEn,bggId,copies', 'dao catan,,,2', 'Totally Unknown Game Xyz,,,1'].join(
+      '\n',
+    );
+    const form = new FormData();
+    form.set('file', new File([csv], 'inventory.csv', { type: 'text/csv' }));
+
+    const res = await ownerAApp.request(`/api/me/cafes/${cafe.id}/inventory/import?dryRun=1`, {
+      method: 'POST',
+      headers: { origin: 'http://localhost:3000' },
+      body: form,
+    });
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as { rows: { status: string; gameId: string | null }[] };
+    expect(body.rows[0]).toMatchObject({ status: 'matched', gameId: catanGame.id });
+    expect(body.rows[1]).toMatchObject({ status: 'unmatched', gameId: null });
+
+    const written = await db.query.cafeGames.findFirst({
+      where: (t, { and, eq: eqOp }) => and(eqOp(t.cafeId, cafe.id), eqOp(t.gameId, catanGame.id)),
+    });
+    expect(written).toBeUndefined();
+  });
+
+  it('dry-run accepts a raw text/csv body', async () => {
+    const cafe = await createCafe();
+    await seedOwner(cafe.id);
+
+    const res = await ownerAApp.request(`/api/me/cafes/${cafe.id}/inventory/import?dryRun=1`, {
+      method: 'POST',
+      headers: { 'content-type': 'text/csv' },
+      body: 'name,copies\nCATAN,3\n',
+    });
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as { rows: { status: string; gameId: string | null }[] };
+    expect(body.rows[0]).toMatchObject({ status: 'matched', gameId: catanGame.id });
+  });
+
+  it('rejects a file with more than 500 rows with 422', async () => {
+    const cafe = await createCafe();
+    await seedOwner(cafe.id);
+
+    const lines = Array.from({ length: 501 }, (_, i) => `Game ${i}`).join('\n');
+    const res = await ownerAApp.request(`/api/me/cafes/${cafe.id}/inventory/import?dryRun=1`, {
+      method: 'POST',
+      headers: { 'content-type': 'text/csv' },
+      body: `name\n${lines}\n`,
+    });
+    expect(res.status).toBe(422);
+  });
+
+  it('apply upserts copies and never deletes games outside the import file', async () => {
+    const cafe = await createCafe();
+    await seedOwner(cafe.id);
+    await db.insert(cafeGames).values({ cafeId: cafe.id, gameId: keptGame.id, copies: 1 });
+
+    const res = await ownerAApp.request(`/api/me/cafes/${cafe.id}/inventory/import/apply`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ rows: [{ line: 2, gameId: catanGame.id, copies: 4 }] }),
+    });
+    expect(res.status).toBe(200);
+    expect((await res.json()) as { rowsApplied: number }).toEqual({ rowsApplied: 1 });
+
+    const catanRow = await db.query.cafeGames.findFirst({
+      where: (t, { and, eq: eqOp }) => and(eqOp(t.cafeId, cafe.id), eqOp(t.gameId, catanGame.id)),
+    });
+    expect(catanRow).toMatchObject({ copies: 4, addedVia: 'import' });
+
+    const keptRow = await db.query.cafeGames.findFirst({
+      where: (t, { and, eq: eqOp }) => and(eqOp(t.cafeId, cafe.id), eqOp(t.gameId, keptGame.id)),
+    });
+    expect(keptRow).toMatchObject({ copies: 1 });
+
+    await db.delete(cafeGames).where(eq(cafeGames.cafeId, cafe.id));
+  });
+
+  it('403s an owner of another café on both dry-run and apply', async () => {
+    const cafe = await createCafe();
+    await seedOwner(cafe.id);
+
+    const dryRunRes = await ownerBApp.request(
+      `/api/me/cafes/${cafe.id}/inventory/import?dryRun=1`,
+      { method: 'POST', headers: { 'content-type': 'text/csv' }, body: 'name\nCatan\n' },
+    );
+    expect(dryRunRes.status).toBe(403);
+
+    const applyRes = await ownerBApp.request(`/api/me/cafes/${cafe.id}/inventory/import/apply`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ rows: [{ line: 2, gameId: catanGame.id, copies: 1 }] }),
+    });
+    expect(applyRes.status).toBe(403);
+  });
+
+  it('rate limits apply to 10 requests/hour per user', async () => {
+    const cafe = await createCafe();
+    await seedOwner(cafe.id);
+    const rateLimitedApp = createApp({ auth: fakeAuth(ownerA), rateLimit: true });
+
+    let lastStatus = 200;
+    for (let i = 0; i < 11; i += 1) {
+      const res = await rateLimitedApp.request(`/api/me/cafes/${cafe.id}/inventory/import/apply`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ rows: [{ line: 2, gameId: catanGame.id, copies: 1 }] }),
+      });
+      lastStatus = res.status;
+    }
+    expect(lastStatus).toBe(429);
+
+    await db.delete(cafeGames).where(eq(cafeGames.cafeId, cafe.id));
+  });
+
+  it('rate limits dry-run to 30 requests/hour per user', async () => {
+    const cafe = await createCafe();
+    await seedOwner(cafe.id);
+    const rateLimitedApp = createApp({ auth: fakeAuth(ownerA), rateLimit: true });
+
+    let lastStatus = 200;
+    for (let i = 0; i < 31; i += 1) {
+      const res = await rateLimitedApp.request(
+        `/api/me/cafes/${cafe.id}/inventory/import?dryRun=1`,
+        { method: 'POST', headers: { 'content-type': 'text/csv' }, body: 'name\nCatan\n' },
+      );
+      lastStatus = res.status;
+    }
+    expect(lastStatus).toBe(429);
+  });
+
+  it('rejects a body over 1MB with 413 before it is fully read', async () => {
+    const cafe = await createCafe();
+    await seedOwner(cafe.id);
+
+    const oversized = `name\n${'a'.repeat(1_000_001)}\n`;
+    const res = await ownerAApp.request(`/api/me/cafes/${cafe.id}/inventory/import?dryRun=1`, {
+      method: 'POST',
+      headers: { 'content-type': 'text/csv' },
+      body: oversized,
+    });
+    expect(res.status).toBe(413);
+  });
+
+  it('rejects apply with only skipped rows (no gameId) as 422, writing no audit row', async () => {
+    const cafe = await createCafe();
+    await seedOwner(cafe.id);
+
+    const before = await db
+      .select()
+      .from(cafeInventoryImports)
+      .where(eq(cafeInventoryImports.cafeId, cafe.id));
+
+    const res = await ownerAApp.request(`/api/me/cafes/${cafe.id}/inventory/import/apply`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ rows: [{ line: 2, gameId: null, copies: 1 }] }),
+    });
+    expect(res.status).toBe(422);
+
+    const after = await db
+      .select()
+      .from(cafeInventoryImports)
+      .where(eq(cafeInventoryImports.cafeId, cafe.id));
+    expect(after.length).toBe(before.length);
   });
 });
 

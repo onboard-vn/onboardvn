@@ -31,11 +31,19 @@ export default async function MyCafeDetailPage(props: PageProps<'/my-cafes/[id]'
 
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-6 py-10">
-      <div className="flex items-baseline justify-between">
+      <div className="flex items-baseline justify-between gap-4">
         <h1 className="text-2xl font-semibold tracking-tight">{cafe.name}</h1>
-        <Link href={`/my-cafes/${id}/consent`} className="text-sm font-medium underline">
-          Đồng ý hiển thị
-        </Link>
+        <div className="flex flex-wrap gap-3 text-sm font-medium">
+          <Link href={`/my-cafes/${id}/import`} className="underline">
+            Import kho CSV
+          </Link>
+          <Link href={`/my-cafes/${id}/scan`} className="underline">
+            Quét mã vạch
+          </Link>
+          <Link href={`/my-cafes/${id}/consent`} className="underline">
+            Đồng ý hiển thị
+          </Link>
+        </div>
       </div>
 
       <OwnerCafeForm

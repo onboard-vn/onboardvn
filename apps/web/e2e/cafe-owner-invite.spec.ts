@@ -17,6 +17,8 @@ let cafeASlug: string;
 let cafeBId: string;
 let cafeBSlug: string;
 let adminUserId: string | undefined;
+let importGameIds: string[] = [];
+const importGameNames = Array.from({ length: 4 }, (_, i) => `E2E Import Game ${i + 1} ${stamp}`);
 
 test.beforeAll(async () => {
   client = new Client({ connectionString: DATABASE_URL });
@@ -45,14 +47,25 @@ test.beforeAll(async () => {
     [cafeBSlug, provinceCode, wardCode],
   );
   cafeBId = cafeBRes.rows[0].id as string;
+
+  const gamesRes = await client.query(
+    `insert into games (slug, name_en) select unnest($1::text[]), unnest($2::text[]) returning id`,
+    [importGameNames.map((_, i) => `e2e-import-game-${i + 1}-${stamp}`), importGameNames],
+  );
+  importGameIds = gamesRes.rows.map((r: { id: string }) => r.id);
 });
 
 test.afterAll(async () => {
+  await client.query('delete from cafe_inventory_imports where cafe_id = any($1)', [
+    [cafeAId, cafeBId],
+  ]);
+  await client.query('delete from cafe_games where cafe_id = any($1)', [[cafeAId, cafeBId]]);
   await client.query('delete from cafe_owner_invites where cafe_id = any($1)', [
     [cafeAId, cafeBId],
   ]);
   await client.query('delete from cafe_members where cafe_id = any($1)', [[cafeAId, cafeBId]]);
   await client.query('delete from cafes where id = any($1)', [[cafeAId, cafeBId]]);
+  await client.query('delete from games where id = any($1)', [importGameIds]);
   await client.query('delete from sessions where user_id = any($1)', [
     (
       await client.query('select id from users where email = any($1)', [
@@ -171,10 +184,30 @@ test('admin invites an owner who accepts, grants consent, edits hours, then a se
   await ownerAPage.goto(`/my-cafes/${cafeAId}`);
   await ownerAPage.getByLabel('Giờ mở cửa').fill('9:00–23:00 hằng ngày');
   await ownerAPage.getByRole('button', { name: 'Lưu thay đổi' }).click();
+  // Wait for the PATCH to actually resolve, not just for the click to fire — otherwise the
+  // publicPage navigation below can race the write and load the café before it's persisted.
+  await expect(ownerAPage.getByText('Đã lưu.')).toBeVisible();
 
   const publicPage = await (await browser.newContext()).newPage();
   await publicPage.goto(`/cafes/${cafeASlug}`);
   await expect(publicPage.getByText('9:00–23:00 hằng ngày')).toBeVisible();
+
+  // Import kho CSV: 5 rows, one unmatched name is skipped automatically (no game selected).
+  await ownerAPage.goto(`/my-cafes/${cafeAId}/import`);
+  const csv = [
+    'name,nameEn,bggId,copies',
+    ...importGameNames.map((name) => `${name},,,1`),
+    'Totally Unknown Game Not In Catalog,,,1',
+  ].join('\n');
+  await ownerAPage
+    .locator('input[type=file]')
+    .setInputFiles({ name: 'inventory.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) });
+  await expect(ownerAPage.getByRole('button', { name: 'Thêm 4 game vào kho' })).toBeVisible();
+  await ownerAPage.getByRole('button', { name: 'Thêm 4 game vào kho' }).click();
+  await expect(ownerAPage.getByText('Đã áp dụng 4 dòng.')).toBeVisible();
+
+  await publicPage.goto(`/cafes/${cafeASlug}`);
+  await expect(publicPage.getByText('Kho game (4)')).toBeVisible();
 
   // Owner B: accept, then decline -> café disappears from public site.
   const ownerBPage = await signUpFromInvitePage(browser, ownerB, invitePathB);

@@ -50,7 +50,7 @@ export function createApp({
     .route('/categories', categoryRoutes)
     .route('/locations', locationRoutes)
     .route('/cafes', cafeRoutes)
-    .route('/', cafeOwnerRoutes)
+    .route('/', cafeOwnerRoutes({ rateLimit }))
     .route('/barcodes', barcodeRoutes(barcodeProvider))
     .route('/barcodes/local', localBarcodeRoutes)
     .route('/openapi.json', openApiRoutes);

@@ -65,3 +65,44 @@ export interface CafeMemberDto {
 export interface CafeMemberListResponse {
   items: CafeMemberDto[];
 }
+
+export const inventoryImportDryRunQuerySchema = z.object({ dryRun: z.literal('1') });
+
+export const inventoryImportRowStatusEnum = z.enum(['matched', 'suggested', 'unmatched', 'error']);
+export type InventoryImportRowStatus = z.infer<typeof inventoryImportRowStatusEnum>;
+
+export interface InventoryImportSuggestionDto {
+  gameId: string;
+  name: string;
+  similarity: number;
+}
+
+export interface InventoryImportRowDto {
+  line: number;
+  input: { name: string; nameEn: string | null; bggId: number | null; copies: number };
+  status: InventoryImportRowStatus;
+  gameId: string | null;
+  gameName: string | null;
+  suggestions: InventoryImportSuggestionDto[];
+  error: string | null;
+}
+
+export interface InventoryImportDryRunResponse {
+  rows: InventoryImportRowDto[];
+}
+
+export const inventoryImportApplyRowSchema = z.object({
+  line: z.number().int().positive(),
+  gameId: z.uuid().nullable(),
+  copies: z.coerce.number().int().min(1).max(99),
+});
+export type InventoryImportApplyRow = z.infer<typeof inventoryImportApplyRowSchema>;
+
+export const inventoryImportApplyInputSchema = z.object({
+  rows: z.array(inventoryImportApplyRowSchema).min(1).max(500),
+});
+export type InventoryImportApplyInput = z.infer<typeof inventoryImportApplyInputSchema>;
+
+export interface InventoryImportApplyResponse {
+  rowsApplied: number;
+}

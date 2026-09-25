@@ -1,7 +1,15 @@
 import type { CafeConsentStatus, CafeMemberRole } from '@onboard/shared';
-import { and, eq, isNull, sql } from 'drizzle-orm';
+import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
-import { cafeMembers, cafeOwnerInvites, cafes, users } from '../../db/schema/index.js';
+import {
+  cafeGames,
+  cafeInventoryImports,
+  cafeMembers,
+  cafeOwnerInvites,
+  cafes,
+  games,
+  users,
+} from '../../db/schema/index.js';
 
 export type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
 
@@ -199,4 +207,43 @@ export async function findUserIdByUsername(username: string): Promise<string | u
 export async function findAdminEmails(): Promise<string[]> {
   const rows = await db.select({ email: users.email }).from(users).where(eq(users.role, 'admin'));
   return rows.map((r) => r.email);
+}
+
+export async function findExistingGameIds(gameIds: string[]): Promise<Set<string>> {
+  if (gameIds.length === 0) return new Set();
+  const rows = await db.select({ id: games.id }).from(games).where(inArray(games.id, gameIds));
+  return new Set(rows.map((r) => r.id));
+}
+
+/** Upserts inventory copies for the given games in a single statement; never touches rows for
+ * games not in `items`. */
+export async function upsertCafeGamesTx(
+  tx: Tx,
+  cafeId: string,
+  items: { gameId: string; copies: number }[],
+): Promise<void> {
+  if (items.length === 0) return;
+  await tx
+    .insert(cafeGames)
+    .values(
+      items.map((item) => ({
+        cafeId,
+        gameId: item.gameId,
+        copies: item.copies,
+        addedVia: 'import' as const,
+      })),
+    )
+    .onConflictDoUpdate({
+      target: [cafeGames.cafeId, cafeGames.gameId],
+      set: { copies: sql`excluded.copies`, addedVia: sql`excluded.added_via` },
+    });
+}
+
+export async function insertInventoryImportAudit(
+  tx: Tx,
+  cafeId: string,
+  userId: string,
+  rowsApplied: number,
+): Promise<void> {
+  await tx.insert(cafeInventoryImports).values({ cafeId, userId, rowsApplied });
 }

@@ -1,7 +1,7 @@
 ---
 phase: 7
 title: "Chủ quán: link mời owner + consent + /my-cafes + import kho CSV"
-status: pending
+status: completed
 effort: "4.5d"
 dependencies: ["P1b phase 1"]
 ---
