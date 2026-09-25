@@ -1,0 +1,23 @@
+OnBoardVN dataset — license summary
+
+This dataset directory mixes content under different licenses, split by
+top-level folder:
+
+- facts/       CC0 1.0 Universal (Public Domain Dedication) — see
+               facts/LICENSE-CC0.txt. Objective game facts (name, player
+               count, playtime, age, categories, barcodes) created by
+               OnBoardVN, dedicated to the public domain.
+- admin-units/ MIT License — see admin-units/LICENSE-MIT.txt. Third-party
+               Vietnamese province/ward data from
+               ThangLeQuoc/vietnamese-provinces-database.
+- descriptions/ CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/).
+               Original game descriptions written by OnBoardVN contributors.
+- cafes/       CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/).
+               Café directory info collected from public sources
+               (consentStatus=public_info_only entries omit lat/lng,
+               sourceUrl and legacyDistrict from export, per
+               apps/api/src/dataset/export.ts).
+
+Source code for the OnBoardVN platform itself is licensed separately under
+GNU AGPL-3.0-only (see repository root LICENSE) and is not part of this
+dataset.

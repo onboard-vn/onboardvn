@@ -3,6 +3,8 @@ import { and, asc, count, eq, inArray, ne, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import { cafeGames, cafes, games, provinces, wards } from '../../db/schema/index.js';
 
+export type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
+
 export interface CafeListFilter {
   provinceCode?: string;
   wardCodes?: string[];
@@ -127,8 +129,11 @@ function toCafeValues(input: CafeUpdateInput) {
   };
 }
 
-export async function insertCafe(input: CafeCreateInput & { slug: string; createdBy: string }) {
-  const [row] = await db
+export async function insertCafe(
+  input: CafeCreateInput & { slug: string; createdBy: string | null },
+  tx: Tx | typeof db = db,
+) {
+  const [row] = await tx
     .insert(cafes)
     .values({
       slug: input.slug,
@@ -150,12 +155,12 @@ export async function insertCafe(input: CafeCreateInput & { slug: string; create
   return row!;
 }
 
-export async function updateCafeRow(id: string, input: CafeUpdateInput) {
+export async function updateCafeRow(id: string, input: CafeUpdateInput, tx: Tx | typeof db = db) {
   const values = toCafeValues(input);
   if (Object.keys(values).length === 0) {
-    return db.query.cafes.findFirst({ where: eq(cafes.id, id) });
+    return tx.query.cafes.findFirst({ where: eq(cafes.id, id) });
   }
-  const [row] = await db.update(cafes).set(values).where(eq(cafes.id, id)).returning();
+  const [row] = await tx.update(cafes).set(values).where(eq(cafes.id, id)).returning();
   return row;
 }
 
@@ -180,16 +185,20 @@ export function findCafeGame(cafeId: string, gameId: string) {
   });
 }
 
-export async function insertCafeGame(values: typeof cafeGames.$inferInsert): Promise<void> {
-  await db.insert(cafeGames).values(values);
+export async function insertCafeGame(
+  values: typeof cafeGames.$inferInsert,
+  tx: Tx | typeof db = db,
+): Promise<void> {
+  await tx.insert(cafeGames).values(values);
 }
 
 export async function updateCafeGameCopies(
   cafeId: string,
   gameId: string,
   copies: number,
+  tx: Tx | typeof db = db,
 ): Promise<void> {
-  await db
+  await tx
     .update(cafeGames)
     .set({ copies })
     .where(and(eq(cafeGames.cafeId, cafeId), eq(cafeGames.gameId, gameId)));

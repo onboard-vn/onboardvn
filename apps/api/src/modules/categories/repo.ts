@@ -3,6 +3,8 @@ import { eq } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import { categories } from '../../db/schema/index.js';
 
+export type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
+
 export function listCategories(filter: CategoryFilter = {}) {
   return db
     .select()
@@ -11,25 +13,34 @@ export function listCategories(filter: CategoryFilter = {}) {
     .orderBy(categories.name);
 }
 
-export async function insertCategory(values: typeof categories.$inferInsert) {
-  const [row] = await db.insert(categories).values(values).returning();
+export async function insertCategory(
+  values: typeof categories.$inferInsert,
+  tx: Tx | typeof db = db,
+) {
+  const [row] = await tx.insert(categories).values(values).returning();
   return row!;
 }
 
 export async function updateCategoryRow(
   id: string,
   values: Partial<typeof categories.$inferInsert>,
+  tx: Tx | typeof db = db,
 ) {
   if (Object.keys(values).length === 0) {
-    const [row] = await db.select().from(categories).where(eq(categories.id, id)).limit(1);
+    const [row] = await tx.select().from(categories).where(eq(categories.id, id)).limit(1);
     return row;
   }
-  const [row] = await db.update(categories).set(values).where(eq(categories.id, id)).returning();
+  const [row] = await tx.update(categories).set(values).where(eq(categories.id, id)).returning();
   return row;
 }
 
 export async function findCategoryById(id: string) {
   const [row] = await db.select().from(categories).where(eq(categories.id, id)).limit(1);
+  return row;
+}
+
+export async function findCategoryByName(name: string) {
+  const [row] = await db.select().from(categories).where(eq(categories.name, name)).limit(1);
   return row;
 }
 
