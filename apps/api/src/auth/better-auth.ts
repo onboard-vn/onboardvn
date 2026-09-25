@@ -1,4 +1,5 @@
-import { bggUsernameSchema, ROLES } from '@onboard/shared';
+import { randomBytes } from 'node:crypto';
+import { bggUsernameSchema, PRIVACY_LEVELS, ROLES } from '@onboard/shared';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { emailOTP, username } from 'better-auth/plugins';
@@ -15,6 +16,9 @@ const google =
     ? { google: { clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET } }
     : undefined;
 
+/** 12 random bytes -> 16-char base64url, no padding: shareable in a QR/link. */
+const generateFriendCode = () => randomBytes(12).toString('base64url');
+
 export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   basePath: '/api/auth',
@@ -29,6 +33,38 @@ export const auth = betterAuth({
         required: false,
         input: true,
         validator: { input: bggUsernameSchema.nullable() },
+      },
+      friendCode: { type: 'string', required: false, input: false },
+      profileVisibility: {
+        type: [...PRIVACY_LEVELS],
+        required: false,
+        defaultValue: 'public',
+        input: false,
+      },
+      playsVisibility: {
+        type: [...PRIVACY_LEVELS],
+        required: false,
+        defaultValue: 'public',
+        input: false,
+      },
+      friendsVisibility: {
+        type: [...PRIVACY_LEVELS],
+        required: false,
+        defaultValue: 'friends',
+        input: false,
+      },
+      emailOnFriendRequest: {
+        type: 'boolean',
+        required: false,
+        defaultValue: false,
+        input: false,
+      },
+    },
+  },
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user) => ({ data: { ...user, friendCode: generateFriendCode() } }),
       },
     },
   },
@@ -63,7 +99,7 @@ export const auth = betterAuth({
     }),
   ],
   rateLimit: {
-    enabled: env.NODE_ENV !== 'test',
+    enabled: env.NODE_ENV !== 'test' && !env.AUTH_RATE_LIMIT_DISABLED,
     window: 60,
     max: 30,
     customRules: {

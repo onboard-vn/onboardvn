@@ -17,6 +17,7 @@ import {
 } from './modules/barcodes/gameupc-client.js';
 import { cafeRoutes } from './modules/cafes/routes.js';
 import { categoryRoutes } from './modules/categories/routes.js';
+import { blockRoutes, friendRoutes } from './modules/friends/routes.js';
 import { gameRoutes } from './modules/games/routes.js';
 import { locationRoutes } from './modules/locations/routes.js';
 import { meRoutes } from './modules/me/routes.js';
@@ -40,6 +41,8 @@ export function createApp({
     .use('*', publicCache())
     .route('/me', meRoutes)
     .route('/users', userRoutes)
+    .route('/friends', friendRoutes({ rateLimit }))
+    .route('/blocks', blockRoutes)
     .route('/games', gameRoutes)
     .route('/categories', categoryRoutes)
     .route('/locations', locationRoutes)

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const SCAN_FORMATS = ['ean_13', 'upc_a', 'ean_8'] as const;
+const DEFAULT_SCAN_FORMATS = ['ean_13', 'upc_a', 'ean_8'] as const;
 const SCAN_INTERVAL_MS = 300;
 const REDETECT_COOLDOWN_MS = 2000;
 
@@ -51,7 +51,13 @@ function beep(): void {
   }
 }
 
-export function BarcodeScanner({ onDetect }: { onDetect: (code: string) => void }) {
+export function BarcodeScanner({
+  onDetect,
+  formats = DEFAULT_SCAN_FORMATS,
+}: {
+  onDetect: (code: string) => void;
+  formats?: readonly string[];
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const lastDetectionRef = useRef<{ code: string; at: number } | null>(null);
@@ -79,7 +85,7 @@ export function BarcodeScanner({ onDetect }: { onDetect: (code: string) => void 
     async function start() {
       try {
         const DetectorCtor = await loadBarcodeDetector();
-        const detector = new DetectorCtor({ formats: SCAN_FORMATS });
+        const detector = new DetectorCtor({ formats });
 
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: 'environment' },
@@ -134,7 +140,7 @@ export function BarcodeScanner({ onDetect }: { onDetect: (code: string) => void 
       streamRef.current?.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     };
-  }, [unsupportedReason]);
+  }, [unsupportedReason, formats]);
 
   return (
     <div className="flex flex-col gap-2">

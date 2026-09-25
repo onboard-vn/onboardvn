@@ -20,12 +20,21 @@ const envSchema = z
     TRUST_PROXY: z.preprocess((v) => v === 'true' || v === '1', z.boolean()),
     SMTP_URL: z.preprocess((v) => v || undefined, z.url().optional()),
     MAIL_FROM: z.preprocess((v) => v || undefined, z.string().min(3).optional()),
+    /** e2e-only: disables Better Auth's own IP-keyed rate limiter without touching NODE_ENV. */
+    AUTH_RATE_LIMIT_DISABLED: z.preprocess((v) => v === 'true' || v === '1', z.boolean()),
   })
   .superRefine((v, ctx) => {
     if (v.NODE_ENV !== 'production') return;
     for (const key of ['SMTP_URL', 'MAIL_FROM'] as const) {
       if (!v[key])
         ctx.addIssue({ code: 'custom', path: [key], message: `${key} bắt buộc khi production` });
+    }
+    if (v.AUTH_RATE_LIMIT_DISABLED) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['AUTH_RATE_LIMIT_DISABLED'],
+        message: 'AUTH_RATE_LIMIT_DISABLED không được bật khi production',
+      });
     }
   });
 

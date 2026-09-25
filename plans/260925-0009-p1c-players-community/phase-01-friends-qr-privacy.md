@@ -1,7 +1,7 @@
 ---
 phase: 1
 title: "Bạn bè (QR + lời mời) + cài đặt riêng tư"
-status: pending
+status: completed
 effort: "2.5d"
 dependencies: ["P1b phase 3"]
 ---

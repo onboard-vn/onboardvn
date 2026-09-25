@@ -64,6 +64,13 @@
       "when": 1790302480016,
       "tag": "0008_bgg_username_case_insensitive",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790309979844,
+      "tag": "0009_social_friends",
+      "breakpoints": true
     }
   ]
 }

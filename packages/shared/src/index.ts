@@ -6,4 +6,5 @@ export * from './games.js';
 export * from './health.js';
 export * from './locations.js';
 export * from './roles.js';
+export * from './social.js';
 export * from './users.js';

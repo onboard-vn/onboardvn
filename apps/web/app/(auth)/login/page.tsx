@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { AuthPage } from '@/components/auth-page';
+import { safeNextPath } from '@/lib/safe-next';
 import { LoginForm } from './login-form';
 import { SITE_NAME } from '@/lib/site';
 
@@ -10,10 +11,13 @@ const NOTICES: Record<string, string> = {
 };
 
 export default async function LoginPage({ searchParams }: PageProps<'/login'>) {
-  const { notice } = await searchParams;
+  const { notice, next } = await searchParams;
   return (
     <AuthPage>
-      <LoginForm notice={typeof notice === 'string' ? NOTICES[notice] : undefined} />
+      <LoginForm
+        notice={typeof notice === 'string' ? NOTICES[notice] : undefined}
+        next={safeNextPath(typeof next === 'string' ? next : undefined)}
+      />
     </AuthPage>
   );
 }

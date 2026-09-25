@@ -28,7 +28,9 @@ export default defineConfig({
       cwd: '../api',
       port: API_PORT,
       reuseExistingServer: false,
-      env: { ...commonEnv, PORT: String(API_PORT) },
+      // Several e2e specs sign in multiple accounts back-to-back and share one IP-keyed
+      // 60s/5-request bucket; disable only Better Auth's own rate limiter, not NODE_ENV.
+      env: { ...commonEnv, PORT: String(API_PORT), AUTH_RATE_LIMIT_DISABLED: 'true' },
       stdout: 'pipe',
       stderr: 'pipe',
     },

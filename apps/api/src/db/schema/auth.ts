@@ -20,6 +20,21 @@ export const users = pgTable(
     username: text('username').unique(),
     displayUsername: text('display_username'),
     bggUsername: text('bgg_username'),
+    // Default only backstops direct inserts (seed/tests); real sign-ups get one from the auth hook.
+    friendCode: text('friend_code')
+      .unique()
+      .notNull()
+      .default(sql`substr(replace(gen_random_uuid()::text, '-', ''), 1, 16)`),
+    profileVisibility: text('profile_visibility', { enum: ['public', 'friends', 'private'] })
+      .default('public')
+      .notNull(),
+    playsVisibility: text('plays_visibility', { enum: ['public', 'friends', 'private'] })
+      .default('public')
+      .notNull(),
+    friendsVisibility: text('friends_visibility', { enum: ['public', 'friends', 'private'] })
+      .default('friends')
+      .notNull(),
+    emailOnFriendRequest: boolean('email_on_friend_request').default(false).notNull(),
   },
   (table) => [uniqueIndex('users_bgg_username_lower_idx').on(sql`lower(${table.bggUsername})`)],
 );

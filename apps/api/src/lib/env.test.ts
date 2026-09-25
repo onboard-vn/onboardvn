@@ -29,3 +29,30 @@ describe('parseEnv SMTP', () => {
     expect(parseEnv({ ...base, NODE_ENV: 'development', SMTP_URL: '' }).SMTP_URL).toBeUndefined();
   });
 });
+
+describe('parseEnv AUTH_RATE_LIMIT_DISABLED', () => {
+  it('defaults to false', () => {
+    expect(parseEnv(base).AUTH_RATE_LIMIT_DISABLED).toBe(false);
+  });
+
+  it('parses "true"/"1" as enabled outside production', () => {
+    expect(parseEnv({ ...base, AUTH_RATE_LIMIT_DISABLED: 'true' }).AUTH_RATE_LIMIT_DISABLED).toBe(
+      true,
+    );
+    expect(parseEnv({ ...base, AUTH_RATE_LIMIT_DISABLED: '1' }).AUTH_RATE_LIMIT_DISABLED).toBe(
+      true,
+    );
+  });
+
+  it('refuses AUTH_RATE_LIMIT_DISABLED=true in production', () => {
+    expect(() =>
+      parseEnv({
+        ...base,
+        NODE_ENV: 'production',
+        SMTP_URL: 'smtps://user:pass@smtp.gmail.com:465',
+        MAIL_FROM: 'OnBoardVN <no-reply@example.test>',
+        AUTH_RATE_LIMIT_DISABLED: 'true',
+      }),
+    ).toThrow(/AUTH_RATE_LIMIT_DISABLED/);
+  });
+});

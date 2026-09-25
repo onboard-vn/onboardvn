@@ -17,14 +17,14 @@ type OtpStep = { kind: 'email' } | { kind: 'code'; email: string };
 const field = (form: HTMLFormElement, name: string) =>
   String(new FormData(form).get(name) ?? '').trim();
 
-export function LoginForm({ notice }: { notice?: string }) {
+export function LoginForm({ notice, next }: { notice?: string; next?: string | null }) {
   const router = useRouter();
   const [mode, setMode] = useState<Mode>('password');
   const [otpStep, setOtpStep] = useState<OtpStep>({ kind: 'email' });
   const { error, pending, run, setError } = useAuthAction();
 
   function done() {
-    router.push('/');
+    router.push(next || '/');
     router.refresh();
   }
 
@@ -73,7 +73,7 @@ export function LoginForm({ notice }: { notice?: string }) {
           variant="outline"
           disabled={pending}
           onClick={() =>
-            run(() => authClient.signIn.social({ provider: 'google', callbackURL: '/' }))
+            run(() => authClient.signIn.social({ provider: 'google', callbackURL: next || '/' }))
           }
         >
           Tiếp tục với Google

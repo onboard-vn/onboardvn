@@ -1,6 +1,7 @@
 import {
   cafeFilterSchema,
   categoryFilterSchema,
+  friendsListResultSchema,
   gameFilterSchema,
   publicProfileSchema,
 } from '@onboard/shared';
@@ -168,6 +169,19 @@ export function buildOpenApiDocument(siteUrl: string): Record<string, unknown> {
           ],
           responses: {
             '200': jsonResponse('Hồ sơ công khai', publicProfileSchema),
+            '404': NOT_FOUND,
+            '429': RATE_LIMITED,
+          },
+        },
+      },
+      '/users/{username}/friends': {
+        get: {
+          summary: 'Danh sách bạn bè (theo cài đặt riêng tư của người dùng đó)',
+          parameters: [
+            { name: 'username', in: 'path', required: true, schema: { type: 'string' } },
+          ],
+          responses: {
+            '200': jsonResponse('Danh sách bạn bè hoặc { hidden: true }', friendsListResultSchema),
             '404': NOT_FOUND,
             '429': RATE_LIMITED,
           },

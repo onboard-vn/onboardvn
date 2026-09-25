@@ -2,7 +2,7 @@ import type { Role } from '@onboard/shared';
 import type { AppDeps } from '../app.js';
 import type { SessionUser } from '../types.js';
 
-export function fakeUser(role: Role = 'user'): SessionUser {
+export function fakeUser(role: Role = 'user') {
   const now = new Date();
   return {
     id: `u-${role}`,
@@ -13,7 +13,11 @@ export function fakeUser(role: Role = 'user'): SessionUser {
     role,
     createdAt: now,
     updatedAt: now,
-  };
+    profileVisibility: 'public',
+    playsVisibility: 'public',
+    friendsVisibility: 'friends',
+    emailOnFriendRequest: false,
+  } satisfies SessionUser;
 }
 
 /** Stub for route tests that do not need a real Better Auth session. */

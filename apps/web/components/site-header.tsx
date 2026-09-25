@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getCurrentUser } from '@/lib/api-server';
+import { FriendRequestBadge } from './friend-request-badge';
 import { SignOutButton } from './sign-out-button';
 import { SiteLogo } from './site-logo';
 
@@ -21,6 +22,12 @@ export async function SiteHeader() {
           <Link href="/cafes" className="text-sm font-medium">
             Quán
           </Link>
+          {user ? (
+            <Link href="/ban-be" className="flex items-center gap-1.5 text-sm font-medium">
+              Bạn bè
+              <FriendRequestBadge />
+            </Link>
+          ) : null}
           {user && user.role !== 'user' ? (
             <>
               <Link href="/admin/games" className="text-sm font-medium">

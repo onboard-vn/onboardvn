@@ -80,3 +80,12 @@ export function resetPasswordEmail(url: string): MailContent {
     footer: IGNORE_FOOTER,
   });
 }
+
+export function friendRequestEmail(fromName: string, url: string): MailContent {
+  return render('Lời mời kết bạn mới', {
+    heading: 'Bạn có lời mời kết bạn mới',
+    lines: [`${fromName} vừa gửi lời mời kết bạn cho bạn.`],
+    action: { label: 'Xem lời mời', url },
+    footer: 'Bạn nhận được email này vì đã bật thông báo lời mời kết bạn trong cài đặt.',
+  });
+}
