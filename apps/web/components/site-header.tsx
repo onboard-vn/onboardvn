@@ -22,6 +22,9 @@ export async function SiteHeader() {
           <Link href="/cafes" className="text-sm font-medium">
             Địa điểm chơi
           </Link>
+          <Link href="/map" className="text-sm font-medium">
+            Bản đồ
+          </Link>
           {user ? (
             <Link href="/friends" className="flex items-center gap-1.5 text-sm font-medium">
               Bạn bè

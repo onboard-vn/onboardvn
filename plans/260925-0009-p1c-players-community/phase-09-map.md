@@ -1,7 +1,7 @@
 ---
 phase: 9
 title: "/map: bản đồ quán (MapLibre + OpenFreeMap) + ghim tay"
-status: pending
+status: completed
 effort: "2d"
 dependencies: [7]
 ---

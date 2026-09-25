@@ -362,6 +362,50 @@ export const cafeFilterSchema = z.object({
 });
 export type CafeFilter = z.infer<typeof cafeFilterSchema>;
 
+const optionalCoord = (min: number, max: number) => z.coerce.number().min(min).max(max).optional();
+
+export const cafeMapFilterSchema = z
+  .object({
+    province: z.string().trim().optional(),
+    ward: z.string().trim().optional(),
+    venueType: venueTypeEnum.optional(),
+    byog: boolQueryParam,
+    food: boolQueryParam,
+    privateRoom: boolQueryParam,
+    largeTables: boolQueryParam,
+    free: boolQueryParam,
+    openNow: boolQueryParam,
+    /** "có game X" — matches `cafe_games` by game slug. */
+    gameSlug: z.string().trim().min(1).max(150).optional(),
+    minLng: optionalCoord(-180, 180),
+    minLat: optionalCoord(-90, 90),
+    maxLng: optionalCoord(-180, 180),
+    maxLat: optionalCoord(-90, 90),
+  })
+  .refine(
+    (v) =>
+      [v.minLng, v.minLat, v.maxLng, v.maxLat].every((x) => x === undefined) ||
+      [v.minLng, v.minLat, v.maxLng, v.maxLat].every((x) => x !== undefined),
+    { message: 'bbox cần đủ 4 tham số minLng, minLat, maxLng, maxLat', path: ['minLng'] },
+  )
+  .refine((v) => v.minLng === undefined || (v.minLng < v.maxLng! && v.minLat! < v.maxLat!), {
+    message: 'bbox không hợp lệ: minLng/minLat phải nhỏ hơn maxLng/maxLat',
+    path: ['minLng'],
+  });
+export type CafeMapFilter = z.infer<typeof cafeMapFilterSchema>;
+
+export interface CafeMapPinDto {
+  slug: string;
+  name: string;
+  lat: number;
+  lng: number;
+  venueType: VenueType;
+  /** true only when consentStatus === 'granted'. */
+  verified: boolean;
+  /** Undefined for a `public_info_only` café (hours aren't public yet). */
+  openStatus?: CafeOpenStatus;
+}
+
 export const cafeGameInputSchema = z.object({
   gameId: z.uuid(),
   copies: z.coerce.number().int().positive().max(999).optional(),

@@ -4,7 +4,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { SITE_NAME, SITE_SLOGAN } from '@/lib/site';
 
 const ACTIONS = [
-  { href: '/cafes', label: 'Tìm quán', variant: 'default' },
+  { href: '/map', label: 'Tìm quán', variant: 'default' },
   { href: '/games', label: 'Tìm game', variant: 'outline' },
   { href: '/signup', label: 'Tham gia cộng đồng', variant: 'outline' },
 ] as const;

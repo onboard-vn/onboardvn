@@ -123,6 +123,16 @@ export const cafePublicDetailDtoSchema = cafePublicSummaryDtoSchema.extend({
   inventory: z.array(cafeInventoryItemDtoSchema),
 });
 
+export const cafeMapPinDtoSchema = z.object({
+  slug: z.string(),
+  name: z.string(),
+  lat: z.number(),
+  lng: z.number(),
+  venueType: venueTypeDtoSchema,
+  verified: z.boolean(),
+  openStatus: cafeOpenStatusDtoSchema.optional(),
+});
+
 export const cafeListResponseSchema = z.object({
   items: z.array(cafePublicSummaryDtoSchema),
   page: z.number().int(),

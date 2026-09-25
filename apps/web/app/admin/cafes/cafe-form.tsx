@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import { AmenitiesFields } from '@/components/cafe/amenities-fields';
 import { OpeningHoursEditor } from '@/components/cafe/opening-hours-editor';
+import { PinEditor } from '@/components/pin-editor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -77,6 +78,8 @@ export function CafeForm({
   const [amenities, setAmenities] = useState<CafeAmenities>(initial?.amenities ?? {});
   const [feeModel, setFeeModel] = useState<CafeFeeModel>(initial?.feeModel ?? 'unknown');
   const [hours, setHours] = useState<CafeOpeningHours>(initial?.openingHours);
+  const [lat, setLat] = useState<number | null>(initial?.lat ?? null);
+  const [lng, setLng] = useState<number | null>(initial?.lng ?? null);
 
   async function onProvinceChange(code: string) {
     setProvinceCode(code);
@@ -101,12 +104,6 @@ export function CafeForm({
       if (v !== '') return v;
       return initial ? null : undefined;
     };
-    const num = (key: string) => {
-      const v = String(data.get(key) ?? '').trim();
-      if (v !== '') return Number(v);
-      return initial ? null : undefined;
-    };
-
     const fanpageRaw = String(data.get('fanpage') ?? '').trim();
     const mapsRaw = String(data.get('maps') ?? '').trim();
     const feeNoteRaw = String(data.get('feeNote') ?? '').trim();
@@ -117,8 +114,8 @@ export function CafeForm({
       wardCode,
       addressLine: str('addressLine') ?? '',
       legacyDistrict: str('legacyDistrict'),
-      lat: num('lat'),
-      lng: num('lng'),
+      lat: lat ?? (initial ? null : undefined),
+      lng: lng ?? (initial ? null : undefined),
       openingHours: hours ?? (initial ? null : undefined),
       links:
         fanpageRaw || mapsRaw
@@ -218,28 +215,14 @@ export function CafeForm({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="lat">Vĩ độ (lat)</Label>
-          <Input
-            id="lat"
-            name="lat"
-            type="number"
-            step="0.000001"
-            defaultValue={initial?.lat ?? ''}
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="lng">Kinh độ (lng)</Label>
-          <Input
-            id="lng"
-            name="lng"
-            type="number"
-            step="0.000001"
-            defaultValue={initial?.lng ?? ''}
-          />
-        </div>
-      </div>
+      <PinEditor
+        lat={lat}
+        lng={lng}
+        onChange={(la, ln) => {
+          setLat(la);
+          setLng(ln);
+        }}
+      />
 
       <div className="flex flex-col gap-1">
         <Label htmlFor="venueType">Loại địa điểm</Label>

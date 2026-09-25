@@ -10,6 +10,8 @@ import type {
   CafeListResponse,
   CafeMaintainerDto,
   CafeMaintainerInventoryItemDto,
+  CafeMapFilter,
+  CafeMapPinDto,
   CafeOwnerDto,
   CafeOwnerInventoryItemDto,
   CafePhotoDto,
@@ -53,8 +55,10 @@ function toPublicSummaryFromListRow(row: CafeListRow, forceShowAll = false): Caf
     wardName: row.wardName,
     addressLine: row.addressLine,
     legacyDistrict: hideDetails ? null : row.legacyDistrict,
-    lat: hideDetails || row.lat === null ? null : Number(row.lat),
-    lng: hideDetails || row.lng === null ? null : Number(row.lng),
+    // lat/lng stay public even for public_info_only — the pin is manually placed by an admin
+    // from the café's public address, never geocoded/stored from a third party.
+    lat: row.lat === null ? null : Number(row.lat),
+    lng: row.lng === null ? null : Number(row.lng),
     links: visibleLinks(row.links ?? undefined, hideDetails),
     gameCount: row.gameCount,
     verified: row.consentStatus === 'granted',
@@ -111,8 +115,8 @@ function toPublicDetail(row: CafeFullRow, forceShowAll = false): CafePublicDetai
     wardName: row.ward.name,
     addressLine: row.addressLine,
     legacyDistrict: hideDetails ? null : row.legacyDistrict,
-    lat: hideDetails || row.lat === null ? null : Number(row.lat),
-    lng: hideDetails || row.lng === null ? null : Number(row.lng),
+    lat: row.lat === null ? null : Number(row.lat),
+    lng: row.lng === null ? null : Number(row.lng),
     links: visibleLinks(row.links ?? undefined, hideDetails),
     gameCount: row.inventory.length,
     verified: row.consentStatus === 'granted',
@@ -264,6 +268,39 @@ async function assertWardInProvince(provinceCode: string, wardCode: string): Pro
   }
 }
 
+const VN_LAT_RANGE = [8, 24] as const;
+const VN_LNG_RANGE = [102, 110] as const;
+
+/** Ghim tay chỉ chấp nhận toạ độ trong lãnh thổ Việt Nam (không geocode/lưu toạ độ ngoài phạm vi
+ * này) — chặn cứng thay vì chỉ cảnh báo. Cả lat/lng phải cùng có hoặc cùng null (không cho lưu
+ * nửa toạ độ — tránh một điểm ghim vô nghĩa như "lat=21, lng=null"). */
+function assertVnCoordinates(lat: number | null, lng: number | null): void {
+  if (lat === null && lng === null) return;
+  if (lat === null || lng === null) {
+    throw new ApiError(
+      'VALIDATION_FAILED',
+      422,
+      'Cần nhập đủ cả vĩ độ và kinh độ (hoặc để trống cả hai)',
+      {
+        path: ['lat'],
+      },
+    );
+  }
+  const inRange =
+    lat >= VN_LAT_RANGE[0] &&
+    lat <= VN_LAT_RANGE[1] &&
+    lng >= VN_LNG_RANGE[0] &&
+    lng <= VN_LNG_RANGE[1];
+  if (!inRange) {
+    throw new ApiError(
+      'VALIDATION_FAILED',
+      422,
+      'Toạ độ phải nằm trong lãnh thổ Việt Nam (vĩ độ 8-24, kinh độ 102-110)',
+      { path: ['lat'] },
+    );
+  }
+}
+
 function assertConsentSourceUrl(consentStatus: string, sourceUrl: string | undefined | null): void {
   if (consentStatus !== 'granted' && !sourceUrl) {
     throw new ApiError(
@@ -293,6 +330,7 @@ export async function createCafeService(
 ): Promise<CafeMaintainerDto> {
   await assertWardInProvince(input.provinceCode, input.wardCode);
   assertConsentSourceUrl(input.consentStatus, input.sourceUrl);
+  assertVnCoordinates(input.lat ?? null, input.lng ?? null);
 
   const amenities = withByogDefault(input.venueType, input.amenities);
   const slug = await repo.findAvailableSlug(slugify(input.name));
@@ -316,6 +354,14 @@ export async function updateCafeService(
   const mergedConsentStatus = input.consentStatus ?? existing.consentStatus;
   const mergedSourceUrl = input.sourceUrl !== undefined ? input.sourceUrl : existing.sourceUrl;
   assertConsentSourceUrl(mergedConsentStatus, mergedSourceUrl);
+
+  if (input.lat !== undefined || input.lng !== undefined) {
+    const mergedLat =
+      input.lat !== undefined ? input.lat : existing.lat === null ? null : Number(existing.lat);
+    const mergedLng =
+      input.lng !== undefined ? input.lng : existing.lng === null ? null : Number(existing.lng);
+    assertVnCoordinates(mergedLat, mergedLng);
+  }
 
   const mergedVenueType = input.venueType ?? existing.venueType;
   const amenities =
@@ -548,6 +594,74 @@ export async function reorderCafePhotosService(
 
   await repo.reorderCafePhotos(cafeId, photoIds);
   return getCafeForOwnerService(cafeId);
+}
+
+function toMapPinDto(row: repo.CafeMapPinRow): CafeMapPinDto {
+  const hideDetails = row.consentStatus === 'public_info_only';
+  return {
+    slug: row.slug,
+    name: row.name,
+    lat: Number(row.lat),
+    lng: Number(row.lng),
+    venueType: row.venueType,
+    verified: row.consentStatus === 'granted',
+    openStatus: hideDetails ? undefined : getOpenStatus(row.openingHours, new Date()),
+  };
+}
+
+/** `/map` pins: public cafés (same visibility + attribute filters as {@link listCafesService})
+ * with coordinates. `openNow` can't run in SQL (see {@link listCafesOpenNow}), so it filters the
+ * already-capped pin set in JS instead. */
+export async function getCafeMapPinsService(filter: CafeMapFilter): Promise<CafeMapPinDto[]> {
+  const base: repo.CafeListFilter = {
+    venueType: filter.venueType,
+    byog: filter.byog,
+    food: filter.food,
+    privateRoom: filter.privateRoom,
+    largeTables: filter.largeTables,
+    free: filter.free,
+  };
+
+  let resolved: repo.CafeListFilter = base;
+  if (filter.province) {
+    const province = await locationsRepo.findProvinceBySlug(filter.province);
+    if (!province) return [];
+    resolved = { ...base, provinceCode: province.code };
+
+    if (filter.ward) {
+      const wardRows = await locationsRepo.findWardsByProvinceAndSlug(province.code, filter.ward);
+      if (wardRows.length === 0) return [];
+      resolved = { ...resolved, wardCodes: wardRows.map((w) => w.code) };
+    }
+  } else if (filter.ward) {
+    throw new ApiError('VALIDATION_FAILED', 422, 'Cần chọn tỉnh/thành trước khi lọc theo phường');
+  }
+
+  const bbox =
+    filter.minLng !== undefined &&
+    filter.minLat !== undefined &&
+    filter.maxLng !== undefined &&
+    filter.maxLat !== undefined
+      ? {
+          minLng: filter.minLng,
+          minLat: filter.minLat,
+          maxLng: filter.maxLng,
+          maxLat: filter.maxLat,
+        }
+      : undefined;
+
+  const rows = await repo.listCafeMapPins({ ...resolved, gameSlug: filter.gameSlug, bbox });
+
+  const openFiltered = filter.openNow
+    ? rows.filter((row) => {
+        // public_info_only cafés don't expose hours publicly, so openNow must never match them.
+        if (row.consentStatus === 'public_info_only') return false;
+        const status = getOpenStatus(row.openingHours, new Date()).state;
+        return status === 'open' || status === 'closing_soon';
+      })
+    : rows;
+
+  return openFiltered.map(toMapPinDto);
 }
 
 export async function getCafesForGameService(gameId: string): Promise<CafeForGameDto[]> {

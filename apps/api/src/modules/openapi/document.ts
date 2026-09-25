@@ -1,5 +1,6 @@
 import {
   cafeFilterSchema,
+  cafeMapFilterSchema,
   categoryFilterSchema,
   friendsListResultSchema,
   gameFilterSchema,
@@ -10,6 +11,7 @@ import {
   apiErrorBodySchema,
   cafeForGameDtoSchema,
   cafeListResponseSchema,
+  cafeMapPinDtoSchema,
   cafePublicDetailDtoSchema,
   categoryDtoSchema,
   gameDetailDtoSchema,
@@ -146,6 +148,17 @@ export function buildOpenApiDocument(siteUrl: string): Record<string, unknown> {
           parameters: queryParams(cafeFilterSchema),
           responses: {
             '200': jsonResponse('Danh sách quán', cafeListResponseSchema),
+            '422': errorResponse('Tham số không hợp lệ'),
+            '429': RATE_LIMITED,
+          },
+        },
+      },
+      '/cafes/map': {
+        get: {
+          summary: 'Ghim quán trên bản đồ',
+          parameters: queryParams(cafeMapFilterSchema),
+          responses: {
+            '200': jsonResponse('Danh sách ghim quán', z.array(cafeMapPinDtoSchema)),
             '422': errorResponse('Tham số không hợp lệ'),
             '429': RATE_LIMITED,
           },

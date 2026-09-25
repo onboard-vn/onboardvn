@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# generated: scripts/copy-maplibre-worker.mjs (predev/prebuild)
+/public/maplibre/
+
 # next.js
 /.next/
 /out/

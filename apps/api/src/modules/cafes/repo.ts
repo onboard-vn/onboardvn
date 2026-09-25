@@ -6,7 +6,7 @@ import type {
   CafeUpdateInput,
   VenueType,
 } from '@onboard/shared';
-import { and, asc, count, eq, inArray, ne, type SQL, sql } from 'drizzle-orm';
+import { and, asc, count, eq, gte, inArray, isNotNull, lte, ne, type SQL, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import { cafeGames, cafePhotos, cafes, games, provinces, wards } from '../../db/schema/index.js';
 import { ApiError } from '../../lib/errors.js';
@@ -54,12 +54,17 @@ const ATTRIBUTE_FILTER_KEYS = [
   'free',
 ] as const;
 
-function buildWhere(filter: CafeListFilter, opts: CafeListOptions) {
+function buildWhere(
+  filter: CafeListFilter,
+  opts: CafeListOptions,
+  extra: (SQL | undefined)[] = [],
+) {
   const conditions = [
     amenityFilter('byogAllowed', filter.byog),
     amenityFilter('foodAvailable', filter.food),
     amenityFilter('privateRoom', filter.privateRoom),
     amenityFilter('largeTables', filter.largeTables),
+    ...extra,
   ].filter((c): c is SQL => c !== undefined);
   if (!opts.includePending) conditions.push(publicCafeWhere());
   if (filter.provinceCode) conditions.push(eq(cafes.provinceCode, filter.provinceCode));
@@ -409,6 +414,74 @@ export async function listCafePhotoPaths(cafeId: string): Promise<string[]> {
 
 export async function deleteCafePhoto(id: string): Promise<void> {
   await db.delete(cafePhotos).where(eq(cafePhotos.id, id));
+}
+
+export interface CafeMapFilter extends CafeListFilter {
+  gameSlug?: string;
+  bbox?: { minLng: number; minLat: number; maxLng: number; maxLat: number };
+}
+
+export interface CafeMapPinRow {
+  slug: string;
+  name: string;
+  lat: string;
+  lng: string;
+  venueType: VenueType;
+  consentStatus: 'granted' | 'pending' | 'public_info_only' | 'declined';
+  openingHours: CafeOpeningHours | null;
+}
+
+const MAP_PIN_CAP = 2000;
+
+function gameSlugCondition(gameSlug: string | undefined): SQL | undefined {
+  if (!gameSlug) return undefined;
+  return sql`exists (
+    select 1 from ${cafeGames}
+    inner join ${games} on ${games.id} = ${cafeGames.gameId}
+    where ${cafeGames.cafeId} = ${cafes.id} and ${games.slug} = ${gameSlug}
+  )`;
+}
+
+function bboxConditions(bbox: CafeMapFilter['bbox']): SQL[] {
+  if (!bbox) return [];
+  return [
+    gte(cafes.lat, bbox.minLat.toString()),
+    lte(cafes.lat, bbox.maxLat.toString()),
+    gte(cafes.lng, bbox.minLng.toString()),
+    lte(cafes.lng, bbox.maxLng.toString()),
+  ];
+}
+
+/** Lightweight pins for `/map` — same public/attribute filters as {@link listCafes}, plus
+ * coordinates required (no pin without a lat/lng), an optional `gameSlug` and viewport bbox.
+ * Ordered `granted` cafés first then by name so the {@link MAP_PIN_CAP} cutoff is deterministic
+ * rather than whatever order Postgres happens to return. `openNow` (JS-only, see service.ts)
+ * filters this already-capped set rather than an unbounded one — an acceptable trade-off at the
+ * current dataset size; revisit (like {@link listAllCafesForFilter}'s own cap) if it grows. */
+export function listCafeMapPins(
+  filter: CafeMapFilter,
+  opts: CafeListOptions = {},
+): Promise<CafeMapPinRow[]> {
+  const where = buildWhere(filter, opts, [
+    isNotNull(cafes.lat),
+    isNotNull(cafes.lng),
+    gameSlugCondition(filter.gameSlug),
+    ...bboxConditions(filter.bbox),
+  ]);
+  return db
+    .select({
+      slug: cafes.slug,
+      name: cafes.name,
+      lat: cafes.lat,
+      lng: cafes.lng,
+      venueType: cafes.venueType,
+      consentStatus: cafes.consentStatus,
+      openingHours: cafes.openingHours,
+    })
+    .from(cafes)
+    .where(where)
+    .orderBy(sql`(${cafes.consentStatus} = 'granted') desc`, asc(cafes.name))
+    .limit(MAP_PIN_CAP) as Promise<CafeMapPinRow[]>;
 }
 
 export async function reorderCafePhotos(cafeId: string, photoIds: string[]): Promise<void> {

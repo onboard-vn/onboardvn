@@ -60,6 +60,8 @@ export default async function MyCafeDetailPage(props: PageProps<'/my-cafes/[id]'
           name: cafe.name,
           addressLine: cafe.addressLine,
           legacyDistrict: cafe.legacyDistrict,
+          lat: cafe.lat,
+          lng: cafe.lng,
           openingHours: cafe.openingHours,
           links: cafe.links,
           venueType: cafe.venueType,

@@ -4,6 +4,7 @@ import {
   cafeGameBulkInputSchema,
   cafeGameCopiesSchema,
   cafeGameInputSchema,
+  cafeMapFilterSchema,
   cafePhotoCaptionSchema,
   cafePhotoReorderSchema,
   cafeUpdateSchema,
@@ -30,6 +31,7 @@ import {
   getCafeBySlugService,
   getCafeForManageService,
   getCafeForOwnerService,
+  getCafeMapPinsService,
   listCafesService,
   removeGameFromCafeService,
   reorderCafePhotosService,
@@ -103,6 +105,9 @@ export const cafeRoutes = new Hono<AppEnv>()
       );
     },
   )
+  .get('/map', zValidator('query', cafeMapFilterSchema), async (c) => {
+    return c.json(await getCafeMapPinsService(c.req.valid('query')));
+  })
   .get('/:slug', async (c) => {
     return c.json(await getCafeBySlugService(c.req.param('slug')));
   })

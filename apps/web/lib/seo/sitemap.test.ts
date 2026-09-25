@@ -10,6 +10,7 @@ describe('entry builders', () => {
       'https://onboard.j2teamnnl.com',
       'https://onboard.j2teamnnl.com/games',
       'https://onboard.j2teamnnl.com/cafes',
+      'https://onboard.j2teamnnl.com/map',
       'https://onboard.j2teamnnl.com/developers',
       'https://onboard.j2teamnnl.com/data-sources',
     ]);

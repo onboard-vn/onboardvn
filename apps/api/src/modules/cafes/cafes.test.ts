@@ -327,6 +327,26 @@ describe('cafes directory', () => {
     expect(manageBody.feeModel).toBe('hourly');
   });
 
+  it('shows lat/lng for a public_info_only café (pin placed from a public address)', async () => {
+    const { json: cafe } = await createCafe(
+      baseCafeBody({
+        consentStatus: 'public_info_only',
+        sourceUrl: 'https://example.test',
+        lat: 21.0285,
+        lng: 105.8542,
+      }),
+    );
+
+    const detailRes = await publicApp.request(`/api/cafes/${cafe.slug}`);
+    const detailBody = (await detailRes.json()) as { lat: number | null; lng: number | null };
+    expect(detailBody.lat).toBe(21.0285);
+    expect(detailBody.lng).toBe(105.8542);
+
+    const listRes = await publicApp.request(`/api/cafes?province=${PROVINCE_A.slug}&pageSize=50`);
+    const listBody = (await listRes.json()) as { items: { id: string; lat: number | null }[] };
+    expect(listBody.items.find((c) => c.id === cafe.id)?.lat).toBe(21.0285);
+  });
+
   it('defaults byogAllowed to true for a byog_cafe when unset', async () => {
     const { json: cafe } = await createCafe(baseCafeBody({ venueType: 'byog_cafe' }));
     const manageRes = await maintainerApp.request(`/api/cafes/${cafe.id}/manage`);

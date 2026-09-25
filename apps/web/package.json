@@ -3,12 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/copy-maplibre-worker.mjs",
     "dev": "next dev --port 3000",
+    "prebuild": "node scripts/copy-maplibre-worker.mjs",
     "build": "next build",
     "start": "next start --port 3000",
     "lint": "eslint .",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
+    "pretest:e2e": "node scripts/copy-maplibre-worker.mjs",
     "test:e2e": "playwright test"
   },
   "dependencies": {
@@ -21,6 +24,7 @@
     "cn": "^0.4.0",
     "hono": "^4.13.9",
     "lucide-react": "^1.47.0",
+    "maplibre-gl": "6.11.1",
     "marked": "18.0.14",
     "next": "16.3.6",
     "qrcode": "^1.5.4",
@@ -33,6 +37,7 @@
   "devDependencies": {
     "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
+    "@types/geojson": "^7946.0.16",
     "@types/node": "^22.0.0",
     "@types/pg": "^8.23.1",
     "@types/qrcode": "^1.5.6",

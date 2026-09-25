@@ -8,6 +8,7 @@ export function staticEntries(siteUrl: string): MetadataRoute.Sitemap {
     { url: siteUrl, changeFrequency: 'weekly', priority: 1 },
     { url: `${siteUrl}/games`, changeFrequency: 'daily', priority: 0.8 },
     { url: `${siteUrl}/cafes`, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${siteUrl}/map`, changeFrequency: 'daily', priority: 0.7 },
     { url: `${siteUrl}/developers`, changeFrequency: 'monthly', priority: 0.3 },
     { url: `${siteUrl}/data-sources`, changeFrequency: 'monthly', priority: 0.3 },
   ];

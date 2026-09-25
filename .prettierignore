@@ -4,3 +4,4 @@ LICENSE
 .next/
 dist/
 .claude/
+apps/web/public/maplibre/

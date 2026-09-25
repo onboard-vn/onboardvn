@@ -12,6 +12,7 @@ import { useState, type FormEvent } from 'react';
 import { AmenitiesFields } from '@/components/cafe/amenities-fields';
 import { OpeningHoursEditor } from '@/components/cafe/opening-hours-editor';
 import { FormError } from '@/components/form-error';
+import { PinEditor } from '@/components/pin-editor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,6 +24,8 @@ export interface OwnerCafeFormInitial {
   name: string;
   addressLine: string;
   legacyDistrict: string | null;
+  lat: number | null;
+  lng: number | null;
   openingHours?: CafeOpeningHours;
   links?: CafeLinks;
   venueType: VenueType;
@@ -42,6 +45,8 @@ export function OwnerCafeForm({ initial }: { initial: OwnerCafeFormInitial }) {
   const [amenities, setAmenities] = useState<CafeAmenities>(initial.amenities ?? {});
   const [feeModel, setFeeModel] = useState<CafeFeeModel>(initial.feeModel ?? 'unknown');
   const [hours, setHours] = useState<CafeOpeningHours>(initial.openingHours);
+  const [lat, setLat] = useState<number | null>(initial.lat);
+  const [lng, setLng] = useState<number | null>(initial.lng);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -77,6 +82,8 @@ export function OwnerCafeForm({ initial }: { initial: OwnerCafeFormInitial }) {
         name: str('name') ?? initial.name,
         addressLine: str('addressLine') ?? initial.addressLine,
         legacyDistrict: str('legacyDistrict'),
+        lat,
+        lng,
         venueType,
         amenities,
         feeModel,
@@ -133,6 +140,17 @@ export function OwnerCafeForm({ initial }: { initial: OwnerCafeFormInitial }) {
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="border-t pt-4">
+        <PinEditor
+          lat={lat}
+          lng={lng}
+          onChange={(la, ln) => {
+            setLat(la);
+            setLng(ln);
+          }}
+        />
       </div>
 
       <div className="flex flex-col gap-2 border-t pt-4">

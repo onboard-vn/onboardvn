@@ -35,7 +35,7 @@ export default defineConfig({
       stderr: 'pipe',
     },
     {
-      command: `npx next dev --port ${WEB_PORT}`,
+      command: `node scripts/copy-maplibre-worker.mjs && npx next dev --port ${WEB_PORT}`,
       cwd: '.',
       port: WEB_PORT,
       reuseExistingServer: false,
