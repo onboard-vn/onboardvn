@@ -10,6 +10,7 @@ dependencies: [1, 6]
 ## Context
 - Ván cá nhân = ván nhóm chỉ có 1 người chơi → **1 mô hình duy nhất**.
 - Cafe tham chiếu `cafes.id` (apps/api/src/db/schema/cafes.ts:17); chỉ chọn quán không `pending` (cùng rule public tại apps/api/src/modules/cafes/repo.ts:26).
+- Xóa user: `plays.createdBy` → **set null** (ván còn cho người chơi khác; chỉ admin sửa/xóa ván mồ côi), `play_players` dòng của họ cascade.
 - Chạy sau phase 6 (thứ tự thực thi, plan.md) → phase này thêm `plays.meetupId`, `plays.meetupTableId` (bảng `meetups`, `meetup_tables` của [phase 6](./phase-06-events.md)). `clubId` thêm ở phase 5 — không tạo sớm.
 - `exp(user, game)` (định nghĩa ở [phase 4](./phase-04-profile-stats-feed.md)) = `COUNT(DISTINCT plays.id)` qua `play_players.userId` → phase này chỉ cần đảm bảo index; không lưu counter.
 

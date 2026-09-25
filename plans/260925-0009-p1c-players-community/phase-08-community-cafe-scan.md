@@ -13,20 +13,20 @@ dependencies: [1, 7]
 - Lookup barcode chỉ maintainer (apps/api/src/modules/barcodes/routes.ts:11,17). Rate limit hiện theo IP (apps/api/src/lib/rate-limit.ts:6-15).
 
 ## Requirements
-- User đăng nhập (email đã xác minh) quét/thêm game vào kho quán bất kỳ không `pending` → hiện ngay, nhãn "Cộng đồng đóng góp".
+- User đăng nhập (email đã xác minh) quét/thêm game vào kho quán **công khai** (predicate `isPubliclyVisibleCafe` của phase 7: không `pending`, không `declined`) → hiện ngay; quán `declined` → 403 cho mọi đóng góp cộng đồng (test), nhãn "Cộng đồng đóng góp".
 - Game đã có trong kho → không đổi gì (không ghi đè nguồn).
 - Chủ quán/staff (phase 7) hoặc maintainer/admin: **gỡ** hoặc **xác nhận** (bỏ nhãn → `source='owner'|'staff'`).
 - Danh tính người đóng góp: **chỉ role `admin`** thấy (đã chốt). Maintainer/chủ quán/public chỉ thấy nhãn.
 - Chống lạm dụng: rate limit theo user (30 request thêm/giờ, bulk ≤ 20 game), audit mọi thêm/gỡ/xác nhận; game đã bị chủ quán/staff gỡ thì cộng đồng không thêm lại được; admin chặn user đóng góp + gỡ hàng loạt đóng góp của 1 user.
 
 ## Data
-- `cafe_games` thêm `source text enum('staff','owner','community') default 'staff' not null` (dòng cũ = staff).
+- `cafe_games` thêm `source text enum('staff','owner','community') default 'staff' not null` (dòng cũ = staff; dòng `addedVia='import'` từ import CSV của owner ở phase 7 → `owner`).
 - `cafe_game_events(id, cafeId, gameId, userId, action 'add'|'remove'|'confirm', source, createdAt)` index (cafeId,gameId), (userId, createdAt).
 - `users.contributionBlockedAt timestamp null` (additionalField, input false).
 
 ## Files
-- Create: `apps/api/src/modules/cafes/community.ts` (service community add/confirm/remove + audit), `apps/api/src/modules/cafes/community.test.ts`, `apps/web/app/cafes/[slug]/dong-gop/page.tsx` (quét/tìm game → thêm), `apps/web/app/admin/dong-gop/page.tsx`.
-- Modify: `apps/api/src/lib/user-rate-limit.ts` (tạo ở phase 1; thêm limiter đóng góp), `apps/api/src/db/schema/cafes.ts`, `apps/api/src/modules/cafes/{routes,service,repo}.ts` (DTO: public/owner thêm `community:boolean`; `addedBy` chỉ khi actor là admin), `packages/shared/src/cafes.ts` (enum source, DTO), `apps/api/src/modules/barcodes/routes.ts` (GET lookup → requireUser + user rate limit; POST link giữ maintainer), `apps/api/src/auth/better-auth.ts`, `apps/web/components/scan-session.tsx` (mode `community`: không link barcode — đã chốt, chỉ chọn game có sẵn; mã chưa biết → báo "chưa có trong catalog"), `apps/web/app/cafes/[slug]/page.tsx` (nhãn + nút "Đóng góp"), `apps/web/app/quan-cua-toi/[id]/page.tsx` (lọc + xác nhận/gỡ).
+- Create: `apps/api/src/modules/cafes/community.ts` (service community add/confirm/remove + audit), `apps/api/src/modules/cafes/community.test.ts`, `apps/web/app/cafes/[slug]/contribute/page.tsx` (quét/tìm game → thêm), `apps/web/app/admin/contributions/page.tsx`.
+- Modify: `apps/api/src/lib/user-rate-limit.ts` (tạo ở phase 1; thêm limiter đóng góp), `apps/api/src/db/schema/cafes.ts`, `apps/api/src/modules/cafes/{routes,service,repo}.ts` (DTO: public/owner thêm `community:boolean`; `addedBy` chỉ khi actor là admin), `packages/shared/src/cafes.ts` (enum source, DTO), `apps/api/src/modules/barcodes/routes.ts` (GET lookup → requireUser + user rate limit; POST link giữ maintainer), `apps/api/src/auth/better-auth.ts`, `apps/web/components/scan-session.tsx` (mode `community`: không link barcode — đã chốt, chỉ chọn game có sẵn; mã chưa biết → báo "chưa có trong catalog"), `apps/web/app/cafes/[slug]/page.tsx` (nhãn + nút "Đóng góp"), `apps/web/app/my-cafes/[id]/page.tsx` (lọc + xác nhận/gỡ).
 
 ## API
 - `POST /cafes/:id/community-games {gameIds}` (requireUser, verified, not blocked, user rate limit).
