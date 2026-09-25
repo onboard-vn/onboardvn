@@ -19,6 +19,19 @@ export const requireUser = createMiddleware<AppEnv & { Variables: { user: Sessio
   },
 );
 
+/** Defense in depth: Better Auth already requires email verification before a session exists,
+ * but community-contribution routes re-check here in case that policy ever changes. */
+export const requireVerifiedUser = createMiddleware<AppEnv & { Variables: { user: SessionUser } }>(
+  async (c, next) => {
+    const user = c.get('user');
+    if (!user) throw new ApiError('UNAUTHENTICATED', 401, 'Bạn cần đăng nhập');
+    if (!user.emailVerified) {
+      throw new ApiError('FORBIDDEN', 403, 'Cần xác minh email trước khi đóng góp');
+    }
+    await next();
+  },
+);
+
 export const requireRole = (...roles: Role[]) =>
   createMiddleware<AppEnv & { Variables: { user: SessionUser } }>(async (c, next) => {
     const user = c.get('user');

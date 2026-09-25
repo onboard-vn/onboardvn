@@ -65,6 +65,11 @@ export const auth = betterAuth({
         defaultValue: false,
         input: false,
       },
+      contributionBlockedAt: {
+        type: 'date',
+        required: false,
+        input: false,
+      },
     },
   },
   databaseHooks: {

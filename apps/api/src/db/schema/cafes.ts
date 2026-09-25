@@ -79,10 +79,36 @@ export const cafeGames = pgTable(
     addedVia: text({ enum: ['manual', 'scan', 'import'] })
       .notNull()
       .default('manual'),
+    source: text({ enum: ['staff', 'owner', 'community'] })
+      .notNull()
+      .default('staff'),
   },
   (table) => [
     primaryKey({ columns: [table.cafeId, table.gameId] }),
     index('cafe_games_game_id_idx').on(table.gameId),
+  ],
+);
+
+/** Audit trail for community-contributed inventory rows: one row per add/remove/confirm action,
+ * used to decide whether a community re-add is blocked (see community.ts). */
+export const cafeGameEvents = pgTable(
+  'cafe_game_events',
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    cafeId: uuid()
+      .notNull()
+      .references(() => cafes.id, { onDelete: 'cascade' }),
+    gameId: uuid()
+      .notNull()
+      .references(() => games.id, { onDelete: 'cascade' }),
+    userId: text().references(() => users.id, { onDelete: 'set null' }),
+    action: text({ enum: ['add', 'remove', 'confirm'] }).notNull(),
+    source: text({ enum: ['staff', 'owner', 'community'] }).notNull(),
+    createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    index('cafe_game_events_cafe_game_idx').on(table.cafeId, table.gameId),
+    index('cafe_game_events_user_created_at_idx').on(table.userId, table.createdAt),
   ],
 );
 

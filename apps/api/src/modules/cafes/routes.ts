@@ -1,4 +1,5 @@
 import {
+  adminContributionsQuerySchema,
   cafeCreateSchema,
   cafeFilterSchema,
   cafeGameBulkInputSchema,
@@ -8,17 +9,30 @@ import {
   cafePhotoCaptionSchema,
   cafePhotoReorderSchema,
   cafeUpdateSchema,
+  communityGamesInputSchema,
   idAndGameIdParamSchema,
   idAndPhotoIdParamSchema,
   idParamSchema,
+  userIdParamSchema,
+  type CafeGameSource,
+  type CafeMemberRole,
 } from '@onboard/shared';
 import { Hono } from 'hono';
 import { bodyLimit } from 'hono/body-limit';
 import { requireCafeRole } from '../../auth/cafe-role.js';
-import { requireRole } from '../../auth/middleware.js';
+import { requireRole, requireUser, requireVerifiedUser } from '../../auth/middleware.js';
 import { ApiError } from '../../lib/errors.js';
+import { userRateLimit } from '../../lib/user-rate-limit.js';
 import { zValidator } from '../../lib/validator.js';
 import type { AppEnv } from '../../types.js';
+import {
+  addCommunityGamesService,
+  adminBlockContributionsService,
+  adminListContributionsService,
+  adminRemoveCommunityGamesService,
+  adminUnblockContributionsService,
+  confirmCafeGameService,
+} from './community.js';
 import {
   addCafePhotoService,
   addGameToCafeService,
@@ -42,6 +56,20 @@ import {
 } from './service.js';
 
 const MAX_MEDIA_UPLOAD_BYTES = 5 * 1024 * 1024;
+const COMMUNITY_ADD_HOURLY_LIMIT = 30;
+const HOUR_MS = 60 * 60 * 1000;
+
+/** Café-scoped `owner` keeps `source: 'owner'`; `staff` and the global maintainer/admin bypass
+ * (null `cafeMemberRole`) all count as `staff` for provenance purposes. */
+function sourceForMember(memberRole: CafeMemberRole | null): CafeGameSource {
+  return memberRole === 'owner' ? 'owner' : 'staff';
+}
+
+/** Global maintainer/admin route guards leave `cafeMemberRole` unset, so the manage-DTO actor is
+ * derived straight from the session role instead. */
+function manageActor(role: string | null | undefined): 'maintainer' | 'admin' {
+  return role === 'admin' ? 'admin' : 'maintainer';
+}
 
 /** Rejects an oversized body before it's fully buffered by `parseBody`. */
 const mediaBodyLimit = bodyLimit({
@@ -91,201 +119,296 @@ function stripOwnerOnlyFields<
   return rest;
 }
 
-export const cafeRoutes = new Hono<AppEnv>()
-  .get('/', zValidator('query', cafeFilterSchema), async (c) => {
-    return c.json(await listCafesService(c.req.valid('query')));
-  })
+export interface CafeRoutesOptions {
+  rateLimit: boolean;
+}
+
+export const cafeRoutes = ({ rateLimit }: CafeRoutesOptions) =>
+  new Hono<AppEnv>()
+    .get('/', zValidator('query', cafeFilterSchema), async (c) => {
+      return c.json(await listCafesService(c.req.valid('query')));
+    })
+    .get(
+      '/manage',
+      requireRole('maintainer', 'admin'),
+      zValidator('query', cafeFilterSchema),
+      async (c) => {
+        return c.json(
+          await listCafesService(c.req.valid('query'), { includePending: true, showAll: true }),
+        );
+      },
+    )
+    .get('/map', zValidator('query', cafeMapFilterSchema), async (c) => {
+      return c.json(await getCafeMapPinsService(c.req.valid('query')));
+    })
+    .get('/:slug', async (c) => {
+      return c.json(await getCafeBySlugService(c.req.param('slug')));
+    })
+    .get(
+      '/:id/manage',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idParamSchema),
+      async (c) => {
+        const cafe = c.get('cafeMemberRole')
+          ? await getCafeForOwnerService(c.req.param('id'))
+          : await getCafeForManageService(c.req.param('id'), manageActor(c.var.user.role));
+        return c.json(cafe);
+      },
+    )
+    .post(
+      '/',
+      requireRole('maintainer', 'admin'),
+      zValidator('json', cafeCreateSchema),
+      async (c) => {
+        const cafe = await createCafeService(
+          c.req.valid('json'),
+          c.var.user.id,
+          manageActor(c.var.user.role),
+        );
+        return c.json(cafe, 201);
+      },
+    )
+    .patch(
+      '/:id',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idParamSchema),
+      zValidator('json', cafeUpdateSchema),
+      async (c) => {
+        const memberRole = c.get('cafeMemberRole');
+        const input = memberRole ? stripOwnerOnlyFields(c.req.valid('json')) : c.req.valid('json');
+        await updateCafeService(c.req.param('id'), input);
+        const cafe = memberRole
+          ? await getCafeForOwnerService(c.req.param('id'))
+          : await getCafeForManageService(c.req.param('id'), manageActor(c.var.user.role));
+        return c.json(cafe);
+      },
+    )
+    .delete(
+      '/:id',
+      requireRole('maintainer', 'admin'),
+      zValidator('param', idParamSchema),
+      async (c) => {
+        await deleteCafeService(c.req.param('id'));
+        return c.body(null, 204);
+      },
+    )
+    .post(
+      '/:id/games',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idParamSchema),
+      zValidator('json', cafeGameInputSchema),
+      async (c) => {
+        const memberRole = c.get('cafeMemberRole');
+        await addGameToCafeService(
+          c.req.param('id'),
+          c.req.valid('json'),
+          c.var.user.id,
+          sourceForMember(memberRole),
+        );
+        const cafe = memberRole
+          ? await getCafeForOwnerService(c.req.param('id'))
+          : await getCafeForManageService(c.req.param('id'), manageActor(c.var.user.role));
+        return c.json(cafe, 201);
+      },
+    )
+    .patch(
+      '/:id/games/:gameId',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idAndGameIdParamSchema),
+      zValidator('json', cafeGameCopiesSchema),
+      async (c) => {
+        const memberRole = c.get('cafeMemberRole');
+        await updateCafeGameCopiesService(
+          c.req.param('id'),
+          c.req.param('gameId'),
+          c.req.valid('json').copies,
+        );
+        const cafe = memberRole
+          ? await getCafeForOwnerService(c.req.param('id'))
+          : await getCafeForManageService(c.req.param('id'), manageActor(c.var.user.role));
+        return c.json(cafe);
+      },
+    )
+    .delete(
+      '/:id/games/:gameId',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idAndGameIdParamSchema),
+      async (c) => {
+        const memberRole = c.get('cafeMemberRole');
+        await removeGameFromCafeService(
+          c.req.param('id'),
+          c.req.param('gameId'),
+          c.var.user.id,
+          sourceForMember(memberRole),
+        );
+        const cafe = memberRole
+          ? await getCafeForOwnerService(c.req.param('id'))
+          : await getCafeForManageService(c.req.param('id'), manageActor(c.var.user.role));
+        return c.json(cafe);
+      },
+    )
+    .post(
+      '/:id/games/:gameId/confirm',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idAndGameIdParamSchema),
+      async (c) => {
+        const memberRole = c.get('cafeMemberRole');
+        await confirmCafeGameService(
+          c.req.param('id'),
+          c.req.param('gameId'),
+          c.var.user.id,
+          sourceForMember(memberRole),
+        );
+        const cafe = memberRole
+          ? await getCafeForOwnerService(c.req.param('id'))
+          : await getCafeForManageService(c.req.param('id'), manageActor(c.var.user.role));
+        return c.json(cafe);
+      },
+    )
+    .post(
+      '/:id/community-games',
+      requireUser,
+      requireVerifiedUser,
+      userRateLimit({ limit: COMMUNITY_ADD_HOURLY_LIMIT, windowMs: HOUR_MS, enabled: rateLimit }),
+      zValidator('param', idParamSchema),
+      zValidator('json', communityGamesInputSchema),
+      async (c) => {
+        const result = await addCommunityGamesService(
+          c.req.param('id'),
+          c.req.valid('json').gameIds,
+          c.var.user,
+        );
+        return c.json(result, 201);
+      },
+    )
+    .post(
+      '/:id/games/bulk',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idParamSchema),
+      zValidator('json', cafeGameBulkInputSchema),
+      async (c) => {
+        const memberRole = c.get('cafeMemberRole');
+        const body = c.req.valid('json');
+        // Café-scoped members can't claim 'import'/'scan' provenance for a manual bulk-add.
+        const addedVia = memberRole ? undefined : body.addedVia;
+        const result = await bulkAddGamesToCafeService(
+          c.req.param('id'),
+          body.gameIds,
+          c.var.user.id,
+          sourceForMember(memberRole),
+          addedVia,
+        );
+        return c.json(result);
+      },
+    )
+    .post(
+      '/:id/logo',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idParamSchema),
+      mediaBodyLimit,
+      async (c) => {
+        const { file } = await readImageFile(c);
+        const cafe = await setCafeLogoService(c.req.param('id'), file);
+        return c.json(cafe);
+      },
+    )
+    .delete(
+      '/:id/logo',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idParamSchema),
+      async (c) => {
+        const cafe = await deleteCafeLogoService(c.req.param('id'));
+        return c.json(cafe);
+      },
+    )
+    .post(
+      '/:id/cover',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idParamSchema),
+      mediaBodyLimit,
+      async (c) => {
+        const { file } = await readImageFile(c);
+        const cafe = await setCafeCoverService(c.req.param('id'), file);
+        return c.json(cafe);
+      },
+    )
+    .delete(
+      '/:id/cover',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idParamSchema),
+      async (c) => {
+        const cafe = await deleteCafeCoverService(c.req.param('id'));
+        return c.json(cafe);
+      },
+    )
+    .post(
+      '/:id/photos',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idParamSchema),
+      mediaBodyLimit,
+      async (c) => {
+        const { file, caption } = await readPhotoUpload(c);
+        const cafe = await addCafePhotoService(c.req.param('id'), file, caption, c.var.user.id);
+        return c.json(cafe, 201);
+      },
+    )
+    .patch(
+      '/:id/photos/reorder',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idParamSchema),
+      zValidator('json', cafePhotoReorderSchema),
+      async (c) => {
+        const cafe = await reorderCafePhotosService(
+          c.req.param('id'),
+          c.req.valid('json').photoIds,
+        );
+        return c.json(cafe);
+      },
+    )
+    .delete(
+      '/:id/photos/:photoId',
+      requireCafeRole('owner', 'staff'),
+      zValidator('param', idAndPhotoIdParamSchema),
+      async (c) => {
+        const cafe = await deleteCafePhotoService(c.req.param('id'), c.req.param('photoId'));
+        return c.json(cafe);
+      },
+    );
+
+export const adminCafeRoutes = new Hono<AppEnv>()
   .get(
-    '/manage',
-    requireRole('maintainer', 'admin'),
-    zValidator('query', cafeFilterSchema),
+    '/contributions',
+    requireRole('admin'),
+    zValidator('query', adminContributionsQuerySchema),
     async (c) => {
-      return c.json(
-        await listCafesService(c.req.valid('query'), { includePending: true, showAll: true }),
-      );
-    },
-  )
-  .get('/map', zValidator('query', cafeMapFilterSchema), async (c) => {
-    return c.json(await getCafeMapPinsService(c.req.valid('query')));
-  })
-  .get('/:slug', async (c) => {
-    return c.json(await getCafeBySlugService(c.req.param('slug')));
-  })
-  .get(
-    '/:id/manage',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idParamSchema),
-    async (c) => {
-      const cafe = c.get('cafeMemberRole')
-        ? await getCafeForOwnerService(c.req.param('id'))
-        : await getCafeForManageService(c.req.param('id'));
-      return c.json(cafe);
+      return c.json(await adminListContributionsService(c.req.valid('query')));
     },
   )
   .post(
-    '/',
-    requireRole('maintainer', 'admin'),
-    zValidator('json', cafeCreateSchema),
+    '/users/:userId/contribution-block',
+    requireRole('admin'),
+    zValidator('param', userIdParamSchema),
     async (c) => {
-      const cafe = await createCafeService(c.req.valid('json'), c.var.user.id);
-      return c.json(cafe, 201);
-    },
-  )
-  .patch(
-    '/:id',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idParamSchema),
-    zValidator('json', cafeUpdateSchema),
-    async (c) => {
-      const memberRole = c.get('cafeMemberRole');
-      const input = memberRole ? stripOwnerOnlyFields(c.req.valid('json')) : c.req.valid('json');
-      await updateCafeService(c.req.param('id'), input);
-      const cafe = memberRole
-        ? await getCafeForOwnerService(c.req.param('id'))
-        : await getCafeForManageService(c.req.param('id'));
-      return c.json(cafe);
-    },
-  )
-  .delete(
-    '/:id',
-    requireRole('maintainer', 'admin'),
-    zValidator('param', idParamSchema),
-    async (c) => {
-      await deleteCafeService(c.req.param('id'));
+      await adminBlockContributionsService(c.req.valid('param').userId, c.var.user.id);
       return c.body(null, 204);
     },
   )
-  .post(
-    '/:id/games',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idParamSchema),
-    zValidator('json', cafeGameInputSchema),
+  .delete(
+    '/users/:userId/contribution-block',
+    requireRole('admin'),
+    zValidator('param', userIdParamSchema),
     async (c) => {
-      const memberRole = c.get('cafeMemberRole');
-      await addGameToCafeService(c.req.param('id'), c.req.valid('json'), c.var.user.id);
-      const cafe = memberRole
-        ? await getCafeForOwnerService(c.req.param('id'))
-        : await getCafeForManageService(c.req.param('id'));
-      return c.json(cafe, 201);
+      await adminUnblockContributionsService(c.req.valid('param').userId, c.var.user.id);
+      return c.body(null, 204);
     },
   )
-  .patch(
-    '/:id/games/:gameId',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idAndGameIdParamSchema),
-    zValidator('json', cafeGameCopiesSchema),
+  .delete(
+    '/users/:userId/community-games',
+    requireRole('admin'),
+    zValidator('param', userIdParamSchema),
     async (c) => {
-      const memberRole = c.get('cafeMemberRole');
-      await updateCafeGameCopiesService(
-        c.req.param('id'),
-        c.req.param('gameId'),
-        c.req.valid('json').copies,
+      return c.json(
+        await adminRemoveCommunityGamesService(c.req.valid('param').userId, c.var.user.id),
       );
-      const cafe = memberRole
-        ? await getCafeForOwnerService(c.req.param('id'))
-        : await getCafeForManageService(c.req.param('id'));
-      return c.json(cafe);
-    },
-  )
-  .delete(
-    '/:id/games/:gameId',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idAndGameIdParamSchema),
-    async (c) => {
-      const memberRole = c.get('cafeMemberRole');
-      await removeGameFromCafeService(c.req.param('id'), c.req.param('gameId'));
-      const cafe = memberRole
-        ? await getCafeForOwnerService(c.req.param('id'))
-        : await getCafeForManageService(c.req.param('id'));
-      return c.json(cafe);
-    },
-  )
-  .post(
-    '/:id/games/bulk',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idParamSchema),
-    zValidator('json', cafeGameBulkInputSchema),
-    async (c) => {
-      const memberRole = c.get('cafeMemberRole');
-      const body = c.req.valid('json');
-      // Café-scoped members can't claim 'import'/'scan' provenance for a manual bulk-add.
-      const addedVia = memberRole ? undefined : body.addedVia;
-      const result = await bulkAddGamesToCafeService(
-        c.req.param('id'),
-        body.gameIds,
-        c.var.user.id,
-        addedVia,
-      );
-      return c.json(result);
-    },
-  )
-  .post(
-    '/:id/logo',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idParamSchema),
-    mediaBodyLimit,
-    async (c) => {
-      const { file } = await readImageFile(c);
-      const cafe = await setCafeLogoService(c.req.param('id'), file);
-      return c.json(cafe);
-    },
-  )
-  .delete(
-    '/:id/logo',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idParamSchema),
-    async (c) => {
-      const cafe = await deleteCafeLogoService(c.req.param('id'));
-      return c.json(cafe);
-    },
-  )
-  .post(
-    '/:id/cover',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idParamSchema),
-    mediaBodyLimit,
-    async (c) => {
-      const { file } = await readImageFile(c);
-      const cafe = await setCafeCoverService(c.req.param('id'), file);
-      return c.json(cafe);
-    },
-  )
-  .delete(
-    '/:id/cover',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idParamSchema),
-    async (c) => {
-      const cafe = await deleteCafeCoverService(c.req.param('id'));
-      return c.json(cafe);
-    },
-  )
-  .post(
-    '/:id/photos',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idParamSchema),
-    mediaBodyLimit,
-    async (c) => {
-      const { file, caption } = await readPhotoUpload(c);
-      const cafe = await addCafePhotoService(c.req.param('id'), file, caption, c.var.user.id);
-      return c.json(cafe, 201);
-    },
-  )
-  .patch(
-    '/:id/photos/reorder',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idParamSchema),
-    zValidator('json', cafePhotoReorderSchema),
-    async (c) => {
-      const cafe = await reorderCafePhotosService(c.req.param('id'), c.req.valid('json').photoIds);
-      return c.json(cafe);
-    },
-  )
-  .delete(
-    '/:id/photos/:photoId',
-    requireCafeRole('owner', 'staff'),
-    zValidator('param', idAndPhotoIdParamSchema),
-    async (c) => {
-      const cafe = await deleteCafePhotoService(c.req.param('id'), c.req.param('photoId'));
-      return c.json(cafe);
     },
   );

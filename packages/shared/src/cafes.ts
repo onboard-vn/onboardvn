@@ -6,6 +6,9 @@ export type CafeConsentStatus = z.infer<typeof cafeConsentStatusEnum>;
 export const cafeGameAddedViaEnum = z.enum(['manual', 'scan', 'import']);
 export type CafeGameAddedVia = z.infer<typeof cafeGameAddedViaEnum>;
 
+export const cafeGameSourceEnum = z.enum(['staff', 'owner', 'community']);
+export type CafeGameSource = z.infer<typeof cafeGameSourceEnum>;
+
 export const venueTypeEnum = z.enum(['boardgame_cafe', 'byog_cafe', 'event_space']);
 export type VenueType = z.infer<typeof venueTypeEnum>;
 
@@ -425,6 +428,9 @@ export const cafeGameBulkInputSchema = z.object({
 });
 export type CafeGameBulkInput = z.infer<typeof cafeGameBulkInputSchema>;
 
+export const communityGamesInputSchema = z.object({ gameIds: z.array(z.uuid()).min(1).max(20) });
+export type CommunityGamesInput = z.infer<typeof communityGamesInputSchema>;
+
 export interface CafeInventoryCategoryDto {
   id: string;
   name: string;
@@ -442,11 +448,14 @@ export interface CafeInventoryItemDto {
   maxPlayers: number | null;
   playMinutes: number | null;
   categories: CafeInventoryCategoryDto[];
+  /** true when this row's `source` is `community` — shown to every actor as a label. */
+  community: boolean;
 }
 
-export interface CafeMaintainerInventoryItemDto extends CafeInventoryItemDto {
-  addedVia: CafeGameAddedVia;
-  addedBy: string | null;
+/** `addedBy` is optional on purpose: present only for the `admin` actor (see `toInventoryDto`
+ * in service.ts) — a `maintainer` actor gets this same DTO shape but never the key itself. */
+export interface CafeMaintainerInventoryItemDto extends CafeOwnerInventoryItemDto {
+  addedBy?: string | null;
 }
 
 export interface CafePublicSummaryDto {
@@ -512,6 +521,7 @@ export interface CafeMaintainerListResponse {
  * given inventory row (only admins see community-contribution identity). */
 export interface CafeOwnerInventoryItemDto extends CafeInventoryItemDto {
   addedVia: CafeGameAddedVia;
+  source: CafeGameSource;
 }
 
 /** consentNote carries the owner's private decline reason for admins only — never sent to the
@@ -537,4 +547,36 @@ export interface CafeForGameDto {
 export interface BulkAddGamesResult {
   added: number;
   skipped: number;
+}
+
+/** `skippedRemoved`: requested ids whose latest café event is a `remove` by staff/owner —
+ * community can't re-add those without a staff/owner confirm first. */
+export interface CommunityAddGamesResult extends BulkAddGamesResult {
+  skippedRemoved: number;
+}
+
+export const adminContributionsQuerySchema = z.object({
+  userId: z.string().min(1).optional(),
+  cafeId: z.uuid().optional(),
+  page: z.coerce.number().int().positive().default(1),
+  pageSize: z.coerce.number().int().positive().max(100).default(20),
+});
+export type AdminContributionsQuery = z.infer<typeof adminContributionsQuerySchema>;
+
+export interface AdminContributionItemDto {
+  id: string;
+  cafeId: string;
+  cafeName: string;
+  gameId: string;
+  gameNameEn: string;
+  userId: string | null;
+  userName: string | null;
+  createdAt: string;
+}
+
+export interface AdminContributionListResponse {
+  items: AdminContributionItemDto[];
+  page: number;
+  pageSize: number;
+  total: number;
 }

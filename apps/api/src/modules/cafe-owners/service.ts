@@ -238,7 +238,7 @@ export async function applyInventoryImportService(
   }
 
   await db.transaction(async (tx) => {
-    await repo.upsertCafeGamesTx(tx, cafeId, items);
+    await repo.upsertCafeGamesTx(tx, cafeId, items, actorId);
     await repo.insertInventoryImportAudit(tx, cafeId, actorId, items.length);
   });
 

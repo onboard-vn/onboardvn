@@ -5,6 +5,7 @@ import type {
   CafeForGameDto,
   CafeGameAddedVia,
   CafeGameInput,
+  CafeGameSource,
   CafeInventoryItemDto,
   CafeLinks,
   CafeListResponse,
@@ -78,8 +79,29 @@ function toPhotoDto(row: CafeFullRow['photos'][number]): CafePhotoDto {
   };
 }
 
-function toInventoryDto(row: CafeFullRow['inventory'][number]): CafeInventoryItemDto {
-  return {
+export type InventoryActor = 'public' | 'owner' | 'maintainer' | 'admin';
+type ManageActor = 'maintainer' | 'admin';
+
+function toInventoryDto(
+  row: CafeFullRow['inventory'][number],
+  actor: 'public',
+): CafeInventoryItemDto;
+function toInventoryDto(
+  row: CafeFullRow['inventory'][number],
+  actor: 'owner' | 'maintainer',
+): CafeOwnerInventoryItemDto;
+function toInventoryDto(
+  row: CafeFullRow['inventory'][number],
+  actor: 'admin' | ManageActor,
+): CafeMaintainerInventoryItemDto;
+/** Single DTO builder for every actor: `public` gets the bare item + `community` label;
+ * `owner`/`maintainer` also get `addedVia`/`source`; only `admin` gets `addedBy` — the key is
+ * omitted entirely otherwise, never set to `null`/`undefined`. */
+function toInventoryDto(
+  row: CafeFullRow['inventory'][number],
+  actor: InventoryActor,
+): CafeInventoryItemDto | CafeOwnerInventoryItemDto | CafeMaintainerInventoryItemDto {
+  const base: CafeInventoryItemDto = {
     gameId: row.gameId,
     slug: row.game.slug,
     nameVi: row.game.nameVi,
@@ -94,13 +116,17 @@ function toInventoryDto(row: CafeFullRow['inventory'][number]): CafeInventoryIte
       name: gc.category.name,
       nameVi: gc.category.nameVi,
     })),
+    community: row.source === 'community',
   };
-}
+  if (actor === 'public') return base;
 
-function toMaintainerInventoryDto(
-  row: CafeFullRow['inventory'][number],
-): CafeMaintainerInventoryItemDto {
-  return { ...toInventoryDto(row), addedVia: row.addedVia, addedBy: row.addedBy };
+  const withProvenance: CafeOwnerInventoryItemDto = {
+    ...base,
+    addedVia: row.addedVia,
+    source: row.source as CafeGameSource,
+  };
+  if (actor === 'admin') return { ...withProvenance, addedBy: row.addedBy };
+  return withProvenance;
 }
 
 function toPublicDetail(row: CafeFullRow, forceShowAll = false): CafePublicDetailDto {
@@ -128,12 +154,14 @@ function toPublicDetail(row: CafeFullRow, forceShowAll = false): CafePublicDetai
     feeNote: hideDetails ? undefined : row.feeNote,
     logoUrl: hideDetails ? undefined : row.logoPath ? storage.url(row.logoPath) : null,
     coverUrl: hideDetails ? undefined : row.coverPath ? storage.url(row.coverPath) : null,
-    inventory: row.inventory.map(toInventoryDto),
+    inventory: row.inventory.map((item) => toInventoryDto(item, 'public')),
     photos: hideDetails ? [] : row.photos.map(toPhotoDto),
   };
 }
 
-function toMaintainerDto(row: CafeFullRow): CafeMaintainerDto {
+/** `actor` decides whether `addedBy` is present on each inventory item — only `admin` sees it
+ * (see {@link toInventoryDto}); a `maintainer` caller gets the same DTO shape without the key. */
+function toMaintainerDto(row: CafeFullRow, actor: ManageActor): CafeMaintainerDto {
   return {
     ...toPublicDetail(row, true),
     sourceUrl: row.sourceUrl,
@@ -141,12 +169,8 @@ function toMaintainerDto(row: CafeFullRow): CafeMaintainerDto {
     consentNote: row.consentNote,
     verifiedAt: row.verifiedAt ? row.verifiedAt.toISOString() : null,
     createdBy: row.createdBy,
-    inventory: row.inventory.map(toMaintainerInventoryDto),
+    inventory: row.inventory.map((item) => toInventoryDto(item, actor)),
   };
-}
-
-function toOwnerInventoryDto(row: CafeFullRow['inventory'][number]): CafeOwnerInventoryItemDto {
-  return { ...toInventoryDto(row), addedVia: row.addedVia };
 }
 
 /** Owner/staff view of a café: same as the maintainer DTO but never exposes `addedBy` or the
@@ -157,7 +181,7 @@ function toOwnerDto(row: CafeFullRow): CafeOwnerDto {
     sourceUrl: row.sourceUrl,
     consentStatus: row.consentStatus,
     verifiedAt: row.verifiedAt ? row.verifiedAt.toISOString() : null,
-    inventory: row.inventory.map(toOwnerInventoryDto),
+    inventory: row.inventory.map((item) => toInventoryDto(item, 'owner')),
   };
 }
 
@@ -243,14 +267,17 @@ export async function getCafeBySlugService(slug: string): Promise<CafePublicDeta
   return toPublicDetail(row);
 }
 
-async function getCafeManageDtoOrThrow(id: string): Promise<CafeMaintainerDto> {
+async function getCafeManageDtoOrThrow(id: string, actor: ManageActor): Promise<CafeMaintainerDto> {
   const row = await repo.findCafeFullById(id);
   if (!row) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
-  return toMaintainerDto(row);
+  return toMaintainerDto(row, actor);
 }
 
-export async function getCafeForManageService(id: string): Promise<CafeMaintainerDto> {
-  return getCafeManageDtoOrThrow(id);
+export async function getCafeForManageService(
+  id: string,
+  actor: ManageActor,
+): Promise<CafeMaintainerDto> {
+  return getCafeManageDtoOrThrow(id, actor);
 }
 
 export async function getCafeForOwnerService(id: string): Promise<CafeOwnerDto> {
@@ -328,6 +355,7 @@ function withByogDefault<T extends CafeCreateInput['amenities'] | null>(
 export async function createCafeService(
   input: CafeCreateInput,
   userId: string,
+  actor: ManageActor,
 ): Promise<CafeMaintainerDto> {
   await assertWardInProvince(input.provinceCode, input.wardCode);
   assertConsentSourceUrl(input.consentStatus, input.sourceUrl);
@@ -336,13 +364,10 @@ export async function createCafeService(
   const amenities = withByogDefault(input.venueType, input.amenities);
   const slug = await repo.findAvailableSlug(slugify(input.name));
   const created = await repo.insertCafe({ ...input, amenities, slug, createdBy: userId });
-  return getCafeManageDtoOrThrow(created.id);
+  return getCafeManageDtoOrThrow(created.id, actor);
 }
 
-export async function updateCafeService(
-  id: string,
-  input: CafeUpdateInput,
-): Promise<CafeMaintainerDto> {
+export async function updateCafeService(id: string, input: CafeUpdateInput): Promise<void> {
   const existing = await repo.findCafeRowById(id);
   if (!existing) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
 
@@ -369,7 +394,6 @@ export async function updateCafeService(
     input.amenities !== undefined ? withByogDefault(mergedVenueType, input.amenities) : undefined;
 
   await repo.updateCafeRow(id, { ...input, ...(amenities !== undefined && { amenities }) });
-  return getCafeManageDtoOrThrow(id);
 }
 
 export async function deleteCafeService(id: string): Promise<void> {
@@ -395,7 +419,8 @@ export async function addGameToCafeService(
   cafeId: string,
   input: CafeGameInput,
   userId: string,
-): Promise<CafeMaintainerDto> {
+  source: CafeGameSource,
+): Promise<void> {
   const exists = await repo.cafeExists(cafeId);
   if (!exists) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
 
@@ -405,40 +430,40 @@ export async function addGameToCafeService(
   const duplicate = await repo.findCafeGame(cafeId, input.gameId);
   if (duplicate) throw new ApiError('CONFLICT', 409, 'Game đã có trong kho của quán này');
 
-  await repo.insertCafeGame({
+  await repo.insertCafeGameWithEvent({
     cafeId,
     gameId: input.gameId,
     copies: input.copies ?? 1,
     addedBy: userId,
     addedVia: input.addedVia ?? 'manual',
+    source,
   });
-
-  return getCafeManageDtoOrThrow(cafeId);
 }
 
 export async function updateCafeGameCopiesService(
   cafeId: string,
   gameId: string,
   copies: number,
-): Promise<CafeMaintainerDto> {
+): Promise<void> {
   const existing = await repo.findCafeGame(cafeId, gameId);
   if (!existing) throw new ApiError('NOT_FOUND', 404, 'Game không có trong kho của quán này');
   await repo.updateCafeGameCopies(cafeId, gameId, copies);
-  return getCafeManageDtoOrThrow(cafeId);
 }
 
 export async function removeGameFromCafeService(
   cafeId: string,
   gameId: string,
-): Promise<CafeMaintainerDto> {
-  await repo.deleteCafeGame(cafeId, gameId);
-  return getCafeManageDtoOrThrow(cafeId);
+  userId: string,
+  source: CafeGameSource,
+): Promise<void> {
+  await repo.deleteCafeGameWithEvent(cafeId, gameId, userId, source);
 }
 
 export async function bulkAddGamesToCafeService(
   cafeId: string,
   gameIds: string[],
   userId: string,
+  source: CafeGameSource,
   addedVia: CafeGameAddedVia = 'manual',
 ): Promise<BulkAddGamesResult> {
   const exists = await repo.cafeExists(cafeId);
@@ -448,7 +473,7 @@ export async function bulkAddGamesToCafeService(
   const allExist = await repo.gameIdsExist(uniqueIds);
   if (!allExist) throw new ApiError('VALIDATION_FAILED', 422, 'Danh sách game có mục không hợp lệ');
 
-  return repo.bulkInsertCafeGames(cafeId, uniqueIds, userId, addedVia);
+  return repo.bulkInsertCafeGames(cafeId, uniqueIds, userId, addedVia, source);
 }
 
 const MAX_MEDIA_BYTES = 5 * 1024 * 1024;

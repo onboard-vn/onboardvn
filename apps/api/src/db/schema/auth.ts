@@ -35,6 +35,7 @@ export const users = pgTable(
       .default('friends')
       .notNull(),
     emailOnFriendRequest: boolean('email_on_friend_request').default(false).notNull(),
+    contributionBlockedAt: timestamp('contribution_blocked_at'),
   },
   (table) => [uniqueIndex('users_bgg_username_lower_idx').on(sql`lower(${table.bggUsername})`)],
 );

@@ -16,7 +16,7 @@ import {
   type BarcodeProvider,
 } from './modules/barcodes/gameupc-client.js';
 import { cafeOwnerRoutes } from './modules/cafe-owners/routes.js';
-import { cafeRoutes } from './modules/cafes/routes.js';
+import { adminCafeRoutes, cafeRoutes } from './modules/cafes/routes.js';
 import { categoryRoutes } from './modules/categories/routes.js';
 import { adminEventRoutes, eventRoutes, meEventsRoutes } from './modules/events/routes.js';
 import { blockRoutes, friendRoutes } from './modules/friends/routes.js';
@@ -53,7 +53,8 @@ export function createApp({
     .route('/games', gameRoutes)
     .route('/categories', categoryRoutes)
     .route('/locations', locationRoutes)
-    .route('/cafes', cafeRoutes)
+    .route('/cafes', cafeRoutes({ rateLimit }))
+    .route('/admin', adminCafeRoutes)
     .route('/', cafeOwnerRoutes({ rateLimit }))
     .route('/barcodes', barcodeRoutes(barcodeProvider))
     .route('/barcodes/local', localBarcodeRoutes)

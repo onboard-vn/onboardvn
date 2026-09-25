@@ -2,6 +2,7 @@ import type { CafeConsentStatus, CafeMemberRole } from '@onboard/shared';
 import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import {
+  cafeGameEvents,
   cafeGames,
   cafeInventoryImports,
   cafeMembers,
@@ -217,12 +218,24 @@ export async function findExistingGameIds(gameIds: string[]): Promise<Set<string
 
 /** Upserts inventory copies for the given games in a single statement; never touches rows for
  * games not in `items`. */
+/** Writes one `add` event for a newly inserted row, one `confirm` for a row that was previously
+ * `source: 'community'` (the import "claims" it back for the owner) — an already owner/staff row
+ * gets no event since only its copies/addedVia changed. */
 export async function upsertCafeGamesTx(
   tx: Tx,
   cafeId: string,
   items: { gameId: string; copies: number }[],
+  actorId: string,
 ): Promise<void> {
   if (items.length === 0) return;
+
+  const gameIds = items.map((item) => item.gameId);
+  const existing = await tx
+    .select({ gameId: cafeGames.gameId, source: cafeGames.source })
+    .from(cafeGames)
+    .where(and(eq(cafeGames.cafeId, cafeId), inArray(cafeGames.gameId, gameIds)));
+  const existingSourceByGameId = new Map(existing.map((row) => [row.gameId, row.source]));
+
   await tx
     .insert(cafeGames)
     .values(
@@ -231,12 +244,34 @@ export async function upsertCafeGamesTx(
         gameId: item.gameId,
         copies: item.copies,
         addedVia: 'import' as const,
+        source: 'owner' as const,
       })),
     )
     .onConflictDoUpdate({
       target: [cafeGames.cafeId, cafeGames.gameId],
-      set: { copies: sql`excluded.copies`, addedVia: sql`excluded.added_via` },
+      set: {
+        copies: sql`excluded.copies`,
+        addedVia: sql`excluded.added_via`,
+        source: sql`excluded.source`,
+      },
     });
+
+  const events: (typeof cafeGameEvents.$inferInsert)[] = [];
+  for (const item of items) {
+    const previousSource = existingSourceByGameId.get(item.gameId);
+    if (previousSource === undefined) {
+      events.push({ cafeId, gameId: item.gameId, userId: actorId, action: 'add', source: 'owner' });
+    } else if (previousSource === 'community') {
+      events.push({
+        cafeId,
+        gameId: item.gameId,
+        userId: actorId,
+        action: 'confirm',
+        source: 'owner',
+      });
+    }
+  }
+  if (events.length > 0) await tx.insert(cafeGameEvents).values(events);
 }
 
 export async function insertInventoryImportAudit(

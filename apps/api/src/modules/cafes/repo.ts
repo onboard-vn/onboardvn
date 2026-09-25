@@ -1,6 +1,7 @@
 import type {
   CafeCreateInput,
   CafeGameAddedVia,
+  CafeGameSource,
   CafeLinks,
   CafeOpeningHours,
   CafeUpdateInput,
@@ -8,7 +9,15 @@ import type {
 } from '@onboard/shared';
 import { and, asc, count, eq, gte, inArray, isNotNull, lte, ne, type SQL, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
-import { cafeGames, cafePhotos, cafes, games, provinces, wards } from '../../db/schema/index.js';
+import {
+  cafeGameEvents,
+  cafeGames,
+  cafePhotos,
+  cafes,
+  games,
+  provinces,
+  wards,
+} from '../../db/schema/index.js';
 import { ApiError } from '../../lib/errors.js';
 import { publicCafeWhere } from './visibility.js';
 
@@ -300,6 +309,45 @@ export async function insertCafeGame(
   await tx.insert(cafeGames).values(values);
 }
 
+/** Inserts an inventory row and its `add` audit event in one transaction. */
+export async function insertCafeGameWithEvent(values: {
+  cafeId: string;
+  gameId: string;
+  copies: number;
+  addedBy: string;
+  addedVia: CafeGameAddedVia;
+  source: CafeGameSource;
+}): Promise<void> {
+  await db.transaction(async (tx) => {
+    await tx.insert(cafeGames).values(values);
+    await tx.insert(cafeGameEvents).values({
+      cafeId: values.cafeId,
+      gameId: values.gameId,
+      userId: values.addedBy,
+      action: 'add',
+      source: values.source,
+    });
+  });
+}
+
+/** Deletes an inventory row and logs a `remove` event — only when a row was actually deleted
+ * (mirrors the previous no-op-on-missing-row behavior of a plain delete). */
+export async function deleteCafeGameWithEvent(
+  cafeId: string,
+  gameId: string,
+  userId: string,
+  source: CafeGameSource,
+): Promise<void> {
+  await db.transaction(async (tx) => {
+    const deleted = await tx
+      .delete(cafeGames)
+      .where(and(eq(cafeGames.cafeId, cafeId), eq(cafeGames.gameId, gameId)))
+      .returning({ gameId: cafeGames.gameId });
+    if (deleted.length === 0) return;
+    await tx.insert(cafeGameEvents).values({ cafeId, gameId, userId, action: 'remove', source });
+  });
+}
+
 export async function updateCafeGameCopies(
   cafeId: string,
   gameId: string,
@@ -312,15 +360,12 @@ export async function updateCafeGameCopies(
     .where(and(eq(cafeGames.cafeId, cafeId), eq(cafeGames.gameId, gameId)));
 }
 
-export async function deleteCafeGame(cafeId: string, gameId: string): Promise<void> {
-  await db.delete(cafeGames).where(and(eq(cafeGames.cafeId, cafeId), eq(cafeGames.gameId, gameId)));
-}
-
 export async function bulkInsertCafeGames(
   cafeId: string,
   gameIds: string[],
   addedBy: string,
   addedVia: CafeGameAddedVia,
+  source: CafeGameSource,
 ): Promise<{ added: number; skipped: number }> {
   return db.transaction(async (tx) => {
     const existing = await tx
@@ -333,7 +378,16 @@ export async function bulkInsertCafeGames(
     if (toInsert.length > 0) {
       await tx
         .insert(cafeGames)
-        .values(toInsert.map((gameId) => ({ cafeId, gameId, addedBy, addedVia })));
+        .values(toInsert.map((gameId) => ({ cafeId, gameId, addedBy, addedVia, source })));
+      await tx.insert(cafeGameEvents).values(
+        toInsert.map((gameId) => ({
+          cafeId,
+          gameId,
+          userId: addedBy,
+          action: 'add' as const,
+          source,
+        })),
+      );
     }
 
     return { added: toInsert.length, skipped: gameIds.length - toInsert.length };

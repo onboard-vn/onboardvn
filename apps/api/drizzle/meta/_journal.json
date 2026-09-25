@@ -120,6 +120,13 @@
       "when": 1790344651658,
       "tag": "0016_admin_audit_log",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1790349492814,
+      "tag": "0017_community_cafe_games",
+      "breakpoints": true
     }
   ]
 }

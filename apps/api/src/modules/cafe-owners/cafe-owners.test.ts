@@ -4,6 +4,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createApp } from '../../app.js';
 import { db, pool } from '../../db/client.js';
 import {
+  cafeGameEvents,
   cafeGames,
   cafeInventoryImports,
   cafeMembers,
@@ -599,13 +600,53 @@ describe('inventory import', () => {
     const catanRow = await db.query.cafeGames.findFirst({
       where: (t, { and, eq: eqOp }) => and(eqOp(t.cafeId, cafe.id), eqOp(t.gameId, catanGame.id)),
     });
-    expect(catanRow).toMatchObject({ copies: 4, addedVia: 'import' });
+    expect(catanRow).toMatchObject({ copies: 4, addedVia: 'import', source: 'owner' });
 
     const keptRow = await db.query.cafeGames.findFirst({
       where: (t, { and, eq: eqOp }) => and(eqOp(t.cafeId, cafe.id), eqOp(t.gameId, keptGame.id)),
     });
     expect(keptRow).toMatchObject({ copies: 1 });
 
+    const catanEvents = await db.query.cafeGameEvents.findMany({
+      where: eq(cafeGameEvents.gameId, catanGame.id),
+    });
+    expect(catanEvents).toHaveLength(1);
+    expect(catanEvents[0]).toMatchObject({ action: 'add', source: 'owner', userId: ownerA.id });
+
+    await db.delete(cafeGameEvents).where(eq(cafeGameEvents.cafeId, cafe.id));
+    await db.delete(cafeGames).where(eq(cafeGames.cafeId, cafe.id));
+  });
+
+  it('apply writes a confirm event (not add) for a game previously added by the community', async () => {
+    const cafe = await createCafe();
+    await seedOwner(cafe.id);
+    await db.insert(cafeGames).values({
+      cafeId: cafe.id,
+      gameId: catanGame.id,
+      copies: 1,
+      addedVia: 'scan',
+      source: 'community',
+    });
+
+    const res = await ownerAApp.request(`/api/me/cafes/${cafe.id}/inventory/import/apply`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ rows: [{ line: 2, gameId: catanGame.id, copies: 2 }] }),
+    });
+    expect(res.status).toBe(200);
+
+    const catanRow = await db.query.cafeGames.findFirst({
+      where: (t, { and, eq: eqOp }) => and(eqOp(t.cafeId, cafe.id), eqOp(t.gameId, catanGame.id)),
+    });
+    expect(catanRow).toMatchObject({ copies: 2, source: 'owner' });
+
+    const catanEvents = await db.query.cafeGameEvents.findMany({
+      where: eq(cafeGameEvents.gameId, catanGame.id),
+    });
+    expect(catanEvents).toHaveLength(1);
+    expect(catanEvents[0]).toMatchObject({ action: 'confirm', source: 'owner', userId: ownerA.id });
+
+    await db.delete(cafeGameEvents).where(eq(cafeGameEvents.cafeId, cafe.id));
     await db.delete(cafeGames).where(eq(cafeGames.cafeId, cafe.id));
   });
 
