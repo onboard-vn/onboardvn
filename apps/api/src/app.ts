@@ -20,6 +20,7 @@ import { categoryRoutes } from './modules/categories/routes.js';
 import { gameRoutes } from './modules/games/routes.js';
 import { locationRoutes } from './modules/locations/routes.js';
 import { meRoutes } from './modules/me/routes.js';
+import { userRoutes } from './modules/users/routes.js';
 import { openApiRoutes } from './modules/openapi/routes.js';
 import type { AppEnv } from './types.js';
 
@@ -38,6 +39,7 @@ export function createApp({
     .use(sessionMiddleware(auth))
     .use('*', publicCache())
     .route('/me', meRoutes)
+    .route('/users', userRoutes)
     .route('/games', gameRoutes)
     .route('/categories', categoryRoutes)
     .route('/locations', locationRoutes)

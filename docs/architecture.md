@@ -36,6 +36,19 @@ src/
 
 Luồng gọi: `routes → service → repo`. Route không gọi thẳng repo; service không import Hono context.
 
+## Tài khoản & email
+
+- Better Auth (`apps/api/src/auth/better-auth.ts`): username/email + mật khẩu (bắt buộc xác minh email), mã OTP qua email, Google (tùy chọn).
+- Mail qua `apps/api/src/lib/mailer/` (SMTP ở production, console ở dev/test); gửi nền để thời gian phản hồi sign-up/reset không lộ email đã đăng ký.
+- Quy tắc hồ sơ ngoài plugin (display handle khớp username, BGG username unique không phân biệt hoa/thường, không tự đặt ảnh) ở `auth/profile-guard.ts`.
+- Hồ sơ công khai `GET /api/users/:username` chỉ trả cột an toàn (không email).
+
+## SEO & API công khai
+
+- Web: `robots.txt`, `sitemap.xml`, `llms.txt`, `llms-full.txt` render lúc request (image build không có `SITE_URL`), dữ liệu sitemap/llms cache trong process 1 giờ.
+- JSON-LD `Game` / `EntertainmentBusiness` trên trang chi tiết; `/developers` hướng dẫn API + dataset.
+- `GET /api/openapi.json`: OpenAPI 3.0 cho route đọc công khai. Response ẩn danh có `Cache-Control: public` + `Vary: Cookie`.
+
 ## Secrets chỉ nằm ở API
 
 Frontend (`apps/web`, `apps/mobile`) không bao giờ giữ API key của bên thứ ba. Mọi request tới dịch vụ ngoài đi qua `apps/api` làm proxy giữ secret:

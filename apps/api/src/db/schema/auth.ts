@@ -1,23 +1,28 @@
-import { relations } from 'drizzle-orm';
-import { pgTable, text, timestamp, boolean, index } from 'drizzle-orm/pg-core';
+import { relations, sql } from 'drizzle-orm';
+import { pgTable, text, timestamp, boolean, index, uniqueIndex } from 'drizzle-orm/pg-core';
 
-export const users = pgTable('users', {
-  id: text('id').primaryKey(),
-  name: text('name').notNull(),
-  email: text('email').notNull().unique(),
-  emailVerified: boolean('email_verified').default(false).notNull(),
-  image: text('image'),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at')
-    .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
-  role: text('role', { enum: ['user', 'maintainer', 'admin'] })
-    .default('user')
-    .notNull(),
-  username: text('username').unique(),
-  displayUsername: text('display_username'),
-});
+export const users = pgTable(
+  'users',
+  {
+    id: text('id').primaryKey(),
+    name: text('name').notNull(),
+    email: text('email').notNull().unique(),
+    emailVerified: boolean('email_verified').default(false).notNull(),
+    image: text('image'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    role: text('role', { enum: ['user', 'maintainer', 'admin'] })
+      .default('user')
+      .notNull(),
+    username: text('username').unique(),
+    displayUsername: text('display_username'),
+    bggUsername: text('bgg_username'),
+  },
+  (table) => [uniqueIndex('users_bgg_username_lower_idx').on(sql`lower(${table.bggUsername})`)],
+);
 
 export const sessions = pgTable(
   'sessions',

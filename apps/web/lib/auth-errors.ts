@@ -18,6 +18,10 @@ const MESSAGES: Record<string, string> = {
   PASSWORD_TOO_SHORT: 'Mật khẩu cần ít nhất 8 ký tự',
   PASSWORD_TOO_LONG: 'Mật khẩu quá dài',
   INVALID_TOKEN: 'Liên kết không hợp lệ hoặc đã hết hạn',
+  INVALID_DISPLAY_USERNAME: 'Tên đăng nhập không hợp lệ',
+  BGG_USERNAME_IS_ALREADY_TAKEN: 'Username BGG đã được liên kết với tài khoản khác',
+  INVALID_PASSWORD: 'Mật khẩu hiện tại không đúng',
+  INVALID_NAME: 'Tên hiển thị cần 1-100 ký tự',
 };
 
 export function authErrorMessage(error: AuthClientError): string {

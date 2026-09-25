@@ -21,6 +21,9 @@ export interface CurrentUser {
   email: string;
   image: string | null | undefined;
   role: Role;
+  username: string | null;
+  displayUsername: string | null;
+  bggUsername: string | null;
 }
 
 export async function getCurrentUser(): Promise<CurrentUser | null> {

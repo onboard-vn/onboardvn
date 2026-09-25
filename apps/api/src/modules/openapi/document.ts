@@ -1,4 +1,9 @@
-import { cafeFilterSchema, categoryFilterSchema, gameFilterSchema } from '@onboard/shared';
+import {
+  cafeFilterSchema,
+  categoryFilterSchema,
+  gameFilterSchema,
+  publicProfileSchema,
+} from '@onboard/shared';
 import { z, type ZodObject } from 'zod';
 import {
   apiErrorBodySchema,
@@ -150,6 +155,19 @@ export function buildOpenApiDocument(siteUrl: string): Record<string, unknown> {
           parameters: [{ name: 'slug', in: 'path', required: true, schema: { type: 'string' } }],
           responses: {
             '200': jsonResponse('Chi tiết quán', cafePublicDetailDtoSchema),
+            '404': NOT_FOUND,
+            '429': RATE_LIMITED,
+          },
+        },
+      },
+      '/users/{username}': {
+        get: {
+          summary: 'Hồ sơ công khai (không có email)',
+          parameters: [
+            { name: 'username', in: 'path', required: true, schema: { type: 'string' } },
+          ],
+          responses: {
+            '200': jsonResponse('Hồ sơ công khai', publicProfileSchema),
             '404': NOT_FOUND,
             '429': RATE_LIMITED,
           },

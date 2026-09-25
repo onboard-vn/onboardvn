@@ -50,6 +50,20 @@
       "when": 1790301096837,
       "tag": "0006_users_username",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1790302182902,
+      "tag": "0007_users_bgg_username",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1790302480016,
+      "tag": "0008_bgg_username_case_insensitive",
+      "breakpoints": true
     }
   ]
 }

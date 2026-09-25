@@ -1,4 +1,4 @@
-import { ROLES } from '@onboard/shared';
+import { bggUsernameSchema, ROLES } from '@onboard/shared';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { emailOTP, username } from 'better-auth/plugins';
@@ -7,6 +7,7 @@ import * as schema from '../db/schema/index.js';
 import { env } from '../lib/env.js';
 import { mailer, resetPasswordEmail, verifyEmail } from '../lib/mailer/index.js';
 import { sendOtpEmail } from './otp-mailer.js';
+import { profileGuard } from './profile-guard.js';
 import { isValidUsername } from './username.js';
 
 const google =
@@ -23,6 +24,12 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: { type: [...ROLES], required: false, defaultValue: 'user', input: false },
+      bggUsername: {
+        type: 'string',
+        required: false,
+        input: true,
+        validator: { input: bggUsernameSchema.nullable() },
+      },
     },
   },
   emailAndPassword: {
@@ -40,6 +47,7 @@ export const auth = betterAuth({
     sendVerificationEmail: ({ user, url }) => mailer.send({ to: user.email, ...verifyEmail(url) }),
   },
   socialProviders: google,
+  hooks: { before: profileGuard },
   plugins: [
     emailOTP({
       sendVerificationOTP: sendOtpEmail,
@@ -50,6 +58,7 @@ export const auth = betterAuth({
       minUsernameLength: 3,
       maxUsernameLength: 30,
       usernameValidator: isValidUsername,
+      displayUsernameValidator: isValidUsername,
       validationOrder: { username: 'post-normalization' },
     }),
   ],

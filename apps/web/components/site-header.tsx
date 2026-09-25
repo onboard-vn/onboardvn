@@ -43,7 +43,9 @@ export async function SiteHeader() {
               // eslint-disable-next-line @next/next/no-img-element -- external avatar hosts vary
               <img src={user.image} alt="" className="size-7 rounded-full" />
             ) : null}
-            <span>{user.name}</span>
+            <Link href="/tai-khoan" className="hover:underline">
+              {user.name}
+            </Link>
             <span className="rounded bg-muted px-1.5 py-0.5 text-xs">{ROLE_LABEL[user.role]}</span>
             <SignOutButton />
           </div>
