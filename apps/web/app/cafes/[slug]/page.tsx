@@ -1,11 +1,26 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { JsonLdScript } from '@/components/json-ld-script';
 import { serverApi } from '@/lib/api-server';
+import { SITE_URL } from '@/lib/env';
+import { cafeJsonLd } from '@/lib/seo/json-ld';
 
 export async function generateMetadata(props: PageProps<'/cafes/[slug]'>): Promise<Metadata> {
   const { slug } = await props.params;
-  return { title: `${slug} · Onboard VN` };
+  const res = await (await serverApi()).api.cafes[':slug'].$get({ param: { slug } });
+  if (!res.ok) return { title: `${slug} · Onboard VN` };
+  const cafe = await res.json();
+
+  const title = `${cafe.name} · Onboard VN`;
+  const description = `Quán board game ${cafe.name} tại ${cafe.wardName}, ${cafe.provinceName} — kho ${cafe.gameCount} game.`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `/cafes/${slug}` },
+    openGraph: { title, description, url: `/cafes/${slug}` },
+  };
 }
 
 export default async function CafeDetailPage(props: PageProps<'/cafes/[slug]'>) {
@@ -17,6 +32,7 @@ export default async function CafeDetailPage(props: PageProps<'/cafes/[slug]'>) 
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10">
+      <JsonLdScript data={cafeJsonLd(cafe, `${SITE_URL}/cafes/${slug}`)} />
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">{cafe.name}</h1>
         <p className="text-muted-foreground text-sm">

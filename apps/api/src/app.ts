@@ -5,6 +5,7 @@ import { csrf } from 'hono/csrf';
 import { requestId } from 'hono/request-id';
 import type { Auth } from './auth/better-auth.js';
 import { sessionMiddleware } from './auth/middleware.js';
+import { publicCache } from './lib/cache-control.js';
 import { env } from './lib/env.js';
 import { errorHandler, notFoundHandler } from './lib/error-handler.js';
 import { apiRateLimit } from './lib/rate-limit.js';
@@ -19,6 +20,7 @@ import { categoryRoutes } from './modules/categories/routes.js';
 import { gameRoutes } from './modules/games/routes.js';
 import { locationRoutes } from './modules/locations/routes.js';
 import { meRoutes } from './modules/me/routes.js';
+import { openApiRoutes } from './modules/openapi/routes.js';
 import type { AppEnv } from './types.js';
 
 export interface AppDeps {
@@ -34,12 +36,14 @@ export function createApp({
 }: AppDeps) {
   const api = new Hono<AppEnv>()
     .use(sessionMiddleware(auth))
+    .use('*', publicCache())
     .route('/me', meRoutes)
     .route('/games', gameRoutes)
     .route('/categories', categoryRoutes)
     .route('/locations', locationRoutes)
     .route('/cafes', cafeRoutes)
-    .route('/barcodes', barcodeRoutes(barcodeProvider));
+    .route('/barcodes', barcodeRoutes(barcodeProvider))
+    .route('/openapi.json', openApiRoutes);
 
   // Mounted before rate limit + session: images are public and requested in bulk per page.
   const app = new Hono<AppEnv>()

@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { JsonLdScript } from '@/components/json-ld-script';
 import { Badge } from '@/components/ui/badge';
 import { getCurrentUser, serverApi } from '@/lib/api-server';
+import { SITE_URL } from '@/lib/env';
+import { gameJsonLd } from '@/lib/seo/json-ld';
 import { parseVideoEmbed } from '@/lib/video-embed';
 
 const DESCRIPTION_LABEL = {
@@ -13,7 +16,26 @@ const CATEGORY_GROUP_LABEL = { category: 'Thể loại', mechanic: 'Cơ chế' }
 
 export async function generateMetadata(props: PageProps<'/games/[slug]'>): Promise<Metadata> {
   const { slug } = await props.params;
-  return { title: `${slug} · Onboard VN` };
+  const res = await (await serverApi()).api.games[':slug'].$get({ param: { slug } });
+  if (!res.ok) return { title: `${slug} · Onboard VN` };
+  const game = await res.json();
+
+  const title = `${game.nameVi || game.nameEn} · Onboard VN`;
+  const description = game.descriptionVi
+    ? game.descriptionVi.slice(0, 160)
+    : `Thông tin, số người chơi, thời gian chơi và nơi có thể chơi ${game.nameVi || game.nameEn}.`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `/games/${slug}` },
+    openGraph: {
+      title,
+      description,
+      url: `/games/${slug}`,
+      ...(game.imageUrl && { images: [{ url: game.imageUrl }] }),
+    },
+  };
 }
 
 export default async function GameDetailPage(props: PageProps<'/games/[slug]'>) {
@@ -36,6 +58,7 @@ export default async function GameDetailPage(props: PageProps<'/games/[slug]'>) 
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10">
+      <JsonLdScript data={gameJsonLd(game, `${SITE_URL}/games/${slug}`)} />
       <div className="flex flex-wrap items-center gap-2">
         <h1 className="text-2xl font-semibold tracking-tight">{game.nameVi || game.nameEn}</h1>
         {game.isVietnamese ? <Badge variant="secondary">Việt hóa</Badge> : null}
