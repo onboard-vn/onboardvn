@@ -9,7 +9,7 @@ import type { AppEnv } from '../types.js';
 export function publicCache(value = 'public, max-age=60, s-maxage=300') {
   return createMiddleware<AppEnv>(async (c, next) => {
     await next();
-    if (c.req.method === 'GET' && !c.var.user && c.res.ok) {
+    if (c.req.method === 'GET' && !c.var.user && c.res.ok && !c.res.headers.has('Cache-Control')) {
       c.res.headers.set('Cache-Control', value);
       c.res.headers.append('Vary', 'Cookie');
     }

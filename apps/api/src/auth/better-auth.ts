@@ -6,10 +6,16 @@ import { emailOTP, username } from 'better-auth/plugins';
 import { db } from '../db/client.js';
 import * as schema from '../db/schema/index.js';
 import { env } from '../lib/env.js';
+import { logger } from '../lib/logger.js';
 import { mailer, resetPasswordEmail, verifyEmail } from '../lib/mailer/index.js';
+import { goingMeetupIdsForUser, promoteWaitlistForMeetups } from '../modules/events/service.js';
 import { sendOtpEmail } from './otp-mailer.js';
 import { profileGuard } from './profile-guard.js';
 import { isValidUsername } from './username.js';
+
+/** `before` snapshots the user's `going` meetups; `after` promotes their waitlists once the
+ * cascaded `meetup_participants` rows are actually gone. No route uses `deleteUser` yet. */
+const pendingWaitlistPromotions = new Map<string, string[]>();
 
 const google =
   env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET
@@ -65,6 +71,31 @@ export const auth = betterAuth({
     user: {
       create: {
         before: async (user) => ({ data: { ...user, friendCode: generateFriendCode() } }),
+      },
+      delete: {
+        before: async (user) => {
+          try {
+            pendingWaitlistPromotions.set(user.id, await goingMeetupIdsForUser(user.id));
+          } catch (err) {
+            pendingWaitlistPromotions.delete(user.id);
+            logger.error(
+              { err, userId: user.id },
+              'failed to snapshot going meetups before user delete',
+            );
+          }
+        },
+        after: async (user) => {
+          const meetupIds = pendingWaitlistPromotions.get(user.id);
+          pendingWaitlistPromotions.delete(user.id);
+          try {
+            if (meetupIds?.length) await promoteWaitlistForMeetups(meetupIds);
+          } catch (err) {
+            logger.error(
+              { err, userId: user.id, meetupIds },
+              'failed to promote waitlists after user delete',
+            );
+          }
+        },
       },
     },
   },

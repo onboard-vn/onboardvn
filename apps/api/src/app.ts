@@ -18,6 +18,7 @@ import {
 import { cafeOwnerRoutes } from './modules/cafe-owners/routes.js';
 import { cafeRoutes } from './modules/cafes/routes.js';
 import { categoryRoutes } from './modules/categories/routes.js';
+import { eventRoutes, meEventsRoutes } from './modules/events/routes.js';
 import { blockRoutes, friendRoutes } from './modules/friends/routes.js';
 import { gameRoutes } from './modules/games/routes.js';
 import { locationRoutes } from './modules/locations/routes.js';
@@ -43,6 +44,8 @@ export function createApp({
     .use('*', publicCache())
     .route('/me', meRoutes)
     .route('/me/shelf', shelfRoutes)
+    .route('/me/events', meEventsRoutes)
+    .route('/events', eventRoutes({ rateLimit }))
     .route('/users', userRoutes)
     .route('/friends', friendRoutes({ rateLimit }))
     .route('/blocks', blockRoutes)

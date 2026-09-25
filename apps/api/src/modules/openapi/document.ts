@@ -4,6 +4,11 @@ import {
   categoryFilterSchema,
   friendsListResultSchema,
   gameFilterSchema,
+  meetupCalendarDaySchema,
+  meetupCalendarQuerySchema,
+  meetupDetailDtoSchema,
+  meetupFilterSchema,
+  meetupListResponseSchema,
   publicProfileSchema,
 } from '@onboard/shared';
 import { z, type ZodObject } from 'zod';
@@ -170,6 +175,42 @@ export function buildOpenApiDocument(siteUrl: string): Record<string, unknown> {
           parameters: [{ name: 'slug', in: 'path', required: true, schema: { type: 'string' } }],
           responses: {
             '200': jsonResponse('Chi tiết quán', cafePublicDetailDtoSchema),
+            '404': NOT_FOUND,
+            '429': RATE_LIMITED,
+          },
+        },
+      },
+      '/events': {
+        get: {
+          summary: 'Danh sách Kèo công khai sắp tới',
+          parameters: queryParams(meetupFilterSchema),
+          responses: {
+            '200': jsonResponse('Danh sách Kèo', meetupListResponseSchema),
+            '422': errorResponse('Tham số không hợp lệ'),
+            '429': RATE_LIMITED,
+          },
+        },
+      },
+      '/events/calendar': {
+        get: {
+          summary: 'Lịch Kèo theo tháng (giờ Asia/Saigon)',
+          parameters: queryParams(meetupCalendarQuerySchema),
+          responses: {
+            '200': jsonResponse('Thống kê theo ngày', z.array(meetupCalendarDaySchema)),
+            '422': errorResponse('Tham số không hợp lệ'),
+            '429': RATE_LIMITED,
+          },
+        },
+      },
+      '/events/{slug}': {
+        get: {
+          summary: 'Chi tiết Kèo (`?code=` để xem Kèo riêng tư có link mời)',
+          parameters: [
+            { name: 'slug', in: 'path', required: true, schema: { type: 'string' } },
+            { name: 'code', in: 'query', required: false, schema: { type: 'string' } },
+          ],
+          responses: {
+            '200': jsonResponse('Chi tiết Kèo', meetupDetailDtoSchema),
             '404': NOT_FOUND,
             '429': RATE_LIMITED,
           },

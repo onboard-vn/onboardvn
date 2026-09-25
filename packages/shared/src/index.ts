@@ -3,6 +3,7 @@ export * from './cafe-owners.js';
 export * from './cafes.js';
 export * from './common.js';
 export * from './errors.js';
+export * from './events.js';
 export * from './games.js';
 export * from './health.js';
 export * from './locations.js';
