@@ -65,6 +65,9 @@ export default async function GameDetailPage(props: PageProps<'/games/[slug]'>) 
         {game.isVietnamese ? <Badge variant="secondary">Việt hóa</Badge> : null}
       </div>
       {game.nameVi ? <p className="text-muted-foreground">{game.nameEn}</p> : null}
+      {game.ownersCount > 0 ? (
+        <p className="text-muted-foreground text-sm">{game.ownersCount} người có game này</p>
+      ) : null}
 
       {game.imageUrl ? (
         // eslint-disable-next-line @next/next/no-img-element -- served from local upload storage, not an optimizable remote host

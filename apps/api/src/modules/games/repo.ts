@@ -81,6 +81,11 @@ export function findGameById(id: string) {
   return db.query.games.findFirst({ where: eq(games.id, id), with: withRelations });
 }
 
+export function findGamesByIds(ids: string[]) {
+  if (ids.length === 0) return Promise.resolve([]);
+  return db.query.games.findMany({ where: inArray(games.id, ids), with: withRelations });
+}
+
 export async function slugExists(slug: string): Promise<boolean> {
   const [row] = await db.select({ id: games.id }).from(games).where(eq(games.slug, slug)).limit(1);
   return Boolean(row);

@@ -3,19 +3,40 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { FriendButton } from '@/components/friend-button';
 import { publicApi } from '@/lib/api-public';
-import { getCurrentUser } from '@/lib/api-server';
+import { getCurrentUser, serverApi } from '@/lib/api-server';
 import { SITE_URL } from '@/lib/env';
 import { SITE_NAME } from '@/lib/site';
 
-async function fetchProfile(username: string) {
+/** Anonymous, cookie-free: used only for metadata, which must stay neutral regardless of viewer. */
+async function fetchProfileForMetadata(username: string) {
   const res = await publicApi().api.users[':username'].$get({ param: { username } });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Profile fetch failed: ${res.status}`);
   return res.json();
 }
 
+/** Cookie-forwarding: visibility (friends/private/blocked) must resolve against the actual viewer. */
+async function fetchProfile(username: string) {
+  const client = await serverApi();
+  const res = await client.api.users[':username'].$get({ param: { username } });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`Profile fetch failed: ${res.status}`);
+  return res.json();
+}
+
+async function fetchShelf(username: string) {
+  const client = await serverApi();
+  const res = await client.api.users[':username'].shelf.$get({ param: { username } });
+  if (!res.ok) return null;
+  return res.json();
+}
+
+function displayGameName(g: { nameVi: string | null; nameEn: string }): string {
+  return g.nameVi || g.nameEn;
+}
+
 export async function generateMetadata({ params }: PageProps<'/u/[username]'>): Promise<Metadata> {
-  const profile = await fetchProfile((await params).username);
+  const profile = await fetchProfileForMetadata((await params).username);
   if (!profile) return { title: `Không tìm thấy · ${SITE_NAME}` };
   const label = profile.hidden ? (profile.displayUsername ?? profile.username) : profile.name;
   return {
@@ -30,6 +51,7 @@ export default async function ProfilePage({ params }: PageProps<'/u/[username]'>
   if (!profile) notFound();
   const viewer = await getCurrentUser();
   const isSelf = viewer?.id === profile.id;
+  const shelf = profile.hidden ? null : await fetchShelf(username);
 
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-4 px-6 py-10">
@@ -66,6 +88,23 @@ export default async function ProfilePage({ params }: PageProps<'/u/[username]'>
             {profile.bggUsername}
           </a>
         </p>
+      ) : null}
+      {shelf && !shelf.hidden && shelf.items.length > 0 ? (
+        <div>
+          <h2 className="mb-2 text-sm font-medium">Tủ game</h2>
+          <ul className="flex flex-wrap gap-2">
+            {shelf.items.map((item) => (
+              <li key={item.game.id}>
+                <Link
+                  href={`/games/${item.game.slug}`}
+                  className="rounded-lg border px-3 py-1.5 text-sm hover:border-foreground/40"
+                >
+                  {displayGameName(item.game)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : null}
     </main>
   );

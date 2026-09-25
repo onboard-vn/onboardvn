@@ -47,6 +47,7 @@ export const gameDetailDtoSchema = gameSummaryDtoSchema.extend({
   imageCredit: z.string().nullable(),
   bggUrl: z.string().nullable(),
   barcodes: z.array(gameBarcodeDtoSchema),
+  ownersCount: z.number().int(),
 });
 
 export const gameListResponseSchema = z.object({
@@ -107,6 +108,17 @@ export const cafeForGameDtoSchema = z.object({
   links: cafeLinksDtoSchema,
   copies: z.number().int(),
 });
+
+export const shelfItemDtoSchema = z.object({
+  game: gameSummaryDtoSchema,
+  note: z.string().nullable(),
+  createdAt: z.iso.datetime(),
+});
+
+export const shelfListResultDtoSchema = z.union([
+  z.object({ hidden: z.literal(true) }),
+  z.object({ hidden: z.literal(false), items: z.array(shelfItemDtoSchema) }),
+]);
 
 export const provinceDtoSchema = z.object({ code: z.string(), name: z.string(), slug: z.string() });
 export const wardDtoSchema = z.object({

@@ -15,6 +15,7 @@ import {
   gameDetailDtoSchema,
   gameListResponseSchema,
   provinceListResponseSchema,
+  shelfListResultDtoSchema,
   wardListResponseSchema,
 } from './dto-schemas.js';
 
@@ -182,6 +183,19 @@ export function buildOpenApiDocument(siteUrl: string): Record<string, unknown> {
           ],
           responses: {
             '200': jsonResponse('Danh sách bạn bè hoặc { hidden: true }', friendsListResultSchema),
+            '404': NOT_FOUND,
+            '429': RATE_LIMITED,
+          },
+        },
+      },
+      '/users/{username}/shelf': {
+        get: {
+          summary: 'Tủ game (theo cài đặt riêng tư của người dùng đó)',
+          parameters: [
+            { name: 'username', in: 'path', required: true, schema: { type: 'string' } },
+          ],
+          responses: {
+            '200': jsonResponse('Tủ game hoặc { hidden: true }', shelfListResultDtoSchema),
             '404': NOT_FOUND,
             '429': RATE_LIMITED,
           },

@@ -21,6 +21,7 @@ import { blockRoutes, friendRoutes } from './modules/friends/routes.js';
 import { gameRoutes } from './modules/games/routes.js';
 import { locationRoutes } from './modules/locations/routes.js';
 import { meRoutes } from './modules/me/routes.js';
+import { localBarcodeRoutes, shelfRoutes } from './modules/shelf/routes.js';
 import { userRoutes } from './modules/users/routes.js';
 import { openApiRoutes } from './modules/openapi/routes.js';
 import type { AppEnv } from './types.js';
@@ -40,6 +41,7 @@ export function createApp({
     .use(sessionMiddleware(auth))
     .use('*', publicCache())
     .route('/me', meRoutes)
+    .route('/me/shelf', shelfRoutes)
     .route('/users', userRoutes)
     .route('/friends', friendRoutes({ rateLimit }))
     .route('/blocks', blockRoutes)
@@ -48,6 +50,7 @@ export function createApp({
     .route('/locations', locationRoutes)
     .route('/cafes', cafeRoutes)
     .route('/barcodes', barcodeRoutes(barcodeProvider))
+    .route('/barcodes/local', localBarcodeRoutes)
     .route('/openapi.json', openApiRoutes);
 
   // Mounted before rate limit + session: images are public and requested in bulk per page.

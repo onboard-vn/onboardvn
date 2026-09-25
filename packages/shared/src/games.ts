@@ -150,6 +150,7 @@ export interface GameDetailDto extends GameSummaryDto {
   imageCredit: string | null;
   bggUrl: string | null;
   barcodes: GameBarcodeDto[];
+  ownersCount: number;
 }
 
 export interface GameRevisionDto {

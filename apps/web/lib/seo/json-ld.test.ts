@@ -24,6 +24,7 @@ const baseGame: GameDetailDto = {
   imageCredit: null,
   bggUrl: 'https://boardgamegeek.com/boardgame/1234',
   barcodes: [],
+  ownersCount: 0,
 };
 
 const baseCafe: CafePublicDetailDto = {

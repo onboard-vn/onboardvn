@@ -13,12 +13,13 @@ import type {
 } from '@onboard/shared';
 import { ApiError } from '../../lib/errors.js';
 import { storage } from '../../lib/storage/index.js';
+import { countOwners } from '../shelf/repo.js';
 import { normalizeBarcode } from './barcode.js';
 import * as repo from './repo.js';
 import type { GameRow } from './repo.js';
 import { slugify } from './slug.js';
 
-function toSummaryDto(row: GameRow): GameSummaryDto {
+export function toSummaryDto(row: GameRow): GameSummaryDto {
   return {
     id: row.id,
     slug: row.slug,
@@ -42,7 +43,11 @@ function toSummaryDto(row: GameRow): GameSummaryDto {
   };
 }
 
-function toDetailDto(row: GameRow, includePermissionRef: boolean): GameDetailDto {
+function toDetailDto(
+  row: GameRow,
+  includePermissionRef: boolean,
+  ownersCount: number,
+): GameDetailDto {
   return {
     ...toSummaryDto(row),
     descriptionVi: row.descriptionVi,
@@ -58,6 +63,7 @@ function toDetailDto(row: GameRow, includePermissionRef: boolean): GameDetailDto
       edition: b.edition,
       source: b.source,
     })),
+    ownersCount,
   };
 }
 
@@ -72,13 +78,13 @@ export async function getGameBySlugService(
 ): Promise<GameDetailDto> {
   const row = await repo.findGameBySlug(slug);
   if (!row) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy game');
-  return toDetailDto(row, includePermissionRef);
+  return toDetailDto(row, includePermissionRef, await countOwners(row.id));
 }
 
 async function getGameByIdOrThrow(id: string): Promise<GameDetailDto> {
   const row = await repo.findGameById(id);
   if (!row) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy game');
-  return toDetailDto(row, true);
+  return toDetailDto(row, true, await countOwners(row.id));
 }
 
 function assertDescriptionInvariants(params: {

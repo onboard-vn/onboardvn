@@ -28,6 +28,11 @@ export async function SiteHeader() {
               <FriendRequestBadge />
             </Link>
           ) : null}
+          {user ? (
+            <Link href="/tu-game" className="text-sm font-medium">
+              Tủ game
+            </Link>
+          ) : null}
           {user && user.role !== 'user' ? (
             <>
               <Link href="/admin/games" className="text-sm font-medium">

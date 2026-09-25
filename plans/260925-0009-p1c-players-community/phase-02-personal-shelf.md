@@ -1,7 +1,7 @@
 ---
 phase: 2
 title: "Tủ game riêng"
-status: pending
+status: completed
 effort: "1d"
 dependencies: ["P1b phase 3", 1]
 ---
