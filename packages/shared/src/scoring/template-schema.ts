@@ -128,7 +128,9 @@ export const scoreTemplateSchema = z.strictObject({
   bggId: nullableInt,
   templateVersion: z.number().int().min(1),
   variant: z.string().nullish(),
-  playerCount: z.object({ min: z.number().int().optional(), max: z.number().int().optional() }).optional(),
+  playerCount: z
+    .object({ min: z.number().int().optional(), max: z.number().int().optional() })
+    .optional(),
   mode: scoreModeEnum,
   winRule: scoreWinRuleEnum,
   scoringStyle: scoringStyleEnum.optional(),
@@ -148,7 +150,10 @@ export const scoreTemplateSchema = z.strictObject({
   needsReview: z.boolean().optional(),
   winCondition: z.string().nullish(),
   winConditionVi: z.string().nullish(),
-  uiHint: z.string().regex(/^(generic|custom:[a-z][a-z0-9-]*)$/).optional(),
+  uiHint: z
+    .string()
+    .regex(/^(generic|custom:[a-z][a-z0-9-]*)$/)
+    .optional(),
   uiHintReason: z.string().optional(),
   roles: z.array(roleSchema).optional(),
   endCondition: z

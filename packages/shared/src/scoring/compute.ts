@@ -1,10 +1,20 @@
 import { z } from 'zod';
 import { evaluateExpr, type CompiledExpr, type ExprValue } from './expr.js';
 import { err, ok, type Result, type ScoreError } from './result.js';
-import type { RankAwardSpec, ScoreCategory, ScoreFormula, ScoreTemplate } from './template-schema.js';
+import type {
+  RankAwardSpec,
+  ScoreCategory,
+  ScoreFormula,
+  ScoreTemplate,
+} from './template-schema.js';
 import { compileTemplate } from './validate.js';
 
-const rawValueSchema = z.union([z.number(), z.boolean(), z.array(z.number()), z.record(z.string(), z.number())]);
+const rawValueSchema = z.union([
+  z.number(),
+  z.boolean(),
+  z.array(z.number()),
+  z.record(z.string(), z.number()),
+]);
 
 export const scoreInputSchema = z.object({
   players: z
@@ -74,7 +84,11 @@ class InputFailure {
 }
 
 const bad = (message: string, path?: string): never => {
-  throw new InputFailure({ code: 'INPUT_INVALID', message, ...(path === undefined ? {} : { path }) });
+  throw new InputFailure({
+    code: 'INPUT_INVALID',
+    message,
+    ...(path === undefined ? {} : { path }),
+  });
 };
 
 const clean = (n: number): number => Math.round(n * 1e9) / 1e9;
@@ -89,7 +103,9 @@ function toNumber(x: unknown, path: string): number {
 function resolveFormula(f: ScoreFormula, playerCount: number): ScoreFormula {
   const overrides = f.byPlayerCount;
   if (!overrides) return f;
-  let key: string | undefined = Object.hasOwn(overrides, String(playerCount)) ? String(playerCount) : undefined;
+  let key: string | undefined = Object.hasOwn(overrides, String(playerCount))
+    ? String(playerCount)
+    : undefined;
   if (key === undefined) {
     let best = -Infinity;
     for (const k of Object.keys(overrides)) {
@@ -129,18 +145,28 @@ function rankAwardPoints(
   const tieMode = spec.tieMode ?? 'split-floor';
   const dir = spec.compare === 'lowest' ? 1 : -1;
   const ranked = [...values.entries()]
-    .filter(([, v]) => !(spec.excludeZero && v === 0) && !(spec.minValueToScore != null && v < spec.minValueToScore))
+    .filter(
+      ([, v]) =>
+        !(spec.excludeZero && v === 0) &&
+        !(spec.minValueToScore != null && v < spec.minValueToScore),
+    )
     .sort((a, b) => dir * (a[1] - b[1]));
   const at = (i: number): number => table[i] ?? 0;
   let i = 0;
   while (i < ranked.length) {
     let j = i;
-    while (j + 1 < ranked.length && (ranked[j + 1] as [string, number])[1] === (ranked[i] as [string, number])[1]) j++;
+    while (
+      j + 1 < ranked.length &&
+      (ranked[j + 1] as [string, number])[1] === (ranked[i] as [string, number])[1]
+    )
+      j++;
     const size = j - i + 1;
     let pts: number;
     if (size === 1) pts = at(i);
-    else if (tieMode === 'split-floor') pts = Math.floor(sumOf(Array.from({ length: size }, (_, k) => at(i + k))) / size);
-    else if (tieMode === 'split-exact') pts = sumOf(Array.from({ length: size }, (_, k) => at(i + k))) / size;
+    else if (tieMode === 'split-floor')
+      pts = Math.floor(sumOf(Array.from({ length: size }, (_, k) => at(i + k))) / size);
+    else if (tieMode === 'split-exact')
+      pts = sumOf(Array.from({ length: size }, (_, k) => at(i + k))) / size;
     else if (tieMode === 'all-full') pts = at(i);
     else if (tieMode === 'all-next-lower') pts = at(i + 1);
     else pts = 0;
@@ -215,7 +241,10 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
     if (!playerIds.has(w) && !teamIds.has(w)) bad(`unknown winner id '${w}'`, 'winners');
   }
 
-  const points = { player: new Map<string, Map<string, number>>(), team: new Map<string, Map<string, number>>() };
+  const points = {
+    player: new Map<string, Map<string, number>>(),
+    team: new Map<string, Map<string, number>>(),
+  };
   const norms = new Map<string, Map<string, Norm>>();
 
   const catPoint = (e: Entity, key: string): number => {
@@ -257,7 +286,8 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
         }
         value = sumOf(list);
       } else if (cat.input === 'counts') {
-        if (raw !== undefined && (typeof raw !== 'object' || Array.isArray(raw))) bad('expected an object of counts', path);
+        if (raw !== undefined && (typeof raw !== 'object' || Array.isArray(raw)))
+          bad('expected an object of counts', path);
         const rec = (raw ?? {}) as Record<string, number>;
         for (const name of cat.inputs ?? []) {
           named.set(name, Object.hasOwn(rec, name) ? toNumber(rec[name], `${path}.${name}`) : 0);
@@ -274,7 +304,8 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
     if (cat.input === 'perRound' && cat.roundInput === 'exclusive') {
       const lists = [...out.values()].map((n) => n.list as number[]);
       for (let r = 0; r < Math.max(0, ...lists.map((l) => l.length)); r++) {
-        if (sumOf(lists.map((l) => l[r] ?? 0)) > 1) bad(`more than one entity selected in round ${r + 1}`, `categories.${cat.key}`);
+        if (sumOf(lists.map((l) => l[r] ?? 0)) > 1)
+          bad(`more than one entity selected in round ${r + 1}`, `categories.${cat.key}`);
       }
     }
     if (cat.input === 'perRound' && (cat.roundInput ?? 'number') === 'number') {
@@ -283,7 +314,8 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
       const lowest = template.winRule === 'lowest';
       for (const n of out.values()) {
         const l = n.list as number[];
-        if (aggregate === 'best') n.value = l.length ? (lowest ? Math.min(...l) : Math.max(...l)) : 0;
+        if (aggregate === 'best')
+          n.value = l.length ? (lowest ? Math.min(...l) : Math.max(...l)) : 0;
         else if (aggregate === 'rounds-won') {
           let won = 0;
           for (let r = 0; r < rounds; r++) {
@@ -353,7 +385,8 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
         break;
       case 'exclusiveBonus': {
         const top = Math.max(0, ...active.map(valueOf));
-        for (const e of active) result.set(e.id, top > 0 && valueOf(e) === top ? (formula.points ?? 0) : 0);
+        for (const e of active)
+          result.set(e.id, top > 0 && valueOf(e) === top ? (formula.points ?? 0) : 0);
         break;
       }
       case 'rankAward': {
@@ -362,7 +395,18 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
         const values = new Map(
           active.map((e) => {
             const n = norm.get(e.id) as Norm;
-            return [e.id, over === 'count' ? (n.list ? n.list.length : n.value) : over === 'bool' ? (n.value !== 0 ? 1 : 0) : n.value] as const;
+            return [
+              e.id,
+              over === 'count'
+                ? n.list
+                  ? n.list.length
+                  : n.value
+                : over === 'bool'
+                  ? n.value !== 0
+                    ? 1
+                    : 0
+                  : n.value,
+            ] as const;
           }),
         );
         for (const [id, p] of rankAwardPoints(spec, values)) result.set(id, p);
@@ -388,28 +432,38 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
       warnings,
       lookup: (name): ExprValue | undefined => {
         if (name === 'players') return playerCount;
-        if (name.startsWith('cat_') && byKey.has(name.slice(4))) return catRef(tableEntity, name.slice(4));
+        if (name.startsWith('cat_') && byKey.has(name.slice(4)))
+          return catRef(tableEntity, name.slice(4));
         return undefined;
       },
     });
     if (!r.ok) throw new InputFailure({ ...r.error, path: 'expr' });
     return r.value;
   };
-  const derivedOutcome: 'win' | 'loss' | null =
-    evalTable(template.outcome?.winWhen) ? 'win' : evalTable(template.outcome?.loseWhen) ? 'loss' : null;
+  const derivedOutcome: 'win' | 'loss' | null = evalTable(template.outcome?.winWhen)
+    ? 'win'
+    : evalTable(template.outcome?.loseWhen)
+      ? 'loss'
+      : null;
   const outcome = input.outcome ?? derivedOutcome;
   const ended = template.endCondition?.when ? evalTable(template.endCondition.when) !== 0 : null;
 
   const counted = template.categories.filter((c) => c.countsToTotal && !c.multiplierOf?.length);
   const outcomeRule = template.outcome;
   const gated =
-    (outcomeRule?.scoreOnlyIfWin && outcome !== 'win') || (outcomeRule?.scoreOnlyIfLose && outcome !== 'loss');
+    (outcomeRule?.scoreOnlyIfWin && outcome !== 'win') ||
+    (outcomeRule?.scoreOnlyIfLose && outcome !== 'loss');
   if ((outcomeRule?.scoreOnlyIfWin || outcomeRule?.scoreOnlyIfLose) && outcome === null) {
     bad('outcome is required by this template', 'outcome');
   }
   const playerTotal = new Map<string, number>();
   for (const p of players) {
-    playerTotal.set(p.id, gated ? 0 : clean(sumOf(counted.filter((c) => c.scope === 'player').map((c) => catPoint(p, c.key)))));
+    playerTotal.set(
+      p.id,
+      gated
+        ? 0
+        : clean(sumOf(counted.filter((c) => c.scope === 'player').map((c) => catPoint(p, c.key)))),
+    );
   }
   const teamTotal = new Map<string, number>();
   for (const t of teams) {
@@ -418,10 +472,11 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
     teamTotal.set(t.id, gated ? 0 : clean(own + members));
   }
 
-  const rankable = template.mode !== 'coop' && (template.winRule === 'highest' || template.winRule === 'lowest');
+  const rankable =
+    template.mode !== 'coop' && (template.winRule === 'highest' || template.winRule === 'lowest');
   const rankTeams = template.mode === 'team';
   const rankSet = rankTeams ? teams : players;
-  const totalOf = (e: Entity): number => ((rankTeams ? teamTotal : playerTotal).get(e.id) as number);
+  const totalOf = (e: Entity): number => (rankTeams ? teamTotal : playerTotal).get(e.id) as number;
   const tiebreakers = (template.tiebreakers ?? []).filter((t) => t.categoryKey);
   const compare = (a: Entity, b: Entity): number => {
     const d = totalOf(a) - totalOf(b);
@@ -441,7 +496,9 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
   let tieUnresolved = false;
   let tiedIds: string[] = [];
   if (input.winners) {
-    winnerEntities = input.winners.map((id) => (playerById.get(id) ?? teams.find((t) => t.id === id)) as Entity);
+    winnerEntities = input.winners.map(
+      (id) => (playerById.get(id) ?? teams.find((t) => t.id === id)) as Entity,
+    );
   } else if (template.mode === 'coop') {
     winnerEntities = outcome === 'win' ? players : [];
   } else if (rankable) {
@@ -454,7 +511,9 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
     const won = byKey.get('won');
     if (won) {
       const n = norms.get('won') as Map<string, Norm>;
-      winnerEntities = (won.scope === 'team' ? teams : players).filter((e) => (n.get(e.id) as Norm).value !== 0);
+      winnerEntities = (won.scope === 'team' ? teams : players).filter(
+        (e) => (n.get(e.id) as Norm).value !== 0,
+      );
     }
   }
 
@@ -474,7 +533,9 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
       team: playerTeam.get(p.id) ?? null,
       categories: rowOf(p),
       total: playerTotal.get(p.id) as number,
-      rank: rankable ? ((rankTeams ? rankOf.get(playerTeam.get(p.id) as string) : rankOf.get(p.id)) ?? null) : null,
+      rank: rankable
+        ? ((rankTeams ? rankOf.get(playerTeam.get(p.id) as string) : rankOf.get(p.id)) ?? null)
+        : null,
     })),
     teams: teams.map((t) => ({
       id: t.id,

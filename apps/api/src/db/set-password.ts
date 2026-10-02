@@ -25,9 +25,13 @@ const existing = await db.query.accounts.findFirst({
 if (existing) {
   await db.update(accounts).set({ password: hash }).where(eq(accounts.id, existing.id));
 } else {
-  await db
-    .insert(accounts)
-    .values({ id: randomUUID(), accountId: user.id, providerId: 'credential', userId: user.id, password: hash });
+  await db.insert(accounts).values({
+    id: randomUUID(),
+    accountId: user.id,
+    providerId: 'credential',
+    userId: user.id,
+    password: hash,
+  });
 }
 await db.update(users).set({ emailVerified: true }).where(eq(users.id, user.id));
 await pool.end();

@@ -13,7 +13,10 @@ export const cat = (key: string, over: Partial<ScoreCategory> = {}): ScoreCatego
   ...over,
 });
 
-export const tpl = (categories: ScoreCategory[], over: Partial<ScoreTemplate> = {}): ScoreTemplate => ({
+export const tpl = (
+  categories: ScoreCategory[],
+  over: Partial<ScoreTemplate> = {},
+): ScoreTemplate => ({
   slug: 't',
   name: 'T',
   templateVersion: 1,
@@ -26,7 +29,11 @@ export const tpl = (categories: ScoreCategory[], over: Partial<ScoreTemplate> = 
 });
 
 type P = ScoreInput['players'][number];
-const p = (id: string, values: Record<string, RawValue> = {}, extra: Partial<P> = {}): P => ({ id, values, ...extra });
+const p = (id: string, values: Record<string, RawValue> = {}, extra: Partial<P> = {}): P => ({
+  id,
+  values,
+  ...extra,
+});
 
 const run = (t: ScoreTemplate, players: P[], extra: Partial<ScoreInput> = {}): ScoreResult => {
   const r = computeScores(t, { players, playerCount: players.length, ...extra });
@@ -57,7 +64,12 @@ describe('formulas', () => {
   });
 
   it('table with N+ keys', () => {
-    const t = tpl([cat('n', { input: 'count', formula: { type: 'table', table: { '0': 0, '1': 1, '2': 3, '7+': 20 } } })]);
+    const t = tpl([
+      cat('n', {
+        input: 'count',
+        formula: { type: 'table', table: { '0': 0, '1': 1, '2': 3, '7+': 20 } },
+      }),
+    ]);
     const r = run(t, [p('a', { n: 2 }), p('b', { n: 7 }), p('c', { n: 12 }), p('d', { n: 0 })]);
     expect(r.players.map((x) => x.total)).toEqual([3, 20, 20, 0]);
     const gap = run(t, [p('a', { n: 5 })]);
@@ -68,7 +80,11 @@ describe('formulas', () => {
   it('expr with counts inputs, players and cat_ references regardless of order', () => {
     const t = tpl([
       cat('late', { formula: { type: 'expr', expr: 'cat_early * 2 + players' } }),
-      cat('early', { input: 'counts', inputs: ['x', 'y'], formula: { type: 'expr', expr: 'floor((x + y) / 3)' } }),
+      cat('early', {
+        input: 'counts',
+        inputs: ['x', 'y'],
+        formula: { type: 'expr', expr: 'floor((x + y) / 3)' },
+      }),
     ]);
     const r = run(t, [p('a', { early: { x: 4, y: 3 } }), p('b')]);
     expect(pts(r, 'a', 'early')).toBe(2);
@@ -76,55 +92,111 @@ describe('formulas', () => {
   });
 
   it('repeating with sum(value) expr', () => {
-    const t = tpl([cat('r', { input: 'repeating', formula: { type: 'expr', expr: 'sum(value) + count(value)' } })]);
+    const t = tpl([
+      cat('r', {
+        input: 'repeating',
+        formula: { type: 'expr', expr: 'sum(value) + count(value)' },
+      }),
+    ]);
     expect(run(t, [p('a', { r: [2, 3] })]).players[0]?.total).toBe(7);
   });
 
   it('setCollection via table or expr', () => {
     const t = tpl([
-      cat('s1', { input: 'count', formula: { type: 'setCollection', table: { '1': 1, '2': 3, '3+': 6 } } }),
-      cat('s2', { input: 'counts', inputs: ['a', 'b'], formula: { type: 'setCollection', expr: 'min(a, b) * 4' } }),
+      cat('s1', {
+        input: 'count',
+        formula: { type: 'setCollection', table: { '1': 1, '2': 3, '3+': 6 } },
+      }),
+      cat('s2', {
+        input: 'counts',
+        inputs: ['a', 'b'],
+        formula: { type: 'setCollection', expr: 'min(a, b) * 4' },
+      }),
     ]);
     const r = run(t, [p('a', { s1: 5, s2: { a: 2, b: 3 } })]);
     expect(r.players[0]?.total).toBe(6 + 8);
   });
 
   it('exclusiveBonus: highest takes it, ties share, zero gives nothing', () => {
-    const t = tpl([cat('e', { input: 'exclusive', formula: { type: 'exclusiveBonus', points: 4 } })]);
-    expect(run(t, [p('a', { e: 3 }), p('b', { e: 1 })]).players.map((x) => x.total)).toEqual([4, 0]);
-    expect(run(t, [p('a', { e: 2 }), p('b', { e: 2 })]).players.map((x) => x.total)).toEqual([4, 4]);
+    const t = tpl([
+      cat('e', { input: 'exclusive', formula: { type: 'exclusiveBonus', points: 4 } }),
+    ]);
+    expect(run(t, [p('a', { e: 3 }), p('b', { e: 1 })]).players.map((x) => x.total)).toEqual([
+      4, 0,
+    ]);
+    expect(run(t, [p('a', { e: 2 }), p('b', { e: 2 })]).players.map((x) => x.total)).toEqual([
+      4, 4,
+    ]);
     expect(run(t, [p('a', { e: false }), p('b')]).players.map((x) => x.total)).toEqual([0, 0]);
-    expect(run(t, [p('a', { e: true }), p('b', { e: false })]).players.map((x) => x.total)).toEqual([4, 0]);
+    expect(run(t, [p('a', { e: true }), p('b', { e: false })]).players.map((x) => x.total)).toEqual(
+      [4, 0],
+    );
   });
 
   describe('rankAward ties', () => {
     const award = (tieMode: string, points = [10, 6, 3]) =>
       tpl([
         cat('r', {
-          formula: { type: 'rankAward', rankAward: { points, tieMode: tieMode as 'none', compare: 'highest', excludeZero: true } },
+          formula: {
+            type: 'rankAward',
+            rankAward: {
+              points,
+              tieMode: tieMode as 'none',
+              compare: 'highest',
+              excludeZero: true,
+            },
+          },
         }),
       ]);
     const players = [p('a', { r: 5 }), p('b', { r: 5 }), p('c', { r: 3 }), p('d', { r: 0 })];
-    const totals = (mode: string, pts?: number[]) => run(award(mode, pts), players).players.map((x) => x.total);
+    const totals = (mode: string, pts?: number[]) =>
+      run(award(mode, pts), players).players.map((x) => x.total);
 
     it('split-floor', () => expect(totals('split-floor')).toEqual([8, 8, 3, 0]));
-    it('split-floor rounds down', () => expect(totals('split-floor', [5, 2, 1])).toEqual([3, 3, 1, 0]));
+    it('split-floor rounds down', () =>
+      expect(totals('split-floor', [5, 2, 1])).toEqual([3, 3, 1, 0]));
     it('split-exact', () => expect(totals('split-exact', [5, 2, 1])).toEqual([3.5, 3.5, 1, 0]));
     it('all-full', () => expect(totals('all-full')).toEqual([10, 10, 3, 0]));
     it('all-next-lower', () => expect(totals('all-next-lower')).toEqual([6, 6, 3, 0]));
     it('none', () => expect(totals('none')).toEqual([0, 0, 3, 0]));
 
     it('defaults to split-floor, lowest compare and minValueToScore', () => {
-      const t = tpl([cat('r', { formula: { type: 'rankAward', rankAward: { points: [4, 2], compare: 'lowest', minValueToScore: 1 } } })]);
+      const t = tpl([
+        cat('r', {
+          formula: {
+            type: 'rankAward',
+            rankAward: { points: [4, 2], compare: 'lowest', minValueToScore: 1 },
+          },
+        }),
+      ]);
       const r = run(t, [p('a', { r: 0 }), p('b', { r: 2 }), p('c', { r: 3 })]);
       expect(r.players.map((x) => x.total)).toEqual([0, 4, 2]);
     });
 
     it('over count and bool', () => {
-      const t = tpl([cat('r', { input: 'repeating', formula: { type: 'rankAward', rankAward: { points: [5, 1], over: 'count' } } })]);
-      expect(run(t, [p('a', { r: [9] }), p('b', { r: [1, 1] })]).players.map((x) => x.total)).toEqual([1, 5]);
-      const b = tpl([cat('r', { input: 'bool', formula: { type: 'rankAward', rankAward: { points: [7], over: 'bool', tieMode: 'all-full', excludeZero: true } } })]);
-      expect(run(b, [p('a', { r: true }), p('b', { r: true }), p('c', { r: false })]).players.map((x) => x.total)).toEqual([7, 7, 0]);
+      const t = tpl([
+        cat('r', {
+          input: 'repeating',
+          formula: { type: 'rankAward', rankAward: { points: [5, 1], over: 'count' } },
+        }),
+      ]);
+      expect(
+        run(t, [p('a', { r: [9] }), p('b', { r: [1, 1] })]).players.map((x) => x.total),
+      ).toEqual([1, 5]);
+      const b = tpl([
+        cat('r', {
+          input: 'bool',
+          formula: {
+            type: 'rankAward',
+            rankAward: { points: [7], over: 'bool', tieMode: 'all-full', excludeZero: true },
+          },
+        }),
+      ]);
+      expect(
+        run(b, [p('a', { r: true }), p('b', { r: true }), p('c', { r: false })]).players.map(
+          (x) => x.total,
+        ),
+      ).toEqual([7, 7, 0]);
     });
   });
 
@@ -132,7 +204,11 @@ describe('formulas', () => {
     const t = tpl([
       cat('m', {
         input: 'count',
-        formula: { type: 'multiply', points: 1, byPlayerCount: { '2': { points: 5 }, '4+': { points: 10 } } },
+        formula: {
+          type: 'multiply',
+          points: 1,
+          byPlayerCount: { '2': { points: 5 }, '4+': { points: 10 } },
+        },
       }),
     ]);
     const mk = (n: number) => Array.from({ length: n }, (_, i) => p(`p${i}`, { m: 1 }));
@@ -143,10 +219,19 @@ describe('formulas', () => {
 
   it('appliesWhen and roleKey gate categories', () => {
     const t = tpl([
-      cat('bonus', { appliesWhen: 'players >= 4', formula: { type: 'multiply', points: 2 }, input: 'count' }),
+      cat('bonus', {
+        appliesWhen: 'players >= 4',
+        formula: { type: 'multiply', points: 2 },
+        input: 'count',
+      }),
       cat('spy', { roleKey: 'spy' }),
     ]);
-    const four = run(t, [p('a', { bonus: 1, spy: 3 }, { role: 'spy' }), p('b', { bonus: 1, spy: 3 }), p('c'), p('d')]);
+    const four = run(t, [
+      p('a', { bonus: 1, spy: 3 }, { role: 'spy' }),
+      p('b', { bonus: 1, spy: 3 }),
+      p('c'),
+      p('d'),
+    ]);
     expect(four.players.map((x) => x.total)).toEqual([5, 2, 0, 0]);
     expect(run(t, [p('a', { bonus: 1 }), p('b')]).players[0]?.total).toBe(0);
   });
@@ -163,10 +248,17 @@ describe('formulas', () => {
   it('multiplierOf scales targets and is not summed', () => {
     const t = tpl([
       cat('cards'),
-      cat('doubler', { input: 'bool', formula: { type: 'expr', expr: 'if(value, 2, 1)' }, multiplierOf: ['cards'] }),
+      cat('doubler', {
+        input: 'bool',
+        formula: { type: 'expr', expr: 'if(value, 2, 1)' },
+        multiplierOf: ['cards'],
+      }),
       cat('extra'),
     ]);
-    const r = run(t, [p('a', { cards: 10, doubler: true, extra: 1 }), p('b', { cards: 10, extra: 1 })]);
+    const r = run(t, [
+      p('a', { cards: 10, doubler: true, extra: 1 }),
+      p('b', { cards: 10, extra: 1 }),
+    ]);
     expect(r.players.map((x) => x.total)).toEqual([21, 11]);
   });
 
@@ -190,18 +282,25 @@ describe('formulas', () => {
 
 describe('win rules, ranking and tiebreakers', () => {
   it('lowest wins', () => {
-    const r = run(tpl([cat('s')], { winRule: 'lowest' }), [p('a', { s: 30 }), p('b', { s: 12 }), p('c', { s: 40 })]);
+    const r = run(tpl([cat('s')], { winRule: 'lowest' }), [
+      p('a', { s: 30 }),
+      p('b', { s: 12 }),
+      p('c', { s: 40 }),
+    ]);
     expect(r.players.map((x) => x.rank)).toEqual([2, 1, 3]);
     expect(r.winners).toEqual(['b']);
   });
 
   it('tiebreakers apply in order', () => {
-    const t = tpl([cat('s'), cat('t1', { countsToTotal: false }), cat('t2', { countsToTotal: false })], {
-      tiebreakers: [
-        { categoryKey: 't1', dir: 'highest', description: '' },
-        { categoryKey: 't2', dir: 'lowest', description: '' },
-      ],
-    });
+    const t = tpl(
+      [cat('s'), cat('t1', { countsToTotal: false }), cat('t2', { countsToTotal: false })],
+      {
+        tiebreakers: [
+          { categoryKey: 't1', dir: 'highest', description: '' },
+          { categoryKey: 't2', dir: 'lowest', description: '' },
+        ],
+      },
+    );
     const r = run(t, [
       p('a', { s: 10, t1: 2, t2: 5 }),
       p('b', { s: 10, t1: 2, t2: 3 }),
@@ -238,8 +337,13 @@ describe('win rules, ranking and tiebreakers', () => {
   });
 
   it('objective uses won category or manual winners', () => {
-    const t = tpl([cat('won', { input: 'bool', countsToTotal: false })], { winRule: 'objective', mode: 'hidden-traitor' });
-    expect(run(t, [p('a', { won: true }), p('b', { won: false }), p('c', { won: true })]).winners).toEqual(['a', 'c']);
+    const t = tpl([cat('won', { input: 'bool', countsToTotal: false })], {
+      winRule: 'objective',
+      mode: 'hidden-traitor',
+    });
+    expect(
+      run(t, [p('a', { won: true }), p('b', { won: false }), p('c', { won: true })]).winners,
+    ).toEqual(['a', 'c']);
     expect(run(t, [p('a'), p('b')], { winners: ['b'] }).winners).toEqual(['b']);
   });
 });
@@ -267,7 +371,11 @@ describe('team and coop', () => {
   });
 
   it('coop winners follow outcome and scoreOnlyIfWin zeroes totals', () => {
-    const t = tpl([cat('s')], { mode: 'coop', winRule: 'objective', outcome: { winLose: true, scoreOnlyIfWin: true } });
+    const t = tpl([cat('s')], {
+      mode: 'coop',
+      winRule: 'objective',
+      outcome: { winLose: true, scoreOnlyIfWin: true },
+    });
     const players = [p('a', { s: 10 }), p('b', { s: 5 })];
     const win = run(t, players, { outcome: 'win' });
     expect(win.winners).toEqual(['a', 'b']);
@@ -279,7 +387,13 @@ describe('team and coop', () => {
   });
 
   it('team-scope category reads value from any member', () => {
-    const t = tpl([cat('team', { scope: 'team' }), cat('mine', { formula: { type: 'expr', expr: 'cat_team + 1' } })], { mode: 'coop' });
+    const t = tpl(
+      [
+        cat('team', { scope: 'team' }),
+        cat('mine', { formula: { type: 'expr', expr: 'cat_team + 1' } }),
+      ],
+      { mode: 'coop' },
+    );
     const r = run(t, [p('a', { team: 7 }), p('b')], { outcome: 'win' });
     expect(r.players.map((x) => x.total)).toEqual([8, 8]);
     expect(r.teams[0]?.total).toBe(7 + 16);
@@ -287,7 +401,10 @@ describe('team and coop', () => {
 });
 
 describe('boundary validation', () => {
-  const t = tpl([cat('n', { input: 'count', min: 0, max: 5 }), cat('c', { input: 'counts', inputs: ['x'] })]);
+  const t = tpl([
+    cat('n', { input: 'count', min: 0, max: 5 }),
+    cat('c', { input: 'counts', inputs: ['x'] }),
+  ]);
 
   it('rejects bad input', () => {
     expect(fails(t, [p('a', { n: -1 })])).toBe('INPUT_INVALID');
@@ -321,30 +438,60 @@ describe('template validation', () => {
 
   it('rejects malformed templates', () => {
     expect(bad(tpl([cat('a'), cat('a')]))).toMatch(/duplicate/);
-    expect(bad(tpl([cat('a', { formula: { type: 'expr', expr: 'nope + 1' } })]))).toMatch(/unknown identifier/);
-    expect(bad(tpl([cat('a', { formula: { type: 'expr', expr: 'cat_missing' } })]))).toMatch(/unknown identifier/);
+    expect(bad(tpl([cat('a', { formula: { type: 'expr', expr: 'nope + 1' } })]))).toMatch(
+      /unknown identifier/,
+    );
+    expect(bad(tpl([cat('a', { formula: { type: 'expr', expr: 'cat_missing' } })]))).toMatch(
+      /unknown identifier/,
+    );
     expect(bad(tpl([cat('a', { formula: { type: 'expr', expr: 'x.y' } })]))).toMatch(/EXPR_SYNTAX/);
-    expect(bad(tpl([cat('a', { formula: { type: 'expr', expr: 'cat_b' } }), cat('b', { formula: { type: 'expr', expr: 'cat_a' } })]))).toMatch(/circular/);
+    expect(
+      bad(
+        tpl([
+          cat('a', { formula: { type: 'expr', expr: 'cat_b' } }),
+          cat('b', { formula: { type: 'expr', expr: 'cat_a' } }),
+        ]),
+      ),
+    ).toMatch(/circular/);
     expect(bad(tpl([cat('a', { formula: { type: 'expr', expr: 'cat_a' } })]))).toMatch(/circular/);
     expect(bad(tpl([cat('a', { formula: { type: 'multiply' } })]))).toMatch(/points/);
     expect(bad(tpl([cat('a', { input: 'counts' })]))).toMatch(/inputs/);
     expect(bad(tpl([cat('a', { input: 'counts', inputs: ['value'] })]))).toMatch(/invalid/);
-    expect(bad(tpl([cat('a')], { tiebreakers: [{ categoryKey: 'zzz', description: '' }] }))).toMatch(/tiebreaker/);
+    expect(
+      bad(tpl([cat('a')], { tiebreakers: [{ categoryKey: 'zzz', description: '' }] })),
+    ).toMatch(/tiebreaker/);
     expect(bad(tpl([cat('a', { multiplierOf: ['zzz'] })]))).toMatch(/multiplierOf/);
   });
 
   it('computeScores surfaces template errors as results', () => {
-    expect(fails(tpl([cat('a', { formula: { type: 'expr', expr: 'process' } })]), [p('a')])).toBe('TEMPLATE_INVALID');
+    expect(fails(tpl([cat('a', { formula: { type: 'expr', expr: 'process' } })]), [p('a')])).toBe(
+      'TEMPLATE_INVALID',
+    );
   });
 });
 
 describe('derived categories and outcome expressions', () => {
-  const heists = cat('heists', { scope: 'team', input: 'perRound', roundInput: 'bool', countsToTotal: false });
+  const heists = cat('heists', {
+    scope: 'team',
+    input: 'perRound',
+    roundInput: 'bool',
+    countsToTotal: false,
+  });
   const t = tpl(
     [
       heists,
-      cat('wins', { scope: 'team', input: 'derived', countsToTotal: false, formula: { type: 'expr', expr: 'countTrue(cat_heists)' } }),
-      cat('losses', { scope: 'team', input: 'derived', countsToTotal: false, formula: { type: 'expr', expr: 'sumRounds(cat_heists) * 0 + count(cat_heists) - cat_wins' } }),
+      cat('wins', {
+        scope: 'team',
+        input: 'derived',
+        countsToTotal: false,
+        formula: { type: 'expr', expr: 'countTrue(cat_heists)' },
+      }),
+      cat('losses', {
+        scope: 'team',
+        input: 'derived',
+        countsToTotal: false,
+        formula: { type: 'expr', expr: 'sumRounds(cat_heists) * 0 + count(cat_heists) - cat_wins' },
+      }),
     ],
     {
       mode: 'coop',

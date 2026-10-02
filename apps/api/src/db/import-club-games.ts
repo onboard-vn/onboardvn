@@ -57,8 +57,11 @@ const toInt = (value: string | number | null | undefined): number | null => {
   return Number.isFinite(n) && n > 0 ? Math.round(n) : null;
 };
 
-const expandRanges = (ranges: { min: number; max: number }[] = []): number[] =>
-  [...new Set(ranges.flatMap(({ min, max }) => Array.from({ length: max - min + 1 }, (_, i) => min + i)))];
+const expandRanges = (ranges: { min: number; max: number }[] = []): number[] => [
+  ...new Set(
+    ranges.flatMap(({ min, max }) => Array.from({ length: max - min + 1 }, (_, i) => min + i)),
+  ),
+];
 
 async function findOrCreateGame(club: ClubGame, bgg: BggCache | null): Promise<string> {
   const bggId = bgg ? Number(bgg.imageSource.id) : null;
@@ -119,7 +122,9 @@ async function linkCategories(gameId: string, bgg: BggCache): Promise<void> {
         where: and(eq(categories.kind, kind), eq(categories.bggId, bggId)),
       });
       if (!category) {
-        const name = (await db.query.categories.findFirst({ where: eq(categories.name, link.name) }))
+        const name = (await db.query.categories.findFirst({
+          where: eq(categories.name, link.name),
+        }))
           ? `${link.name} (${kind})`
           : link.name;
         [category] = await db.insert(categories).values({ name, kind, bggId }).returning();
@@ -159,7 +164,9 @@ async function upsertMetadata(
 
 async function importTemplates(gameIdBySlug: Map<string, string>): Promise<number> {
   let count = 0;
-  for (const file of readdirSync(TEMPLATE_DIR).filter((f) => f.endsWith('.json') && f !== 'schema.json')) {
+  for (const file of readdirSync(TEMPLATE_DIR).filter(
+    (f) => f.endsWith('.json') && f !== 'schema.json',
+  )) {
     let def;
     try {
       def = JSON.parse(readFileSync(`${TEMPLATE_DIR}/${file}`, 'utf8'));
@@ -207,19 +214,32 @@ const gameIdBySlug = new Map<string, string>();
 let withBgg = 0;
 for (const clubGame of club.games) {
   const cachePath = `${BGG_CACHE}/${clubGame.slug}.json`;
-  const bgg: BggCache | null = existsSync(cachePath) ? JSON.parse(readFileSync(cachePath, 'utf8')) : null;
+  const bgg: BggCache | null = existsSync(cachePath)
+    ? JSON.parse(readFileSync(cachePath, 'utf8'))
+    : null;
   const gameId = await findOrCreateGame(clubGame, bgg);
   gameIdBySlug.set(clubGame.slug, gameId);
 
   if (bgg) {
     withBgg++;
     await linkCategories(gameId, bgg);
-    await upsertMetadata(gameId, 'bgg', bgg.imageSource.id, { item: bgg.item, dynamic: bgg.dynamic }, {
-      bestPlayers: expandRanges(bgg.dynamic.polls.userplayers?.best),
-      playMinutesMax: toInt(bgg.item.maxplaytime),
-    });
+    await upsertMetadata(
+      gameId,
+      'bgg',
+      bgg.imageSource.id,
+      { item: bgg.item, dynamic: bgg.dynamic },
+      {
+        bestPlayers: expandRanges(bgg.dynamic.polls.userplayers?.best),
+        playMinutesMax: toInt(bgg.item.maxplaytime),
+      },
+    );
   }
-  await upsertMetadata(gameId, CLUB_SOURCE, clubGame.externalId, rawById.get(clubGame.externalId) ?? clubGame);
+  await upsertMetadata(
+    gameId,
+    CLUB_SOURCE,
+    clubGame.externalId,
+    rawById.get(clubGame.externalId) ?? clubGame,
+  );
 }
 
 const templates = await importTemplates(gameIdBySlug);

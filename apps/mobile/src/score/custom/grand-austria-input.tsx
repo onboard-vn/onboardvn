@@ -33,95 +33,95 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
         const row = sheet.summary.rows.find((r) => r.id === p.id);
         return (
           <Flash key={p.id} sheet={sheet} id={p.id}>
-          <Card>
-            <View style={styles.header}>
-              <View>
-                <Heading>{p.name}</Heading>
-                <PresenceLabel sheet={sheet} id={p.id} name={p.name} />
-              </View>
-              <Text style={styles.total}>{row?.total ?? 0} VP</Text>
-            </View>
-
-            <Text style={styles.label}>Điểm trên track (trước tính điểm cuối)</Text>
-            <NumberField
-              value={num(p.id, 'trackVp')}
-              step={1}
-              width={80}
-              onChange={(n) => sheet.setValue(p.id, 'trackVp', n)}
-            />
-            <View style={styles.wrap}>
-              {TRACK_CHIPS.map((q) => (
-                <Chip
-                  key={q}
-                  label={`+${q}`}
-                  onPress={() => sheet.setValue(p.id, 'trackVp', num(p.id, 'trackVp') + q)}
-                />
-              ))}
-            </View>
-
-            <Text style={styles.label}>Phòng có khách (chạm để đánh dấu)</Text>
-            <View style={styles.hotel}>
-              {ROWS.map((r) => {
-                const n = num(p.id, r.key);
-                return (
-                  <View key={r.key} style={styles.floor}>
-                    <Text style={styles.floorLabel}>
-                      {r.label} · {r.vp} VP
-                    </Text>
-                    <View style={styles.rooms}>
-                      {Array.from({ length: ROOM_SLOTS }, (_, i) => {
-                        const filled = i < n;
-                        return (
-                          <Pressable
-                            key={i}
-                            accessibilityRole="button"
-                            accessibilityLabel={`${r.label}, phòng ${i + 1}`}
-                            accessibilityState={{ selected: filled }}
-                            onPress={() => sheet.setValue(p.id, r.key, n === i + 1 ? i : i + 1)}
-                            style={[styles.room, filled && styles.roomOn]}
-                          >
-                            <Text style={[styles.roomText, filled && { color: '#fff' }]}>
-                              {filled ? r.vp : ''}
-                            </Text>
-                          </Pressable>
-                        );
-                      })}
-                    </View>
-                    <Text style={styles.floorSum}>{n * r.vp} VP</Text>
-                  </View>
-                );
-              })}
-            </View>
-
-            <Text style={styles.label}>Thẻ nhân viên</Text>
-            <View style={styles.line}>
-              <Text style={styles.lineText}>VP từ nhân viên cuối game</Text>
-              <NumberField
-                value={num(p.id, 'staffVp')}
-                min={0}
-                width={56}
-                onChange={(n) => sheet.setValue(p.id, 'staffVp', n)}
-              />
-            </View>
-
-            <Text style={styles.label}>Tài nguyên còn lại</Text>
-            {COUNTERS.map((c) => (
-              <View key={c.key} style={styles.line}>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.lineText}>{c.label}</Text>
-                  <Hint>
-                    {sign(c.vp)} VP mỗi cái = {sign(c.vp * num(p.id, c.key))} VP
-                  </Hint>
+            <Card>
+              <View style={styles.header}>
+                <View>
+                  <Heading>{p.name}</Heading>
+                  <PresenceLabel sheet={sheet} id={p.id} name={p.name} />
                 </View>
+                <Text style={styles.total}>{row?.total ?? 0} VP</Text>
+              </View>
+
+              <Text style={styles.label}>Điểm trên track (trước tính điểm cuối)</Text>
+              <NumberField
+                value={num(p.id, 'trackVp')}
+                step={1}
+                width={80}
+                onChange={(n) => sheet.setValue(p.id, 'trackVp', n)}
+              />
+              <View style={styles.wrap}>
+                {TRACK_CHIPS.map((q) => (
+                  <Chip
+                    key={q}
+                    label={`+${q}`}
+                    onPress={() => sheet.setValue(p.id, 'trackVp', num(p.id, 'trackVp') + q)}
+                  />
+                ))}
+              </View>
+
+              <Text style={styles.label}>Phòng có khách (chạm để đánh dấu)</Text>
+              <View style={styles.hotel}>
+                {ROWS.map((r) => {
+                  const n = num(p.id, r.key);
+                  return (
+                    <View key={r.key} style={styles.floor}>
+                      <Text style={styles.floorLabel}>
+                        {r.label} · {r.vp} VP
+                      </Text>
+                      <View style={styles.rooms}>
+                        {Array.from({ length: ROOM_SLOTS }, (_, i) => {
+                          const filled = i < n;
+                          return (
+                            <Pressable
+                              key={i}
+                              accessibilityRole="button"
+                              accessibilityLabel={`${r.label}, phòng ${i + 1}`}
+                              accessibilityState={{ selected: filled }}
+                              onPress={() => sheet.setValue(p.id, r.key, n === i + 1 ? i : i + 1)}
+                              style={[styles.room, filled && styles.roomOn]}
+                            >
+                              <Text style={[styles.roomText, filled && { color: '#fff' }]}>
+                                {filled ? r.vp : ''}
+                              </Text>
+                            </Pressable>
+                          );
+                        })}
+                      </View>
+                      <Text style={styles.floorSum}>{n * r.vp} VP</Text>
+                    </View>
+                  );
+                })}
+              </View>
+
+              <Text style={styles.label}>Thẻ nhân viên</Text>
+              <View style={styles.line}>
+                <Text style={styles.lineText}>VP từ nhân viên cuối game</Text>
                 <NumberField
-                  value={num(p.id, c.key)}
+                  value={num(p.id, 'staffVp')}
                   min={0}
                   width={56}
-                  onChange={(n) => sheet.setValue(p.id, c.key, n)}
+                  onChange={(n) => sheet.setValue(p.id, 'staffVp', n)}
                 />
               </View>
-            ))}
-          </Card>
+
+              <Text style={styles.label}>Tài nguyên còn lại</Text>
+              {COUNTERS.map((c) => (
+                <View key={c.key} style={styles.line}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.lineText}>{c.label}</Text>
+                    <Hint>
+                      {sign(c.vp)} VP mỗi cái = {sign(c.vp * num(p.id, c.key))} VP
+                    </Hint>
+                  </View>
+                  <NumberField
+                    value={num(p.id, c.key)}
+                    min={0}
+                    width={56}
+                    onChange={(n) => sheet.setValue(p.id, c.key, n)}
+                  />
+                </View>
+              ))}
+            </Card>
           </Flash>
         );
       })}

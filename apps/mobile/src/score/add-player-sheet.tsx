@@ -6,11 +6,7 @@ import { colors } from '../ui/theme';
 import type { Player } from './model';
 
 const normalize = (s: string) =>
-  s
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/đ/gi, 'd')
-    .toLowerCase();
+  s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase();
 
 export function AddPlayerSheet({
   visible,

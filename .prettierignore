@@ -5,3 +5,10 @@ LICENSE
 dist/
 .claude/
 apps/web/public/maplibre/
+
+# Generated files
+apps/mobile/.expo/
+apps/mobile/expo-env.d.ts
+apps/api/drizzle/meta/
+data/staging/score-templates/
+tools/the-gang-print/src/.tmp/

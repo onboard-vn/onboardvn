@@ -129,9 +129,7 @@ export const listClubMembers = (): SeatedPlayer[] => club.members;
 export const listMeetups = (): MockMeetup[] => meetups;
 export const getMeetup = (id: string): MockMeetup | undefined => meetups.find((m) => m.id === id);
 
-export function getTable(
-  tableId: string,
-): { table: MockTable; meetup: MockMeetup } | undefined {
+export function getTable(tableId: string): { table: MockTable; meetup: MockMeetup } | undefined {
   for (const meetup of meetups) {
     const table = meetup.tables.find((t) => t.id === tableId);
     if (table) return { table, meetup };

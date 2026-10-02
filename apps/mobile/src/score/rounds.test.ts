@@ -11,9 +11,30 @@ describe('rounds scoring', () => {
     if (!flip7) return;
     expect(roundsConfig(flip7)).toMatchObject({ target: 200, aggregate: 'sum' });
     let s = initialState(players);
-    s = applyOp(s, { opId: '1', actorId: 'a', identityId: 'a', categoryKey: '$round', roundIndex: 0, value: 120 });
-    s = applyOp(s, { opId: '2', actorId: 'a', identityId: 'a', categoryKey: '$round', roundIndex: 1, value: 85 });
-    s = applyOp(s, { opId: '3', actorId: 'b', identityId: 'b', categoryKey: '$round', roundIndex: 0, value: 60 });
+    s = applyOp(s, {
+      opId: '1',
+      actorId: 'a',
+      identityId: 'a',
+      categoryKey: '$round',
+      roundIndex: 0,
+      value: 120,
+    });
+    s = applyOp(s, {
+      opId: '2',
+      actorId: 'a',
+      identityId: 'a',
+      categoryKey: '$round',
+      roundIndex: 1,
+      value: 85,
+    });
+    s = applyOp(s, {
+      opId: '3',
+      actorId: 'b',
+      identityId: 'b',
+      categoryKey: '$round',
+      roundIndex: 0,
+      value: 60,
+    });
     expect(s.roundCount).toBe(2);
     expect(roundTotal(flip7, s, 'a')).toBe(205);
     const sum = summarize(flip7, s);
@@ -23,7 +44,13 @@ describe('rounds scoring', () => {
 
   it('ignores remote ops for unseated players', () => {
     const s = initialState(players);
-    const next = applyOp(s, { opId: '1', actorId: 'x', identityId: 'zzz', categoryKey: 'cash', value: 5 });
+    const next = applyOp(s, {
+      opId: '1',
+      actorId: 'x',
+      identityId: 'zzz',
+      categoryKey: 'cash',
+      value: 5,
+    });
     expect(next).toBe(s);
   });
 });

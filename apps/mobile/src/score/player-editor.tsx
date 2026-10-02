@@ -29,7 +29,9 @@ export function PlayerEditor({ sheet }: { sheet: SheetApi }) {
             </Text>
             <PresenceLabel sheet={sheet} id={p.id} name={p.name} />
           </View>
-          {p.kind && KIND_LABEL[p.kind] ? <Text style={styles.kind}>{KIND_LABEL[p.kind]}</Text> : null}
+          {p.kind && KIND_LABEL[p.kind] ? (
+            <Text style={styles.kind}>{KIND_LABEL[p.kind]}</Text>
+          ) : null}
           <Pressable
             accessibilityLabel={`Xóa ${p.name}`}
             accessibilityRole="button"

@@ -18,7 +18,9 @@ export function Flash({
 }) {
   const on = sheet.isFlashed(id, cat, round);
   return (
-    <View style={[{ borderRadius: 10 }, on && { backgroundColor: colors.warnSoft }]}>{children}</View>
+    <View style={[{ borderRadius: 10 }, on && { backgroundColor: colors.warnSoft }]}>
+      {children}
+    </View>
   );
 }
 

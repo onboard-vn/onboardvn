@@ -28,7 +28,8 @@ function checkFormulaShape(cat: ScoreCategory): string | null {
   if (cat.input === 'derived' && (f.type !== 'expr' || f.expr === undefined)) {
     return "input 'derived' requires an expr formula";
   }
-  if (cat.roundInput !== undefined && cat.input !== 'perRound') return "roundInput requires input 'perRound'";
+  if (cat.roundInput !== undefined && cat.input !== 'perRound')
+    return "roundInput requires input 'perRound'";
   const hasOverrides = Object.keys(f.byPlayerCount ?? {}).length > 0;
   if (hasOverrides) return null;
   switch (f.type) {
@@ -70,21 +71,31 @@ export function compileTemplate(template: ScoreTemplate): Result<CompiledTemplat
     const inputNames = new Set<string>();
     if (cat.input === 'counts') {
       if (!cat.inputs || cat.inputs.length === 0) {
-        return err('TEMPLATE_INVALID', "input 'counts' requires non-empty inputs", `${base}.inputs`);
+        return err(
+          'TEMPLATE_INVALID',
+          "input 'counts' requires non-empty inputs",
+          `${base}.inputs`,
+        );
       }
       for (const name of cat.inputs) {
         if (!IDENT_RE.test(name) || RESERVED_INPUTS.has(name) || inputNames.has(name)) {
-          return err('TEMPLATE_INVALID', `invalid or duplicate input name '${name}'`, `${base}.inputs`);
+          return err(
+            'TEMPLATE_INVALID',
+            `invalid or duplicate input name '${name}'`,
+            `${base}.inputs`,
+          );
         }
         inputNames.add(name);
       }
     }
 
     for (const { path, src } of categoryExprSources(cat)) {
-      const compiled = exprs.get(src) ?? (() => {
-        const c = compileExpr(src);
-        return c.ok ? c.value : c.error;
-      })();
+      const compiled =
+        exprs.get(src) ??
+        (() => {
+          const c = compileExpr(src);
+          return c.ok ? c.value : c.error;
+        })();
       if ('code' in compiled) {
         return err('TEMPLATE_INVALID', `${compiled.code}: ${compiled.message}`, `${base}.${path}`);
       }
@@ -101,7 +112,11 @@ export function compileTemplate(template: ScoreTemplate): Result<CompiledTemplat
 
     for (const target of cat.multiplierOf ?? []) {
       if (target === cat.key || !byKey.has(target)) {
-        return err('TEMPLATE_INVALID', `invalid multiplierOf target '${target}'`, `${base}.multiplierOf`);
+        return err(
+          'TEMPLATE_INVALID',
+          `invalid multiplierOf target '${target}'`,
+          `${base}.multiplierOf`,
+        );
       }
       deps.get(target)?.add(cat.key);
     }
@@ -117,7 +132,8 @@ export function compileTemplate(template: ScoreTemplate): Result<CompiledTemplat
     const c = compileExpr(src);
     if (!c.ok) return err('TEMPLATE_INVALID', `${c.error.code}: ${c.error.message}`, path);
     for (const id of c.value.identifiers) {
-      if (id === 'players' || (id.startsWith(CAT_PREFIX) && byKey.has(id.slice(CAT_PREFIX.length)))) continue;
+      if (id === 'players' || (id.startsWith(CAT_PREFIX) && byKey.has(id.slice(CAT_PREFIX.length))))
+        continue;
       return err('TEMPLATE_INVALID', `unknown identifier '${id}'`, path);
     }
     exprs.set(src, c.value);
@@ -125,7 +141,11 @@ export function compileTemplate(template: ScoreTemplate): Result<CompiledTemplat
 
   for (const [i, tb] of (template.tiebreakers ?? []).entries()) {
     if (tb.categoryKey && !byKey.has(tb.categoryKey)) {
-      return err('TEMPLATE_INVALID', `unknown tiebreaker category '${tb.categoryKey}'`, `tiebreakers[${i}]`);
+      return err(
+        'TEMPLATE_INVALID',
+        `unknown tiebreaker category '${tb.categoryKey}'`,
+        `tiebreakers[${i}]`,
+      );
     }
   }
 

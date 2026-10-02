@@ -72,11 +72,17 @@ export function applyOp(s: SheetState, op: PlayOp): SheetState {
   }
   return {
     ...s,
-    values: { ...s.values, [op.identityId]: { ...s.values[op.identityId], [op.categoryKey]: op.value } },
+    values: {
+      ...s.values,
+      [op.identityId]: { ...s.values[op.identityId], [op.categoryKey]: op.value },
+    },
   };
 }
 
-export function readCell(s: SheetState, op: Pick<PlayOp, 'identityId' | 'categoryKey' | 'roundIndex'>) {
+export function readCell(
+  s: SheetState,
+  op: Pick<PlayOp, 'identityId' | 'categoryKey' | 'roundIndex'>,
+) {
   if (op.identityId === TEAM_ID) return s.teamValues[op.categoryKey];
   if (op.categoryKey === QUICK_KEY) return s.quickTotals[op.identityId];
   if (op.categoryKey === ROUND_KEY) return s.rounds[op.identityId]?.[op.roundIndex ?? 0];
@@ -208,11 +214,7 @@ export function tiebreakerNotes(t: ScoreTemplate): RuleNotes {
 const cmp = (t: ScoreTemplate) => (a: number, b: number) =>
   t.winRule === 'lowest' ? a - b : b - a;
 
-function totalsSummary(
-  t: ScoreTemplate,
-  s: SheetState,
-  totalOf: (id: string) => number,
-): Summary {
+function totalsSummary(t: ScoreTemplate, s: SheetState, totalOf: (id: string) => number): Summary {
   const rows: SummaryRow[] = s.players.map((p) => ({
     id: p.id,
     name: p.name,
@@ -236,7 +238,8 @@ function tieNote(t: ScoreTemplate, s: SheetState, leaders: string[]): string | n
 }
 
 export function summarize(t: ScoreTemplate, s: SheetState): Summary {
-  if (s.mode === 'quick' && isRankable(t)) return totalsSummary(t, s, (id) => s.quickTotals[id] ?? 0);
+  if (s.mode === 'quick' && isRankable(t))
+    return totalsSummary(t, s, (id) => s.quickTotals[id] ?? 0);
   if (isRoundsGame(t)) return totalsSummary(t, s, (id) => roundTotal(t, s, id));
   const res = computeScores(t, buildInput(t, s));
   if (!res.ok) {

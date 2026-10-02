@@ -6,9 +6,7 @@ export const MAX_EXPR_DEPTH = 32;
 export type ExprValue = number | readonly number[];
 
 type BinOp =
-  | '+' | '-' | '*' | '/' | '%' | '**'
-  | '<' | '<=' | '>' | '>=' | '==' | '!='
-  | '&&' | '||';
+  '+' | '-' | '*' | '/' | '%' | '**' | '<' | '<=' | '>' | '>=' | '==' | '!=' | '&&' | '||';
 
 export type ExprNode =
   | { k: 'num'; v: number }
@@ -52,9 +50,11 @@ const FUNCTIONS: Readonly<Record<string, { min: number; max: number }>> = {
   sumRounds: { min: 1, max: 1 },
 };
 
-type Token = { t: 'num'; v: number } | { t: 'id'; v: string } | { t: 'op'; v: string } | { t: 'end' };
+type Token =
+  { t: 'num'; v: number } | { t: 'id'; v: string } | { t: 'op'; v: string } | { t: 'end' };
 
-const TOKEN_RE = /\s*(?:(\d+(?:\.\d+)?|\.\d+)|([A-Za-z_][A-Za-z0-9_]*)|(\*\*|<=|>=|==|!=|&&|\|\||[-+*/%<>!?:(),]))/y;
+const TOKEN_RE =
+  /\s*(?:(\d+(?:\.\d+)?|\.\d+)|([A-Za-z_][A-Za-z0-9_]*)|(\*\*|<=|>=|==|!=|&&|\|\||[-+*/%<>!?:(),]))/y;
 
 function tokenize(src: string): Token[] {
   const tokens: Token[] = [];
@@ -195,7 +195,12 @@ class Parser {
     this.expectOp(')');
     if (name === 'if') {
       if (args.length !== 3) fail('EXPR_ARITY', 'if() takes 3 arguments');
-      return { k: 'cond', test: args[0] as ExprNode, then: args[1] as ExprNode, else: args[2] as ExprNode };
+      return {
+        k: 'cond',
+        test: args[0] as ExprNode,
+        then: args[1] as ExprNode,
+        else: args[2] as ExprNode,
+      };
     }
     const spec = Object.hasOwn(FUNCTIONS, name) ? FUNCTIONS[name] : undefined;
     if (!spec) return fail('EXPR_UNKNOWN_FUNCTION', `function '${name}' is not allowed`);
@@ -221,7 +226,8 @@ export function compileExpr(src: string): Result<CompiledExpr> {
   }
 }
 
-const flatten = (vals: ExprValue[]): number[] => vals.flatMap((v) => (typeof v === 'number' ? [v] : [...v]));
+const flatten = (vals: ExprValue[]): number[] =>
+  vals.flatMap((v) => (typeof v === 'number' ? [v] : [...v]));
 
 function finite(n: number): number {
   return Number.isFinite(n) ? n : fail('EXPR_NON_FINITE', 'result is not a finite number');
@@ -237,7 +243,9 @@ function evalNode(node: ExprNode, ctx: EvalContext): ExprValue {
       return node.v;
     case 'id': {
       const v = ctx.lookup(node.name);
-      return v === undefined ? fail('EXPR_UNKNOWN_IDENTIFIER', `unknown identifier '${node.name}'`) : v;
+      return v === undefined
+        ? fail('EXPR_UNKNOWN_IDENTIFIER', `unknown identifier '${node.name}'`)
+        : v;
     }
     case 'unary': {
       const v = num(node.arg);
@@ -251,10 +259,14 @@ function evalNode(node: ExprNode, ctx: EvalContext): ExprValue {
       const l = num(node.l);
       const r = num(node.r);
       switch (node.op) {
-        case '+': return finite(l + r);
-        case '-': return finite(l - r);
-        case '*': return finite(l * r);
-        case '**': return finite(l ** r);
+        case '+':
+          return finite(l + r);
+        case '-':
+          return finite(l - r);
+        case '*':
+          return finite(l * r);
+        case '**':
+          return finite(l ** r);
         case '/':
         case '%':
           if (r === 0) {
@@ -262,19 +274,26 @@ function evalNode(node: ExprNode, ctx: EvalContext): ExprValue {
             return 0;
           }
           return finite(node.op === '/' ? l / r : l % r);
-        case '<': return l < r ? 1 : 0;
-        case '<=': return l <= r ? 1 : 0;
-        case '>': return l > r ? 1 : 0;
-        case '>=': return l >= r ? 1 : 0;
-        case '==': return l === r ? 1 : 0;
-        default: return l !== r ? 1 : 0;
+        case '<':
+          return l < r ? 1 : 0;
+        case '<=':
+          return l <= r ? 1 : 0;
+        case '>':
+          return l > r ? 1 : 0;
+        case '>=':
+          return l >= r ? 1 : 0;
+        case '==':
+          return l === r ? 1 : 0;
+        default:
+          return l !== r ? 1 : 0;
       }
     }
     case 'call': {
       const args = node.args.map((a) => evalNode(a, ctx));
       if (node.fn === 'count') return flatten(args).length;
       if (node.fn === 'countTrue') return flatten(args).filter((n) => n !== 0).length;
-      if (node.fn === 'sum' || node.fn === 'sumRounds') return finite(flatten(args).reduce((a, b) => a + b, 0));
+      if (node.fn === 'sum' || node.fn === 'sumRounds')
+        return finite(flatten(args).reduce((a, b) => a + b, 0));
       if (node.fn === 'min' || node.fn === 'max') {
         const list = flatten(args);
         if (list.length === 0) return 0;

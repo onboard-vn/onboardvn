@@ -15,8 +15,7 @@ export interface PlayOp {
 }
 
 export type PlayEvent =
-  | { type: 'op'; op: PlayOp }
-  | { type: 'presence'; identityId: string; typing: boolean };
+  { type: 'op'; op: PlayOp } | { type: 'presence'; identityId: string; typing: boolean };
 
 export interface FinishPayload {
   players: { identityId: string; kind: PlayerKind }[];

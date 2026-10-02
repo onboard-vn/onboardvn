@@ -10,9 +10,11 @@ const files = readdirSync(dir)
   .filter((f) => f.endsWith('.json') && f !== 'schema.json')
   .sort();
 
-const load = (slug: string): ScoreTemplate => scoreTemplateSchema.parse(JSON.parse(readFileSync(`${dir}/${slug}.json`, 'utf8')));
+const load = (slug: string): ScoreTemplate =>
+  scoreTemplateSchema.parse(JSON.parse(readFileSync(`${dir}/${slug}.json`, 'utf8')));
 
-const clamp = (v: number, c: ScoreCategory): number => Math.min(c.max ?? Infinity, Math.max(c.min ?? -Infinity, v));
+const clamp = (v: number, c: ScoreCategory): number =>
+  Math.min(c.max ?? Infinity, Math.max(c.min ?? -Infinity, v));
 
 function sampleValue(c: ScoreCategory, n: number): RawValue {
   switch (c.input) {
@@ -41,7 +43,9 @@ function sampleInput(t: ScoreTemplate, n: number): ScoreInput {
       id: `p${i}`,
       ...(teamed ? { team: i % 2 === 0 ? 'a' : 'b' } : {}),
       ...(t.roles?.[0] ? { role: t.roles[i % t.roles.length]?.key as string } : {}),
-      values: Object.fromEntries(t.categories.map((c) => [c.key, sampleValue(c, n === 0 ? 0 : n + i)])),
+      values: Object.fromEntries(
+        t.categories.map((c) => [c.key, sampleValue(c, n === 0 ? 0 : n + i)]),
+      ),
     })),
   };
 }
@@ -55,11 +59,16 @@ describe('staging score templates', () => {
     const raw = JSON.parse(readFileSync(`${dir}/${file}`, 'utf8'));
     expect(raw.slug).toBe(file.replace(/\.json$/, ''));
     const valid = validateTemplate(raw);
-    expect(valid.ok, valid.ok ? '' : `${valid.error.code} ${valid.error.path} ${valid.error.message}`).toBe(true);
+    expect(
+      valid.ok,
+      valid.ok ? '' : `${valid.error.code} ${valid.error.path} ${valid.error.message}`,
+    ).toBe(true);
     const t = scoreTemplateSchema.parse(raw);
     for (const n of [0, 1, 3]) {
       const r = computeScores(t, sampleInput(t, n));
-      expect(r.ok, r.ok ? '' : `n=${n} ${r.error.code} ${r.error.path} ${r.error.message}`).toBe(true);
+      expect(r.ok, r.ok ? '' : `n=${n} ${r.error.code} ${r.error.path} ${r.error.message}`).toBe(
+        true,
+      );
       if (r.ok) {
         for (const pl of r.value.players) expect(Number.isFinite(pl.total)).toBe(true);
       }
@@ -83,7 +92,15 @@ const solve = (
 const useValueForOwnKey = (t: ScoreTemplate): ScoreTemplate => ({
   ...t,
   categories: t.categories.map((c) =>
-    c.formula.expr ? { ...c, formula: { ...c.formula, expr: c.formula.expr.replace(new RegExp(`\\b${c.key}\\b`, 'g'), 'value') } } : c,
+    c.formula.expr
+      ? {
+          ...c,
+          formula: {
+            ...c.formula,
+            expr: c.formula.expr.replace(new RegExp(`\\b${c.key}\\b`, 'g'), 'value'),
+          },
+        }
+      : c,
   ),
 });
 
@@ -92,20 +109,36 @@ describe('golden vectors', () => {
     const p1: V = { vpTrack: 58, incomeLevel: 10, moneyRemaining: 5 };
     const p2: V = { vpTrack: 58, incomeLevel: 12, moneyRemaining: 5 };
     const p3: V = { ...p2, moneyRemaining: 9 };
-    const r = solve('brass-birmingham-2018', [{ id: 'p1', values: p1 }, { id: 'p2', values: p2 }, { id: 'p3', values: p3 }]);
+    const r = solve('brass-birmingham-2018', [
+      { id: 'p1', values: p1 },
+      { id: 'p2', values: p2 },
+      { id: 'p3', values: p3 },
+    ]);
     expect(r.players.map((x) => x.total)).toEqual([58, 58, 58]);
     expect(r.players.map((x) => x.rank)).toEqual([3, 2, 1]);
     expect(r.winners).toEqual(['p3']);
-    const shared = solve('brass-birmingham-2018', [{ id: 'p2', values: p2 }, { id: 'p4', values: { ...p2 } }]);
+    const shared = solve('brass-birmingham-2018', [
+      { id: 'p2', values: p2 },
+      { id: 'p4', values: { ...p2 } },
+    ]);
     expect(shared.winners).toEqual(['p2', 'p4']);
     expect(shared.tieUnresolved).toBe(false);
   });
 
   it('azul: rows/columns/colors bonuses and rows tiebreak', () => {
     const r = solve('azul', [
-      { id: 'a', values: { trackScore: 70, completeRows: 3, completeColumns: 2, completeColors: 1 } },
-      { id: 'b', values: { trackScore: 85, completeRows: 2, completeColumns: 1, completeColors: 1 } },
-      { id: 'c', values: { trackScore: 81, completeRows: 4, completeColumns: 1, completeColors: 1 } },
+      {
+        id: 'a',
+        values: { trackScore: 70, completeRows: 3, completeColumns: 2, completeColors: 1 },
+      },
+      {
+        id: 'b',
+        values: { trackScore: 85, completeRows: 2, completeColumns: 1, completeColors: 1 },
+      },
+      {
+        id: 'c',
+        values: { trackScore: 81, completeRows: 4, completeColumns: 1, completeColors: 1 },
+      },
     ]);
     expect(r.players.map((x) => x.total)).toEqual([100, 106, 106]);
     expect(r.players.map((x) => x.rank)).toEqual([3, 2, 1]);
@@ -113,24 +146,52 @@ describe('golden vectors', () => {
   });
 
   it('the-castles-of-burgundy-2019: yellow bonuses and unresolved tie', () => {
-    const base: V = { trackScore: 120, unsoldGoods: 3, silverlings: 4, workers: 5, yellowGoodsTypesSold: 4, yellowBuildingTiles: 2, yellowAnimalTypes: 3, yellowSoldGoods: 5, yellowBonusTiles: 3 };
-    const castles = (players: { id: string; values: V }[]) => solve('the-castles-of-burgundy-2019', players, {}, useValueForOwnKey);
-    const r = castles([{ id: 'a', values: base }, { id: 'b', values: { trackScore: 100 } }]);
+    const base: V = {
+      trackScore: 120,
+      unsoldGoods: 3,
+      silverlings: 4,
+      workers: 5,
+      yellowGoodsTypesSold: 4,
+      yellowBuildingTiles: 2,
+      yellowAnimalTypes: 3,
+      yellowSoldGoods: 5,
+      yellowBonusTiles: 3,
+    };
+    const castles = (players: { id: string; values: V }[]) =>
+      solve('the-castles-of-burgundy-2019', players, {}, useValueForOwnKey);
+    const r = castles([
+      { id: 'a', values: base },
+      { id: 'b', values: { trackScore: 100 } },
+    ]);
     expect(r.players[0]?.total).toBe(120 + 3 + 4 + 2 + 12 + 8 + 12 + 5 + 6);
     expect(r.winners).toEqual(['a']);
-    const tie = castles([{ id: 'a', values: base }, { id: 'b', values: { ...base } }]);
+    const tie = castles([
+      { id: 'a', values: base },
+      { id: 'b', values: { ...base } },
+    ]);
     expect(tie.winners).toEqual([]);
     expect(tie.tieUnresolved).toBe(true);
     expect(tie.tiedIds).toEqual(['a', 'b']);
   });
 
   it('gaia-project-2017: tiles, research, leftover resources, shared victory', () => {
-    const a: V = { vpTrack: 130, finalTiles: 12 + 6, researchLevels: 12, leftoverResources: 7 + 5 + 3 };
+    const a: V = {
+      vpTrack: 130,
+      finalTiles: 12 + 6,
+      researchLevels: 12,
+      leftoverResources: 7 + 5 + 3,
+    };
     const b: V = { vpTrack: 140, researchLevels: 10 };
-    const r = solve('gaia-project-2017', [{ id: 'a', values: a }, { id: 'b', values: b }]);
+    const r = solve('gaia-project-2017', [
+      { id: 'a', values: a },
+      { id: 'b', values: b },
+    ]);
     expect(r.players.map((x) => x.total)).toEqual([130 + 12 + 6 + 48 + 5, 180]);
     expect(r.winners).toEqual(['a']);
-    const tie = solve('gaia-project-2017', [{ id: 'a', values: a }, { id: 'c', values: { ...a } }]);
+    const tie = solve('gaia-project-2017', [
+      { id: 'a', values: a },
+      { id: 'c', values: { ...a } },
+    ]);
     expect(tie.winners).toEqual(['a', 'c']);
   });
 

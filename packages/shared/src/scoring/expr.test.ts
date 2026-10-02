@@ -144,7 +144,21 @@ describe('evaluator rejections', () => {
   });
 
   it('never throws for arbitrary garbage', () => {
-    const junk = ['(((', ')))', '?:', '**', '!!!!', ',,,', 'a b', '1 2', 'if(', 'sum(,)', '\u0000', '\n\t', '😀'];
+    const junk = [
+      '(((',
+      ')))',
+      '?:',
+      '**',
+      '!!!!',
+      ',,,',
+      'a b',
+      '1 2',
+      'if(',
+      'sum(,)',
+      '\u0000',
+      '\n\t',
+      '😀',
+    ];
     for (const j of junk) expect(() => compileExpr(j)).not.toThrow();
   });
 });
