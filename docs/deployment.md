@@ -2,7 +2,7 @@
 
 Chạy production trên máy Linux nhà (alias SSH `vps`, Ubuntu 24.04, Docker 29, Tailscale có sẵn). Images build trên GitHub Actions → GHCR; máy nhà chỉ `pull`, không build trên server.
 
-Site công khai hiện tại (subdomain tạm thời): https://onboard.j2teamnnl.com. Tên miền riêng dự kiến trong tương lai: `onboardvn.com` (chưa mua, chưa cấu hình — xem giai đoạn 2 bên dưới).
+Site công khai (subdomain tạm thời): https://onboard.j2teamnnl.com — DNS `j2teamnnl.com` đã chuyển sang Cloudflare (2026-10-02, NS `isabel`/`jimmy.ns.cloudflare.com`; tên miền vẫn đăng ký và gia hạn ở Tino). Ingress qua Cloudflare Tunnel `onboard` chạy dạng container (xem "Cloudflare Tunnel" bên dưới). Tên miền riêng dự kiến: `onboardvn.com` (chưa mua).
 
 ## Kiến trúc
 
@@ -12,6 +12,7 @@ Internet ─► Cloudflare Tunnel (cloudflared)      ──┤   (giai đoạn 2
                                                   ▼
                               caddy :8080 (chỉ 127.0.0.1)
                               ├── /api/*, /health  → api:8787
+                              ├── /app/*            → Expo web build tĩnh (compose.vps.yml)
                               └── /*                → web:3000
                               postgres:16 (network nội bộ, không publish port)
                               uploads volume (ảnh bìa)
@@ -91,17 +92,28 @@ tailscale funnel --bg 8080    # public ra internet qua *.ts.net, HTTPS tự đ�
 
 `BETTER_AUTH_URL` và `WEB_ORIGIN` trong `.env.prod` phải khớp domain `*.ts.net` đang funnel.
 
-## Chuyển sang Cloudflare Tunnel (giai đoạn 2, khi có tên miền)
+## Cloudflare Tunnel (đang dùng trên máy nhà)
 
-1. Chuyển DNS domain về Cloudflare.
-2. Cài `cloudflared`, đăng nhập: `cloudflared tunnel login`.
-3. Tạo tunnel: `cloudflared tunnel create onboard`.
-4. Route hostname: `cloudflared tunnel route dns onboard your-domain.com`.
-5. Copy `deploy/cloudflared/config.example.yml` → `deploy/cloudflared/config.yml` (không commit), điền `tunnel` ID và `hostname`; `service` giữ nguyên `http://127.0.0.1:8080`.
-6. Chạy service: `cloudflared service install` (dùng `--config` trỏ tới `config.yml`), `systemctl enable --now cloudflared`.
-7. Tắt Tailscale Funnel: `tailscale funnel --https=443 off`.
-8. Cập nhật `.env.prod`: `BETTER_AUTH_URL` và `WEB_ORIGIN` → `https://your-domain.com`, rồi `docker compose -p onboard --env-file .env.prod -f compose.prod.yml up -d` để áp dụng.
-9. Cập nhật Google OAuth redirect URI (Google Cloud Console) → `https://your-domain.com/api/auth/callback/google`.
+Tunnel `onboard` quản lý trên dashboard Cloudflare (Networking → Tunnels), connector là service `cloudflared` trong `compose.vps.yml` (profile `tunnel`, không cần sudo hay `cloudflared login`).
+
+1. Token tunnel nằm trong `.env.prod` dưới key `CLOUDFLARE_TUNNEL_TOKEN` (chủ sở hữu tự nhập, không commit).
+2. Chạy: `dc --profile tunnel up -d cloudflared` (định nghĩa `dc` ở mục VPS bên dưới).
+3. Dashboard → tunnel `onboard` → Public hostname: `onboard.j2teamnnl.com` → `HTTP` → `caddy:8080`.
+4. `.env.prod`: `BETTER_AUTH_URL` và `WEB_ORIGIN` → `https://onboard.j2teamnnl.com`, rồi `dc up -d api web`. Auth chỉ nhận một origin, nên sau bước này đăng nhập qua URL `*.ts.net` sẽ không còn chạy.
+5. Google OAuth (nếu bật): redirect URI → `https://onboard.j2teamnnl.com/api/auth/callback/google`.
+
+### App Expo ở `/app`
+
+App Expo build tĩnh (`experiments.baseUrl = /app`), không build trong Docker:
+
+```bash
+pnpm --filter @onboard/shared build
+pnpm --filter @onboard/mobile export:web
+rsync -a --delete apps/mobile/dist/ vps:Code/onboardvn/deploy/mobile-web/
+ssh vps 'cd ~/Code/onboardvn && docker compose -p onboard --env-file .env.prod -f compose.prod.yml -f compose.vps.yml restart caddy'
+```
+
+`deploy/mobile-web/` bị gitignore. Restart caddy là bắt buộc khi đổi `deploy/Caddyfile` bằng `scp` (bind mount giữ inode cũ).
 
 ## Rollback theo tag
 
