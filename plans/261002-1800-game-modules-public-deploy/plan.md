@@ -9,12 +9,12 @@ Outcome: club members open `https://onboard.j2teamnnl.com/app/games`, search a g
 | Game search + detail (Expo) | Done | `apps/mobile/src/app/games/**`, `src/games/catalog.ts`, `game-index.json` |
 | The Gang mission drawer (Advanced/Professional/Master Thief/Homebrew, undo, VI/EN, local save) | Done | `apps/mobile/src/games/the-gang/**` |
 | The Gang print-and-play (EN cards + chips, 3mm bleed) | Done | `tools/the-gang-print` (`cd src && node build.mjs`, needs Google Chrome) |
-| Expo web served at `/app` on VPS | Done (tailnet) | `deploy/Caddyfile`, `compose.vps.yml`, `docs/deployment.md` |
+| Expo web served at `/app` on VPS | Done (public) | `deploy/Caddyfile`, `compose.vps.yml`, `docs/deployment.md` |
 | DNS `j2teamnnl.com` → Cloudflare | Done | NS `isabel`/`jimmy.ns.cloudflare.com`; registrar stays Tino |
-| Cloudflare Tunnel `onboard` | Created, connector not running | owner adds `CLOUDFLARE_TUNNEL_TOKEN` to VPS `.env.prod` |
-| Public hostname `onboard.j2teamnnl.com` → `caddy:8080` | Todo | after connector is healthy |
-| Switch `BETTER_AUTH_URL` / `WEB_ORIGIN` to public domain | Todo | VPS `.env.prod` |
-| Email Routing catch-all `*@j2teamnnl.com` → `j2teamnnl@gmail.com` | Todo | Cloudflare → Email → Email Routing (MX moves to Cloudflare; Tino mail unused) |
+| Cloudflare Tunnel `onboard` | Done, Healthy (4 conns, HKG) | `cloudflared` container, `--profile tunnel` |
+| Public hostname `onboard.j2teamnnl.com` → `caddy:8080` | Done | tunnel route (CNAME auto-created) |
+| Switch `BETTER_AUTH_URL` / `WEB_ORIGIN` to public domain | Done | VPS `.env.prod` (backup `backups/.env.prod.20261002-1815`) |
+| Email Routing catch-all `*@j2teamnnl.com` → `j2teamnnl@gmail.com` | Done (Active; old MX deleted) | Cloudflare → Email → Email Routing (MX moves to Cloudflare; Tino mail unused) |
 | Email Worker: prefix subject with alias (`fb@` → `[fb] …`), fallback plain forward | Todo | new Worker, outside this repo or `deploy/` |
 | Save The Gang result into plays/score sheet | Later | scoring resumes after BG Stats research |
 

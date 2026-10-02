@@ -14,11 +14,12 @@ Verified before push: `pnpm format:check`, `lint`, `typecheck`, `test` (shared 6
 
 ## Next (in order)
 
-1. Owner: add `CLOUDFLARE_TUNNEL_TOKEN=<token>` to `~/Code/onboardvn/.env.prod` on `vps` (token from Cloudflare → Networking → Tunnels → `onboard`).
-2. On `vps`: `git pull` (main), then `dc --profile tunnel up -d cloudflared`; wait for the tunnel to show Healthy; add Public hostname `onboard.j2teamnnl.com` → HTTP `caddy:8080`.
-3. Switch `BETTER_AUTH_URL`/`WEB_ORIGIN` to `https://onboard.j2teamnnl.com`, `dc up -d api web`, smoke test `/`, `/health`, `/app/games`, sign-in.
-4. Email Routing catch-all → `j2teamnnl@gmail.com`; then an Email Worker that prefixes the subject with the alias local part, with plain-forward fallback.
-5. Redeploy `/app` after mobile changes: steps in `docs/deployment.md` → "App Expo ở `/app`".
+Done at 18:20: tunnel Healthy, `https://onboard.j2teamnnl.com` live (`/`, `/health`, `/app/games`, auth session 200), auth origin switched, Email Routing catch-all active.
+
+1. Owner smoke test: sign in on the public domain; send a mail to e.g. `test@j2teamnnl.com` and check Gmail.
+2. Email Worker (optional): prefix the subject with the alias local part (`fb@` → `[fb] …`). Forwarding via `message.forward` cannot change the subject, so the Worker must send a new message to the verified Gmail destination (From = alias, Reply-To = original sender) and fall back to `message.forward` on error. Until then use Gmail filters `deliveredto:fb@j2teamnnl.com`.
+3. Redeploy `/app` after mobile changes: `docs/deployment.md` → "App Expo ở `/app`".
+4. Product next steps from the club-first handoff (wire Expo to the real API, port remaining pages, resume scoring after BG Stats research).
 
 ## Environment notes
 
