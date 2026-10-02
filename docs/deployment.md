@@ -12,8 +12,7 @@ Internet ─► Cloudflare Tunnel (cloudflared)      ──┤   (giai đoạn 2
                                                   ▼
                               caddy :8080 (chỉ 127.0.0.1)
                               ├── /api/*, /health  → api:8787
-                              ├── /app/*            → Expo web build tĩnh (compose.vps.yml)
-                              └── /*                → web:3000
+                              └── /*                → Expo web build tĩnh (deploy/mobile-web, compose.vps.yml)
                               postgres:16 (network nội bộ, không publish port)
                               uploads volume (ảnh bìa)
 ```
@@ -102,9 +101,11 @@ Tunnel `onboard` quản lý trên dashboard Cloudflare (Networking → Tunnels),
 4. `.env.prod`: `BETTER_AUTH_URL` và `WEB_ORIGIN` → `https://onboard.j2teamnnl.com`, rồi `dc up -d api web`. Auth chỉ nhận một origin, nên sau bước này đăng nhập qua URL `*.ts.net` sẽ không còn chạy.
 5. Google OAuth (nếu bật): redirect URI → `https://onboard.j2teamnnl.com/api/auth/callback/google`.
 
-### App Expo ở `/app`
+### Website = app Expo (web build tĩnh)
 
-App Expo build tĩnh (`experiments.baseUrl = /app`), không build trong Docker:
+Từ 2026-10-02 toàn bộ site ở `/` là bản web của `apps/mobile` (Expo Router, `web.output = single`). Next.js `apps/web` không còn được Caddy route tới (container `web` có thể dừng). Đường dẫn cũ `/app/*` và các path tiếng Việt cũ (`/dang-ky`, `/tai-khoan`, `/ket-ban/:code`…) được Caddy redirect 308.
+
+Build không chạy trong Docker:
 
 ```bash
 pnpm --filter @onboard/shared build
@@ -113,7 +114,7 @@ rsync -a --delete apps/mobile/dist/ vps:Code/onboardvn/deploy/mobile-web/
 ssh vps 'cd ~/Code/onboardvn && docker compose -p onboard --env-file .env.prod -f compose.prod.yml -f compose.vps.yml restart caddy'
 ```
 
-`deploy/mobile-web/` bị gitignore. Restart caddy là bắt buộc khi đổi `deploy/Caddyfile` bằng `scp` (bind mount giữ inode cũ).
+`deploy/mobile-web/` bị gitignore. Restart caddy là bắt buộc khi đổi `deploy/Caddyfile` bằng `scp` (bind mount giữ inode cũ). Rollback về Next.js: khôi phục khối `handle { reverse_proxy web:3000 }` trong `deploy/Caddyfile` từ git history và `docker compose … up -d web caddy`.
 
 ## Rollback theo tag
 

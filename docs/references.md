@@ -43,6 +43,14 @@ Dữ liệu tỉnh/thành và phường/xã sau cải cách 2 cấp (07/2025) l�
 
 - https://github.com/ThangLeQuoc/vietnamese-provinces-database
 
+## Âm thanh "Hôm nay chơi gì?"
+
+File trong `apps/mobile/public/sfx/` (đã đổi tên, chuyển mp3):
+
+- Xào bài, chia lá, huỷ lá, lật thẻ: **Kenney Casino Audio** (CC0) — https://kenney.nl/assets/casino-audio
+- Hồi hộp trước khi lật: "Loot box open" của freesound_community trên Pixabay (Pixabay License) — https://pixabay.com/sound-effects/
+- Lộ kết quả: "Level up!" của tithuh trên Pixabay (Pixabay License) — https://pixabay.com/sound-effects/
+
 ## BoardGameGeek (BGG)
 
 Nếu tích hợp BGG, OnBoardVN chỉ lưu **`bgg_id` và link** tới trang BGG tương ứng — **không copy mô tả game hay hình ảnh** của BGG vào dữ liệu của mình. XML API v2 hiện yêu cầu Bearer token phía server (không còn free-for-all hoàn toàn public).

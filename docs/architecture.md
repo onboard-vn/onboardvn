@@ -3,19 +3,25 @@
 ## Sơ đồ monorepo
 
 ```
-┌─────────────┐      HTTP/RPC      ┌─────────────┐      SQL      ┌────────────┐
-│  apps/web   │ ─────────────────▶ │  apps/api   │ ────────────▶ │  Postgres  │
-│  Next.js 16 │                    │    Hono     │               │ (Drizzle)  │
-│  (:3000)    │ ◀───────────────── │   (:8787)   │ ◀──────────── │            │
-└─────────────┘   hono/client RPC  └─────────────┘               └────────────┘
-      │                                   │
-      │           packages/shared (zod schema, types)
-      └──────────────────┬────────────────┘
-                          │
-                 packages/config (tsconfig, eslint)
-
-apps/mobile (Expo Router, SDK 57) là client chính cho iOS + Android + web; apps/web (Next.js) chỉ sửa lỗi, bỏ khi Expo web đủ tính năng.
+┌──────────────────────┐   HTTP (fetch, cookie)  ┌─────────────┐      SQL      ┌────────────┐
+│  apps/mobile (Expo)  │ ──────────────────────▶ │  apps/api   │ ────────────▶ │  Postgres  │
+│  web build tĩnh = cả │                         │    Hono     │               │ (Drizzle)  │
+│  website, iOS, Andr. │ ◀────────────────────── │   (:8787)   │ ◀──────────── │            │
+└──────────────────────┘                         └─────────────┘               └────────────┘
+            │                                           │
+            └──────── packages/shared (zod schema, types, scoring) ─┘
+                                    │
+                         packages/config (tsconfig, eslint)
 ```
+
+Từ 2026-10-02 website là bản web của `apps/mobile` (Caddy phục vụ file tĩnh ở `/`). `apps/web` (Next.js) không còn được deploy, code giữ lại tới khi owner xoá.
+
+## Hôm nay chơi gì? (`/suggest`)
+
+- `GET /api/suggest` trả "chồng bài" tối đa 150 game đã xáo, mỗi game kèm độ hiếm (5 bậc theo số quán có game, game nặng tăng 1 bậc) và `cafeCount`.
+- Nguồn: `shelf`, `wishlist` (cần đăng nhập), `cafe` (`cafeId`), `province`/`city` (`provinceCode`), `club` (`clubId`, phải là thành viên), `friends`, `all`.
+- Quyền riêng tư: `club` chỉ tính tủ của thành viên bật `users.club_shelf_suggest` (mặc định bật); `friends` chỉ tính bạn có hồ sơ `public`/`friends`; `city` tính quán trong tỉnh + người dùng đặt `users.province_code` và hồ sơ `public`. Người chặn nhau (hai chiều) bị loại. Ba nguồn này trả `owners` (≤5, không gồm người gọi) + `ownerCount`.
+- Client tự rút 5 lá từ chồng, tráo/chia kiểu poker và lật bằng `Animated`; âm thanh qua Web Audio (chỉ web).
 
 ## Club, danh tính, ván chơi, đồng bộ club ngoài
 

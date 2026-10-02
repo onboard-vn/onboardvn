@@ -18,21 +18,35 @@
 		}
 	}
 
-	# Expo web build (static SPA), mounted only by compose.vps.yml. Missing bundles must 404, not fall back to HTML.
+	# Retired Vietnamese paths from the Next.js site.
+	redir /dang-ky /signup 308
+	redir /kiem-tra-email /check-email 308
+	redir /quen-mat-khau /forgot-password 308
+	redir /dat-lai-mat-khau /reset-password 308
+	redir /tai-khoan /account 308
+	redir /ban-be /friends 308
+	redir /tu-game /shelf 308
+	redir /nguon-tham-khao /credits 308
+	@ketBan path_regexp ketBan ^/ket-ban/(.+)$
+	redir @ketBan /invite/{http.regexp.ketBan.1} 308
+
+	# Expo web build (static SPA) is the whole site; mounted by compose.vps.yml. Missing bundles/assets must 404, not fall back to HTML.
 	redir /app /app/ 308
-	handle_path /app/_expo/* {
-		root * /srv/mobile-web/_expo
+	@legacyApp path_regexp legacyApp ^/app/(.*)$
+	redir @legacyApp /{http.regexp.legacyApp.1} 308
+
+	handle /_expo/* {
+		root * /srv/mobile-web
 		file_server
 	}
-	handle_path /app/* {
+	handle /assets/* {
 		root * /srv/mobile-web
-		try_files {path} /index.html
 		file_server
 	}
 
 	handle {
-		reverse_proxy web:3000 {
-			header_up X-Forwarded-For {client_ip}
-		}
+		root * /srv/mobile-web
+		try_files {path} /index.html
+		file_server
 	}
 }
