@@ -5,6 +5,7 @@ LICENSE
 dist/
 .claude/
 apps/web/public/maplibre/
+apps/mobile/public/maplibre/
 
 # Generated files
 apps/mobile/.expo/

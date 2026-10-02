@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   chipText: { color: colors.text, fontWeight: '500' },
   segmented: {
     flexDirection: 'row',
-    backgroundColor: '#e8eaee',
+    backgroundColor: colors.surfaceMuted,
     borderRadius: 10,
     padding: 3,
   },

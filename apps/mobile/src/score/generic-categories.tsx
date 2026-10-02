@@ -50,6 +50,44 @@ function ListField({ value, onChange }: { value: number[]; onChange: (v: number[
   );
 }
 
+function BoolListField({
+  value,
+  max,
+  onChange,
+}: {
+  value: number[];
+  max?: number;
+  onChange: (v: number[]) => void;
+}) {
+  const full = max !== undefined && value.length >= max;
+  return (
+    <View style={{ gap: 8 }}>
+      <View style={styles.wrap}>
+        {value.map((n, i) => (
+          <Chip
+            key={`${i}-${n}`}
+            label={`${i + 1}: ${n ? '✓' : '✗'}`}
+            tint={n ? colors.success : colors.danger}
+            selected
+            onPress={() => onChange(value.filter((_, j) => j !== i))}
+          />
+        ))}
+        {value.length === 0 ? <Hint>Chưa có phi vụ nào.</Hint> : null}
+      </View>
+      <View style={styles.wrap}>
+        <Button label="✓ Thành công" disabled={full} onPress={() => onChange([...value, 1])} />
+        <Button
+          label="✗ Thất bại"
+          tone="ghost"
+          disabled={full}
+          onPress={() => onChange([...value, 0])}
+        />
+      </View>
+      {value.length ? <Hint>Bấm vào một ô để xoá.</Hint> : null}
+    </View>
+  );
+}
+
 function Control({
   cat,
   value,
@@ -80,8 +118,14 @@ function Control({
         </View>
       );
     }
-    case 'repeating':
     case 'perRound':
+      if (cat.roundInput === 'bool') {
+        return (
+          <BoolListField value={asList(value)} max={cat.max ?? undefined} onChange={onChange} />
+        );
+      }
+      return <ListField value={asList(value)} onChange={onChange} />;
+    case 'repeating':
       return <ListField value={asList(value)} onChange={onChange} />;
     default:
       return (
@@ -98,7 +142,25 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
   const showPoints = cat.formula.type !== 'sum';
 
   let body;
-  if (cat.input === 'exclusive') {
+  if (cat.input === 'derived') {
+    const computed = (id: string | undefined) =>
+      cat.scope === 'team'
+        ? summary.result?.teams.find((t) => !id || t.memberIds.includes(id))?.categories[cat.key]
+        : id
+          ? resultOf(id)
+          : undefined;
+    body =
+      cat.scope === 'team' ? (
+        <Text style={styles.derived}>{computed(players[0]?.id) ?? 0}</Text>
+      ) : (
+        players.map((p) => (
+          <View key={p.id} style={styles.playerRow}>
+            <Text style={styles.player}>{p.name}</Text>
+            <Text style={styles.derived}>{computed(p.id) ?? 0}</Text>
+          </View>
+        ))
+      );
+  } else if (cat.input === 'exclusive') {
     const chosen = players.find((p) => asNumber(state.values[p.id]?.[cat.key]) !== 0)?.id ?? null;
     const pick = (id: string | null) =>
       sheet.patchValues(
@@ -187,6 +249,7 @@ const styles = StyleSheet.create({
   },
   player: { fontSize: 15, fontWeight: '600', color: colors.text },
   points: { fontSize: 12, color: colors.muted },
+  derived: { fontSize: 18, fontWeight: '700', color: colors.text },
   na: { color: colors.muted, fontSize: 12, fontStyle: 'italic' },
   sub: { color: colors.text, fontSize: 14, flex: 1 },
   input: {

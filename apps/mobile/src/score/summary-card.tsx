@@ -11,6 +11,8 @@ export function SummaryCard({ sheet }: { sheet: SheetApi }) {
   const coop = isCoop(template);
   const rows = [...summary.rows].sort((a, b) => (a.rank ?? 99) - (b.rank ?? 99));
   const ranked = rows.some((r) => r.rank !== null);
+  const outcome = state.outcome ?? summary.result?.outcome ?? null;
+  const derived = !state.outcome && !!outcome;
 
   return (
     <Card>
@@ -19,17 +21,18 @@ export function SummaryCard({ sheet }: { sheet: SheetApi }) {
         <View
           style={[
             styles.banner,
-            state.outcome === 'win' && { backgroundColor: colors.successSoft },
-            state.outcome === 'loss' && { backgroundColor: colors.dangerSoft },
+            outcome === 'win' && { backgroundColor: colors.successSoft },
+            outcome === 'loss' && { backgroundColor: colors.dangerSoft },
           ]}
         >
           <Text style={styles.bannerText}>
-            {state.outcome === 'win'
+            {outcome === 'win'
               ? 'Cả đội thắng'
-              : state.outcome === 'loss'
+              : outcome === 'loss'
                 ? 'Cả đội thua'
-                : 'Chưa chọn kết quả'}
+                : 'Chưa có kết quả'}
           </Text>
+          {derived ? <Text style={styles.derivedNote}>Tự tính từ kết quả phi vụ</Text> : null}
         </View>
       ) : null}
       {summary.error ? <Text style={styles.error}>{summary.error}</Text> : null}
@@ -53,6 +56,7 @@ export function SummaryCard({ sheet }: { sheet: SheetApi }) {
 }
 
 const styles = StyleSheet.create({
+  derivedNote: { color: colors.muted, fontSize: 12, marginTop: 4 },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -73,6 +77,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   error: { color: colors.danger, fontSize: 14 },
-  banner: { padding: 14, borderRadius: 10, backgroundColor: '#eef0f3', alignItems: 'center' },
+  banner: {
+    padding: 14,
+    borderRadius: 10,
+    backgroundColor: colors.surfaceMuted,
+    alignItems: 'center',
+  },
   bannerText: { fontSize: 18, fontWeight: '700', color: colors.text },
 });

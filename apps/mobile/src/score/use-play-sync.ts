@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { playsApi } from '../api/plays';
+import type { PlaysApi } from '../api/plays-types';
 import type { SheetApi } from './use-sheet';
 
 const FLUSH_DELAY_MS = 400;
 const RETRY_MS = 3000;
 
-export function usePlaySync(playId: string | undefined, sheet: SheetApi) {
+export function usePlaySync(playId: string | undefined, sheet: SheetApi, playsApi: PlaysApi) {
   const { applyRemote, setPresence, ackOps } = sheet;
   const pending = sheet.state.pendingOps;
   const pendingRef = useRef(pending);
@@ -25,7 +25,7 @@ export function usePlaySync(playId: string | undefined, sheet: SheetApi) {
     } finally {
       batch.forEach((o) => inflight.current.delete(o.opId));
     }
-  }, [playId, ackOps]);
+  }, [playId, ackOps, playsApi]);
 
   useEffect(() => {
     if (!playId) return;
@@ -33,7 +33,7 @@ export function usePlaySync(playId: string | undefined, sheet: SheetApi) {
       if (e.type === 'op') applyRemote(e.op);
       else setPresence(e.identityId, e.typing);
     });
-  }, [playId, applyRemote, setPresence]);
+  }, [playId, applyRemote, setPresence, playsApi]);
 
   useEffect(() => {
     if (!playId || pending.length === 0) return;

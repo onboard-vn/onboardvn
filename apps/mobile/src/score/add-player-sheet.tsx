@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { avatarColorFor, listClubMembers } from '../mock/club';
+import type { RosterApi, RosterPlayer } from '../api/plays-types';
 import { Avatar, Button, Heading, Hint } from '../ui/primitives';
 import { colors } from '../ui/theme';
 import type { Player } from './model';
@@ -11,12 +11,14 @@ const normalize = (s: string) =>
 export function AddPlayerSheet({
   visible,
   seatedIds,
+  roster,
   onPick,
   onClose,
 }: {
   visible: boolean;
   seatedIds: string[];
-  onPick: (p: Player) => void;
+  roster: Pick<RosterApi, 'search' | 'createGuest'>;
+  onPick: (p: Player) => Promise<void>;
   onClose: () => void;
 }) {
   const [query, setQuery] = useState('');
@@ -24,12 +26,27 @@ export function AddPlayerSheet({
   const [guestName, setGuestName] = useState('');
   const [birthYear, setBirthYear] = useState('');
 
-  const options = useMemo(() => {
-    const q = normalize(query.trim());
-    return listClubMembers().filter(
-      (m) => !seatedIds.includes(m.identityId) && normalize(m.displayName).includes(q),
-    );
-  }, [query, seatedIds]);
+  const [found, setFound] = useState<RosterPlayer[]>([]);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!visible || guestMode) return;
+    let live = true;
+    const t = setTimeout(() => {
+      roster
+        .search(query.trim())
+        .then((list) => live && setFound(list))
+        .catch(() => live && setFound([]));
+    }, 250);
+    return () => {
+      live = false;
+      clearTimeout(t);
+    };
+  }, [visible, guestMode, query, roster]);
+
+  const q = normalize(query.trim());
+  const options = found.filter((m) => !seatedIds.includes(m.id) && normalize(m.name).includes(q));
 
   const year = birthYear.trim() === '' ? undefined : Number(birthYear);
   const yearOk = year === undefined || (Number.isInteger(year) && year >= 1900 && year <= 2026);
@@ -40,20 +57,31 @@ export function AddPlayerSheet({
     setGuestMode(false);
     setGuestName('');
     setBirthYear('');
+    setError(null);
     onClose();
+  };
+
+  const pick = async (load: () => Promise<Player>) => {
+    setBusy(true);
+    setError(null);
+    try {
+      await onPick(await load());
+      close();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Không thêm được người chơi');
+    } finally {
+      setBusy(false);
+    }
   };
 
   const addGuest = () => {
     if (!guestOk) return;
-    const name = guestName.trim();
-    onPick({
-      id: `guest-${Date.now().toString(36)}`,
-      name,
-      kind: 'guest',
-      avatarColor: avatarColorFor(name),
-      ...(year !== undefined ? { birthYear: year } : {}),
-    });
-    close();
+    void pick(() =>
+      roster.createGuest({
+        displayName: guestName.trim(),
+        ...(year !== undefined ? { birthYear: year } : {}),
+      }),
+    );
   };
 
   return (
@@ -80,7 +108,7 @@ export function AddPlayerSheet({
                 style={styles.input}
               />
               {!yearOk ? <Hint>Năm sinh không hợp lệ.</Hint> : null}
-              <Button label="Thêm khách" onPress={addGuest} disabled={!guestOk} />
+              <Button label="Thêm khách" onPress={addGuest} disabled={!guestOk || busy} />
               <Button label="Quay lại danh sách" tone="ghost" onPress={() => setGuestMode(false)} />
             </View>
           ) : (
@@ -94,21 +122,14 @@ export function AddPlayerSheet({
               <ScrollView style={styles.list} keyboardShouldPersistTaps="handled">
                 {options.map((m) => (
                   <Pressable
-                    key={m.identityId}
+                    key={m.id}
                     accessibilityRole="button"
-                    onPress={() => {
-                      onPick({
-                        id: m.identityId,
-                        name: m.displayName,
-                        kind: m.kind,
-                        avatarColor: m.avatarColor,
-                      });
-                      close();
-                    }}
+                    disabled={busy}
+                    onPress={() => void pick(async () => m)}
                     style={styles.option}
                   >
-                    <Avatar name={m.displayName} color={m.avatarColor} />
-                    <Text style={styles.optionName}>{m.displayName}</Text>
+                    <Avatar name={m.name} color={m.avatarColor} />
+                    <Text style={styles.optionName}>{m.name}</Text>
                   </Pressable>
                 ))}
                 {options.length === 0 ? <Hint>Không có thành viên phù hợp.</Hint> : null}
@@ -116,6 +137,7 @@ export function AddPlayerSheet({
               <Button label="Thêm khách" tone="ghost" onPress={() => setGuestMode(true)} />
             </>
           )}
+          {error ? <Text style={styles.error}>{error}</Text> : null}
           <Button label="Đóng" tone="ghost" onPress={close} />
         </View>
       </View>
@@ -148,5 +170,6 @@ const styles = StyleSheet.create({
   },
   list: { maxHeight: 280 },
   option: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 },
+  error: { color: colors.danger },
   optionName: { fontSize: 16, color: colors.text, fontWeight: '500' },
 });

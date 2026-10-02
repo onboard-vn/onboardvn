@@ -1,0 +1,34 @@
+const MESSAGES: Record<string, string> = {
+  INVALID_EMAIL_OR_PASSWORD: 'Sai email hoặc mật khẩu',
+  INVALID_USERNAME_OR_PASSWORD: 'Sai tên đăng nhập hoặc mật khẩu',
+  EMAIL_NOT_VERIFIED: 'Email chưa được xác minh. Đã gửi lại email xác minh, hãy kiểm tra hộp thư.',
+  USERNAME_IS_ALREADY_TAKEN: 'Tên đăng nhập đã có người dùng',
+  INVALID_USERNAME:
+    'Tên đăng nhập chỉ gồm chữ thường, số, dấu _ và dấu chấm, không dùng tên dành riêng',
+  USERNAME_TOO_SHORT: 'Tên đăng nhập cần ít nhất 3 ký tự',
+  USERNAME_TOO_LONG: 'Tên đăng nhập tối đa 30 ký tự',
+  USER_ALREADY_EXISTS: 'Email này đã được đăng ký',
+  USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL: 'Email này đã được đăng ký',
+  PASSWORD_TOO_SHORT: 'Mật khẩu cần ít nhất 8 ký tự',
+  PASSWORD_TOO_LONG: 'Mật khẩu quá dài',
+  INVALID_TOKEN: 'Liên kết không hợp lệ hoặc đã hết hạn',
+  INVALID_DISPLAY_USERNAME: 'Tên đăng nhập không hợp lệ',
+  BGG_USERNAME_IS_ALREADY_TAKEN: 'Username BGG đã được liên kết với tài khoản khác',
+  INVALID_PASSWORD: 'Mật khẩu hiện tại không đúng',
+  INVALID_NAME: 'Tên hiển thị cần 1-100 ký tự',
+};
+
+interface ApiLike {
+  status: number;
+  code?: string;
+  message: string;
+}
+
+const isApiLike = (e: unknown): e is ApiLike =>
+  e instanceof Error && typeof (e as Partial<ApiLike>).status === 'number';
+
+export function authErrorMessage(error: unknown): string {
+  if (!isApiLike(error)) return 'Không kết nối được máy chủ';
+  if (error.status === 429) return 'Thử quá nhiều lần, vui lòng đợi một phút';
+  return (error.code && MESSAGES[error.code]) || error.message || 'Có lỗi xảy ra, thử lại sau';
+}

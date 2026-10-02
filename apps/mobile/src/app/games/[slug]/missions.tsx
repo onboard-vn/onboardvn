@@ -15,7 +15,7 @@ import {
 } from '../../../games/the-gang/engine';
 import { MissionCard } from '../../../games/the-gang/mission-card';
 import { useGangSession } from '../../../games/the-gang/use-session';
-import { Button, Card, Chip, Collapsible, Heading, Hint, Segmented } from '../../../ui/primitives';
+import { Button, Card, Chip, Collapsible, Heading, Hint } from '../../../ui/primitives';
 import { colors, space } from '../../../ui/theme';
 
 const MODES: { value: Mode; label: string; info: string }[] = [
@@ -124,14 +124,17 @@ function TheGangMissions() {
   return (
     <ScrollView contentContainerStyle={styles.content}>
       <View style={styles.column}>
-        <Segmented
-          options={[
-            { value: 'vi', label: 'Tiếng Việt' },
-            { value: 'en', label: 'English' },
-          ]}
-          value={lang}
-          onChange={session.setLang}
-        />
+        <View style={styles.langRow}>
+          <Text style={styles.langLabel}>Ngôn ngữ nội dung thẻ</Text>
+          <View style={styles.langChips} accessibilityRole="radiogroup">
+            <Chip
+              label="Tiếng Việt"
+              selected={lang === 'vi'}
+              onPress={() => session.setLang('vi')}
+            />
+            <Chip label="English" selected={lang === 'en'} onPress={() => session.setLang('en')} />
+          </View>
+        </View>
 
         {!s ? (
           <Setup onStart={(c) => session.start(startGame(c))} />
@@ -271,6 +274,15 @@ function TheGangMissions() {
 }
 
 const styles = StyleSheet.create({
+  langRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  langLabel: { color: colors.muted, fontSize: 14 },
+  langChips: { flexDirection: 'row', gap: 8 },
   content: { padding: space.lg, alignItems: 'center' },
   column: { width: '100%', maxWidth: 560, gap: space.md },
   wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },

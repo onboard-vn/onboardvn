@@ -2,7 +2,7 @@ import type { ScoreTemplate } from '@onboard/shared';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { playsApi } from '../api/plays';
+import { playsApi as defaultPlaysApi, type PlaysApi } from '../api/plays';
 import { CURRENT_IDENTITY_ID } from '../mock/club';
 import { NumberField } from '../ui/number-field';
 import { Badge, Button, Card, Chip, Heading, Hint, Segmented } from '../ui/primitives';
@@ -37,17 +37,31 @@ export interface ScoreSheetProps {
   playId?: string;
   saved?: SheetState | null;
   onExit?: () => void;
+  api?: PlaysApi;
+  actorId?: string;
+  restoredFromDraft?: boolean;
 }
 
-export function ScoreSheet({ template, players, playId, saved, onExit }: ScoreSheetProps) {
-  const sheet = useSheet(template, players, { actorId: CURRENT_IDENTITY_ID, saved });
-  const sync = usePlaySync(playId, sheet);
+export function ScoreSheet({
+  template,
+  players,
+  playId,
+  saved,
+  onExit,
+  api: playsApi = defaultPlaysApi,
+  actorId = CURRENT_IDENTITY_ID,
+  restoredFromDraft = !!saved,
+}: ScoreSheetProps) {
+  const sheet = useSheet(template, players, { actorId, saved });
+  const sync = usePlaySync(playId, sheet, playsApi);
   const Custom = scoreInputRegistry[template.slug];
   const { state } = sheet;
   const expansions = expansionsOf(template);
   const detailed = state.mode === 'detailed';
   const [finishing, setFinishing] = useState(false);
-  const [notice, setNotice] = useState<string | null>(saved ? 'Đã khôi phục bản nháp.' : null);
+  const [notice, setNotice] = useState<string | null>(
+    restoredFromDraft ? 'Đã khôi phục bản nháp.' : null,
+  );
 
   const saveNow = async () => {
     if (!playId) return;
@@ -63,6 +77,7 @@ export function ScoreSheet({ template, players, playId, saved, onExit }: ScoreSh
     if (!playId) throw new Error('missing play');
     await sync.flush();
     const receipt = await playsApi.finish(playId, {
+      outcome: needsOutcome(template) ? state.outcome : undefined,
       players: state.players.map((p) => ({ identityId: p.id, kind: p.kind ?? 'member' })),
       winners: sheet.summary.winners,
       rows: sheet.summary.rows,
@@ -101,7 +116,7 @@ export function ScoreSheet({ template, players, playId, saved, onExit }: ScoreSh
             ]}
           />
 
-          <PlayerEditor sheet={sheet} />
+          {playsApi.roster ? <PlayerEditor sheet={sheet} roster={playsApi.roster} /> : null}
 
           {needsOutcome(template) ? (
             <Card>

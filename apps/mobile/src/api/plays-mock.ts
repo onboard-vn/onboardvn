@@ -1,5 +1,5 @@
 import { ROUND_KEY, type PlayEvent, type PlayOp, type PlaysApi } from './plays-types';
-import { CURRENT_IDENTITY_ID, getTable } from '../mock/club';
+import { avatarColorFor, CURRENT_IDENTITY_ID, getTable, listClubMembers } from '../mock/club';
 import { isRoundsGame, isOutcomeDriven } from '../score/model';
 import { scoreTemplates } from '../score/templates';
 
@@ -9,6 +9,28 @@ const rand = (n: number) => Math.floor(Math.random() * n);
 const newId = () => `mock-${Date.now().toString(36)}-${rand(1e9).toString(36)}`;
 
 export const mockPlaysApi: PlaysApi = {
+  roster: {
+    async search() {
+      return listClubMembers().map((m) => ({
+        id: m.identityId,
+        name: m.displayName,
+        kind: m.kind,
+        avatarColor: m.avatarColor,
+      }));
+    },
+    async createGuest({ displayName, birthYear }) {
+      return {
+        id: `guest-${Date.now().toString(36)}`,
+        name: displayName,
+        kind: 'guest',
+        avatarColor: avatarColorFor(displayName),
+        ...(birthYear !== undefined ? { birthYear } : {}),
+      };
+    },
+    async add() {},
+    async remove() {},
+  },
+
   async sendOps(_playId, ops) {
     await wait(300);
     return { appliedOpIds: ops.map((o) => o.opId) };

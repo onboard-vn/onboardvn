@@ -5,11 +5,12 @@ import { colors } from '../ui/theme';
 import { PresenceLabel } from './cell-flash';
 import { AddPlayerSheet } from './add-player-sheet';
 import { playerBounds } from './model';
+import type { RosterApi } from '../api/plays-types';
 import type { SheetApi } from './use-sheet';
 
 const KIND_LABEL = { member: '', guest: 'Khách', external: 'Ngoài CLB' } as const;
 
-export function PlayerEditor({ sheet }: { sheet: SheetApi }) {
+export function PlayerEditor({ sheet, roster }: { sheet: SheetApi; roster: RosterApi }) {
   const { players } = sheet.state;
   const { min, max } = playerBounds(sheet.template);
   const [open, setOpen] = useState(false);
@@ -36,7 +37,12 @@ export function PlayerEditor({ sheet }: { sheet: SheetApi }) {
             accessibilityLabel={`Xóa ${p.name}`}
             accessibilityRole="button"
             disabled={players.length <= min}
-            onPress={() => sheet.removePlayer(p.id)}
+            onPress={() =>
+              roster.remove(p.id).then(
+                () => sheet.removePlayer(p.id),
+                () => undefined,
+              )
+            }
             style={[styles.remove, players.length <= min && { opacity: 0.3 }]}
           >
             <Text style={styles.removeText}>✕</Text>
@@ -52,7 +58,11 @@ export function PlayerEditor({ sheet }: { sheet: SheetApi }) {
       <AddPlayerSheet
         visible={open}
         seatedIds={players.map((p) => p.id)}
-        onPick={sheet.addPlayer}
+        roster={roster}
+        onPick={async (p) => {
+          await roster.add(p.id);
+          sheet.addPlayer(p);
+        }}
         onClose={() => setOpen(false)}
       />
     </Card>
