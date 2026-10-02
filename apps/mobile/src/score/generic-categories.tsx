@@ -1,9 +1,11 @@
 import type { RawValue, ScoreCategory } from '@onboard/shared';
 import { useState } from 'react';
+import { TEAM_ID } from '../api/plays-types';
 import { StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { NumberField } from '../ui/number-field';
 import { Button, Card, Chip, Heading, Hint } from '../ui/primitives';
 import { colors } from '../ui/theme';
+import { Flash, PresenceLabel } from './cell-flash';
 import { categoryAppliesToAny, categoryApplies, visibleCategories } from './model';
 import type { SheetApi } from './use-sheet';
 
@@ -112,11 +114,13 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
     );
   } else if (cat.scope === 'team') {
     body = (
-      <Control
-        cat={cat}
-        value={state.teamValues[cat.key]}
-        onChange={(v) => sheet.setTeamValue(cat.key, v)}
-      />
+      <Flash sheet={sheet} id={TEAM_ID} cat={cat.key}>
+        <Control
+          cat={cat}
+          value={state.teamValues[cat.key]}
+          onChange={(v) => sheet.setTeamValue(cat.key, v)}
+        />
+      </Flash>
     );
   } else {
     body = players.map((p) => {
@@ -126,16 +130,19 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
         <View key={p.id} style={styles.playerRow}>
           <View style={{ flex: 1 }}>
             <Text style={styles.player}>{p.name}</Text>
+            <PresenceLabel sheet={sheet} id={p.id} name={p.name} />
             {applies && showPoints && pts !== undefined ? (
               <Text style={styles.points}>= {pts} điểm</Text>
             ) : null}
           </View>
           {applies ? (
-            <Control
-              cat={cat}
-              value={state.values[p.id]?.[cat.key]}
-              onChange={(v) => sheet.setValue(p.id, cat.key, v)}
-            />
+            <Flash sheet={sheet} id={p.id} cat={cat.key}>
+              <Control
+                cat={cat}
+                value={state.values[p.id]?.[cat.key]}
+                onChange={(v) => sheet.setValue(p.id, cat.key, v)}
+              />
+            </Flash>
           ) : (
             <Text style={styles.na}>Không áp dụng</Text>
           )}

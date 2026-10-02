@@ -13,8 +13,11 @@ export default function RootLayout() {
           contentStyle: { backgroundColor: colors.bg },
         }}
       >
-        <Stack.Screen name="index" options={{ title: 'Onboard · Bảng điểm' }} />
-        <Stack.Screen name="score/[slug]" options={{ title: 'Bảng điểm' }} />
+        <Stack.Screen name="index" options={{ title: 'Onboard' }} />
+        <Stack.Screen name="club" options={{ title: 'Kèo của CLB' }} />
+        <Stack.Screen name="meetup/[id]" options={{ title: 'Kèo' }} />
+        <Stack.Screen name="score/table/[tableId]" options={{ title: 'Bảng điểm' }} />
+        <Stack.Screen name="score/[slug]" options={{ title: 'Bảng điểm (dev)' }} />
       </Stack>
     </>
   );

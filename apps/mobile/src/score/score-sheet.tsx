@@ -1,26 +1,81 @@
+import type { ScoreTemplate } from '@onboard/shared';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { playsApi } from '../api/plays';
+import { CURRENT_IDENTITY_ID } from '../mock/club';
 import { NumberField } from '../ui/number-field';
 import { Badge, Button, Card, Chip, Heading, Hint, Segmented } from '../ui/primitives';
 import { colors } from '../ui/theme';
+import { Flash, PresenceLabel } from './cell-flash';
+import { clearDraft, saveDraft, saveResult } from './draft-storage';
+import { FinishDialog } from './finish-dialog';
 import { GenericCategories } from './generic-categories';
-import { expansionsOf, isCoop, isRankable, needsOutcome, type SheetMode } from './model';
+import {
+  expansionsOf,
+  isCoop,
+  isRankable,
+  isRoundsGame,
+  needsOutcome,
+  tiebreakerNotes,
+  type Player,
+  type SheetMode,
+  type SheetState,
+} from './model';
 import { PlayerEditor } from './player-editor';
 import { scoreInputRegistry } from './registry';
+import { RoundsTable } from './rounds-table';
+import { RuleNotes } from './rule-notes';
 import { SummaryCard } from './summary-card';
+import { usePlaySync } from './use-play-sync';
 import { useSheet } from './use-sheet';
-import type { ScoreTemplate } from '@onboard/shared';
+import { QUICK_KEY } from '../api/plays-types';
 
-type InputStyle = 'custom' | 'generic';
+export interface ScoreSheetProps {
+  template: ScoreTemplate;
+  players: Player[];
+  playId?: string;
+  saved?: SheetState | null;
+  onExit?: () => void;
+}
 
-export function ScoreSheet({ template }: { template: ScoreTemplate }) {
-  const sheet = useSheet(template);
+export function ScoreSheet({ template, players, playId, saved, onExit }: ScoreSheetProps) {
+  const sheet = useSheet(template, players, { actorId: CURRENT_IDENTITY_ID, saved });
+  const sync = usePlaySync(playId, sheet);
   const Custom = scoreInputRegistry[template.slug];
-  const [inputStyle, setInputStyle] = useState<InputStyle>('custom');
   const { state } = sheet;
   const expansions = expansionsOf(template);
   const detailed = state.mode === 'detailed';
+  const [finishing, setFinishing] = useState(false);
+  const [notice, setNotice] = useState<string | null>(saved ? 'Đã khôi phục bản nháp.' : null);
+
+  const saveNow = async () => {
+    if (!playId) return;
+    try {
+      await saveDraft(playId, state);
+      setNotice('Đã lưu nháp.');
+    } catch {
+      setNotice('Không lưu được bản nháp.');
+    }
+  };
+
+  const confirmFinish = async () => {
+    if (!playId) throw new Error('missing play');
+    await sync.flush();
+    const receipt = await playsApi.finish(playId, {
+      players: state.players.map((p) => ({ identityId: p.id, kind: p.kind ?? 'member' })),
+      winners: sheet.summary.winners,
+      rows: sheet.summary.rows,
+    });
+    await saveResult(playId, {
+      finishedAt: new Date().toISOString(),
+      rows: sheet.summary.rows,
+      winners: sheet.summary.winners,
+      ...receipt,
+    });
+    await clearDraft(playId);
+    return receipt;
+  };
 
   return (
     <SafeAreaView edges={['bottom']} style={styles.screen}>
@@ -75,12 +130,17 @@ export function ScoreSheet({ template }: { template: ScoreTemplate }) {
               <Heading>Tổng điểm mỗi người</Heading>
               {state.players.map((p) => (
                 <View key={p.id} style={styles.quickRow}>
-                  <Text style={styles.quickName}>{p.name}</Text>
-                  <NumberField
-                    value={state.quickTotals[p.id] ?? 0}
-                    width={96}
-                    onChange={(n) => sheet.setQuickTotal(p.id, n)}
-                  />
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.quickName}>{p.name}</Text>
+                    <PresenceLabel sheet={sheet} id={p.id} name={p.name} />
+                  </View>
+                  <Flash sheet={sheet} id={p.id} cat={QUICK_KEY}>
+                    <NumberField
+                      value={state.quickTotals[p.id] ?? 0}
+                      width={96}
+                      onChange={(n) => sheet.setQuickTotal(p.id, n)}
+                    />
+                  </Flash>
                 </View>
               ))}
             </Card>
@@ -104,18 +164,9 @@ export function ScoreSheet({ template }: { template: ScoreTemplate }) {
               ) : null}
 
               {Custom ? (
-                <Segmented<InputStyle>
-                  value={inputStyle}
-                  onChange={setInputStyle}
-                  options={[
-                    { value: 'custom', label: 'Giao diện riêng' },
-                    { value: 'generic', label: 'Giao diện chung' },
-                  ]}
-                />
-              ) : null}
-
-              {Custom && inputStyle === 'custom' ? (
                 <Custom sheet={sheet} />
+              ) : isRoundsGame(template) ? (
+                <RoundsTable sheet={sheet} />
               ) : (
                 <GenericCategories sheet={sheet} />
               )}
@@ -124,9 +175,38 @@ export function ScoreSheet({ template }: { template: ScoreTemplate }) {
             <Hint>Chuyển sang chế độ Chi tiết để ghi số phi vụ thành công/thất bại.</Hint>
           ) : null}
 
+          <RuleNotes notes={tiebreakerNotes(template)} />
+
+          {playId ? (
+            <Card>
+              <Text style={styles.sync}>
+                {sync.unsynced > 0
+                  ? `Đang đồng bộ ${sync.unsynced} thay đổi...`
+                  : 'Đã đồng bộ với bàn chơi'}
+              </Text>
+              {notice ? <Hint>{notice}</Hint> : null}
+              <View style={styles.wrap}>
+                <Button label="Lưu nháp" tone="ghost" onPress={saveNow} />
+                <Button label="Kết thúc ván" onPress={() => setFinishing(true)} />
+              </View>
+            </Card>
+          ) : null}
+
           <Button label="Làm lại từ đầu" tone="ghost" onPress={sheet.reset} />
         </View>
       </ScrollView>
+      {playId ? (
+        <FinishDialog
+          sheet={sheet}
+          visible={finishing}
+          onClose={() => setFinishing(false)}
+          onConfirm={confirmFinish}
+          onDone={() => {
+            setFinishing(false);
+            onExit?.();
+          }}
+        />
+      ) : null}
     </SafeAreaView>
   );
 }
@@ -137,5 +217,6 @@ const styles = StyleSheet.create({
   column: { width: '100%', maxWidth: 720, gap: 12 },
   wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   quickRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
-  quickName: { flex: 1, fontSize: 15, fontWeight: '600', color: colors.text },
+  quickName: { fontSize: 15, fontWeight: '600', color: colors.text },
+  sync: { fontSize: 13, color: colors.muted },
 });

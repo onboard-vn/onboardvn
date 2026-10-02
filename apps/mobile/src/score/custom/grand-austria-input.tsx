@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Flash, PresenceLabel } from '../cell-flash';
 import { NumberField } from '../../ui/number-field';
 import { Card, Chip, Heading, Hint } from '../../ui/primitives';
 import { colors } from '../../ui/theme';
@@ -31,9 +32,13 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
       {sheet.state.players.map((p) => {
         const row = sheet.summary.rows.find((r) => r.id === p.id);
         return (
-          <Card key={p.id}>
+          <Flash key={p.id} sheet={sheet} id={p.id}>
+          <Card>
             <View style={styles.header}>
-              <Heading>{p.name}</Heading>
+              <View>
+                <Heading>{p.name}</Heading>
+                <PresenceLabel sheet={sheet} id={p.id} name={p.name} />
+              </View>
               <Text style={styles.total}>{row?.total ?? 0} VP</Text>
             </View>
 
@@ -117,6 +122,7 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
               </View>
             ))}
           </Card>
+          </Flash>
         );
       })}
     </>

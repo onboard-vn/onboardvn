@@ -9,7 +9,16 @@ export default function Home() {
   return (
     <ScrollView contentContainerStyle={styles.content}>
       <View style={styles.column}>
-        <Hint>Chọn game để mở bảng điểm (bản thử nghiệm).</Hint>
+        <Link href="/club" asChild>
+          <Pressable accessibilityRole="button">
+            <Card>
+              <Heading>Kèo của CLB</Heading>
+              <Text style={styles.meta}>Chọn kèo, chọn bàn rồi tính điểm.</Text>
+            </Card>
+          </Pressable>
+        </Link>
+
+        <Hint>Dev: mở thẳng bảng điểm theo game (không có bàn/người chơi thật).</Hint>
         {templateList.map((t) => (
           <Link key={t.slug} href={{ pathname: '/score/[slug]', params: { slug: t.slug } }} asChild>
             <Pressable>
@@ -18,7 +27,7 @@ export default function Home() {
                 <Text style={styles.meta}>
                   {t.mode === 'coop' ? 'Co-op' : 'Cạnh tranh'} · {t.playerCount?.min}-
                   {t.playerCount?.max} người
-                  {scoreInputRegistry[t.slug] ? ' · giao diện riêng' : ' · giao diện chung'}
+                  {scoreInputRegistry[t.slug] ? ' · nhập riêng' : ''}
                 </Text>
                 {t.needsReview ? <Badge label="Mẫu chưa duyệt" /> : null}
               </Card>

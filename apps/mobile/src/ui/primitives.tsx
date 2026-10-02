@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { colors, radius, space } from './theme';
 
@@ -103,7 +103,67 @@ export function Hint({ children }: { children: ReactNode }) {
   return <Text style={styles.hint}>{children}</Text>;
 }
 
+export function Avatar({ name, color, size = 36 }: { name: string; color: string; size?: number }) {
+  return (
+    <View
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        backgroundColor: color,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Text style={{ color: '#fff', fontWeight: '700', fontSize: size * 0.42 }}>
+        {name.trim().charAt(0).toUpperCase()}
+      </Text>
+    </View>
+  );
+}
+
+export function Collapsible({
+  title,
+  children,
+  defaultOpen = false,
+}: {
+  title: string;
+  children: ReactNode;
+  defaultOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <View style={styles.collapsible}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ expanded: open }}
+        onPress={() => setOpen((o) => !o)}
+        style={styles.collapsibleHead}
+      >
+        <Text style={styles.collapsibleTitle}>{title}</Text>
+        <Text style={styles.collapsibleTitle}>{open ? '▴' : '▾'}</Text>
+      </Pressable>
+      {open ? <View style={styles.collapsibleBody}>{children}</View> : null}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
+  collapsible: {
+    borderRadius: radius,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.card,
+    overflow: 'hidden',
+  },
+  collapsibleHead: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: space.lg,
+  },
+  collapsibleTitle: { fontSize: 15, fontWeight: '600', color: colors.primary },
+  collapsibleBody: { padding: space.lg, paddingTop: 0, gap: space.md },
   card: {
     backgroundColor: colors.card,
     borderRadius: radius,
