@@ -2,9 +2,10 @@ import { randomBytes } from 'node:crypto';
 import { bggUsernameSchema, PRIVACY_LEVELS, ROLES } from '@onboard/shared';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { emailOTP, username } from 'better-auth/plugins';
+import { bearer, emailOTP, username } from 'better-auth/plugins';
 import { db } from '../db/client.js';
 import * as schema from '../db/schema/index.js';
+import { DEV_EXPO_ORIGIN } from '../lib/dev-origins.js';
 import { env } from '../lib/env.js';
 import { logger } from '../lib/logger.js';
 import { mailer, resetPasswordEmail, verifyEmail } from '../lib/mailer/index.js';
@@ -30,7 +31,8 @@ export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   basePath: '/api/auth',
   secret: env.BETTER_AUTH_SECRET,
-  trustedOrigins: [env.WEB_ORIGIN],
+  trustedOrigins:
+    env.NODE_ENV === 'development' ? [env.WEB_ORIGIN, DEV_EXPO_ORIGIN] : [env.WEB_ORIGIN],
   database: drizzleAdapter(db, { provider: 'pg', schema, usePlural: true }),
   user: {
     additionalFields: {
@@ -123,6 +125,7 @@ export const auth = betterAuth({
   socialProviders: google,
   hooks: { before: profileGuard },
   plugins: [
+    bearer(),
     emailOTP({
       sendVerificationOTP: sendOtpEmail,
       // Plain only outside production: e2e reads the OTP from the verifications table.

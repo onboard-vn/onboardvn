@@ -1,7 +1,14 @@
 import type { ClubRole } from '@onboard/shared';
 import { and, asc, count, desc, eq, inArray, isNull, or, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
-import { clubExternalMembers, clubMembers, clubs, meetups, users } from '../../db/schema/index.js';
+import {
+  clubExternalMembers,
+  clubMembers,
+  clubs,
+  identities,
+  meetups,
+  users,
+} from '../../db/schema/index.js';
 
 export type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
 export type Executor = Tx | typeof db;
@@ -236,17 +243,39 @@ export async function claimExternalMember(tx: Tx, id: string, userId: string): P
     .update(clubExternalMembers)
     .set({ userId })
     .where(and(eq(clubExternalMembers.id, id), isNull(clubExternalMembers.userId)))
-    .returning({ id: clubExternalMembers.id });
+    .returning({ clubId: clubExternalMembers.clubId, externalId: clubExternalMembers.externalId });
+  if (rows[0]) await setExternalIdentityUser(tx, rows[0].clubId, rows[0].externalId, userId);
   return rows.length > 0;
 }
 
+async function setExternalIdentityUser(
+  executor: Executor,
+  clubId: string,
+  externalId: string,
+  userId: string | null,
+): Promise<void> {
+  await executor
+    .update(identities)
+    .set({ userId })
+    .where(
+      and(
+        eq(identities.kind, 'external'),
+        eq(identities.clubId, clubId),
+        eq(identities.externalId, externalId),
+      ),
+    );
+}
+
 export async function unlinkExternalMember(clubId: string, memberId: string): Promise<boolean> {
-  const rows = await db
-    .update(clubExternalMembers)
-    .set({ userId: null })
-    .where(and(eq(clubExternalMembers.id, memberId), eq(clubExternalMembers.clubId, clubId)))
-    .returning({ id: clubExternalMembers.id });
-  return rows.length > 0;
+  return db.transaction(async (tx) => {
+    const rows = await tx
+      .update(clubExternalMembers)
+      .set({ userId: null })
+      .where(and(eq(clubExternalMembers.id, memberId), eq(clubExternalMembers.clubId, clubId)))
+      .returning({ externalId: clubExternalMembers.externalId });
+    if (rows[0]) await setExternalIdentityUser(tx, clubId, rows[0].externalId, null);
+    return rows.length > 0;
+  });
 }
 
 export async function findClubRefsByIds(ids: string[]) {

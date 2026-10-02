@@ -1,0 +1,1 @@
+DROP TABLE "meetup_table_external_players" CASCADE;

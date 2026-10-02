@@ -11,8 +11,9 @@ import {
   externalRefs,
   gameExternalMetadata,
   games,
+  identities,
   meetupParticipants,
-  meetupTableExternalPlayers,
+  meetupTableIdentities,
   meetupTables,
   meetups,
   provinces,
@@ -224,8 +225,8 @@ describe('syncExternalClub', () => {
   it('seats external players without fake users and links matched users', async () => {
     const [seats] = await db
       .select()
-      .from(meetupTableExternalPlayers)
-      .innerJoin(meetupTables, eq(meetupTables.id, meetupTableExternalPlayers.tableId))
+      .from(meetupTableIdentities)
+      .innerJoin(meetupTables, eq(meetupTables.id, meetupTableIdentities.tableId))
       .innerJoin(meetups, eq(meetups.id, meetupTables.meetupId))
       .where(eq(meetups.clubId, clubId))
       .limit(1);
@@ -252,6 +253,11 @@ describe('syncExternalClub', () => {
     expect(participants).toHaveLength(1);
     expect(participants[0]).toMatchObject({ status: 'going' });
     expect(participants[0]!.tableId).not.toBeNull();
+    const [linkedIdentity] = await db
+      .select()
+      .from(identities)
+      .where(and(eq(identities.clubId, clubId), eq(identities.externalId, 'm2')));
+    expect(linkedIdentity).toMatchObject({ kind: 'external', userId: linkedUser.id });
   });
 
   it('updates changed tables and removes tables that vanished at the source', async () => {

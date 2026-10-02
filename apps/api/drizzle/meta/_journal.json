@@ -148,6 +148,20 @@
       "when": 1790924634273,
       "tag": "0020_external_club_sync",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1790932054418,
+      "tag": "0021_identities_plays",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1790932104671,
+      "tag": "0022_drop_external_players",
+      "breakpoints": true
     }
   ]
 }

@@ -26,7 +26,7 @@ export interface SyncContext {
   club: typeof clubs.$inferSelect;
   actorUserId: string;
   report: SyncReport;
-  members: Map<string, { id: string; userId: string | null }>;
+  members: Map<string, { id: string; userId: string | null; identityId: string }>;
   gameIds: Map<string, string>;
 }
 

@@ -1,7 +1,6 @@
 import { index, pgTable, primaryKey, text, uuid } from 'drizzle-orm/pg-core';
 import { clubExternalMembers, clubs } from './clubs.js';
 import { games } from './games.js';
-import { meetupTables } from './meetups.js';
 
 /** Maps an external record to the internal row it was imported into, so re-syncs update in place. */
 export const externalRefs = pgTable(
@@ -34,22 +33,5 @@ export const clubExternalOwnerships = pgTable(
   (table) => [
     primaryKey({ columns: [table.clubId, table.gameId, table.externalMemberId] }),
     index('club_external_ownerships_member_idx').on(table.externalMemberId),
-  ],
-);
-
-/** Seats of imported tables held by external members; avoids fake users for unmatched players. */
-export const meetupTableExternalPlayers = pgTable(
-  'meetup_table_external_players',
-  {
-    tableId: uuid()
-      .notNull()
-      .references(() => meetupTables.id, { onDelete: 'cascade' }),
-    externalMemberId: uuid()
-      .notNull()
-      .references(() => clubExternalMembers.id, { onDelete: 'cascade' }),
-  },
-  (table) => [
-    primaryKey({ columns: [table.tableId, table.externalMemberId] }),
-    index('meetup_table_external_players_member_idx').on(table.externalMemberId),
   ],
 );

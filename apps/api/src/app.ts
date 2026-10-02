@@ -1,11 +1,13 @@
 import { serveStatic } from '@hono/node-server/serve-static';
 import type { HealthResponse } from '@onboard/shared';
 import { Hono } from 'hono';
+import { cors } from 'hono/cors';
 import { csrf } from 'hono/csrf';
 import { requestId } from 'hono/request-id';
 import type { Auth } from './auth/better-auth.js';
 import { sessionMiddleware } from './auth/middleware.js';
 import { publicCache } from './lib/cache-control.js';
+import { DEV_EXPO_ORIGIN } from './lib/dev-origins.js';
 import { env } from './lib/env.js';
 import { errorHandler, notFoundHandler } from './lib/error-handler.js';
 import { apiRateLimit } from './lib/rate-limit.js';
@@ -22,9 +24,21 @@ import { adminClubRoutes, clubRoutes } from './modules/clubs/routes.js';
 import { adminEventRoutes, eventRoutes, meEventsRoutes } from './modules/events/routes.js';
 import { blockRoutes, friendRoutes } from './modules/friends/routes.js';
 import { gameRoutes } from './modules/games/routes.js';
+import {
+  claimRequestRoutes,
+  clubScopedRoutes,
+  identityRoutes,
+  tableRoutes,
+} from './modules/identities/routes.js';
 import { locationRoutes } from './modules/locations/routes.js';
 import { meRoutes } from './modules/me/routes.js';
 import { localBarcodeRoutes, shelfRoutes } from './modules/shelf/routes.js';
+import {
+  gameScoreTemplateRoutes,
+  myPlayRoutes,
+  playRoutes,
+  tablePlayRoutes,
+} from './modules/plays/routes.js';
 import { userRoutes } from './modules/users/routes.js';
 import { openApiRoutes } from './modules/openapi/routes.js';
 import type { AppEnv } from './types.js';
@@ -46,13 +60,21 @@ export function createApp({
     .route('/me', meRoutes)
     .route('/me/shelf', shelfRoutes)
     .route('/me/events', meEventsRoutes)
+    .route('/me', myPlayRoutes)
     .route('/events', eventRoutes({ rateLimit }))
     .route('/events-admin', adminEventRoutes)
     .route('/clubs', clubRoutes({ rateLimit }))
+    .route('/clubs', clubScopedRoutes)
+    .route('/tables', tableRoutes({ rateLimit }))
+    .route('/tables', tablePlayRoutes)
+    .route('/identities', identityRoutes({ rateLimit }))
+    .route('/identity-claim-requests', claimRequestRoutes)
+    .route('/plays', playRoutes({ rateLimit }))
     .route('/clubs-admin', adminClubRoutes)
     .route('/users', userRoutes)
     .route('/friends', friendRoutes({ rateLimit }))
     .route('/blocks', blockRoutes)
+    .route('/games', gameScoreTemplateRoutes)
     .route('/games', gameRoutes)
     .route('/categories', categoryRoutes)
     .route('/locations', locationRoutes)
@@ -81,6 +103,19 @@ export function createApp({
         rewriteRequestPath: (path) => path.slice(UPLOADS_PUBLIC_PREFIX.length),
       }),
     );
+
+  if (env.NODE_ENV === 'development') {
+    app.use(
+      '/api/*',
+      cors({
+        origin: DEV_EXPO_ORIGIN,
+        credentials: true,
+        allowHeaders: ['Authorization', 'Content-Type'],
+        allowMethods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+        exposeHeaders: ['set-auth-token'],
+      }),
+    );
+  }
 
   if (rateLimit) app.use('/api/*', apiRateLimit);
 

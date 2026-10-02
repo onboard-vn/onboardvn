@@ -13,3 +13,5 @@ export * from './shelf.js';
 export * from './social.js';
 export * from './users.js';
 export * from './scoring/index.js';
+export * from './identities.js';
+export * from './plays.js';

@@ -4,6 +4,7 @@ import {
   clubExternalOwnerships,
   gameExternalMetadata,
   games,
+  identities,
 } from '../../db/schema/index.js';
 import { slugify } from '../../modules/games/slug.js';
 import { chunked, dedupe, stableJson, type SyncContext } from './context.js';
@@ -20,6 +21,36 @@ export async function syncMembers(
     .from(clubExternalMembers)
     .where(eq(clubExternalMembers.clubId, club.id));
   const byExternalId = new Map(existing.map((row) => [row.externalId, row]));
+  const identityRows = await tx
+    .select()
+    .from(identities)
+    .where(and(eq(identities.clubId, club.id), eq(identities.kind, 'external')));
+  const identityByExternalId = new Map(identityRows.map((row) => [row.externalId!, row]));
+
+  const upsertIdentity = async (externalId: string, nickname: string, userId: string | null) => {
+    const current = identityByExternalId.get(externalId);
+    if (!current) {
+      const [created] = await tx
+        .insert(identities)
+        .values({
+          kind: 'external',
+          clubId: club.id,
+          displayName: nickname,
+          userId,
+          externalSource: ctx.source,
+          externalId,
+        })
+        .returning({ id: identities.id });
+      return created!.id;
+    }
+    if (current.displayName !== nickname || current.userId !== userId) {
+      await tx
+        .update(identities)
+        .set({ displayName: nickname, userId })
+        .where(eq(identities.id, current.id));
+    }
+    return current.id;
+  };
 
   for (const dto of dedupe(members, (m) => m.externalId)) {
     const loginId = dto.loginId ?? loginIds.get(dto.externalId);
@@ -35,11 +66,13 @@ export async function syncMembers(
           externalLoginId: loginId ?? null,
         })
         .returning({ id: clubExternalMembers.id });
-      ctx.members.set(dto.externalId, { id: created!.id, userId: null });
+      const identityId = await upsertIdentity(dto.externalId, dto.nickname, null);
+      ctx.members.set(dto.externalId, { id: created!.id, userId: null, identityId });
       report.members.created++;
       continue;
     }
-    ctx.members.set(dto.externalId, { id: row.id, userId: row.userId });
+    const identityId = await upsertIdentity(dto.externalId, dto.nickname, row.userId);
+    ctx.members.set(dto.externalId, { id: row.id, userId: row.userId, identityId });
     const changes: Partial<typeof clubExternalMembers.$inferInsert> = {};
     if (row.nickname !== dto.nickname) changes.nickname = dto.nickname;
     if (stableJson(row.stats) !== stableJson(dto.stats)) changes.stats = dto.stats;

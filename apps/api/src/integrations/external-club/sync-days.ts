@@ -6,7 +6,7 @@ import {
   games,
   meetupParticipants,
   meetups,
-  meetupTableExternalPlayers,
+  meetupTableIdentities,
   meetupTables,
 } from '../../db/schema/index.js';
 import { slugify } from '../../modules/games/slug.js';
@@ -110,10 +110,10 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
   const playerRows = tableRows.length
     ? await tx
         .select()
-        .from(meetupTableExternalPlayers)
+        .from(meetupTableIdentities)
         .where(
           inArray(
-            meetupTableExternalPlayers.tableId,
+            meetupTableIdentities.tableId,
             tableRows.map((t) => t.id),
           ),
         )
@@ -121,7 +121,7 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
   const playersByTable = new Map<string, Set<string>>();
   for (const row of playerRows) {
     const set = playersByTable.get(row.tableId) ?? new Set<string>();
-    set.add(row.externalMemberId);
+    set.add(row.identityId);
     playersByTable.set(row.tableId, set);
   }
 
@@ -199,7 +199,7 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
           report.unknownMemberRefs++;
           continue;
         }
-        playerIds.add(member.id);
+        playerIds.add(member.identityId);
         if (member.userId && !seatedUsers.has(member.userId)) {
           seatedUsers.add(member.userId);
           userIds.push(member.userId);
@@ -236,17 +236,17 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
       const toAdd = [...playerIds].filter((id) => !currentPlayers.has(id));
       if (toAdd.length) {
         await tx
-          .insert(meetupTableExternalPlayers)
-          .values(toAdd.map((externalMemberId) => ({ tableId, externalMemberId })));
+          .insert(meetupTableIdentities)
+          .values(toAdd.map((identityId) => ({ tableId, identityId })));
       }
       const toRemove = [...currentPlayers].filter((id) => !playerIds.has(id));
       if (toRemove.length) {
         await tx
-          .delete(meetupTableExternalPlayers)
+          .delete(meetupTableIdentities)
           .where(
             and(
-              eq(meetupTableExternalPlayers.tableId, tableId),
-              inArray(meetupTableExternalPlayers.externalMemberId, toRemove),
+              eq(meetupTableIdentities.tableId, tableId),
+              inArray(meetupTableIdentities.identityId, toRemove),
             ),
           );
       }
