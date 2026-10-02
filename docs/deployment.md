@@ -163,3 +163,19 @@ pnpm --filter @onboard/api sync:club --club <slug> [--from YYYY-MM-DD] [--to YYY
 ```
 
 `--dry-run` chạy toàn bộ trong 1 transaction rồi rollback và in số lượng tạo/sửa. Chạy lại nhiều lần là idempotent (ánh xạ qua `external_refs`). Mỗi ngày thành 1 Kèo `club`, mỗi bàn thành 1 `meetup_tables`; người chơi chưa có tài khoản nằm ở `meetup_table_external_players` (không tạo user giả).
+
+## Môi trường nội bộ trên VPS (chỉ tailnet, build tại chỗ)
+
+`compose.vps.yml` chồng lên `compose.prod.yml`: build image api/web tại máy (`onboard-api:vps`, `onboard-web:vps`), mount `./data` (read-only) và plugin club riêng (`PRIVATE_PLUGINS_DIR`, mặc định `../onboardvn-private/plugins`), thêm `mailpit` làm SMTP sink (`SMTP_URL=smtp://mailpit:1025`, UI `127.0.0.1:8025`) để đọc link xác minh/OTP mà không gửi mail thật. `.env.prod` cần thêm `EXTERNAL_CLUB_BASE_URL`.
+
+```bash
+dc() { docker compose -p onboard --env-file .env.prod -f compose.prod.yml -f compose.vps.yml "$@"; }
+dc up -d --build
+dc run --rm migrate node dist/db/seed-locations.js
+dc run --rm -e ADMIN_EMAIL=<email> migrate node dist/db/seed.js
+dc run --rm -e CLUB_SOURCE=thursday_club -e CLUB_SNAPSHOT_DIR=/app/data/private/thursday migrate node dist/db/import-club-games.js
+dc run --rm api node dist/integrations/external-club/sync-cli.js --club <slug> --from YYYY-MM-DD
+tailscale serve --bg 8080   # KHÔNG dùng funnel
+```
+
+Admin seed không có mật khẩu: đăng nhập bằng email OTP (đọc OTP trong mailpit) rồi đặt mật khẩu qua "quên mật khẩu".
