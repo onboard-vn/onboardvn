@@ -13,8 +13,9 @@ Supersedes [onboardvn-main-20261002-1815.md](onboardvn-main-20261002-1815.md) fo
 1. ~~Rewrite `/suggest`~~ — **Done (uncommitted, 23:20)**: new flow per demo with existing sources (Tủ game, Muốn chơi, Quán, Tỉnh/thành, Toàn quốc); see plan table row for files and gaps. Mobile lint/typecheck/test green (123), prettier clean.
 2. ~~New sources + actions after pick~~ — **Done (uncommitted, 00:00)**: owner decisions and file list in the plan ("Owner decisions for sources and actions" + table row). Restart API after pulling: migration 0024 already applied to dev DB.
 3. ~~Home sections~~ — done. Public smoke test: `/`, `/suggest`, `/games`, `/sfx/*.mp3`, `/health`, `/api/games?sort=cafes`, `/api/suggest` → 200, `/dang-ky` → 308.
-4. Open: prod has 0 public cafés and no game covers, so every draw is "Cổ vật" and cards show initials until cafés are published and covers added; native sound not implemented; `/games` ignores URL filters (home "Tất cả game" goes to plain list).
-5. Earlier later-list: home sections ("Dành cho người mới", "Thuần Việt/Việt hoá", "Nhiều quán có nhất"); gaps list in the plan; then commit → deploy → public smoke test.
+4. BGG content (2026-10-03 00:25, owner decision): covers hotlinked from BGG CDN (`games.external_image_url`, credit "BoardGameGeek"), descriptions translated from BGG by 12 subagents (`translated_from_bgg`, `permission-only`, excluded from CC BY-SA dataset); prod now 576/587 games with cover + description. Prod backup before migration 0025: `backups/onboard-20261003-002353.dump`. Source/translations in `data/private/bgg/` (gitignored), runbook in `docs/deployment.md`.
+5. Open: prod has 0 public cafés, so every draw is "Cổ vật" until cafés are published; native sound not implemented; `/games` ignores URL filters (home "Tất cả game" goes to plain list).
+6. Earlier later-list: home sections ("Dành cho người mới", "Thuần Việt/Việt hoá", "Nhiều quán có nhất"); gaps list in the plan; then commit → deploy → public smoke test.
 
 ## Local dev
 
