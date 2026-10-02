@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "Onboard",
+    "slug": "onboard",
+    "version": "0.0.0",
+    "orientation": "portrait",
+    "scheme": "onboard",
+    "userInterfaceStyle": "light",
+    "plugins": ["expo-router"],
+    "web": { "output": "single", "bundler": "metro" },
+    "experiments": { "typedRoutes": true }
+  }
+}
