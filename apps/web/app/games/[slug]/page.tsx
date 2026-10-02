@@ -8,6 +8,7 @@ import { SITE_URL } from '@/lib/env';
 import { gameJsonLd } from '@/lib/seo/json-ld';
 import { parseVideoEmbed } from '@/lib/video-embed';
 import { SITE_NAME } from '@/lib/site';
+import { gameModuleHref } from '../modules';
 
 const DESCRIPTION_LABEL = {
   original: 'Mô tả do cộng đồng viết · CC BY-SA 4.0',
@@ -59,6 +60,8 @@ export default async function GameDetailPage(props: PageProps<'/games/[slug]'>) 
     kind,
     items: game.categories.filter((c) => c.kind === kind),
   }));
+
+  const moduleHref = gameModuleHref(game.slug);
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-10">
@@ -112,6 +115,15 @@ export default async function GameDetailPage(props: PageProps<'/games/[slug]'>) 
           <dd>{game.minAge ?? '—'}</dd>
         </div>
       </dl>
+
+      {moduleHref ? (
+        <a
+          href={moduleHref}
+          className="bg-primary text-primary-foreground inline-flex h-9 w-fit items-center rounded-lg px-4 text-sm font-medium"
+        >
+          Mở công cụ rút nhiệm vụ
+        </a>
+      ) : null}
 
       {categoryGroups.map(({ kind, items }) =>
         items.length > 0 ? (

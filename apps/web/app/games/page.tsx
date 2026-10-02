@@ -2,12 +2,23 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { serverApi } from '@/lib/api-server';
+import { gameModuleHref } from './modules';
 import { GameFilters, type GameFiltersValues } from './game-filters';
 import { SITE_NAME } from '@/lib/site';
 
 export const metadata: Metadata = { title: `Danh mục game · ${SITE_NAME}` };
 
-const FILTER_KEYS = ['q', 'players', 'maxTime', 'maxWeight', 'categoryId'] as const;
+const FILTER_KEYS = [
+  'q',
+  'players',
+  'minPlayers',
+  'maxPlayers',
+  'minTime',
+  'maxTime',
+  'minWeight',
+  'maxWeight',
+  'categoryId',
+] as const;
 
 function firstValue(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
@@ -58,53 +69,61 @@ export default async function GamesPage(props: PageProps<'/games'>) {
         <p className="text-muted-foreground text-sm">Không tìm thấy game phù hợp.</p>
       ) : (
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((game) => (
-            <li key={game.id}>
-              <Link
-                href={`/games/${game.slug}`}
-                className="hover:border-foreground/40 block h-full rounded-lg border p-4 transition"
-              >
-                {game.imageUrl || game.externalThumbUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- upload storage or remote BGG CDN, not optimizable
-                  <img
-                    src={game.imageUrl ?? game.externalThumbUrl ?? ''}
-                    alt=""
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                    className="mb-3 h-32 w-full rounded-md object-cover"
-                  />
-                ) : null}
-                <div className="flex items-center justify-between gap-2">
-                  <h2 className="font-medium">{game.nameVi || game.nameEn}</h2>
-                  {game.isVietnamese ? <Badge variant="secondary">Việt hóa</Badge> : null}
-                </div>
-                {game.nameVi ? (
-                  <p className="text-muted-foreground text-sm">{game.nameEn}</p>
-                ) : null}
-                <dl className="text-muted-foreground mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
-                  {game.minPlayers || game.maxPlayers ? (
-                    <span>
-                      {game.minPlayers ?? '?'}-{game.maxPlayers ?? '?'} người
-                    </span>
+          {items.map((game) => {
+            const moduleHref = gameModuleHref(game.slug);
+            return (
+              <li key={game.id} className="flex flex-col gap-2">
+                <Link
+                  href={`/games/${game.slug}`}
+                  className="hover:border-foreground/40 block flex-1 rounded-lg border p-4 transition"
+                >
+                  {game.imageUrl || game.externalThumbUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- upload storage or remote BGG CDN, not optimizable
+                    <img
+                      src={game.imageUrl ?? game.externalThumbUrl ?? ''}
+                      alt=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                      className="mb-3 h-32 w-full rounded-md object-cover"
+                    />
                   ) : null}
-                  {game.playMinutes ? <span>{game.playMinutes} phút</span> : null}
-                  {game.weight ? <span>Độ khó {game.weight}</span> : null}
-                </dl>
-                {!game.imageUrl && game.externalThumbUrl ? (
-                  <p className="text-muted-foreground mt-1 text-[10px]">Ảnh: BoardGameGeek</p>
-                ) : null}
-                {game.categories.length > 0 ? (
-                  <div className="mt-2 flex flex-wrap gap-1">
-                    {game.categories.map((c) => (
-                      <Badge key={c.id} variant="outline">
-                        {c.nameVi ?? c.name}
-                      </Badge>
-                    ))}
+                  <div className="flex items-center justify-between gap-2">
+                    <h2 className="font-medium">{game.nameVi || game.nameEn}</h2>
+                    {game.isVietnamese ? <Badge variant="secondary">Việt hóa</Badge> : null}
                   </div>
+                  {game.nameVi ? (
+                    <p className="text-muted-foreground text-sm">{game.nameEn}</p>
+                  ) : null}
+                  <dl className="text-muted-foreground mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                    {game.minPlayers || game.maxPlayers ? (
+                      <span>
+                        {game.minPlayers ?? '?'}-{game.maxPlayers ?? '?'} người
+                      </span>
+                    ) : null}
+                    {game.playMinutes ? <span>{game.playMinutes} phút</span> : null}
+                    {game.weight ? <span>Độ khó {game.weight}</span> : null}
+                  </dl>
+                  {!game.imageUrl && game.externalThumbUrl ? (
+                    <p className="text-muted-foreground mt-1 text-[10px]">Ảnh: BoardGameGeek</p>
+                  ) : null}
+                  {game.categories.length > 0 ? (
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {game.categories.map((c) => (
+                        <Badge key={c.id} variant="outline">
+                          {c.nameVi ?? c.name}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : null}
+                </Link>
+                {moduleHref ? (
+                  <a href={moduleHref} className="text-sm font-medium underline">
+                    Mở công cụ rút nhiệm vụ
+                  </a>
                 ) : null}
-              </Link>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       )}
 
