@@ -18,8 +18,13 @@
 		}
 	}
 
-	# Expo web build (static, single-page); mounted only by compose.vps.yml.
-	handle_path /app* {
+	# Expo web build (static SPA), mounted only by compose.vps.yml. Missing bundles must 404, not fall back to HTML.
+	redir /app /app/ 308
+	handle_path /app/_expo/* {
+		root * /srv/mobile-web/_expo
+		file_server
+	}
+	handle_path /app/* {
 		root * /srv/mobile-web
 		try_files {path} /index.html
 		file_server

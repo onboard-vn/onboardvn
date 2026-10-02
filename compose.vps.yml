@@ -35,14 +35,11 @@ services:
 
   caddy:
     volumes:
-      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
       - ./deploy/mobile-web:/srv/mobile-web:ro
 
   # Public ingress via a dashboard-managed Cloudflare Tunnel; start with `--profile tunnel`.
   cloudflared:
-    image: cloudflare/cloudflared:latest
+    image: cloudflare/cloudflared:2026.9.3
     profiles: [tunnel]
     restart: unless-stopped
     mem_limit: 128m

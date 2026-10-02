@@ -10,8 +10,22 @@ export interface SavedSession {
   states: GangState[];
 }
 
+const isState = (v: unknown): v is GangState => {
+  const s = v as Partial<GangState> | null;
+  return (
+    !!s &&
+    typeof s.config?.mode === 'string' &&
+    Array.isArray(s.stacks?.bad) &&
+    Array.isArray(s.stacks?.good) &&
+    Array.isArray(s.active)
+  );
+};
+
 const isSession = (v: unknown): v is SavedSession =>
-  !!v && typeof v === 'object' && Array.isArray((v as SavedSession).states);
+  !!v &&
+  typeof v === 'object' &&
+  Array.isArray((v as SavedSession).states) &&
+  (v as SavedSession).states.every(isState);
 
 export async function loadSession(): Promise<SavedSession | null> {
   try {
