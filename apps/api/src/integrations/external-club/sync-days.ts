@@ -4,13 +4,14 @@ import {
   externalRefs,
   gameExternalMetadata,
   games,
+  identities,
   meetupParticipants,
   meetups,
   meetupTableIdentities,
   meetupTables,
 } from '../../db/schema/index.js';
 import { slugify } from '../../modules/games/slug.js';
-import { dedupe, type SyncContext } from './context.js';
+import { chunked, dedupe, type SyncContext } from './context.js';
 import type { ExternalDay, ExternalTable } from './types.js';
 
 type RefKind = 'meetup' | 'meetup_table';
@@ -84,6 +85,84 @@ function tableValues(
   };
 }
 
+async function syncGuests(
+  ctx: SyncContext,
+  days: ExternalDay[],
+): Promise<{ seated: Map<string, string>; managed: string[] }> {
+  const { tx, club, source, report } = ctx;
+  const wanted = dedupe(
+    days.flatMap((d) => d.tables.flatMap((t) => t.guests ?? [])),
+    (g) => g.externalId,
+  );
+  const existing = await tx
+    .select()
+    .from(identities)
+    .where(
+      and(
+        eq(identities.clubId, club.id),
+        eq(identities.kind, 'guest'),
+        eq(identities.externalSource, source),
+      ),
+    );
+  const byExternalId = new Map(existing.map((r) => [r.externalId!, r]));
+  const inviterIds = [
+    ...new Set(
+      wanted.flatMap((g) => {
+        const inviter = ctx.members.get(g.invitedByExternalMemberId);
+        return inviter ? [inviter.identityId] : [];
+      }),
+    ),
+  ];
+  const inviterNames = new Map<string, string>();
+  for (const part of chunked(inviterIds)) {
+    const rows = await tx
+      .select({ id: identities.id, displayName: identities.displayName })
+      .from(identities)
+      .where(inArray(identities.id, part));
+    for (const row of rows) inviterNames.set(row.id, row.displayName);
+  }
+  const result = new Map<string, string>();
+  for (const guest of wanted) {
+    const inviter = ctx.members.get(guest.invitedByExternalMemberId);
+    if (!inviter) {
+      report.unknownMemberRefs++;
+      continue;
+    }
+    const displayName = `Bạn của ${inviterNames.get(inviter.identityId) ?? ''}`.trim();
+    const current = byExternalId.get(guest.externalId);
+    if (!current) {
+      const [created] = await tx
+        .insert(identities)
+        .values({
+          kind: 'guest',
+          clubId: club.id,
+          displayName,
+          invitedByIdentityId: inviter.identityId,
+          externalSource: source,
+          externalId: guest.externalId,
+        })
+        .returning({ id: identities.id });
+      result.set(guest.externalId, created!.id);
+      report.guests.created++;
+    } else {
+      result.set(guest.externalId, current.id);
+      if (
+        !current.claimedAt &&
+        (current.displayName !== displayName || current.invitedByIdentityId !== inviter.identityId)
+      ) {
+        await tx
+          .update(identities)
+          .set({ displayName, invitedByIdentityId: inviter.identityId })
+          .where(eq(identities.id, current.id));
+        report.guests.updated++;
+      } else {
+        report.guests.unchanged++;
+      }
+    }
+  }
+  return { seated: result, managed: existing.map((r) => r.id) };
+}
+
 export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<void> {
   const { tx, source, club, report } = ctx;
   const days = dedupe(input, (d) => d.date);
@@ -92,6 +171,12 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
 
   await resolveTableGames(ctx, days);
   const byName = await gameIdsByName(ctx, days);
+  const { seated: guestIdentities, managed: guestIds } = await syncGuests(ctx, days);
+  const managedIdentityIds = new Set([
+    ...[...ctx.members.values()].map((m) => m.identityId),
+    ...guestIds,
+    ...guestIdentities.values(),
+  ]);
 
   const refRows = await tx.select().from(externalRefs).where(eq(externalRefs.source, source));
   const refs = new Map(refRows.map((r) => [refKey(r.kind, r.externalId), r.internalId]));
@@ -120,6 +205,7 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
     : [];
   const playersByTable = new Map<string, Set<string>>();
   for (const row of playerRows) {
+    if (!managedIdentityIds.has(row.identityId)) continue;
     const set = playersByTable.get(row.tableId) ?? new Set<string>();
     set.add(row.identityId);
     playersByTable.set(row.tableId, set);
@@ -204,6 +290,11 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
           seatedUsers.add(member.userId);
           userIds.push(member.userId);
         }
+      }
+
+      for (const guest of table.guests ?? []) {
+        const identityId = guestIdentities.get(guest.externalId);
+        if (identityId) playerIds.add(identityId);
       }
 
       let row = existingTables.get(refs.get(refKey('meetup_table', table.externalId)) ?? '');

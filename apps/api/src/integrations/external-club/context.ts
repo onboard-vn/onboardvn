@@ -12,6 +12,7 @@ export interface Counts {
 export interface SyncReport {
   dryRun: boolean;
   members: Counts;
+  guests: Counts;
   games: { created: number; linked: number; unchanged: number };
   ownerships: { added: number; removed: number };
   meetups: Counts;
@@ -33,6 +34,7 @@ export interface SyncContext {
 export const emptyReport = (dryRun: boolean): SyncReport => ({
   dryRun,
   members: { created: 0, updated: 0, unchanged: 0 },
+  guests: { created: 0, updated: 0, unchanged: 0 },
   games: { created: 0, linked: 0, unchanged: 0 },
   ownerships: { added: 0, removed: 0 },
   meetups: { created: 0, updated: 0, unchanged: 0 },

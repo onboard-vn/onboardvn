@@ -34,6 +34,7 @@ export const externalTableSchema = z.object({
   minPlayers: count.nullish(),
   maxPlayers: count.nullish(),
   players: z.array(z.object({ externalMemberId: id, loginId: id.optional() })),
+  guests: z.array(z.object({ externalId: id, invitedByExternalMemberId: id })).optional(),
   status: z.enum(['confirmed', 'poll']),
 });
 

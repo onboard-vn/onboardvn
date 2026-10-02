@@ -270,6 +270,49 @@ describe('syncExternalClub', () => {
     expect((await counts()).refs).toBe(2);
   });
 
+  it('imports anonymous guests as seated guest identities, idempotently', async () => {
+    const withGuest = [
+      { ...baseTables[0]!, guests: [{ externalId: 'x1', invitedByExternalMemberId: 'm1' }] },
+    ];
+    const report = await syncExternalClub(fakeSource({ days: [day(withGuest)] }), {
+      clubSlug: CLUB_SLUG,
+    });
+    expect(report.guests).toEqual({ created: 1, updated: 0, unchanged: 0 });
+    const [guest] = await db
+      .select()
+      .from(identities)
+      .where(and(eq(identities.clubId, clubId), eq(identities.externalId, 'x1')));
+    const [inviter] = await db
+      .select()
+      .from(identities)
+      .where(and(eq(identities.clubId, clubId), eq(identities.externalId, 'm1')));
+    expect(guest).toMatchObject({
+      kind: 'guest',
+      displayName: 'Bạn của Member One',
+      invitedByIdentityId: inviter!.id,
+      externalSource: SOURCE,
+    });
+    const seat = await db
+      .select()
+      .from(meetupTableIdentities)
+      .where(eq(meetupTableIdentities.identityId, guest!.id));
+    expect(seat).toHaveLength(1);
+
+    const again = await syncExternalClub(fakeSource({ days: [day(withGuest)] }), {
+      clubSlug: CLUB_SLUG,
+    });
+    expect(again.guests).toEqual({ created: 0, updated: 0, unchanged: 1 });
+    expect(again.tables).toMatchObject({ created: 0, updated: 0 });
+
+    await syncExternalClub(fakeSource({ days: [day([baseTables[0]!])] }), { clubSlug: CLUB_SLUG });
+    expect(
+      await db
+        .select()
+        .from(meetupTableIdentities)
+        .where(eq(meetupTableIdentities.identityId, guest!.id)),
+    ).toHaveLength(0);
+  });
+
   it('ignores days before --from', async () => {
     const report = await syncExternalClub(fakeSource({ days: [day(baseTables, '2026-01-01')] }), {
       clubSlug: CLUB_SLUG,
