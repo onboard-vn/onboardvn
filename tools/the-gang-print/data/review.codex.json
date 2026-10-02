@@ -1,0 +1,97 @@
+[
+  {
+    "code": "H5",
+    "severity": "medium",
+    "issue": "“Các lá trong tay bài” dễ bị hiểu là tay bài poker gồm cả bài chung; ở đây người chơi đoán bài riêng của người khác. “Số lần đoán đúng” cũng dễ hiểu thành số lượt đoán.",
+    "suggest_text_vi": "Một người có thể đoán <b>giá trị, không đoán chất</b>, của các lá bài tẩy của một người khác. Người được đoán chia sẻ với cả nhóm <b>số lá được đoán đúng giá trị</b>."
+  },
+  {
+    "code": "H15",
+    "severity": "medium",
+    "issue": "“Đổi 1 lá trong tay bài” có thể cho phép chọn cả bài chung; lá đem đổi phải là bài riêng của người chơi.",
+    "suggest_text_vi": "Một người có thể <b>đổi 1 lá bài tẩy của mình</b> với 1 lá bài chung."
+  },
+  {
+    "code": "H18",
+    "severity": "high",
+    "issue": "Bản VI có thể hiểu rằng cả hai chất đều đồng thời mang chất kia. Nguồn chỉ cho các lá thuộc một chất được chọn mang thêm chất còn lại; cần chỉ rõ chiều tác động.",
+    "suggest_text_vi": "Chọn <b>2 chất</b>, rồi chọn một trong hai chất đó. Các lá thuộc chất được chọn được tính là <b>thuộc cả chất còn lại</b>."
+  },
+  {
+    "code": "H25",
+    "severity": "low",
+    "issue": "“1 lần mỗi trò chơi” thiếu tự nhiên và khó phân biệt với một ván/phi vụ; nguồn quy định một lần cho toàn bộ cuộc chơi.",
+    "suggest_text_vi": "<b>Mỗi người được 1 lần trong cả cuộc chơi</b> ra hiệu giơ ngón cái lên hoặc xuống (không dùng tín hiệu trung gian). Cả nhóm có thể thống nhất trước ý nghĩa của hai tín hiệu này."
+  },
+  {
+    "code": "H35",
+    "severity": "medium",
+    "issue": "Lấy lá bài chung “vào tay bài” dễ bị hiểu là chỉ chọn vào tổ hợp 5 lá; hiệu ứng chuyển lá đó sang bài tẩy.",
+    "suggest_text_vi": "Trước Showdown, người giữ <b>chip đỏ 4 sao</b> lấy vào bài tẩy của mình lá bài chung cao nhất có <b>giá trị chỉ xuất hiện 1 lần</b> trong bài chung (ví dụ: nếu bài chung có hai lá A, lấy lá cao nhất tiếp theo có giá trị không lặp)."
+  },
+  {
+    "code": "H38",
+    "severity": "medium",
+    "issue": "“Thêm vào tay bài” dễ bị hiểu là thêm vào tổ hợp poker; lá được chọn trở thành bài tẩy.",
+    "suggest_text_vi": "Sau Vòng 1, chia úp số lá bằng <b>số người chơi cộng 1</b>. Theo thứ tự chip từ ít sao nhất đến nhiều sao nhất, mỗi người lần lượt xem các lá đó và chọn 1 lá thêm vào <b>bài tẩy của mình</b>. Bỏ ngửa lá còn lại."
+  },
+  {
+    "code": "H40",
+    "severity": "low",
+    "issue": "Lỗi OCR tiếng Anh: cụm “the questioned any - player” bị chèn từ và dấu gạch; bản VI đã truyền đạt đúng.",
+    "suggest_en_fix": "One player can ask another player if they have a certain card value: \"Got _?\" If yes, the questioned player gives a card of the matching value to the questioner. Otherwise, they answer \"Go Fish\" and the questioner draws an additional pocket card."
+  },
+  {
+    "code": "H58",
+    "severity": "medium",
+    "issue": "Nguồn dùng “This round” nhưng hiệu ứng bao trùm Vòng 1–4, nên phải là “This hand”. Bản VI dùng “Ván này” đã đúng. Đây là lỗi thuật ngữ nguồn; chưa thể khẳng định do OCR.",
+    "suggest_en_fix": "This hand, there are no community cards. Instead, deal the following cards to each player: Round 1: 2 face-down, 1 face-up. Round 2: 1 face-up. Round 3: 1 face-down. Round 4: 1 face-down, 1 face-up."
+  },
+  {
+    "code": "H61",
+    "severity": "low",
+    "issue": "Tiêu đề nguồn sai chính tả: “Surveilance” thiếu một chữ l; bản VI không cần sửa.",
+    "suggest_en_fix": "Drone Surveillance"
+  },
+  {
+    "code": "H62",
+    "severity": "medium",
+    "issue": "Nguồn dùng “This round” dễ bị hiểu là chỉ một vòng đặt chip; bản VI hiểu là cả ván. Cần thống nhất thuật ngữ hand/round; sửa đề xuất theo phạm vi cả ván của bản VI, cần đối chiếu ý đồ tác giả nếu phạm vi chỉ là một vòng.",
+    "suggest_en_fix": "This hand, make your best 6-card hand. Use the 6-Card Hand Ranks reference card."
+  },
+  {
+    "code": "H66",
+    "severity": "medium",
+    "issue": "“Một bộ bài tẩy” chưa rõ đây là một tay bài bổ sung độc lập, không phải thêm lá vào tay bài cũ.",
+    "suggest_text_vi": "Chọn ngẫu nhiên một người và chia cho họ <b>một tay bài riêng bổ sung</b>. Tay bài bổ sung này cũng phải được <b>xếp thứ tự cùng các tay bài khác</b>."
+  },
+  {
+    "code": "H70",
+    "severity": "medium",
+    "issue": "Cả EN và VI không xác định rõ bỏ qua các lá tạo hạng hay mọi lá dùng để phân định cùng hạng (kể cả Kicker). Hai cách hiểu cho kết quả xếp bài khác nhau; cần tác giả xác nhận trước khi viết lại, không tự suy diễn luật."
+  },
+  {
+    "code": "H73",
+    "severity": "medium",
+    "issue": "“Không thể loại bất kỳ lá nào” dễ hiểu là không thể thao tác loại bài; ý là không có lá nào có thể loại mà vẫn giữ đúng thứ tự tay bài.",
+    "suggest_text_vi": "Trước Showdown, tất cả đồng thời chỉ vào một lá bài chung để biểu quyết <b>loại lá đó khỏi ván</b>. Người giữ chip đỏ ít sao nhất quyết định khi hòa phiếu. Thứ tự tay bài phải đúng cả <b>trước VÀ sau khi loại lá bài</b>. Nếu không có lá nào có thể loại mà vẫn đáp ứng điều kiện này, tất cả phải chỉ thẳng lên trên. Nếu cả nhóm chỉ lên trên nhưng thực ra có lá có thể loại hợp lệ, <b>phi vụ thất bại</b>."
+  },
+  {
+    "code": "H76",
+    "severity": "medium",
+    "issue": "Nguồn “community revealed cards” thiếu dấu cộng/từ nối; bản VI đã khôi phục đúng community + revealed. Cả hai bản vẫn chưa định nghĩa cách so độ mạnh tập bài gộp khi có hơn 5 lá, cần xác nhận tác giả.",
+    "suggest_en_fix": "Before the Showdown, reveal cards from the deck until there are as many community + revealed cards as cards in players' pockets. All players must simultaneously vote on whether they think their pocket cards are collectively stronger, weaker, or the same as the community + revealed cards, with ties broken by the highest red chip. If incorrect, you lose the heist."
+  },
+  {
+    "code": "H77",
+    "severity": "low",
+    "issue": "Lỗi OCR nguồn: “Os” (chữ O) phải là “0s” (số 0). Bản VI đã đúng.",
+    "suggest_en_fix": "Subtract your lowest pocket card from your highest to get the value of your ghost card, which is also in your pocket. It has no suit. 0s can be used in a 0 A 2 3 4 Straight. A = 1; J = 11; Q = 12; K = 13."
+  },
+  {
+    "code": "H104",
+    "severity": "low",
+    "issue": "“Niềm dục vọng” không tự nhiên trong tiếng Việt; tên tội lỗi Lust nên dùng “Dục vọng”.",
+    "suggest_title_vi": "Dục vọng"
+  }
+]

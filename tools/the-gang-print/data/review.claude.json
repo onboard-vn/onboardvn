@@ -1,0 +1,69 @@
+[
+  {
+    "code": "H17",
+    "severity": "medium",
+    "issue": "Trùng tiêu đề với S9 (Kẻ lừa đảo); Fraudster nên khác Con Artist",
+    "suggest_title_vi": "Kẻ gian lận"
+  },
+  {
+    "code": "H31",
+    "severity": "medium",
+    "issue": "Trùng tiêu đề với S6 Coordinator (Người điều phối); Orchestrator nên khác",
+    "suggest_title_vi": "Nhạc trưởng v2"
+  },
+  {
+    "code": "H18",
+    "severity": "medium",
+    "issue": "Câu 'thuộc một trong hai chất... cả chất còn lại' mơ hồ; nên nói rõ mỗi lá thuộc cả hai chất",
+    "suggest_text_vi": "Chọn <b>2 chất</b>. Mỗi lá thuộc một trong hai chất đó được tính là <b>thuộc cả hai chất</b>."
+  },
+  {
+    "code": "H40",
+    "severity": "medium",
+    "issue": "Tiếng Anh OCR sai: 'Got any ___?' và 'the questioned player' (ảnh gốc xác nhận); bản dịch thiếu 'any'",
+    "suggest_en_fix": "One player can ask another player if they have a certain card value: \"Got any ___?\" If yes, the questioned player gives a card of the matching value to the questioner. Otherwise, they answer \"Go Fish\" and the questioner draws an additional pocket card.",
+    "suggest_text_vi": "Một người có thể hỏi người khác xem họ có lá mang một giá trị cụ thể không: “Có lá nào giá trị _ không?” Nếu có, người được hỏi đưa <b>1 lá có giá trị đó</b> cho người hỏi. Nếu không, họ đáp “Go Fish” và người hỏi rút thêm <b>1 lá bài tẩy</b>."
+  },
+  {
+    "code": "H77",
+    "severity": "medium",
+    "issue": "Tiếng Anh OCR sai: '0s' bị đọc thành 'Os' (ảnh gốc xác nhận)",
+    "suggest_en_fix": "Subtract your lowest pocket card from your highest to get the value of your ghost card, which is also in your pocket. It has no suit. 0s can be used in a 0 A 2 3 4 Straight.\nA = 1\nJ = 11\nQ = 12\nK = 13"
+  },
+  {
+    "code": "H35",
+    "severity": "low",
+    "issue": "Tiếng Anh OCR: 'non- paired' thừa khoảng trắng",
+    "suggest_en_fix": "Before the Showdown, the player with the red 4 chip draws the highest unique community card into their hand (e.g., if there is a pair of Aces in the community cards, they'd take the next highest non-paired value)."
+  },
+  {
+    "code": "H70",
+    "severity": "low",
+    "issue": "Câu dịch lặp ý 'thứ tự', đọc nặng; nên gọn hơn",
+    "suggest_text_vi": "Ván này, với các tay bài High Card, Pair, Two Pair, Three of a Kind và Full House, <b>bỏ qua các lá vốn dùng để phân định thứ tự</b> giữa các tay bài cùng hạng."
+  },
+  {
+    "code": "H108",
+    "severity": "low",
+    "issue": "'chốt' không khớp thuật ngữ 'khóa' (locked) dùng ở nơi khác",
+    "suggest_text_vi": "Cho đến khi chip đỏ bị <b>khóa</b>, mỗi khi có người <b>cười</b>, thêm một <b>thẻ Bất lợi</b> mới."
+  },
+  {
+    "code": "H41",
+    "severity": "low",
+    "issue": "'Chiếc giày ủng' thừa nghĩa",
+    "suggest_title_vi": "Chiếc ủng"
+  },
+  {
+    "code": "H25",
+    "severity": "low",
+    "issue": "'Once per game' nên dùng 'mỗi ván chơi' cho rõ phạm vi (cả trò chơi), tránh nhầm với 'ván' = một phi vụ",
+    "suggest_text_vi": "<b>1 lần trong cả trò chơi</b>, mỗi người có thể ra hiệu giơ ngón cái lên hoặc xuống (không được ra hiệu ở giữa). Cả nhóm có thể thống nhất trước ý nghĩa của hai tín hiệu này."
+  },
+  {
+    "code": "R1",
+    "severity": "low",
+    "issue": "Mục 'được lật' lặp từ, khó đọc; nên viết 'đã lật ngửa'",
+    "suggest_text_vi": "Một lá bài được coi là <b>đã lật ngửa</b> khi đã được cho tất cả người chơi xem cùng lúc."
+  }
+]

@@ -1,0 +1,13 @@
+Glossary EN -> VI (The Gang, cooperative poker). Use consistently.
+pocket cards -> bài tẩy | community cards -> bài chung | hand -> tay bài (poker hand) / ván (one heist round of play = "ván")
+heist -> phi vụ | the heist fails -> phi vụ thất bại | vault -> két sắt | alarm -> báo động
+chip -> chip | star(s) -> sao | 1-star chip -> chip 1 sao | dark side -> mặt tối | light side -> mặt sáng
+white/yellow/orange/red chips -> chip trắng/vàng/cam/đỏ
+Round 1..4 -> Vòng 1..4 ; keep Pre-Flop, Flop, Turn, River, Showdown in English
+deal -> chia | draw -> rút | discard -> bỏ (bài) | reveal/revealed -> lật ngửa / được lật | flip (chip) -> lật
+face cards -> lá hình (J, Q, K) | suit -> chất | value -> giá trị | rank (of hand) -> hạng bài
+Keep poker hand names in English: High Card, Pair, Two Pair, Three of a Kind, Straight, Flush, Full House, Four of a Kind, Straight Flush, Royal Flush, Five of a Kind, Kicker.
+Wildcard -> lá đa năng (Wildcard) | sharing/share -> chia sẻ (công khai cho cả nhóm) | "One of you" -> "Một người trong nhóm"
+Beneficial -> Lợi thế | Detrimental -> Bất lợi | modifier -> thẻ hiệu ứng | the community -> bài chung
+Style: short, natural Vietnamese imperative suited to a card, faithful meaning, no additions. Wrap 1-3 key phrases in <b>..</b> for emphasis.
+Card titles: translate to a short catchy Vietnamese name (2-4 words); proper-noun jokes (e.g. "Owen Wilson Protocol", "Hanabi Protocol") keep the proper noun: "Giao thức Owen Wilson".
