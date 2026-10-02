@@ -176,6 +176,13 @@
       "when": 1790959108748,
       "tag": "0024_suggest_sources",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1790961453813,
+      "tag": "0025_game_external_image",
+      "breakpoints": true
     }
   ]
 }

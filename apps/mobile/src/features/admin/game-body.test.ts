@@ -36,3 +36,17 @@ describe('validateGame', () => {
     expect(validateGame({ ...v, rightsHolder: 'NPH', permissionRef: '#1' })).toBeNull();
   });
 });
+
+describe('translated_from_bgg descriptions', () => {
+  it('needs no CC BY-SA consent and always sends permission-only', () => {
+    const v = {
+      ...gameValuesFrom(undefined),
+      nameEn: 'Catan',
+      source: 'translated_from_bgg' as const,
+    };
+    expect(validateGame(v)).toBeNull();
+    expect(buildGameBody({ ...v, license: 'CC-BY-SA-4.0' }, true).descriptionLicense).toBe(
+      'permission-only',
+    );
+  });
+});

@@ -33,7 +33,7 @@ function toSummaryDto(row: GameRow): GameSummaryDto {
     minAge: row.minAge,
     isVietnamese: row.isVietnamese,
     bggId: row.bggId,
-    imageUrl: row.imageKey ? storage.url(row.imageKey) : null,
+    imageUrl: row.imageKey ? storage.url(row.imageKey) : row.externalImageUrl,
     categories: row.categories.map((gc) => ({
       id: gc.category.id,
       name: gc.category.name,

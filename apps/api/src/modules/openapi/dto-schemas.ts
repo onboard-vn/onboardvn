@@ -41,7 +41,7 @@ export const gameSummaryDtoSchema = z.object({
 
 export const gameDetailDtoSchema = gameSummaryDtoSchema.extend({
   descriptionVi: z.string().nullable(),
-  descriptionSource: z.enum(['original', 'translated_with_permission']),
+  descriptionSource: z.enum(['original', 'translated_with_permission', 'translated_from_bgg']),
   descriptionRightsHolder: z.string().nullable(),
   descriptionLicense: z.enum(['CC-BY-SA-4.0', 'permission-only']),
   videoUrls: z.array(z.string()),

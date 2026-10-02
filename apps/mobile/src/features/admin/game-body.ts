@@ -1,6 +1,6 @@
 import type { CategoryDto, GameDetailDto, GameCreateInput } from '@onboard/shared';
 
-export type DescriptionSource = 'original' | 'translated_with_permission';
+export type DescriptionSource = 'original' | 'translated_with_permission' | 'translated_from_bgg';
 export type DescriptionLicense = 'CC-BY-SA-4.0' | 'permission-only';
 
 export interface GameFormValues {
@@ -55,7 +55,7 @@ export function validateGame(v: GameFormValues): string | null {
   if (v.source === 'translated_with_permission') {
     if (!v.rightsHolder.trim()) return 'Nhập đơn vị cấp phép';
     if (!v.permissionRef.trim()) return 'Nhập tham chiếu giấy phép';
-  } else if (!v.acceptLicense) {
+  } else if (v.source !== 'translated_from_bgg' && !v.acceptLicense) {
     return 'Cần xác nhận tự viết nội dung và đồng ý cấp phép CC BY-SA 4.0';
   }
   return null;
@@ -80,8 +80,11 @@ export function buildGameBody(v: GameFormValues, editing: boolean) {
     descriptionSource: v.source,
     descriptionRightsHolder: str(v.rightsHolder),
     descriptionPermissionRef: str(v.permissionRef),
-    descriptionLicense: (v.source === 'original' ? 'CC-BY-SA-4.0' : v.license) as
-      DescriptionLicense | undefined,
+    descriptionLicense: (v.source === 'original'
+      ? 'CC-BY-SA-4.0'
+      : v.source === 'translated_from_bgg'
+        ? 'permission-only'
+        : v.license) as DescriptionLicense | undefined,
     videoUrls: v.videoUrls
       .split('\n')
       .map((line) => line.trim())

@@ -203,7 +203,9 @@ export function apiView(g: GameDetailDto, local?: GameEntry): GameView {
         note:
           g.descriptionSource === 'translated_with_permission'
             ? `Bản dịch được ${g.descriptionRightsHolder ?? 'NPH'} cho phép`
-            : 'Mô tả do cộng đồng viết · CC BY-SA 4.0',
+            : g.descriptionSource === 'translated_from_bgg'
+              ? 'Dịch từ mô tả trên BoardGameGeek'
+              : 'Mô tả do cộng đồng viết · CC BY-SA 4.0',
         foreign: false,
       }
     : externalText

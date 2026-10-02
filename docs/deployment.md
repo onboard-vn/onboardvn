@@ -177,6 +177,17 @@ pnpm --filter @onboard/api sync:club --club <slug> [--from YYYY-MM-DD] [--to YYY
 
 `--dry-run` chạy toàn bộ trong 1 transaction rồi rollback và in số lượng tạo/sửa. Chạy lại nhiều lần là idempotent (ánh xạ qua `external_refs`). Mỗi ngày thành 1 Kèo `club`, mỗi bàn thành 1 `meetup_tables`; người chơi chưa có tài khoản nằm ở `meetup_table_external_players` (không tạo user giả).
 
+## Import ảnh bìa + mô tả từ BGG
+
+Nguồn: cache BGG trong `data/private/bgg/` (gitignore). File gộp `data/private/bgg/bgg-content-vi.json` (mảng `{bggId, imageUrl, descriptionVi}`); script chỉ điền game chưa có ảnh upload / chưa có mô tả, chạy được nhiều lần:
+
+```bash
+dc run --rm -e DATA_DIR=/app/data migrate node dist/db/import-bgg-content.js --dry-run
+dc run --rm -e DATA_DIR=/app/data migrate node dist/db/import-bgg-content.js
+```
+
+Backup DB trước khi chạy thật (`./deploy/backup.sh`).
+
 ## Môi trường nội bộ trên VPS (chỉ tailnet, build tại chỗ)
 
 `compose.vps.yml` chồng lên `compose.prod.yml`: build image api/web tại máy (`onboard-api:vps`, `onboard-web:vps`), mount `./data` (read-only) và plugin club riêng (`PRIVATE_PLUGINS_DIR`, mặc định `../onboardvn-private/plugins`), thêm `mailpit` làm SMTP sink (`SMTP_URL=smtp://mailpit:1025`, UI `127.0.0.1:8025`) để đọc link xác minh/OTP mà không gửi mail thật. `.env.prod` cần thêm `EXTERNAL_CLUB_BASE_URL`.

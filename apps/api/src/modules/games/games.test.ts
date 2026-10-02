@@ -161,6 +161,31 @@ describe('games catalog', () => {
     );
   });
 
+  it('accepts a BGG translation only as permission-only and falls back to its cover link', async () => {
+    const post = (license: string) =>
+      createGame({
+        nameEn: `BGG Translated ${license} ${Date.now()}`,
+        descriptionVi: 'Mô tả dịch',
+        descriptionSource: 'translated_from_bgg',
+        descriptionLicense: license,
+      });
+    expect((await post('CC-BY-SA-4.0')).res.status).toBe(422);
+    const { res: ok, json: created } = await post('permission-only');
+    expect(ok.status).toBe(201);
+    await db
+      .update(games)
+      .set({ externalImageUrl: 'https://cf.geekdo-images.com/x.jpg' })
+      .where(eq(games.id, created.id));
+    const detail = (await (await publicApp.request(`/api/games/${created.slug}`)).json()) as {
+      imageUrl: string | null;
+      descriptionSource: string;
+    };
+    expect(detail).toMatchObject({
+      imageUrl: 'https://cf.geekdo-images.com/x.jpg',
+      descriptionSource: 'translated_from_bgg',
+    });
+  });
+
   it('rejects a non-YouTube/Facebook video URL (422)', async () => {
     const res = await maintainerApp.request('/api/games', {
       method: 'POST',

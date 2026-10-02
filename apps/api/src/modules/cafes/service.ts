@@ -106,7 +106,7 @@ function toInventoryDto(
     slug: row.game.slug,
     nameVi: row.game.nameVi,
     nameEn: row.game.nameEn,
-    imageUrl: row.game.imageKey ? storage.url(row.game.imageKey) : null,
+    imageUrl: row.game.imageKey ? storage.url(row.game.imageKey) : row.game.externalImageUrl,
     copies: row.copies,
     minPlayers: row.game.minPlayers,
     maxPlayers: row.game.maxPlayers,

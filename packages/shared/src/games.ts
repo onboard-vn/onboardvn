@@ -10,7 +10,12 @@ export const barcodeInputSchema = z.object({
 });
 export type BarcodeInput = z.infer<typeof barcodeInputSchema>;
 
-export const descriptionSourceEnum = z.enum(['original', 'translated_with_permission']);
+/** `translated_from_bgg`: imported translation of the BGG description; never in the CC BY-SA dataset. */
+export const descriptionSourceEnum = z.enum([
+  'original',
+  'translated_with_permission',
+  'translated_from_bgg',
+]);
 export type DescriptionSource = z.infer<typeof descriptionSourceEnum>;
 
 export const descriptionLicenseEnum = z.enum(['CC-BY-SA-4.0', 'permission-only']);

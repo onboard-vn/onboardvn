@@ -33,7 +33,7 @@ export function toSummaryDto(row: GameRow): GameSummaryDto {
     minAge: row.minAge,
     isVietnamese: row.isVietnamese,
     bggId: row.bggId,
-    imageUrl: row.imageKey ? storage.url(row.imageKey) : null,
+    imageUrl: row.imageKey ? storage.url(row.imageKey) : row.externalImageUrl,
     categories: row.categories.map((gc) => ({
       id: gc.category.id,
       name: gc.category.name,
@@ -120,6 +120,12 @@ function assertDescriptionInvariants(params: {
         422,
         'Bản dịch có phép cần ghi rõ đơn vị cấp phép và tham chiếu giấy phép',
       );
+    }
+    return;
+  }
+  if (source === 'translated_from_bgg') {
+    if (license !== 'permission-only') {
+      throw new ApiError('VALIDATION_FAILED', 422, 'Bản dịch từ BGG không được gắn CC BY-SA 4.0');
     }
     return;
   }

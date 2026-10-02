@@ -53,6 +53,6 @@ File trong `apps/mobile/public/sfx/` (đã đổi tên, chuyển mp3):
 
 ## BoardGameGeek (BGG)
 
-Nếu tích hợp BGG, OnBoardVN chỉ lưu **`bgg_id` và link** tới trang BGG tương ứng — **không copy mô tả game hay hình ảnh** của BGG vào dữ liệu của mình. XML API v2 hiện yêu cầu Bearer token phía server (không còn free-for-all hoàn toàn public).
+OnBoardVN lưu **`bgg_id` và link** tới trang BGG. Từ 2026-10-03 (quyết định của owner): ảnh bìa game chưa có ảnh upload được **hiển thị bằng link ảnh trên CDN của BGG** (`games.external_image_url`, không tải về server) kèm ghi nguồn "Ảnh: BoardGameGeek"; mô tả tiếng Việt được **dịch từ mô tả trên BGG**, gắn nhãn `translated_from_bgg` + `permission-only` (bản quyền thuộc BGG / nhà phát hành), hiện ghi chú "Dịch từ mô tả trên BoardGameGeek" và **không nằm trong dataset CC BY-SA**. Ảnh upload và mô tả cộng đồng tự viết luôn được ưu tiên, import không ghi đè. XML API v2 hiện yêu cầu Bearer token phía server (không còn free-for-all hoàn toàn public).
 
 - https://boardgamegeek.com/xmlapi2

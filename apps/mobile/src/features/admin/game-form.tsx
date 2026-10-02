@@ -21,6 +21,7 @@ import { CheckRow, ErrorText, Field, PickerField, Section, type Option } from '.
 const SOURCE_OPTIONS: Option<DescriptionSource>[] = [
   { value: 'original', label: 'Cộng đồng tự viết' },
   { value: 'translated_with_permission', label: 'Bản dịch được NPH cho phép' },
+  { value: 'translated_from_bgg', label: 'Dịch từ BGG (không thuộc CC BY-SA)' },
 ];
 
 const LICENSE_OPTIONS: Option<DescriptionLicense>[] = [

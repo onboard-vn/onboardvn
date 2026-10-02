@@ -28,7 +28,9 @@ export const games = pgTable('games', {
   isVietnamese: boolean().default(false).notNull(),
   bggId: integer().unique(),
   descriptionVi: text(),
-  descriptionSource: text({ enum: ['original', 'translated_with_permission'] })
+  descriptionSource: text({
+    enum: ['original', 'translated_with_permission', 'translated_from_bgg'],
+  })
     .default('original')
     .notNull(),
   descriptionRightsHolder: text(),
@@ -41,6 +43,8 @@ export const games = pgTable('games', {
     .default(sql`'{}'::text[]`)
     .notNull(),
   imageKey: text(),
+  /** Hotlinked cover (BGG CDN) used only when no uploaded image exists. */
+  externalImageUrl: text(),
   imageCredit: text(),
   createdBy: text().references(() => users.id),
   createdAt: timestamp().defaultNow().notNull(),

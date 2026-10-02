@@ -1,6 +1,6 @@
 'use client';
 
-import type { GameCreateInput } from '@onboard/shared';
+import type { DescriptionSource, GameCreateInput } from '@onboard/shared';
 import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
@@ -28,7 +28,7 @@ export interface GameFormInitial {
   isVietnamese: boolean;
   bggId: number | null;
   descriptionVi: string | null;
-  descriptionSource: 'original' | 'translated_with_permission';
+  descriptionSource: DescriptionSource;
   descriptionRightsHolder: string | null;
   descriptionPermissionRef?: string | null;
   descriptionLicense: 'CC-BY-SA-4.0' | 'permission-only';
@@ -47,7 +47,7 @@ export function GameForm({
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
-  const [source, setSource] = useState<'original' | 'translated_with_permission'>(
+  const [source, setSource] = useState<DescriptionSource>(
     initial?.descriptionSource ?? 'original',
   );
   const selectedCategoryIds = new Set(initial?.categories.map((c) => c.id) ?? []);
@@ -250,6 +250,7 @@ export function GameForm({
           >
             <option value="original">Cộng đồng tự viết</option>
             <option value="translated_with_permission">Bản dịch được NPH cho phép</option>
+            <option value="translated_from_bgg">Dịch từ BGG (không thuộc CC BY-SA)</option>
           </select>
         </div>
 
