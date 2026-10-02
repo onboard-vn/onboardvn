@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { boolQueryParam } from './cafes.js';
 
 export const gameBarcodeSourceEnum = z.enum(['manual', 'gameupc']);
 export type GameBarcodeSource = z.infer<typeof gameBarcodeSourceEnum>;
@@ -87,9 +88,15 @@ export type GameUpdateInput = z.infer<typeof gameUpdateSchema>;
 export const gameFilterSchema = z.object({
   q: z.string().trim().min(1).max(200).optional(),
   players: z.coerce.number().int().positive().optional(),
+  minPlayers: z.coerce.number().int().positive().max(100).optional(),
+  maxPlayers: z.coerce.number().int().positive().max(100).optional(),
+  minTime: z.coerce.number().int().positive().optional(),
   maxTime: z.coerce.number().int().positive().optional(),
+  minWeight: z.coerce.number().min(1).max(5).optional(),
   maxWeight: z.coerce.number().min(1).max(5).optional(),
   categoryId: z.uuid().optional(),
+  isVietnamese: boolQueryParam,
+  sort: z.enum(['name', 'cafes']).default('name'),
   page: z.coerce.number().int().positive().default(1),
   pageSize: z.coerce.number().int().positive().max(50).default(20),
 });

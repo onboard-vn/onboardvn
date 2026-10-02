@@ -39,6 +39,8 @@ import {
   playRoutes,
   tablePlayRoutes,
 } from './modules/plays/routes.js';
+import { suggestRoutes } from './modules/suggest/routes.js';
+import { wishlistRoutes } from './modules/wishlist/routes.js';
 import { userRoutes } from './modules/users/routes.js';
 import { openApiRoutes } from './modules/openapi/routes.js';
 import type { AppEnv } from './types.js';
@@ -59,6 +61,8 @@ export function createApp({
     .use('*', publicCache())
     .route('/me', meRoutes)
     .route('/me/shelf', shelfRoutes)
+    .route('/me/wishlist', wishlistRoutes)
+    .route('/suggest', suggestRoutes)
     .route('/me/events', meEventsRoutes)
     .route('/me', myPlayRoutes)
     .route('/events', eventRoutes({ rateLimit }))

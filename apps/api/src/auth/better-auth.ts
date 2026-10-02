@@ -68,6 +68,13 @@ export const auth = betterAuth({
         defaultValue: false,
         input: false,
       },
+      provinceCode: { type: 'string', required: false, input: false },
+      clubShelfSuggest: {
+        type: 'boolean',
+        required: false,
+        defaultValue: true,
+        input: false,
+      },
       contributionBlockedAt: {
         type: 'date',
         required: false,

@@ -1,7 +1,13 @@
 import type { FriendSummary, PrivacyLevel } from '@onboard/shared';
 import { and, count, desc, eq, or, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
-import { friendRequests, friendships, userBlocks, users } from '../../db/schema/index.js';
+import {
+  friendRequests,
+  friendships,
+  provinces,
+  userBlocks,
+  users,
+} from '../../db/schema/index.js';
 import { orderPair, type Executor } from '../../lib/visibility.js';
 
 /** Serializes concurrent writers for the same pair (e.g. A->B and B->A sent at once); must run inside `db.transaction`, the lock releases on commit/rollback. */
@@ -71,6 +77,15 @@ export async function rotateFriendCode(userId: string, code: string): Promise<vo
   await db.update(users).set({ friendCode: code }).where(eq(users.id, userId));
 }
 
+export async function provinceExists(code: string): Promise<boolean> {
+  const [row] = await db
+    .select({ code: provinces.code })
+    .from(provinces)
+    .where(eq(provinces.code, code))
+    .limit(1);
+  return Boolean(row);
+}
+
 export async function updatePrivacy(
   userId: string,
   input: Partial<{
@@ -78,6 +93,8 @@ export async function updatePrivacy(
     playsVisibility: PrivacyLevel;
     friendsVisibility: PrivacyLevel;
     emailOnFriendRequest: boolean;
+    clubShelfSuggest: boolean;
+    provinceCode: string | null;
   }>,
 ): Promise<void> {
   await db.update(users).set(input).where(eq(users.id, userId));

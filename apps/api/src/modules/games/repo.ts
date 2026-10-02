@@ -1,14 +1,17 @@
 import type { GameFilter } from '@onboard/shared';
-import { and, asc, count, desc, eq, inArray, or, sql } from 'drizzle-orm';
+import { and, asc, count, desc, eq, exists, inArray, or, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import { users } from '../../db/schema/auth.js';
 import {
+  cafeGames,
+  cafes,
   categories,
   gameBarcodes,
   gameCategories,
   gameRevisions,
   games,
 } from '../../db/schema/index.js';
+import { publicCafeWhere } from '../cafes/visibility.js';
 
 const withRelations = { categories: { with: { category: true } }, barcodes: true } as const;
 
@@ -39,6 +42,24 @@ function buildWhere(filter: GameFilter) {
       sql`(${games.maxPlayers} is null or ${games.maxPlayers} >= ${filter.players})`,
     );
   }
+  if (filter.minPlayers !== undefined) {
+    conditions.push(
+      sql`(${games.maxPlayers} is null or ${games.maxPlayers} >= ${filter.minPlayers})`,
+    );
+  }
+  if (filter.maxPlayers !== undefined) {
+    conditions.push(
+      sql`(${games.minPlayers} is null or ${games.minPlayers} <= ${filter.maxPlayers})`,
+    );
+  }
+  if (filter.minTime !== undefined) {
+    conditions.push(
+      sql`(${games.playMinutes} is null or ${games.playMinutes} >= ${filter.minTime})`,
+    );
+  }
+  if (filter.minWeight !== undefined) {
+    conditions.push(sql`(${games.weight} is null or ${games.weight} >= ${filter.minWeight})`);
+  }
   if (filter.maxTime !== undefined) {
     conditions.push(
       sql`(${games.playMinutes} is null or ${games.playMinutes} <= ${filter.maxTime})`,
@@ -49,11 +70,36 @@ function buildWhere(filter: GameFilter) {
   }
   if (filter.categoryId) {
     conditions.push(
-      sql`exists (select 1 from ${gameCategories} where ${gameCategories.gameId} = ${games.id} and ${gameCategories.categoryId} = ${filter.categoryId})`,
+      sql`exists (select 1 from game_categories gc where gc.game_id = ${games.id} and gc.category_id = ${filter.categoryId})`,
+    );
+  }
+
+  if (filter.isVietnamese !== undefined) {
+    conditions.push(eq(games.isVietnamese, filter.isVietnamese));
+  }
+  if (filter.sort === 'cafes') {
+    conditions.push(
+      exists(
+        db
+          .select({ id: cafeGames.gameId })
+          .from(cafeGames)
+          .innerJoin(cafes, eq(cafes.id, cafeGames.cafeId))
+          .where(and(eq(cafeGames.gameId, games.id), publicCafeWhere())),
+      ),
     );
   }
 
   return conditions.length ? and(...conditions) : undefined;
+}
+
+function buildOrderBy(filter: GameFilter) {
+  if (filter.sort === 'name') return [asc(games.nameEn)];
+  const publicCafeCount = db
+    .select({ n: count() })
+    .from(cafeGames)
+    .innerJoin(cafes, eq(cafes.id, cafeGames.cafeId))
+    .where(and(eq(cafeGames.gameId, games.id), publicCafeWhere()));
+  return [desc(sql`(${publicCafeCount})`), asc(games.nameEn)];
 }
 
 export async function listGames(filter: GameFilter) {
@@ -62,7 +108,7 @@ export async function listGames(filter: GameFilter) {
   const [rows, totalRows] = await Promise.all([
     db.query.games.findMany({
       where,
-      orderBy: [asc(games.nameEn)],
+      orderBy: buildOrderBy(filter),
       limit: filter.pageSize,
       offset: (filter.page - 1) * filter.pageSize,
       with: withRelations,

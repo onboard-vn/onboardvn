@@ -20,15 +20,31 @@ async function requireGame(gameId: string): Promise<GameRow> {
   return row;
 }
 
-async function toItemDtos(rows: UserGameRow[]): Promise<ShelfItemDto[]> {
+async function toItemDtos(
+  rows: UserGameRow[],
+  lastPlayed: Map<string, Date> = new Map(),
+): Promise<ShelfItemDto[]> {
   const gamesById = new Map(
     (await gamesRepo.findGamesByIds(rows.map((r) => r.gameId))).map((g) => [g.id, g]),
   );
   return rows.flatMap((row) => {
     const game = gamesById.get(row.gameId);
     if (!game) return [];
-    return [{ game: toSummaryDto(game), note: row.note, createdAt: row.createdAt.toISOString() }];
+    return [toItemDto(game, row, lastPlayed.get(row.gameId))];
   });
+}
+
+function toItemDto(game: GameRow, row: UserGameRow, lastPlayed?: Date): ShelfItemDto {
+  return {
+    game: toSummaryDto(game),
+    note: row.note,
+    condition: row.condition,
+    sleeved: row.sleeved,
+    boxProtected: row.boxProtected,
+    edition: row.edition,
+    lastPlayedAt: lastPlayed?.toISOString() ?? null,
+    createdAt: row.createdAt.toISOString(),
+  };
 }
 
 export async function addToShelfService(
@@ -36,13 +52,11 @@ export async function addToShelfService(
   input: ShelfAddInput,
 ): Promise<ShelfItemDto> {
   const game = await requireGame(input.gameId);
-  await repo.upsertShelfItem(userId, input.gameId, input.note);
-  const row = await repo.findShelfItem(userId, input.gameId);
-  return {
-    game: toSummaryDto(game),
-    note: row?.note ?? input.note ?? null,
-    createdAt: (row?.createdAt ?? new Date()).toISOString(),
-  };
+  const { gameId, ...fields } = input;
+  await repo.upsertShelfItem(userId, gameId, fields);
+  const row = await repo.findShelfItem(userId, gameId);
+  if (!row) throw new ApiError('NOT_FOUND', 404, 'Game không có trong tủ');
+  return toItemDto(game, row, (await repo.lastPlayedByGame(userId)).get(gameId));
 }
 
 export async function removeFromShelfService(userId: string, gameId: string): Promise<void> {
@@ -51,7 +65,11 @@ export async function removeFromShelfService(userId: string, gameId: string): Pr
 }
 
 export async function listMyShelfService(userId: string): Promise<ShelfItemDto[]> {
-  return toItemDtos(await repo.listShelfItems(userId));
+  const [rows, lastPlayed] = await Promise.all([
+    repo.listShelfItems(userId),
+    repo.lastPlayedByGame(userId),
+  ]);
+  return toItemDtos(rows, lastPlayed);
 }
 
 export async function getShelfForProfileService(

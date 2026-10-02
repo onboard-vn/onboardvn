@@ -1,4 +1,4 @@
-import { and, eq, or, sql } from 'drizzle-orm';
+import { and, desc, eq, or, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import {
   clubMembers,
@@ -142,4 +142,14 @@ export async function pickTemplate(
       for (let i = 0; i < ra.length; i++) if (ra[i] !== rb[i]) return ra[i]! - rb[i]!;
       return 0;
     })[0];
+}
+
+export async function latestPlayIdForTable(tableId: string): Promise<string | null> {
+  const [row] = await db
+    .select({ id: plays.id })
+    .from(plays)
+    .where(eq(plays.meetupTableId, tableId))
+    .orderBy(desc(plays.createdAt))
+    .limit(1);
+  return row?.id ?? null;
 }

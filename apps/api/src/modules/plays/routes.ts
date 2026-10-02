@@ -130,20 +130,25 @@ export const playRoutes = ({ rateLimit }: { rateLimit: boolean }) =>
       });
     });
 
-export const tablePlayRoutes = new Hono<AppEnv>().post(
-  '/:tableId/plays',
-  requireUser,
-  zValidator('param', tableIdParamSchema),
-  zValidator('json', playCreateSchema.omit({ meetupTableId: true })),
-  async (c) =>
-    c.json(
-      await service.createPlayService(c.var.user.id, {
-        ...c.req.valid('json'),
-        meetupTableId: c.req.valid('param').tableId,
-      }),
-      201,
-    ),
-);
+export const tablePlayRoutes = new Hono<AppEnv>()
+  .get('/:tableId/play', requireUser, zValidator('param', tableIdParamSchema), async (c) => {
+    noStore(c);
+    return c.json(await service.getTablePlayService(c.req.valid('param').tableId, c.var.user.id));
+  })
+  .post(
+    '/:tableId/plays',
+    requireUser,
+    zValidator('param', tableIdParamSchema),
+    zValidator('json', playCreateSchema.omit({ meetupTableId: true })),
+    async (c) =>
+      c.json(
+        await service.createPlayService(c.var.user.id, {
+          ...c.req.valid('json'),
+          meetupTableId: c.req.valid('param').tableId,
+        }),
+        201,
+      ),
+  );
 
 export const myPlayRoutes = new Hono<AppEnv>().get(
   '/plays',

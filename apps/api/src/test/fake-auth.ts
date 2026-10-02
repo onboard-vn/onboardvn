@@ -17,6 +17,8 @@ export function fakeUser(role: Role = 'user') {
     playsVisibility: 'public',
     friendsVisibility: 'friends',
     emailOnFriendRequest: false,
+    provinceCode: null,
+    clubShelfSuggest: true,
   } satisfies SessionUser;
 }
 

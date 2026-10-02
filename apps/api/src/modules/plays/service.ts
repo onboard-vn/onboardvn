@@ -336,6 +336,12 @@ export async function getPlayService(playId: string, userId: string): Promise<Pl
   return toPlayDto(bundle, userId, access.canEdit);
 }
 
+export async function getTablePlayService(tableId: string, userId: string): Promise<PlayDto> {
+  const playId = await repo.latestPlayIdForTable(tableId);
+  if (!playId) return notFound('Bàn chưa có ván chơi');
+  return getPlayService(playId, userId);
+}
+
 export async function pollPlayService(
   playId: string,
   userId: string,

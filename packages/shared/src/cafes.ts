@@ -49,6 +49,16 @@ function socialUrlSchema(hosts?: string[]) {
 /** VN mobile number: optional +84/84/0 prefix, then a 9-digit subscriber number starting 3/5/7/8/9. */
 const VN_PHONE_RE = /^(\+?84|0)(3|5|7|8|9)\d{8}$/;
 
+/** VN mobile or landline (e.g. 028…): +84/84/0 prefix, then 9–10 digits. Spaces, dots, dashes allowed. */
+const VN_ANY_PHONE_RE = /^(\+?84|0)\d{9,10}$/;
+const cafePhoneSchema = z
+  .string()
+  .trim()
+  .max(30)
+  .refine((value) => VN_ANY_PHONE_RE.test(value.replace(/[\s.-]/g, '')), {
+    message: 'Số điện thoại không hợp lệ',
+  });
+
 const zaloSchema = z
   .string()
   .trim()
@@ -73,6 +83,7 @@ const cafeLinksSchema = z
     tiktok: socialUrlSchema(['tiktok.com']).optional(),
     /** Zalo contact: either a VN phone number or a zalo.me link. */
     zalo: zaloSchema.optional(),
+    phone: cafePhoneSchema.optional(),
     website: socialUrlSchema().optional(),
     maps: socialUrlSchema().optional(),
   })
@@ -344,7 +355,7 @@ export const cafeUpdateSchema = z
   .partial();
 export type CafeUpdateInput = z.infer<typeof cafeUpdateSchema>;
 
-const boolQueryParam = z
+export const boolQueryParam = z
   .enum(['true', 'false'])
   .optional()
   .transform((v) => (v === undefined ? undefined : v === 'true'));

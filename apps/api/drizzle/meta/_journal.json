@@ -162,6 +162,20 @@
       "when": 1790932104671,
       "tag": "0022_drop_external_players",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1790953709898,
+      "tag": "0023_shelf_wishlist",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1790959108748,
+      "tag": "0024_suggest_sources",
+      "breakpoints": true
     }
   ]
 }

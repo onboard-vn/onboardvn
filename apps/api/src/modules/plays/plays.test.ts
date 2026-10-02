@@ -103,6 +103,14 @@ describe('create', () => {
     expect(res.status).toBe(422);
   });
 
+  it('finds the latest play of a table for viewers only', async () => {
+    const { id } = await createFromTable();
+    const found = await as('seated').request(`/api/tables/${w.tableId}/play`);
+    expect(found.status).toBe(200);
+    expect(((await found.json()) as PlayJson).id).toBe(id);
+    expect((await as('outsider').request(`/api/tables/${w.tableId}/play`)).status).toBe(404);
+  });
+
   it('plays without a template when scoreTemplateId is null', async () => {
     const { json } = await createFromTable('host', { scoreTemplateId: null });
     expect(json.template).toBeNull();

@@ -1,5 +1,6 @@
 import { relations, sql } from 'drizzle-orm';
 import { pgTable, text, timestamp, boolean, index, uniqueIndex } from 'drizzle-orm/pg-core';
+import { provinces } from './locations.js';
 
 export const users = pgTable(
   'users',
@@ -35,6 +36,8 @@ export const users = pgTable(
       .default('friends')
       .notNull(),
     emailOnFriendRequest: boolean('email_on_friend_request').default(false).notNull(),
+    provinceCode: text('province_code').references(() => provinces.code),
+    clubShelfSuggest: boolean('club_shelf_suggest').default(true).notNull(),
     contributionBlockedAt: timestamp('contribution_blocked_at'),
   },
   (table) => [uniqueIndex('users_bgg_username_lower_idx').on(sql`lower(${table.bggUsername})`)],

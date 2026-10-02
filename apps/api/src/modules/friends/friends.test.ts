@@ -1,10 +1,10 @@
 import { randomUUID } from 'node:crypto';
-import { inArray } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { createApp } from '../../app.js';
 import { auth } from '../../auth/better-auth.js';
 import { db, pool } from '../../db/client.js';
-import { users } from '../../db/schema/index.js';
+import { provinces, users } from '../../db/schema/index.js';
 import { onMailSent } from '../../lib/mailer/index.js';
 
 const app = createApp({ auth, rateLimit: false });
@@ -353,6 +353,37 @@ describe('privacy settings', () => {
       body: JSON.stringify({ emailOnFriendRequest: true }),
     });
     expect(res.status).toBe(204);
+  });
+
+  it('persists clubShelfSuggest and provinceCode, exposed by GET /api/me', async () => {
+    const code = `fr-p-${stamp}`;
+    await db.insert(provinces).values({ code, name: 'FR', slug: `fr-${stamp}` });
+    const patch = (body: unknown) =>
+      app.request('/api/me/privacy', {
+        method: 'PATCH',
+        headers: api(cookie[alice.username]!),
+        body: JSON.stringify(body),
+      });
+    const me = async () =>
+      (
+        (await (
+          await app.request('/api/me', { headers: api(cookie[alice.username]!) })
+        ).json()) as { user: { provinceCode: string | null; clubShelfSuggest: boolean } }
+      ).user;
+    try {
+      expect(await me()).toMatchObject({ provinceCode: null, clubShelfSuggest: true });
+      expect((await patch({ provinceCode: 'nope', clubShelfSuggest: false })).status).toBe(422);
+      expect((await patch({ provinceCode: code, clubShelfSuggest: false })).status).toBe(204);
+      expect(await me()).toMatchObject({ provinceCode: code, clubShelfSuggest: false });
+      expect((await patch({ provinceCode: null })).status).toBe(204);
+      expect(await me()).toMatchObject({ provinceCode: null, clubShelfSuggest: false });
+    } finally {
+      await db
+        .update(users)
+        .set({ provinceCode: null })
+        .where(eq(users.id, userId[alice.username]!));
+      await db.delete(provinces).where(eq(provinces.code, code));
+    }
   });
 });
 

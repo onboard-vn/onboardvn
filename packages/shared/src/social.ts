@@ -44,6 +44,10 @@ export const privacyUpdateSchema = z
     playsVisibility: privacyLevelSchema,
     friendsVisibility: privacyLevelSchema,
     emailOnFriendRequest: z.boolean(),
+    /** Let fellow club members draw from my shelf in "Hôm nay chơi gì?". */
+    clubShelfSuggest: z.boolean(),
+    /** Home province, used by the "Cùng thành phố" draw source; null clears it. */
+    provinceCode: z.string().trim().min(1).max(20).nullable(),
   })
   .partial();
 export type PrivacyUpdateInput = z.infer<typeof privacyUpdateSchema>;

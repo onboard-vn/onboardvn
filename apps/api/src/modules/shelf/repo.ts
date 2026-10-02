@@ -1,29 +1,55 @@
-import { and, count, desc, eq } from 'drizzle-orm';
+import type { ShelfAddInput, ShelfCondition } from '@onboard/shared';
+import { and, count, desc, eq, max } from 'drizzle-orm';
 import { db } from '../../db/client.js';
-import { userGames } from '../../db/schema/index.js';
+import { identities, playPlayers, plays, userGames } from '../../db/schema/index.js';
 import type { Executor } from '../../lib/visibility.js';
 
 export interface UserGameRow {
   gameId: string;
   note: string | null;
+  condition: ShelfCondition | null;
+  sleeved: boolean;
+  boxProtected: boolean;
+  edition: string | null;
   createdAt: Date;
 }
 
-/** `note === undefined` means "not provided": inserts as null, but leaves an existing note untouched on conflict. */
+const rowColumns = {
+  gameId: userGames.gameId,
+  note: userGames.note,
+  condition: userGames.condition,
+  sleeved: userGames.sleeved,
+  boxProtected: userGames.boxProtected,
+  edition: userGames.edition,
+  createdAt: userGames.createdAt,
+};
+
+type ShelfFields = Omit<ShelfAddInput, 'gameId'>;
+
+/** Omitted field = keep the stored value on conflict; `null` = clear. */
 export async function upsertShelfItem(
   userId: string,
   gameId: string,
-  note: string | null | undefined,
+  fields: ShelfFields,
 ): Promise<void> {
-  const values = { userId, gameId, note: note ?? null };
-  if (note === undefined) {
-    await db.insert(userGames).values(values).onConflictDoNothing();
+  const provided = Object.fromEntries(
+    Object.entries({
+      note: fields.note,
+      condition: fields.condition,
+      sleeved: fields.sleeved,
+      boxProtected: fields.boxProtected,
+      edition: fields.edition,
+    }).filter(([, v]) => v !== undefined),
+  ) as Partial<typeof userGames.$inferInsert>;
+  const insert = db.insert(userGames).values({ userId, gameId, ...provided });
+  if (Object.keys(provided).length === 0) {
+    await insert.onConflictDoNothing();
     return;
   }
-  await db
-    .insert(userGames)
-    .values(values)
-    .onConflictDoUpdate({ target: [userGames.userId, userGames.gameId], set: { note } });
+  await insert.onConflictDoUpdate({
+    target: [userGames.userId, userGames.gameId],
+    set: provided,
+  });
 }
 
 export async function deleteShelfItem(userId: string, gameId: string): Promise<boolean> {
@@ -39,7 +65,7 @@ export async function findShelfItem(
   gameId: string,
 ): Promise<UserGameRow | undefined> {
   const [row] = await db
-    .select({ gameId: userGames.gameId, note: userGames.note, createdAt: userGames.createdAt })
+    .select(rowColumns)
     .from(userGames)
     .where(and(eq(userGames.userId, userId), eq(userGames.gameId, gameId)))
     .limit(1);
@@ -48,7 +74,7 @@ export async function findShelfItem(
 
 export async function listShelfItems(userId: string): Promise<UserGameRow[]> {
   return db
-    .select({ gameId: userGames.gameId, note: userGames.note, createdAt: userGames.createdAt })
+    .select(rowColumns)
     .from(userGames)
     .where(eq(userGames.userId, userId))
     .orderBy(desc(userGames.createdAt));
@@ -60,4 +86,18 @@ export async function countOwners(gameId: string, executor: Executor = db): Prom
     .from(userGames)
     .where(eq(userGames.gameId, gameId));
   return row?.value ?? 0;
+}
+
+export async function lastPlayedByGame(userId: string): Promise<Map<string, Date>> {
+  const rows = await db
+    .select({ gameId: plays.gameId, lastPlayedAt: max(plays.startedAt) })
+    .from(plays)
+    .innerJoin(playPlayers, eq(playPlayers.playId, plays.id))
+    .innerJoin(identities, eq(identities.id, playPlayers.identityId))
+    .innerJoin(userGames, and(eq(userGames.gameId, plays.gameId), eq(userGames.userId, userId)))
+    .where(and(eq(identities.userId, userId), eq(identities.kind, 'member')))
+    .groupBy(plays.gameId);
+  return new Map(
+    rows.flatMap((r) => (r.lastPlayedAt ? [[r.gameId, r.lastPlayedAt] as const] : [])),
+  );
 }

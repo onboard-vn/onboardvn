@@ -25,6 +25,8 @@ export const meRoutes = new Hono<AppEnv>()
       playsVisibility,
       friendsVisibility,
       emailOnFriendRequest,
+      provinceCode,
+      clubShelfSuggest,
     } = c.var.user;
     const cafeMembershipCount = await countMyMembershipsService(id);
     return c.json({
@@ -41,6 +43,8 @@ export const meRoutes = new Hono<AppEnv>()
         playsVisibility,
         friendsVisibility,
         emailOnFriendRequest,
+        provinceCode: provinceCode ?? null,
+        clubShelfSuggest,
         cafeMembershipCount,
       },
     });

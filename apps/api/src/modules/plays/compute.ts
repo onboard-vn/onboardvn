@@ -99,7 +99,7 @@ export function computePlay(
             categories: { ...p.categories, ...team.categories },
             total: team.total,
             rank: team.rank,
-            isWinner: winnerTeams.has(team.id),
+            isWinner: winnerTeams.has(team.id) || winnerIds.has(p.id),
           }
         : { categories: p.categories, total: p.total, rank: p.rank, isWinner: winnerIds.has(p.id) },
     );

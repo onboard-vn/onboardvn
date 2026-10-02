@@ -89,6 +89,13 @@ describe('computePlay without a template', () => {
     expect(out.byIdentity.get('a')).toBeNull();
   });
 
+  it('coop win marks every player as winner', () => {
+    const coop = { ...template(), mode: 'coop' as const, winRule: 'objective' as const };
+    const out = compute(coop, [player('a'), player('b')], 'win');
+    expect(out.byIdentity.get('a')?.isWinner).toBe(true);
+    expect(out.byIdentity.get('b')?.isWinner).toBe(true);
+  });
+
   it('coop loss means nobody wins', () => {
     const out = compute(null, [player('a', { values: { total: 5 } })], 'loss');
     expect(out.byIdentity.get('a')?.isWinner).toBe(false);

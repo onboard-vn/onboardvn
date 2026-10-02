@@ -208,5 +208,8 @@ export async function updatePrivacyService(
   actorId: string,
   input: Parameters<typeof repo.updatePrivacy>[1],
 ): Promise<void> {
+  if (input.provinceCode && !(await repo.provinceExists(input.provinceCode))) {
+    throw new ApiError('VALIDATION_FAILED', 422, 'Tỉnh/thành không hợp lệ');
+  }
   await repo.updatePrivacy(actorId, input);
 }

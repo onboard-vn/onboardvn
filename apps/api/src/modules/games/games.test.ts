@@ -2,7 +2,17 @@ import { eq, inArray } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createApp } from '../../app.js';
 import { db, pool } from '../../db/client.js';
-import { gameBarcodes, gameCategories, games, users } from '../../db/schema/index.js';
+import {
+  cafeGames,
+  cafes,
+  categories,
+  gameBarcodes,
+  gameCategories,
+  games,
+  provinces,
+  users,
+  wards,
+} from '../../db/schema/index.js';
 import { fakeAuth, fakeUser } from '../../test/fake-auth.js';
 
 const maintainer = fakeUser('maintainer');
@@ -56,6 +66,33 @@ describe('games catalog', () => {
     expect(listRes.status).toBe(200);
     const body = (await listRes.json()) as { items: { nameVi: string | null }[] };
     expect(body.items.some((g) => g.nameVi === 'Ma Sói')).toBe(true);
+  });
+
+  it('filters by player, time and weight ranges', async () => {
+    const tag = `Range${Date.now()}`;
+    const mk = (suffix: string, body: Record<string, unknown>) =>
+      createGame({ nameEn: `${tag} ${suffix}`, ...body });
+    await mk('A', { minPlayers: 2, maxPlayers: 4, playMinutes: 30, weight: 1.5 });
+    await mk('B', { minPlayers: 5, maxPlayers: 8, playMinutes: 120, weight: 3.5 });
+
+    const names = async (query: string) => {
+      const res = await publicApp.request(`/api/games?q=${encodeURIComponent(tag)}&${query}`);
+      expect(res.status).toBe(200);
+      const body = (await res.json()) as { items: { nameEn: string }[] };
+      return body.items.map((g) => g.nameEn.slice(-1)).sort();
+    };
+
+    expect(await names('minPlayers=3&maxPlayers=4')).toEqual(['A']);
+    expect(await names('minPlayers=4&maxPlayers=5')).toEqual(['A', 'B']);
+    expect(await names('minPlayers=9')).toEqual([]);
+    expect(await names('maxPlayers=1')).toEqual([]);
+    expect(await names('minTime=60')).toEqual(['B']);
+    expect(await names('minTime=20&maxTime=60')).toEqual(['A']);
+    expect(await names('minWeight=2')).toEqual(['B']);
+    expect(await names('minWeight=1&maxWeight=2')).toEqual(['A']);
+    expect(await names('players=6')).toEqual(['B']);
+    expect(await names('maxTime=30')).toEqual(['A']);
+    expect(await names('maxWeight=4')).toEqual(['A', 'B']);
   });
 
   it('rejects a barcode with a bad checksum (422)', async () => {
@@ -171,6 +208,27 @@ describe('games catalog', () => {
     expect(staffBody.descriptionPermissionRef).toBe('email-2026-09-24');
   });
 
+  it('filters by categoryId', async () => {
+    const [cat] = await db
+      .insert(categories)
+      .values({ name: `Test category ${Date.now()}` })
+      .returning({ id: categories.id });
+    const { json: tagged } = await createGame({
+      nameEn: `Category hit ${Date.now()}`,
+      categoryIds: [cat!.id],
+    });
+    await createGame({ nameEn: `Category miss ${Date.now()}` });
+    try {
+      const res = await publicApp.request(`/api/games?categoryId=${cat!.id}`);
+      expect(res.status).toBe(200);
+      const body = (await res.json()) as { items: { id: string }[] };
+      expect(body.items.map((g) => g.id)).toEqual([tagged.id]);
+    } finally {
+      await db.delete(gameCategories).where(eq(gameCategories.categoryId, cat!.id));
+      await db.delete(categories).where(eq(categories.id, cat!.id));
+    }
+  });
+
   it('returns 422 (not 500) for a malformed uuid in categoryId or a route param', async () => {
     const listRes = await publicApp.request('/api/games?categoryId=abc');
     expect(listRes.status).toBe(422);
@@ -199,5 +257,66 @@ describe('games catalog', () => {
     const body = (await res.json()) as { nameVi: string | null; bggId: number | null };
     expect(body.nameVi).toBeNull();
     expect(body.bggId).toBeNull();
+  });
+  it('filters by isVietnamese and rejects a non-boolean value', async () => {
+    const { json: vi } = await createGame({ nameEn: `Viet hit ${Date.now()}`, isVietnamese: true });
+    const { json: other } = await createGame({ nameEn: `Viet miss ${Date.now()}` });
+
+    const yes = (await (
+      await publicApp.request('/api/games?isVietnamese=true&pageSize=50')
+    ).json()) as {
+      items: { id: string; isVietnamese: boolean }[];
+    };
+    expect(yes.items.every((g) => g.isVietnamese)).toBe(true);
+    expect(yes.items.some((g) => g.id === vi.id)).toBe(true);
+    expect(yes.items.some((g) => g.id === other.id)).toBe(false);
+
+    expect((await publicApp.request('/api/games?isVietnamese=maybe')).status).toBe(422);
+  });
+
+  it('sorts by number of public cafes, ignoring pending ones and games in no café', async () => {
+    const stamp = Date.now();
+    const { json: many } = await createGame({ nameEn: `Zzz many cafes ${stamp}` });
+    const { json: few } = await createGame({ nameEn: `Aaa few cafes ${stamp}` });
+    const { json: none } = await createGame({ nameEn: `Aaa no cafes ${stamp}` });
+    const provinceCode = `gs-p-${stamp}`;
+    await db.insert(provinces).values({ code: provinceCode, name: 'GS', slug: `gs-${stamp}` });
+    await db
+      .insert(wards)
+      .values({ code: `gs-w-${stamp}`, provinceCode, name: 'W', slug: `gs-w-${stamp}` });
+    const inserted = await db
+      .insert(cafes)
+      .values(
+        [0, 1, 2].map((i) => ({
+          slug: `games-sort-${stamp}-${i}`,
+          name: `Games Sort ${i}`,
+          provinceCode,
+          wardCode: `gs-w-${stamp}`,
+          addressLine: 'x',
+          consentStatus: (i === 2 ? 'pending' : 'granted') as 'pending' | 'granted',
+        })),
+      )
+      .returning({ id: cafes.id });
+    const cafeIds = inserted.map((c) => c.id);
+    try {
+      await db.insert(cafeGames).values([
+        { cafeId: cafeIds[0]!, gameId: many.id },
+        { cafeId: cafeIds[1]!, gameId: many.id },
+        { cafeId: cafeIds[0]!, gameId: few.id },
+        { cafeId: cafeIds[2]!, gameId: few.id },
+      ]);
+      const res = await publicApp.request('/api/games?sort=cafes&pageSize=50');
+      expect(res.status).toBe(200);
+      const body = (await res.json()) as { items: { id: string }[] };
+      const ids = body.items.map((g) => g.id);
+      expect(ids.indexOf(many.id)).toBeGreaterThanOrEqual(0);
+      expect(ids.indexOf(many.id)).toBeLessThan(ids.indexOf(few.id));
+      expect(ids).not.toContain(none.id);
+      expect((await publicApp.request('/api/games?sort=bogus')).status).toBe(422);
+    } finally {
+      await db.delete(cafes).where(inArray(cafes.id, cafeIds));
+      await db.delete(wards).where(eq(wards.provinceCode, provinceCode));
+      await db.delete(provinces).where(eq(provinces.code, provinceCode));
+    }
   });
 });
