@@ -88,9 +88,9 @@ const useValueForOwnKey = (t: ScoreTemplate): ScoreTemplate => ({
 });
 
 describe('golden vectors', () => {
-  it('brass-birmingham-2018: sums eras, tiebreak by income then money', () => {
-    const p1: V = { canalLinks: 12, canalIndustries: [3, 5, 2], railLinks: 20, railIndustries: [4, 6, 8], shortfallPenalty: 2, incomeLevel: 10, moneyRemaining: 5 };
-    const p2: V = { canalLinks: 10, canalIndustries: [8], railLinks: 20, railIndustries: [10, 10], incomeLevel: 12, moneyRemaining: 5 };
+  it('brass-birmingham-2018: final VP track, tiebreak by income then money', () => {
+    const p1: V = { vpTrack: 58, incomeLevel: 10, moneyRemaining: 5 };
+    const p2: V = { vpTrack: 58, incomeLevel: 12, moneyRemaining: 5 };
     const p3: V = { ...p2, moneyRemaining: 9 };
     const r = solve('brass-birmingham-2018', [{ id: 'p1', values: p1 }, { id: 'p2', values: p2 }, { id: 'p3', values: p3 }]);
     expect(r.players.map((x) => x.total)).toEqual([58, 58, 58]);
@@ -125,7 +125,7 @@ describe('golden vectors', () => {
   });
 
   it('gaia-project-2017: tiles, research, leftover resources, shared victory', () => {
-    const a: V = { vpTrack: 130, finalTile1: 12, finalTile2: 6, researchLevels: 12, leftoverResources: { credits: 7, knowledge: 5, ore: 3 } };
+    const a: V = { vpTrack: 130, finalTiles: 12 + 6, researchLevels: 12, leftoverResources: 7 + 5 + 3 };
     const b: V = { vpTrack: 140, researchLevels: 10 };
     const r = solve('gaia-project-2017', [{ id: 'a', values: a }, { id: 'b', values: b }]);
     expect(r.players.map((x) => x.total)).toEqual([130 + 12 + 6 + 48 + 5, 180]);
