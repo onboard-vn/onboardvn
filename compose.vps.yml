@@ -1,0 +1,39 @@
+# Internal (tailnet-only) deployment: build on the host, dev-safe mail sink.
+# docker compose -p onboard --env-file .env.prod -f compose.prod.yml -f compose.vps.yml up -d --build
+x-api-build: &api-build
+  context: .
+  dockerfile: apps/api/Dockerfile
+
+x-private-mounts: &private-mounts
+  - ./data:/app/data:ro
+
+services:
+  migrate:
+    image: onboard-api:vps
+    build: *api-build
+    volumes: *private-mounts
+
+  api:
+    image: onboard-api:vps
+    build: *api-build
+    volumes:
+      - uploads:${UPLOADS_DIR:-/data/uploads}
+      - ./data:/app/data:ro
+      - ${PRIVATE_PLUGINS_DIR:-../onboardvn-private/plugins}:/plugins:ro
+    environment:
+      EXTERNAL_CLUB_PLUGIN: /plugins/thursday-club/index.mjs
+      EXTERNAL_CLUB_BASE_URL: ${EXTERNAL_CLUB_BASE_URL:?EXTERNAL_CLUB_BASE_URL is required}
+
+  web:
+    image: onboard-web:vps
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    mem_limit: 128m
+    networks: [onboard]
+    ports:
+      - '127.0.0.1:8025:8025'
