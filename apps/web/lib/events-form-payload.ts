@@ -16,6 +16,7 @@ export interface EventFormFields extends EventPlaceInput {
   endsAt: string;
   capacity: string;
   visibility: MeetupVisibility;
+  clubId?: string;
 }
 
 /** `POST /events` body: omitted (`undefined`) keys mean "not set" — `meetupCreateSchema` fields
@@ -38,6 +39,7 @@ export function buildCreatePayload(
         }),
     capacity: fields.capacity ? Number(fields.capacity) : undefined,
     visibility: fields.visibility,
+    ...(fields.visibility === 'club' && fields.clubId && { clubId: fields.clubId }),
     ...(table && { table }),
   };
 }

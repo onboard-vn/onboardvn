@@ -30,7 +30,13 @@ const VISIBILITY_OPTIONS: { value: MeetupVisibility; label: string; hint: string
   },
   { value: 'friends', label: 'Chỉ bạn bè', hint: 'Chỉ bạn bè của bạn thấy Kèo này.' },
   { value: 'private', label: 'Riêng tư', hint: 'Chỉ ai có link mời mới xem được.' },
+  { value: 'club', label: 'Chỉ club', hint: 'Chỉ thành viên của club được chọn thấy Kèo này.' },
 ];
+
+export interface ClubOption {
+  id: string;
+  name: string;
+}
 
 export interface EventFormInitial {
   id: string;
@@ -51,11 +57,15 @@ export function EventForm({
   mode,
   initial,
   prefillCafe,
+  clubs = [],
+  initialClubId,
 }: {
   provinces: Province[];
   mode: 'create' | 'edit';
   initial?: EventFormInitial;
   prefillCafe?: CafeOption;
+  clubs?: ClubOption[];
+  initialClubId?: string;
 }) {
   const router = useRouter();
   const [title, setTitle] = useState(initial?.title ?? '');
@@ -84,7 +94,17 @@ export function EventForm({
   const [provinceCode, setProvinceCode] = useState(initial?.provinceCode ?? '');
   const [wardCode, setWardCode] = useState(initial?.wardCode ?? '');
   const [capacity, setCapacity] = useState(initial?.capacity ? String(initial.capacity) : '');
-  const [visibility, setVisibility] = useState<MeetupVisibility>(initial?.visibility ?? 'public');
+  const [visibility, setVisibility] = useState<MeetupVisibility>(
+    initial?.visibility ?? (initialClubId ? 'club' : 'public'),
+  );
+  const visibilityOptions = VISIBILITY_OPTIONS.filter((opt) =>
+    opt.value !== 'club'
+      ? true
+      : mode === 'create'
+        ? clubs.length > 0
+        : initial?.visibility === 'club',
+  );
+  const [clubId, setClubId] = useState(initialClubId ?? clubs[0]?.id ?? '');
   const [wantsTable, setWantsTable] = useState(false);
   const [tableGameId, setTableGameId] = useState<string | null>(null);
   const [tableGameLabel, setTableGameLabel] = useState<string | null>(null);
@@ -119,6 +139,7 @@ export function EventForm({
         endsAt,
         capacity,
         visibility,
+        clubId,
       };
 
       if (mode === 'create') {
@@ -301,7 +322,7 @@ export function EventForm({
 
       <fieldset className="flex flex-col gap-2">
         <legend className="text-sm font-medium">Chế độ hiển thị</legend>
-        {VISIBILITY_OPTIONS.map((opt) => (
+        {visibilityOptions.map((opt) => (
           <label key={opt.value} className="flex items-start gap-2 text-sm">
             <input
               type="radio"
@@ -317,6 +338,20 @@ export function EventForm({
             </span>
           </label>
         ))}
+        {mode === 'create' && visibility === 'club' ? (
+          <select
+            aria-label="Club"
+            className="h-8 rounded-lg border border-input bg-transparent px-2 text-sm"
+            value={clubId}
+            onChange={(e) => setClubId(e.target.value)}
+          >
+            {clubs.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        ) : null}
       </fieldset>
 
       {mode === 'create' ? (

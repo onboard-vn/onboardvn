@@ -29,6 +29,11 @@ export async function SiteHeader() {
             Kèo
           </Link>
           {user ? (
+            <Link href="/clubs" className="text-sm font-medium">
+              Club
+            </Link>
+          ) : null}
+          {user ? (
             <Link href="/friends" className="flex items-center gap-1.5 text-sm font-medium">
               Bạn bè
               <FriendRequestBadge />
@@ -60,6 +65,9 @@ export async function SiteHeader() {
               </Link>
               <Link href="/admin/events" className="text-sm font-medium">
                 Quản lý Kèo
+              </Link>
+              <Link href="/admin/clubs" className="text-sm font-medium">
+                Quản lý club
               </Link>
             </>
           ) : null}

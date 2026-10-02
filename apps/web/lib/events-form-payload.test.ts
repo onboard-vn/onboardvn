@@ -34,6 +34,13 @@ describe('buildCreatePayload', () => {
     expect(payload).toMatchObject({ cafeId: 'cafe-1' });
     expect(payload).not.toHaveProperty('addressLine');
   });
+
+  it('sends clubId only for club visibility', () => {
+    const club = buildCreatePayload({ ...baseFields, visibility: 'club', clubId: 'club-1' });
+    expect(club).toMatchObject({ visibility: 'club', clubId: 'club-1' });
+    const open = buildCreatePayload({ ...baseFields, clubId: 'club-1' });
+    expect(open).not.toHaveProperty('clubId');
+  });
 });
 
 describe('buildUpdatePayload', () => {

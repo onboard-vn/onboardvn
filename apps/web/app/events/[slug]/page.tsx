@@ -70,6 +70,14 @@ export default async function EventDetailPage(props: PageProps<'/events/[slug]'>
           </p>
         ) : null}
         <h1 className="text-2xl font-semibold tracking-tight">{meetup.title}</h1>
+        {meetup.club ? (
+          <p className="text-sm">
+            Club:{' '}
+            <Link href={`/clubs/${meetup.club.slug}`} className="underline">
+              {meetup.club.name}
+            </Link>
+          </p>
+        ) : null}
         <p className="text-muted-foreground text-sm">{formatVnDateTime(meetup.startsAt)}</p>
         <p className="text-sm">
           {meetup.cafe ? (
