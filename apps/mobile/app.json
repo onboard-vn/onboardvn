@@ -7,7 +7,13 @@
     "scheme": "onboard",
     "userInterfaceStyle": "light",
     "plugins": ["expo-router"],
-    "web": { "output": "single", "bundler": "metro" },
-    "experiments": { "typedRoutes": true }
+    "web": {
+      "output": "single",
+      "bundler": "metro"
+    },
+    "experiments": {
+      "typedRoutes": true,
+      "baseUrl": "/app"
+    }
   }
 }

@@ -19,3 +19,6 @@ backups/
 # Private datasets (BGG metadata, club member data) — never commit
 data/private/
 plans/private/
+
+# Expo web build synced to the VPS
+deploy/mobile-web/

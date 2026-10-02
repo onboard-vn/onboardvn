@@ -33,6 +33,25 @@ services:
       context: .
       dockerfile: apps/web/Dockerfile
 
+  caddy:
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./deploy/mobile-web:/srv/mobile-web:ro
+
+  # Public ingress via a dashboard-managed Cloudflare Tunnel; start with `--profile tunnel`.
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    profiles: [tunnel]
+    restart: unless-stopped
+    mem_limit: 128m
+    networks: [onboard]
+    depends_on: [caddy]
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:-}
+
   mailpit:
     image: axllent/mailpit:latest
     restart: unless-stopped

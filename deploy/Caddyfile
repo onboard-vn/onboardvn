@@ -18,6 +18,13 @@
 		}
 	}
 
+	# Expo web build (static, single-page); mounted only by compose.vps.yml.
+	handle_path /app* {
+		root * /srv/mobile-web
+		try_files {path} /index.html
+		file_server
+	}
+
 	handle {
 		reverse_proxy web:3000 {
 			header_up X-Forwarded-For {client_ip}
