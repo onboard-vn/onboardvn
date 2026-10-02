@@ -12,6 +12,8 @@ services:
     image: onboard-api:vps
     build: *api-build
     volumes: *private-mounts
+    environment:
+      GAMEUPC_BASE_URL: !reset null
 
   api:
     image: onboard-api:vps
@@ -21,6 +23,7 @@ services:
       - ./data:/app/data:ro
       - ${PRIVATE_PLUGINS_DIR:-../onboardvn-private/plugins}:/plugins:ro
     environment:
+      GAMEUPC_BASE_URL: !reset null
       EXTERNAL_CLUB_PLUGIN: /plugins/thursday-club/index.mjs
       EXTERNAL_CLUB_BASE_URL: ${EXTERNAL_CLUB_BASE_URL:?EXTERNAL_CLUB_BASE_URL is required}
 
