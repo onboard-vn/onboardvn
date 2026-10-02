@@ -24,5 +24,5 @@ Done at 18:20: tunnel Healthy, `https://onboard.j2teamnnl.com` live (`/`, `/heal
 ## Environment notes
 
 - VPS checkout `~/Code/onboardvn` had `deploy/Caddyfile` and `compose.vps.yml` copied in by scp before this push; `git pull` brings the same content. `deploy/mobile-web/` there is synced build output (excluded via `.git/info/exclude` and `.gitignore`).
-- Cloudflare account: J2teamnnl@gmail.com; zone `j2teamnnl.com` on Free plan; `@` and `ftp` A records DNS-only (MX → `j2teamnnl.com`).
+- Cloudflare account: J2teamnnl@gmail.com; zone `j2teamnnl.com` on Free plan; `@` and `ftp` A records DNS-only; MX/SPF/DKIM now managed by Email Routing (old Tino MX deleted). Public resolvers may serve the old `onboard` A record (Tino IP) until its TTL expires.
 - Tino ticket #525433: ICANN verification not needed (Tino confirmed); nameserver change done.
