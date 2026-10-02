@@ -1,0 +1,535 @@
+{
+  "C1": {
+    "title": "Truy cập nhanh",
+    "text": "Sau khi chia bài tẩy, <b>không phát chip trắng</b>."
+  },
+  "C2": {
+    "title": "Cảm biến âm thanh",
+    "text": "Lật các <b>chip 1 sao</b> của Vòng 1, 2 và 3 sang <b>mặt tối</b>. Sau khi được phát, các chip này không thể đổi chủ."
+  },
+  "C3": {
+    "title": "Cảm biến chuyển động",
+    "text": "Nếu có bất kỳ lá bài nào ở Flop (Vòng 2) là <b>J, Q hoặc K</b>, người giữ <b>chip trắng 1 sao</b> bỏ bài tẩy của mình và rút bài tẩy mới."
+  },
+  "C4": {
+    "title": "Quét võng mạc",
+    "text": "Trước khi tay bài cuối cùng được lật ngửa ở Showdown, những người còn lại cùng đoán <b>giá trị của một lá bài tẩy</b> trong tay bài đó (từ 2 đến A). Nếu đoán sai, <b>phi vụ thất bại</b>."
+  },
+  "C5": {
+    "title": "Tẩu thoát vội vàng",
+    "text": "Sau Turn (Vòng 3), <b>không phát chip cam</b>."
+  },
+  "C6": {
+    "title": "Ống thông gió",
+    "text": "Lật các <b>chip có giá trị cao nhất</b> của Vòng 1, 2 và 3 sang <b>mặt tối</b>. Sau khi được phát, các chip này không thể đổi chủ."
+  },
+  "C7": {
+    "title": "Bẫy dây laser",
+    "text": "Nếu không có lá bài nào ở Flop (Vòng 2) là <b>J, Q hoặc K</b>, người giữ <b>chip trắng có giá trị cao nhất</b> bỏ bài tẩy của mình và rút bài tẩy mới."
+  },
+  "C8": {
+    "title": "Mất điện",
+    "text": "Khi bắt đầu mỗi vòng, <b>bỏ tất cả chip của các vòng trước</b>."
+  },
+  "C9": {
+    "title": "Quét vân tay",
+    "text": "Trước khi tay bài cuối cùng được lật ngửa ở Showdown, tất cả những người còn lại cùng đoán <b>hạng bài</b> của tay bài đó (ví dụ: “Royal Flush”). Nếu đoán sai, <b>phi vụ thất bại</b>."
+  },
+  "C10": {
+    "title": "Camera an ninh",
+    "text": "Mỗi người nhận <b>ba lá bài tẩy</b> thay vì hai lá."
+  },
+  "S1": {
+    "title": "Người chỉ điểm",
+    "text": "Một người trong nhóm cho <b>một người khác</b> xem <b>một lá bài tẩy của mình</b>."
+  },
+  "S2": {
+    "title": "Tài xế tẩu thoát",
+    "text": "Một người trong nhóm chia sẻ với cả nhóm <b>hạng bài hiện tại của mình</b> (ví dụ: “Royal Flush”)."
+  },
+  "S3": {
+    "title": "Nhà đầu tư",
+    "text": "Sau khi chia bài tẩy, mỗi người chia sẻ với cả nhóm <b>số lá hình (J, Q, K)</b> mình có."
+  },
+  "S4": {
+    "title": "Bộ óc chủ mưu",
+    "text": "Chọn một <b>giá trị lá bài</b> (từ 2 đến A). Một người trong nhóm chia sẻ với cả nhóm <b>số lá bài tẩy có giá trị đó</b> mình có."
+  },
+  "S5": {
+    "title": "Tin tặc",
+    "text": "Một người trong nhóm <b>rút thêm một lá bài tẩy</b> từ bộ bài, rồi <b>bỏ một lá bài tẩy của mình</b>."
+  },
+  "S6": {
+    "title": "Người điều phối",
+    "text": "Sau khi chia bài tẩy, mỗi người đưa <b>một lá bài tẩy của mình</b> cho <b>người bên trái</b>."
+  },
+  "S7": {
+    "title": "Chàng Jack",
+    "text": "Một người trong nhóm lấy thẻ này để <b>thay thế một lá bài tẩy của mình</b>. Thẻ này là <b>lá J không thuộc chất nào</b>."
+  },
+  "S8": {
+    "title": "Thiên tài toán học",
+    "text": "Sau khi chia bài tẩy, mỗi người chia sẻ với cả nhóm <b>tổng giá trị các lá bài tẩy của mình</b>. J, Q, K có giá trị 10. A có giá trị 11."
+  },
+  "S9": {
+    "title": "Kẻ lừa đảo",
+    "text": "Sau khi chia bài tẩy, <b>xáo và chia lại tất cả bài tẩy</b>."
+  },
+  "S10": {
+    "title": "Tay cơ bắp",
+    "text": "Một người trong nhóm có khả năng sau: Tay bài của người đó <b>thắng mọi tay bài khác cùng hạng bài</b>."
+  },
+  "H1": {
+    "title": "Người phòng xa",
+    "text": "Chia cho mỗi người thêm <b>1 lá bài tẩy</b>. Trước khi lật ngửa tay bài, mỗi người bỏ 1 lá tùy chọn."
+  },
+  "H2": {
+    "title": "Tay lái mạo hiểm",
+    "text": "Trước khi chia bài chung ở <b>Vòng 2–4</b>, người đã lấy chip 1 sao ở vòng trước xem lá trên cùng của bộ bài và có thể chọn bỏ lá đó."
+  },
+  "H3": {
+    "title": "Người dàn xếp v2",
+    "text": "Một người loại vĩnh viễn <b>1 lá bài tẩy</b> của mình khỏi trò chơi. Cất lá đó vào hộp mà không cho người khác xem. Người đó không được tiết lộ lá đã loại, kể cả trong các ván sau."
+  },
+  "H4": {
+    "title": "Bậc thầy thiết bị v2",
+    "text": "Mỗi người được <b>1 lần</b> lấy một chip từ vòng trước; chip này được tính là lá bài không có chất, có giá trị bằng số sao trên chip (ví dụ: chip 3 sao thành lá 3 không có chất). Đã lấy chip thì <b>không được đặt lại</b>."
+  },
+  "H5": {
+    "title": "Nhà tiên tri",
+    "text": "Một người có thể đoán <b>giá trị, không đoán chất</b>, của các lá bài tẩy của một người khác. Người được đoán chia sẻ với cả nhóm <b>số lá được đoán đúng giá trị</b>."
+  },
+  "H6": {
+    "title": "Tay cờ bạc v2",
+    "text": "Sau khi chia bài tẩy, cả nhóm chọn 1 phương án: tất cả bỏ <b>lá cao nhất</b> của mình và lật ngửa lá đó, hoặc tất cả bỏ <b>lá thấp nhất</b> của mình và lật ngửa lá đó. Sau đó, mỗi người rút 1 lá."
+  },
+  "H7": {
+    "title": "Người đếm bài",
+    "text": "Chia cho mỗi người thêm <b>1 lá bài tẩy</b>. Trước khi phân chip trắng, tất cả bỏ lá thấp nhất của mình."
+  },
+  "H8": {
+    "title": "Nhà số học",
+    "text": "Một người có thể chia sẻ <b>hiệu giữa giá trị của 2 lá bài tẩy</b> của mình. A tính là 11; lá hình (J, Q, K) tính là 10."
+  },
+  "H9": {
+    "title": "Người đánh cá",
+    "text": "Một người nêu <b>giá trị và chất</b> của một lá mình không có. Nếu người khác có lá đó, họ lật ngửa cho cả nhóm xem."
+  },
+  "H10": {
+    "title": "Họa sĩ v2",
+    "text": "Trước khi chia bài tẩy, mở một bài viết Wikipedia ngẫu nhiên. <b>1 lần trong ván này</b>, một người được dùng đúng <b>5 từ</b> từ đoạn đầu của bài viết để mô tả tay bài của mình."
+  },
+  "H11": {
+    "title": "Sát thủ",
+    "text": "Chọn <b>1 lá bài chung</b> để bỏ và thay bằng một lá ngẫu nhiên."
+  },
+  "H12": {
+    "title": "Nghệ sĩ uốn dẻo v2",
+    "text": "Một người có thể <b>giảm giá trị còn một nửa</b> cho một lá bài tẩy có giá trị chẵn, không phải lá hình (J, Q, K). Xoay ngang lá đó để đánh dấu. Nếu giảm một nửa lá 2, lá đó trở thành A."
+  },
+  "H13": {
+    "title": "Ảo thuật gia",
+    "text": "Chọn một <b>hạng bài khác High Card</b>. Hạng đó không tồn tại trong ván này. (Lưu ý: tay bài thuộc hạng bị loại có thể chứa tay bài hạng thấp hơn, chẳng hạn Three of a Kind chứa Pair.)"
+  },
+  "H14": {
+    "title": "Người xã hội chủ nghĩa v2",
+    "text": "Thay vì chia bài tẩy, chia <b>2 lá giữa mỗi cặp người ngồi cạnh nhau</b>. “Bài tẩy” của mỗi người gồm các lá ở hai bên mình; họ được xem tất cả và có thể dùng <b>cả 4 lá</b> để tạo tay bài mạnh nhất."
+  },
+  "H15": {
+    "title": "Kẻ giả danh",
+    "text": "Một người có thể <b>đổi 1 lá bài tẩy của mình</b> với 1 lá bài chung."
+  },
+  "H16": {
+    "title": "Người tích trữ",
+    "text": "Một người có thể rút thêm <b>1 lá bài tẩy</b>."
+  },
+  "H17": {
+    "title": "Kẻ gian lận",
+    "text": "Khi lật ngửa tay bài ở Showdown, mỗi người có thể chọn 1 lá để tính giá trị <b>cao hơn hoặc thấp hơn 1</b>. A có thể thành K hoặc 2, và ngược lại."
+  },
+  "H18": {
+    "title": "Người hòa hợp",
+    "text": "Chọn <b>2 chất</b>, rồi chọn một trong hai chất đó. Các lá thuộc chất được chọn được tính là <b>thuộc cả chất còn lại</b>."
+  },
+  "H19": {
+    "title": "Người nhảy bậc",
+    "text": "Chọn <b>2 giá trị liền nhau</b>: cả hai đều được tính là giá trị cao hơn, riêng cặp A và 2 được tính là 2. <b>Straight không bị ảnh hưởng</b>."
+  },
+  "H20": {
+    "title": "Người độc lập",
+    "text": "Trước khi phân chip vàng và chip cam, lật ngửa 1 lá từ bộ bài. Tất cả bỏ các lá của mình có <b>cùng giá trị với lá được lật</b>."
+  },
+  "H21": {
+    "title": "Chiếc mỏ neo",
+    "text": "Một người nhận khả năng sau: tay bài của họ <b>thua mọi tay bài khác cùng hạng bài</b>."
+  },
+  "H22": {
+    "title": "Nhà từ thiện",
+    "text": "Một người phân <b>toàn bộ bài tẩy</b> của mình cho những người khác, đều nhất có thể. Nếu thẻ hiệu ứng khác cho họ thêm bài, họ phân ngay khi nhận được."
+  },
+  "H23": {
+    "title": "Người tổ chức cộng đồng",
+    "text": "Chia cho mỗi người thêm <b>2 lá bài tẩy</b>. Mỗi khi cần rút một lá bài chung, người có ít nhất 3 lá bài tẩy có thể đưa 1 lá bài tẩy vào bài chung thay cho việc rút. Trước khi phân chip đỏ, tất cả bỏ bài để chỉ còn <b>2 lá bài tẩy</b>."
+  },
+  "H24": {
+    "title": "Nghệ sĩ tung hứng",
+    "text": "Hai người <b>đồng thời chọn 1 lá</b> để trao đổi với nhau."
+  },
+  "H25": {
+    "title": "Người điện đài",
+    "text": "<b>Mỗi người được 1 lần trong cả cuộc chơi</b> ra hiệu giơ ngón cái lên hoặc xuống (không dùng tín hiệu trung gian). Cả nhóm có thể thống nhất trước ý nghĩa của hai tín hiệu này."
+  },
+  "H26": {
+    "title": "Người nổi tiếng",
+    "text": "Thẻ này là <b>một người chơi bổ sung</b> trong ván này. Chia bài tẩy của người đó ngửa lên. Ai cũng có thể gán chip cho người đó."
+  },
+  "H27": {
+    "title": "Huấn luyện viên",
+    "text": "Trước Showdown, người giữ <b>chip đỏ 1 sao</b> chọn một hạng bài khác hạng bài của mình: mọi tay bài thuộc hạng đó được coi là hòa nhau."
+  },
+  "H28": {
+    "title": "Sự hy sinh",
+    "text": "Một người đưa <b>1 lá bài của mình</b> vào bài chung."
+  },
+  "H29": {
+    "title": "Quân tiếp viện v2",
+    "text": "Khi bài chung có đủ <b>3 chất</b>, hoặc sau khi đã thêm toàn bộ bài chung, cả nhóm có thể quyết định bỏ tất cả bài tẩy không cùng chất với bất kỳ lá bài chung nào."
+  },
+  "H30": {
+    "title": "Mồi nhử",
+    "text": "Trước khi đánh giá kết quả phi vụ, có thể chọn <b>từ bỏ phi vụ này</b> mà không tính là phi vụ thất bại. Nếu vậy, bắt đầu phi vụ tiếp theo với cùng các thẻ hiệu ứng (trừ thẻ này)."
+  },
+  "H31": {
+    "title": "Nhạc trưởng v2",
+    "text": "Sau khi thêm bài chung ở <b>Vòng 2–4</b>, tất cả có thể chuyển 1 lá cho người bên phải. Xáo các lá trong tay trước khi chuyển để người khác không nhận ra lá được chuyển."
+  },
+  "H32": {
+    "title": "Người chuyển phát",
+    "text": "Sau khi chia bài tẩy, một người chuyển 1 lá cho người bên phải. Đầu mỗi vòng tiếp theo, sau khi thêm bài chung, người có <b>nhiều bài tẩy nhất</b> phải chuyển 1 lá cho người bên phải."
+  },
+  "H33": {
+    "title": "Kẻ hạ sát",
+    "text": "Ở <b>Vòng 4</b>, bất kỳ ai cũng có thể chỉ vào một chip đang ở mặt sáng trước mặt người khác và nói “Bang” để hạ chip đó. Lật chip sang <b>mặt tối</b>. Sau khi hạ một chip, bạn có thể cho một người khác xem 1 lá bài của mình."
+  },
+  "H34": {
+    "title": "Người phân loại",
+    "text": "Lá đỏ và lá đen <b>không tạo Pair với nhau</b>. Có thể kích hoạt thẻ hiệu ứng này bất cứ lúc nào, nhưng đã kích hoạt thì phải giữ hiệu lực."
+  },
+  "H35": {
+    "title": "Nhà tư bản",
+    "text": "Trước Showdown, người giữ <b>chip đỏ 4 sao</b> lấy vào bài tẩy của mình lá bài chung cao nhất có <b>giá trị chỉ xuất hiện 1 lần</b> trong bài chung (ví dụ: nếu bài chung có hai lá A, lấy lá cao nhất tiếp theo có giá trị không lặp)."
+  },
+  "H36": {
+    "title": "Kẻ tiêu diệt v2",
+    "text": "Một người tiêu diệt một người khác. Người bị tiêu diệt bỏ <b>tất cả lá K</b> của mình. Nếu bài chung có lá Q, người bị tiêu diệt phải chọn các lá Q để bỏ và <b>thay bằng các lá K đó</b>."
+  },
+  "H37": {
+    "title": "Kẻ chỉ điểm",
+    "text": "Lật ngửa <b>10 lá từ bộ bài</b> để tất cả biết những lá đó không tham gia ván này."
+  },
+  "H38": {
+    "title": "Người phân phát",
+    "text": "Sau Vòng 1, chia úp số lá bằng <b>số người chơi cộng 1</b>. Theo thứ tự chip từ ít sao nhất đến nhiều sao nhất, mỗi người lần lượt xem các lá đó và chọn 1 lá thêm vào <b>bài tẩy của mình</b>. Bỏ ngửa lá còn lại."
+  },
+  "H39": {
+    "title": "Bậc thầy câu đố",
+    "text": "Mỗi người được <b>1 lần</b> đoán giá trị của 2 lá bài tẩy của người khác. Nếu đoán sai, người đoán rút thêm <b>1 lá bài tẩy</b>."
+  },
+  "H40": {
+    "title": "Người câu cá",
+    "text": "Một người có thể hỏi người khác xem họ có lá mang một giá trị cụ thể không: “Có lá nào giá trị _ không?” Nếu có, người được hỏi đưa <b>1 lá có giá trị đó</b> cho người hỏi. Nếu không, họ đáp “Go Fish” và người hỏi rút thêm <b>1 lá bài tẩy</b>."
+  },
+  "H41": {
+    "title": "Chiếc ủng",
+    "text": "<b>Bắt buộc:</b> các lá 2, 3, 4 và 5 đều được tính là <b>lá 5</b>."
+  },
+  "H42": {
+    "title": "Người ngắm sao",
+    "text": "Nếu một lá được lật có giá trị bằng số sao trên <b>chip bạn lấy gần nhất</b> (A = 1), bạn phải lật ngửa lá bài tẩy có giá trị cao nhất của mình và đổi với lá đó. Nếu việc này lặp vô hạn, <b>phi vụ thành công</b>."
+  },
+  "H43": {
+    "title": "Kẻ trích máu",
+    "text": "Có thể đưa các <b>lá bài tẩy chất cơ</b> vào bài chung để rút lá khác. Các lá chất cơ <b>không thể tạo Flush</b>."
+  },
+  "H44": {
+    "title": "Người ban ơn",
+    "text": "<b>Mỗi lá chỉ 1 lần:</b> có thể đưa lá bài tẩy chất rô cho người khác để rút lá khác. Các lá chất rô <b>không thể tạo Flush</b>."
+  },
+  "H45": {
+    "title": "Tay phóng tên lửa",
+    "text": "Bất cứ lúc nào, một người có thể bỏ <b>lá bài tẩy A hoặc K</b> và thay bằng một lá ngẫu nhiên. Nếu làm vậy, họ phải chọn thêm một lá bài tẩy khác hoặc một lá bài chung để bỏ và thay thế."
+  },
+  "H46": {
+    "title": "Cuộc chiến",
+    "text": "Thêm bài chung <b>từng lá một</b>. Nếu lá vừa thêm không cao hơn lá được thêm ngay trước đó, bỏ và lật ngửa lá đó rồi thêm lá thay thế. Ngoại lệ: có thể thêm bất kỳ lá nào ngay sau A hoặc K. Nếu bộ bài hết lá, <b>phi vụ thành công</b>."
+  },
+  "H47": {
+    "title": "Máy chém",
+    "text": "<b>Tất cả lá hình (J, Q, K)</b> bị bỏ và thay thế ngay khi tham gia ván bài."
+  },
+  "H48": {
+    "title": "Thợ sửa ống",
+    "text": "Chọn <b>1 chất</b>. Bỏ và thay thế mọi lá thuộc chất đó, trừ các lá thuộc một Flush (sau khi chọn chất, người chơi có thể tiết lộ rằng mình có <b>Flush sử dụng bài chung</b>)."
+  },
+  "H49": {
+    "title": "Blood on the Clocktower v2",
+    "text": "Mỗi vòng, khi thêm bài chung, thêm <b>1 lá bài chung nữa</b>. Sau đó, tất cả đồng thời chỉ vào một lá bài chung để bỏ phiếu chọn lá cần bỏ."
+  },
+  "H50": {
+    "title": "Tin tình báo nhiễu",
+    "text": "<b>Lá bích thấp nhất</b> đang tham gia ván bài là <b>lá đa năng (Wildcard)</b>."
+  },
+  "H51": {
+    "title": "Khóa tự động",
+    "text": "Ở mỗi vòng trong <b>3 vòng đầu</b>, người đầu tiên lấy chip không được lấy chip nhiều sao nhất hoặc ít sao nhất. Dù lấy chip nào, hãy lật chip đó sang <b>mặt tối</b>."
+  },
+  "H52": {
+    "title": "Nhận diện khuôn mặt",
+    "text": "Tạo tay bài mạnh nhất như bình thường. Nếu chỉ mình bạn có hạng bài đó, tay bài của bạn <b>thắng mọi người có hạng bài trùng với người khác</b>."
+  },
+  "H53": {
+    "title": "Cảm biến trọng lượng",
+    "text": "Trước Showdown, tất cả lật ngửa tay bài. Xác định <b>giá trị cao nhất trong toàn bộ bài tẩy</b>, rồi bỏ tất cả các lá bài tẩy có giá trị đó."
+  },
+  "H54": {
+    "title": "Giao thức Omaha",
+    "text": "Chia cho mỗi người thêm <b>2 lá bài tẩy</b>. Mỗi người phải dùng đúng <b>2 lá bài tẩy và 3 lá bài chung</b> để tạo tay bài mạnh nhất."
+  },
+  "H55": {
+    "title": "Giao thức Nile",
+    "text": "Ở <b>Vòng 4</b>, lật ngửa <b>2 lá River</b> thay vì 1."
+  },
+  "H56": {
+    "title": "Cửa một chiều v2",
+    "text": "Trong <b>Vòng 1–3</b>, lật tất cả chip sang mặt tối và lần lượt lấy từng chip theo quy trình sau: Chọn ngẫu nhiên một chip chưa được phân phát. Bắt đầu đếm <b>10 giây</b>. Phải có người lấy chip trước khi hết giờ, nếu không, phi vụ thất bại."
+  },
+  "H57": {
+    "title": "Két sắt kép",
+    "text": "Ở <b>Vòng 3</b>, chip phải được xếp đúng thứ tự theo tình trạng bài tại Vòng 3. Nếu không, <b>phi vụ thất bại</b>."
+  },
+  "H58": {
+    "title": "Giao thức 7 Card Stud",
+    "text": "Ván này <b>không có bài chung</b>. Thay vào đó, chia cho mỗi người các lá sau:<br>Vòng 1: 2 lá úp, 1 lá ngửa.<br>Vòng 2: 1 lá ngửa.<br>Vòng 3: 1 lá úp.<br>Vòng 4: 1 lá úp, 1 lá ngửa."
+  },
+  "H59": {
+    "title": "Máy phá sóng",
+    "text": "Bài tẩy của mỗi người còn bao gồm <b>lá bài tẩy có giá trị cao nhất</b> của người bên trái (hoặc tất cả các lá cùng giá trị cao nhất), nhưng bạn <b>không được biết</b> đó là lá nào."
+  },
+  "H60": {
+    "title": "Dây bẫy",
+    "text": "Dùng <b>thẻ tham chiếu Tiny Straight</b>."
+  },
+  "H61": {
+    "title": "Drone giám sát",
+    "text": "Thay vì phân chip cho người chơi, hãy phân chip vào <b>khoảng trống giữa các người chơi</b>. Trước Showdown, mỗi người chọn một lá để thêm vào bài tẩy của chip bên trái và một lá để thêm vào bài tẩy của chip bên phải."
+  },
+  "H62": {
+    "title": "Camera ngoài v2",
+    "text": "Ván này, tạo <b>tay bài 6 lá mạnh nhất</b>. Dùng thẻ tham chiếu <b>6-Card Hand Ranks</b>."
+  },
+  "H63": {
+    "title": "Giao thức Hanabi v2",
+    "text": "Trước khi cầm bài tẩy lên, một nửa số người chơi (làm tròn lên) xoay một lá bài của mình hướng ra ngoài để <b>những người khác thấy, còn mình không thấy</b>. Chọn ngẫu nhiên những người phải làm việc này."
+  },
+  "H64": {
+    "title": "Kiểm tra tiền sảnh",
+    "text": "Lật tất cả <b>chip vàng</b> sang <b>mặt tối</b>."
+  },
+  "H65": {
+    "title": "Công tắc vô danh",
+    "text": "Trong Vòng 1–3, mỗi khi lấy chip, hãy <b>tung chip như đồng xu</b>. Nếu chip rơi với mặt tối ngửa lên, chip đó <b>không được đổi người giữ nữa</b>."
+  },
+  "H66": {
+    "title": "Khúc ca ghế 7",
+    "text": "Chọn ngẫu nhiên một người và chia cho họ <b>một tay bài riêng bổ sung</b>. Tay bài bổ sung này cũng phải được <b>xếp thứ tự cùng các tay bài khác</b>."
+  },
+  "H67": {
+    "title": "Giao thức Owen Wilson",
+    "text": "Trong 2 vòng đầu, thay vì phân phát chip trắng và chip vàng, mỗi người chỉ được truyền đạt độ mạnh của tay bài bằng cách nói <b>“Wow” đúng một lần</b> (với ngữ điệu tùy ý)."
+  },
+  "H68": {
+    "title": "Giao thức Tigris và Euphrates",
+    "text": "Trong Vòng 2–4, lật ngửa <b>hai bộ bài chung riêng biệt</b>. Khi đã lật hết bài chung, bỏ bộ yếu hơn (dựa trên <b>tay bài 5 lá mạnh nhất</b> tạo được từ riêng bộ đó)."
+  },
+  "H69": {
+    "title": "Giao thức Yellow và Yangtze",
+    "text": "Trong Vòng 2–4, lật ngửa <b>hai bộ bài chung riêng biệt</b>. Mỗi người phải tạo tay bài mạnh nhất bằng <b>một trong hai bộ</b>, không được dùng cả hai."
+  },
+  "H70": {
+    "title": "Bẫy áp lực v2",
+    "text": "Ván này, với các tay bài High Card, Pair, Two Pair, Three of a Kind và Full House, <b>bỏ qua các lá vốn dùng để phân định thứ tự</b> giữa các tay bài cùng hạng."
+  },
+  "H71": {
+    "title": "Bãi mìn",
+    "text": "Trong Vòng 2–4, sau khi chia bài chung như bình thường, tất cả người chơi <b>nhắm mắt</b> trong lúc một người rút một lá, giơ cao hết tầm tay phía trên bàn, hướng cạnh mỏng xuống rồi thả. Nếu lá bài <b>rơi ngửa</b>, thêm nó vào bài chung."
+  },
+  "H72": {
+    "title": "Máy quét dấu chân",
+    "text": "Khi lật ngửa các tay bài, lật từ <b>mạnh nhất đến yếu nhất</b>. Trước khi lật tay bài yếu nhất, tất cả người chơi còn lại phải đoán một giá trị lá bài. Nếu giá trị đó không có trong bài tẩy của người yếu nhất, <b>phi vụ thất bại</b>."
+  },
+  "H73": {
+    "title": "Camera hồng ngoại v3",
+    "text": "Trước Showdown, tất cả đồng thời chỉ vào một lá bài chung để biểu quyết <b>loại lá đó khỏi ván</b>. Người giữ chip đỏ ít sao nhất quyết định khi hòa phiếu. Thứ tự tay bài phải đúng cả <b>trước VÀ sau khi loại lá bài</b>. Nếu không có lá nào có thể loại mà vẫn đáp ứng điều kiện này, tất cả phải chỉ thẳng lên trên. Nếu cả nhóm chỉ lên trên nhưng thực ra có lá có thể loại hợp lệ, <b>phi vụ thất bại</b>."
+  },
+  "H74": {
+    "title": "Thiết bị theo dõi v3",
+    "text": "Sau khi phân chip đỏ, chọn ngẫu nhiên một người làm <b>“Chuột thí nghiệm”</b>. Tất cả người còn lại lật ngửa tay bài. Lật ngửa một lá từ bộ bài. Những người còn lại cùng quyết định xem nếu thêm lá mới này vào bài chung, số sao trên chip đỏ của Chuột thí nghiệm sẽ <b>tăng, giảm hay giữ nguyên</b>, xét tất cả các tay bài. Nếu đoán sai, phi vụ thất bại."
+  },
+  "H75": {
+    "title": "Mê cung v2",
+    "text": "Lật ngửa <b>4 lá</b> từ bộ bài. Ván này, nếu có đúng 1/2/3/4 lá A đang được sử dụng, tất cả lá A trở thành <b>bản sao của lá được lật thứ 1/2/3/4</b> tương ứng."
+  },
+  "H76": {
+    "title": "Cán cân",
+    "text": "Trước Showdown, lật ngửa thêm bài từ bộ bài cho đến khi tổng số lá bài chung và bài vừa lật <b>bằng tổng số lá bài tẩy</b> của người chơi. Tất cả đồng thời biểu quyết xem toàn bộ bài tẩy của nhóm <b>mạnh hơn, yếu hơn hay ngang bằng</b> toàn bộ bài chung cộng bài vừa lật; người giữ chip đỏ nhiều sao nhất quyết định khi hòa phiếu. Nếu sai, phi vụ thất bại."
+  },
+  "H77": {
+    "title": "Những bóng ma",
+    "text": "Lấy giá trị lá bài tẩy cao nhất trừ giá trị lá thấp nhất để được giá trị <b>lá ma</b>, cũng thuộc bài tẩy của bạn. Lá này không có chất. Lá 0 có thể dùng trong Straight <b>0 A 2 3 4</b>.<br>A = 1; J = 11; Q = 12; K = 13."
+  },
+  "H78": {
+    "title": "Nhịp chia đều",
+    "text": "Trong Vòng 2–4, mỗi vòng lật ngửa <b>2 lá bài chung</b> (thay vì lần lượt 3, 1, 1 lá)."
+  },
+  "H79": {
+    "title": "Đảo ngược thời gian",
+    "text": "<b>Vòng 2:</b> Lật ngửa 1 lá bài chung.<br><b>Vòng 3:</b> Lật ngửa 1 lá bài chung.<br><b>Vòng 4:</b> Lật ngửa 3 lá bài chung."
+  },
+  "H80": {
+    "title": "Tách bài Blackjack v2",
+    "text": "Pair trong bài tẩy được <b>tách thành hai tay bài</b>, mỗi tay rút thêm một lá (và có thể lại tách tiếp). Mỗi khi xuất hiện Pair trong bài chung, chuyển lá thứ hai của Pair sang cạnh lá thứ nhất để tạo <b>một nhánh bài chung song song</b>, rồi tiếp tục thêm bài cho đến khi mọi nhánh có đủ số lá thông thường của vòng đó (các lá trước điểm tách được tính cho cả hai nhánh). Bạn phải dùng nhánh bài chung tạo ra <b>tay bài mạnh nhất</b> cho mình."
+  },
+  "H81": {
+    "title": "Chướng ngại vật",
+    "text": "Trong <b>Vòng 2 và 3</b>, không ai được lấy chip có <b>cùng số sao</b> với chip mình đã lấy ở vòng trước."
+  },
+  "H82": {
+    "title": "Hai đôi kép",
+    "text": "Mỗi lá 2 được tính là <b>hai lá 2 cùng chất</b>."
+  },
+  "H83": {
+    "title": "Ngày đảo ngược",
+    "text": "Tạo tay bài mạnh nhất như bình thường. Nếu một nửa tổng số tay bài (làm tròn lên) có <b>cùng hạng bài</b>, phải xếp thứ tự tất cả tay bài theo <b>chiều ngược lại</b>."
+  },
+  "H84": {
+    "title": "Không đường quay lại",
+    "text": "Trong Vòng 1–3, bạn không được lấy chip có số sao <b>bằng hoặc thấp hơn</b> bất kỳ chip nào mình đã giữ trong vòng đó. Nếu không còn ai có thể lấy <b>chip 1 sao</b>, phi vụ thất bại."
+  },
+  "H85": {
+    "title": "Chủ nghĩa tư bản",
+    "text": "Trước Showdown, theo <b>thứ tự ngẫu nhiên</b>, mỗi người phải lấy một lá bài chung vào bài tẩy của mình, cho đến khi hết bài chung. Nếu số người ít hơn số lá bài chung, xáo lại thứ tự sau khi mỗi người đã lấy một lá."
+  },
+  "H86": {
+    "title": "Straight ẩn mình",
+    "text": "Có thể tạo <b>Straight với giá trị lặp lại</b> (ví dụ: [4, 5, 5, 6, 6] là Straight)."
+  },
+  "H87": {
+    "title": "Nữ hoàng Goth",
+    "text": "Nếu có một lá Q đen đang được sử dụng, <b>Q có giá trị cao nhất</b>, còn K/J có giá trị thấp nhất, với K > J. <b>Straight không bị ảnh hưởng</b>."
+  },
+  "H88": {
+    "title": "Những bản sao",
+    "text": "Với mỗi người, các lá hình (J, Q, K) trở thành <b>bản sao của lá hình cao nhất cùng chất</b> trong bài chung và bài tẩy của người đó. (Lá hình cao nhất của chất đó giữ nguyên.)"
+  },
+  "H89": {
+    "title": "Thị trấn nhện",
+    "text": "Đầu Vòng 1–3, phân ngẫu nhiên tất cả chip trừ một chip cho người chơi. Bạn chỉ được <b>đổi chip với người bên cạnh</b>, lấy chip từ người bên cạnh hoặc lấy chip còn lại; không được ra hiệu dưới bất kỳ hình thức nào để người khác đổi chip. Vòng kết thúc khi <b>chip còn lại được lấy</b>."
+  },
+  "H90": {
+    "title": "Nâng lên nào",
+    "text": "Đối với bạn, các lá bài chung có giá trị 2–5 mang giá trị của <b>lá bài tẩy cao nhất trong khoảng 6–10</b>, nếu bạn có lá như vậy."
+  },
+  "H91": {
+    "title": "Chi phí chìm",
+    "text": "Sau khi thêm bài chung ở Vòng 4, mọi người không có lá bài tẩy nào có thể góp vào Pair, Straight hoặc Flush phải <b>giơ tay</b> (bất kể đó có phải tay bài mạnh nhất của mình hay không). Thêm bài chung <b>mỗi lần 2 lá</b> cho đến khi tất cả đã hạ tay."
+  },
+  "H92": {
+    "title": "Cảm giác chẵn lẻ",
+    "text": "<b>Lẻ và chẵn là hai chất</b> (A là lẻ, lá hình không thuộc chất nào trong hai chất này). A, 3, 5, 7, 9 và 2, 4, 6, 8, 10 là <b>Straight Flush</b>."
+  },
+  "H93": {
+    "title": "Mù hình dạng",
+    "text": "<b>Đỏ và đen là hai chất</b>. Flush đỏ hoặc đen cần <b>6 lá</b>. Với mỗi người có thể tạo bất kỳ Flush nào, bất kể đó có phải tay bài mạnh nhất của họ hay không, <b>Flush giảm 1 hạng bài</b>."
+  },
+  "H94": {
+    "title": "Blackjack v2",
+    "text": "Nếu cộng giá trị lá thấp nhất của Flop (Vòng 2) vào tổng giá trị bài tẩy khiến tổng <b>vượt 21</b>, bỏ ngẫu nhiên một lá bài tẩy rồi rút lá mới. Sau khi mọi người đã làm xong, nếu có lá nào trong Flop có thể cộng vào bài tẩy để đạt <b>đúng 21</b>, rút thêm một lá bài tẩy.<br>A = 11; lá hình = 10."
+  },
+  "H95": {
+    "title": "Lội ngược dòng",
+    "text": "Trong Vòng 1–3, sau khi phân chip, người giữ <b>chip 1 sao</b> rút thêm một lá bài tẩy."
+  },
+  "H96": {
+    "title": "Khoảng cách giàu nghèo",
+    "text": "Sau khi phân chip ở Vòng 1, người giữ <b>chip nhiều sao nhất</b> bỏ lá bài thấp nhất và rút lá thay thế; người giữ <b>chip 1 sao</b> bỏ lá bài cao nhất và rút lá thay thế."
+  },
+  "H97": {
+    "title": "Đấu trường sinh tử",
+    "text": "Tạo tay bài mạnh nhất như bình thường. Tay bài không có giá trị lá bài lặp lại (Straight, Flush, v.v.) phải được <b>xếp thấp hơn tay bài có giá trị lặp lại</b>, trừ khi bạn có <b>lá bài tẩy góp vào Pair</b> (bất kể Pair đó có thuộc tay bài mạnh nhất của bạn hay không)."
+  },
+  "H98": {
+    "title": "Tép lớn ra tay",
+    "text": "Người có <b>lá tép trong bài tẩy không ghép thành Pair và không thuộc Straight hay Flush</b> (bất kể đó có phải tay bài mạnh nhất của mình hay không) thắng tất cả người không có lá như vậy."
+  },
+  "H99": {
+    "title": "Hội quán tép",
+    "text": "Tạo tay bài mạnh nhất như bình thường. Bạn phải xếp tay bài mình <b>thấp hơn tất cả người có nhiều lá tép không phải Kicker hơn bạn</b>."
+  },
+  "H100": {
+    "title": "Chăm chỉ đào đất",
+    "text": "Mỗi khi một <b>lá bích</b> được thêm vào bài tẩy hoặc bài chung, lập tức <b>thêm một lá nữa</b>."
+  },
+  "H101": {
+    "title": "Lòng kiêu ngạo",
+    "text": "Với mỗi <b>lá bích không phải Kicker</b> trong tay bài, tay bài được tính cao hơn bình thường 1 hạng, nhưng được coi là <b>tay bài yếu nhất trong hạng đó</b>."
+  },
+  "H102": {
+    "title": "Cơn thịnh nộ",
+    "text": "Khi một <b>lá tép được lật ngửa</b>, bỏ tất cả lá tép có giá trị thấp hơn và rút lá thay thế (trong cả bài tẩy lẫn bài chung)."
+  },
+  "H103": {
+    "title": "Lòng tham lam",
+    "text": "Khi một <b>lá rô không phải lá hình</b> được lật ngửa, tất cả người chơi rút thêm một lá bài tẩy."
+  },
+  "H104": {
+    "title": "Dục vọng",
+    "text": "Các <b>lá hình chất cơ</b> là <b>lá đa năng (Wildcard)</b>."
+  },
+  "H105": {
+    "title": "Tự hại chính mình",
+    "text": "Sau khi chia bài tẩy, lấy số lá bằng số bài chung sẽ dùng và <b>chia đều nhất có thể</b> cho người chơi. Thay vì rút ngẫu nhiên bài chung từ bộ bài, mỗi lá bài chung được <b>lấy ngẫu nhiên từ bài của một người được chọn ngẫu nhiên còn giữ lá chia thêm</b>."
+  },
+  "H106": {
+    "title": "Bức tường gạch",
+    "text": "Dùng <b>thẻ tham chiếu Small Flush Ranks</b>."
+  },
+  "H107": {
+    "title": "Ghép đội phút chót",
+    "text": "Xác định tay bài mạnh nhất của bạn, tạm bỏ qua thẻ này. Số người có tay bài mạnh nhất là <b>Pair</b> quyết định vị trí của Pair trong thứ tự hạng bài.<br>0–1 người: Pair giữ nguyên.<br>2–3 người: Pair yếu hơn High Card.<br>4–5 người: Pair cao hơn Two Pair 1 hạng.<br>6 người: Pair cao hơn Three of a Kind 1 hạng.<br>Pair được <b>ấn định vĩnh viễn hạng mới</b> này (cho ván này và các ván sau)."
+  },
+  "H108": {
+    "title": "Khí gây cười",
+    "text": "Cho đến khi chip đỏ bị <b>khóa</b>, mỗi khi có người <b>cười</b>, thêm một <b>thẻ Bất lợi</b> mới."
+  },
+  "H109": {
+    "title": "Két sắt dưới nước",
+    "text": "Sau khi chia bài tẩy, chọn một người. Người đó chỉ được lấy chip <b>tổng cộng 7 lần</b> trong toàn bộ phi vụ."
+  },
+  "H110": {
+    "title": "Một vợ một chồng",
+    "text": "Nếu nhiều người tạo được một hạng bài có <b>giá trị lặp lại</b> (Pair, Three of a Kind, Full House, v.v.) bằng cùng một lá bài chung, <b>không ai trong số họ được dùng lá đó</b>."
+  },
+  "R1": {
+    "title": "Thuật ngữ và giải thích luật",
+    "items": [
+      "Theo mặc định, các lá bài được <b>bỏ</b> úp mặt.",
+      "Nếu chip đang ở <b>mặt tối</b>, không thể lấy chip đó từ người đang giữ.",
+      "<b>Lá đa năng (Wildcard)</b> có thể mang bất kỳ chất và giá trị nào, và phải được dùng để tạo tay bài mạnh nhất có thể, trừ khi có quy định khác.",
+      "Các lá <b>Kicker</b> thuộc tay bài gồm 5 lá của bạn nhưng không quyết định hạng bài (chỉ dùng để phân định thắng thua khi cùng hạng bài).",
+      "“<b>Chia sẻ</b>” nghĩa là cung cấp thông tin cho tất cả người chơi.",
+      "Một lá bài được coi là <b>đã lật ngửa</b> khi đã được cho tất cả người chơi xem cùng lúc.",
+      "Thẻ hiệu ứng Lợi thế là tùy chọn và có thể được sử dụng bất cứ lúc nào trong ván, trừ khi có quy định khác.",
+      "Nếu một thẻ hiệu ứng có thể tác động đến nhiều lá bài nhưng không nêu cách phân biệt chúng, người chơi chọn lá bài chịu tác động. Nếu đó là bài chung, cả nhóm cùng quyết định."
+    ]
+  }
+}

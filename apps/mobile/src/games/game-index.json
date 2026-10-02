@@ -1,0 +1,3403 @@
+[
+  {
+    "slug": "1830-railways-robber-barons-1986",
+    "name": "1830: Railways & Robber Barons",
+    "year": 1986,
+    "players": [3, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "7-wonders",
+    "name": "7 Wonders",
+    "year": 2010,
+    "players": [3, 7],
+    "mode": "competitive"
+  },
+  {
+    "slug": "a-fake-artist-goes-to-new-york-2011",
+    "name": "A Fake Artist Goes to New York",
+    "year": 2011,
+    "players": [5, 10],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "a-feast-for-odin",
+    "name": "A Feast for Odin",
+    "year": 2016,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "a-game-of-thrones-the-board-game-second-edition-2011",
+    "name": "A Game of Thrones: The Board Game (Second Edition)",
+    "year": 2011,
+    "players": [3, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "a-gentle-rain-2021",
+    "name": "A Gentle Rain",
+    "year": 2021,
+    "players": [1, 1],
+    "mode": "solo"
+  },
+  {
+    "slug": "a-message-from-the-star--teams",
+    "name": "A Message From The Stars",
+    "year": 2024,
+    "players": [4, 8],
+    "mode": "team"
+  },
+  {
+    "slug": "a-message-from-the-star",
+    "name": "A Message From The Stars",
+    "year": 2024,
+    "players": [2, 8],
+    "mode": "coop"
+  },
+  {
+    "slug": "a-war-of-whispers-2019",
+    "name": "A War of Whispers",
+    "year": 2019,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "abandon-all-artichokes-2020",
+    "name": "Abandon All Artichokes",
+    "year": 2020,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "abomination-the-heir-of-frankenstein-2019",
+    "name": "Abomination: The Heir of Frankenstein",
+    "year": 2019,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "above-and-below",
+    "name": "Above and Below",
+    "year": 2015,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "abyss", "name": "Abyss", "year": 2014, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "acquire-1963",
+    "name": "Acquire",
+    "year": 1964,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "age-of-innovation",
+    "name": "Age of Innovation",
+    "year": 2023,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "age-of-steam-deluxe-2019",
+    "name": "Age of Steam: Deluxe",
+    "year": 2019,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "agent-avenue-2024",
+    "name": "Agent Avenue",
+    "year": 2024,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "agricola-2007",
+    "name": "Agricola (Revised Edition)",
+    "year": 2016,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "agricola-15-2022",
+    "name": "Agricola 15",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "ahoy", "name": "Ahoy", "year": 2022, "players": [2, 4], "mode": "asymmetric" },
+  {
+    "slug": "air-land-sea",
+    "name": "Air, Land, & Sea",
+    "year": 2015,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "air-land-sea-spies-lies-supplies-2022",
+    "name": "Air, Land, & Sea: Spies, Lies, & Supplies",
+    "year": 2022,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "alchemists",
+    "name": "Alchemists",
+    "year": 2014,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "amalfi-renaissance-2023",
+    "name": "Amalfi: Renaissance",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "amritsar-the-golden-temple",
+    "name": "Amritsar: The Golden Temple",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "amsterdam",
+    "name": "Amsterdam",
+    "year": 2020,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "amun-re-20th-anniversary-edition-2023",
+    "name": "Amun-Re: 20th Anniversary Edition",
+    "year": 2023,
+    "players": [3, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "anachrony-2017",
+    "name": "Anachrony",
+    "year": 2017,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "andromeda-s-edge-2024",
+    "name": "Andromeda's Edge",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "ankh-gods-of-egypt-2021",
+    "name": "Ankh: Gods of Egypt",
+    "year": 2021,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "applejack-2022",
+    "name": "Applejack",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "aquatica",
+    "name": "Aquatica",
+    "year": 2021,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "arborea", "name": "Arborea", "year": 2023, "players": [1, 4], "mode": "competitive" },
+  {
+    "slug": "arboretum-2015",
+    "name": "Arboretum",
+    "year": 2015,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "archaeology-the-new-expedition",
+    "name": "Archaeology - The New Expedition",
+    "year": 2016,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "architects-of-the-west-kingdom",
+    "name": "Architects of the West Kingdom",
+    "year": 2018,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  { "slug": "arcs-2024", "name": "Arcs", "year": 2024, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "arkham-horror-revised-core-set",
+    "name": "Arkham Horror: The Card Game (Revised Core Set)",
+    "year": 2021,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "arkwright",
+    "name": "Arkwright",
+    "year": null,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "at-the-gates-of-loyang",
+    "name": "At the Gates of Loyang",
+    "year": 2009,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "atlas-lost-rise-of-the-new-sovereigns",
+    "name": "Atlas Lost: Rise of the New Sovereigns",
+    "year": null,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "ayar-children-of-the-sun-2025",
+    "name": "Ayar: Children of the Sun",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "azul", "name": "Azul", "year": 2017, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "azul-chocolate",
+    "name": "Azul : Chocolate",
+    "year": 2022,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "babylonia-2019",
+    "name": "Babylonia",
+    "year": 2019,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "baghdad-the-city-of-peace",
+    "name": "Baghdad: The City of Peace",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "bamboo", "name": "Bamboo", "year": 2023, "players": [2, 4], "mode": "competitive" },
+  { "slug": "bang", "name": "BANG!", "year": null, "players": [4, 7], "mode": "team" },
+  {
+    "slug": "barcelona",
+    "name": "Barcelona",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "barker-s-row-2018",
+    "name": "Barker's Row",
+    "year": 2018,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "barrage", "name": "Barrage", "year": 2019, "players": [1, 4], "mode": "competitive" },
+  {
+    "slug": "beacon-patrol-2023",
+    "name": "Beacon Patrol",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "betrayal-at-house-on-the-hill-2nd-edition",
+    "name": "Betrayal at House on the Hill (2nd edition)",
+    "year": 2010,
+    "players": [3, 6],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "beyond-the-sun",
+    "name": "Beyond the sun",
+    "year": 2020,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "bier-pioniere-2023",
+    "name": "Bier Pioniere",
+    "year": 2023,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "big-top", "name": "Big Top", "year": 2023, "players": [3, 4], "mode": "competitive" },
+  {
+    "slug": "bitoku-2021",
+    "name": "Bitoku",
+    "year": 2021,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "black-forest",
+    "name": "Black Forest",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "blazon", "name": "Blazon", "year": 2021, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "blind-business",
+    "name": "Blind Business",
+    "year": 2023,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "blood-on-the-clocktower",
+    "name": "Blood on the Clocktower",
+    "year": 2022,
+    "players": [5, 20],
+    "mode": "team"
+  },
+  {
+    "slug": "blood-rage",
+    "name": "Blood Rage",
+    "year": 2015,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "bohnanza",
+    "name": "Bohnanza",
+    "year": 1997,
+    "players": [2, 7],
+    "mode": "competitive"
+  },
+  {
+    "slug": "bomb-busters-2024",
+    "name": "Bomb Busters",
+    "year": 2024,
+    "players": [2, 5],
+    "mode": "coop"
+  },
+  { "slug": "bonsai", "name": "Bonsai", "year": 2023, "players": [1, 5], "mode": "competitive" },
+  {
+    "slug": "boonlake-2021",
+    "name": "Boonlake",
+    "year": 2021,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "boooop", "name": "BOOoop.", "year": 2023, "players": [2, 2], "mode": "competitive" },
+  {
+    "slug": "brass-birmingham-2018",
+    "name": "Brass: Birmingham",
+    "year": 2018,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "brass-pittsburgh",
+    "name": "Brass: Pittsburgh",
+    "year": 2024,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "brew", "name": "Brew", "year": 2021, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "brewcrafters-2013",
+    "name": "Brew Crafters",
+    "year": 2013,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "bristol-1350",
+    "name": "Bristol 1350",
+    "year": 2021,
+    "players": [1, 9],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "bruxelles-1893",
+    "name": "Bruxelles 1893",
+    "year": 2013,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "bus", "name": "Bus", "year": 1999, "players": [3, 5], "mode": "competitive" },
+  {
+    "slug": "ca-h-n-guns-second-edition-2014",
+    "name": "Ca$h 'n Guns: Second Edition",
+    "year": 2014,
+    "players": [4, 8],
+    "mode": "competitive"
+  },
+  {
+    "slug": "calimala",
+    "name": "Calimala",
+    "year": 2017,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "camel-up-second-edition",
+    "name": "Camel Up (Second Edition)",
+    "year": 2018,
+    "players": [3, 8],
+    "mode": "competitive"
+  },
+  {
+    "slug": "carcassonne",
+    "name": "Carcassonne",
+    "year": 2000,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "carnegie",
+    "name": "Carnegie",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "carnuta-2026",
+    "name": "Carnuta",
+    "year": 2026,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "carpe-diem",
+    "name": "Carpe Diem",
+    "year": 2018,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "carson-city-big-box-2015",
+    "name": "Carson City: Big Box",
+    "year": 2015,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "cartographers",
+    "name": "Cartographers",
+    "year": 2019,
+    "players": [2, 100],
+    "mode": "competitive"
+  },
+  {
+    "slug": "cascadia",
+    "name": "Cascadia",
+    "year": 2021,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "castle-combo-2024",
+    "name": "Castle Combo",
+    "year": null,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "castles-of-mad-king-ludwig-2014",
+    "name": "Castles of Mad King Ludwig",
+    "year": 2014,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "cat-in-the-box-deluxe-edition-2022",
+    "name": "Cat in the Box: Deluxe Edition",
+    "year": 2022,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  { "slug": "catan", "name": "Catan", "year": 1995, "players": [3, 4], "mode": "competitive" },
+  {
+    "slug": "catan-junior",
+    "name": "Catan: Junior",
+    "year": 2007,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "caylus-2005",
+    "name": "Caylus",
+    "year": 2005,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "caylus-1303",
+    "name": "Caylus 1303",
+    "year": 2019,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "century-golem-edition",
+    "name": "Century: Golem Edition",
+    "year": 2017,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "chicago-1875-city-of-the-big-shoulders",
+    "name": "Chicago 1875: City of the Big Shoulders",
+    "year": 2021,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "chicago-express-2007",
+    "name": "Chicago Express",
+    "year": 2007,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "citadels",
+    "name": "Citadels",
+    "year": 2016,
+    "players": [2, 8],
+    "mode": "competitive"
+  },
+  {
+    "slug": "city-of-iron-second-edition-2016",
+    "name": "City of Iron: Second Edition",
+    "year": 2016,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "civolution",
+    "name": "Civolution",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "clank-in-space-a-deck-building-adventure-2017",
+    "name": "Clank! In! Space!: A Deck-Building Adventure",
+    "year": 2017,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "clans-of-caledonia",
+    "name": "Clans of Caledonia",
+    "year": 2017,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "cloudspire",
+    "name": "Cloudspire",
+    "year": 2019,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "codenames-2015",
+    "name": "Codenames",
+    "year": 2015,
+    "players": [2, 8],
+    "mode": "team"
+  },
+  {
+    "slug": "codenames-pictures-2016",
+    "name": "Codenames: Pictures",
+    "year": 2016,
+    "players": [2, 8],
+    "mode": "team"
+  },
+  {
+    "slug": "codex-naturalis-2021",
+    "name": "Codex Naturalis",
+    "year": 2021,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "coffee-traders",
+    "name": "Coffee Traders",
+    "year": 2020,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "colt-express-big-box",
+    "name": "Colt Express Big Box",
+    "year": null,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "compile-main-1",
+    "name": "Compile: Main 1",
+    "year": 2024,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "concordia",
+    "name": "Concordia",
+    "year": 2013,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "concordia-venus",
+    "name": "Concordia Venus",
+    "year": 2018,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "consumption-food-and-choices",
+    "name": "Consumption: Food and Choices",
+    "year": 2019,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "container-2026",
+    "name": "Container",
+    "year": 2026,
+    "players": [3, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "cooper-island",
+    "name": "Cooper Island",
+    "year": 2019,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "cosmoctopus-2023--coop-pi",
+    "name": "Cosmoctopus",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "cosmoctopus-2023",
+    "name": "Cosmoctopus",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "cottage-garden",
+    "name": "Cottage Garden",
+    "year": 2016,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "counter-spy-2023",
+    "name": "Counter Spy",
+    "year": 2023,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  { "slug": "coup", "name": "Coup", "year": 2012, "players": [2, 6], "mode": "competitive" },
+  {
+    "slug": "covenant",
+    "name": "Covenant",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "co-ty-phu",
+    "name": "Cờ Tỷ Phú",
+    "year": null,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "crescent-moon-2022",
+    "name": "Crescent Moon",
+    "year": 2022,
+    "players": [4, 5],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "critter-kitchen",
+    "name": "Critter Kitchen",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "cryptid-2018",
+    "name": "Cryptid",
+    "year": 2018,
+    "players": [3, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "cthulhu-death-may-die",
+    "name": "Cthulhu: Death May Die",
+    "year": 2019,
+    "players": [1, 5],
+    "mode": "coop"
+  },
+  {
+    "slug": "cthulhu-death-may-die-fear-of-the-unknown",
+    "name": "Cthulhu: Death May Die - Fear of the Unknown",
+    "year": 2024,
+    "players": [1, 5],
+    "mode": "coop"
+  },
+  { "slug": "cuzco", "name": "Cuzco", "year": 2023, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "cyclades-2009",
+    "name": "Cyclades",
+    "year": 2009,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "daitoshi",
+    "name": "Daitoshi",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "darwin-s-journey-collector-s-edition",
+    "name": "Darwin's Journey: Collector's Edition",
+    "year": 2021,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "dawn", "name": "Dawn", "year": 2023, "players": [2, 5], "mode": "hidden-traitor" },
+  {
+    "slug": "de-vulgari-eloquentia-deluxe-edition",
+    "name": "De Vulgari Eloquentia: Deluxe Edition",
+    "year": 2019,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dead-of-winter",
+    "name": "Dead of Winter: A Crossroads Game",
+    "year": 2014,
+    "players": [2, 5],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "dead-of-winter-the-long-night-2016",
+    "name": "Dead of Winter: The Long Night",
+    "year": 2016,
+    "players": [2, 5],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "dead-reckoning",
+    "name": "Dead Reckoning",
+    "year": 2021,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "deception-murder-in-hong-kong",
+    "name": "Deception: Murder in Hong Kong",
+    "year": 2014,
+    "players": [4, 12],
+    "mode": "asymmetric"
+  },
+  { "slug": "decrypto-2018", "name": "Decrypto", "year": 2018, "players": [3, 8], "mode": "team" },
+  {
+    "slug": "deep-dive",
+    "name": "Deep Dive",
+    "year": 2023,
+    "players": [1, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "deep-regrets",
+    "name": "Deep Regrets",
+    "year": 2025,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "deep-rock-galactic-the-board-game",
+    "name": "Deep Rock Galactic: The Board Game",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  { "slug": "dewan-2025", "name": "Dewan", "year": 2025, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "dice-throne-adventures",
+    "name": "Dice Throne Adventures",
+    "year": 2022,
+    "players": [1, 6],
+    "mode": "coop"
+  },
+  {
+    "slug": "dice-throne-outcasts",
+    "name": "Dice Throne Outcasts",
+    "year": null,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dice-throne-season-one-rerolled",
+    "name": "Dice Throne Season One ReRolled",
+    "year": null,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dice-throne-vanguard",
+    "name": "Dice Throne Vanguard",
+    "year": null,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dice-throne-deadpool",
+    "name": "Dice Throne: Deadpool",
+    "year": null,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dice-throne-santa-v-krampu",
+    "name": "Dice Throne: Santa v. Krampu",
+    "year": null,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dice-throne-season-two",
+    "name": "Dice Throne: Season Two",
+    "year": null,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dice-throne-x-men",
+    "name": "Dice Throne: X-Men",
+    "year": null,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "die-macher",
+    "name": "Die Macher",
+    "year": 1986,
+    "players": [3, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dig-your-way-out--team",
+    "name": "Dig your way out",
+    "year": null,
+    "players": [4, 6],
+    "mode": "team"
+  },
+  {
+    "slug": "dig-your-way-out",
+    "name": "Dig your way out",
+    "year": null,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dinosaur-island-xtreme-edition-2018",
+    "name": "Dinosaur Island Xtreme Edition",
+    "year": 2018,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "discordia-sun-promo",
+    "name": "Discordia & Sun promo",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "disney-villainous-perfectly-wretched-2020",
+    "name": "Disney Villainous: Perfectly Wretched",
+    "year": 2020,
+    "players": [2, 3],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "disney-villainous-the-worstdisney-takes-it-all-2018",
+    "name": "Disney Villainous: The Worst Takes it All",
+    "year": 2018,
+    "players": [2, 6],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "distilled",
+    "name": "Distilled",
+    "year": 2022,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  { "slug": "dixit", "name": "Dixit", "year": 2008, "players": [3, 8], "mode": "competitive" },
+  { "slug": "dnup-2025", "name": "DNUP", "year": 2025, "players": [2, 5], "mode": "competitive" },
+  {
+    "slug": "dokojong-2021",
+    "name": "Dokojong",
+    "year": 2021,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dominant-species-marine--2-player",
+    "name": "Dominant Species: Marine",
+    "year": 2020,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dominant-species-marine",
+    "name": "Dominant Species: Marine",
+    "year": 2020,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dominion-big-box",
+    "name": "Dominion big box",
+    "year": 2017,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dragonscale",
+    "name": "Dragonscales",
+    "year": 2019,
+    "players": [3, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dune-imperium",
+    "name": "Dune: Imperium",
+    "year": 2020,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dune-imperium-uprising-2023",
+    "name": "Dune: Imperium - Uprising",
+    "year": 2023,
+    "players": [1, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "dwellings-of-eldervale",
+    "name": "Dwellings of Eldervale",
+    "year": 2020,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "east-india-companies",
+    "name": "East India Companies",
+    "year": 2022,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "el-grande-big-box-2015",
+    "name": "El Grande Big Box",
+    "year": 2015,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "eldritch-horror",
+    "name": "Eldritch Horror",
+    "year": 2013,
+    "players": [1, 8],
+    "mode": "coop"
+  },
+  {
+    "slug": "endeavor-deep-sea-2024",
+    "name": "Endeavor: Deep Sea",
+    "year": 2024,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "entropy-2026",
+    "name": "Entropy",
+    "year": 2026,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "eternal-decks",
+    "name": "Eternal Decks",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "eternal-sevens-2026",
+    "name": "Eternal Sevens",
+    "year": 2026,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "ethnos-2nd-edition-promo-2025",
+    "name": "Ethnos 2nd edition & promo",
+    "year": 2025,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "evacuation--points",
+    "name": "Evacuation",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "evacuation",
+    "name": "Evacuation",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "everbloom-2025",
+    "name": "Everbloom",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "everdell",
+    "name": "Everdell",
+    "year": 2018,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "everstone-discovering-ignis",
+    "name": "Everstone: Discovering Ignis",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "expeditions-2023",
+    "name": "Expeditions",
+    "year": 2023,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "exploding-kittens",
+    "name": "Exploding Kittens",
+    "year": 2015,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "ezra-and-nehemiah-2024",
+    "name": "Ezra and Nehemiah",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "faiyum", "name": "Faiyum", "year": 2020, "players": [1, 5], "mode": "competitive" },
+  {
+    "slug": "falling-2026",
+    "name": "Falling",
+    "year": 2026,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "fantasy-realms-deluxe-edition-2022",
+    "name": "Fantasy Realms: Deluxe Edition",
+    "year": 2022,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "federation-2022",
+    "name": "Federation",
+    "year": 2022,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "feed-the-kraken",
+    "name": "Feed the Kraken",
+    "year": null,
+    "players": [5, 11],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "fest-season",
+    "name": "Fest Season",
+    "year": 2025,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  { "slug": "feudum", "name": "Feudum", "year": 2017, "players": [2, 5], "mode": "competitive" },
+  {
+    "slug": "feya-s-swamp-2025",
+    "name": "Feya's Swamp",
+    "year": 2025,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "fields-of-arle",
+    "name": "Fields of Arle",
+    "year": 2014,
+    "players": [1, 2],
+    "mode": "competitive"
+  },
+  { "slug": "finspan", "name": "Finspan", "year": null, "players": [2, 5], "mode": "competitive" },
+  {
+    "slug": "first-rat",
+    "name": "First Rat",
+    "year": 2022,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  { "slug": "fishing", "name": "Fishing", "year": 2024, "players": [3, 5], "mode": "competitive" },
+  {
+    "slug": "fit-to-print-2023",
+    "name": "Fit to Print",
+    "year": 2023,
+    "players": [1, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "five-tribes-the-djinns-of-naqala-2014",
+    "name": "Five Tribes: The Djinns of Naqala",
+    "year": 2014,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "fjords-2022",
+    "name": "Fjords",
+    "year": 2022,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "flamecraft-2022",
+    "name": "Flamecraft",
+    "year": 2022,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  { "slug": "flip-7", "name": "Flip 7", "year": 2024, "players": [3, 18], "mode": "competitive" },
+  {
+    "slug": "flip-7-with-a-vengeance-2026",
+    "name": "Flip 7: With A Vengeance",
+    "year": 2026,
+    "players": [3, 18],
+    "mode": "competitive"
+  },
+  {
+    "slug": "fliptoons",
+    "name": "FlipToons",
+    "year": 2025,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "florenza-x-anniversary-edition",
+    "name": "Florenza: X Anniversary Edition",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "food-chain-magnate",
+    "name": "Food chain Magnate",
+    "year": 2015,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "forbidden-star-2015",
+    "name": "Forbidden Stars",
+    "year": 2015,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "forest-shuffle-2023",
+    "name": "Forest Shuffle",
+    "year": 2023,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "forestry",
+    "name": "Forestry",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "forge-war-2015",
+    "name": "Forge War",
+    "year": 2015,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "formaggio-2025",
+    "name": "Formaggio",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "foundations-of-metropolis",
+    "name": "Foundations of Metropolis",
+    "year": 2023,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "from-the-moon",
+    "name": "From the Moon",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "fromage", "name": "Fromage", "year": 2024, "players": [1, 4], "mode": "competitive" },
+  {
+    "slug": "frostpunk",
+    "name": "Frostpunk: The Board Game",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "gaia-project-2017",
+    "name": "Gaia Project",
+    "year": 2017,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "galactic-cruise",
+    "name": "Galactic Cruise",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "ginkgopolis",
+    "name": "Ginkgopolis",
+    "year": 2012,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "giraffe-raffe",
+    "name": "Giraffe Raffe",
+    "year": 2024,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "glen-more-ii-chronicles",
+    "name": "Glen More II: Chronicles",
+    "year": 2020,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  { "slug": "gloomhaven", "name": "Gloomhaven", "year": 2017, "players": [1, 4], "mode": "coop" },
+  {
+    "slug": "gloomhaven-jaws-of-the-lion-2020",
+    "name": "Gloomhaven: Jaws of the Lion",
+    "year": 2020,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  { "slug": "goa", "name": "Goa", "year": 2004, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "grand-austria-hotel-deluxe",
+    "name": "Grand Austria Hotel Deluxe",
+    "year": 2015,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "great-western-trail",
+    "name": "Great Western Trail",
+    "year": 2021,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "great-western-trail-argentina-2022",
+    "name": "Great Western Trail: Argentina",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "great-western-trail-el-paso",
+    "name": "Great Western Trail: El Paso",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "great-western-trail-new-zealand",
+    "name": "Great Western Trail: New Zealand",
+    "year": null,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "grow-sky-2024",
+    "name": "Grow Sky",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "halli-galli",
+    "name": "Halli Galli",
+    "year": 1990,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  { "slug": "hamburg", "name": "Hamburg", "year": 2022, "players": [2, 5], "mode": "competitive" },
+  {
+    "slug": "hansa-teutonica-big-box-2020",
+    "name": "Hansa Teutonica: Big Box",
+    "year": 2020,
+    "players": [3, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "harmonies",
+    "name": "Harmonies",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "hegemony",
+    "name": "Hegemony",
+    "year": null,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "hellapagos",
+    "name": "Hellapagos",
+    "year": 2017,
+    "players": [3, 12],
+    "mode": "competitive"
+  },
+  {
+    "slug": "here-to-slay",
+    "name": "Here to Slay",
+    "year": 2020,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "hero-realms",
+    "name": "Hero Realms",
+    "year": 2016,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "hidden-leaders",
+    "name": "Hidden Leaders",
+    "year": null,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "hoplomachus-victorum",
+    "name": "Hoplomachus: Victorum",
+    "year": 2023,
+    "players": [1, 1],
+    "mode": "solo"
+  },
+  {
+    "slug": "horizon-of-spirit-island",
+    "name": "Horizon of spirit island",
+    "year": 2022,
+    "players": [1, 3],
+    "mode": "coop"
+  },
+  {
+    "slug": "horseless-carriage",
+    "name": "Horseless Carriage",
+    "year": 2022,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "hot-streak",
+    "name": "Hot Streak",
+    "year": 2025,
+    "players": [2, 8],
+    "mode": "competitive"
+  },
+  {
+    "slug": "hungry-monkey",
+    "name": "Hungry Monkey",
+    "year": 2022,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "ierusalem-anno-domini",
+    "name": "Ierusalem: Anno Domini",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "iki", "name": "IKI", "year": null, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "imperial-2030",
+    "name": "Imperial 2030",
+    "year": 2007,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "imperial-settlers-2014",
+    "name": "Imperial Settlers",
+    "year": 2014,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "imperial-steam-2021",
+    "name": "Imperial Steam",
+    "year": 2021,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "in-the-year-of-the-dragon",
+    "name": "In the Year of the Dragon",
+    "year": 2007,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "indonesia",
+    "name": "Indonesia",
+    "year": 2005,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  { "slug": "inferno", "name": "Inferno", "year": 2024, "players": [1, 4], "mode": "competitive" },
+  {
+    "slug": "infinity-gauntlet-a-love-letter-game-2020",
+    "name": "Infinity Gauntlet: A Love Letter Game",
+    "year": 2020,
+    "players": [2, 6],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "inis-legendary-edition-2025",
+    "name": "Inis: Legendary Edition",
+    "year": 2025,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "inkwell-2026",
+    "name": "Inkwell",
+    "year": 2026,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "innovation-ultimate-2025",
+    "name": "Innovation Ultimate",
+    "year": 2025,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "inventors-of-the-south-tigris",
+    "name": "Inventors of the South Tigris",
+    "year": null,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "isle-of-trains-all-aboard-2023",
+    "name": "Isle of Trains: All Aboard",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "iss-vanguard",
+    "name": "ISS Vanguard",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "istanbul-2014",
+    "name": "Istanbul",
+    "year": 2014,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "istanbul-big-box-2018",
+    "name": "Istanbul: Big Box",
+    "year": 2018,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  { "slug": "jamaica", "name": "Jamaica", "year": 2007, "players": [2, 6], "mode": "competitive" },
+  {
+    "slug": "john-company-second-edition-2022",
+    "name": "John Company: Second Edition",
+    "year": 2022,
+    "players": [1, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "jungle-speed",
+    "name": "Jungle Speed",
+    "year": 1991,
+    "players": [2, 10],
+    "mode": "competitive"
+  },
+  {
+    "slug": "junk-art",
+    "name": "Junk Art",
+    "year": 2016,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "kelp-shark-vs-octopus",
+    "name": "Kelp: Shark vs Octopus",
+    "year": 2023,
+    "players": [2, 2],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "kemet-blood-and-sand-2021",
+    "name": "Kemet: Blood and Sand",
+    "year": 2021,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "keyflower-2012",
+    "name": "Keyflower",
+    "year": 2012,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "keyside-2025",
+    "name": "Keyside",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "king-of-tokyo-dark-edition-2020",
+    "name": "King of Tokyo: Dark Edition",
+    "year": 2020,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "kingdom-crossing-2025",
+    "name": "Kingdom Crossing",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "kingdomino-origin",
+    "name": "Kingdomino Origin",
+    "year": 2021,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "kohle-kolonie",
+    "name": "Kohle & Kolonie",
+    "year": 2011,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "koinobori-2024",
+    "name": "Koinobori",
+    "year": 2024,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "kraftwagen-age-of-engineering",
+    "name": "Kraftwagen: Age of Engineering",
+    "year": 2023,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "kutna-hora-the-city-of-silver-2023",
+    "name": "Kutná Hora: The City of Silver",
+    "year": 2023,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "la-famiglia-the-great-mafia-war",
+    "name": "La Famiglia: The Great Mafia War",
+    "year": null,
+    "players": [4, 4],
+    "mode": "team"
+  },
+  {
+    "slug": "la-granja-deluxe-master-set",
+    "name": "La Granja: Deluxe Master Set",
+    "year": null,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "lacrimosa-2022",
+    "name": "Lacrimosa",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "las-vegas-royale-2019",
+    "name": "Las Vegas Royale",
+    "year": 2019,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "le-havre",
+    "name": "Le Havre",
+    "year": 2008,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "legacy-the-testament-of-duke-de-crecy",
+    "name": "Legacy: The Testament of Duke de Crecy",
+    "year": 2013,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "libertalia-winds-of-galecrest-2022",
+    "name": "Libertalia: Winds of Galecrest",
+    "year": 2022,
+    "players": [1, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "lightning-train-2025",
+    "name": "Lightning Train",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "lignum-2nd-edition",
+    "name": "Lignum (Second Edition)",
+    "year": 2017,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "lockup-a-roll-player-tale-2019",
+    "name": "Lockup: A Roll Player Tale",
+    "year": 2019,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "lord-of-the-rings-fate-of-the-fellowship",
+    "name": "Lord of the Rings: Fate of the Fellowship",
+    "year": 2025,
+    "players": [1, 5],
+    "mode": "coop"
+  },
+  {
+    "slug": "lords-of-hellas-2018",
+    "name": "Lords of Hellas",
+    "year": 2018,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "lords-of-waterdeep-2012",
+    "name": "Lords of Waterdeep",
+    "year": 2012,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "lorenzo-il-magnifico",
+    "name": "Lorenzo il Magnifico",
+    "year": 2016,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "lorenzo-il-magnifico-big-box-2021",
+    "name": "Lorenzo il Magnifico: Big Box",
+    "year": 2021,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "lost-cities-1999",
+    "name": "Lost Cities",
+    "year": 1999,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "lost-ruins-of-arnak-2020",
+    "name": "Lost Ruins of Arnak",
+    "year": 2020,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "love-letter",
+    "name": "Love Letter",
+    "year": 2019,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  { "slug": "lure", "name": "Lure", "year": 2024, "players": [2, 5], "mode": "competitive" },
+  { "slug": "luthier", "name": "Luthier", "year": 2024, "players": [2, 4], "mode": "competitive" },
+  { "slug": "madcala", "name": "Madcala", "year": null, "players": [2, 2], "mode": "competitive" },
+  {
+    "slug": "maestro-2026",
+    "name": "Maestro",
+    "year": 2026,
+    "players": [2, 4],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "mageknight-ultimate-edition",
+    "name": "Mage Knight Ultimate Edition",
+    "year": 2018,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "magical-athlete-2025",
+    "name": "Magical Athlete",
+    "year": 2025,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "maracaibo",
+    "name": "Maracaibo",
+    "year": 2019,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "march-of-the-ants-evolved-edition",
+    "name": "March of the Ants: Evolved Edition",
+    "year": 2025,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "marrakesh",
+    "name": "Marrakesh",
+    "year": null,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "marvel-champions",
+    "name": "Marvel Champions: The Card Game",
+    "year": 2019,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "maskmen-2014",
+    "name": "Maskmen",
+    "year": 2014,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "mechs-vs-minions",
+    "name": "Mechs vs Minions",
+    "year": 2016,
+    "players": [2, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "men-nefer",
+    "name": "Men-nefer",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "meo-no", "name": "Mèo Nổ", "year": 2015, "players": [2, 5], "mode": "competitive" },
+  {
+    "slug": "merv-the-heart-of-the-silk-road",
+    "name": "Merv: The Heart of the Silk Road",
+    "year": 2020,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "messina-1347",
+    "name": "Messina 1347",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "mexica-2002",
+    "name": "Mexica",
+    "year": 2002,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "minos-dawn-of-the-bronze-age-2024",
+    "name": "Minos: Dawn of the Bronze Age",
+    "year": 2024,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "mission-red-planet-second-edition-2015",
+    "name": "Mission: Red Planet (Second Edition)",
+    "year": 2015,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "modern-art-1992",
+    "name": "Modern Art",
+    "year": 1992,
+    "players": [3, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "molly-house-2025",
+    "name": "Molly House",
+    "year": 2025,
+    "players": [2, 5],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "mombasa-2015",
+    "name": "Mombasa",
+    "year": 2015,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "money", "name": "Money!", "year": 1999, "players": [2, 5], "mode": "competitive" },
+  {
+    "slug": "monkey-palace",
+    "name": "Monkey Palace",
+    "year": 2024,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "mysterium", "name": "Mysterium", "year": 2015, "players": [2, 7], "mode": "coop" },
+  {
+    "slug": "nana-trio-2021",
+    "name": "Nana (Trio)",
+    "year": 2021,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "natera-new-beginning",
+    "name": "Natera: New Beginning",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "nations", "name": "Nations", "year": 2013, "players": [1, 5], "mode": "competitive" },
+  {
+    "slug": "near-and-far",
+    "name": "Near and Far",
+    "year": 2017,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "neko-syndicate",
+    "name": "Neko Syndicate",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "nekojima-2023--coop",
+    "name": "Nekojima",
+    "year": 2023,
+    "players": [1, 5],
+    "mode": "coop"
+  },
+  {
+    "slug": "nekojima-2023",
+    "name": "Nekojima",
+    "year": 2023,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "nemesis",
+    "name": "Nemesis",
+    "year": 2018,
+    "players": [1, 5],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "nemesis-lockdown--coop",
+    "name": "Nemesis Lockdown",
+    "year": 2022,
+    "players": [1, 5],
+    "mode": "coop"
+  },
+  {
+    "slug": "nemesis-lockdown",
+    "name": "Nemesis Lockdown",
+    "year": 2022,
+    "players": [1, 5],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "new-frontiers",
+    "name": "New Frontiers",
+    "year": 2018,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "new-york-zoo--solo",
+    "name": "New York Zoo",
+    "year": 2020,
+    "players": [1, 1],
+    "mode": "solo"
+  },
+  {
+    "slug": "new-york-zoo",
+    "name": "New York Zoo",
+    "year": 2020,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "nidavellir-2020",
+    "name": "Nidavellir",
+    "year": 2020,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "nippon-zaibatsu",
+    "name": "Nippon: Zaibatsu",
+    "year": 2025,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "northgard",
+    "name": "Northgard",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "not-alone-2016",
+    "name": "Not Alone",
+    "year": 2016,
+    "players": [2, 7],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "not-enough-mana",
+    "name": "Not Enough Mana",
+    "year": 2022,
+    "players": [3, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "notre-dame-10th-anniversary",
+    "name": "Notre Dame: 10th Anniversary",
+    "year": 2017,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "nova-roma",
+    "name": "Nova Roma",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "nucleum-2023",
+    "name": "Nucleum",
+    "year": 2023,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "nunatak-temple-of-ice-2023",
+    "name": "Nunatak: Temple of Ice",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "nusfjord-big-box-2024",
+    "name": "Nusfjord: Big Box",
+    "year": 2024,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "oath-2021",
+    "name": "Oath: Chronicles of Empire and Exile",
+    "year": 2021,
+    "players": [1, 6],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "oathsworn",
+    "name": "Oathsworn: Into the Deepwood",
+    "year": 2021,
+    "players": [null, null],
+    "mode": "coop"
+  },
+  {
+    "slug": "oceans-2020",
+    "name": "Oceans",
+    "year": 2020,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "on-mars-2020",
+    "name": "On Mars",
+    "year": 2020,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "one-night-ultimate-werewolf",
+    "name": "One Night Ultimate Werewolf",
+    "year": 2014,
+    "players": [3, 10],
+    "mode": "hidden-traitor"
+  },
+  { "slug": "onstage", "name": "Onstage", "year": 2024, "players": [3, 5], "mode": "competitive" },
+  {
+    "slug": "ora-et-labora",
+    "name": "Ora et Labora",
+    "year": 2011,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "oriflamme-2019",
+    "name": "Oriflamme",
+    "year": 2019,
+    "players": [3, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "oriflamme-ablaze",
+    "name": "Oriflamme: Ablaze",
+    "year": null,
+    "players": [3, 5],
+    "mode": "competitive"
+  },
+  { "slug": "orleans", "name": "Orléans", "year": 2014, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "orleans-big-box-2024",
+    "name": "Orléans: Big Box",
+    "year": 2024,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "orloj",
+    "name": "Orloj: The Prague Astronomical Clock",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "ostia", "name": "Ostia", "year": 2024, "players": [1, 4], "mode": "competitive" },
+  {
+    "slug": "overseer",
+    "name": "Overseers",
+    "year": 2015,
+    "players": [3, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "pagan-fate-of-roanoke",
+    "name": "Pagan: Fate of Roanoke",
+    "year": 2024,
+    "players": [2, 2],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "paint-the-roses",
+    "name": "Paint the Roses",
+    "year": 2018,
+    "players": [null, null],
+    "mode": "coop"
+  },
+  {
+    "slug": "paladins-of-the-west-kingdom-2019",
+    "name": "Paladins of the West Kingdom",
+    "year": 2019,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "panamax-2014",
+    "name": "Panamax",
+    "year": 2014,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  { "slug": "pandemic", "name": "Pandemic", "year": 2008, "players": [2, 4], "mode": "coop" },
+  { "slug": "parks-2019", "name": "PARKS", "year": 2019, "players": [1, 5], "mode": "competitive" },
+  {
+    "slug": "pax-pamir-second-edition-2019",
+    "name": "Pax Pamir: Second Edition",
+    "year": 2019,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  { "slug": "pdx-2026", "name": "PDX", "year": 2026, "players": [1, 4], "mode": "competitive" },
+  { "slug": "perch-2025", "name": "Perch", "year": 2025, "players": [2, 5], "mode": "competitive" },
+  {
+    "slug": "petiquette-2025",
+    "name": "Petiquette",
+    "year": 2025,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "phoenix-new-horizon",
+    "name": "Phoenix New Horizon",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "phuc-dung-restoration",
+    "name": "Phục Dựng - Restoration",
+    "year": null,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "piles-a-fast-paced-free-for-all-2023",
+    "name": "Piles! A Fast-Paced Free-For-All",
+    "year": 2023,
+    "players": [2, 8],
+    "mode": "competitive"
+  },
+  {
+    "slug": "pillars-of-fate",
+    "name": "Pillars of Fate",
+    "year": 2025,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "pipeline",
+    "name": "Pipeline",
+    "year": 2018,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "pirates-of-maracaibo",
+    "name": "Pirates of Maracaibo",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "popcorn-2025",
+    "name": "Popcorn",
+    "year": 2025,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "power-grid",
+    "name": "Power Grid",
+    "year": 2004,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "power-grid-deluxe-europe-north-america-2014",
+    "name": "Power Grid Deluxe: Europe/North America",
+    "year": 2014,
+    "players": [2, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "power-plants-2022",
+    "name": "Power Plants",
+    "year": 2022,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "praga-caput-regni-2020",
+    "name": "Praga Caput Regni",
+    "year": 2020,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "princess-jing",
+    "name": "Princess Jing",
+    "year": 2018,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "project-l",
+    "name": "Project L",
+    "year": 2020,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "qe-2019", "name": "QE", "year": 2019, "players": [3, 5], "mode": "competitive" },
+  { "slug": "quacks", "name": "Quacks", "year": 2018, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "quebec-2026",
+    "name": "Québec",
+    "year": 2011,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  { "slug": "quorum", "name": "Quorum", "year": 2025, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "ra-1999",
+    "name": "Ra (1999)",
+    "year": 1999,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "race-for-the-galaxy",
+    "name": "Race for the Galaxy",
+    "year": 2007,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "radlands",
+    "name": "Radlands",
+    "year": 2021,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "raiders-of-scythia-2020",
+    "name": "Raiders of Scythia",
+    "year": null,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "raiders-of-the-north-sea-collector",
+    "name": "Raiders of the North Sea Collector",
+    "year": null,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "railway-boom",
+    "name": "Railway Boom",
+    "year": 2024,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "rebel-princess-deluxe-edition-2024",
+    "name": "Rebel Princess: Deluxe Edition",
+    "year": 2024,
+    "players": [3, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "rebirth-ks-edition--ireland",
+    "name": "Rebirth KS edition",
+    "year": 2024,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "rebirth-ks-edition",
+    "name": "Rebirth KS edition",
+    "year": 2024,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "recall", "name": "Recall", "year": 2024, "players": [1, 4], "mode": "competitive" },
+  {
+    "slug": "reef-encounter",
+    "name": "Reef Encounter",
+    "year": 2004,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "regicide", "name": "Regicide", "year": 2020, "players": [1, 4], "mode": "coop" },
+  {
+    "slug": "revenant",
+    "name": "Revenant",
+    "year": 2025,
+    "players": [null, null],
+    "mode": "competitive"
+  },
+  {
+    "slug": "revive-2022",
+    "name": "Revive",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "rising-sun",
+    "name": "Rising Sun",
+    "year": 2018,
+    "players": [3, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "robinson-crusoe-adventures-on-the-cursed-island",
+    "name": "Robinson Crusoe: Adventures on the Cursed Island",
+    "year": 2012,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "rococo-deluxe-edition",
+    "name": "Rococo: Deluxe Edition",
+    "year": 2020,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "roll-player",
+    "name": "Roll Player",
+    "year": 2016,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "root", "name": "Root", "year": 2018, "players": [2, 4], "mode": "asymmetric" },
+  { "slug": "ruins", "name": "Ruins", "year": 2025, "players": [2, 5], "mode": "competitive" },
+  {
+    "slug": "rummikub-premium-2019",
+    "name": "Rummikub: Premium",
+    "year": 2019,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "sabika", "name": "Sabika", "year": 2022, "players": [1, 4], "mode": "competitive" },
+  {
+    "slug": "saboteur",
+    "name": "Saboteur",
+    "year": 2004,
+    "players": [3, 10],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "salem-1692",
+    "name": "Salem 1692",
+    "year": 2018,
+    "players": [4, 12],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "salton-sea",
+    "name": "Salton Sea",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "samurai-the-legend-of-xiandao",
+    "name": "Samurai (The Legend of Xiandao)",
+    "year": 1998,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "san-francisco",
+    "name": "San Francisco",
+    "year": 2022,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "scholars-of-the-south-tigris",
+    "name": "Scholars of the South Tigris",
+    "year": null,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "scout-2019", "name": "Scout", "year": 2019, "players": [2, 5], "mode": "competitive" },
+  {
+    "slug": "seaside-2024",
+    "name": "Seaside",
+    "year": 2024,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "secret-hitler",
+    "name": "Secret Hitler",
+    "year": null,
+    "players": [5, 10],
+    "mode": "team"
+  },
+  { "slug": "septima", "name": "Septima", "year": 2023, "players": [1, 4], "mode": "competitive" },
+  {
+    "slug": "seti-search-for-extraterrestrial-intelligence-2024",
+    "name": "SETI: Search for Extraterrestrial Intelligence",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "shallow-sea-2025",
+    "name": "Shallow Sea",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "shikoku-1889",
+    "name": "Shikoku 1889",
+    "year": 2007,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "shipyard-second-edition-2023",
+    "name": "Shipyard (Second Edition)",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "shogun-no-katana-2023",
+    "name": "Shogun no Katana",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "shuffle-and-swing",
+    "name": "Shuffle and Swing",
+    "year": 2024,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "side-effects",
+    "name": "Side Effects",
+    "year": null,
+    "players": [2, 8],
+    "mode": "competitive"
+  },
+  {
+    "slug": "silver-gold",
+    "name": "Silver & Gold",
+    "year": 2019,
+    "players": [null, null],
+    "mode": "competitive"
+  },
+  { "slug": "skull", "name": "Skull", "year": 2011, "players": [3, 6], "mode": "competitive" },
+  { "slug": "sky-team", "name": "Sky Team", "year": 2023, "players": [2, 2], "mode": "coop" },
+  {
+    "slug": "skymines-2019",
+    "name": "Skymines",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  { "slug": "skyrise", "name": "Skyrise", "year": 2020, "players": [1, 5], "mode": "competitive" },
+  {
+    "slug": "sleeping-gods-distant-skies",
+    "name": "Sleeping Gods: Distant Skies",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "small-city",
+    "name": "Small City",
+    "year": null,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "small-world-of-warcraft",
+    "name": "Small World of Warcraft",
+    "year": 2020,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "snow-colony-2025",
+    "name": "Snow Colony",
+    "year": 2025,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "snow-time-2018",
+    "name": "Snow Time",
+    "year": 2018,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "sobek-2-players-2021",
+    "name": "Sobek: 2 Players",
+    "year": 2021,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "space-station-phoenix-2022",
+    "name": "Space Station Phoenix",
+    "year": 2022,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "spirit-island",
+    "name": "Spirit Island",
+    "year": 2017,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "splendor",
+    "name": "Splendor",
+    "year": null,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "spots-2022", "name": "Spots", "year": 2022, "players": [1, 4], "mode": "competitive" },
+  {
+    "slug": "star-realms-2014",
+    "name": "Star Realms",
+    "year": 2014,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "startups-2017",
+    "name": "Startups",
+    "year": 2017,
+    "players": [3, 7],
+    "mode": "competitive"
+  },
+  {
+    "slug": "stationfall",
+    "name": "Stationfall",
+    "year": 2023,
+    "players": [1, 9],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "stephens",
+    "name": "Stephens",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "stone-age-anniversary",
+    "name": "Stone Age: Anniversary",
+    "year": 2018,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "streets", "name": "Streets", "year": 2021, "players": [2, 5], "mode": "competitive" },
+  {
+    "slug": "suburbia-collector-edition",
+    "name": "Suburbia (Collector's Edition)",
+    "year": 2018,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "super-kawaii-pets",
+    "name": "Super Kawaii Pets",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "survive-escape-from-atlantis",
+    "name": "Survive: Escape from Atlantis!",
+    "year": 1982,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "sushi-go-party-2016",
+    "name": "Sushi Go Party!",
+    "year": 2016,
+    "players": [2, 8],
+    "mode": "competitive"
+  },
+  {
+    "slug": "sushi-go",
+    "name": "Sushi Go!",
+    "year": 2013,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "sweet-lands-2025",
+    "name": "Sweet Lands",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "tabannusi-builders-of-ur",
+    "name": "Tabannusi: Builders of Ur",
+    "year": 2021,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "tacta", "name": "Tacta", "year": null, "players": [2, 6], "mode": "competitive" },
+  {
+    "slug": "tainted-grail-the-fall-of-avalon",
+    "name": "Tainted Grail: The Fall of Avalon",
+    "year": 2019,
+    "players": [null, null],
+    "mode": "coop"
+  },
+  {
+    "slug": "taj-mahal",
+    "name": "Taj Mahal",
+    "year": 2000,
+    "players": [3, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "take-5-30th-anniversary-edition-2024",
+    "name": "Take 5: 30th Anniversary Edition",
+    "year": 2024,
+    "players": [2, 10],
+    "mode": "competitive"
+  },
+  {
+    "slug": "tea-garden-2024",
+    "name": "Tea Garden",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "tekhenu-obelisk-of-the-sun",
+    "name": "Tekhenu: Obelisk of the Sun",
+    "year": 2020,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "teotihuacan-city-of-gods-2018",
+    "name": "Teotihuacan: City of Gods",
+    "year": 2018,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "teotihuacan-city-of-gods-deluxe-master-set-2024",
+    "name": "Teotihuacan: City of Gods – Deluxe Master Set",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "terminus",
+    "name": "Terminus",
+    "year": 2024,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "terra-mystica",
+    "name": "Terra Mystica",
+    "year": 2012,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "that-time-you-killed-me",
+    "name": "That Time You Killed Me",
+    "year": 2022,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-7th-continent-kickstarter",
+    "name": "The 7th Continent Kickstarter",
+    "year": 2017,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "the-7th-continent-classic-edition",
+    "name": "The 7th Continent: Classic Edition",
+    "year": 2017,
+    "players": [null, null],
+    "mode": "coop"
+  },
+  {
+    "slug": "the-castles-of-burgundy-2019",
+    "name": "The Castles of Burgundy",
+    "year": 2019,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-castle-of-burgundy-special-edition",
+    "name": "The Castles of Burgundy: Special Edition",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-cost",
+    "name": "The Cost",
+    "year": 2020,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-elder-scrolls-betrayal-of-the-second-era",
+    "name": "The Elder Scrolls: Betrayal of the Second Era",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "the-estates",
+    "name": "The Estates",
+    "year": null,
+    "players": [3, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-fox-experiment-2023",
+    "name": "The Fox Experiment",
+    "year": 2023,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-gallerist",
+    "name": "The Gallerist",
+    "year": 2015,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-game-quick-and-easy",
+    "name": "The Game Quick and Easy",
+    "year": 2020,
+    "players": [2, 5],
+    "mode": "coop"
+  },
+  { "slug": "the-gang-2024", "name": "The Gang", "year": 2024, "players": [3, 6], "mode": "coop" },
+  {
+    "slug": "the-grand-trunk-journey",
+    "name": "The Grand Trunk Journey",
+    "year": 2020,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-great-zimbabwe",
+    "name": "The Great Zimbabwe",
+    "year": 2012,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-isle-of-cats-2019",
+    "name": "The Isle of Cats",
+    "year": 2019,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-lord-of-the-rings-duel-for-middle-earth",
+    "name": "The Lord of the Rings: Duel for Middle-earth",
+    "year": 2024,
+    "players": [2, 2],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "the-lord-of-the-rings-trick-taking-game-2025",
+    "name": "The Lord of the Rings: The Fellowship of the Ring - Trick-Taking Game",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  { "slug": "the-mind", "name": "The Mind", "year": 2018, "players": [2, 4], "mode": "coop" },
+  {
+    "slug": "the-old-kings-crown",
+    "name": "The Old King's Crown",
+    "year": 2023,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-palaces-of-carrara-second-edition-2022--advanced",
+    "name": "The Palaces of Carrara (Second Edition)",
+    "year": 2022,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-palaces-of-carrara-second-edition-2022",
+    "name": "The Palaces of Carrara (Second Edition)",
+    "year": 2022,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-quest-for-el-dorado",
+    "name": "The Quest for El Dorado",
+    "year": 2017,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-red-cathedral",
+    "name": "The Red Cathedral",
+    "year": 2020,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-taverns-of-tiefenthal-2019",
+    "name": "The Taverns of Tiefenthal",
+    "year": 2019,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-vale-of-eternity-2023",
+    "name": "The Vale of Eternity",
+    "year": 2023,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-voyages-of-marco-polo-2015",
+    "name": "The Voyages of Marco Polo",
+    "year": 2015,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-white-castle-2023",
+    "name": "The White Castle",
+    "year": null,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-white-castle-duel-2025",
+    "name": "The White Castle Duel",
+    "year": 2025,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-witcher-old-world",
+    "name": "The Witcher: Old World",
+    "year": 2023,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "the-wolves-2022",
+    "name": "The Wolves",
+    "year": 2022,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "thien-menh",
+    "name": "Thiên Mệnh",
+    "year": 2023,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "things-in-rings--co-op",
+    "name": "Things in Rings",
+    "year": 2024,
+    "players": [2, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "things-in-rings",
+    "name": "Things in Rings",
+    "year": 2024,
+    "players": [3, 6],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "this-war-of-mine",
+    "name": "This War of Mine: The Board Game",
+    "year": 2017,
+    "players": [null, null],
+    "mode": "coop"
+  },
+  {
+    "slug": "through-the-ages-a-new-story-of-civilization-2015",
+    "name": "Through the Ages: A New Story of Civilization",
+    "year": 2015,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "thunder-road-vendetta-maximum-chrome",
+    "name": "Thunder Road: Vendetta – Maximum Chrome",
+    "year": 2023,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  { "slug": "tiletum", "name": "Tiletum", "year": 2022, "players": [1, 4], "mode": "competitive" },
+  {
+    "slug": "timber-town",
+    "name": "Timber Town",
+    "year": 2025,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "time-to-panic",
+    "name": "Time to Panic",
+    "year": 2025,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  { "slug": "tinco", "name": "Tinco", "year": 2012, "players": [3, 6], "mode": "competitive" },
+  {
+    "slug": "tinner-s-trail",
+    "name": "Tinners' Trail",
+    "year": null,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "tiny-towns",
+    "name": "Tiny Towns",
+    "year": 2019,
+    "players": [1, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "tir-na-nog",
+    "name": "Tír na nÓg",
+    "year": 2024,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  { "slug": "tiwanaku--coop", "name": "Tiwanaku", "year": 2022, "players": [1, 4], "mode": "coop" },
+  {
+    "slug": "tiwanaku",
+    "name": "Tiwanaku",
+    "year": 2022,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "tokaido", "name": "Tokaido", "year": 2012, "players": [2, 5], "mode": "competitive" },
+  {
+    "slug": "too-many-bones",
+    "name": "Too Many Bones",
+    "year": 2017,
+    "players": [null, null],
+    "mode": "coop"
+  },
+  {
+    "slug": "torres-1999",
+    "name": "Torres",
+    "year": 1999,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "townsfolk-tussle",
+    "name": "Townsfolk Tussle",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "coop"
+  },
+  {
+    "slug": "toy-battle",
+    "name": "Toy Battle",
+    "year": 2025,
+    "players": [2, 2],
+    "mode": "competitive"
+  },
+  {
+    "slug": "trajan-2011",
+    "name": "Trajan",
+    "year": 2011,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "transgalactica-2025",
+    "name": "Transgalactica",
+    "year": 2025,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "trickerion-legends-of-illusion",
+    "name": "Trickerion: Legends of Illusion",
+    "year": 2015,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "triqueta-2023",
+    "name": "Triqueta",
+    "year": 2023,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "trismegistus",
+    "name": "Trismegistus",
+    "year": 2026,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "troyes-2010",
+    "name": "Troyes",
+    "year": 2010,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "tycoon-india-1981",
+    "name": "Tycoon: India 1981",
+    "year": 2022,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "tzolk-in-the-mayan-calendar-2012",
+    "name": "Tzolk'in: The Mayan Calendar",
+    "year": 2012,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "ultimate-railroads",
+    "name": "Ultimate Railroads",
+    "year": 2022,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "ultimate-werewolf",
+    "name": "Ultimate Werewolf",
+    "year": 2008,
+    "players": [5, 75],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "unconscious-mind",
+    "name": "Unconscious Mind",
+    "year": 2021,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "undergrove-2024",
+    "name": "Undergrove",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "unfathomable",
+    "name": "Unfathomable",
+    "year": 2021,
+    "players": [3, 6],
+    "mode": "hidden-traitor"
+  },
+  {
+    "slug": "valletta",
+    "name": "Valletta",
+    "year": 2017,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "vantage", "name": "Vantage", "year": 2025, "players": [1, 6], "mode": "coop" },
+  {
+    "slug": "victorian-masterminds-2019",
+    "name": "Victorian Masterminds",
+    "year": 2019,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "village-pillage",
+    "name": "Village Pillage",
+    "year": 2018,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "vindication",
+    "name": "Vindication",
+    "year": null,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "vinhos",
+    "name": "Vinhos: Deluxe Edition",
+    "year": 2016,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "virtu--2-player",
+    "name": "Virtù",
+    "year": 2021,
+    "players": [2, 2],
+    "mode": "asymmetric"
+  },
+  { "slug": "virtu", "name": "Virtù", "year": 2021, "players": [3, 5], "mode": "competitive" },
+  {
+    "slug": "viscounts-of-the-west-kingdom-2020",
+    "name": "Viscounts of the West Kingdom",
+    "year": 2020,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "viticulture-essential-edition-2015",
+    "name": "Viticulture Essential Edition",
+    "year": 2015,
+    "players": [1, 6],
+    "mode": "competitive"
+  },
+  {
+    "slug": "wandering-towers",
+    "name": "Wandering Towers",
+    "year": 2022,
+    "players": [2, 7],
+    "mode": "competitive"
+  },
+  {
+    "slug": "war-chest",
+    "name": "War Chest",
+    "year": 2018,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "way-of-the-panda",
+    "name": "Way of the Panda",
+    "year": 2017,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "wayfarers-of-the-south-tigris",
+    "name": "Wayfarers of the South Tigris",
+    "year": 2021,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "wayfinders-2019",
+    "name": "Wayfinders",
+    "year": 2019,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "wildcatters",
+    "name": "Wildcatters",
+    "year": 2013,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "windmill-valley",
+    "name": "Windmill valley",
+    "year": 2024,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "wingspan",
+    "name": "Wingspan",
+    "year": 2019,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "wir-sind-das-volk",
+    "name": "Wir sind das Volk!",
+    "year": 2014,
+    "players": [2, 2],
+    "mode": "asymmetric"
+  },
+  {
+    "slug": "wonderland-s-war",
+    "name": "Wonderland's War",
+    "year": 2020,
+    "players": [2, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "woodcraft",
+    "name": "Woodcraft",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "world-order-2026",
+    "name": "World Order",
+    "year": 2026,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "world-wonders-2023",
+    "name": "World Wonders",
+    "year": 2023,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "wreck-raiders-2019",
+    "name": "Wreck Raiders",
+    "year": 2019,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  {
+    "slug": "wyrmspan",
+    "name": "Wyrmspan",
+    "year": 2024,
+    "players": [1, 5],
+    "mode": "competitive"
+  },
+  { "slug": "xi-an", "name": "Xi'an", "year": 2017, "players": [2, 4], "mode": "competitive" },
+  { "slug": "yamatai", "name": "Yamatai", "year": 2017, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "yinzi-ming",
+    "name": "Yinzi: Ming",
+    "year": null,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "yokohama-2016",
+    "name": "Yokohama",
+    "year": null,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  { "slug": "yunnan", "name": "Yunnan", "year": 2013, "players": [2, 5], "mode": "competitive" },
+  { "slug": "zenith", "name": "Zenith", "year": 2025, "players": [2, 4], "mode": "competitive" },
+  {
+    "slug": "zhanguo-the-first-empire-2023",
+    "name": "Zhanguo: The First Empire",
+    "year": 2023,
+    "players": [2, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "zoo-tycoon",
+    "name": "Zoo Tycoon",
+    "year": 2022,
+    "players": [1, 4],
+    "mode": "competitive"
+  },
+  {
+    "slug": "zoo-vadis",
+    "name": "Zoo Vadis",
+    "year": null,
+    "players": [3, 7],
+    "mode": "competitive"
+  }
+]

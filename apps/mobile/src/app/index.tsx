@@ -9,6 +9,15 @@ export default function Home() {
   return (
     <ScrollView contentContainerStyle={styles.content}>
       <View style={styles.column}>
+        <Link href="/games" asChild>
+          <Pressable accessibilityRole="button">
+            <Card>
+              <Heading>Game</Heading>
+              <Text style={styles.meta}>Tra cứu thư viện game và công cụ đi kèm.</Text>
+            </Card>
+          </Pressable>
+        </Link>
+
         <Link href="/club" asChild>
           <Pressable accessibilityRole="button">
             <Card>

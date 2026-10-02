@@ -13,7 +13,8 @@
     "export:web": "expo export --platform web",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "games:index": "node scripts/build-game-index.mjs"
   },
   "dependencies": {
     "@expo/log-box": "^57.0.4",

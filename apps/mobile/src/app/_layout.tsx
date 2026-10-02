@@ -14,6 +14,9 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name="index" options={{ title: 'Onboard' }} />
+        <Stack.Screen name="games/index" options={{ title: 'Game' }} />
+        <Stack.Screen name="games/[slug]/index" options={{ title: 'Game' }} />
+        <Stack.Screen name="games/[slug]/missions" options={{ title: 'Rút nhiệm vụ' }} />
         <Stack.Screen name="club" options={{ title: 'Kèo của CLB' }} />
         <Stack.Screen name="meetup/[id]" options={{ title: 'Kèo' }} />
         <Stack.Screen name="score/table/[tableId]" options={{ title: 'Bảng điểm' }} />
