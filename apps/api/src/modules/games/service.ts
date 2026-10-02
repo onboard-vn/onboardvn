@@ -15,6 +15,7 @@ import { ApiError } from '../../lib/errors.js';
 import { storage } from '../../lib/storage/index.js';
 import { countOwners } from '../shelf/repo.js';
 import { normalizeBarcode } from './barcode.js';
+import { findExternalByGameIds } from './external.js';
 import * as repo from './repo.js';
 import type { GameRow } from './repo.js';
 import { slugify } from './slug.js';
@@ -67,18 +68,32 @@ function toDetailDto(
   };
 }
 
-export async function listGamesService(filter: GameFilter): Promise<GameListResponse> {
+export async function listGamesService(
+  filter: GameFilter,
+  includeExternal = false,
+): Promise<GameListResponse> {
   const { rows, total } = await repo.listGames(filter);
-  return { items: rows.map(toSummaryDto), page: filter.page, pageSize: filter.pageSize, total };
+  const external = includeExternal
+    ? await findExternalByGameIds(rows.map((r) => r.id))
+    : new Map<string, never>();
+  const items = rows.map((row) => ({
+    ...toSummaryDto(row),
+    ...(includeExternal ? { externalThumbUrl: external.get(row.id)?.thumbUrl ?? null } : {}),
+  }));
+  return { items, page: filter.page, pageSize: filter.pageSize, total };
 }
 
 export async function getGameBySlugService(
   slug: string,
   includePermissionRef = false,
+  includeExternal = false,
 ): Promise<GameDetailDto> {
   const row = await repo.findGameBySlug(slug);
   if (!row) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy game');
-  return toDetailDto(row, includePermissionRef, await countOwners(row.id));
+  const dto = toDetailDto(row, includePermissionRef, await countOwners(row.id));
+  if (!includeExternal) return dto;
+  const external = await findExternalByGameIds([row.id]);
+  return { ...dto, external: external.get(row.id) ?? null };
 }
 
 async function getGameByIdOrThrow(id: string): Promise<GameDetailDto> {

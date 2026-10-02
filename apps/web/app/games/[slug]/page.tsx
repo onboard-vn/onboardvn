@@ -52,6 +52,9 @@ export default async function GameDetailPage(props: PageProps<'/games/[slug]'>) 
 
   const user = await getCurrentUser();
   const canEditDescription = Boolean(user && user.role !== 'user');
+  const external = game.external ?? null;
+  const externalImage = external?.imageUrl ?? external?.thumbUrl ?? null;
+  const externalText = external?.description ?? external?.shortDescription ?? null;
   const categoryGroups = (['category', 'mechanic'] as const).map((kind) => ({
     kind,
     items: game.categories.filter((c) => c.kind === kind),
@@ -75,6 +78,14 @@ export default async function GameDetailPage(props: PageProps<'/games/[slug]'>) 
           src={game.imageUrl}
           alt={game.nameVi ?? game.nameEn}
           className="max-h-96 w-full rounded-lg object-cover"
+        />
+      ) : externalImage ? (
+        // eslint-disable-next-line @next/next/no-img-element -- remote BGG CDN image, rendered as-is
+        <img
+          src={externalImage}
+          alt={game.nameVi ?? game.nameEn}
+          referrerPolicy="no-referrer"
+          className="max-h-96 w-full rounded-lg object-contain"
         />
       ) : null}
       {game.imageCredit ? (
@@ -133,6 +144,24 @@ export default async function GameDetailPage(props: PageProps<'/games/[slug]'>) 
                 : DESCRIPTION_LABEL.original}
             </p>
           </>
+        ) : external && externalText ? (
+          <details className="group">
+            <summary className="text-muted-foreground cursor-pointer text-sm">
+              Mô tả gốc (EN) — bấm để xem
+            </summary>
+            <p className="mt-2 text-sm leading-relaxed whitespace-pre-line">{externalText}</p>
+            <p className="text-muted-foreground mt-2 text-xs">
+              Nguồn: {external.attribution}
+              {external.bggUrl ? (
+                <>
+                  {' · '}
+                  <a href={external.bggUrl} target="_blank" rel="noreferrer" className="underline">
+                    Xem trên BoardGameGeek
+                  </a>
+                </>
+              ) : null}
+            </p>
+          </details>
         ) : (
           <p className="text-muted-foreground text-sm">
             Chưa có mô tả tiếng Việt — bạn có thể đóng góp.{' '}

@@ -52,6 +52,7 @@ services:
       GAMEUPC_API_KEY: ${GAMEUPC_API_KEY:-}
       SMTP_URL: ${SMTP_URL:?SMTP_URL is required}
       MAIL_FROM: ${MAIL_FROM:?MAIL_FROM is required}
+      SHOW_EXTERNAL_METADATA: ${SHOW_EXTERNAL_METADATA:-false}
     command: ['node', 'dist/db/migrate.js']
 
   api:

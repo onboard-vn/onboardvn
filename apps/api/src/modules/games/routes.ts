@@ -8,6 +8,7 @@ import {
 } from '@onboard/shared';
 import { Hono } from 'hono';
 import { requireRole } from '../../auth/middleware.js';
+import { env } from '../../lib/env.js';
 import { ApiError } from '../../lib/errors.js';
 import { zValidator } from '../../lib/validator.js';
 import type { AppEnv, SessionUser } from '../../types.js';
@@ -24,16 +25,23 @@ import {
   updateGameService,
 } from './service.js';
 
+function canSeeExternal(user: SessionUser | null): boolean {
+  return env.SHOW_EXTERNAL_METADATA && user !== null;
+}
+
 function isStaff(user: SessionUser | null): boolean {
   return user?.role === 'maintainer' || user?.role === 'admin';
 }
 
 export const gameRoutes = new Hono<AppEnv>()
   .get('/', zValidator('query', gameFilterSchema), async (c) => {
-    return c.json(await listGamesService(c.req.valid('query')));
+    return c.json(await listGamesService(c.req.valid('query'), canSeeExternal(c.get('user'))));
   })
   .get('/:slug', async (c) => {
-    return c.json(await getGameBySlugService(c.req.param('slug'), isStaff(c.get('user'))));
+    const user = c.get('user');
+    return c.json(
+      await getGameBySlugService(c.req.param('slug'), isStaff(user), canSeeExternal(user)),
+    );
   })
   .get('/:slug/cafes', async (c) => {
     const game = await getGameBySlugService(c.req.param('slug'));

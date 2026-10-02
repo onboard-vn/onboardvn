@@ -123,6 +123,16 @@ export interface GameBarcodeDto {
   source: GameBarcodeSource;
 }
 
+export const gameExternalSchema = z.object({
+  description: z.string().nullable(),
+  shortDescription: z.string().nullable(),
+  imageUrl: z.url().nullable(),
+  thumbUrl: z.url().nullable(),
+  bggUrl: z.url().nullable(),
+  attribution: z.literal('BoardGameGeek'),
+});
+export type GameExternalDto = z.infer<typeof gameExternalSchema>;
+
 export interface GameSummaryDto {
   id: string;
   slug: string;
@@ -136,6 +146,8 @@ export interface GameSummaryDto {
   isVietnamese: boolean;
   bggId: number | null;
   imageUrl: string | null;
+  /** Only present for authenticated requests when SHOW_EXTERNAL_METADATA is on. */
+  externalThumbUrl?: string | null;
   categories: CategoryDto[];
 }
 
@@ -151,6 +163,8 @@ export interface GameDetailDto extends GameSummaryDto {
   bggUrl: string | null;
   barcodes: GameBarcodeDto[];
   ownersCount: number;
+  /** Only present for authenticated requests when SHOW_EXTERNAL_METADATA is on. */
+  external?: GameExternalDto | null;
 }
 
 export interface GameRevisionDto {

@@ -22,6 +22,8 @@ const envSchema = z
     TRUST_PROXY: z.preprocess((v) => v === 'true' || v === '1', z.boolean()),
     SMTP_URL: z.preprocess((v) => v || undefined, z.url().optional()),
     MAIL_FROM: z.preprocess((v) => v || undefined, z.string().min(3).optional()),
+    /** Private deployments only: expose stored BGG description/image to authenticated users. */
+    SHOW_EXTERNAL_METADATA: z.preprocess((v) => v === 'true' || v === '1', z.boolean()),
     /** e2e-only: disables Better Auth's own IP-keyed rate limiter without touching NODE_ENV. */
     AUTH_RATE_LIMIT_DISABLED: z.preprocess((v) => v === 'true' || v === '1', z.boolean()),
   })
