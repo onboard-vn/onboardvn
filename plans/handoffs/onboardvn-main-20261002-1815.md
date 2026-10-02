@@ -1,5 +1,7 @@
 # Handoff — mainline consolidation (2026-10-02 18:15)
 
+> Superseded by [onboardvn-main-20261002-2305.md](onboardvn-main-20261002-2305.md).
+
 Supersedes [onboardvn-club-first-20261002-1625.md](onboardvn-club-first-20261002-1625.md) for branch state; its "Decided" and "Known issues" still apply.
 
 ## Branch state
@@ -20,6 +22,25 @@ Done at 18:20: tunnel Healthy, `https://onboard.j2teamnnl.com` live (`/`, `/heal
 2. Email Worker (optional): prefix the subject with the alias local part (`fb@` → `[fb] …`). Forwarding via `message.forward` cannot change the subject, so the Worker must send a new message to the verified Gmail destination (From = alias, Reply-To = original sender) and fall back to `message.forward` on error. Until then use Gmail filters `deliveredto:fb@j2teamnnl.com`.
 3. Redeploy `/app` after mobile changes: `docs/deployment.md` → "App Expo ở `/app`".
 4. Product next steps from the club-first handoff (wire Expo to the real API, port remaining pages, resume scoring after BG Stats research).
+
+## Update 2026-10-02 20:00 — product steps (uncommitted on `main`)
+
+Owner said: do not commit. Everything below is in the working tree; status rows in the plan.
+
+- Web `/games`: search-as-you-type, type-to-search category, two-thumb ranges (players/time/weight; API adds `minPlayers`/`maxPlayers`/`minTime`/`minWeight`, old params still work), link to The Gang missions without login; header wraps at 375/768px; `categoryId` filter 500 fixed.
+- Expo: bearer login (password/OTP), clubs → Kèo → tables, table score sheet on the real plays API (2s polling, roster, guests, finalize), guest claim (request + link `/app/claim/:token`), ported cafés/games/shelf/friends.
+- API: new `GET /api/tables/:tableId/play` (latest play of a table, so everyone scores the same play); claim link URL now `/app/claim/…`.
+- Verified: repo-wide lint/typecheck/test green (shared 676, api 380, web 82, mobile 40), `export:web` builds. Table scoring not live-tested yet (no club data locally).
+
+- 20:20 local browser test passed for games/The Gang/table scoring after fixing: co-op winners always false on the server, The Gang derived Vault/Alarm counts editable (server ignored them) and ✓/✗ heists typed as numbers.
+
+Next: owner reviews → commit/push → redeploy API + `/app` on VPS → live-test table scoring with two accounts on one table; then Email Worker / scoring research as before.
+
+## Update 2026-10-02 21:00 — Expo replaces the Next.js site (uncommitted)
+
+Owner decided the Expo app becomes the whole site at `/`. All web pages are ported with identical URLs, a responsive site header (☰ under 900px), cookie+bearer auth; Club/Kèo pages keep the old structure plus "Tính điểm"/"Rút nhiệm vụ" per table. Caddy now serves the Expo build for everything except `/api` and `/health`, redirects `/app/*` and the old Vietnamese paths. Plan: [plans/261002-2033-expo-replaces-web/plan.md](../261002-2033-expo-replaces-web/plan.md) (status, gaps, verification).
+
+Next: owner reviews locally → commit → deploy (`docs/deployment.md` → "Website = app Expo") → smoke test on the public domain; then close gaps listed in the plan.
 
 ## Environment notes
 

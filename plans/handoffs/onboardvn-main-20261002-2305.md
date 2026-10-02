@@ -1,0 +1,23 @@
+# Handoff — Expo replaces web + "Hôm nay chơi gì?" redesign (2026-10-02 23:05)
+
+Supersedes [onboardvn-main-20261002-1815.md](onboardvn-main-20261002-1815.md) for current state (its env notes still apply). Plan with full status, decisions, gaps: [plans/261002-2033-expo-replaces-web/plan.md](../261002-2033-expo-replaces-web/plan.md) — read it first.
+
+## State
+
+- Everything since commit `4a9ce07` is **uncommitted on `main`** (~90 files). Owner: do not commit/deploy until asked.
+- Done (uncommitted): Expo app (`apps/mobile`) is the whole site at `/` with all old Next.js pages ported (same URLs), responsive header, brand theme (felt green `#0f766e`, logo yellow/red, cream bg, Be Vietnam Pro), transparent hero, home redesign; Caddy serves the Expo build + legacy redirects (`deploy/Caddyfile`, `docs/deployment.md`); table scoring on the real plays API; shelf upgrade (condition/sleeve/box/edition, list/grid, last played), wishlist, `/api/suggest` (migration `0023_shelf_wishlist`, dev DB migrated, backup `backups/dev-onboard-20261002-2207.dump`).
+- Last verified: repo-wide lint/typecheck/test green (shared 676, api 397, web 82, mobile 121), prettier clean; after `/suggest` rewrite mobile 123 green.
+
+## Next (in order)
+
+1. ~~Rewrite `/suggest`~~ — **Done (uncommitted, 23:20)**: new flow per demo with existing sources (Tủ game, Muốn chơi, Quán, Tỉnh/thành, Toàn quốc); see plan table row for files and gaps. Mobile lint/typecheck/test green (123), prettier clean.
+2. ~~New sources + actions after pick~~ — **Done (uncommitted, 00:00)**: owner decisions and file list in the plan ("Owner decisions for sources and actions" + table row). Restart API after pulling: migration 0024 already applied to dev DB.
+3. Later: home sections ("Dành cho người mới", "Thuần Việt/Việt hoá", "Nhiều quán có nhất"); gaps list in the plan; then commit → deploy → public smoke test.
+
+## Local dev
+
+- Postgres: `onboard-dev-postgres-1` (127.0.0.1:54329); seeded club "CLB Test Local", Kèo `keo-test-local` with The Gang + Catan tables, users `dev1@example.com` (owner) / `dev2@example.com`; password in `plans/private/dev-login.txt` (gitignored). API env: `apps/api/.env` (gitignored, dev values).
+- Run API: `cd apps/api && pnpm exec tsx --env-file=.env src/server.ts` (port 8787).
+- Run Expo web: `cd apps/mobile && EXPO_PUBLIC_API_URL=http://localhost:8787 pnpm exec expo start --web --port 8081` (dev routes have no `/app` prefix; do not set `CI=1`, it disables reload).
+- Production-like check: `pnpm --filter @onboard/mobile export:web`, then run `caddy:2-alpine` with `deploy/Caddyfile` (replace `api:8787` with `host.docker.internal:8787`) mounting `apps/mobile/dist` at `/srv/mobile-web`, port 8081 (auth trusted origin is `http://localhost:8081`).
+- Codex image generation quota resets 2026-10-04; ChatGPT in the owner's Chrome works for image edits (downloads land in `~/Downloads/.com.google.Chrome.*` temp files pending confirmation).
