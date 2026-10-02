@@ -1,0 +1,49 @@
+{
+  "slug": "northgard",
+  "name": "Northgard",
+  "year": 2022,
+  "bggId": null,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Winner",
+      "labelVi": "Người thắng",
+      "hint": "Mark the player who met a victory condition.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value, 1, 0)"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Not verified: assumed to be Northgard: Uncharted Lands (4X board game); winner decided by that game's victory conditions.",
+  "notes": "family: objective. Edition assumed (Northgard: Uncharted Lands, 2022); victory conditions and any scoring could not be retrieved (BGG and publisher pages blocked, web search exhausted). Player count is unverified; replace after reading the official rulebook.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Northgard",
+      "title": "Northgard (Wikipedia)",
+      "type": "wiki",
+      "section": "Board game: Northgard Uncharted Lands"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Unverified"
+  }
+}

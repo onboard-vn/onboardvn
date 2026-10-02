@@ -1,0 +1,157 @@
+{
+  "slug": "7-wonders",
+  "name": "7 Wonders",
+  "year": 2010,
+  "bggId": 68448,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 7
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "military",
+      "label": "Military conflict tokens",
+      "labelVi": "Điểm quân sự",
+      "hint": "Sum of conflict tokens: +1 (Age I), +3 (Age II), +5 (Age III) per victory, -1 per defeat. Can be negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coins",
+      "label": "Coins in treasury",
+      "labelVi": "Số xu còn lại",
+      "hint": "Enter total coins; every 3 coins = 1 VP (rounded down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wonder",
+      "label": "Wonder stages",
+      "labelVi": "Điểm giai đoạn Wonder",
+      "hint": "VP printed on each built wonder stage (stages that give other effects score 0).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "civilian",
+      "label": "Civilian structures (blue)",
+      "labelVi": "Công trình dân sự (xanh dương)",
+      "hint": "Sum of VP on blue cards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "science",
+      "label": "Scientific structures (green)",
+      "labelVi": "Khoa học (xanh lá)",
+      "hint": "Count each symbol: each symbol type scores n squared, plus 7 per complete set of all three.",
+      "scope": "player",
+      "input": "counts",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "compass ** 2 + gear ** 2 + tablet ** 2 + 7 * min(compass, gear, tablet)"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "compass",
+        "gear",
+        "tablet"
+      ]
+    },
+    {
+      "key": "commercial",
+      "label": "Commercial structures (yellow)",
+      "labelVi": "Thương mại (vàng)",
+      "hint": "Sum of VP from yellow cards (mainly Age III; includes card-based coin/VP effects).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "guilds",
+      "label": "Guilds (purple)",
+      "labelVi": "Hội (tím)",
+      "hint": "Sum of VP from guilds, per card text (your city and/or neighbours).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "coins",
+      "dir": "highest",
+      "description": "Most coins remaining"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Official rulebook PDF could not be downloaded (mirror blocked); scoring order and values cross-checked from two rules summaries. Leaders/Cities/Armada expansions and Babel/Edifice not modelled. Tiebreaker coin count uses coins before conversion (enter coins in the coins field).",
+  "sources": [
+    {
+      "url": "https://tesera.ru/images/items/8722/7-Wonders-Rulebook-EN.pdf",
+      "title": "7 Wonders Rulebook EN (Repos Production)",
+      "type": "official-rulebook",
+      "section": "End of the game / Final score (not directly verified)"
+    },
+    {
+      "url": "https://officialgamerules.org/game-rules/7-wonders/",
+      "title": "7 Wonders rules summary",
+      "type": "other",
+      "section": "Final scoring and tiebreaker"
+    },
+    {
+      "url": "https://rules.dized.com/game/pmaODHsUS_65I0ac8XvnoQ/mSkL0GqyQ4KUIU0YY9UcNw/scoring",
+      "title": "7 Wonders Dized rules - Scoring",
+      "type": "other",
+      "section": "Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

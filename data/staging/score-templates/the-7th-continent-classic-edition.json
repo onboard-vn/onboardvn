@@ -1,0 +1,61 @@
+{
+  "slug": "the-7th-continent-classic-edition",
+  "name": "The 7th Continent: Classic Edition",
+  "year": 2017,
+  "bggId": 283317,
+  "templateVersion": 1,
+  "variant": null,
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Curse lifted (expedition won)",
+      "labelVi": "Phá lời nguyền (thắng)",
+      "hint": "Win by lifting the curse of the chosen curse; lose if deck runs out or all explorers die",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "actionDeckCardsLeft",
+      "label": "Action deck cards remaining",
+      "labelVi": "Số lá Action còn lại",
+      "hint": "Optional: cards left in the action deck at end",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative/solo exploration: the group wins by lifting the chosen curse, and loses when the action deck runs out or all explorers die.",
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "Game ends when the curse is lifted (win) or the action deck is exhausted / all explorers die (loss)"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. UNVERIFIED: official rulebook could not be retrieved (web search budget exhausted, BGG/publisher blocked). Win/lose summary from general knowledge; confirm exact victory/defeat conditions against the rulebook.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/283317/the-7th-continent-classic-edition",
+      "title": "The 7th Continent: Classic Edition (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

@@ -1,0 +1,113 @@
+{
+  "slug": "die-macher",
+  "name": "Die Macher",
+  "year": 1986,
+  "bggId": 1,
+  "templateVersion": 1,
+  "variant": "2018/2019 edition (4 elections)",
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "After the 4th federal state election (5 rounds / 7 elections in the extended variant)"
+  },
+  "categories": [
+    {
+      "key": "electionVp",
+      "label": "Federal state election VP (votes + winner/coalition), total of all elections",
+      "labelVi": "VP bầu cử các bang (phiếu + thắng/liên minh), tổng cộng",
+      "hint": "From the scoring pad: VP for votes per state (min 5 votes), plus 12 for sole 50+ winner, 10 each if several reach 50+, 7 each for a coalition partner, 5 if no coalition.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mediaVp",
+      "label": "Media VP (media markers on the media board)",
+      "labelVi": "VP truyền thông",
+      "hint": "Sum of the VP shown on the media presence spot of each of your media markers.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "partyBaseVp",
+      "label": "Party base VP",
+      "labelVi": "VP cơ sở đảng",
+      "hint": "1 VP per point on the party base scale.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverMoney",
+      "label": "Leftover money",
+      "labelVi": "Tiền còn dư",
+      "hint": "Only the two players with the most money score: 1st 6 VP, 2nd 3 VP. Enter your money in euros (or thousands).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            6,
+            3
+          ],
+          "tieMode": "all-full",
+          "over": "value",
+          "excludeZero": true
+        }
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "No tiebreaker found in the rulebook read."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: election-majority-plus-tracks. Verified from a rulebook of the newer edition (Spielworxx/Indie Game Studios, 4 elections); BGG id 1 is the 1986 Hans im Gluck edition and older editions (1997 Moskito, 2006 Valley) differ: 7 elections, extra VP when party platform matches national opinion, no money VP. Confirm which edition the club owns. All-full tie treatment for money is an assumption; rule says tied players each score the table value.",
+  "sources": [
+    {
+      "url": "https://cs.uwaterloo.ca/~dtompkin/archive/dtlib/base/Die%20Macher.pdf",
+      "title": "Die Macher rule book (newer edition, English)",
+      "type": "official-rulebook",
+      "section": "07 End of Game and Final Scoring; Determine Effects of the Federal State Election"
+    },
+    {
+      "url": "https://api.geekdo.com/api/geekitems?objectid=1&objecttype=thing",
+      "title": "BGG Die Macher description (editions, four VP sources)",
+      "type": "other",
+      "section": "description"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,147 @@
+{
+  "name": "Kutná Hora: The City of Silver",
+  "year": 2023,
+  "bggId": 385610,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "4 players: 5 rounds; 2-3 players: 6 rounds"
+  },
+  "categories": [
+    {
+      "key": "scoreTrack",
+      "label": "Points accumulated during play",
+      "labelVi": "Điểm tích lũy trong game",
+      "hint": "Position of your marker on the score track before final scoring.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Kutná Hora: building adjacency",
+      "labelVi": "Tòa nhà kề nhau",
+      "hint": "1 point per matching dot on adjacent buildings or the board edge, for each of your buildings.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mines",
+      "label": "Mines: row majorities",
+      "labelVi": "Mỏ: đa số hàng",
+      "hint": "Per row, rank by stars; points by rank per printed value; ties get full value of the place, no lower place awarded.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "income",
+      "label": "Income",
+      "labelVi": "Thu nhập",
+      "hint": "Final income divided by 10, rounded down.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 10)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "reputation",
+      "label": "Reputation",
+      "labelVi": "Danh tiếng",
+      "hint": "Positive or negative points from final positions on reputation tracks.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "extras",
+      "label": "Extras",
+      "labelVi": "Điểm phụ",
+      "hint": "1 each: building tile left in a slot on your board, claimed plot without a building, unused pelican token.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "groschen",
+      "label": "Groschen left (tiebreak)",
+      "labelVi": "Đồng groschen còn lại (phân định hòa)",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "groschen",
+      "dir": "highest",
+      "description": "Most groschen left; remaining ties may be settled by jousting or accepted as a draw."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Patrician scoring each round and during play goes into the score track. Rank-based mine points are entered as a total because row values are printed on the board.",
+  "sources": [
+    {
+      "url": "https://filemanager.czechgames.com/storage/files/kutna-hora-the-city-of-silver/rules/kutna-hora-rules-en.pdf",
+      "title": "Kutná Hora: The City of Silver rulebook (CGE)",
+      "type": "official-rulebook",
+      "section": "End of Game: Final Scoring, Winning"
+    },
+    {
+      "url": "https://www.boardgamequest.com/kutna-hora-the-city-of-silver-review/",
+      "title": "Board Game Quest review",
+      "type": "other",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "slug": "kutna-hora-the-city-of-silver-2023",
+  "templateVersion": 1
+}

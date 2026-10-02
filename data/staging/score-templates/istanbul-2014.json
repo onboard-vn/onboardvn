@@ -1,0 +1,34 @@
+{
+  "slug": "istanbul-2014",
+  "name": "Istanbul",
+  "year": 2014,
+  "bggId": 148949,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {"min": 2, "max": 5},
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {"key": "rubies", "label": "Rubies collected", "labelVi": "Số ruby đã thu", "hint": "Game ends after the round in which a player reaches 5 rubies (6 with 2 players).", "scope": "player", "input": "count", "min": 0, "max": 8, "formula": {"type": "sum"}, "countsToTotal": true},
+    {"key": "lira", "label": "Remaining lira (tiebreaker)", "labelVi": "Lira còn lại (phân hòa)", "hint": "Used only to break ties.", "scope": "player", "input": "number", "min": 0, "max": null, "formula": {"type": "sum"}, "countsToTotal": false},
+    {"key": "goods", "label": "Goods left on wheelbarrow (tiebreaker)", "labelVi": "Hàng còn trên xe cút kít (phân hòa)", "hint": "Second tiebreaker.", "scope": "player", "input": "count", "min": 0, "max": null, "formula": {"type": "sum"}, "countsToTotal": false},
+    {"key": "bonusCards", "label": "Leftover bonus cards (tiebreaker)", "labelVi": "Thẻ bonus còn lại (phân hòa)", "hint": "Third tiebreaker, after using cards that give goods or money.", "scope": "player", "input": "count", "min": 0, "max": null, "formula": {"type": "sum"}, "countsToTotal": false}
+  ],
+  "tiebreakers": [
+    {"categoryKey": "lira", "dir": "highest", "description": "Most remaining lira"},
+    {"categoryKey": "goods", "dir": "highest", "description": "Most goods on wheelbarrow"},
+    {"categoryKey": "bonusCards", "dir": "highest", "description": "Most leftover bonus cards"},
+    {"description": "If still tied, victory is shared."}
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {"type": "target-score", "target": 5, "description": "First player to 5 rubies (6 in a 2-player game) triggers the end; the current round is completed."},
+  "notes": "family: race-to-target. Verified only against a secondary rules summary, not the official rulebook (download blocked); ruby targets and tiebreaker order should be re-checked. Expansions (Letters & Seals, Mocha & Baksheesh) not modelled.",
+  "sources": [
+    {"url": "https://www.ultraboardgames.com/istanbul/game-rules.php", "title": "Istanbul game rules (UltraBoardGames)", "type": "other", "section": "Game end, winner, tiebreakers"},
+    {"url": "https://en.wikipedia.org/wiki/Istanbul_(board_game)", "title": "Istanbul (board game) - Wikipedia", "type": "wiki", "section": "Gameplay: first to acquire five rubies"}
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

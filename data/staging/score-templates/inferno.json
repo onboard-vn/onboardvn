@@ -1,0 +1,160 @@
+{
+  "slug": "inferno",
+  "name": "Inferno",
+  "year": 2024,
+  "bggId": 393165,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "infamyTrack",
+      "label": "Infamy track before final scoring",
+      "labelVi": "Điểm Infamy trước khi tính cuối game",
+      "hint": "Position of your Infamy token (include +60/+120 token).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fraudCards",
+      "label": "Fraud cards (end-game effects)",
+      "labelVi": "Thẻ Fraud (hiệu ứng cuối game)",
+      "hint": "Points from the chosen right-half effect of played Fraud cards whose Barrel requirement you meet.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "diplomas",
+      "label": "Diplomas (Phlegethon cube x Skull level)",
+      "labelVi": "Văn bằng (cube Phlegethon x cấp Skull)",
+      "hint": "For each diploma: Phlegethon cube value (1-5, after moving it left per empty shield) x your Skull level on that Sin Track (1-4). Enter each diploma.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "loans",
+      "label": "Charon's loans repayment",
+      "labelVi": "Trả nợ Charon",
+      "hint": "Points at your Boat square on the loan track: 0, -2 or -4. Enter as a negative number.",
+      "scope": "player",
+      "input": "number",
+      "min": -4,
+      "max": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "highestTower",
+      "label": "Highest Tower",
+      "labelVi": "Tháp cao nhất",
+      "hint": "4 Infamy for the tallest Tower (tied players each score).",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mostFlorins",
+      "label": "Most Florins",
+      "labelVi": "Nhiều Florin nhất",
+      "hint": "3 Infamy for the most Florins (tied players each score).",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mostGuests",
+      "label": "Most Guests",
+      "labelVi": "Nhiều Guest nhất",
+      "hint": "4 Infamy for the most Guests hosted (tied players each score).",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mostFamily",
+      "label": "Most family members at home",
+      "labelVi": "Nhiều thành viên gia đình ở nhà nhất",
+      "hint": "3 Infamy for the most family members in your home (tied players each score).",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most diplomas"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Final scoring order: Fraud cards, adjust Phlegethon cubes, extra diplomas from pairs of 1/2 Diploma tokens, score diplomas, repay Charon's loans, Florence reputation. No Reputation points in solo mode; solo scoring ranks and challenges not modelled. Sudden death early end changes final steps (see rulebook p.16).",
+  "sources": [
+    {
+      "url": "https://nastol.io/storage/games/files/inferno_6/933421/Inferno_Rulebook_EN_V7.pdf",
+      "title": "Inferno English rulebook V7 (Red Mojo / Cranio Creations)",
+      "type": "official-rulebook",
+      "section": "p.16 Endgame - Final scoring steps 1-6; p.17 example"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/286025/inferno-english-rulebook",
+      "title": "Inferno English Rulebook (BGG file page, same V7 file name)",
+      "type": "bgg-file",
+      "section": "Cross-check of file identity"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

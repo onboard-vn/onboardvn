@@ -1,0 +1,233 @@
+{
+  "slug": "florenza-x-anniversary-edition",
+  "name": "Florenza: X Anniversary Edition",
+  "year": 2022,
+  "bggId": 311464,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 8,
+    "aggregate": "sum",
+    "endCondition": "After the 8th round"
+  },
+  "categories": [
+    {
+      "key": "prestigeCertificates",
+      "label": "Prestige certificates held",
+      "labelVi": "Chứng chỉ danh tiếng",
+      "hint": "Total value of prestige point certificates you hold.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "prestigeTrack",
+      "label": "Prestige track position",
+      "labelVi": "Vị trí trên thanh danh tiếng",
+      "hint": "Position of your marker on the prestige track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "captain",
+      "label": "Ended as Captain of the People",
+      "labelVi": "Kết thúc là Captain",
+      "hint": "1 VP",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bishop",
+      "label": "Ended as Bishop",
+      "labelVi": "Kết thúc là Bishop",
+      "hint": "1 VP",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resourceSets",
+      "label": "Sets of 3 resource cubes",
+      "labelVi": "Bộ 3 khối tài nguyên",
+      "hint": "1 VP per full set of 3 cubes of any type.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "moneySets",
+      "label": "Sets of 300 Fiorini",
+      "labelVi": "Bộ 300 Fiorini",
+      "hint": "1 VP per 300 Fiorini.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "emptyWorkshops",
+      "label": "Empty workshop spaces",
+      "labelVi": "Ô xưởng trống",
+      "hint": "-1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "uncompletedArtworks",
+      "label": "Uncompleted artworks on district board",
+      "labelVi": "Tác phẩm chưa hoàn thành",
+      "hint": "-1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "noPalazzo",
+      "label": "No artwork completed in Palazzo (1 if none)",
+      "labelVi": "Chưa hoàn thành tác phẩm ở Palazzo",
+      "hint": "-4 VP if you completed none (enter 1).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": -4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "noChiesa",
+      "label": "No artwork completed in Chiesa (1 if none)",
+      "labelVi": "Chưa hoàn thành tác phẩm ở Chiesa",
+      "hint": "-4 VP if you completed none (enter 1).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": -4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resourcesTotal",
+      "label": "Total resources (tiebreak)",
+      "labelVi": "Tổng tài nguyên (phân định hòa)",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "fiorini",
+      "label": "Fiorini (tiebreak)",
+      "labelVi": "Fiorini (phân định hòa)",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "resourcesTotal",
+      "dir": "highest",
+      "description": "Most resources"
+    },
+    {
+      "categoryKey": "fiorini",
+      "dir": "highest",
+      "description": "Most money"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "rounds",
+    "target": 8,
+    "description": "Game ends after the 8th round."
+  },
+  "notes": "family: point-salad-euro. UNVERIFIED for the X Anniversary Edition: values come from the original Florenza rulebook (RulesPal mirror); the X edition rulebook (BGG file 'Rulebook ENG', fileid 279053) could not be downloaded (BGG blocks downloads) and the edition has changed rules (see BGG 'Florenza rules differences'). Verify the final scoring list, round count and tiebreakers against the X rulebook before use.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/florenza/rulebook",
+      "title": "Florenza (original) rulebook (RulesPal mirror)",
+      "type": "other",
+      "section": "The End of the Game"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/207423",
+      "title": "Florenza X official English rulebook (BGG file, not downloaded)",
+      "type": "bgg-file",
+      "section": "End of the Game (not read)"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

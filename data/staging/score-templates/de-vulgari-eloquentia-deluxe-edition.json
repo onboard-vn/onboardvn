@@ -1,0 +1,264 @@
+{
+  "slug": "de-vulgari-eloquentia-deluxe-edition",
+  "name": "De Vulgari Eloquentia: Deluxe Edition",
+  "year": 2019,
+  "bggId": 275010,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "election",
+      "label": "Final Election status",
+      "labelVi": "Bầu cử cuối game",
+      "hint": "0 none; 1 Banker (Merchant, 7 votes) 6 VP; 2 Monk (Friar, 10 votes) 11 VP; 3 Camerlengo (Cardinal, 11 votes) 14 VP; 4 Pope (Cardinal, 17 votes, only one) 22 VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 6,
+          "2": 11,
+          "3": 14,
+          "4": 22
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "richestCubes",
+      "label": "Highest total remaining cube value",
+      "labelVi": "Tổng giá trị cube còn lại cao nhất",
+      "hint": "Yes for the player with the highest remaining cube sum after the election (tie: furthest on Knowledge track): 3 VP.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "if(value, 3, 0)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "scribes",
+      "label": "Turquoise cubes (Scribes) behind screen",
+      "labelVi": "Cube Scribes sau màn chắn",
+      "hint": "1 VP each; only cubes behind the screen.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "papalTiles",
+      "label": "Papal Library tiles",
+      "labelVi": "Thẻ Papal Library",
+      "hint": "Sum of VP shown on your revealed Papal Library tiles.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "richestDucati",
+      "label": "Most Ducati",
+      "labelVi": "Nhiều Ducati nhất",
+      "hint": "0 = no; 6 VP if the richest player is a Merchant, 3 VP if Friar or Cardinal (tie: furthest on Knowledge track).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 6,
+          "2": 3
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "riddle",
+      "label": "Riddle from Verona (furthest player)",
+      "labelVi": "Indovinello (người đi xa nhất)",
+      "hint": "Only the furthest player: 4, 5 or 6 VP by space reached or passed (tie: disc at bottom of stack). Others 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "canticle",
+      "label": "Canticle of the Sun",
+      "labelVi": "Cantico (Bài ca Mặt Trời)",
+      "hint": "Furthest player 9 VP, second furthest 6 VP (tie: disc at bottom of stack is further). Others 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 9,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "messengerCities",
+      "label": "Messenger: cities with cultural value",
+      "labelVi": "Corriere: thành phố có giá trị văn hóa",
+      "hint": "Only if Messenger track completed and disc on Bologna: 1 VP per visited city with a cultural value (disc placed), Bologna included.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "orientHarbors",
+      "label": "Orient: harbor cities visited",
+      "labelVi": "Oriente: thành phố cảng",
+      "hint": "Only Merchants who completed the Orient track: 1 VP per harbor city with your disc.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "manuscripts",
+      "label": "Manuscripts by level",
+      "labelVi": "Bản thảo theo cấp",
+      "hint": "Each manuscript = its level (1-4) in VP.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "lvl1",
+        "lvl2",
+        "lvl3",
+        "lvl4"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "lvl1 + 2*lvl2 + 3*lvl3 + 4*lvl4"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "linguaVolgare",
+      "label": "Lingua Volgare manuscript",
+      "labelVi": "Bản thảo Lingua Volgare",
+      "hint": "8 VP for the owner.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "if(value, 8, 0)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "allFiveColors",
+      "label": "Manuscripts in all 5 colors",
+      "labelVi": "Đủ 5 màu bản thảo",
+      "hint": "5 VP once (level 4 counts as one of its colors; Papal tile with wild symbol counts as any color).",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "if(value, 5, 0)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tileVp",
+      "label": "Friar / Cardinal tile VP",
+      "labelVi": "VP từ thẻ Friar/Cardinal",
+      "hint": "Raffaele +4, Gigi -4, Lanzuisi +6 (0 if you became Pope), Shlasinger +4.",
+      "scope": "player",
+      "input": "number",
+      "min": -4,
+      "max": 10,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "knowledge",
+      "label": "Knowledge track position",
+      "labelVi": "Vị trí track Knowledge",
+      "hint": "Not VP. Tiebreaker only; leave disc where it is.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "knowledge",
+      "dir": "highest",
+      "description": "Furthest on the Knowledge track; if on the same space, the player at the bottom of the stack wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Game ends when the second red Papal Event tile is revealed (from turn 12); that turn is the last. Score order: Final Election first, then the Volgare Points list. Scoring happens only at game end (VP are called Volgare Points). Expansions (Ritmo Bellunese, Placiti di Capua, Guaita di Travale, Glossario cards) not modelled. richestDucati: enter 1 if the richest player is a Merchant, 2 if Friar/Cardinal, else 0.",
+  "sources": [
+    {
+      "url": "https://www.giochix.it/rules/dvedeluxeeng.pdf",
+      "title": "De Vulgari Eloquentia Deluxe English rulebook (Giochix.it)",
+      "type": "official-rulebook",
+      "section": "p.11-12 Final Election, Volgare Points, The Winner"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/3449251",
+      "title": "BGG forum: final counting of victory points",
+      "type": "bgg-forum",
+      "section": "Volgare points = VP; knowledge not VP"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

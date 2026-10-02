@@ -1,0 +1,55 @@
+{
+  "slug": "halli-galli",
+  "name": "Halli Galli",
+  "year": 1990,
+  "bggId": 2944,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "cards",
+      "label": "Cards held at game end (draw deck + face-up pile)",
+      "labelVi": "Tổng số bài còn giữ khi kết thúc",
+      "hint": "Count the draw deck plus the face-up discard pile. Most cards wins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 56,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "endCondition": {
+    "type": "last-standing",
+    "target": null,
+    "description": "Game ends when only 2 players remain and one of them wins the face-up piles (or the other rings by mistake)"
+  },
+  "notes": "family: speed-reaction-card-collection. Players start with an equal share of 56 cards; first to ring when exactly 5 identical fruits show wins all face-up piles; wrong ring = give 1 card to each other player. Rulebook says only that the player with the most cards wins; no tiebreak stated. Players may optionally play on until one holds all cards.",
+  "sources": [
+    {
+      "url": "https://blog.amigo-spiele.de/content/ap/rule/01700-GB-AmigoRule.pdf",
+      "title": "Halli Galli rules (AMIGO, English)",
+      "type": "official-rulebook",
+      "section": "The game; End of the round; Winner"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/2944/halli-galli",
+      "title": "Halli Galli (BGG description)",
+      "type": "other",
+      "section": "Description: taller deck wins"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

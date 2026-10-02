@@ -1,0 +1,134 @@
+{
+  "name": "Bier Pioniere",
+  "year": 2023,
+  "bggId": 389102,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "endCondition": {
+    "type": "target-score",
+    "target": 20,
+    "description": "A player reaching 20 VP triggers the end; the round is completed, then final scoring."
+  },
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "Victory points on track",
+      "labelVi": "Điểm trên track VP",
+      "hint": "VP marker position when the game ends, before final scoring.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalBeerSale",
+      "label": "Final scoring 1: beer tiles discarded",
+      "labelVi": "Chung cuộc 1: bia bán ra",
+      "hint": "1 VP per beer tile discarded from the cellar, up to your lightbulb icons in your card display (icons are not spent).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalCoinConversion",
+      "label": "Final scoring 2: coins paid",
+      "labelVi": "Chung cuộc 2: xu đổi điểm",
+      "hint": "Only if you reached the last space of the brewing level track: pay 1 coin per lightbulb icon for 1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "beerTotal",
+      "label": "Beer on hand (tiebreak)",
+      "labelVi": "Số bia còn lại (phân định hòa)",
+      "hint": "All beers: in cellar and not yet brewed, counted after final scoring.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "barrelTotal",
+      "label": "Barrels on brewery board (tiebreak)",
+      "labelVi": "Số thùng (phân định hòa)",
+      "hint": "Including the virtual barrel from the improved barrel depot.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "beerTotal",
+      "dir": "highest",
+      "description": "Tied player with more beer (cellar plus not-yet-brewed) wins"
+    },
+    {
+      "categoryKey": "barrelTotal",
+      "dir": "highest",
+      "description": "Then more barrels on the brewery board (incl. virtual barrel from improved barrel depot)"
+    },
+    {
+      "description": "If still tied, the players tied at that point share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: running-track + end conversions. Nearly all points are tracked on the VP track during play (deliveries, objectives, first-builder bonuses); the scorer enters the track value plus the two final-scoring conversions. Other editions/expansions (e.g. Kölsch) not modelled.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/389102/bier-pioniere",
+      "title": "Bier Pioniere - BGG (identification, English rulebook)",
+      "type": "other",
+      "section": "Game page"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/389102/bier-pioniere/files",
+      "title": "Bier Pioniere / Beer Pioneers rulebook",
+      "type": "official-rulebook",
+      "section": "p.29 End of the game: final scoring parts 1 and 2, winner and tiebreakers; 20 VP end trigger"
+    },
+    {
+      "url": "https://www.philibertnet.com/en/spielefaible/140604-bier-pioniere-4260362320581.html",
+      "title": "Bier Pioniere - Philibert (20 VP end trigger summary)",
+      "type": "publisher-page",
+      "section": "Description"
+    }
+  ],
+  "confidence": "high",
+  "slug": "bier-pioniere-2023",
+  "templateVersion": 1,
+  "needsReview": false
+}

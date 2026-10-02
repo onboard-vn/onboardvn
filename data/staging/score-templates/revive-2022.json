@@ -1,0 +1,203 @@
+{
+  "slug": "revive-2022",
+  "name": "Revive",
+  "year": 2022,
+  "bggId": 332772,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "blueTrack",
+      "label": "Points on track before final scoring",
+      "labelVi": "Điểm đã có trên track (xanh)",
+      "hint": "Blue points scored during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "progress",
+      "label": "Lowest visible points on progress track",
+      "labelVi": "Điểm ô trống thấp nhất track tiến trình",
+      "hint": "Points visible in lowest vacant space.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "technologies",
+      "label": "Unlocked technologies",
+      "labelVi": "Công nghệ đã mở",
+      "hint": "Sum of points on unlocked technologies.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "largeLocations",
+      "label": "Large locations with your population",
+      "labelVi": "Địa điểm lớn có dân",
+      "hint": "Points of each large location where you have a figure.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardBonus",
+      "label": "Machine-track card bonus cards",
+      "labelVi": "Thẻ thưởng đường máy",
+      "hint": "2 points per recruited card of the shown color (starting cards excluded).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endTile",
+      "label": "End game tile",
+      "labelVi": "Ô kết thúc game",
+      "hint": "4 points to the player holding the end game tile.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "minorArtifacts",
+      "label": "Minor artifacts after game end triggered",
+      "labelVi": "Cổ vật nhỏ sau khi kết thúc",
+      "hint": "2 points each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resources",
+      "label": "Remaining resources",
+      "labelVi": "Tài nguyên còn lại",
+      "hint": "1 point per 5 resources, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "artifactCard",
+      "label": "Artifact card and major artifacts",
+      "labelVi": "Thẻ cổ vật và cổ vật lớn",
+      "hint": "Three categories on artifact card once, plus matching category again per major artifact of that color.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resourcesTiebreak",
+      "label": "Remaining unscored resources (tiebreak)",
+      "labelVi": "Tài nguyên còn lại (phân định hòa)",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "machineTracks",
+      "label": "Combined machine track advancement (tiebreak)",
+      "labelVi": "Tổng tiến trình 3 đường máy (phân định hòa)",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "resourcesTiebreak",
+      "dir": "highest",
+      "description": "Most remaining unscored resources"
+    },
+    {
+      "categoryKey": "machineTracks",
+      "dir": "highest",
+      "description": "Furthest on three machine tracks combined"
+    },
+    {
+      "description": "If still tied, share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends after the last major artifact is taken and everyone gets one final turn. Solo mode (score table) not modelled. Only the RulesPal summary was found; official rulebook not retrieved.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/revive/rulebook",
+      "title": "Revive rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End of the game / scoring"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

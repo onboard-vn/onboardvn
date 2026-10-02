@@ -1,0 +1,82 @@
+{
+  "year": 2024,
+  "bggId": 399987,
+  "templateVersion": 1,
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "alienGuess",
+      "label": "Alien guesses Scientists' message words",
+      "labelVi": "Alien đoán đúng từ của Scientists",
+      "hint": "1 point per correct word of the 3 (all 3 must be written before reveal).",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "scientistGuess",
+      "label": "Scientists guess Alien's message words",
+      "labelVi": "Scientists đoán đúng từ của Alien",
+      "hint": "1 point per correct word of the 3.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cipherLetters",
+      "label": "Cipher letters guessed (trust, amplify, suspicion)",
+      "labelVi": "Chữ cái mật mã đoán đúng",
+      "hint": "1 point per correct cipher letter of the 6 (3 trust, 2 amplify, 1 suspicion).",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://assets.allplay.com/board-games-a-message-from-the-stars-rulebook-link.pdf",
+      "title": "A Message From The Stars rulebook (Allplay)",
+      "type": "official-rulebook",
+      "section": "p.2 Objective, p.3 Final Guess, p.4 Team vs Team"
+    }
+  ],
+  "slug": "a-message-from-the-star",
+  "name": "A Message From The Stars",
+  "variant": "co-op",
+  "playerCount": {
+    "min": 2,
+    "max": 8
+  },
+  "mode": "coop",
+  "winRule": "highest",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "4 rounds of transmissions, then the final guess"
+  },
+  "tiebreakers": [],
+  "endCondition": {
+    "type": "rounds",
+    "target": 4,
+    "description": "After 4 rounds (3 in hard mode) of alternating transmissions the Final Guess is scored."
+  },
+  "winCondition": "Cooperative: Alien plus Scientists share one score out of 12 (3 + 3 words, 6 cipher letters). There is no win threshold in the rulebook; 12 is a perfect score.",
+  "notes": "family: coop-score-higher-better. Max 12. Hard mode: play only 3 rounds. Team vs team variant is in a-message-from-the-star--teams.json. Scores are summed across Alien and Scientists as one team result.",
+  "confidence": "high",
+  "needsReview": false
+}

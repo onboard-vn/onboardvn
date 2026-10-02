@@ -1,0 +1,122 @@
+{
+  "slug": "dinosaur-island-xtreme-edition-2018",
+  "name": "Dinosaur Island Xtreme Edition",
+  "year": 2018,
+  "bggId": 221194,
+  "templateVersion": 1,
+  "variant": "x-treme edition",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 7,
+    "aggregate": "sum",
+    "endCondition": "Game ends when only one objective card is left unclaimed; finish the round, then final scoring (or after 7 rounds)"
+  },
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "VP on track during play",
+      "labelVi": "Điểm trên track trong ván",
+      "hint": "1 VP per surviving patron at an attraction or exhibit each Park phase (hooligans and queued visitors score nothing); lost VPs for eaten visitors are already deducted.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "attractions",
+      "label": "Attractions in park (VP printed)",
+      "labelVi": "Điểm in trên các attraction",
+      "hint": "One entry per attraction: the VP listed on it.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "exhibits",
+      "label": "Dinosaur exhibits (VP x dinosaurs)",
+      "labelVi": "Điểm các exhibit (VP x số khủng long)",
+      "hint": "One entry per exhibit: printed VP x dinosaurs in that paddock; enter -10 for an exhibit with no dinosaurs.",
+      "scope": "player",
+      "input": "repeating",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Claimed objectives (face value)",
+      "labelVi": "Điểm thẻ mục tiêu",
+      "hint": "One entry per objective you claimed: 6-8 VP each.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "money",
+      "label": "Leftover money ($)",
+      "labelVi": "Tiền còn lại ($)",
+      "hint": "$5 = 1 VP, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 5)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied player with the most leftover money wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Rules read from the Pandasaurus rulebook (pp.15-16 scoring); the Xtreme Edition is the same game with upgraded components, scoring unchanged. Deluxe/2.0 and Variants (Predictable Systems, Chaos Threat Theory) not modelled. Solo mode uses an AI deck and different objective scoring, not modelled.",
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/s/hnzlz0aj4r3qqve/Dinosaur%20Island%20Rulebook.pdf?dl=0",
+      "title": "Dinosaur Island Rulebook (Pandasaurus, linked from product page)",
+      "type": "official-rulebook",
+      "section": "p.15 Score Victory Points; p.16 Completing Objectives and Game End"
+    },
+    {
+      "url": "https://pandasaurusgames.com/products/dinosaur-island",
+      "title": "Dinosaur Island (Pandasaurus product page)",
+      "type": "publisher-page",
+      "section": "Rulebook link"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/dinosaur-island/game-rules.php",
+      "title": "How to play Dinosaur Island (Ultra BoardGames)",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

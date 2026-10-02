@@ -1,0 +1,215 @@
+{
+  "slug": "yinzi-ming",
+  "name": "Yinzi: Ming",
+  "year": null,
+  "bggId": 369938,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "transport",
+      "label": "Yangtze Transport Capacity levels",
+      "labelVi": "Cấp vận chuyển sông Dương Tử",
+      "hint": "2 Wealth per level reached (max level 6).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "workshopsI",
+      "label": "Level I Workshops",
+      "labelVi": "Xưởng cấp I",
+      "hint": "1 Wealth each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "workshopsII",
+      "label": "Level II Workshops",
+      "labelVi": "Xưởng cấp II",
+      "hint": "3 Wealth each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "workshopsIII",
+      "label": "Level III Workshops",
+      "labelVi": "Xưởng cấp III",
+      "hint": "5 Wealth each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goods",
+      "label": "Unexported Goods",
+      "labelVi": "Hàng hóa chưa xuất",
+      "hint": "Goods in Workshops or on ships in port; 1 Wealth each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "exports",
+      "label": "Foreign Market exported Goods",
+      "labelVi": "Hàng xuất khẩu",
+      "hint": "Sum of Wealth from your Goods by their slot on the Asian and European Foreign Market boards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "negotiation",
+      "label": "Ambassador Negotiation",
+      "labelVi": "Đàm phán của Đại sứ",
+      "hint": "Negotiation level (1-4) x number of distinct destinations you exported at least 1 Good to (max 6).",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "level * destinations"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "level",
+        "destinations"
+      ]
+    },
+    {
+      "key": "escort",
+      "label": "Caravan Escort Bonus",
+      "labelVi": "Thưởng hộ tống đoàn buôn",
+      "hint": "Wealth on the Escort Bonus token if you have the most Overseers at the Caravanserai (enter 0 / 2 / 4 as shown).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "caravans",
+      "label": "Completed Silk Road Caravans",
+      "labelVi": "Đoàn buôn hoàn thành",
+      "hint": "Sum of Wealth on completed Caravan tiles; uncompleted give nothing.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bribe",
+      "label": "Bribe the Administration",
+      "labelVi": "Hối lộ quan lại",
+      "hint": "Most Overseers in Corrupt Administration: enter 4 (sole winner), 2 (tied) or 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "silver",
+      "label": "Silver bars",
+      "labelVi": "Bạc",
+      "hint": "1 Wealth per Silver bar after converting Copper at current rate.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "misfortune",
+      "label": "Misfortune tiles",
+      "labelVi": "Thẻ xui xẻo",
+      "hint": "-2 Wealth per Misfortune tile.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Player furthest ahead in turn order in the final round wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Game ends after round 4; fulfil any kept Caravans first. Bribe the Administration is entered as 4 (sole most Overseers), 2 (tied) or 0. Exported goods slot values depend on market position so they are entered as a total. Solo and Natural Disaster optional rule not modelled. Verified only against RulesPal rulebook text; official PDF not retrieved.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/yinzi-ming/rulebook",
+      "title": "Yinzi: Ming rulebook text (RulesPal)",
+      "type": "other",
+      "section": "End of the Game & Final Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,102 @@
+{
+  "slug": "ostia",
+  "name": "Ostia",
+  "year": 2024,
+  "bggId": 469388,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "iconsAndAmphora",
+      "label": "Building/ship icons and amphora tokens",
+      "labelVi": "Biểu tượng công trình/tàu và amphora",
+      "hint": "VP per building/ship icon and per amphora depend on your reward cube position on the reward track (board table). Enter icon counts and the VP values read from the table.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "buildings",
+        "ships",
+        "amphora",
+        "iconVp",
+        "amphoraVp"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "(buildings + ships) * iconVp + amphora * amphoraVp"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "destinations",
+      "label": "Destination tiles end-of-game effects",
+      "labelVi": "Hiệu ứng cuối game của ô điểm đến",
+      "hint": "Sum VP from the side of each destination tile your corbita tokens reached.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tradingPorts",
+      "label": "Trading port tiles end-of-game effects",
+      "labelVi": "Hiệu ứng cuối game của cảng thương mại",
+      "hint": "Sum VP from trading port tiles where your construction discs sit (icon-only tiles excluded).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "iconSets",
+      "label": "Sets of 4 different icons",
+      "labelVi": "Bộ 4 biểu tượng khác nhau",
+      "hint": "8 VP per set of wild animal + exotic animal + nobleman + noblewoman.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "wild",
+        "exotic",
+        "nobleman",
+        "noblewoman"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "8 * min(wild, exotic, nobleman, noblewoman)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. The reward-track VP table is printed on the board and was not available, so per-icon values are scorer inputs. Some trading port/destination effects add extra VP per icon type and are folded into the repeating categories. Solo mode not checked. Text taken from the RulesPal rulebook reproduction, not the official PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/ostia/rulebook",
+      "title": "Ostia rulebook (RulesPal)",
+      "type": "other",
+      "section": "Rewards and Victory Points; Final Score Calculation"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

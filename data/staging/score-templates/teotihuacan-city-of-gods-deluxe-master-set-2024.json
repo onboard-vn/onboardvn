@@ -1,0 +1,98 @@
+{
+  "slug": "teotihuacan-city-of-gods-deluxe-master-set-2024",
+  "name": "Teotihuacan: City of Gods – Deluxe Master Set",
+  "year": 2024,
+  "bggId": 381715,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Victory Point track (after final Eclipse, before Temple bonuses)",
+      "labelVi": "Điểm trên track (sau Nhật thực cuối, trước thưởng đền)",
+      "hint": "Track already includes Avenue of the Dead, Pyramid, mask sets and salary penalties from the 3 Eclipses.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "templeBonus",
+      "label": "Temple Bonus tiles",
+      "labelVi": "Ô thưởng đền",
+      "hint": "VP from Temple Bonus tiles reached on penultimate/top temple steps (scored once at the end).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cocoaLeft",
+      "label": "Cocoa remaining (tiebreak)",
+      "labelVi": "Ca cao còn lại (phân định hòa)",
+      "hint": "Cocoa left at game end.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "playerOrder",
+      "label": "Player Order token number (tiebreak)",
+      "labelVi": "Số thứ tự lượt (phân định hòa)",
+      "hint": "Lower number wins the last tiebreak.",
+      "scope": "player",
+      "input": "number",
+      "min": 1,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "cocoaLeft",
+      "dir": "highest",
+      "description": "Most cocoa remaining"
+    },
+    {
+      "categoryKey": "playerOrder",
+      "dir": "lowest",
+      "description": "Lower number on Player Order token"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Only a third-party rulebook transcription (RulesPal) could be reached; official PDF/BGG pages were not accessible, so values are not verified against the printed rulebook. Scoring happens in 3 Eclipses (each: Avenue of the Dead steps x lowest visible building value; furthest on Pyramid track +4; Pyramid steps x4/3/2 by Eclipse; mask sets 1/3/6/10/15/21/28; salary 1 cocoa per worker +1 per power 4-5 worker, -3 VP per unpaid cocoa). These are normally tracked on the VP track, so enter the final track value. Game may also end on finishing the Pyramid (triggers a final Eclipse). Deluxe Master Set expansion content (e.g. extra modules) not verified or modelled. Dark Eclipse variant reverses the last tiebreak (higher token number wins); solo Teotibot not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/teotihuacan/rulebook",
+      "title": "Teotihuacan: City of Gods rulebook (RulesPal transcription)",
+      "type": "other",
+      "section": "Eclipse & End of Game > Eclipse scoring, winner and tie rules"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

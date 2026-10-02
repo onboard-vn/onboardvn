@@ -1,0 +1,80 @@
+{
+  "slug": "bomb-busters-2024",
+  "name": "Bomb Busters",
+  "year": 2024,
+  "bggId": 413246,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Mission completed (all tile stands empty)",
+      "labelVi": "Hoàn thành nhiệm vụ (mọi giá đỡ đã hết dây)",
+      "hint": "Win only if every expert's wires are all cut before any explosion.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "detonatorAdvances",
+      "label": "Detonator dial advances (wrong guesses)",
+      "labelVi": "Số lần kim kíp nổ tiến (đoán sai)",
+      "hint": "+1 each failed Dual Cut on a blue/yellow wire. Reaching the skull space blows up the bomb.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "redWireCut",
+      "label": "Red wire cut (instant explosion)",
+      "labelVi": "Cắt trúng dây đỏ (nổ ngay)",
+      "hint": "Cutting or wrongly targeting a red wire ends the mission in failure.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Mission ends in success when all tile stands are empty; in failure when a red wire is cut or the detonator dial reaches the skull space (then restart with a new Captain)."
+  },
+  "winCondition": "Cooperative per mission: cut every wire (all tile stands empty) without cutting a red wire or letting the detonator dial reach the skull. No points; record each mission as won/lost.",
+  "notes": "family: coop. 66 missions with mission-specific setup/special rules (not modelled). Each failed mission is restarted with a new Captain. Unofficial fan score sheets exist but the official rules define no points.",
+  "sources": [
+    {
+      "url": "https://www.cocktailgames.com/wp-content/uploads/2023/10/BombBusters_rules_EN.pdf",
+      "title": "Bomb Busters official rules (Cocktail Games / Pegasus)",
+      "type": "official-rulebook",
+      "section": "p.7 End of the Game; quick reference guide"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/413246/bomb-busters",
+      "title": "BGG: Bomb Busters description (goal: cut all wires without blowing up)",
+      "type": "other",
+      "section": "description"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

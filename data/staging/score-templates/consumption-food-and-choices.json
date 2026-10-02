@@ -1,0 +1,172 @@
+{
+  "slug": "consumption-food-and-choices",
+  "name": "Consumption: Food and Choices",
+  "year": 2019,
+  "bggId": 198517,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 6,
+    "aggregate": "sum",
+    "endCondition": "Game ends after round 6"
+  },
+  "categories": [
+    {
+      "key": "scoreTrack",
+      "label": "Score track VP before final scoring",
+      "labelVi": "VP trên track (trước tính điểm cuối)",
+      "hint": "VP from completed recipes and activities scored during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "emptyGroups",
+      "label": "Food groups with 0 tokens",
+      "labelVi": "Nhóm thực phẩm trống (0 token)",
+      "hint": "Sum the VP printed on each empty food group (e.g. Alcohol 5).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goodGroups",
+      "label": "Food groups on yellow/green",
+      "labelVi": "Nhóm thực phẩm ở ô vàng/xanh",
+      "hint": "Per group, VP of the furthest token's space (e.g. Grains 5). Enter total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "redGroups",
+      "label": "Food groups on red (penalty)",
+      "labelVi": "Nhóm thực phẩm ở ô đỏ (phạt)",
+      "hint": "Enter total as a negative number (e.g. Seafood -3).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "trashTokens",
+      "label": "Food tokens in trash",
+      "labelVi": "Token trong thùng rác",
+      "hint": "-2 VP per token in trash.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incompleteCards",
+      "label": "Incomplete recipe/activity cards (penalty)",
+      "labelVi": "Thẻ chưa hoàn thành (phạt)",
+      "hint": "Enter the sum of VP printed on incomplete cards as a negative number.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "recipeEndVP",
+      "label": "End-game VP on completed recipes",
+      "labelVi": "VP cuối game của công thức",
+      "hint": "Completed recipe cards with a pink ability that give end-game VP.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "activitySets",
+      "label": "Activity sets completed",
+      "labelVi": "Bộ hoạt động",
+      "hint": "Number of sets of each size from unique icons: 3=5, 4=7, 5=10, 6=14, 7=19, 8=25 VP. A card belongs to one set only.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "sets3 * 5 + sets4 * 7 + sets5 * 10 + sets6 * 14 + sets7 * 19 + sets8 * 25"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "sets3",
+        "sets4",
+        "sets5",
+        "sets6",
+        "sets7",
+        "sets8"
+      ]
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker stated in the available rules text; treat as shared victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 6,
+    "description": "Game ends after round 6, then end-game scoring."
+  },
+  "notes": "family: point-salad-euro. Food group values (Alcohol 5, Seafood -3, Grains 5) are examples from the rules; real values are printed on each diet board, so group totals are scorer inputs. Solo uses the same scoring ranked against a personal goals chart; Cleanse diet board and 2-player variants not modelled. Official PDF (BGG file 259188) could not be downloaded (Cloudflare block); text taken from RulesPal's reproduction, so needsReview=true.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/consumption-food-and-choices/rulebook",
+      "title": "Consumption rulebook text (RulesPal)",
+      "type": "other",
+      "section": "End of Game; Collecting Activity Sets; Kitchen & Trash"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/194583/consumption-living-rules",
+      "title": "Consumption Living Rules (Kolossal, BGG files)",
+      "type": "bgg-file",
+      "section": "Not read (download blocked)"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

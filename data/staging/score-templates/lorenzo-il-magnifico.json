@@ -1,0 +1,183 @@
+{
+  "slug": "lorenzo-il-magnifico",
+  "name": "Lorenzo il Magnifico",
+  "year": 2016,
+  "bggId": 203993,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "Victory Points on track (incl. Faith rewards)",
+      "labelVi": "Điểm chiến thắng trên track (gồm thưởng Đức tin)",
+      "hint": "VP marker position at game end, after the last Vatican Report (turn 6 Faith reward) and after any excommunication VP penalty applied before final scoring.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "excommunicationPenalty",
+      "label": "Excommunication end-game penalty",
+      "labelVi": "Phạt cuối game do bị rút phép thông công",
+      "hint": "Only if an excommunication tile says so: -1 VP per 5 VP, per Military Point, per wood/stone in Building costs, or per resource. Enter as a negative number; 0 if none.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "territories",
+      "label": "Territory cards",
+      "labelVi": "Thẻ Lãnh thổ (xanh lá)",
+      "hint": "1/4/10/20 VP for 3/4/5/6 Territory cards (0-2 cards score nothing).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 1,
+          "4": 4,
+          "5": 10,
+          "6+": 20
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "characters",
+      "label": "Character cards",
+      "labelVi": "Thẻ Nhân vật (xanh dương)",
+      "hint": "1/3/6/10/15/21 VP for 1-6 Character cards.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 3,
+          "3": 6,
+          "4": 10,
+          "5": 15,
+          "6+": 21
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "ventures",
+      "label": "Venture cards",
+      "labelVi": "Thẻ Mạo hiểm (tím)",
+      "hint": "Sum of the VP printed on your Venture cards.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "militaryStrength",
+      "label": "Military Strength ranking",
+      "labelVi": "Xếp hạng Sức mạnh quân sự",
+      "hint": "Enter Military Points. 1st gets 5 VP, 2nd gets 2 VP. Tied for 1st: all get 5 and nobody gets 2; tied for 2nd: all get 2.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            5,
+            2
+          ],
+          "tieMode": "all-full",
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resources",
+      "label": "Collected resources",
+      "labelVi": "Tài nguyên thu thập",
+      "hint": "Total of wood + stone + coins + servants; 1 VP per 5 (rounded down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "turnOrderPosition",
+      "label": "Turn order position (tiebreak)",
+      "labelVi": "Vị trí thứ tự lượt (phân định hòa)",
+      "hint": "1 = first in turn order. Lower number wins a tie.",
+      "scope": "player",
+      "input": "number",
+      "min": 1,
+      "max": 5,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "turnOrderPosition",
+      "dir": "lowest",
+      "description": "Player further ahead in turn order wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. VP are gained during play (track); final scoring adds territories, characters, ventures, military ranking and resources. Faith points are converted to VP at each Vatican Report; at the end of round 6 players short of the required Faith still gain VP for their current Faith step, so include them in trackVp. Not modelled: Leader cards, Personal Bonus Tiles, expansions (Ambition & Glory etc.).",
+  "sources": [
+    {
+      "url": "https://www.craniocreations.it/storage/media/product_downloads/26/431/Lorenzo_Rules_ENG-1.pdf",
+      "title": "Lorenzo il Magnifico Rulebook (Cranio Creations)",
+      "type": "official-rulebook",
+      "section": "p.10 Vatican Report; p.11 End of the Game and Final Scoring; p.12-13 Excommunication tiles"
+    },
+    {
+      "url": "https://boardgamearchive.com/how-to-play/lorenzo-vatican-final-scoring/",
+      "title": "Lorenzo il Magnifico Vatican Reports & Final Scoring",
+      "type": "other",
+      "section": "Final Scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

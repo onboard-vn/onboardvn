@@ -1,0 +1,119 @@
+{
+  "slug": "yamatai",
+  "name": "Yamatai",
+  "year": 2017,
+  "bggId": 213893,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "coins",
+      "label": "Coins",
+      "labelVi": "Tiền xu",
+      "hint": "Enter total coins; 1 PP per full 5 coins.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "floor(value / 5)" },
+      "countsToTotal": true
+    },
+    {
+      "key": "prestigeTokens",
+      "label": "Prestige tokens",
+      "labelVi": "Thẻ điểm uy tín",
+      "hint": "1 PP per Prestige Point token.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Constructed buildings",
+      "labelVi": "Công trình đã xây",
+      "hint": "Sum of PP printed on each building tile you constructed.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "specialists",
+      "label": "Specialists",
+      "labelVi": "Chuyên gia",
+      "hint": "Sum of PP from recruited Specialists (see appendix; some are conditional).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "reservedUnbuilt",
+      "label": "Reserved buildings not built",
+      "labelVi": "Công trình giữ chỗ chưa xây",
+      "hint": "-1 PP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": -1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "unusedBoats",
+      "label": "Boats put aside / unused on mat",
+      "labelVi": "Thuyền không dùng",
+      "hint": "-1 PP per 2 boats, any color.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "-floor(value / 2)" },
+      "countsToTotal": true
+    },
+    {
+      "key": "playedFirstLastRound",
+      "label": "Played first in last round (tiebreak)",
+      "labelVi": "Đi đầu vòng cuối (phân định hòa)",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "playedFirstLastRound", "dir": "highest", "description": "Tied player who played first in the last round wins" }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Building and Specialist PP values are printed on tiles, so they are scorer inputs. Rulebook wording says the player who 'played first on last round' wins ties. Game ends when a player places last Standard Building, a boat colour runs out, or Specialist/Building row cannot be replenished (finish round).",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/72/52/7d-yamatai-rulebook.pdf",
+      "title": "Yamatai rulebook (Days of Wonder/Asmodee)",
+      "type": "official-rulebook",
+      "section": "Scoring; Place Remaining Boats; Game End"
+    },
+    {
+      "url": "https://daoofboardgaming.home.blog/2023/05/10/yamatai/",
+      "title": "Yamatai (Dao of Board Gaming)",
+      "type": "other",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

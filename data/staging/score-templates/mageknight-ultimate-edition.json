@@ -1,0 +1,65 @@
+{
+  "slug": "mageknight-ultimate-edition",
+  "name": "Mage Knight Ultimate Edition",
+  "year": 2018,
+  "bggId": 248562,
+  "templateVersion": 1,
+  "variant": "competitive / solo conquest (generic)",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "fame",
+      "label": "Fame at game end",
+      "labelVi": "Fame khi kết thúc",
+      "hint": "Final value on the Fame track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "achievementPoints",
+      "label": "Achievement / bonus points (enter sum from rulebook table)",
+      "labelVi": "Điểm thành tựu / thưởng (tổng theo bảng luật)",
+      "hint": "Greatest-achievement style end-game awards; enter the total points per the scenario's scoring table.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: fame-plus-achievements. UNVERIFIED: the official rulebook (wizkids PDF, BGG file 'MKUE Rulebook') could not be downloaded in this run (publisher host returned 500 / archive rate-limited / BGG blocked), so per-achievement point values, scenario-specific end conditions (rounds, city assault) and tiebreakers are not modelled. Scorer enters Fame and the summed achievement points manually. Coop conquest and solo scenarios differ per scenario book.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/filepage/167577/mkue-rulebook",
+      "title": "MKUE Rulebook (BGG file page, not read - blocked)",
+      "type": "bgg-file",
+      "section": "Scoring / End of the game"
+    },
+    {
+      "url": "https://wizkidsgames.com/wp-content/uploads/mage/MK_rulebook_ENG_searchable-mar2012.pdf",
+      "title": "Mage Knight rulebook (WizKids, link from publisher page; download failed)",
+      "type": "official-rulebook",
+      "section": "Scoring"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

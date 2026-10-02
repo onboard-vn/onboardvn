@@ -1,0 +1,113 @@
+{
+  "slug": "shallow-sea-2025",
+  "name": "Shallow Sea",
+  "year": 2025,
+  "bggId": 428440,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 1, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "ecosystemOrange",
+      "label": "Orange Ecosystem card",
+      "labelVi": "Thẻ hệ sinh thái cam",
+      "hint": "VP per the condition on your chosen Orange Ecosystem card.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "ecosystemBlue",
+      "label": "Blue Ecosystem card",
+      "labelVi": "Thẻ hệ sinh thái xanh",
+      "hint": "VP per the condition on your chosen Blue Ecosystem card.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "tiles",
+      "label": "Completed tiles and incomplete Sealife",
+      "labelVi": "Ô hoàn thành và Sealife chưa hoàn thành",
+      "hint": "Enter VP of each completed Coral/Sealife tile; incomplete Sealife scores the lower value shown. Incomplete Coral scores 0.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "differingSealife",
+      "label": "Different completed Sealife tiles",
+      "labelVi": "Số loại Sealife khác nhau đã hoàn thành",
+      "hint": "2 VP per DIFFERENT completed Sealife tile.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 2 },
+      "countsToTotal": true
+    },
+    {
+      "key": "incompleteFish",
+      "label": "Incomplete fish: adjacent completed Coral",
+      "labelVi": "Cá chưa hoàn thành: san hô kề cạnh",
+      "hint": "1 VP per adjacent Completed Coral tile for each Incomplete Fish (a coral can count for several fish). Enter the total count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "seashells",
+      "label": "Remaining Seashells (tiebreak)",
+      "labelVi": "Vỏ sò còn lại (phân định hòa)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "seashells", "dir": "highest", "description": "Most remaining Seashells" },
+    { "description": "If still tied, the win is shared." }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 17,
+    "description": "Game ends when each player's Ocean has only 4 empty spaces left (17 turns each)."
+  },
+  "notes": "family: point-salad-euro. Solo mode (Lionfish penalty) and Achievement scenarios not modelled. Ecosystem card formulas vary per card, so they are scorer inputs. Rulebook scoring order: Ecosystem cards, tiles top row down, 2 VP per different Sealife, incomplete fish.",
+  "sources": [
+    {
+      "url": "https://drive.google.com/file/d/1Oa386UarFzrau1pLMARc7Sb8QNAGy5nt/view",
+      "title": "Shallow Sea Rulebook EN (Bad Comet, linked from badcomet.co)",
+      "type": "official-rulebook",
+      "section": "End of the Game (p.10); Scoring (p.11)"
+    },
+    {
+      "url": "https://opinionatedgamers.com/2026/03/13/dale-yu-review-of-shallow-sea/",
+      "title": "Dale Yu: Review of Shallow Sea",
+      "type": "other",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

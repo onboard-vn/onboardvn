@@ -1,0 +1,192 @@
+{
+  "slug": "phoenix-new-horizon",
+  "name": "Phoenix New Horizon",
+  "year": 2024,
+  "bggId": 419704,
+  "variant": "base",
+  "categories": [
+    {
+      "key": "trackPoints",
+      "label": "Points on score track before final scoring",
+      "labelVi": "Điểm trên track trước khi tính điểm cuối",
+      "hint": "Immediate-scoring points gained during the game (all four rounds).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "intercoms",
+      "label": "Intercom scoring",
+      "labelVi": "Điểm Intercom",
+      "hint": "Per intercom: value for settler position (1st/2nd/3rd) x times you meet its condition. Sum all intercoms (rulebook 13.1). Board values vary by intercom, so enter the total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "technologies",
+      "label": "Level IV technology cards",
+      "labelVi": "Thẻ công nghệ cấp IV",
+      "hint": "Points from each level IV technology card per its condition (e.g. 3 per building type / region regenerator, 2 per completed mission).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Buildings",
+      "labelVi": "Công trình",
+      "hint": "Per building type: your insignia value x number of your buildings of that type; sum civic, scientific and military (13.3).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "energyTrack",
+      "label": "Energy track position (9-12)",
+      "labelVi": "Vị trí track Energy (9-12)",
+      "hint": "Enter the position of your energy counter (0-12). Position 12/11/10/9 scores 6/4/2/1; lower scores 0.",
+      "scope": "player",
+      "input": "track",
+      "min": 0,
+      "max": 12,
+      "formula": {
+        "type": "expr",
+        "expr": "value >= 12 ? 6 : value >= 11 ? 4 : value >= 10 ? 2 : value >= 9 ? 1 : 0"
+      },
+      "countsToTotal": true,
+      "track": {
+        "min": 0,
+        "max": 12
+      }
+    },
+    {
+      "key": "developmentTrack",
+      "label": "Lowest development marker position",
+      "labelVi": "Vị trí marker phát triển thấp nhất",
+      "hint": "Position of your lowest development marker (1-4): 4th/3rd/2nd scores 10/6/3.",
+      "scope": "player",
+      "input": "track",
+      "min": 1,
+      "max": 4,
+      "formula": {
+        "type": "expr",
+        "expr": "value >= 4 ? 10 : value >= 3 ? 6 : value >= 2 ? 3 : 0"
+      },
+      "countsToTotal": true,
+      "track": {
+        "min": 1,
+        "max": 4
+      }
+    },
+    {
+      "key": "settlersReleased",
+      "label": "Settlers released (tiebreaker)",
+      "labelVi": "Số settler đã thả (hòa điểm)",
+      "hint": "First tiebreaker: most released settlers.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "energyPosition",
+      "label": "Energy counter position (tiebreaker)",
+      "labelVi": "Vị trí energy (hòa điểm)",
+      "hint": "Second tiebreaker: highest on the energy track.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 12,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "fuel",
+      "label": "Fuel counters (tiebreaker)",
+      "labelVi": "Nhiên liệu (hòa điểm)",
+      "hint": "Third tiebreaker: most fuel.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "settlersReleased",
+      "dir": "highest",
+      "description": "Most released settlers"
+    },
+    {
+      "categoryKey": "energyPosition",
+      "dir": "highest",
+      "description": "Highest energy counter on the track"
+    },
+    {
+      "categoryKey": "fuel",
+      "dir": "highest",
+      "description": "Most fuel"
+    },
+    {
+      "description": "If still tied, players are joint victors."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Four rounds then end scoring (13.1 intercoms, 13.2 level IV technologies, 13.3 buildings, 13.4 command console: energy track + development track). Intercom and building values depend on board/insignia, so they are entered as totals. Solo variant (Project Kraken: wins on a draw) is not modelled.",
+  "sources": [
+    {
+      "url": "https://perrolokogames.com/wp-content/uploads/2025/09/Rulebook_EN_phoenix.pdf",
+      "title": "Phoenix New Horizon rulebook EN (Perro Loko Games)",
+      "type": "official-rulebook",
+      "section": "4.2 Victory points; 11 Intercoms; 13 End of game pp.15-16"
+    },
+    {
+      "url": "https://www.perrolokogames.com/en/phoenix-new-horizon/",
+      "title": "Phoenix New Horizon - Perro Loko Games",
+      "type": "publisher-page",
+      "section": "Rulebook download"
+    }
+  ],
+  "templateVersion": 1,
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "high",
+  "needsReview": false,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  }
+}

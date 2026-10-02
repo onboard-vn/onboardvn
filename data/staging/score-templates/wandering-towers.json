@@ -1,0 +1,84 @@
+{
+  "slug": "wandering-towers",
+  "name": "Wandering Towers",
+  "year": 2022,
+  "bggId": 355483,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 7
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (all potions full and all wizards in Ravenskeep)",
+      "labelVi": "Thắng (đầy bình thuốc và mọi pháp sư vào Ravenskeep)",
+      "hint": "Win needs both: every potion bottle full and every wizard in Ravenskeep",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "fullPotionsRemaining",
+      "label": "Full potions remaining at finish",
+      "labelVi": "Số bình thuốc còn đầy khi kết thúc",
+      "hint": "Tiebreaker if several players finish in the same round",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "fullPotionsRemaining",
+      "dir": "highest",
+      "description": "If several players complete both goals in the same round, most full potions remaining wins"
+    },
+    {
+      "description": "If still tied, victory is shared"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "winCondition": "First player to fill all their potion bottles (by trapping wizards under towers) and move all their wizards into Ravenskeep wins; order of the two goals does not matter.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends when a player has all potions full and all wizards in Ravenskeep"
+  },
+  "notes": "family: race-to-goal. No points. Tiebreaker taken from secondary sources; official rulebook PDF could not be downloaded to confirm exact wording (a wrong PDF was returned for the Arcane Wonders URL).",
+  "sources": [
+    {
+      "url": "https://officialgamerules.org/game-rules/wandering-towers-rules/",
+      "title": "Wandering Towers Rules (officialgamerules.org)",
+      "type": "other",
+      "section": "Win conditions and tiebreaker"
+    },
+    {
+      "url": "https://rulesofplay.co.uk/products/wandering-towers",
+      "title": "Wandering Towers - Rules of Play",
+      "type": "other",
+      "section": "Winning"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/355483/wandering-towers",
+      "title": "Wandering Towers (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,197 @@
+{
+  "name": "Galactic Cruise",
+  "year": 2024,
+  "bggId": 391137,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "winRule": "highest",
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "VP on track (AGM A/B and in play)",
+      "labelVi": "Điểm trên track (trước AGM C)",
+      "hint": "Everything scored before the final AGM (launches, section 1/2 progress, etc.). Track continues past 100/200.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cockpits",
+      "label": "Cockpits",
+      "labelVi": "Cockpit",
+      "hint": "Sum of each Cockpit's criteria; -5 for each ship never launched.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "segments",
+      "label": "Ship Segments",
+      "labelVi": "Khoang tàu",
+      "hint": "VP printed on each built Ship Segment.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "progress",
+      "label": "Progress Scoring (Section 3)",
+      "labelVi": "Điểm tiến độ (Khu 3)",
+      "hint": "(Your cubes in section 3 incl. overflow + 1 if most Reputation) x revealed Wings.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "(cubes + mostReputation) * wings"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "cubes",
+        "wings",
+        "mostReputation"
+      ]
+    },
+    {
+      "key": "reputation",
+      "label": "Reputation track",
+      "labelVi": "Uy tín",
+      "hint": "VP of the highest threshold reached on the Reputation Track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "developments",
+      "label": "Developments",
+      "labelVi": "Công trình phát triển",
+      "hint": "VP of the rightmost empty column in the Development area.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "supplies",
+      "label": "Leftover supplies",
+      "labelVi": "Vật tư còn dư",
+      "hint": "Resources, money, ads, agenda cards and blueprints: 1 VP per 3.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "progressCubes",
+      "label": "Progress cubes on track (tiebreak)",
+      "labelVi": "Cube tiến độ (phân định hòa)",
+      "hint": "Total your Progress Cubes on the Progress Track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "reputationLevel",
+      "label": "Reputation level (tiebreak)",
+      "labelVi": "Mức uy tín (phân định hòa)",
+      "hint": "Current Reputation.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 18,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "cockpitVp",
+      "label": "VP from Cockpits (tiebreak)",
+      "labelVi": "VP từ Cockpit (phân định hòa)",
+      "hint": "Cockpit score total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "progressCubes",
+      "dir": "highest",
+      "description": "Most Progress Cubes on the Progress Track"
+    },
+    {
+      "categoryKey": "reputationLevel",
+      "dir": "highest",
+      "description": "Most Reputation"
+    },
+    {
+      "categoryKey": "cockpitVp",
+      "dir": "highest",
+      "description": "Most VP from Cockpits"
+    },
+    {
+      "description": "Then the tied player later in turn order."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Reputation and Developments values are printed on the player board so they are entered directly. Enter the VP track as it stands before AGM C scoring. The mostReputation input is 1 if you alone or tied hold the most Reputation (ties all get the extra cube). Tiebreak 'VP from Cockpits' duplicates the cockpits category value.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/galactic-cruise/rulebook",
+      "title": "RulesPal transcription of the official rulebook",
+      "type": "other",
+      "section": "Progress Track and Game End; Final Scoring - AGM C; tiebreakers"
+    }
+  ],
+  "slug": "galactic-cruise",
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "medium",
+  "needsReview": true
+}

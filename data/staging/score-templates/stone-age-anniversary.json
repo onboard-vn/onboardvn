@@ -1,0 +1,177 @@
+{
+  "slug": "stone-age-anniversary",
+  "name": "Stone Age: Anniversary",
+  "year": 2018,
+  "bggId": 260678,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Points on scoring track before final scoring",
+      "labelVi": "Điểm trên track trước khi tính cuối game",
+      "hint": "Everything scored during play: building tiles, immediate card points, minus 10 per unpaid food shortfall.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "greenSets",
+      "label": "Civilization cards (green): sets of different cards, squared",
+      "labelVi": "Thẻ văn minh xanh lá: bộ khác nhau, bình phương",
+      "hint": "Size of each set of different green cards, squared. Enter the 1st, 2nd, 3rd, 4th set size (0 if none).",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "set1 ** 2 + set2 ** 2 + set3 ** 2 + set4 ** 2"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "set1",
+        "set2",
+        "set3",
+        "set4"
+      ]
+    },
+    {
+      "key": "farmers",
+      "label": "Farmers x agriculture track",
+      "labelVi": "Nông dân x mức nông nghiệp",
+      "hint": "Number of farmer symbols times your marker position on the agriculture track.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "farmers * agriculture"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "farmers",
+        "agriculture"
+      ]
+    },
+    {
+      "key": "toolMakers",
+      "label": "Tool makers x total tool value",
+      "labelVi": "Thợ chế tác x tổng giá trị công cụ",
+      "hint": "Number of tool-maker symbols times total value of your tool tiles.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "toolMakers * toolValue"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "toolMakers",
+        "toolValue"
+      ]
+    },
+    {
+      "key": "builders",
+      "label": "Builders x building tiles",
+      "labelVi": "Thợ xây x số ô công trình",
+      "hint": "Number of builder symbols times number of building tiles you own.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "builders * buildings"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "builders",
+        "buildings"
+      ]
+    },
+    {
+      "key": "shamans",
+      "label": "Shamans x figures",
+      "labelVi": "Pháp sư x số quân",
+      "hint": "Number of shaman symbols times figures on your board.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "shamans * figures"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "shamans",
+        "figures"
+      ]
+    },
+    {
+      "key": "resources",
+      "label": "Remaining resources (not food)",
+      "labelVi": "Tài nguyên còn lại (không tính thức ăn)",
+      "hint": "1 point per wood, clay, stone, gold left.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tieBreakSum",
+      "label": "Tiebreak: agriculture level + total tool value + figures",
+      "labelVi": "Phá hòa: nông nghiệp + công cụ + số quân",
+      "hint": "Not scored; compare only when tied.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "tieBreakSum",
+      "dir": "highest",
+      "description": "Highest sum of agriculture level, total tool value and number of figures"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: set-collection. Rulebook checked is the base-game Stone Age rulebook (Hans im Gluck / Z-Man); Anniversary rules assumed identical for scoring but the Anniversary-edition rulebook itself could not be downloaded. Green set sizes are limited to four sets in this template. Game ends when the Civilization card row cannot be refilled or a Building pile is empty (that round is completed).",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/e3/1b/ad-stone-age-rulebook.pdf",
+      "title": "Stone Age rulebook (1j1ju copy)",
+      "type": "official-rulebook",
+      "section": "End of the game; Final scoring and winner (p.7-8)"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

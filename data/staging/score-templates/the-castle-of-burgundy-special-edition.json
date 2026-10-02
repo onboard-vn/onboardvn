@@ -1,0 +1,176 @@
+{
+  "slug": "the-castle-of-burgundy-special-edition",
+  "name": "The Castles of Burgundy: Special Edition",
+  "year": 2022,
+  "bggId": 363622,
+  "templateVersion": 1,
+  "variant": "special edition (base game rules)",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Victory point track (before final scoring)",
+      "labelVi": "Điểm trên track (trước tính điểm cuối)",
+      "hint": "Total on the VP track, incl. completed regions, phase bonuses, bonus tiles, animals, sales. Add 100/200 if tile flipped",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unsoldGoods",
+      "label": "Unsold goods tiles",
+      "labelVi": "Hàng chưa bán",
+      "hint": "1 VP per goods tile left in storage",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "silverlings",
+      "label": "Remaining Silverlings",
+      "labelVi": "Silverling còn lại",
+      "hint": "1 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "workers",
+      "label": "Worker tiles",
+      "labelVi": "Thẻ công nhân",
+      "hint": "1 VP per 2 workers",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "yellowGoodsTypesSold",
+      "label": "Tile 15: goods types sold",
+      "labelVi": "Ô vàng 15: loại hàng đã bán",
+      "hint": "3 VP per goods type sold at least once (needs tile 15)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "yellowBuildingTiles",
+      "label": "Tiles 16-23: matching buildings",
+      "labelVi": "Ô vàng 16-23: công trình tương ứng",
+      "hint": "4 VP per building of each type whose yellow tile you own",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "yellowAnimalTypes",
+      "label": "Tile 24: animal types",
+      "labelVi": "Ô vàng 24: loại vật nuôi",
+      "hint": "4 VP per animal type in your estate (needs tile 24)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "yellowSoldGoods",
+      "label": "Tile 25: sold goods tiles",
+      "labelVi": "Ô vàng 25: số hàng đã bán",
+      "hint": "1 VP per sold goods tile (needs tile 25)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "yellowBonusTiles",
+      "label": "Tile 26: bonus tiles claimed",
+      "labelVi": "Ô vàng 26: ô thưởng đã nhận",
+      "hint": "2 VP per bonus tile claimed, large or small (needs tile 26)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 12,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": "lowest",
+      "description": "Fewest empty estate spaces"
+    },
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "Still tied: the player who went later in turn order wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro (running-track + end bonuses). Base-game scoring: points during play already sit on the VP track; final scoring adds unsold goods (1 each), Silverlings (1 each), every 2 workers (1), and VP-bearing yellow tiles. Unplaced six-sided tiles in storage score nothing. Tiebreak: fewest empty estate spaces, then later in turn order. Special Edition rulebook could not be fetched; categories follow the original alea/Ravensburger rulebook (same game). Special Edition components/extra modules and solo target not modelled; verify against the Special Edition rulebook.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/04/f5/f9-the-castles-of-burgundy-rulebook.pdf",
+      "title": "The Castles of Burgundy Rulebook (alea/Ravensburger)",
+      "type": "official-rulebook",
+      "section": "p.8-9 Game End and tiebreakers; p.10-11 yellow tiles 15-26"
+    },
+    {
+      "url": "https://www.yucata.de/en/Rules/CastlesOfBurgundy",
+      "title": "Yucata - Rules - The Castles of Burgundy",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

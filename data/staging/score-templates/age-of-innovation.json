@@ -1,0 +1,189 @@
+{
+  "slug": "age-of-innovation",
+  "name": "Age of Innovation",
+  "year": 2023,
+  "bggId": 383179,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "Victory points on track (during play)",
+      "labelVi": "Điểm trên track",
+      "hint": "VP marker value before final scoring (round scoring, innovations, cities, etc.).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "area",
+      "label": "Area score (largest connected group)",
+      "labelVi": "Điểm khu vực",
+      "hint": "Buildings in largest group within Reach: 1st 18, 2nd 12, 3rd 6; ties share summed places rounded down.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            18,
+            12,
+            6
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "discOne",
+      "label": "One discipline ranking",
+      "labelVi": "Xếp hạng ngành 1",
+      "hint": "Level 0 scores nothing. 1st 8, 2nd 4, 3rd 2; ties share summed places rounded down.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4,
+            2
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "discTwo",
+      "label": "Two discipline ranking",
+      "labelVi": "Xếp hạng ngành 2",
+      "hint": "Level 0 scores nothing. 1st 8, 2nd 4, 3rd 2; ties share summed places rounded down.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4,
+            2
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "discThree",
+      "label": "Three discipline ranking",
+      "labelVi": "Xếp hạng ngành 3",
+      "hint": "Level 0 scores nothing. 1st 8, 2nd 4, 3rd 2; ties share summed places rounded down.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4,
+            2
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "discFour",
+      "label": "Four discipline ranking",
+      "labelVi": "Xếp hạng ngành 4",
+      "hint": "Level 0 scores nothing. 1st 8, 2nd 4, 3rd 2; ties share summed places rounded down.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4,
+            2
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resources",
+      "label": "Leftover coins after conversion",
+      "labelVi": "Xu còn lại sau quy đổi",
+      "hint": "Convert leftover resources to Coins; 1 VP per 5 Coins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 5)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: tied players share the win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends after round 6 actions. The 4 Discipline tracks are generic keys discOne..discFour (rename per Science display). Rank values entered per player are the compared values (building count / track level). 2-player game adds a non-player faction that can take 1st/2nd in area and science scoring (reducing others' points); not modelled. Solo not modelled. Verified only against RulesPal rulebook text; official PDF not retrieved.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/age-of-innovation/rulebook",
+      "title": "Age of Innovation rulebook text (RulesPal)",
+      "type": "other",
+      "section": "End of Game and Final Scoring: Area Score, Science Scoring, Resource Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

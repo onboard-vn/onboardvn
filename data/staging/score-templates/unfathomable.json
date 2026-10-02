@@ -1,0 +1,97 @@
+{
+  "slug": "unfathomable",
+  "name": "Unfathomable",
+  "year": 2021,
+  "bggId": 340466,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 6
+  },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Player won",
+      "labelVi": "Người chơi thắng",
+      "hint": "Judge from ALL loyalty cards revealed at game end",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "humansReachedPort",
+      "label": "Humans reached port (travel track hit Arrive)",
+      "labelVi": "Tàu cập cảng (con người thắng)",
+      "hint": "Human objective: waypoints totalling 12+ distance resolved, then the travel track reaches Arrive",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Game ends immediately when a resource dial hits 0, six damaged spaces exist at once, or Deep Ones cannot be spawned; or when the travel track reaches the Arrive space after 12+ distance. Everyone reveals all loyalty cards. If the game ended by reaching Arrive, players holding only Human cards win. Otherwise every player with at least one Hybrid card wins, and the Cultist-card holder also wins if total waypoint distance is 12 or more.",
+  "roles": [
+    {
+      "key": "human",
+      "label": "Human (only Human loyalty cards)",
+      "labelVi": "Con người",
+      "winCondition": "Ship reaches Arrive after 12+ total waypoint distance",
+      "categoryKeys": [
+        "won",
+        "humansReachedPort"
+      ]
+    },
+    {
+      "key": "hybrid",
+      "label": "Hybrid (at least one Hybrid card)",
+      "labelVi": "Lai (Hybrid)",
+      "winCondition": "Game ends any way other than humans reaching Arrive",
+      "categoryKeys": [
+        "won"
+      ]
+    },
+    {
+      "key": "cultist",
+      "label": "Cultist",
+      "labelVi": "Tín đồ",
+      "winCondition": "Game ends before humans reach Arrive and total waypoint distance is 12+ (also wins if holding a Hybrid card and Hybrids win)",
+      "categoryKeys": [
+        "won"
+      ]
+    }
+  ],
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Arrive space reached, or a resource dial at 0, six damaged spaces, or not enough Deep Ones to spawn"
+  },
+  "notes": "family: hidden-role-social. Cultist loyalty card is used only in 4- and 6-player standard games; first game uses Human and Hybrid cards only. A player with both Hybrid and Cultist cards wins whenever Hybrids win. Expansions (The Deep From the Abyss) not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.svc.asmodee.net/production-fantasyflightgames/uploads/2026/09/unf01_rules_reference_v5-compressed.pdf",
+      "title": "Unfathomable Rules Reference",
+      "type": "official-rulebook",
+      "section": "Ending the Game (section 18) and Loyalty/Humans"
+    },
+    {
+      "url": "https://cdn.svc.asmodee.net/production-fantasyflightgames/uploads/2026/09/unf01_learn_to_play_eng_v5-compressed.pdf",
+      "title": "Unfathomable Learn to Play",
+      "type": "official-rulebook",
+      "section": "Loyalty cards"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

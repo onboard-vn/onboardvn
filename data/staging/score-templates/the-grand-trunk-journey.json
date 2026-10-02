@@ -1,0 +1,108 @@
+{
+  "slug": "the-grand-trunk-journey",
+  "name": "The Grand Trunk Journey",
+  "year": 2020,
+  "bggId": 292892,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track (deliveries, terminals, objectives, special deliveries)",
+      "labelVi": "Điểm trên track",
+      "hint": "VP gained during play: goods delivered (3 per Coal-Iron-Wood set, 3 per Steel), terminals built, objectives, special deliveries.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "improvements",
+      "label": "Improvement cards x value on Wood track",
+      "labelVi": "Thẻ cải tiến x giá trị track Gỗ",
+      "hint": "Per-card VP set by your marker on the improvement VP track, times number of Improvement cards owned.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "souvenirs",
+      "label": "Souvenir set VP (rightmost full set)",
+      "labelVi": "Điểm bộ Souvenir",
+      "hint": "A set is 4 cubes, one of each colour (max 4 sets). Score only the VP printed under the rightmost full set in your suitcase.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "souvenirCubes",
+      "label": "Total souvenirs (tiebreaker)",
+      "labelVi": "Tổng souvenir (phân thắng bại)",
+      "hint": "Count all souvenir cubes; used only to break ties.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "souvenirCubes",
+      "dir": "highest",
+      "description": "Most Souvenirs."
+    },
+    {
+      "description": "If still tied, players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. UNVERIFIED against the official Spielworxx rulebook (Spielworxx download 403 and BGG behind Cloudflare). End-game items (improvements x track value, souvenir sets, tiebreaker by Souvenirs) come from secondary snippets of BGG posts and are not exact. Missing: precise end trigger, face-down cards/tokens revealed at final scoring, any per-objective end scoring, exact souvenir VP values. Verify page numbers in the PDF Grand_Trunk_Journey_Rules_EN_web.pdf.",
+  "sources": [
+    {
+      "url": "https://www.spielworxx.de/downloads-a-m/downloads-n-z/",
+      "title": "Spielworxx downloads (Grand_Trunk_Journey_Rules_EN_web.pdf, not fetched)",
+      "type": "publisher-page",
+      "section": "Final scoring"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/2527144/final-score-souvenirs",
+      "title": "BGG: Final score - souvenirs (not fetched, from search snippet)",
+      "type": "bgg-forum",
+      "section": "Souvenir scoring"
+    },
+    {
+      "url": "https://boardgamegeek.com/blog/4184/blogpost/98932/the-grand-trunk-journey-terminal-5-variants-and-sc",
+      "title": "Grand Trunk Journey blog series (not fetched, from search snippet)",
+      "type": "other",
+      "section": "End game scoring / tie"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

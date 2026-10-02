@@ -1,0 +1,61 @@
+{
+  "slug": "tainted-grail-the-fall-of-avalon",
+  "name": "Tainted Grail: The Fall of Avalon",
+  "year": 2019,
+  "bggId": 264220,
+  "templateVersion": 1,
+  "variant": null,
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Campaign/chapter success",
+      "labelVi": "Thành công chiến dịch/chương",
+      "hint": "Story-driven; mark won if the group reached the chapter/campaign goal",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "chaptersCompleted",
+      "label": "Chapters completed",
+      "labelVi": "Số chương hoàn thành",
+      "hint": "Campaign progress counter",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative narrative campaign with no victory points; outcome is determined by story choices and surviving the campaign objectives.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Story campaign ends when the narrative objective is reached or all heroes die"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. UNVERIFIED: official rulebook could not be retrieved (web search budget exhausted, BGG/publisher blocked). Win/lose summary from general knowledge; confirm exact victory/defeat conditions against the rulebook.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/264220/tainted-grail-the-fall-of-avalon",
+      "title": "Tainted Grail: The Fall of Avalon (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

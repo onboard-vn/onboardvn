@@ -1,0 +1,137 @@
+{
+  "slug": "transgalactica-2025",
+  "name": "Transgalactica",
+  "year": 2025,
+  "bggId": 429860,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "After round 5"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track (0-100, incl. in-play VP)",
+      "labelVi": "Điểm trên track",
+      "hint": "VP gained during play from exploring, trading, mining, missions, production etc.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endTech",
+      "label": "End-game technology card points",
+      "labelVi": "Điểm thẻ công nghệ cuối game",
+      "hint": "Rulebook End of the Game text does not remind you to score end-game technology cards - check yours.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objective",
+      "label": "Chosen secret objective card",
+      "labelVi": "Thẻ mục tiêu bí mật đã chọn",
+      "hint": "Choose 1 of your 2 objective cards and score it.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endMissions",
+      "label": "End-game mission / achievement bonuses",
+      "labelVi": "Thưởng nhiệm vụ / thành tựu cuối game",
+      "hint": "Endgame bonuses from missions and other achievements.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverCredits",
+      "label": "Leftover credits",
+      "labelVi": "Credit còn lại",
+      "hint": "Believed 1 VP per unspent credit (unverified vs official text).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverResources",
+      "label": "Leftover resources",
+      "labelVi": "Tài nguyên còn lại",
+      "hint": "Believed 1 VP per 3 resources, rounded down (unverified vs official text).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not found in any accessible source; verify in the official rulebook."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. UNVERIFIED: official rulebook (BGG file page 299946, Devir) is behind Cloudflare and no other copy was reachable. Structure (5 rounds; score 1 objective card + leftover credits and resources + end-game tech/mission bonuses) confirmed only via secondary summaries; credit rate 1 VP each and 3 resources per VP come from a single BGG forum snippet. Tiebreaker unknown. Military/political influence track end rankings, if any, are not modelled.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/filepage/299946/official-rulebook",
+      "title": "Transgalactica official rulebook (BGG file, not fetched)",
+      "type": "official-rulebook",
+      "section": "End of the Game"
+    },
+    {
+      "url": "https://tabletopping.games/2025/08/29/transgalactica/",
+      "title": "Transgalactica review (Tabletopping)",
+      "type": "other",
+      "section": "Endgame scoring summary"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/3529652/another-poor-example-of-the-atrocious-rulebook",
+      "title": "BGG thread on rulebook end-game gaps",
+      "type": "bgg-forum",
+      "section": "End of the game"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

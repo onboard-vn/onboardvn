@@ -1,0 +1,53 @@
+{
+  "slug": "marvel-champions",
+  "name": "Marvel Champions: The Card Game",
+  "year": 2019,
+  "bggId": 285774,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Heroes won (villain defeated)",
+      "labelVi": "Phe anh hung thang (ha villain)",
+      "hint": "Win by reducing the villain's final stage to 0 HP",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Players win by reducing the villain's last (second) form to 0 health. They lose if all heroes are knocked out or the villain's scheme completes its final stage.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Villain defeated, all heroes defeated, or villain scheme completed."
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  },
+  "notes": "family: coop. No points; win/lose only. Standard mode has two villain stages; expert mode and campaign rules add modifiers (not modelled). Verified only via secondary summary; official rulebook PDF could not be fetched (FFG CDN 403).",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Marvel_Champions:_The_Card_Game",
+      "title": "Marvel Champions: The Card Game (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,89 @@
+{
+  "slug": "fit-to-print-2023",
+  "name": "Fit to Print",
+  "year": 2023,
+  "bggId": 352574,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Friday, Saturday and Sunday rounds"
+  },
+  "categories": [
+    {
+      "key": "roundScore",
+      "label": "Round score (Fri/Sat/Sun)",
+      "labelVi": "Điểm mỗi ngày (T6/T7/CN)",
+      "hint": "Per round: articles + photos + centerpiece + white space (3 smallest / -1 largest / 1 others) - mood imbalance - 1 per unplaced tile. A round total below 0 counts as 0.",
+      "scope": "player",
+      "input": "perRound",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "adRevenue",
+      "label": "Ad revenue ($)",
+      "labelVi": "Doanh thu quảng cáo ($)",
+      "hint": "Dollar signs on ads placed each round, summed. Lowest total is eliminated from winning. Not part of score.",
+      "scope": "player",
+      "input": "perRound",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "twoPlayerAdPenalty",
+      "label": "2-player ad penalty",
+      "labelVi": "Phạt quảng cáo (2 người)",
+      "hint": "2 players only: enter -10 if one player has more than $5 less ad revenue than the other (that player is still eligible).",
+      "scope": "player",
+      "input": "number",
+      "min": -10,
+      "max": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "Tied on points: the player with the lower Finishing Token on Sunday wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro (3 rounds, per-round scoring). Winner: player(s) with the lowest total ad revenue are out of the running (not eligible); among the rest the highest total score wins. Enter each round's final score after clamping at 0. Solo/Puzzle mode and Breaking News/achievement modes not modelled. Ad-revenue elimination is not enforced by the calculator; apply manually.",
+  "sources": [
+    {
+      "url": "https://www.alderac.com/wp-content/uploads/2025/04/FitToPrint_BaseGame_Rulebook_Optimized.pdf",
+      "title": "Fit to Print rulebook (AEG)",
+      "type": "official-rulebook",
+      "section": "p.12 Round End & Scoring Tiles; p.13 Game End & Scoring Example"
+    },
+    {
+      "url": "https://www.boardgamemeeplelady.com/2023/10/25/fit-to-print-read-all-about-it/",
+      "title": "Fit To Print: Read all about it!",
+      "type": "other",
+      "section": "Scoring summary"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

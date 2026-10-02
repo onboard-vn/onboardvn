@@ -1,0 +1,122 @@
+{
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "After all players take their 4th turn or pass in year 3"
+  },
+  "confidence": "medium",
+  "needsReview": true,
+  "name": "Pipeline",
+  "year": 2018,
+  "bggId": 256730,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "categories": [
+    {
+      "key": "barrels",
+      "label": "Oil barrels remaining ($)",
+      "labelVi": "Thùng dầu còn lại ($)",
+      "hint": "Money for remaining barrels at the rate on your player board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pipelines",
+      "label": "Pipelines ($)",
+      "labelVi": "Đường ống ($)",
+      "hint": "Money per pipeline by refined grade (below Low-Grade earns $0).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "valuations",
+      "label": "Valuation tile and cards ($)",
+      "labelVi": "Thẻ định giá ($)",
+      "hint": "Money from the Valuation tile and the 3 Valuation cards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "penaltyCount",
+      "label": "Penalty tokens",
+      "labelVi": "Số thẻ phạt",
+      "hint": "Escalating: 1:-20, 2:-50, 3:-90, 4:-140, 5:-200, 6:-270, 7:-350, 8:-440, 9:-540, 10:-650.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 10,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": -20,
+          "2": -50,
+          "3": -90,
+          "4": -140,
+          "5": -200,
+          "6": -270,
+          "7": -350,
+          "8": -440,
+          "9": -540,
+          "10": -650
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cash",
+      "label": "Cash in hand ($)",
+      "labelVi": "Tiền mặt ($)",
+      "hint": "All money held.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied player furthest ahead in player order wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: money-total. Score is money, not VP. Incomplete contracts are removed first and each gives 1 Penalty token (count them in penalty tokens). Barrel/pipeline rates are printed on player boards and Valuation cards vary, so enter dollar totals. Solo Automa and campaign not modelled. Official rulebook not directly downloaded; based on RulesPal text.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/pipeline/rulebook",
+      "title": "RulesPal rulebook summary",
+      "type": "other",
+      "section": "End of Game; Penalty Track"
+    }
+  ],
+  "slug": "pipeline",
+  "templateVersion": 1
+}

@@ -1,0 +1,62 @@
+{
+  "slug": "time-to-panic",
+  "name": "Time to Panic",
+  "year": 2025,
+  "bggId": 445424,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "lowest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "mistakes",
+      "label": "Mistakes (out-of-place cards in final timeline)",
+      "labelVi": "Lỗi (số thẻ sai vị trí trong timeline cuối)",
+      "hint": "After all cards are played, reveal face-down cards, sum the out-of-place numbers and compare with the scoring guide: 0 = perfect, 6+ = catastrophe.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "Game ends once all cards from the draw deck and every hand have been played; face-down cards are then revealed."
+  },
+  "winCondition": "Cooperative: the team builds the timeline 1 to 36 in order. The final result is read off the rulebook's scoring guide: fewer mistakes is better, 0 is a perfect game.",
+  "notes": "family: coop-score-lower-better. Exact mistake-counting (cards vs positions) and the labels for scores 1-5 are NOT verified: the official rulebook PDF (BGG file 428331) could not be downloaded (BGG blocks bots), so only secondary sources were used. Gaps in the timeline do not affect scoring (designer reply on BGG). Three panic-card difficulty levels (mild panic, panic, total panic) are not modelled. Solo supported (1-4 players). Needs review against the rulebook scoring guide.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/filepage/307284/time-to-panic-rulebook-9-10-25",
+      "title": "Time to Panic Rulebook (IV Studio, 9-10-25) - not readable by the tooling",
+      "type": "bgg-file",
+      "section": "scoring guide / end of game"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/time-to-panic/",
+      "title": "Meeple Mountain review of Time to Panic",
+      "type": "other",
+      "section": "end-game scoring paragraph"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/3623908/cards-in-order-but-gaps-in-between",
+      "title": "BGG Rules forum: gaps do not affect end game scoring",
+      "type": "bgg-forum",
+      "section": "designer reply"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

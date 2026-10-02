@@ -1,0 +1,160 @@
+{
+  "slug": "popcorn-2025",
+  "name": "Popcorn",
+  "year": 2025,
+  "bggId": 430563,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "bucket",
+      "label": "Popcorn in bucket",
+      "labelVi": "Bỏng ngô trong xô",
+      "hint": "Popcorn gained during the game (revealed from your bucket).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "money",
+      "label": "Money",
+      "labelVi": "Tiền",
+      "hint": "1 Popcorn per $5 you hold (round down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "theaterCost",
+      "label": "Total cost of your 3 theaters",
+      "labelVi": "Tổng giá 3 rạp",
+      "hint": "Highest total: 5 Popcorn (3-4 players) or 3 (2 players). 3-4 players: 2nd highest gets 3 unless 1st is tied.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            5,
+            3
+          ],
+          "tieMode": "all-full",
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "2": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                3
+              ],
+              "tieMode": "all-full",
+              "over": "value"
+            }
+          },
+          "3": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                5,
+                3
+              ],
+              "tieMode": "all-full",
+              "over": "value"
+            }
+          },
+          "4": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                5,
+                3
+              ],
+              "tieMode": "all-full",
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "awards",
+      "label": "Award cards",
+      "labelVi": "Thẻ Award",
+      "hint": "Popcorn from your revealed Award cards (value printed on each card; Advertising tokens may count as virtual Guests).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "archivedMovies",
+      "label": "Archived movies",
+      "labelVi": "Phim đã lưu trữ",
+      "hint": "Tiebreaker only: fewer archived movies wins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "archivedMovies",
+      "dir": "lowest",
+      "description": "Fewest archived movies"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends after the round in which the Final Showing card is revealed; all movies still showing move to the archive before scoring. Award card values are printed on the cards (rulebook p.12) so they are entered as one total. Theater trophy tie: tied players for 1st each get the full trophy and no 2nd trophy is given; the rulebook does not detail ties for 2nd (modelled as all tied get 3).",
+  "sources": [
+    {
+      "url": "https://iellogames.com/wp-content/uploads/2024/12/Popcorn_Rulebook_EN_V1_Light.pdf",
+      "title": "Popcorn rulebook (IELLO)",
+      "type": "official-rulebook",
+      "section": "End of the Game (p.11); Awards (p.12)"
+    },
+    {
+      "url": "https://iellogames.com/games/popcorn/",
+      "title": "Popcorn - IELLO Games",
+      "type": "publisher-page",
+      "section": "Rulebook link"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

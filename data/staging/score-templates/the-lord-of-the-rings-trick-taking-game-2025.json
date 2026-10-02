@@ -1,0 +1,69 @@
+{
+  "slug": "the-lord-of-the-rings-trick-taking-game-2025",
+  "name": "The Lord of the Rings: The Fellowship of the Ring - Trick-Taking Game",
+  "year": 2025,
+  "bggId": 429293,
+  "templateVersion": 1,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "endCondition": {
+    "type": "objective",
+    "target": 18,
+    "description": "Campaign of 18 chapters; each chapter is passed when every player's character condition is met"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "categories": [
+    {
+      "key": "won",
+      "label": "Chapter passed (all character conditions met)",
+      "labelVi": "Qua chương (mọi nhân vật đạt điều kiện)",
+      "hint": "Each player's character must meet its own condition",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "chaptersCompleted",
+      "label": "Chapters completed (of 18)",
+      "labelVi": "Số chương đã hoàn thành (trên 18)",
+      "hint": "Campaign progress, chapters can be replayed",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 18,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative chapter-based campaign: each player takes a character with a personal condition (e.g. Frodo captures ring cards, Pippin takes as few tricks as possible); the chapter is passed only if all conditions are met.",
+  "notes": "family: coop. Official rulebook (BGG file 'ODLO01_Rulebook_web.pdf') could not be downloaded; modelled from the BGG publisher description only. Exact per-chapter pass/fail wording, retry rules and solo/2-player dummy handling unverified.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/429293",
+      "title": "Fellowship of the Ring Trick-Taking Game (BGG page description)",
+      "type": "other",
+      "section": "Description"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/290209/the-fellowship-of-the-ring-trick-taking-game",
+      "title": "Official rulebook, Office Dog (not read)",
+      "type": "bgg-file",
+      "section": "Rulebook"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

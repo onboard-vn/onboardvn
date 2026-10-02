@@ -1,0 +1,272 @@
+{
+  "slug": "the-palaces-of-carrara-second-edition-2022--advanced",
+  "name": "The Palaces of Carrara (Second Edition)",
+  "year": 2022,
+  "bggId": 348070,
+  "templateVersion": 1,
+  "variant": "advanced",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vp",
+      "label": "Victory points on track",
+      "labelVi": "Điểm VP trên track",
+      "hint": "Include the +5 VP for the player who triggered game end and +100/+200 lap marker.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coins",
+      "label": "Leftover coins converted to VP",
+      "labelVi": "Xu còn lại quy đổi VP",
+      "hint": "ratio = coins per 1 VP: 5 default, 3 if you claimed the 36+ coin space, 2 if the 50+ coin space.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(coins / max(ratio, 1))"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "coins",
+        "ratio"
+      ]
+    },
+    {
+      "key": "decorations",
+      "label": "Decorations on constructed buildings (sets)",
+      "labelVi": "Trang trí trên công trình (bộ)",
+      "hint": "Enter how many of each decoration type you placed; a set of n same decorations scores n(n+1) (1:2, 2:6, 3:12, 4:20, 5:30, 6:42, 7:56).",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "sum(a1 * (a1 + 1), a2 * (a2 + 1), a3 * (a3 + 1), a4 * (a4 + 1), a5 * (a5 + 1), a6 * (a6 + 1))"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "a1",
+        "a2",
+        "a3",
+        "a4",
+        "a5",
+        "a6"
+      ]
+    },
+    {
+      "key": "statuesLivorno",
+      "label": "Statue majority: Livorno",
+      "labelVi": "Đa số tượng: Livorno",
+      "hint": "Statues placed in Livorno; ranks score 12/6/3. Need at least 1 statue. Ties: all tied take the next lower level.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            12,
+            6,
+            3
+          ],
+          "tieMode": "all-next-lower",
+          "minValueToScore": 1,
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "statuesPisa",
+      "label": "Statue majority: Pisa",
+      "labelVi": "Đa số tượng: Pisa",
+      "hint": "Statues placed in Pisa; ranks score 11/5/2. Need at least 1 statue. Ties: all tied take the next lower level.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            11,
+            5,
+            2
+          ],
+          "tieMode": "all-next-lower",
+          "minValueToScore": 1,
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "statuesLucca",
+      "label": "Statue majority: Lucca",
+      "labelVi": "Đa số tượng: Lucca",
+      "hint": "Statues placed in Lucca; ranks score 10/5/2. Need at least 1 statue. Ties: all tied take the next lower level.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            10,
+            5,
+            2
+          ],
+          "tieMode": "all-next-lower",
+          "minValueToScore": 1,
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "statuesViareggio",
+      "label": "Statue majority: Viareggio",
+      "labelVi": "Đa số tượng: Viareggio",
+      "hint": "Statues placed in Viareggio; ranks score 9/4/2. Need at least 1 statue. Ties: all tied take the next lower level.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            9,
+            4,
+            2
+          ],
+          "tieMode": "all-next-lower",
+          "minValueToScore": 1,
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "statuesMassa",
+      "label": "Statue majority: Massa",
+      "labelVi": "Đa số tượng: Massa",
+      "hint": "Statues placed in Massa; ranks score 8/4/2. Need at least 1 statue. Ties: all tied take the next lower level.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4,
+            2
+          ],
+          "tieMode": "all-next-lower",
+          "minValueToScore": 1,
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "statuesLerici",
+      "label": "Statue majority: Lerici",
+      "labelVi": "Đa số tượng: Lerici",
+      "hint": "Statues placed in Lerici; ranks score 7/3/1. Need at least 1 statue. Ties: all tied take the next lower level.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            7,
+            3,
+            1
+          ],
+          "tieMode": "all-next-lower",
+          "minValueToScore": 1,
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "blocksLeft",
+      "label": "Tiebreak: leftover building blocks",
+      "labelVi": "Phá hòa: khối xây dựng còn lại",
+      "hint": "Not scored.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "blocksLeft",
+      "dir": "highest",
+      "description": "Most building blocks left over"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection + area-majority. Advanced version with decorations, statues and Royal Court. Statue colour is ignored for majority; city column order from score board read from rulebook image (Livorno 12/6/3, Pisa 11/5/2, Lucca 10/5/2, Viareggio 9/4/2, Massa 8/4/2, Lerici 7/3/1). Decoration type names not captured (6 types, a1-a6). Gold statues from the Royal Court appear on the score board with a '>' symbol; their effect was not verified and is not modelled.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/the-palaces-of-carrara-second-edition.pdf",
+      "title": "The Palaces of Carrara Second Edition rulebook",
+      "type": "official-rulebook",
+      "section": "Game End; Final Scoring (regular p.7-8); Advanced Final Scoring (p.12)"
+    },
+    {
+      "url": "https://cdn.1j1ju.com/medias/d8/66/6f-the-palaces-of-carrara-second-edition-rulebook.pdf",
+      "title": "Palaces of Carrara Second Edition rulebook (1j1ju copy)",
+      "type": "other",
+      "section": "Same pages; coin exchange rate text contains a typo, follow the 3:1 example"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

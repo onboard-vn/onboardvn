@@ -1,0 +1,105 @@
+{
+  "slug": "expeditions-2023",
+  "name": "Expeditions",
+  "year": 2023,
+  "bggId": 379078,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "coins",
+      "label": "Coins ($)",
+      "labelVi": "Tiền ($)",
+      "hint": "All money you hold at the end (including money gained from melds, quests, items).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "glory",
+      "label": "Glory stars placed",
+      "labelVi": "Sao Glory đã đặt",
+      "hint": "About $10 per star placed with Boast (4 stars triggers the end; check rulebook).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "corruption",
+      "label": "Vanquished Corruption tokens (face value)",
+      "labelVi": "Corruption đã diệt (tổng giá trị)",
+      "hint": "Sum of printed values on your mech mat (tokens include 1, 2, 3 and one 20).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mapTokens",
+      "label": "Map tokens",
+      "labelVi": "Map token",
+      "hint": "Not confirmed as scoring for human players; enter count, counted as $0 unless rulebook says otherwise.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 0
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tiebreaker not verified; check rulebook."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: coin-count. Score is money: coins + glory stars + vanquished corruption values (+ possibly items). Game ends when a player places their 4th glory star; each other player takes one final turn and the trigger player also gets a final turn. Official rulebook (Stonemaier Dropbox / BGG file 412199) could not be downloaded in this environment; values derived from publisher FAQ and BGG forum posts (star = $10 for players, $5 for Automa; corruption tokens by face value). Items, Gears of Corruption expansion and solo Automa scoring not modelled.",
+  "sources": [
+    {
+      "url": "https://stonemaiergames.com/games/expeditions/rules-faq/",
+      "title": "Expeditions Rules & FAQ (Stonemaier Games)",
+      "type": "publisher-page",
+      "section": "End of game trigger and final turn"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/3219938",
+      "title": "BGG forum: Anybody score over $100?",
+      "type": "bgg-forum",
+      "section": "Score components"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/3311235",
+      "title": "BGG forum: Best Path to Win Solo",
+      "type": "bgg-forum",
+      "section": "Example scoring breakdown"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

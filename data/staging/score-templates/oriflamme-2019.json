@@ -1,0 +1,74 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "needsReview": true,
+  "confidence": "medium",
+  "tiebreakers": [
+    {
+      "categoryKey": "queueCards",
+      "dir": "highest",
+      "description": "Most cards still in the Influence Queue"
+    }
+  ],
+  "slug": "oriflamme-2019",
+  "name": "Oriflamme",
+  "year": 2019,
+  "bggId": 287084,
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 6,
+    "aggregate": "sum",
+    "endCondition": "After the sixth round"
+  },
+  "categories": [
+    {
+      "key": "influence",
+      "label": "Collected influence",
+      "labelVi": "Ảnh hưởng đã thu",
+      "hint": "Do not count influence still on cards",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "queueCards",
+      "label": "Family cards left in queue",
+      "labelVi": "Lá gia tộc còn trong hàng",
+      "hint": "Tiebreaker only",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "notes": "family: running-score. 6 rounds; influence still on cards does not count. Verified only against a transcription; sibling Ablaze template (official PDF) uses identical rules. 2-player variant not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/oriflamme/rulebook",
+      "title": "Oriflamme rules transcription (RulesPal)",
+      "type": "other",
+      "section": "End of the game"
+    },
+    {
+      "url": "https://gamers-hq.de/media/pdf/db/26/02/OriflammeAblaze-_Rules_EN.pdf",
+      "title": "Oriflamme: Ablaze official rulebook (same end rule)",
+      "type": "official-rulebook",
+      "section": "END OF GAME p.3"
+    }
+  ]
+}

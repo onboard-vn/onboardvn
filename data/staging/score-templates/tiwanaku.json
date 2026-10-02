@@ -1,0 +1,93 @@
+{
+  "slug": "tiwanaku",
+  "name": "Tiwanaku",
+  "year": 2022,
+  "bggId": 267979,
+  "templateVersion": 1,
+  "variant": "competitive",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "scoreTrack",
+      "label": "Score track (before final offering)",
+      "labelVi": "Điểm trên track (trước lễ vật cuối)",
+      "hint": "Read your score marker (starts at 10): includes correct/wrong divinations, Diversity pawn points and offerings made during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalOffering",
+      "label": "Final offering (different Offering tokens held)",
+      "labelVi": "Lễ vật cuối (số loại token Offering đang giữ)",
+      "hint": "After everyone passes, each player may offer: 1 token = 0, 2 = 1, 3 = 3, 4 = 6, 5 = 10 VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 1,
+          "3": 3,
+          "4": 6,
+          "5": 10
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "diversitySteps",
+      "label": "Total spaces advanced on Diversity board",
+      "labelVi": "Tổng số bước trên bảng Diversity",
+      "hint": "Tiebreaker only: total spaces moved on all four terrain tracks.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "diversitySteps",
+      "dir": "highest",
+      "description": "Tied player who moved the most total spaces on all Terrain tracks of the Diversity board wins"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: running-track-plus-final-offering. Score marker starts on space 10 and tracks most points during play. Game ends after the last Terrain tile is placed; each player then gets final divinations (correct = level of crop in VP and an Offering token; wrong = lose that many VP), then one final offering. Enter the score track value as read after the final divinations and before the final offering. Variants: tiwanaku--coop (also covers solo vs Otoma).",
+  "sources": [
+    {
+      "url": "https://sitdown-games.com/wp-content/uploads/2026/01/TIW-RULES-RETAIL-LD-EN.pdf",
+      "title": "Tiwanaku rulebook (Sit Down!, retail EN)",
+      "type": "official-rulebook",
+      "section": "p.5-6 Divine/Offer/End of the game"
+    },
+    {
+      "url": "https://sitdown-games.com/produit/tiwanaku/",
+      "title": "Tiwanaku product page (Sit Down!)",
+      "type": "publisher-page",
+      "section": "rulebook downloads"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

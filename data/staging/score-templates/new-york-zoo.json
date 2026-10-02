@@ -1,0 +1,92 @@
+{
+  "name": "New York Zoo",
+  "year": 2020,
+  "bggId": 300877,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "completed",
+      "label": "Zoo board fully covered",
+      "labelVi": "Phủ kín khu xây dựng",
+      "hint": "First player to cover every construction space with Enclosures and Attractions wins.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "freeSpaces",
+      "label": "Free construction spaces left",
+      "labelVi": "Ô xây dựng còn trống",
+      "hint": "Fewer is better; ranks players when several finish in the same Breeding.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    },
+    {
+      "key": "animals",
+      "label": "Animals on board (houses + Enclosures)",
+      "labelVi": "Số thú trên bàn",
+      "hint": "Tiebreaker when free spaces are equal.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "freeSpaces",
+      "dir": "lowest",
+      "description": "Fewer free spaces in the construction area ranks higher."
+    },
+    {
+      "categoryKey": "animals",
+      "dir": "highest",
+      "description": "More animals wins; still tied means shared win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "winCondition": "First player to completely cover their construction area wins. If the game ends with the active player's main action, that player wins and no Breeding happens. If it ends through Animal Breeding, several players may finish; the one with more animals wins (tie = several winners). Other positions: fewer free spaces, then more animals.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "A player covers all construction spaces of their zoo board."
+  },
+  "notes": "family: race-to-goal. No points in multiplayer. Solo mode in new-york-zoo--solo.json.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/08/c4/6e-new-york-zoo-rulebook.pdf",
+      "title": "New York Zoo rulebook (Lookout Games)",
+      "type": "official-rulebook",
+      "section": "p.8 Game end and winner; Solo game Scoring"
+    },
+    {
+      "url": "https://desktopgames.com.ua/games/6438/new_york_zoo_summary_en.pdf",
+      "title": "New York Zoo rules summary",
+      "type": "other",
+      "section": "Cross-check of end condition"
+    }
+  ],
+  "slug": "new-york-zoo",
+  "templateVersion": 1,
+  "needsReview": false,
+  "confidence": "high"
+}

@@ -1,0 +1,162 @@
+{
+  "slug": "forestry",
+  "name": "Forestry",
+  "year": 2025,
+  "bggId": 431493,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "inPlayScore",
+      "label": "Points on the score track before final scoring",
+      "labelVi": "Điểm trên track trước khi tính cuối game",
+      "hint": "Victory points already gained during play (45 in the rulebook example).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Buildings",
+      "labelVi": "Công trình",
+      "hint": "Points printed under the right-most uncovered space of the building track. Count only the highest value, not each building.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "waterStructures",
+      "label": "Water structures",
+      "labelVi": "Công trình nước",
+      "hint": "Multiplier = value reached on the water structures track; matches = contract cards, buildings, forester or seedling tokens matching your river tokens.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "multiplier * matches"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "multiplier",
+        "matches"
+      ]
+    },
+    {
+      "key": "taskCards",
+      "label": "Task cards",
+      "labelVi": "Thẻ nhiệm vụ",
+      "hint": "Points of each fulfilled task card, read from the third row of the back of the reference tile.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "foresterTable",
+      "label": "Forestry table (forester tokens)",
+      "labelVi": "Bảng lâm nghiệp (token kiểm lâm)",
+      "hint": "Most forester tokens 10 / second 6 / third 2; ties add the tied ranks and divide equally, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            10,
+            6,
+            2
+          ],
+          "tieMode": "split-floor",
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unusedResources",
+      "label": "Unused resources",
+      "labelVi": "Tài nguyên chưa dùng",
+      "hint": "Count construction material, seedling and temp worker tokens, coins and unfulfilled task cards; 1 VP per complete set of 3.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "woodTokens",
+      "label": "Wood tokens in storage",
+      "labelVi": "Token gỗ trong kho",
+      "hint": "1 VP per wood token in storage.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most planted seedlings"
+    },
+    {
+      "description": "Most fulfilled contract cards"
+    },
+    {
+      "description": "Most fulfilled task cards"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Game ends after every player takes a final turn once the last round token is flipped. Buildings and task card points come from the reference tile and player board, so they are entered as numbers. The rulebook does not say whether a player with zero forester tokens can place in the forestry table ranking. Solo and forester-character modes are not modelled.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/forestry.pdf",
+      "title": "Forestry rulebook (Pink Troubadour, hosted by bghub)",
+      "type": "official-rulebook",
+      "section": "End of the game and scoring (p.20), scoring example"
+    },
+    {
+      "url": "https://www.boardgamequest.com/forestry-review/",
+      "title": "Forestry Review - Board Game Quest",
+      "type": "other",
+      "section": "Scoring categories cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

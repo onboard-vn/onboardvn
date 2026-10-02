@@ -1,0 +1,67 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "needsReview": true,
+  "confidence": "medium",
+  "tiebreakers": [],
+  "slug": "catan-junior",
+  "name": "Catan: Junior",
+  "year": 2007,
+  "bggId": 125921,
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (built all 7 lairs first)",
+      "labelVi": "Thắng (xây đủ 7 hang ổ trước)",
+      "hint": "Spooky Island lair counts if you hold most Coco tiles",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "lairs",
+      "label": "Pirate lairs built",
+      "labelVi": "Số hang ổ đã xây",
+      "hint": "Max 7, including Spooky Island lair",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 7,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "winCondition": "First player to build all 7 pirate lairs wins immediately. No victory points.",
+  "endCondition": {
+    "type": "target-score",
+    "target": 7,
+    "description": "Game ends instantly when a player builds the 7th lair"
+  },
+  "notes": "family: race-to-target. No tiebreak needed (instant end). Verified only against a transcription; the official PDF was not retrieved.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/catan-junior/rulebook",
+      "title": "Catan Junior rules transcription (RulesPal)",
+      "type": "other",
+      "section": "Game end"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/171422/official-rules-for-catan-junior",
+      "title": "Official rules for Catan Junior (BGG file)",
+      "type": "bgg-file",
+      "section": "Game end"
+    }
+  ]
+}

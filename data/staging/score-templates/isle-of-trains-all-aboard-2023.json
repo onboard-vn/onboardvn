@@ -1,0 +1,133 @@
+{
+  "slug": "isle-of-trains-all-aboard-2023",
+  "name": "Isle of Trains: All Aboard",
+  "year": 2023,
+  "bggId": 355224,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "tokens",
+      "label": "VP tokens claimed",
+      "labelVi": "Token VP",
+      "hint": "Total value of VP tokens claimed during the game.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "trainCars",
+      "label": "Built train cars",
+      "labelVi": "Toa tàu đã xây",
+      "hint": "Sum of the badge points on your engine and built train cars.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "contracts",
+      "label": "Completed contracts",
+      "labelVi": "Hợp đồng hoàn thành",
+      "hint": "Badge points on face-up contracts (secondary contracts already show the full total).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "loaded",
+      "label": "Loaded cargo/passengers",
+      "labelVi": "Hàng/khách đã chất",
+      "hint": "1 point per cargo or passenger loaded in your train.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "progressTrain",
+      "label": "Progress train",
+      "labelVi": "Tàu Progress",
+      "hint": "1 point if you claimed the progress train.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Buildings",
+      "labelVi": "Công trình",
+      "hint": "Total points from your buildings' scoring conditions.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Longest train"
+    },
+    {
+      "description": "Most points from engine and train cars"
+    },
+    {
+      "description": "Still tied: shared victory"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Game end: the progress train reaching its required spot, or Train deck and discard both empty at the end of a turn; then every player (including the trigger) takes one final turn. Solo/scenario mode (rating Freeloader<50 up to Island Conductor 80+) not modelled. Verified against a faithful rulebook text mirror (RulesPal) and the BGG official rulebook listing; official PDF could not be downloaded without a BGG login.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/isle-of-trains-all-aboard/rulebook",
+      "title": "Isle of Trains: All Aboard rulebook text (RulesPal)",
+      "type": "other",
+      "section": "End of Game Scoring; Buildings reference"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/243309/isle-of-trains-all-aboard-english-rulebook",
+      "title": "Isle of Trains: All Aboard English Rulebook (BGG file page, official)",
+      "type": "bgg-file",
+      "section": "End of game scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

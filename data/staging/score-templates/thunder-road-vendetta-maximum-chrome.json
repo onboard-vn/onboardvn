@@ -1,0 +1,57 @@
+{
+  "slug": "thunder-road-vendetta-maximum-chrome",
+  "name": "Thunder Road: Vendetta – Maximum Chrome",
+  "year": 2023,
+  "bggId": 355997,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (last car standing / race winner)",
+      "labelVi": "Thắng (xe cuối cùng / về nhất)",
+      "hint": "Mark the winning crew",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Crews race and shoot; the BGG summary says the last car standing wins. Exact win conditions (race finish vs. last survivor, crew-specific rules) NOT verified against the rulebook.",
+  "endCondition": {
+    "type": "last-standing",
+    "target": null,
+    "description": "Last car standing (unverified)"
+  },
+  "notes": "family: race-combat. Rulebook not retrieved; no points modelled. Maximum Chrome is the big-box edition containing the base game plus expansions.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/355997/thunder-road-vendetta-maximum-chrome",
+      "title": "BGG game page (short description)",
+      "type": "other",
+      "section": "Short description"
+    },
+    {
+      "url": "https://restorationgames.com/thunder-road-vendetta/",
+      "title": "Restoration Games - Thunder Road: Vendetta",
+      "type": "publisher-page",
+      "section": "Product lineup"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

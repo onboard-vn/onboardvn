@@ -1,0 +1,43 @@
+{
+  "slug": "cryptid-2018",
+  "name": "Cryptid",
+  "year": 2018,
+  "bggId": 246784,
+  "templateVersion": 1,
+  "variant": null,
+  "playerCount": { "min": 3, "max": 5 },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Found the cryptid's habitat",
+      "labelVi": "Tìm đúng môi trường sống của Cryptid",
+      "hint": "Winner searches the habitat space and no other player places a cube on it",
+      "scope": "player",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends immediately when a player searches the space containing the habitat and no other player places a cube on it"
+  },
+  "winCondition": "First player to search the exact space where the cryptid lives, with no other player able to place a cube there, wins. Players then compare clues to verify. No points and no ties.",
+  "notes": "family: deduction. No points; record only the winner. Each player holds a private clue; setup is by player count (3-5) via setup booklet. Verified only against a third-party rules summary, not the official rulebook PDF (not retrievable in this session).",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/cryptid/game-rules.php",
+      "title": "Cryptid rules summary (UltraBoardGames)",
+      "type": "other",
+      "section": "How to win / end of game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

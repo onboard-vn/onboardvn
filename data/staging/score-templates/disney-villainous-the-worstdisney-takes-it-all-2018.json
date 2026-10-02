@@ -1,0 +1,53 @@
+{
+  "slug": "disney-villainous-the-worstdisney-takes-it-all-2018",
+  "name": "Disney Villainous: The Worst Takes it All",
+  "year": 2018,
+  "bggId": 256382,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "asymmetric",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Fulfilled own villain objective",
+      "labelVi": "Hoàn thành mục tiêu phản diện của mình",
+      "hint": "First player to complete their villain's unique objective wins immediately.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No points; the first player to fulfil their objective wins, so ties do not arise."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Each player controls a different villain with a unique win condition printed on the villain guide; the first player to fulfil it wins.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends immediately when a player completes their villain objective."
+  },
+  "notes": "family: objective-race. Six-villain pack (2018 base game edition family). Objective text is per villain (component-printed) and not modelled; scorer only records the winner. Not verified against the official rulebook (could not be retrieved).",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/256382",
+      "title": "Disney Villainous: The WorstDisney Takes it All (BGG page, description only; official rulebook not retrievable in this run)",
+      "type": "other",
+      "section": "Game description"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

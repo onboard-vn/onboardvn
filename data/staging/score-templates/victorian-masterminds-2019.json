@@ -1,0 +1,45 @@
+{
+  "slug": "victorian-masterminds-2019",
+  "name": "Victorian Masterminds",
+  "year": 2019,
+  "bggId": 189453,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "victoryPoints",
+      "label": "Total victory points",
+      "labelVi": "Tổng điểm chiến thắng",
+      "hint": "Sum VP from missions, contraption, destroyed buildings etc. as tracked on the board/cards",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: worker-placement. Per the publisher description: game ends when a mastermind completes their contraption or the Secret Service ends the villainy; most victory points wins. Itemised VP sources and tiebreakers NOT verified (rulebook not retrieved).",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/189453",
+      "title": "BGG game page (identification and publisher description only)",
+      "type": "other",
+      "section": "Description"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

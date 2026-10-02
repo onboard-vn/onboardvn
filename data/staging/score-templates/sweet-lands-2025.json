@@ -1,0 +1,336 @@
+{
+  "slug": "sweet-lands-2025",
+  "name": "Sweet Lands",
+  "year": 2025,
+  "bggId": 425445,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the Action phase of round 5 (no cleanup), then final scoring"
+  },
+  "categories": [
+    {
+      "key": "gameVp",
+      "label": "Victory points earned during the game",
+      "labelVi": "VP kiếm được trong ván",
+      "hint": "VP gained through passes, actions and abilities during the 5 rounds.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "prosTerrain",
+      "label": "Prosperity: terrain tiles",
+      "labelVi": "Thịnh vượng: ô địa hình",
+      "hint": "VP from Terrain Tiles on your map (any side) at the rate set by the top Prosperity Track (e.g. 1 VP per 3 / per 2 / per tile).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "prosRabbits",
+      "label": "Prosperity: Cookie Rabbit tokens",
+      "labelVi": "Thịnh vượng: thỏ Cookie",
+      "hint": "VP from Cookie Rabbit tokens on your map at the rate of its Prosperity Track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "prosRoads",
+      "label": "Prosperity: road tokens",
+      "labelVi": "Thịnh vượng: đường",
+      "hint": "VP from Road tokens on your map at the rate of its Prosperity Track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "prosProperties",
+      "label": "Prosperity: property tokens",
+      "labelVi": "Thịnh vượng: công trình",
+      "hint": "VP from Property tokens on your map (incl. Clock Tower) at the rate of its Prosperity Track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "prosAutomated",
+      "label": "Prosperity: automated cards",
+      "labelVi": "Thịnh vượng: thẻ tự động hóa",
+      "hint": "VP from automated cards at the rate of its Prosperity Track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "prosIndustry",
+      "label": "Prosperity: industry points",
+      "labelVi": "Thịnh vượng: điểm công nghiệp",
+      "hint": "VP from Industry Points earned at the rate of its Prosperity Track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cityPoints",
+      "label": "City Points earned",
+      "labelVi": "Điểm thành phố (City Points)",
+      "hint": "Total City Points earned in the game; each is worth 2 VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tentBonus",
+      "label": "Bonus: all 5 Tent tokens placed",
+      "labelVi": "Thưởng: đủ 5 Tent",
+      "hint": "Enter Cookie Rabbit tokens on your map if all 5 Tent tokens are placed (else 0); 2 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "houseBonus",
+      "label": "Bonus: all 5 House tokens placed (City Points)",
+      "labelVi": "Thưởng: đủ 5 House",
+      "hint": "Enter City Points earned if all 5 House tokens are placed (else 0); 1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildingBonus",
+      "label": "Bonus: all 5 Building tokens placed (Industry Points)",
+      "labelVi": "Thưởng: đủ 5 Building",
+      "hint": "Enter Industry Points earned if all 5 Building tokens are placed (else 0); 1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gold",
+      "label": "Unspent Gold",
+      "labelVi": "Vàng còn lại",
+      "hint": "1 VP per 5 unspent Gold.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "diamonds",
+      "label": "Unused Diamonds",
+      "labelVi": "Kim cương còn lại",
+      "hint": "1 VP per unused Diamond.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "ports",
+      "label": "Connected Ports (0-4)",
+      "labelVi": "Cảng đã nối (0-4)",
+      "hint": "Ports linked to a Capital hex by a continuous path of terrain tiles: 0=-40, 1=-20, 2=-10, 3=-5, 4=+10.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": -40,
+          "1": -20,
+          "2": -10,
+          "3": -5,
+          "4": 10
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "milestones",
+      "label": "Milestone tiles collected",
+      "labelVi": "Số Milestone đã lấy",
+      "hint": "10 VP per Milestone tile (max 3 collected in the game; none in solo).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalTileOne",
+      "label": "Final scoring tile 1 (rank)",
+      "labelVi": "Ô chấm điểm cuối 1 (xếp hạng)",
+      "hint": "Compare the indicated element among players: 1st 15 VP, 2nd 7 VP; tied players all get the full amount for that rank and the next rank is skipped. Neutral virtual player only blocks places.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            15,
+            7
+          ],
+          "tieMode": "all-full",
+          "excludeZero": false,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalTileTwo",
+      "label": "Final scoring tile 2 (rank)",
+      "labelVi": "Ô chấm điểm cuối 2 (xếp hạng)",
+      "hint": "Same as tile 1 for the second randomly chosen final scoring tile.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            15,
+            7
+          ],
+          "tieMode": "all-full",
+          "excludeZero": false,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "rabbitsOnMap",
+      "label": "Cookie Rabbit tokens on map (tiebreak)",
+      "labelVi": "Số thỏ Cookie trên bản đồ (phân định hòa)",
+      "hint": "Tiebreaker: most Cookie Rabbit tokens on your map board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "rabbitsOnMap",
+      "dir": "highest",
+      "description": "Most Cookie Rabbit tokens on the player's map board"
+    },
+    {
+      "description": "If still tied, the tied players share the victory"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Prosperity-track rates depend on each marker's position (printed on the main board; e.g. top track 1 VP per 3 tiles at spaces 1-2, per 2 at 3-4, per tile at the end), so enter the computed VP per track. Tent/House/Building bonus categories: enter the count only when all 5 of that token are on your map. Final scoring tiles: enter the compared quantity for each player; a neutral virtual player may occupy a rank (it earns nothing but can push real players down) - not modelled. Solo mode (Mio) has no milestones/final tiles; target scores 250/300. Rules read from RulesPal rulebook text (mirrors the official rulebook); official BGG PDF download was blocked.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/sweet-lands/rulebook",
+      "title": "Sweet Lands rulebook (RulesPal, mirrors official rulebook)",
+      "type": "other",
+      "section": "Prosperity Tracks and Final Scoring; Game End and Final Scoring"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/304634/sweet-lands-rulebook",
+      "title": "Sweet Lands Rulebook (official English, BGG file)",
+      "type": "bgg-file",
+      "section": "Game End and Final Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

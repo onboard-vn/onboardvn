@@ -1,0 +1,196 @@
+{
+  "slug": "castles-of-mad-king-ludwig-2014",
+  "name": "Castles of Mad King Ludwig",
+  "year": 2014,
+  "bggId": 155426,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "castle",
+      "label": "Score track (rooms, bonuses, connections)",
+      "labelVi": "Điểm trên track (phòng)",
+      "hint": "VP gained during play from rooms placed, connection bonuses and rescoring.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "depleted",
+      "label": "Rooms of depleted stacks",
+      "labelVi": "Phòng thuộc chồng đã hết",
+      "hint": "Each room in your castle whose size matches an emptied tile stack = 2 VP (Hallways/Stairs count if their stack is empty).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "favor1",
+      "label": "King's Favor 1 (rank)",
+      "labelVi": "Ân huệ nhà vua 1 (hạng)",
+      "hint": "Rank on the Favor's category: 1st 8, 2nd 4, 3rd 2, 4th 1. Need at least 1 qualifying item. Ties split the tied ranks' VP, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4,
+            2,
+            1
+          ],
+          "tieMode": "split-floor",
+          "over": "count",
+          "excludeZero": true
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "favor2",
+      "label": "King's Favor 2 (rank)",
+      "labelVi": "Ân huệ nhà vua 2 (hạng)",
+      "hint": "Rank on the Favor's category: 1st 8, 2nd 4, 3rd 2, 4th 1. Need at least 1 qualifying item. Ties split the tied ranks' VP, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4,
+            2,
+            1
+          ],
+          "tieMode": "split-floor",
+          "over": "count",
+          "excludeZero": true
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "favor3",
+      "label": "King's Favor 3 (rank)",
+      "labelVi": "Ân huệ nhà vua 3 (hạng)",
+      "hint": "Rank on the Favor's category: 1st 8, 2nd 4, 3rd 2, 4th 1. Need at least 1 qualifying item. Ties split the tied ranks' VP, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4,
+            2,
+            1
+          ],
+          "tieMode": "split-floor",
+          "over": "count",
+          "excludeZero": true
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusCards",
+      "label": "Bonus cards",
+      "labelVi": "Thẻ Bonus",
+      "hint": "Sum of VP from your revealed Bonus cards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "money",
+      "label": "Leftover money (marks)",
+      "labelVi": "Tiền còn lại",
+      "hint": "Enter total marks (e.g. 29000); 1 VP per full 10000.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 10000)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "area",
+      "label": "Castle area (tiebreak)",
+      "labelVi": "Diện tích lâu đài (hòa)",
+      "hint": "Total square footage; used only to break ties.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "area",
+      "dir": "highest",
+      "description": "Largest castle (total square footage)"
+    },
+    {
+      "description": "Then most money; then first tied player to take the Master Builder token."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Verified against the current (2nd edition/Collector's) rulebook, not the 2014 first-edition rulebook; end-game scoring is expected to be identical. 3 King's Favors in a standard game (Favor scoring conditions are printed on the face-up tiles). Order: depleted stacks, Favors, Bonus cards, money. Game ends after the round in which the last Room card is drawn. Solo mode scores the same without Favors.",
+  "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0740/4855/files/CAS2_online_rules.pdf?v=1717602100",
+      "title": "Castles of Mad King Ludwig Rulebook (Bezier Games, 2nd ed.)",
+      "type": "official-rulebook",
+      "section": "p.12 Game End/Final Scoring; p.13 Bonus Cards, Leftover Money, The Winner"
+    },
+    {
+      "url": "https://officialgamerules.org/game-rules/castles-of-mad-king-ludwig/",
+      "title": "Castles of Mad King Ludwig rules summary",
+      "type": "other",
+      "section": "Final scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

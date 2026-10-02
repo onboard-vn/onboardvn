@@ -1,0 +1,73 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "needsReview": true,
+  "confidence": "medium",
+  "tiebreakers": [],
+  "slug": "salem-1692",
+  "name": "Salem 1692",
+  "year": 2018,
+  "bggId": 175549,
+  "playerCount": {
+    "min": 4,
+    "max": 12
+  },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Your side won",
+      "labelVi": "Phe của bạn thắng",
+      "hint": "Townspeople or Witches win as a team",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "winCondition": "Townspeople win when the final witch tryal card is revealed. Witches win when all townspeople are eliminated or the last remaining townsperson becomes a witch. No fixed round count and no tiebreak.",
+  "roles": [
+    {
+      "key": "townspeople",
+      "label": "Townspeople",
+      "labelVi": "Dân làng",
+      "winCondition": "Reveal the final witch tryal card",
+      "categoryKeys": [
+        "won"
+      ]
+    },
+    {
+      "key": "witches",
+      "label": "Witches",
+      "labelVi": "Phù thủy",
+      "winCondition": "Eliminate all townspeople or turn the last one into a witch",
+      "categoryKeys": [
+        "won"
+      ]
+    }
+  ],
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game continues through night and day phases until one side meets its condition"
+  },
+  "notes": "family: hidden-role-social. No points. Verified only against a rulebook transcription, not the official PDF; 2-3 player variant and later editions not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/salem-1692/rulebook",
+      "title": "Salem 1692 rules transcription (RulesPal)",
+      "type": "other",
+      "section": "Win conditions"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/175549",
+      "title": "Salem 1692 on BGG",
+      "type": "bgg-file",
+      "section": "Game page + files"
+    }
+  ]
+}

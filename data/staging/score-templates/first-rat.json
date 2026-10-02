@@ -1,0 +1,215 @@
+{
+  "slug": "first-rat",
+  "name": "First Rat",
+  "year": 2022,
+  "bggId": 347703,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "cockpit",
+      "label": "Cockpit Score track",
+      "labelVi": "Track Cockpit",
+      "hint": "Points from your markers on the Cockpit Score track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cargoBay",
+      "label": "Cargo Bay Score track",
+      "labelVi": "Track Cargo Bay",
+      "hint": "Points from your markers on the Cargo Bay Score track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "thruster",
+      "label": "Thruster Score track",
+      "labelVi": "Track Thruster",
+      "hint": "Points from your markers on the Thruster Score track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "rocket",
+      "label": "Rocket Score track",
+      "labelVi": "Track Rocket",
+      "hint": "Points from markers on the Rocket track (one per full set of 3 parts).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "provisions",
+      "label": "Provisions Score track",
+      "labelVi": "Track Provisions",
+      "hint": "Points from markers on the Provisions track (each 10 Cheese donated).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "constructionLights",
+      "label": "Construction Lights Score track",
+      "labelVi": "Track Construction Lights",
+      "hint": "Points from markers on the Construction Lights track (max 3 markers).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "storedFood",
+      "label": "Stored Food Score track",
+      "labelVi": "Track Stored Food",
+      "hint": "Points from markers on the Stored Food track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "rattronaut",
+      "label": "Rattronaut Score track",
+      "labelVi": "Track Rattronaut",
+      "hint": "Points from Rats that reached the rocket.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bottleCaps",
+      "label": "Bottle Caps",
+      "labelVi": "Nắp chai",
+      "hint": "Total points printed on your Bottle Cap tiles.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "awards",
+      "label": "Awards (3 points each)",
+      "labelVi": "Giải thưởng",
+      "hint": "Number of Award tokens; each is worth 3 points.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "moldyCheese",
+      "label": "Moldy Cheese",
+      "labelVi": "Phô mai mốc",
+      "hint": "Number of Moldy Cheese; each costs 2 points.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverResources",
+      "label": "Leftover resources",
+      "labelVi": "Tài nguyên còn lại",
+      "hint": "Total of Vinegar Bottles + Baking Soda + Tin Cans + Calculators + Cheese; 1 point per full 4.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 4)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most Rattronauts in the rocket"
+    },
+    {
+      "description": "Still tied: shared victory"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Score track point values depend on player count (neutral markers cover spaces) and the order markers were placed, so each track total is entered directly. Game ends at end of the round where a player gets the 4th Rat on the Launchpad, or after one extra round once a player places an 8th Score marker (max 10 markers). Variable-setup Score tracks and solo (vs. Greg: total your points vs. his) not modelled. Fixed Score tile values and other Bottle Cap values are printed on components.",
+  "sources": [
+    {
+      "url": "https://cdn.pegasus.de/public/media/57/5c/6b/1717757235/4250231729942_firstrat_rules_en_2te_auflage_web-min.pdf",
+      "title": "First Rat rulebook EN (Pegasus Spiele, 2nd print)",
+      "type": "official-rulebook",
+      "section": "p.9 Score tracks; p.10 End of Game and final scoring; Moldy Cheese p.4"
+    },
+    {
+      "url": "https://www.rulespal.com/first-rat/rulebook",
+      "title": "First Rat rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End of game scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

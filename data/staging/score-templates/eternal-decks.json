@@ -1,0 +1,71 @@
+{
+  "slug": "eternal-decks",
+  "name": "Eternal Decks",
+  "year": 2025,
+  "bggId": 424981,
+  "templateVersion": 1,
+  "variant": null,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won the stage/game",
+      "labelVi": "Cả đội thắng",
+      "hint": "Stage objectives completed before any player is unable to take an action",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "stagesCleared",
+      "label": "Stages cleared",
+      "labelVi": "Số màn đã vượt qua",
+      "hint": "Game has six stages",
+      "scope": "team",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 6
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Complete the stage objectives before any player cannot take an action; six stages (collect points, survive a ghost town, labyrinth, boss, etc.).",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Team loses when any player cannot take an action; wins by completing the stage objectives."
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. Rulebook PDF could not be downloaded (BGG file downloads blocked, publisher page has no rules). Only the publisher/BGG description was verified; stage-specific objectives (some collect points) and solo record sheets not modelled. Check the official rulebook before upgrading confidence.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/424981",
+      "title": "BoardGameGeek game page and publisher description",
+      "type": "bgg-forum",
+      "section": "Description"
+    },
+    {
+      "url": "https://portlandgamecollective.bigcartel.com/product/eternal-decks",
+      "title": "Eternal Decks - Portland Game Collective",
+      "type": "publisher-page",
+      "section": "Product page"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

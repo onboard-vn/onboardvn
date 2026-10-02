@@ -1,0 +1,333 @@
+{
+  "slug": "space-station-phoenix-2022",
+  "name": "Space Station Phoenix",
+  "year": 2022,
+  "bggId": 356414,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Points earned during game (score track incl. laps)",
+      "labelVi": "Điểm tích lũy trong ván (track, tính cả vòng)",
+      "hint": "Final track value; add 50/100/150/200 lap tokens.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "sectorsL1",
+      "label": "Level-1 sectors built",
+      "labelVi": "Khu level 1 đã xây",
+      "hint": "4 VP per level-1 sector.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "sectorsL2",
+      "label": "Level-2 sectors built",
+      "labelVi": "Khu level 2 đã xây",
+      "hint": "6 VP per level-2 sector.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 6
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "sectorsL3",
+      "label": "Level-3 sectors built",
+      "labelVi": "Khu level 3 đã xây",
+      "hint": "10 VP per level-3 sector.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "residents",
+      "label": "Residents on station (aliens + humans)",
+      "labelVi": "Cư dân trên trạm (alien + người)",
+      "hint": "2 VP per resident.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "majorityHuman",
+      "label": "Species majority: Humans",
+      "labelVi": "Đa số loài: Người",
+      "hint": "Count of this species on your station. Most 10 VP, 2nd 5 VP (need at least 1). Tie for 1st split 15 rounded down, no 2nd; tie for 2nd split 5 rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            10,
+            5
+          ],
+          "tieMode": "split-floor",
+          "minValueToScore": 1,
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "majorityTeal",
+      "label": "Species majority: Teal aliens",
+      "labelVi": "Đa số loài: Người ngoài hành tinh xanh lam",
+      "hint": "Count of this species on your station. Most 10 VP, 2nd 5 VP (need at least 1). Tie for 1st split 15 rounded down, no 2nd; tie for 2nd split 5 rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            10,
+            5
+          ],
+          "tieMode": "split-floor",
+          "minValueToScore": 1,
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "majorityPink",
+      "label": "Species majority: Pink aliens",
+      "labelVi": "Đa số loài: Người ngoài hành tinh hồng",
+      "hint": "Count of this species on your station. Most 10 VP, 2nd 5 VP (need at least 1). Tie for 1st split 15 rounded down, no 2nd; tie for 2nd split 5 rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            10,
+            5
+          ],
+          "tieMode": "split-floor",
+          "minValueToScore": 1,
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "majorityBrown",
+      "label": "Species majority: Brown aliens",
+      "labelVi": "Đa số loài: Người ngoài hành tinh nâu",
+      "hint": "Count of this species on your station. Most 10 VP, 2nd 5 VP (need at least 1). Tie for 1st split 15 rounded down, no 2nd; tie for 2nd split 5 rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            10,
+            5
+          ],
+          "tieMode": "split-floor",
+          "minValueToScore": 1,
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "majorityGold",
+      "label": "Species majority: Gold aliens",
+      "labelVi": "Đa số loài: Người ngoài hành tinh vàng",
+      "hint": "Count of this species on your station. Most 10 VP, 2nd 5 VP (need at least 1). Tie for 1st split 15 rounded down, no 2nd; tie for 2nd split 5 rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            10,
+            5
+          ],
+          "tieMode": "split-floor",
+          "minValueToScore": 1,
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "hubBonus",
+      "label": "Hub game-end bonus (purple)",
+      "labelVi": "Thưởng cuối game của Hub (tím)",
+      "hint": "Points from your hub's purple game-end bonus (read from hub tile).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "quartersBonus",
+      "label": "Living-quarters game-end bonuses (purple, some level-3 sectors)",
+      "labelVi": "Thưởng cuối game của ô ở (tím)",
+      "hint": "Total points from occupied living quarters with a purple game-end bonus.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gems",
+      "label": "GEMs remaining",
+      "labelVi": "GEM còn lại",
+      "hint": "1 VP per 20 GEMs, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/20)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resources",
+      "label": "Resource cubes remaining (food + water + metal)",
+      "labelVi": "Tài nguyên còn lại (thực phẩm + nước + kim loại)",
+      "hint": "1 VP per set of 5 resources of any type, rounded down; enter total units.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "aliensCount",
+      "label": "Aliens on station (tiebreak)",
+      "labelVi": "Số alien (phân định hòa)",
+      "hint": "Tiebreak only.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "humansCount",
+      "label": "Humans on station (tiebreak)",
+      "labelVi": "Số người (phân định hòa)",
+      "hint": "Tiebreak only.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "aliensCount",
+      "dir": "highest",
+      "description": "Most aliens"
+    },
+    {
+      "categoryKey": "humansCount",
+      "dir": "highest",
+      "description": "Most humans"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Source is Eric Postpischil's condensed rules (v1.2, based on the official rules), not the publisher's PDF itself; the official rulebook was not reachable, so confidence is medium. Species = humans plus teal/pink/brown/gold aliens; 'residents' counts all of them (2 VP each). Hub/quarters purple bonuses are printed on tiles and entered as totals. Game-end trigger not modelled.",
+  "sources": [
+    {
+      "url": "https://edp.org/Games/SpaceStationPhoenix.pdf",
+      "title": "Space Station Phoenix condensed rules (E. Postpischil, v1.2)",
+      "type": "other",
+      "section": "Game End (p.2)"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/356414/space-station-phoenix",
+      "title": "BGG Space Station Phoenix",
+      "type": "other",
+      "section": "Identification"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

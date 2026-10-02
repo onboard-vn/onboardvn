@@ -1,0 +1,89 @@
+{
+  "slug": "the-palaces-of-carrara-second-edition-2022",
+  "name": "The Palaces of Carrara (Second Edition)",
+  "year": 2022,
+  "bggId": 348070,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vp",
+      "label": "Victory points on track",
+      "labelVi": "Điểm VP trên track",
+      "hint": "Include the +5 VP for the player who triggered game end and +100/+200 lap marker.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coins",
+      "label": "Leftover coins",
+      "labelVi": "Xu còn lại",
+      "hint": "1 VP per 5 coins, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "blocksLeft",
+      "label": "Tiebreak: leftover building blocks",
+      "labelVi": "Phá hòa: khối xây dựng còn lại",
+      "hint": "Not scored.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "blocksLeft",
+      "dir": "highest",
+      "description": "Most building blocks left over"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Regular (non-advanced) version. VP is tracked during play via scoring markers on cities/buildings. Game end: a player has used all scoring markers and the building draw pile is empty; the triggering player gets 5 VP and others get one more turn.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/the-palaces-of-carrara-second-edition.pdf",
+      "title": "The Palaces of Carrara Second Edition rulebook",
+      "type": "official-rulebook",
+      "section": "Game End; Final Scoring (regular p.7-8); Advanced Final Scoring (p.12)"
+    },
+    {
+      "url": "https://cdn.1j1ju.com/medias/d8/66/6f-the-palaces-of-carrara-second-edition-rulebook.pdf",
+      "title": "Palaces of Carrara Second Edition rulebook (1j1ju copy)",
+      "type": "other",
+      "section": "Same pages; coin exchange rate text contains a typo, follow the 3:1 example"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,129 @@
+{
+  "slug": "forge-war-2015",
+  "name": "Forge War",
+  "year": 2015,
+  "bggId": 146221,
+  "templateVersion": 1,
+  "variant": "simple game",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 7,
+    "aggregate": "sum",
+    "endCondition": "Simple game ends after round 7; epic game after round 6 of stage 3"
+  },
+  "categories": [
+    {
+      "key": "questPrestige",
+      "label": "Prestige track after quests (incl. failed active quests)",
+      "labelVi": "Điểm uy tín trên track (kể cả nhiệm vụ thất bại)",
+      "hint": "Fail all still-active quests first: they score the parenthesised value of the last completed leg. Add 100 per 100-prestige token.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "adventurerLevels",
+      "label": "Adventurer levels",
+      "labelVi": "Cấp mạo hiểm giả",
+      "hint": "Number of adventurers at each level: 1 prestige per level, level 4 is worth 5.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "lvl1 + 2 * lvl2 + 3 * lvl3 + 5 * lvl4"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "lvl1",
+        "lvl2",
+        "lvl3",
+        "lvl4"
+      ]
+    },
+    {
+      "key": "marketCards",
+      "label": "Market cards owned",
+      "labelVi": "Điểm thẻ chợ",
+      "hint": "Sum of prestige on every market card owned: unique weapon designs, market bonus cards and claimed public designs.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "marketBonusSpaces",
+      "label": "Blacksmith / bazaar bonus spaces",
+      "labelVi": "Ô thưởng thợ rèn / chợ",
+      "hint": "Prestige from claimed end-game bonus spaces (not used in the epic game): blacksmith 2 per unique and 1 per public design (not starting copper designs); bazaar 1 per completed quest, 1 per adventurer, 2 per permanent market bonus card, 1 per leftover resource.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverWealth",
+      "label": "Leftover gold and resource value",
+      "labelVi": "Vàng và giá trị tài nguyên còn lại",
+      "hint": "Gold plus sell value of leftover resources (without Seller Savvy, excluding resources already used for the bazaar bonus). 1 prestige per 4.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 4)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Player earlier in current player order wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Verified against the final Cephalofair rulebook (Isaac Childres). Epic game (3 stages) uses the same final scoring; optional bonus tiles in the epic game are not scored at the end. Solo variant not modelled.",
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/s/afvogxbryw34irs/Forge%20War%20Rule%20Book%20-%20Final.pdf?dl=0",
+      "title": "Forge War Rule Book - Final (linked from Cephalofair)",
+      "type": "official-rulebook",
+      "section": "End of Game (p.25); Market bonus actions (p.16)"
+    },
+    {
+      "url": "https://cephalofair.com/pages/forge-war-rule-book",
+      "title": "Forge War Rule Book - Cephalofair",
+      "type": "publisher-page",
+      "section": "Link to final rulebook"
+    },
+    {
+      "url": "https://desktopgames.com.ua/games/4933/forge_war_rules_eng.pdf",
+      "title": "Forge War rules (Igromag copy)",
+      "type": "official-rulebook",
+      "section": "End of Game (p.13) cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

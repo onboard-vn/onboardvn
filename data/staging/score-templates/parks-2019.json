@@ -1,0 +1,136 @@
+{
+  "slug": "parks-2019",
+  "name": "PARKS",
+  "year": 2019,
+  "bggId": 266524,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "parks",
+      "label": "Visited Park cards (points)",
+      "labelVi": "Điểm thẻ Park đã thăm",
+      "hint": "Sum of the points printed on all your visited Park cards",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "photos",
+      "label": "Photos",
+      "labelVi": "Ảnh chụp",
+      "hint": "1 point per Photo token",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "photoBonus",
+      "label": "Photo Bonus Tile (most Photos)",
+      "labelVi": "Thưởng nhiều ảnh nhất",
+      "hint": "2-player: 3 pts for most Photos. 3-5 players: 4 pts most, 2 pts second most. Enter what you earned.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "2nd edition rules"
+    },
+    {
+      "key": "fallSeasonBonus",
+      "label": "Fall Season Bonus",
+      "labelVi": "Thưởng mùa Thu",
+      "hint": "3 points if you have the most of the pictured requirement on visited Parks (ties all score)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "2nd edition rules"
+    },
+    {
+      "key": "passion",
+      "label": "Passion Card end-game bonus",
+      "labelVi": "Thưởng thẻ Passion / Year",
+      "hint": "Only if you chose the end-game bonus on your Passion Card (1st edition: Year card, 2 or 3 pts)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "firstHiker",
+      "label": "First Hiker Token",
+      "labelVi": "Thẻ First Hiker",
+      "hint": "1 point to the holder of the First Hiker token",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "parks",
+      "dir": "highest",
+      "description": "Tied player who visited the most Park cards wins (count of Parks, not points)"
+    },
+    {
+      "description": "If still tied, tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Rules from 2nd edition rulebook v1.1 (Photo Bonus Tile, Season Bonuses); 1st edition has no Photo Bonus/Fall bonus (these two categories optional) and uses Year cards instead of Passion cards. Tiebreaker is number of Parks visited, which is not a scored field. Solo and 2-player Ranger Teddy modes, Camping mode and Solo rank table (30-50 pts) not modelled. Photo Bonus tie handling not stated in rulebook; scorer enters points received.",
+  "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/1898/8501/files/Parks-2nd-Edition-1.1-Rules_Online.pdf",
+      "title": "PARKS 2nd Edition rulebook v1.1 (Keymaster Games)",
+      "type": "official-rulebook",
+      "section": "p.13 End Game Scoring; p.12 Season Bonuses"
+    },
+    {
+      "url": "https://www.rulespal.com/parks/rulebook",
+      "title": "PARKS rulebook summary (1st edition, RulesPal)",
+      "type": "other",
+      "section": "End of game: Parks, Photos, Personal Bonus, First Hiker, tiebreak"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

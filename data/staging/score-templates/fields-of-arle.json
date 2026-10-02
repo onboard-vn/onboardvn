@@ -1,0 +1,156 @@
+{
+  "slug": "fields-of-arle",
+  "name": "Fields of Arle",
+  "year": 2014,
+  "bggId": 159675,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 9,
+    "aggregate": "sum",
+    "endCondition": "After the November Inventorying of the 9th Half Year"
+  },
+  "categories": [
+    {
+      "key": "clothingMaterials",
+      "label": "Clothing tiles and building materials",
+      "labelVi": "Quần áo và vật liệu",
+      "hint": "Bricks, Linen, Woolen, Leather 1 VP each; Summer, Winter, Leather Wear 2 VP each; Timber 1/2 VP each (do not round).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "equipment",
+      "label": "Equipment in the Barn",
+      "labelVi": "Thiết bị trong kho",
+      "hint": "VP of Plows, Peat Boats and Vehicles (enter after applying -3 if you have no Large Vehicle).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "travelExperience",
+      "label": "Travel Experience Track",
+      "labelVi": "Hành trình",
+      "hint": "VP at first empty space from the bottom, max 10.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 10,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tools",
+      "label": "Tools",
+      "labelVi": "Dụng cụ",
+      "hint": "Sum of VP of your Tools on the 10 Tool Tracks.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goodsTrack",
+      "label": "Goods Track",
+      "labelVi": "Đường hàng hóa",
+      "hint": "Indicator on 15 = 3 VP; 11-14 = 2 VP; 7-10 = 1 VP; double the total if you have a Depot (once only).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "homeBoard",
+      "label": "Home Board",
+      "labelVi": "Bảng nhà",
+      "hint": "VP of Buildings, Stalls, Stables, Forests, Parks minus 4 per hydrated Moor, 1 per dehydrated Moor, 1 per remaining top-row Tidal Flat space.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "animals",
+      "label": "Animals on Home Board",
+      "labelVi": "Động vật",
+      "hint": "Least-held animal type 2 VP each, second least 1 VP each, most-held type 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bottlenecks",
+      "label": "Supply Bottlenecks",
+      "labelVi": "Thiếu thức ăn/nhiên liệu",
+      "hint": "VP already lost during play from missing Food and Fuel (enter as negative number).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "The Starting Player of a hypothetical 10th Half Year wins the tie."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "rounds",
+    "target": 9,
+    "description": "Game ends after 9 Half Years, after the November Inventorying; Peat Boat may first convert leftover Peat."
+  },
+  "notes": "family: point-salad-euro. Category subtotals are entered as final VP per scoring-pad line. Animals: e.g. 6 Sheep, 5 Horses, 4 Cattle = 13 VP. Tea & Trade expansion, Advent Calendar and solo variant not modelled. Cross-check: the large scoring card exists on BGG (Fields of Arle - Large Scoring Card) but could not be downloaded. Verified via a RulesPal mirror of the rulebook, not the PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/fields-of-arle/rulebook",
+      "title": "Fields of Arle rulebook (RulesPal mirror)",
+      "type": "other",
+      "section": "The End of the Game and the Winner (scoring pad categories)"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,216 @@
+{
+  "slug": "tea-garden-2024",
+  "name": "Tea Garden",
+  "year": 2024,
+  "bggId": 422042,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Game ends after 5 rounds (no maintenance in round 5)"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Victory Point track",
+      "labelVi": "Điểm trên track VP",
+      "hint": "VP already marked on the track during play (caravans, gardens, cups, etc.).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "actionCards",
+      "label": "Action cards",
+      "labelVi": "Thẻ Action",
+      "hint": "Sum of VP printed on the right side of all purchased Action cards.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "emperorCards",
+      "label": "Emperor cards",
+      "labelVi": "Thẻ Emperor",
+      "hint": "Sum of end-game VP from your Emperor cards (see card text, each has a max count).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "riverNavigation",
+      "label": "River Navigation",
+      "labelVi": "Điều hướng sông",
+      "hint": "VP of the River segment your Boat occupies (highest free space for the first to reach the end).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "universityCenter",
+      "label": "Workers in Tea University centre",
+      "labelVi": "Thợ ở giữa Đại học Trà",
+      "hint": "10 VP per Worker meeple in the centre.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "universityOuter",
+      "label": "Workers on Tea University rim",
+      "labelVi": "Thợ ở vành Đại học Trà",
+      "hint": "VP printed at the section where your Worker on the outer rim stands.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "emperorTrackTop",
+      "label": "Top of Emperor track",
+      "labelVi": "Đỉnh đường Hoàng đế",
+      "hint": "10 VP if you reached the topmost row.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 10
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cupConnections",
+      "label": "Same-colour Cup connections",
+      "labelVi": "Kết nối cốc cùng màu",
+      "hint": "Count same-colour connections across all rows: 1:1, 2:2, 3:4, 4:7, 5:11, 6:16, 7:22.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 7,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 2,
+          "3": 4,
+          "4": 7,
+          "5": 11,
+          "6": 16,
+          "7": 22
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unusedTokens",
+      "label": "Unused Scrolls and Emperor tokens",
+      "labelVi": "Cuộn giấy và token Hoàng đế chưa dùng",
+      "hint": "1 VP per unused Scroll and Emperor token.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "teaLeaves",
+      "label": "Tea Leaves on board (tiebreak)",
+      "labelVi": "Lá trà trên bảng (phân định hòa)",
+      "hint": "Total Tea Leaves on your player board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "fermentedLeaves",
+      "label": "Fermented Tea Leaves (tiebreak)",
+      "labelVi": "Lá trà lên men (phân định hòa)",
+      "hint": "Fermented Tea Leaves on your player board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "teaLeaves",
+      "dir": "highest",
+      "description": "Most Tea Leaves on player board"
+    },
+    {
+      "categoryKey": "fermentedLeaves",
+      "dir": "highest",
+      "description": "Most fermented Tea Leaves"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Only a third-party rulebook transcription (RulesPal) could be reached; official PDF/BGG pages were not accessible, so values are not verified against the printed rulebook. Emperor card end-game effects (all cards in deck/discard/hand count): fermented leaf 3 each max 6; fresh leaf 2 each max 9; flat 12; neutral Teapot Scroll 4 each max 4; Pagoda on board 3 each max 6; Caravan card 3 each max 6; 18 minus 1 per Starting card; River/Tea University/Cup symbol cards 3 each max 6; Teapot symbol cards 2 each max 9. Enter their sum in emperorCards. Solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/tea-garden/rulebook",
+      "title": "Tea Garden rulebook (RulesPal transcription)",
+      "type": "other",
+      "section": "End of the Game > Scoring (7 items), tiebreakers; End-Game Scoring Effects of Emperor Cards"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,146 @@
+{
+  "slug": "san-francisco",
+  "name": "San Francisco",
+  "year": 2022,
+  "bggId": 357271,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "skyscrapers",
+      "label": "Skyscrapers built",
+      "labelVi": "Tòa nhà chọc trời",
+      "hint": "1 VP per skyscraper figure on your city board.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "masterBuilder",
+      "label": "Master Builder token",
+      "labelVi": "Huy chương Master Builder",
+      "hint": "1 VP if you hold it.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusTokens",
+      "label": "Bonus tokens (1.5 VP)",
+      "labelVi": "Token thưởng 1.5 điểm",
+      "hint": "1.5 VP per bonus token next to your board.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1.5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "districtCompletion",
+      "label": "District completion tokens",
+      "labelVi": "Token hoàn thành khu",
+      "hint": "1 VP per hexagonal token for being first to fill a district row (5 cards).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "districtAdvantage",
+      "label": "District advantage tokens",
+      "labelVi": "Token ưu thế khu",
+      "hint": "Sum of token values: 4p 1st +2, 2nd +1, 4th -1; 3p 1st +2, 2nd +1; 2p 1st +2. Rank by card value; ties by leftmost card.",
+      "scope": "player",
+      "input": "number",
+      "min": -5,
+      "max": 10,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "networkAdvantage",
+      "label": "Cable car network token",
+      "labelVi": "Token ưu thế tàu điện",
+      "hint": "Most cable car tokens: 4p 1st +2.5, 2nd +1, 4th -1; 3p 1st +2.5, 2nd +1; 2p 1st +2.5.",
+      "scope": "player",
+      "input": "number",
+      "min": -1,
+      "max": 2.5,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cableCars",
+      "label": "Cable car tokens on board",
+      "labelVi": "Số token tàu điện",
+      "hint": "Tiebreaker only: more cable car tokens wins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "cableCars",
+      "dir": "highest",
+      "description": "Most cable car tokens on the city board"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends immediately when the last foundation token is placed or a player fills their city board. District/network advantage tokens are entered as the token values won because ties are broken by leftmost card values (district) or leftmost-column cable cars (network), then by the player who ended the game. Verified against the Polish Rebel rulebook (no English PDF reachable); cross-checked with an English review.",
+  "sources": [
+    {
+      "url": "https://files.rebel.pl/files/instrukcje/Instrukcja_San-Francisco.pdf",
+      "title": "Instrukcja San Francisco (Rebel, PL)",
+      "type": "official-rulebook",
+      "section": "Koniec gry; Punkty przewagi; Punktacja końcowa (pp.7-8)"
+    },
+    {
+      "url": "https://opinionatedgamers.com/2022/09/26/dale-yu-review-of-san-francisco/",
+      "title": "Dale Yu review of San Francisco (Opinionated Gamers)",
+      "type": "other",
+      "section": "Scoring and end-game cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

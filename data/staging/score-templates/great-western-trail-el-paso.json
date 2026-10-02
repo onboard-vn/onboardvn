@@ -1,0 +1,160 @@
+{
+  "slug": "great-western-trail-el-paso",
+  "name": "Great Western Trail: El Paso",
+  "year": 2024,
+  "bggId": 431305,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "dollars",
+      "label": "Dollars owned",
+      "labelVi": "Số Dollar còn lại",
+      "hint": "1 VP for every 5 Dollars you own (enter total Dollars).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Victory points on buildings",
+      "labelVi": "Điểm trên công trình",
+      "hint": "Total VP printed on the buildings you own.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tradingPosts",
+      "label": "Trading post discs",
+      "labelVi": "Điểm trạm giao thương",
+      "hint": "VP for each disc on a highlighted trading post space.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "workers",
+      "label": "Worker card points",
+      "labelVi": "Điểm thẻ công nhân",
+      "hint": "Total VP of your workers (sort all cards first).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cattle",
+      "label": "Cattle card points",
+      "labelVi": "Điểm thẻ gia súc",
+      "hint": "Total VP of your cattle cards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "simmentalHerder",
+      "label": "Herder on Simmental space",
+      "labelVi": "Herder ở ô Simmental",
+      "hint": "+2 VP if your herder is on the Simmental space.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusTiles",
+      "label": "Bonus tile points",
+      "labelVi": "Điểm thẻ bonus",
+      "hint": "VP depicted on bonus tiles you own.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Completed objective tiles",
+      "labelVi": "Điểm thẻ nhiệm vụ",
+      "hint": "Points of fully completed objectives only; each item counts for one objective.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "dollars",
+      "dir": "highest",
+      "description": "Most money left after converting Dollars to VP"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends when the Simmental pile is emptied and the next player reaches El Paso; each other player then gets one final turn. Solo variant (Sue automa) not modelled. Money tiebreaker wording is 'money left (after the conversion)': record leftover Dollars if tied.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/greatwesterntrailelpaso.pdf",
+      "title": "Great Western Trail: El Paso rulebook",
+      "type": "official-rulebook",
+      "section": "End of the Game / Final Scoring, p.14"
+    },
+    {
+      "url": "https://officialgamerules.org/game-rules/el-paso/",
+      "title": "How to Play El Paso",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

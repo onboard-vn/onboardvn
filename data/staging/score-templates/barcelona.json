@@ -1,0 +1,240 @@
+{
+  "slug": "barcelona",
+  "name": "Barcelona",
+  "year": 2023,
+  "bggId": 383607,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "VP on score track",
+      "labelVi": "VP trên track điểm",
+      "hint": "VP earned during play (building, Cerdà scoring rounds, Public Services, Tram passengers on streets).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cobblestoneVp",
+      "label": "Cobblestones removed from Warehouse",
+      "labelVi": "VP Cobblestone",
+      "hint": "Rightmost number visible on your player board after removing Cobblestone tiles.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "passengerVp",
+      "label": "Passengers placed",
+      "labelVi": "VP Passenger",
+      "hint": "Number printed on your rightmost uncovered Passenger space.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "modernisme1",
+      "label": "Modernisme tile 1",
+      "labelVi": "Thẻ Modernisme 1",
+      "hint": "Times the tile condition is met x VP printed on tile x your Modernisme marker multiplier. Leave 0 if the space is empty.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "times",
+        "points",
+        "multiplier"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "times * points * multiplier"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "modernisme2",
+      "label": "Modernisme tile 2",
+      "labelVi": "Thẻ Modernisme 2",
+      "hint": "Times the tile condition is met x VP printed on tile x your Modernisme marker multiplier. Leave 0 if the space is empty.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "times",
+        "points",
+        "multiplier"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "times * points * multiplier"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "modernisme3",
+      "label": "Modernisme tile 3",
+      "labelVi": "Thẻ Modernisme 3",
+      "hint": "Times the tile condition is met x VP printed on tile x your Modernisme marker multiplier. Leave 0 if the space is empty.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "times",
+        "points",
+        "multiplier"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "times * points * multiplier"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "modernisme4",
+      "label": "Modernisme tile 4",
+      "labelVi": "Thẻ Modernisme 4",
+      "hint": "Times the tile condition is met x VP printed on tile x your Modernisme marker multiplier. Leave 0 if the space is empty.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "times",
+        "points",
+        "multiplier"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "times * points * multiplier"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "modernisme5",
+      "label": "Modernisme tile 5",
+      "labelVi": "Thẻ Modernisme 5",
+      "hint": "Times the tile condition is met x VP printed on tile x your Modernisme marker multiplier. Leave 0 if the space is empty.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "times",
+        "points",
+        "multiplier"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "times * points * multiplier"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cerdaTrack",
+      "label": "Position on Cerdà track",
+      "labelVi": "Vị trí track Cerdà",
+      "hint": "Tiebreaker 1 only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "sagradaTrack",
+      "label": "Position on Sagrada Família track",
+      "labelVi": "Vị trí track Sagrada Família",
+      "hint": "Tiebreaker 2 only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "buildingMarkers",
+      "label": "Building markers on main board",
+      "labelVi": "Số Building marker trên bàn",
+      "hint": "Tiebreaker 3 only.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "cerdaTrack",
+      "dir": "highest",
+      "description": "Furthest on the Cerdà track"
+    },
+    {
+      "categoryKey": "sagradaTrack",
+      "dir": "highest",
+      "description": "Furthest on the Sagrada Família track"
+    },
+    {
+      "categoryKey": "buildingMarkers",
+      "dir": "highest",
+      "description": "Most Building markers on the main board"
+    },
+    {
+      "description": "If still tied, players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends at the end of a turn when the third section of a Citizen track is filled to its marked Cerdà Scoring space; all play equal turns; final Cerdà Scoring tile is scored at trigger (goes to track VP). Final scoring: Cobblestones, Passengers, then each Modernisme tile (condition x VP x marker multiplier). Player boards have 5 Modernisme project spaces (5 cubes at setup). Promo tiles and solo/Gaudi mode not modelled.",
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/scl/fi/jq0u5u5f1snqmdaw9esvv/barcelona_rulebook_ENG_web.pdf",
+      "title": "Barcelona English rulebook (linked from Board&Dice product page)",
+      "type": "official-rulebook",
+      "section": "p.16 Game End and Final Scoring (example), p.17 Appendix Modernisme tiles"
+    },
+    {
+      "url": "https://boardanddice.com/home-basic/barcelona/",
+      "title": "Barcelona publisher page (Board&Dice)",
+      "type": "publisher-page",
+      "section": "Downloads"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

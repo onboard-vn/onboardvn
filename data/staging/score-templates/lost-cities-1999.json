@@ -1,0 +1,145 @@
+{
+  "templateVersion": 1,
+  "slug": "lost-cities-1999",
+  "name": "Lost Cities",
+  "year": 1999,
+  "bggId": 50,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends when the last card is drawn; a match is 3 games, highest total wins"
+  },
+  "categories": [
+    {
+      "key": "yellow",
+      "label": "Yellow expedition",
+      "labelVi": "Hành trình Vàng",
+      "hint": "cardValueSum = total of number cards; cards = all cards in column (incl. wagers); wagers = wager cards (0-3). Score = (sum - 20) x (1 + wagers), +20 if 8+ cards; 0 if column not started.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cardValueSum",
+        "cards",
+        "wagers"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "if(cards > 0, (cardValueSum - 20) * (1 + wagers) + if(cards >= 8, 20, 0), 0)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "blue",
+      "label": "Blue expedition",
+      "labelVi": "Hành trình Xanh dương",
+      "hint": "cardValueSum = total of number cards; cards = all cards in column (incl. wagers); wagers = wager cards (0-3). Score = (sum - 20) x (1 + wagers), +20 if 8+ cards; 0 if column not started.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cardValueSum",
+        "cards",
+        "wagers"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "if(cards > 0, (cardValueSum - 20) * (1 + wagers) + if(cards >= 8, 20, 0), 0)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "white",
+      "label": "White expedition",
+      "labelVi": "Hành trình Trắng",
+      "hint": "cardValueSum = total of number cards; cards = all cards in column (incl. wagers); wagers = wager cards (0-3). Score = (sum - 20) x (1 + wagers), +20 if 8+ cards; 0 if column not started.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cardValueSum",
+        "cards",
+        "wagers"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "if(cards > 0, (cardValueSum - 20) * (1 + wagers) + if(cards >= 8, 20, 0), 0)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "green",
+      "label": "Green expedition",
+      "labelVi": "Hành trình Xanh lá",
+      "hint": "cardValueSum = total of number cards; cards = all cards in column (incl. wagers); wagers = wager cards (0-3). Score = (sum - 20) x (1 + wagers), +20 if 8+ cards; 0 if column not started.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cardValueSum",
+        "cards",
+        "wagers"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "if(cards > 0, (cardValueSum - 20) * (1 + wagers) + if(cards >= 8, 20, 0), 0)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "red",
+      "label": "Red expedition",
+      "labelVi": "Hành trình Đỏ",
+      "hint": "cardValueSum = total of number cards; cards = all cards in column (incl. wagers); wagers = wager cards (0-3). Score = (sum - 20) x (1 + wagers), +20 if 8+ cards; 0 if column not started.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cardValueSum",
+        "cards",
+        "wagers"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "if(cards > 0, (cardValueSum - 20) * (1 + wagers) + if(cards >= 8, 20, 0), 0)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not defined in the rules summary; equal totals are a tie."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Scored per game; play 3 games and add totals (template scores a single game, sum across games manually). Number cards are 2-10; 3 wager cards per colour. Wager multiplier is 2/3/4 for 1/2/3 wagers. The 8-card bonus counts wager cards and ignores multiplier. Rulebook text per UltraBoardGames (board edition) and RulesPal; the 1999 card-game manual PDF was not downloaded; the card game has the same scoring.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/lost-cities/game-rules.php",
+      "title": "Lost Cities rules (UltraBoardGames)",
+      "type": "other",
+      "section": "End of the Game"
+    },
+    {
+      "url": "https://www.rulespal.com/lost-cities/rulebook",
+      "title": "Lost Cities rulebook text (RulesPal)",
+      "type": "other",
+      "section": "End of the Game and Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

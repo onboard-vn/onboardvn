@@ -1,0 +1,73 @@
+{
+  "slug": "junk-art",
+  "name": "Junk Art",
+  "year": 2016,
+  "bggId": 193042,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "fans",
+      "label": "Fans (total after last city)",
+      "labelVi": "Fan (tổng sau thành phố cuối)",
+      "hint": "Fans are earned per city by its own rule; enter total fan tokens.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "fansLastCity",
+      "label": "Fans won in the last city (tiebreaker)",
+      "labelVi": "Fan ở thành phố cuối (phá hòa)",
+      "hint": "Used only to break a tie.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "fansLastCity",
+      "dir": "highest",
+      "description": "Most fans won in the last city"
+    },
+    {
+      "description": "If still tied, share the victory or play the Monaco face-off"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: running-track (fan tokens). World tour of typically 3 city cards, each with its own scoring (not modelled); players keep fan tokens across cities. Most fans after the last city wins. Source is a rules summary, not the printed rulebook.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/junk-art/game-rules.php",
+      "title": "Junk Art rules (UltraBoardGames)",
+      "type": "other",
+      "section": "End of the Game; Ties"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 3,
+    "description": "Game ends after the last city of the world tour (3 cities recommended)"
+  }
+}

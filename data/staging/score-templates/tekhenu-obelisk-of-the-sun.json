@@ -1,0 +1,183 @@
+{
+  "name": "Tekhenu: Obelisk of the Sun",
+  "year": 2020,
+  "bggId": 297030,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "districts",
+      "label": "District majorities won (both Scorings)",
+      "labelVi": "Đa số khu vực (cả 2 lần Scoring)",
+      "hint": "3 VP per Osiris district where you have most pieces (Statues count for two districts); sum both Scorings.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 8
+    },
+    {
+      "key": "templeComplex",
+      "label": "Temple Complex VP (both Scorings)",
+      "labelVi": "Điểm Temple Complex (cả 2 lần)",
+      "hint": "1 VP per Building/Statue around the complex + 1 per own Building/Statue in same row and column of each Pillar; sum both Scorings.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "buildingRow",
+      "label": "VP on player-board Building row (both Scorings)",
+      "labelVi": "Điểm trên hàng Building",
+      "hint": "Sum of VP symbols visible on the Building row at each Scoring.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "breadPenalty",
+      "label": "Bread debt penalty (both Scorings)",
+      "labelVi": "Phạt thiếu Bread",
+      "hint": "3 VP lost per Bread unpaid at a Scoring; enter as a negative total. Track cannot go below 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": null,
+      "max": 0
+    },
+    {
+      "key": "decrees",
+      "label": "Decree cards (max 3, one per type)",
+      "labelVi": "Thẻ Decree",
+      "hint": "Sum of VP from up to 3 Decrees with distinct symbols, incl. starting Decree.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "turnOrder",
+      "label": "Turn order place at end",
+      "labelVi": "Thứ tự lượt cuối game",
+      "hint": "Enter 1 or 2 (0 if neither). 1st = 3 VP; 2nd = 2 VP only with 3-4 players.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value == 1, 3, if(value == 2 && players >= 3, 2, 0))"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 4
+    },
+    {
+      "key": "statues",
+      "label": "Statues built",
+      "labelVi": "Tượng đã xây",
+      "hint": "1/3/6/10/15/21 VP for 1-6 Statues.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 3,
+          "3": 6,
+          "4": 10,
+          "5": 15,
+          "6+": 21
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 6
+    },
+    {
+      "key": "happiness",
+      "label": "Happiness icons reached",
+      "labelVi": "Biểu tượng Happiness đạt được",
+      "hint": "3 VP per Happiness icon the marker has reached (highest count, not cumulative).",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "production",
+      "label": "Production markers on top (6) position",
+      "labelVi": "Marker Production ở vị trí 6",
+      "hint": "2 VP per Production marker at the topmost position.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 5
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most Scribes"
+    },
+    {
+      "description": "Maat marker first on the Turn Order track"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Game has two Scorings (after Maat phases 2 and 4) plus final Decree scoring; Scoring-phase categories are entered as totals of both Scorings. Final-scoring steps 2-5 are applied once at game end. Solo (Botankhamun) not modelled. Victory track cannot go below 0 during play; exact in-play floor not modelled.",
+  "sources": [
+    {
+      "url": "http://boardgame.bg/tekhenu%20obelisk%20of%20the%20sun%20rules.pdf",
+      "title": "Tekhenu: Obelisk of the Sun Rulebook (hosted copy)",
+      "type": "official-rulebook",
+      "section": "Scoring (steps 1-7) and final scoring"
+    },
+    {
+      "url": "https://en.1jour-1jeu.com/table-game/2020-tekhenu-lobelisque-du-soleil/files",
+      "title": "Tekhenu rules files (1jour-1jeu)",
+      "type": "other",
+      "section": "cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "slug": "tekhenu-obelisk-of-the-sun"
+}

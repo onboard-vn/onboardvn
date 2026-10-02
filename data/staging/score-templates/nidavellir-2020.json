@@ -1,0 +1,139 @@
+{
+  "slug": "nidavellir-2020",
+  "name": "Nidavellir",
+  "year": 2020,
+  "bggId": 293014,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 5 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "warriorPoints",
+      "label": "Warriors: sum of Bravery Points",
+      "labelVi": "Chiến binh: tổng Điểm Dũng cảm",
+      "hint": "Add the Bravery Points shown on each Warrior card (and hero bonuses to this class).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "warriorMajorityBonus",
+      "label": "Warriors majority: add highest coin",
+      "labelVi": "Đa số Chiến binh: cộng đồng xu giá trị cao nhất",
+      "hint": "Most ranks in the Warrior column adds the value of your highest coin; all tied players add it.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["majority", "highestCoin"],
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "majority * highestCoin" },
+      "countsToTotal": true
+    },
+    {
+      "key": "hunters",
+      "label": "Hunters: number squared",
+      "labelVi": "Thợ săn: bình phương số lá",
+      "hint": "Bravery Value = number of Hunter ranks squared.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "value * value" },
+      "countsToTotal": true
+    },
+    {
+      "key": "miners",
+      "label": "Miners: Bravery Points x ranks",
+      "labelVi": "Thợ mỏ: tổng Điểm Dũng cảm x số bậc",
+      "hint": "Sum of Miner Bravery Points multiplied by the number of ranks in the Miner column.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["points", "ranks"],
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "points * ranks" },
+      "countsToTotal": true
+    },
+    {
+      "key": "blacksmiths",
+      "label": "Blacksmiths: +3, +4, +5...",
+      "labelVi": "Thợ rèn: dãy +3, +4, +5...",
+      "hint": "Number of Blacksmith ranks n gives 3+4+...+(n+2) = n(n+5)/2 (1=3, 2=7, 3=12...).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "value * (value + 5) / 2" },
+      "countsToTotal": true
+    },
+    {
+      "key": "explorers",
+      "label": "Explorers: sum of Bravery Points",
+      "labelVi": "Nhà thám hiểm: tổng Điểm Dũng cảm",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "neutralHeroes",
+      "label": "Neutral heroes (command zone)",
+      "labelVi": "Anh hùng trung lập (khu chỉ huy)",
+      "hint": "Bravery Value of neutral hero cards in the Command zone, plus final-count bonuses from artifacts/heroes not already added to a class.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "coins",
+      "label": "Total value of gold coins",
+      "labelVi": "Tổng giá trị đồng xu vàng",
+      "hint": "Sum all your coins (including Royal Treasury coins and any transformed coins).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    { "description": "No tiebreaker: tied players share the victory." }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: auction-money (blind coin bidding for dwarf cards, final Bravery Value). Game ends after the Age 2 deck is exhausted. Majority for Distinctions/Warriors is by number of ranks, not Bravery Points; the highest-value coin is counted twice for the Warrior majority holder (once in coins, once as Warrior bonus). Hero/artifact bonuses that add to a class Bravery Points should be put in that class; class-specific coins/gems effects of the Thingvellir/Idavoll expansions are not modelled. Hunter table to 25 ranks and blacksmith sequence from the publisher summary.",
+  "sources": [
+    {
+      "url": "https://www.grrre-games.com/wp-content/uploads/2021/10/GG003_RULES_240x240_FR02.pdf",
+      "title": "Nidavellir full rulebook (Grrre Games, FR)",
+      "type": "official-rulebook",
+      "section": "Fin de l'Age 2 et fin de la partie; Determiner la Valeur de Bravoure de chaque classe (p. 7)"
+    },
+    {
+      "url": "https://www.grrre-games.com/wp-content/uploads/2020/03/GG003_R%C3%A8gles_A4_ENG.pdf",
+      "title": "Nidavellir rules summary (Grrre Games, EN)",
+      "type": "official-rulebook",
+      "section": "Determine the Bravery Value of each class"
+    },
+    {
+      "url": "https://en.boardgamearena.com/gamepanel?game=nidavellir",
+      "title": "Nidavellir on Board Game Arena",
+      "type": "other",
+      "section": "Final Bravery Value calculation"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

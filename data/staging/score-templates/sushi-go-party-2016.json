@@ -1,0 +1,190 @@
+{
+  "slug": "sushi-go-party-2016",
+  "name": "Sushi Go Party!",
+  "year": 2016,
+  "bggId": 192291,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 8
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Three rounds; highest total (including pudding) wins"
+  },
+  "categories": [
+    {
+      "key": "roundScores",
+      "label": "Round scores (sum of 3 rounds, excl. pudding)",
+      "labelVi": "Điểm 3 vòng (không gồm pudding)",
+      "hint": "Score the menu cards each round (maki, tempura, nigiri, etc.) and add the three rounds.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "puddingCards",
+      "label": "Pudding cards at end",
+      "labelVi": "Số thẻ pudding",
+      "hint": "Most +6, fewest -6 (2 players: no penalty). Ties split evenly (rounded down).",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            6,
+            0,
+            -6
+          ],
+          "tieMode": "split-floor",
+          "over": "count"
+        },
+        "byPlayerCount": {
+          "2": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                6,
+                0
+              ],
+              "tieMode": "split-floor",
+              "over": "count"
+            }
+          },
+          "3": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                6,
+                0,
+                -6
+              ],
+              "tieMode": "split-floor",
+              "over": "count"
+            }
+          },
+          "4": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                6,
+                0,
+                0,
+                -6
+              ],
+              "tieMode": "split-floor",
+              "over": "count"
+            }
+          },
+          "5": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                6,
+                0,
+                0,
+                0,
+                -6
+              ],
+              "tieMode": "split-floor",
+              "over": "count"
+            }
+          },
+          "6": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                6,
+                0,
+                0,
+                0,
+                0,
+                -6
+              ],
+              "tieMode": "split-floor",
+              "over": "count"
+            }
+          },
+          "7": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                6,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -6
+              ],
+              "tieMode": "split-floor",
+              "over": "count"
+            }
+          },
+          "8": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                6,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                -6
+              ],
+              "tieMode": "split-floor",
+              "over": "count"
+            }
+          }
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "puddingCards",
+      "dir": "highest",
+      "description": "Most pudding cards (common rule; unverified)"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: rounds (card drafting). MEDIUM-LOW: the printed rulebook could not be retrieved. Menu cards vary per game, so per-card scoring is not itemised; scorer enters the 3-round total. Pudding: most +6, fewest -6, 2 players no penalty; ties split rounded down (from memory of the rules). Verify against the official rulebook (Gamewright).",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/192291",
+      "title": "Sushi Go Party! (BGG)",
+      "type": "other",
+      "section": "Game page (not read; blocked)"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/sushi-go/game-rules.php",
+      "title": "Sushi Go! rules (related base game, UltraBoardGames)",
+      "type": "other",
+      "section": "Scoring"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 3,
+    "description": "Three rounds, then count puddings"
+  }
+}

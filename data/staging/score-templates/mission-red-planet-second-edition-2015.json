@@ -1,0 +1,100 @@
+{
+  "slug": "mission-red-planet-second-edition-2015",
+  "name": "Mission: Red Planet (Second Edition)",
+  "year": 2015,
+  "bggId": null,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 6 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": { "count": 10, "aggregate": "sum", "endCondition": "After round 10 and the final scoring phase" },
+  "categories": [
+    {
+      "key": "pointTokens",
+      "label": "Collected point tokens (total value)",
+      "labelVi": "Tổng giá trị token điểm đã thu",
+      "hint": "Sum the printed value of all point tokens won from production phases.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "missions",
+      "label": "Completed mission card points",
+      "labelVi": "Điểm thẻ nhiệm vụ hoàn thành",
+      "hint": "Reveal mission cards; add the printed value of each one completed (values are printed on the cards).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "discoveries",
+      "label": "Discovery card adjustments (+/-)",
+      "labelVi": "Điểm cộng/trừ từ thẻ khám phá",
+      "hint": "Add or subtract points from discovery cards that affect you; can be negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "iceMonopoly",
+      "label": "Ice Monopoly (most ice tokens)",
+      "labelVi": "Độc quyền băng (nhiều token băng nhất)",
+      "hint": "Enter number of ice point tokens held. Most ice gets 9 pts; ties split the 9 rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [9],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tokenCount",
+      "label": "Number of point tokens (tiebreaker only)",
+      "labelVi": "Số lượng token điểm (chỉ để phá hòa)",
+      "hint": "Quantity of point tokens regardless of value; used only if scores tie.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "tokenCount", "dir": "highest", "description": "Largest quantity of point tokens regardless of value" },
+    { "description": "If still tied, the tied players share the victory." }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: majority-area-control. Points are earned in three production phases by area majority per Mars zone (not itemised; tracked by token values). Final scoring = mission cards + point tokens +/- discoveries; Ice Monopoly global mission is 9 pts. Two-player variant and Phobos/event specifics not modelled. Official FFG rulebook PDF could not be downloaded in this session; figures taken from a rules transcription (UltraBoardGames) only, so single-source.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/mission-red-planet/game-rules.php",
+      "title": "Mission: Red Planet rules (UltraBoardGames, transcribed from rulebook)",
+      "type": "other",
+      "section": "Final Scoring Phase; Ice Monopoly Mission; tie rule"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,267 @@
+{
+  "slug": "stephens",
+  "name": "Stephens",
+  "year": 2022,
+  "bggId": 357975,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "VP marked on Scoring track",
+      "labelVi": "Điểm trên track",
+      "hint": "Final marker position on the Scoring track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "forest",
+      "label": "Forest track sectors reached",
+      "labelVi": "Sector Forest",
+      "hint": "Sector of your disk: 0/7/15 VP. Enter 0, 1 or 2 for first/second/third sector.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 7,
+          "2": 15
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "dune",
+      "label": "Dune track sectors reached",
+      "labelVi": "Sector Dune",
+      "hint": "Sector of your disk: 0/7/15 VP. Enter 0, 1 or 2.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 7,
+          "2": 15
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mastersFactory",
+      "label": "Masters in Stephens' factory",
+      "labelVi": "Thợ cả ở xưởng Stephens",
+      "hint": "1 VP per master on profession cards at Stephens' factory.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mastersLower",
+      "label": "Masters in lower small factories",
+      "labelVi": "Thợ cả ở xưởng nhỏ dưới",
+      "hint": "3 VP per master.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mastersUpper",
+      "label": "Masters in upper small factories",
+      "labelVi": "Thợ cả ở xưởng nhỏ trên",
+      "hint": "5 VP per master.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "apprentices",
+      "label": "Professions you created that have an apprentice",
+      "labelVi": "Nghề của bạn có thợ học việc",
+      "hint": "1 VP per apprentice on a profession card where you are the master.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "contracts",
+      "label": "Fulfilled contracts",
+      "labelVi": "Hợp đồng đã hoàn thành",
+      "hint": "For each column: number of cards in column x cubes shown on fulfilled contracts in that column; enter the sum.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cubesLeft",
+      "label": "Cubes in personal supply (needs ability 7a unlocked)",
+      "labelVi": "Khối trong kho (cần mở khóa 7a)",
+      "hint": "1 VP per 2 cubes; enter 0 if ability not unlocked.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coinsLeft",
+      "label": "Coins in personal supply (needs ability 7b unlocked)",
+      "labelVi": "Xu trong kho (cần mở khóa 7b)",
+      "hint": "1 VP per 2 coins; enter 0 if ability not unlocked.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "influence",
+      "label": "Influence points on track (tiebreak; scores only if ability 7c unlocked)",
+      "labelVi": "Điểm ảnh hưởng (cần mở khóa 7c)",
+      "hint": "1 VP per influence point if unlocked. Enter 0 for VP if not unlocked but track the tiebreak below.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "accessorySets",
+      "label": "Sets of 3 different accessories (needs ability 7d unlocked)",
+      "labelVi": "Bộ 3 phụ kiện khác nhau (cần mở khóa 7d)",
+      "hint": "5 VP per set, counting spent (on contracts) and in supply; 0 if not unlocked.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "influenceTb",
+      "label": "Remaining influence points (tiebreak)",
+      "labelVi": "Điểm ảnh hưởng còn lại (phân định hòa)",
+      "hint": "Tiebreak 1.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "coinsTb",
+      "label": "Remaining coins (tiebreak)",
+      "labelVi": "Xu còn lại (phân định hòa)",
+      "hint": "Tiebreak 2.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "influenceTb",
+      "dir": "highest",
+      "description": "Most remaining influence points"
+    },
+    {
+      "categoryKey": "coinsTb",
+      "dir": "highest",
+      "description": "Most remaining coins"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Triggered when the French army marker reaches or crosses any player's Scoring-track marker; finish the round, everyone takes one more turn, then a final reset phase."
+  },
+  "notes": "family: point-salad-euro. Ability-based categories (cubes, coins, influence, accessory sets) only score if the matching permanent ability on the player board is unlocked; enter 0 otherwise. Influence VP and the influence tiebreak share the same stat, so enter it in both rows. Solo Automa mode not modelled.",
+  "sources": [
+    {
+      "url": "https://www.pileupgames.com/_files/ugd/1964f3_5a58743114c845ac9687a807bc279fa2.pdf",
+      "title": "Stephens official rulebook (Pile Up Games, EN)",
+      "type": "official-rulebook",
+      "section": "End of the game / Final Scoring (p.19-20)"
+    },
+    {
+      "url": "https://www.pileupgames.com/stephens",
+      "title": "Pile Up Games Stephens page",
+      "type": "publisher-page",
+      "section": "Rulebook downloads"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

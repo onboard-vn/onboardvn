@@ -1,0 +1,182 @@
+{
+  "slug": "architects-of-the-west-kingdom",
+  "name": "Architects of the West Kingdom",
+  "year": 2018,
+  "bggId": 343489,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "buildings",
+      "label": "Constructed buildings (incl. end-game bonuses)",
+      "labelVi": "Công trình đã xây (gồm thưởng cuối game)",
+      "hint": "Sum of VP on your buildings after resolving end-game effects.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cathedral",
+      "label": "Cathedral level",
+      "labelVi": "Cấp Nhà thờ",
+      "hint": "VP in the yellow flag left of your current cathedral level.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "virtuePoints",
+      "label": "Virtue track VP",
+      "labelVi": "Điểm Đức hạnh",
+      "hint": "VP (can be negative) from the flag next to your virtue marker position.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "debts",
+      "label": "Unpaid debts",
+      "labelVi": "Nợ chưa trả",
+      "hint": "-2 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gold",
+      "label": "Gold",
+      "labelVi": "Vàng",
+      "hint": "1 VP each on your player board.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "marble",
+      "label": "Marble",
+      "labelVi": "Đá cẩm thạch",
+      "hint": "1 VP each on your player board.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "silver",
+      "label": "Silver",
+      "labelVi": "Bạc",
+      "hint": "1 VP per full 10 Silver on your player board.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/10)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "prisoners",
+      "label": "Workers in prison",
+      "labelVi": "Thợ trong tù",
+      "hint": "-1 VP per 2 workers in prison.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "-floor(value/2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "virtueLevel",
+      "label": "Virtue level (tiebreak)",
+      "labelVi": "Mức Đức hạnh (phân định hòa)",
+      "hint": "Virtue track position, not its VP.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "virtueLevel",
+      "dir": "highest",
+      "description": "Highest Virtue"
+    },
+    {
+      "categoryKey": "silver",
+      "dir": "highest",
+      "description": "Most remaining Silver (enter raw silver count)"
+    },
+    {
+      "description": "If still tied, all tied players share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game end: last Worker placed in the Guildhall, then one final round. Resolve end-game building effects first. Silver tiebreak uses raw silver; silver category enters the same raw count. Solo and Works of Wonder/Age of Artisans modes not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/80/41/3d-architects-of-the-west-kingdom-rulebook.pdf",
+      "title": "Architects of the West Kingdom rulebook (Garphill Games)",
+      "type": "official-rulebook",
+      "section": "p.15-18 Cathedral, Virtue track, End of the game, End-game scoring"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/architects-of-the-west-kingdom/game-rules.php",
+      "title": "How to play Architects of the West Kingdom",
+      "type": "other",
+      "section": "Final scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

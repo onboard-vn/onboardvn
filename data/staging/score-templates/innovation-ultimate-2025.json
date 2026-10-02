@@ -1,0 +1,85 @@
+{
+  "name": "Innovation Ultimate",
+  "year": 2025,
+  "bggId": 388367,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won the game",
+      "labelVi": "Thắng game",
+      "hint": "Mark the winner (achievements, score, card effect or elimination).",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "achievements",
+      "label": "Achievements claimed",
+      "labelVi": "Số thành tựu",
+      "hint": "Needed: 6 for 2 players, minus 1 per extra player (min 3), plus 1 per expansion.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "scorePile",
+      "label": "Score pile total",
+      "labelVi": "Tổng điểm đống score",
+      "hint": "Sum of the ages of all cards in your score pile; only decides a game that ends by drawing past age 11.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "achievements",
+      "dir": "highest",
+      "description": "Score victory: highest score wins; tie goes to most achievements; still tied is a draw."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "winCondition": "First to claim the required number of achievements wins immediately; or a card effect ends the game; or last player standing. If the age-11 deck is exhausted (a draw above age 11 is attempted), the highest score pile wins, then most achievements, then draw.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends instantly on achievement victory, card-effect victory, elimination, or attempt to draw above age 11 (score victory)."
+  },
+  "notes": "family: objective-race. Achievements needed for team games and large games differ (8 plus adjustments for 4+ player large games); see rulebook Team/Large Games section. Expansion-specific victory rules not modelled. Rulebook version is v0.9 proof.",
+  "sources": [
+    {
+      "url": "https://www.asmadigames.com/innovation/InnoUlt_Rulebook_v0_9.pdf",
+      "title": "Innovation Ultimate Rulebook v0.9",
+      "type": "official-rulebook",
+      "section": "Game End: Achievement/Score/Card Effect/Elimination Victory; Team rules"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "slug": "innovation-ultimate-2025",
+  "templateVersion": 1
+}

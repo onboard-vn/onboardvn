@@ -1,0 +1,82 @@
+{
+  "name": "New York Zoo",
+  "year": 2020,
+  "bggId": 300877,
+  "variant": "solo",
+  "playerCount": {
+    "min": 1,
+    "max": 1
+  },
+  "mode": "solo",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Zoo board filled before elephant crosses start twice",
+      "labelVi": "Phủ kín bàn trước khi voi qua vạch xuất phát lần 2",
+      "hint": "Win if every construction space is covered in time.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "spacesToStart",
+      "label": "Action strip spaces up to the starting space (win)",
+      "labelVi": "Ô trên thanh hành động tới vạch xuất phát",
+      "hint": "1 point per Animal Acquisition space and per slot (occupied or empty) up to the start; 0 if the elephant lands exactly on start.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "appliesWhen": "cat_won == 1"
+    },
+    {
+      "key": "uncoveredSpaces",
+      "label": "Uncovered spaces on zoo board (loss)",
+      "labelVi": "Ô chưa phủ (thua)",
+      "hint": "Each uncovered space is -1 point when you lose.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "appliesWhen": "cat_won == 0"
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Fill the whole zoo board before the elephant crosses the starting space for the second time; otherwise you lose.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Zoo board filled, or elephant circles the action strip twice."
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: race-to-goal. Solo score only; improve your score next game.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/08/c4/6e-new-york-zoo-rulebook.pdf",
+      "title": "New York Zoo rulebook (Lookout Games)",
+      "type": "official-rulebook",
+      "section": "p.8 Game end and winner; Solo game Scoring"
+    }
+  ],
+  "slug": "new-york-zoo--solo",
+  "templateVersion": 1,
+  "needsReview": false,
+  "confidence": "high"
+}

@@ -1,0 +1,65 @@
+{
+  "slug": "mechs-vs-minions",
+  "name": "Mechs vs Minions",
+  "year": 2016,
+  "bggId": 209010,
+  "templateVersion": 1,
+  "variant": null,
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Mission won",
+      "labelVi": "Hoàn thành nhiệm vụ (thắng)",
+      "hint": "Each Mission dossier sets its own win condition; any Mission is lost if the Bomb explodes or the Boss reaches 3-Power and fires",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "missionNumber",
+      "label": "Mission number played",
+      "labelVi": "Nhiệm vụ đã chơi",
+      "hint": "Optional: which Mission (1-10)",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 10,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative missions: win condition is defined per Mission Dossier (e.g. drain the Doom Tracker to zero for the Boss, or reach the objective). Lose if the Bomb explodes or a Boss Command Line slot executes at 3-Power.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Per-mission objective; defeat on Bomb explosion or Boss 3-Power slot executing"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. No points. Mission-specific win conditions are not modelled; scorer records win/lose and mission number. Source is a rules summary, not the official PDF.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/mechs-vs-minions/game-rules.php",
+      "title": "Mechs vs. Minions rules (UltraBoardGames)",
+      "type": "other",
+      "section": "Doom Tracker, Boss, Missions"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

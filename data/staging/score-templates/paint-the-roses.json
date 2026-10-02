@@ -1,0 +1,43 @@
+{
+  "slug": "paint-the-roses",
+  "name": "Paint the Roses",
+  "year": 2018,
+  "bggId": 253759,
+  "templateVersion": 1,
+  "variant": null,
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won",
+      "labelVi": "Cả đội thắng",
+      "hint": "Cooperative win/lose as per rulebook (UNVERIFIED)",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative: players win or lose together (exact conditions unverified).",
+  "endCondition": null,
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. UNVERIFIED: no rulebook or reliable summary could be retrieved (web search budget exhausted, BGG blocked). Mode and win/lose structure inferred from the family guess only; confirm against the rulebook.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/253759/paint-the-roses",
+      "title": "Paint the Roses (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

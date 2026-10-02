@@ -1,0 +1,114 @@
+{
+  "slug": "deception-murder-in-hong-kong",
+  "name": "Deception: Murder in Hong Kong",
+  "year": 2014,
+  "bggId": 156129,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 4,
+    "max": 12
+  },
+  "mode": "asymmetric",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "investigatorsWon",
+      "label": "Investigators (and Forensic Scientist) won",
+      "labelVi": "Điều tra viên thắng",
+      "hint": "An Investigator correctly named both the Key Evidence and the Means of Murder",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "murdererWon",
+      "label": "Murderer team won",
+      "labelVi": "Phe sát nhân thắng",
+      "hint": "Murderer and Accomplice win if the crime is not solved",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Investigators and the Forensic Scientist win if an Investigator names both the Key Evidence and Means of Murder correctly. Otherwise the Murderer wins, together with the Accomplice if present, even if the Murderer is identified.",
+  "roles": [
+    {
+      "key": "forensicScientist",
+      "label": "Forensic Scientist",
+      "labelVi": "Nhà pháp y",
+      "winCondition": "Wins with the Investigators",
+      "categoryKeys": [
+        "investigatorsWon"
+      ]
+    },
+    {
+      "key": "investigator",
+      "label": "Investigator",
+      "labelVi": "Điều tra viên",
+      "winCondition": "Name the Key Evidence and Means of Murder",
+      "categoryKeys": [
+        "investigatorsWon"
+      ]
+    },
+    {
+      "key": "witness",
+      "label": "Witness",
+      "labelVi": "Nhân chứng",
+      "winCondition": "Knows the Murderer and Accomplice but not the solution; wins with the Investigators",
+      "categoryKeys": [
+        "investigatorsWon"
+      ]
+    },
+    {
+      "key": "murderer",
+      "label": "Murderer",
+      "labelVi": "Sát nhân",
+      "winCondition": "Crime not solved",
+      "categoryKeys": [
+        "murdererWon"
+      ]
+    },
+    {
+      "key": "accomplice",
+      "label": "Accomplice",
+      "labelVi": "Đồng phạm",
+      "winCondition": "Wins with the Murderer",
+      "categoryKeys": [
+        "murdererWon"
+      ]
+    }
+  ],
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Each Investigator gets one guess (a badge); game ends when the crime is solved or all guesses are used"
+  },
+  "notes": "family: hidden-role-social. Official rulebook PDF unavailable (BGG login wall); verified via UltraBoardGames and Wikipedia. Witness win side and the one-guess-per-Investigator limit come from general game knowledge and are not confirmed by a fetched source. Three rounds of clue tile changes not modelled; expansion roles not modelled.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/deception-murder-in-hong-kong/game-rules.php",
+      "title": "Deception: Murder in Hong Kong rules (UltraBoardGames)",
+      "type": "other",
+      "section": "Roles and win conditions"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Deception:_Murder_in_Hong_Kong",
+      "title": "Deception: Murder in Hong Kong (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

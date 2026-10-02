@@ -1,0 +1,60 @@
+{
+  "slug": "dice-throne-outcasts",
+  "name": "Dice Throne Outcasts",
+  "year": null,
+  "bggId": 431582,
+  "templateVersion": 1,
+  "variant": "1v1 / free-for-all",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (last hero standing)",
+      "labelVi": "Thắng (người cuối còn sống)",
+      "hint": "Mark the player who was not reduced to 0 Health",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "winCondition": "Reduce opponents' Health to 0; a player at 0 Health is defeated and the last player standing wins. If all remaining players reach 0 Health simultaneously the game is a draw. 2v2: teams share one Health Dial and the team that survives wins. 3 players use King of the Hill (bonus card for attacking the Leader).",
+  "endCondition": {
+    "type": "last-standing",
+    "target": null,
+    "description": "Game ends when only one player (or team) has Health above 0."
+  },
+  "eliminationTracking": {
+    "resource": "Health",
+    "start": null,
+    "eliminatedCannotWin": true
+  },
+  "notes": "family: elimination. No points. Starting Health value is printed as an icon in the rulebook PDF and was not readable, so it is not recorded here. Core Dice Throne rulebook used; Outcasts-specific rulebook was not located, so hero/box-specific rules and any scenario modes are unverified.",
+  "sources": [
+    {
+      "url": "https://drive.google.com/file/d/1srf7KTQMhkGoYf27wZ4kQyCM2AwIrBiG/view",
+      "title": "Dice Throne Rulebook v2.4.3 (2025), linked from Dice Throne FAQ/Downloads",
+      "type": "official-rulebook",
+      "section": "Goal; Health Dial and defeat; 2v2 Team Game; King of the Hill"
+    },
+    {
+      "url": "https://shop.dicethrone.com/pages/faq",
+      "title": "Dice Throne FAQ/Downloads (publisher page)",
+      "type": "publisher-page",
+      "section": "Rulebooks"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

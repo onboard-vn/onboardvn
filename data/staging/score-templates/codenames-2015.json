@@ -1,0 +1,62 @@
+{
+  "slug": "codenames-2015",
+  "name": "Codenames",
+  "year": 2015,
+  "bggId": 178900,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 8 },
+  "mode": "team",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won",
+      "labelVi": "Đội thắng",
+      "hint": "Win by revealing all your agents first; a team that reveals the assassin loses at once",
+      "scope": "team",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "agentsLeft",
+      "label": "Agents still hidden at game end",
+      "labelVi": "Số điệp viên chưa lộ khi kết thúc",
+      "hint": "Starting team has 9 agents, the other 8",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 9,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Two teams (red/blue), each with a spymaster. The first team to reveal all of its agents wins; if a team's guess reveals the assassin, that team loses immediately.",
+  "endCondition": { "type": "objective", "target": null, "description": "All of one team's agents revealed, or the assassin revealed" },
+  "outcome": { "winLose": true },
+  "roles": [
+    { "key": "spymaster", "label": "Spymaster", "labelVi": "Chỉ huy", "winCondition": "Team reveals all its agents first" },
+    { "key": "operative", "label": "Field operative", "labelVi": "Điệp viên", "winCondition": "Team reveals all its agents first" }
+  ],
+  "notes": "family: team-objective. No points. 25 cards: 9 + 8 agents, 7 bystanders, 1 assassin. Duet/Pictures variants not modelled. Rulebook PDF read only via page summary; counts from well-known base rules.",
+  "sources": [
+    {
+      "url": "https://czechgames.com/files/rules/codenames-rules-en.pdf",
+      "title": "Codenames rulebook (Czech Games Edition)",
+      "type": "official-rulebook",
+      "section": "Objective / game end"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Codenames_(board_game)",
+      "title": "Codenames (board game) - Wikipedia",
+      "type": "wiki",
+      "section": "Gameplay"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

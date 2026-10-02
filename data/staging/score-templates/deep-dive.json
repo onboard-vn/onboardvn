@@ -1,0 +1,58 @@
+{
+  "templateVersion": 1,
+  "slug": "deep-dive",
+  "name": "Deep Dive",
+  "year": 2023,
+  "bggId": 376747,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "whitePearls",
+      "label": "White pearls collected",
+      "labelVi": "Số ngọc trai trắng",
+      "hint": "Count shells flipped pearl-side up with a white pearl (1 point each); black pearls and empties do not count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "whitePearls",
+      "dir": "highest",
+      "description": "Most white pearls wins; tied players all win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Game ends when 4 black-pearl shells are revealed or the shell supply runs out. Shells still face-down in front of a player (not cashed out) are lost. Shell tokens removed for 2-3 players: 10 / 5 white-pearl shells. Rulebook text per RulesPal; the official PDF (BGG file 387748) needs login and was not read, and some rulebook variants (e.g. the 1-player/6-player rules, expansion) were not verified.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/deep-dive/rulebook",
+      "title": "Deep Dive rulebook text (RulesPal)",
+      "type": "other",
+      "section": "Goal of the Game; Winning the Game"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/278834/deep-dive-english-rulebook",
+      "title": "Deep Dive English Rulebook (BGG files, not downloadable w/o login)",
+      "type": "bgg-file",
+      "section": null
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

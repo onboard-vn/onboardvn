@@ -1,0 +1,69 @@
+{
+  "slug": "streets",
+  "name": "Streets",
+  "year": 2021,
+  "bggId": 279720,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "streetMoney",
+      "label": "Money earned from scored Streets",
+      "labelVi": "Tiền từ các Street đã chốt",
+      "hint": "Sum of $ taken whenever a Street enclosed: each Building's Valuation plus $1 per Person on it.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endGameMoney",
+      "label": "End Game Scoring (remaining Buildings, halved)",
+      "labelVi": "Điểm cuối ván (nhà còn lại, một nửa)",
+      "hint": "Each Building still holding your Ownership Sign scores half its normal value, rounded up per Building; no People move. Enter the total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Rulebook has no tiebreaker: tied players may play another game to decide."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: tile-laying-money. Game ends when the Stack is empty and all hands are played. Building Valuations are printed on tiles and depend on Symbols/People in the Street (scorer enters computed money). Abandoned Buildings score nothing. Solo 'Grifter' mode and expansion modules (asymmetric abilities) not modelled; shared victory used as default for ties.",
+  "sources": [
+    {
+      "url": "https://sinisterfish.com/wp-content/uploads/2022/01/streets_rulebook.pdf",
+      "title": "Streets Rulebook (Sinister Fish Games)",
+      "type": "official-rulebook",
+      "section": "Scoring a Street/Building (pp. 9-10); The End of the Game (p. 12)"
+    },
+    {
+      "url": "https://www.sinisterfish.com/games/streets/",
+      "title": "Streets (Sinister Fish Games product page)",
+      "type": "publisher-page",
+      "section": "Rulebook links"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

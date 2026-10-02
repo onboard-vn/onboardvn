@@ -1,0 +1,74 @@
+{
+  "slug": "men-nefer",
+  "name": "Men-nefer",
+  "year": 2024,
+  "bggId": 404431,
+  "variant": "base",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "prestigePoints",
+      "label": "Prestige Points (PP) on score track after Era III Harvest",
+      "labelVi": "Điểm Prestige (PP) trên track sau Harvest Era III",
+      "hint": "Read the final PP from the score track. Era-end scoring (Obelisk, Necropolis, Pyramids track, Duat, Trade Contracts, Queens' Pyramids permissions) is already added to the track by then.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "heartFeatherSum",
+      "label": "Heart + Feather space values (tiebreaker)",
+      "labelVi": "Tổng giá trị ô Heart + Feather (hòa điểm)",
+      "hint": "Add the values of the spaces where your Heart and Feather stand; higher wins a PP tie.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "heartFeatherSum",
+      "dir": "highest",
+      "description": "Purest of heart: highest sum of the values of the Heart and Feather spaces"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. PP are scored at the end of each of 3 Eras (Harvest phase, red seals) and immediately (purple seals); the game ends after the Era III Harvest and the winner has most PP. PP never drop below 0. Harvest order: Obelisk, Necropolis, Pyramids track, Duat, Trade Contracts, Queens' Pyramids permissions. Solo mode has its own rulebook (not modelled).",
+  "sources": [
+    {
+      "url": "https://ludonova.com/wp-content/uploads/2024/07/Men-Nefer_EN_Rulebook.pdf",
+      "title": "Men-Nefer English rulebook (Ludonova)",
+      "type": "official-rulebook",
+      "section": "Prestige Points p.7; Phase 3 Harvest pp.17-18; game end and tiebreak p.19"
+    },
+    {
+      "url": "https://ludonova.com/en/juego/men-nefer/",
+      "title": "Men Nefer - Ludonova",
+      "type": "publisher-page",
+      "section": "Rulebook download"
+    }
+  ],
+  "templateVersion": 1,
+  "mode": "competitive",
+  "winRule": "highest",
+  "rounds": null,
+  "confidence": "high",
+  "needsReview": false,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  }
+}

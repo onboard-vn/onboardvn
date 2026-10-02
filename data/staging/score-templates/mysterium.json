@@ -1,0 +1,95 @@
+{
+  "slug": "mysterium",
+  "name": "Mysterium",
+  "year": 2015,
+  "bggId": 181304,
+  "templateVersion": 1,
+  "variant": "base game",
+  "playerCount": {
+    "min": 2,
+    "max": 7
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": {
+    "count": 7,
+    "aggregate": "rounds-won",
+    "endCondition": "Clock runs out after hour VII without all psychics identifying their character, location and object"
+  },
+  "categories": [
+    {
+      "key": "phase1Done",
+      "label": "All psychics identified their 3 cards before the clock ran out",
+      "labelVi": "Mọi nhà ngoại cảm tìm đúng bộ 3 thẻ trước khi hết giờ",
+      "hint": "Character, location and object found by every psychic within 7 hours",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "culpritFound",
+      "label": "Psychics named the true culprit group (team won)",
+      "labelVi": "Chỉ đúng nhóm hung thủ (cả đội thắng)",
+      "hint": "The group chosen in the straw poll contains the culprit token",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "hourReached",
+      "label": "Hour on the clock when phase 1 ended",
+      "labelVi": "Giờ trên đồng hồ khi kết thúc phần 1",
+      "hint": "1 to 7; for record only",
+      "scope": "team",
+      "input": "count",
+      "min": 1,
+      "max": 7,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Phase 1: within 7 hours every psychic must guess their character, location and object from the ghost's visions, otherwise everyone loses. Phase 2: the ghost sends a shared vision of 3 cards; the psychics vote (ties broken by clairvoyancy track, then eldest voter). If the chosen group contains the true culprit all players win, otherwise all lose.",
+  "endCondition": {
+    "type": "rounds",
+    "target": 7,
+    "description": "Seven game hours, then the culprit reveal phase"
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  },
+  "notes": "family: coop-deduction. The ghost plays on the winning side. No points: clairvoyancy track only decides vote timing and tie-breaks. Expansions (Hidden Signs, Secrets and Lies) not modelled. Rules checked against a secondary rules summary because the Libellud rulebook PDF could not be downloaded.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/mysterium/game-rules.php",
+      "title": "Mysterium game rules (UltraBoardGames summary of the official rules)",
+      "type": "other",
+      "section": "Gameplay: Phase 1, Phase 2, End of the game"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Mysterium_(board_game)",
+      "title": "Mysterium (board game) - Wikipedia",
+      "type": "wiki",
+      "section": "Gameplay"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/181304",
+      "title": "Mysterium (BGG, publisher description)",
+      "type": "other",
+      "section": "Description"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

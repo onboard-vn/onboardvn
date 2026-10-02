@@ -1,0 +1,85 @@
+{
+  "slug": "hellapagos",
+  "name": "Hellapagos",
+  "year": 2017,
+  "bggId": 224272,
+  "templateVersion": 1,
+  "variant": "base game",
+  "playerCount": {
+    "min": 3,
+    "max": 12
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "rounds": {
+    "count": null,
+    "aggregate": "rounds-won",
+    "endCondition": "Game ends when the survivors board the raft, the hurricane forces departure, or everyone dies"
+  },
+  "categories": [
+    {
+      "key": "raftSize",
+      "label": "Players aboard the raft at the end",
+      "labelVi": "Số người lên bè khi kết thúc",
+      "hint": "Surviving castaways who left the island (0 if the game ended in total failure or the hurricane hit without a valid departure)",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 12,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "boarded",
+      "label": "Escaped on the raft (win)",
+      "labelVi": "Thoát lên bè (thắng)",
+      "hint": "Tick if this player was aboard when the raft left. Tournament (cooperative) points = number of players aboard",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "value * cat_raftSize"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "winCondition": "All players aboard the raft when it leaves win together. The raft leaves at the end of a round when raft cards built >= survivors and at least 1 water and 1 food per survivor remain after rations; it must leave when the Hurricane weather card is revealed (votes and sacrifices are allowed to meet the conditions, otherwise everyone loses). If everyone dies of thirst or hunger, all lose.",
+  "endCondition": {
+    "type": "elimination",
+    "target": null,
+    "description": "Players are eliminated by votes when water or food runs short; game ends on raft departure, hurricane, or total failure"
+  },
+  "eliminationTracking": {
+    "resource": "survival (water/food rations)",
+    "start": null,
+    "eliminatedCannotWin": true
+  },
+  "notes": "family: social-survival-objective. No points in a single game. Optional tournament mode: cooperative = each player aboard scores as many points as players aboard, highest total after N games wins (modelled by boarded); solitary-castaway scoring (starting player count minus extra survivors plus one, per survivor) is not modelled. Voice of the Dead variant lets eliminated players keep voting.",
+  "sources": [
+    {
+      "url": "https://en.gigamic.com/index.php?controller=attachment&id_attachment=398",
+      "title": "Hellapagos rules (Gigamic, attached to publisher product page)",
+      "type": "official-rulebook",
+      "section": "p.1 goal; p.12-13 End of the Game; p.14 Tournament Mode"
+    },
+    {
+      "url": "https://en.gigamic.com/games-for-fun/1052-hellapagos-big-box-8326650001696.html",
+      "title": "Hellapagos Big Box (Gigamic product page)",
+      "type": "publisher-page",
+      "section": "Downloads"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/224272",
+      "title": "Hellapagos (BGG, publisher description)",
+      "type": "other",
+      "section": "Description"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

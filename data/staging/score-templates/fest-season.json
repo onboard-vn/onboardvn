@@ -1,0 +1,155 @@
+{
+  "slug": "fest-season",
+  "name": "Fest Season",
+  "year": 2025,
+  "bggId": 404231,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "lineup",
+      "label": "Lineup (bands x genre volume VP)",
+      "labelVi": "Lineup (ban nhạc x điểm thể loại)",
+      "hint": "Per genre: VP at final volume x number of your bands in that genre; bands playing the same slot count once. Enter each genre subtotal.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tracks",
+      "label": "Tracks (lowest of amenities / attendance / ticket price)",
+      "labelVi": "Đường đua (thấp nhất trong 3 track)",
+      "hint": "Find your lowest token among the 3 tracks and read the VP in the right column.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Objectives (VP above completed markers)",
+      "labelVi": "Mục tiêu (VP trên marker đã hoàn thành)",
+      "hint": "Sum VP shown above your completed objective markers, incl. end-of-game objectives ranked after the game.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "venue",
+      "label": "Venue (constructions VP)",
+      "labelVi": "Địa điểm (VP công trình)",
+      "hint": "Add the VP of every construction in your venue.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "projects",
+      "label": "Projects (farthest-right project column)",
+      "labelVi": "Dự án (cột phải nhất)",
+      "hint": "VP shown below the farthest-right project placed above your board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "stages",
+      "label": "Stages (lineup boards VP)",
+      "labelVi": "Sân khấu (VP bảng lineup)",
+      "hint": "VP of each lineup board by number of bands placed on it.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "money",
+      "label": "Remaining money",
+      "labelVi": "Tiền còn lại",
+      "hint": "1 VP per 5 money left, rounded down. Enter remaining money.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 5)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most bands in the lineup"
+    },
+    {
+      "description": "Highest attendance"
+    },
+    {
+      "description": "Most amenities"
+    },
+    {
+      "description": "Most completed objectives"
+    },
+    {
+      "description": "Most money"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends immediately when the master track fader reaches the top; collect income happens before moving the fader. Genre VP-per-band values depend on each genre's final volume (printed on board/scorepad) so lineup is entered as per-genre subtotals. Variants & Modules booklet and solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://nastol.io/storage/games/files/fest_season/933484/FestSeason-Rulebook-ENG-low.pdf",
+      "title": "Fest Season rulebook EN (Green Astra Games)",
+      "type": "official-rulebook",
+      "section": "p.22 End of the Game and Scoring; p.6 Main Board (tracks)"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/309979/fest-season-rulebook",
+      "title": "Fest Season - Rulebook (BGG file page, publisher upload)",
+      "type": "bgg-file",
+      "section": "Same rulebook, cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

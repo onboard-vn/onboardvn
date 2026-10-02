@@ -1,0 +1,70 @@
+{
+  "slug": "forest-shuffle-2023",
+  "name": "Forest Shuffle",
+  "year": 2023,
+  "bggId": 391163,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "forestPoints",
+      "label": "Points of visible forest cards",
+      "labelVi": "Điểm các lá bài hiển thị trong rừng",
+      "hint": "Sum of point values on visible cards, incl. conditional card effects (trees, dwellers; only the visible half of split cards).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "caveCards",
+      "label": "Cards under cave",
+      "labelVi": "Số lá dưới hang",
+      "hint": "1 VP per card tucked under your cave card.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends immediately when the 3rd winter card is drawn (current turn is not finished). Enter the total of your visible cards (conditional cards such as Maple, Tree Fern, Brown Bear resolved per reference cards) in forestPoints. Expansions (Alpine, Dartmoor, Woodland) not modelled.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/forestshuffle.pdf",
+      "title": "Forest Shuffle rulebook (Lookout Games)",
+      "type": "official-rulebook",
+      "section": "p.6-7 End of Game and Scoring"
+    },
+    {
+      "url": "https://www.rulespal.com/forest-shuffle/rulebook",
+      "title": "Forest Shuffle rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End-of-game scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

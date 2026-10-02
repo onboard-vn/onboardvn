@@ -1,0 +1,73 @@
+{
+  "slug": "counter-spy-2023",
+  "name": "Counter Spy",
+  "year": 2023,
+  "bggId": 407445,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "correctGuesses",
+      "label": "Correct Spy guesses by you",
+      "labelVi": "Lần đoán đúng Spy",
+      "hint": "2 points each time you name the Spy card correctly.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 2
+    },
+    {
+      "key": "opponentWrongGuesses",
+      "label": "Wrong Spy guesses by opponent",
+      "labelVi": "Đối thủ đoán sai",
+      "hint": "1 point to you each time your opponent guesses the Spy wrongly.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 2
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "First player to reach 3 points wins.",
+  "endCondition": {
+    "type": "target-score",
+    "target": 3,
+    "description": "First to 3 points; a Spy guess ends the exchange phase"
+  },
+  "notes": "family: deduction. Points only come from Spy guesses: +2 for the guesser if correct, otherwise +1 to the opponent. Rules from BGG game description (publisher text); the official rulebook is an image on BGG not yet read.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/407445/counter-spy",
+      "title": "Counter Spy (BGG description)",
+      "type": "bgg-forum",
+      "section": "Game description"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/289409/counterspy-rulebook-eng",
+      "title": "Counterspy Rulebook - ENG (image, unread)",
+      "type": "bgg-file",
+      "section": "Rulebook image"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

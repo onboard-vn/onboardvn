@@ -1,0 +1,63 @@
+{
+  "slug": "the-witcher-old-world",
+  "name": "The Witcher: Old World",
+  "year": 2023,
+  "bggId": 331106,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (final trophy from a fight)",
+      "labelVi": "Thắng (cúp thứ 4 từ trận đấu)",
+      "hint": "First Witcher to gain their 4th Trophy via a Fight wins immediately.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "trophies",
+      "label": "Trophies gained",
+      "labelVi": "Số cúp",
+      "hint": "Monster, Witcher-fight and Attribute (level 5) trophies; 4 needed.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Players race to acquire 4 Trophies (killing monsters, winning fights against other Witchers, reaching level 5 in an Attribute). The first player to gain the final Trophy through a Fight wins immediately; gaining the 4th Trophy by Meditating does not end the game.",
+  "endCondition": {
+    "type": "objective",
+    "target": 4,
+    "description": "First player to gain their 4th Trophy via a Fight ends the game immediately."
+  },
+  "notes": "family: objective-race. No points. Solo mode and 2-player Witcher-vs-Witcher rule changes not modelled. Source is the 1jour-1jeu hosted rulebook, a pre-release layout with unresolved page references; kept needsReview until checked against the final printed rulebook.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/0f/12/2a-the-witcher-old-world-rulebook.pdf",
+      "title": "The Witcher: Old World rulebook (1jour-1jeu hosted)",
+      "type": "official-rulebook",
+      "section": "The Goal of the Game; Gaining Trophies and Fatigue; Game End"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

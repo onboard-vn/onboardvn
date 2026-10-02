@@ -1,0 +1,54 @@
+{
+  "slug": "camel-up-second-edition",
+  "name": "Camel Up (Second Edition)",
+  "year": 2018,
+  "bggId": 260605,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 8
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "egyptianPounds",
+      "label": "Egyptian Pounds (EP) after final scoring",
+      "labelVi": "Tiền (EP) sau tổng kết",
+      "hint": "Count money after the last leg and the overall winner/loser bets are resolved. Winner bets: 8/5/3/2/1 for correct, -1 for wrong; same for loser deck. Money never below 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "If tied for most money, victory is shared"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Race ends as soon as the first camel crosses the finish line; then final leg scoring and overall winner/loser bets are scored"
+  },
+  "notes": "family: betting-money. Money is tracked during play; leg betting tiles pay 5/3/2 for first place, 1 for second, -1 otherwise; each Pyramid tile gives 1 EP; Desert tile landings give 1 EP.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/33/c8/d5-camel-up-rulebook.pdf",
+      "title": "Camel Up (2nd ed) rulebook",
+      "type": "official-rulebook",
+      "section": "End of the game; End of the race scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

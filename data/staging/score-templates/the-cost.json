@@ -1,0 +1,69 @@
+{
+  "slug": "the-cost",
+  "name": "The Cost",
+  "year": 2020,
+  "bggId": 292894,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum"
+  },
+  "categories": [
+    {
+      "key": "money",
+      "label": "Money at game end",
+      "labelVi": "Tiền cuối game",
+      "hint": "Final cash (after paying death costs/lawsuits during play). Verify the exact end-of-game conversions against the official rulebook.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not verified; rulebook not accessed."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "rounds",
+    "target": 4,
+    "description": "Four rounds; may end earlier if all countries ban asbestos (all areas closed by deaths)."
+  },
+  "notes": "family: money-race. needsReview: only secondary sources (publisher/shop pages and reviews) were reachable; Spielworxx rules PDF (spielworxx.de downloads, BGG files) blocked. Confirmed: most money wins; each dead worker costs money; game can end early when all countries ban asbestos. Not verified: any extra end-of-game money conversions (assets, stock, leftovers) and tiebreaker.",
+  "sources": [
+    {
+      "url": "https://www.thegamerules.com/the-cost",
+      "title": "The Cost (shop description)",
+      "type": "other",
+      "section": "Overview"
+    },
+    {
+      "url": "https://rawstone.net/product/the-cost/",
+      "title": "Rawstone Games The Cost page",
+      "type": "publisher-page",
+      "section": "Overview"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/292894/the-cost",
+      "title": "BGG The Cost",
+      "type": "other",
+      "section": "Identification"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

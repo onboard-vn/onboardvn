@@ -1,0 +1,49 @@
+{
+  "slug": "dragonscale",
+  "name": "Dragonscales",
+  "year": 2019,
+  "bggId": 283748,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "treasure",
+      "label": "Treasure value collected",
+      "labelVi": "Giá trị kho báu",
+      "hint": "Total value of treasure taken from the dragon's lair; confirm exact tally with the rulebook.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not verified."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: push-your-luck-treasure. Publisher text mentions multiple victory conditions (slay the dragon while grabbing the most treasure, or flee early); exact scoring and tiebreaks NOT verified, categories are a placeholder. Needs rulebook (Arcane Wonders).",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/283748",
+      "title": "Dragonscales (BGG page, description only; official rulebook not retrievable in this run)",
+      "type": "other",
+      "section": "Game description"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

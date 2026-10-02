@@ -1,0 +1,80 @@
+{
+  "slug": "air-land-sea",
+  "name": "Air, Land, & Sea",
+  "year": 2015,
+  "bggId": null,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "First to 12 VP wins"
+  },
+  "categories": [
+    {
+      "key": "fullBattleWins",
+      "label": "Battles won by theater control (no withdrawal)",
+      "labelVi": "Trận thắng do kiểm soát chiến trường (không ai rút lui)",
+      "hint": "6 VP each when no one withdrew.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 6
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "withdrawalVp",
+      "label": "VP from opponent's withdrawals",
+      "labelVi": "Điểm do đối thủ rút lui",
+      "hint": "VP read from the withdrawing player's Supreme Commander card by cards left in hand; add per battle.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Only one player scores per battle, so both cannot reach 12 together."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "First player to reach 12 VP after a battle wins.",
+  "endCondition": {
+    "type": "target-score",
+    "target": 12,
+    "description": "Checked after each Battle; first to 12 VP."
+  },
+  "notes": "family: area-majority (two-player theater control card game scored per Battle). Withdrawal VP table is printed on Supreme Commander cards and not read from official text, so entered by scorer. Official base-game rulebook not retrieved (web search/PDF access limited); confirmed via summary and the sequel rulebook.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/air-land-and-sea/rulebook",
+      "title": "Air, Land, & Sea rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Win condition; Battle victory scoring"
+    },
+    {
+      "url": "https://www.arcanewonders.com/wp-content/uploads/2022/04/ALS_SLS_Rulebook_v9.pdf",
+      "title": "ALS: Spies, Lies & Supplies Rulebook v9 (sequel, same scoring)",
+      "type": "official-rulebook",
+      "section": "p.9-10 scoring and winning"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

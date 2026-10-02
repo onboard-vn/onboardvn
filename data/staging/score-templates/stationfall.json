@@ -1,0 +1,155 @@
+{
+  "slug": "stationfall",
+  "name": "Stationfall",
+  "year": 2023,
+  "bggId": 316624,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 9
+  },
+  "mode": "asymmetric",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "agenda",
+      "label": "PC Agenda points",
+      "labelVi": "Điểm Agenda của nhân vật",
+      "hint": "Points from your revealed PC's Agenda (rows with + need the preceding row, e.g. Escape).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "bonus",
+      "label": "Bonus Character points",
+      "labelVi": "Điểm Bonus Character",
+      "hint": "Friend: 1 per Friend icon if it Escaped. Grudge: 1 per Grudge icon if it was not Live at Stationfall. None if you Schrodinger Revealed.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "unusedBribe",
+      "label": "Unused own Bribe",
+      "labelVi": "Bribe chưa dùng",
+      "hint": "1 point if you still hold your unused Bribe.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bribesOnPc",
+      "label": "Others' Bribes on your PC",
+      "labelVi": "Bribe của người khác trên PC",
+      "hint": "1 point per other player's Bribe on your PC's card.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "influenceOverLimit",
+      "label": "Influence cubes over limit",
+      "labelVi": "Cube vượt Influence Limit",
+      "hint": "Lose 1 point per Influence cube outside your pool over your PC's Influence Limit.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "guilty",
+      "label": "Guilty at end (cannot win)",
+      "labelVi": "Guilty (không thể thắng)",
+      "hint": "Guilty players cannot win unless their Escaped PC delivered Evidence to Authorities.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "betrayalCubes",
+      "label": "Your cubes in the Betrayal box",
+      "labelVi": "Cube trong hộp Betrayal",
+      "hint": "Tiebreaker: fewer is better.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    },
+    {
+      "key": "unusedInfluence",
+      "label": "Unused Influence cubes",
+      "labelVi": "Cube Influence chưa dùng",
+      "hint": "Second tiebreaker: more is better.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "betrayalCubes",
+      "dir": "lowest",
+      "description": "Fewest cubes in the Betrayal box"
+    },
+    {
+      "categoryKey": "unusedInfluence",
+      "dir": "highest",
+      "description": "Most unused Influence cubes"
+    },
+    {
+      "description": "If still tied, share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "winCondition": "Highest total points among players who are not Guilty. 6-8 players: two winners; 9 players: three winners; team games: add teammates' scores.",
+  "endCondition": {
+    "type": "rounds",
+    "target": null,
+    "description": "10-14 Minutes depending on player count, or earlier Stationfall trigger"
+  },
+  "notes": "family: hidden-agenda. 2-player uses two Secret Identities each (scores combined; Influence Limits penalised separately; cannot win if either is Guilty). Character-specific Agenda values come from Character Dossiers, so entered as a number. Rules text from RulesPal transcription; original PDF not retrieved.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/stationfall/rulebook",
+      "title": "Stationfall rulebook (RulesPal transcription)",
+      "type": "other",
+      "section": "3.6 How to win; 10 Suspicion and Guilt; 16.4 Scoring; 17-18 variants"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

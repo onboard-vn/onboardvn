@@ -1,0 +1,71 @@
+{
+  "slug": "cthulhu-death-may-die",
+  "name": "Cthulhu: Death May Die",
+  "year": 2019,
+  "bggId": 253344,
+  "templateVersion": 1,
+  "variant": null,
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won the episode",
+      "labelVi": "Cả đội thắng tập",
+      "hint": "Elder One defeated while at least one investigator is alive",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "investigatorsAlive",
+      "label": "Investigators alive at end",
+      "labelVi": "Số điều tra viên còn sống",
+      "hint": "Needs to be at least 1 after the summoning",
+      "scope": "team",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 5
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Episodes have two acts (before and after summoning the Elder One). If any investigator dies before the summoning the team loses; after the Elder One is on the board the team can still win while at least one investigator lives.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Lose if an investigator dies before the summoning; after that, win needs at least one survivor."
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. No points. Details of how the Elder One is defeated vary per episode/Elder box and were not verified from the rulebook (downloads blocked). Check the official rulebook before upgrading confidence.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/253344",
+      "title": "BoardGameGeek game page and publisher description",
+      "type": "bgg-forum",
+      "section": "Description"
+    },
+    {
+      "url": "https://www.cmon.com/product/cthulhu-death-may-die/cthulhu-death-may-die",
+      "title": "Cthulhu: Death May Die (CMON)",
+      "type": "publisher-page",
+      "section": "Product page (403 on fetch; URL from BGG)"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,86 @@
+{
+  "templateVersion": 1,
+  "mode": "competitive",
+  "winRule": "highest",
+  "confidence": "high",
+  "needsReview": false,
+  "sharedVictoryOnTie": true,
+  "slug": "amalfi-renaissance-2023",
+  "name": "Amalfi: Renaissance",
+  "year": 2023,
+  "bggId": 351594,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the fourth period"
+  },
+  "categories": [
+    {
+      "key": "scoreTrack",
+      "label": "Victory points on score track",
+      "labelVi": "VP trên track (đã gồm Decree, phạt Feed, Titles)",
+      "hint": "Decree VP each period, Feed penalty (-3 per unpaid coin), Titles and other VP are already on the track; can be negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "characters",
+      "label": "Invited characters (VP, capped per card)",
+      "labelVi": "Nhân vật đã mời (VP, có giới hạn mỗi thẻ)",
+      "hint": "Per invited character: VP per matching item owned, up to that card's maximum. Enter capped VP of each card.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "titleCubes",
+      "label": "Cubes on Titles (tiebreak)",
+      "labelVi": "Khối trên Titles (phân định hòa)",
+      "hint": "Cubes you placed on completed Titles.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "titleCubes",
+      "dir": "highest",
+      "description": "Most cubes on Titles"
+    },
+    {
+      "description": "If still tied, the tied players share the win."
+    }
+  ],
+  "notes": "family: point-salad-euro. Only the characters' VP is counted at the end; all other VP (Decree each period, Titles worth up to 24 and 12, Feed penalty of 3 VP per missing coin, immediate rewards) are scored on the track during play. Characters' per-card maximum is printed on the card; scorer enters capped VP. Solo/co-op modes not modelled.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/amalfirenaissance.pdf",
+      "title": "Amalfi: Renaissance rulebook (bghub mirror)",
+      "type": "official-rulebook",
+      "section": "p.18 Phase 2 Feed, Phase 3 Decree; p.19 End of Game; p.20 Titles"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "slug": "arboretum-2015",
+  "name": "Arboretum",
+  "year": 2015,
+  "bggId": 140934,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {"min": 2, "max": 4},
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "paths",
+      "label": "Scoring paths (best path per eligible species)",
+      "labelVi": "Đường đi ghi điểm (đường tốt nhất mỗi loài được quyền ghi)",
+      "hint": "Only species where you hold the highest hand total (8 counts 0 if an opponent holds that species' 1). Path starts and ends on that species, values strictly rising. Enter sums over your scoring paths.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["pathCards", "pathsStartingWithOne", "pathsEndingWithEight", "pureCards"],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "pathCards + pathsStartingWithOne + 2 * pathsEndingWithEight + pureCards"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "speciesInArboretum",
+      "label": "Species present in your arboretum (tiebreaker)",
+      "labelVi": "Số loài cây trong vườn (phân định hòa)",
+      "hint": "Not scored; used only to break ties.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 10,
+      "formula": {"type": "sum"},
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {"categoryKey": "speciesInArboretum", "dir": "highest", "description": "Tied player with the most tree species in their arboretum wins."}
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: set-collection. pathCards = cards in each scoring path (1 pt each); pathsStartingWithOne = number of scoring paths starting with a 1 (+1 each); pathsEndingWithEight = number ending with an 8 (+2 each); pureCards = cards in scoring paths of 4+ cards made only of the scored species (+1 per card). Right to score a species: highest hand total of that species; ties all qualify. Verified only against BGA game help summary, not the printed rulebook.",
+  "sources": [
+    {"url": "https://boardgamearena.com/gamepanel?game=arboretum", "title": "Board Game Arena - Arboretum game help", "type": "other", "section": "Calculating Points / Winning"}
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

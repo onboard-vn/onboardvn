@@ -1,0 +1,61 @@
+{
+  "slug": "oathsworn",
+  "name": "Oathsworn: Into the Deepwood",
+  "year": 2021,
+  "bggId": 251661,
+  "templateVersion": 1,
+  "variant": null,
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Chapter/encounter won",
+      "labelVi": "Thắng chương/trận",
+      "hint": "Mark won if the party completed the chapter objective without being wiped",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "chaptersCompleted",
+      "label": "Chapters completed",
+      "labelVi": "Số chương hoàn thành",
+      "hint": "Campaign progress counter",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative campaign: the party wins a chapter by meeting its story objective (e.g. defeating the boss) and loses if all heroes fall. No victory points.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Campaign chapters end when the objective is met or the party is defeated"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. UNVERIFIED: official rulebook could not be retrieved (web search budget exhausted, BGG/publisher blocked). Win/lose summary from general knowledge; confirm exact victory/defeat conditions against the rulebook.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/251661/oathsworn-into-the-deepwood",
+      "title": "Oathsworn: Into the Deepwood (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

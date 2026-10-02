@@ -1,0 +1,104 @@
+{
+  "slug": "oceans-2020",
+  "name": "Oceans",
+  "year": 2020,
+  "bggId": 232414,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "scorePile",
+      "label": "Population in score pile",
+      "labelVi": "Dân số trong kho điểm",
+      "hint": "1 point per population token behind your screen.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "speciesPopulation",
+      "label": "Population on surviving species",
+      "labelVi": "Dân số trên loài còn sống",
+      "hint": "1 point per population on your species at game end.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusToken",
+      "label": "Turn-order Bonus Token",
+      "labelVi": "Token bonus",
+      "hint": "2p: 4/0; 3p: 6/4/0; 4p: 7/6/4/0 by turn order (1st to last).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 7,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "traitCards",
+      "label": "Trait cards on species",
+      "labelVi": "Số thẻ đặc điểm",
+      "hint": "Tiebreaker only.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "traitCards",
+      "dir": "highest",
+      "description": "Most trait cards on your species"
+    },
+    {
+      "description": "Then first player to get a job on a fishing boat in Alaska (flavour tiebreaker, decide by table)."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Last round triggers when every Ocean zone is empty; game ends after final player in turn order. Bonus token values: 2p 4/0, 3p 6/4/0, 4p 7/6/4/0 from 1st to last player.",
+  "sources": [
+    {
+      "url": "https://boardgame.bg/oceans%20rules.pdf",
+      "title": "Oceans rulebook (North Star Games)",
+      "type": "official-rulebook",
+      "section": "Setup step 11; End of Game"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/232414/oceans",
+      "title": "Oceans (BGG)",
+      "type": "other",
+      "section": "Overview"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

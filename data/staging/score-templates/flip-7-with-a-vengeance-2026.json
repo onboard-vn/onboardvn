@@ -1,0 +1,91 @@
+{
+  "slug": "flip-7-with-a-vengeance-2026",
+  "name": "Flip 7: With A Vengeance",
+  "year": 2026,
+  "bggId": 463441,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 18
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "Round in which a player reaches the target score (200 in Flip 7; unverified for this edition)"
+  },
+  "categories": [
+    {
+      "key": "numberSum",
+      "label": "Sum of Number cards (this round)",
+      "labelVi": "Tổng lá số (vòng này)",
+      "hint": "Add Number card values in your line; 0 if busted. Check the rulebook for any variant rules.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "modifierPoints",
+      "label": "Bonus/modifier points (this round)",
+      "labelVi": "Điểm cộng/nhân (vòng này)",
+      "hint": "Total of modifier cards applied as written on the cards; enter the net points.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": null,
+      "max": null
+    },
+    {
+      "key": "flip7Bonus",
+      "label": "Flip 7 bonus (7 unique Number cards)",
+      "labelVi": "Thưởng Flip 7",
+      "hint": "+15 for 7 different Number cards, as in Flip 7 (unverified here).",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 15
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not verified; play another round if tied for most points at the end (common ruling)."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: rounds (press-your-luck). LOW CONFIDENCE: the official With A Vengeance rulebook could not be retrieved, so card values, new action cards and scoring changes versus base Flip 7 are not verified; template mirrors flip-7. Enter one scoring per round and sum across rounds. Verify against the official rulebook (The Op) before use.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/463441",
+      "title": "Flip 7: With A Vengeance (BGG)",
+      "type": "other",
+      "section": "Game page (not read; 403)"
+    },
+    {
+      "url": "https://bghub.org/r/flip7.pdf",
+      "title": "Flip 7 base rulebook (reference)",
+      "type": "official-rulebook",
+      "section": "Scoring pp.10-11"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true,
+  "endCondition": {
+    "type": "target-score",
+    "target": 200,
+    "description": "Unverified: first to reach 200 at end of a round"
+  }
+}

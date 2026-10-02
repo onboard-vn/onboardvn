@@ -1,0 +1,77 @@
+{
+  "slug": "regicide",
+  "name": "Regicide",
+  "year": 2020,
+  "bggId": 307002,
+  "templateVersion": 1,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends when the last King is defeated (win) or a player cannot discard enough to cover enemy damage or cannot play/yield (loss)"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won (defeated all 4 Kings)",
+      "labelVi": "Cả đội thắng (hạ cả 4 Vua)",
+      "hint": "Win when the last King is defeated",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "enemiesDefeated",
+      "label": "Enemies defeated (of 12)",
+      "labelVi": "Số kẻ địch đã hạ (trên 12)",
+      "hint": "4 Jacks, 4 Queens, 4 Kings",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 12,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "jestersUsed",
+      "label": "Jesters used in a win",
+      "labelVi": "Số Hề đã dùng khi thắng",
+      "hint": "0 = Gold, 1 = Silver, 2 = Bronze victory",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Team wins by defeating the last King of the Castle deck and loses if a player cannot discard cards worth at least the enemy's attack value, or cannot play a card or yield. Victory tier: win with 0 Jesters = Gold, 1 Jester = Silver, 2 Jesters = Bronze.",
+  "notes": "family: coop. No points. Jesters available by player count: 1p 2 (solo flips them for a hand refresh), 2p 0, 3p 1, 4p 2; a Gold medal is therefore only possible by using none.",
+  "sources": [
+    {
+      "url": "https://www.regicidegame.com/site_files/33132/upload_files/RegicideRulesA4.pdf",
+      "title": "Regicide rules (Badgers From Mars)",
+      "type": "official-rulebook",
+      "section": "Game End; Solo Play (victory medals)"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

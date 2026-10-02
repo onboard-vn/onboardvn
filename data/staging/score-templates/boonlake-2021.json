@@ -1,0 +1,134 @@
+{
+  "name": "Boonlake",
+  "year": 2021,
+  "bggId": 343905,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "endCondition": {
+    "type": "rounds",
+    "target": null,
+    "description": "Fourth interim scoring (a ship reaches the last river space; round finishes to equal turns), then final scoring."
+  },
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "Victory points after 4th interim scoring",
+      "labelVi": "Điểm trên track sau lần chấm thứ 4",
+      "hint": "VP marker value (incl. 100/200 marker) before final scoring.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "levers",
+      "label": "Levers on player board",
+      "labelVi": "Số cần gạt",
+      "hint": "4-6 levers: 2 VP each; 7 or more: 3 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "value >= 7 ? 3 * value : (value >= 4 ? 2 * value : 0)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "playedCards",
+      "label": "Played cards",
+      "labelVi": "Điểm các lá bài đã chơi",
+      "hint": "Sum of points on the symbol of every played card.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tier3",
+      "label": "Tier 3 recesses emptied",
+      "labelVi": "Tầng 3 đã dọn",
+      "hint": "2 VP per emptied recess in the third tier.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tier4",
+      "label": "Tier 4 recesses emptied",
+      "labelVi": "Tầng 4 đã dọn",
+      "hint": "4 VP per emptied recess in the fourth tier.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tier5",
+      "label": "Tier 5 recesses emptied",
+      "labelVi": "Tầng 5 đã dọn",
+      "hint": "6 VP per emptied recess in the fifth tier.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 6
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker; all tied players win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Leftover coins and cards score nothing. Final scoring happens after the 4th interim scoring, whose own points (unused levers, cattle, income, scoring tile) should already be on the VP track. Solo mode vs the Wise Eminence not modelled.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/343905/boonlake",
+      "title": "Boonlake - BGG (official rulebook in files)",
+      "type": "official-rulebook",
+      "section": "Interim Scoring & Final Scoring (p.13-14): final scoring steps, tie rule"
+    },
+    {
+      "url": "https://opinionatedgamers.com/2022/03/30/boonlake%EF%BF%BC/",
+      "title": "Boonlake review (cross-check of end scoring elements)",
+      "type": "other",
+      "section": "Endgame scoring"
+    }
+  ],
+  "confidence": "high",
+  "slug": "boonlake-2021",
+  "templateVersion": 1,
+  "needsReview": false
+}

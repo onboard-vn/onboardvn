@@ -1,0 +1,142 @@
+{
+  "slug": "wingspan",
+  "name": "Wingspan",
+  "year": 2019,
+  "bggId": 266192,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "birdPoints",
+      "label": "Printed points on birds",
+      "labelVi": "Điểm in trên thẻ chim",
+      "hint": "Sum of point values on face-up bird cards on your mat.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusCards",
+      "label": "Bonus cards",
+      "labelVi": "Thẻ thưởng",
+      "hint": "Score the bonus cards in your hand per their text (see appendix).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "roundGoals",
+      "label": "End-of-round goals",
+      "labelVi": "Mục tiêu cuối vòng",
+      "hint": "Total from the 4 goal spaces your cubes occupy (ties already split rounded down).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "eggs",
+      "label": "Eggs",
+      "labelVi": "Trứng",
+      "hint": "1 point per egg on bird cards.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cachedFood",
+      "label": "Cached food",
+      "labelVi": "Thức ăn cất trên thẻ",
+      "hint": "1 point per food token cached on bird cards.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tucked",
+      "label": "Tucked cards",
+      "labelVi": "Thẻ giấu dưới chim",
+      "hint": "1 point per card tucked under bird cards.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unusedFood",
+      "label": "Unused food tokens (tiebreaker)",
+      "labelVi": "Thức ăn còn lại (hòa)",
+      "hint": "Not scored; only breaks ties.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 0
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "unusedFood",
+      "dir": "highest",
+      "description": "Most unused food tokens"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends after round 4. End-of-round goals: green side ranks (e.g. 5/2/1, tied players split the summed places rounded down, must have at least 1 item); blue side 1 point per item max 5; enter the resulting total. Solo/automa and expansions (Europe, Oceania, Asia) not modelled. Verified only against RulesPal rulebook text; official PDF not retrieved.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/wingspan/rulebook",
+      "title": "Wingspan rulebook text (RulesPal)",
+      "type": "other",
+      "section": "Game End and Scoring; Scoring End-of-Round Goals; Bonus Cards"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

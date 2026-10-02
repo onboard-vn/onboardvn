@@ -1,0 +1,96 @@
+{
+  "slug": "not-alone-2016",
+  "name": "Not Alone",
+  "year": 2016,
+  "bggId": 194879,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 7
+  },
+  "mode": "asymmetric",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "creatureWon",
+      "label": "Creature wins (Assimilation counter reached Victory space first)",
+      "labelVi": "Quái vật thắng (Assimilation chạm ô Victory trước)",
+      "hint": "Creature wins immediately when the Assimilation counter reaches the Victory space",
+      "scope": "team",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "roleKey": "creature"
+    },
+    {
+      "key": "huntedWon",
+      "label": "Hunted win (Rescue counter reached Victory space first)",
+      "labelVi": "Người sống sót thắng (Rescue chạm ô Victory trước)",
+      "hint": "All Hunted win immediately when the Rescue counter reaches the Victory space",
+      "scope": "team",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "roleKey": "hunted"
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "roles": [
+    {
+      "key": "creature",
+      "label": "Creature",
+      "labelVi": "Quái vật",
+      "winCondition": "Assimilation counter reaches the Victory space before the Rescue counter",
+      "categoryKeys": [
+        "creatureWon"
+      ]
+    },
+    {
+      "key": "hunted",
+      "label": "Hunted",
+      "labelVi": "Người sống sót",
+      "winCondition": "Rescue counter reaches the Victory space before the Assimilation counter",
+      "categoryKeys": [
+        "huntedWon"
+      ]
+    }
+  ],
+  "winCondition": "One player is the Creature, the others are the Hunted. No points: whichever counter (Assimilation for the Creature, Rescue for the Hunted) reaches the Victory space first wins immediately; the Rescue counter advances every turn, the Assimilation counter advances when Hunted are caught or give up.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends immediately when the Assimilation or Rescue counter reaches the Victory space"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: race-to-goal (asymmetric, no points). Start spaces of both counters depend on player count. Exploration expansion not modelled. Expert variant: a Hunted losing last Will counter in Reckoning regains only 2.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/b6/c1/68-not-alone-rulebook.pdf",
+      "title": "Not Alone rulebook (Geek Attitude Games, via 1j1ju)",
+      "type": "official-rulebook",
+      "section": "Object of the Game; Phase 3 Reckoning; End of Game"
+    },
+    {
+      "url": "https://tesera.ru/images/items/872497/Not%20Alone%20EN.pdf",
+      "title": "Not Alone EN rulebook (mirror)",
+      "type": "official-rulebook",
+      "section": "End of Game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

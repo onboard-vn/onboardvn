@@ -1,0 +1,190 @@
+{
+  "slug": "pirates-of-maracaibo",
+  "name": "Pirates of Maracaibo",
+  "year": 2023,
+  "bggId": 397385,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "rivers",
+      "label": "Rivers crossed",
+      "labelVi": "Sông đã vượt",
+      "hint": "4 VP per river crossed on the Exploration board.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "doubloons",
+      "label": "Remaining doubloons",
+      "labelVi": "Doubloon còn lại",
+      "hint": "1 VP per 5 doubloons.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "improvementBase",
+      "label": "Improvement base points",
+      "labelVi": "Điểm gốc Improvement",
+      "hint": "Points in top-right corner of acquired Improvements.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "improvementEndgame",
+      "label": "Improvement endgame conditional",
+      "labelVi": "Điểm có điều kiện Improvement",
+      "hint": "Gray-scroll conditional points on Improvements with the endgame icon.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "residences",
+      "label": "Residence conditional points",
+      "labelVi": "Điểm Residence",
+      "hint": "Conditional points per Residence with token (max 24-25 each).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "treasures",
+      "label": "Treasure points",
+      "labelVi": "Điểm kho báu",
+      "hint": "Per Treasure by Markers on its island: 0-2 = 2, 3-4 = 3, 5-6 = 4, 7+ = 5.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buriedTreasures",
+      "label": "Buried Treasures",
+      "labelVi": "Kho báu đã chôn",
+      "hint": "+2 VP per Buried Treasure (also counts as Treasure above).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "quests",
+      "label": "Quest card points",
+      "labelVi": "Điểm nhiệm vụ",
+      "hint": "Highest condition met on each Quest card.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "questBonus",
+      "label": "6+ scoring Quest cards",
+      "labelVi": "Bonus 6 nhiệm vụ",
+      "hint": "+10 VP if at least 6 Quest cards scored points.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "roundPoints",
+      "label": "Points gained during play",
+      "labelVi": "Điểm trong ván",
+      "hint": "VP gained during the game (Reputation/score track incl. Maracaibo, income).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "buriedTreasures",
+      "dir": "highest",
+      "description": "Most Buried Treasure"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. 3 rounds; ends when all players have had equal turns after third income. Treasure value per Treasure depends on its island; enter the summed result. Commanders expansion and solo not modelled. Distinct from Maracaibo (2019).",
+  "sources": [
+    {
+      "url": "https://board-game-rules.com/wp-content/uploads/2025/01/pirates-of-maracaibo_Official-Rules.pdf",
+      "title": "Pirates of Maracaibo official rules",
+      "type": "official-rulebook",
+      "section": "Endgame Scoring, p.10-11"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/397385/pirates-of-maracaibo",
+      "title": "Pirates of Maracaibo (BGG)",
+      "type": "other",
+      "section": "Overview"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

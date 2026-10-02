@@ -1,0 +1,195 @@
+{
+  "slug": "the-white-castle-duel-2025",
+  "name": "The White Castle Duel",
+  "year": 2025,
+  "bggId": 438936,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "track",
+      "label": "Clan Points from red fans",
+      "labelVi": "Điểm Clan trên track",
+      "hint": "Clan Points scored on the track during the game.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "currency",
+      "label": "Coins and Daimyo Seals",
+      "labelVi": "Tiền và ấn Daimyo",
+      "hint": "1 Clan Point per 5 coins and/or Daimyo Seals combined (round down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resources",
+      "label": "Remaining resources",
+      "labelVi": "Tài nguyên còn lại",
+      "hint": "Per resource type: 3-6 units = 1 pt, 7 units = 2 pts.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "rice",
+        "iron",
+        "pearl"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "(rice==7?2:(rice>=3?1:0))+(iron==7?2:(iron>=3?1:0))+(pearl==7?2:(pearl>=3?1:0))"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "nobori",
+      "label": "Nobori flags",
+      "labelVi": "Cờ Nobori",
+      "hint": "Nobori flag icons x castle level reached by your Courtier (1, 2 or 3).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "flags",
+        "level"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "flags*level"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "katanas",
+      "label": "Katanas",
+      "labelVi": "Katana",
+      "hint": "Katana icons x Clan Seals in the Basic Training Yard.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "katanas",
+        "basicSeals"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "katanas*basicSeals"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "kabutos",
+      "label": "Kabutos",
+      "labelVi": "Kabuto",
+      "hint": "Kabuto icons x (Clan Seals in Basic Yard + 2 per Clan Seal in Elite Yard).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "kabutos",
+        "basicSeals",
+        "eliteSeals"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "kabutos*(basicSeals+2*eliteSeals)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "origami",
+      "label": "Origami cranes",
+      "labelVi": "Hạc origami",
+      "hint": "Blue cranes x white cranes.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "blue",
+        "white"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "blue*white"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "clanSeals",
+      "label": "Clan Seals placed",
+      "labelVi": "Ấn Clan đã đặt",
+      "hint": "Tiebreaker only: more Clan Seals placed wins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "socialClimbing",
+      "label": "Social Climbing path position",
+      "labelVi": "Vị trí đường thăng tiến",
+      "hint": "Tiebreaker only: higher on the path wins.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "clanSeals",
+      "dir": "highest",
+      "description": "Most Clan Seals placed"
+    },
+    {
+      "categoryKey": "socialClimbing",
+      "dir": "highest",
+      "description": "Higher on the Social Climbing path"
+    },
+    {
+      "description": "If still tied, the players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Final scoring after the last Lantern token is taken and the last player's turn ends (Return Round). Only icons from activated cards count (garden tiles/icons are automatic). Resource types assumed as rice, iron, pearl (matching the rulebook's shown icons and example). Seal counts for katana/kabuto are entered per card-set via the shared inputs of each category.",
+  "sources": [
+    {
+      "url": "https://devirinvestments.s3.eu-west-1.amazonaws.com/media/8436607949947-Rules-EN-1.pdf",
+      "title": "The White Castle Duel rulebook (Devir, EN)",
+      "type": "official-rulebook",
+      "section": "Final Scoring pp.20-21 (image-only PDF, read visually)"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/the-white-castle-duel/",
+      "title": "The White Castle Duel Game Review",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

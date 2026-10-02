@@ -1,0 +1,230 @@
+{
+  "slug": "arborea",
+  "name": "Arborea",
+  "year": 2023,
+  "bggId": 371077,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "rpTrack",
+      "label": "RP on score track (incl. hundreds)",
+      "labelVi": "RP trên track điểm (cả hàng trăm)",
+      "hint": "RP gained during play on the Regeneration track (biomes left for others, ecosystem tasks, etc.).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "captivityCount",
+      "label": "Creatures in Captivity",
+      "labelVi": "Sinh vật trong Captivity",
+      "hint": "Do first: lose 3 Spirit per Creature in Captivity (move Spirit tracker left), then read the Spirit area below.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "spiritRp",
+      "label": "Spirit track area RP",
+      "labelVi": "RP theo vùng Spirit Track",
+      "hint": "RP of the Spirit Track area your tracker is in after Captivity penalty (can be negative; any position inside the area counts the same).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "season1",
+      "label": "Season 1 (leftmost tile) score",
+      "labelVi": "Điểm Mùa 1 (trái nhất)",
+      "hint": "Base RP = times condition met x RP on tile, capped at 8; multiply by your Season Tracker multiplier (max x6).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "base",
+        "multiplier"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "min(8, base) * multiplier"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "season2",
+      "label": "Season 2 score",
+      "labelVi": "Điểm Mùa 2",
+      "hint": "Base RP = times condition met x RP on tile, capped at 8; multiply by your Season Tracker multiplier (max x6).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "base",
+        "multiplier"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "min(8, base) * multiplier"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "season3",
+      "label": "Season 3 score",
+      "labelVi": "Điểm Mùa 3",
+      "hint": "Base RP = times condition met x RP on tile, capped at 8; multiply by your Season Tracker multiplier (max x6).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "base",
+        "multiplier"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "min(8, base) * multiplier"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "season4",
+      "label": "Season 4 score",
+      "labelVi": "Điểm Mùa 4",
+      "hint": "Base RP = times condition met x RP on tile, capped at 8; multiply by your Season Tracker multiplier (max x6).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "base",
+        "multiplier"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "min(8, base) * multiplier"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "creaturesRp",
+      "label": "Creatures in Ecosystem (total RP)",
+      "labelVi": "Tổng RP Sinh vật trong Ecosystem",
+      "hint": "Sum RP of every Creature by its need (adjacent habitats / aligned creatures); a Creature with 1+ adjacent Water habitat doubles its own total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "creatureCount",
+      "label": "Creatures in Ecosystem (count)",
+      "labelVi": "Số Sinh vật trong Ecosystem",
+      "hint": "Tiebreaker 1 only.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "spiritValue",
+      "label": "Spirit (tracker value)",
+      "labelVi": "Giá trị Spirit",
+      "hint": "Tiebreaker 2 only.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "seasonSteps",
+      "label": "Steps advanced on Season Tracks",
+      "labelVi": "Số bước trên các Season Track",
+      "hint": "Tiebreaker 3 only.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "creatureCount",
+      "dir": "highest",
+      "description": "Most Creatures in Ecosystem"
+    },
+    {
+      "categoryKey": "spiritValue",
+      "dir": "highest",
+      "description": "Most Spirit"
+    },
+    {
+      "categoryKey": "seasonSteps",
+      "dir": "highest",
+      "description": "Most steps advanced on the Season Tracks"
+    },
+    {
+      "description": "If still tied, tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends 2 full turns each after the Sun Tracker reaches the last Sun Track space. Final scoring order: Captivity -3 Spirit each, Spirit track RP, Seasons left to right, Creatures. Season tile conditions, Spirit area values and per-Creature needs are printed on components/rulebook p.12 (Mushfrog 3/adjacent Tree, Antlerworm 3/Coral, Spiderant 2/different habitat, Wiseowl 2/Mushroom + 1 per 2 Gifts, Grimster 2/Flower + 3/aligned Mushfrog, Tailcat 2/Weed + 3/aligned Antlerworm); enter totals. Midnight River expansion (fish tiles) and Winds of Change cards not modelled. Solo (Feronia) and Midnight River/solo rules not modelled.",
+  "sources": [
+    {
+      "url": "https://www.alleycatgames.com/_files/ugd/aa325b_d35b448b78ad43c5b91bdeae0c4a3a4f.pdf",
+      "title": "Arborea rulebook (Alley Cat Games)",
+      "type": "official-rulebook",
+      "section": "p.3 How to Win; p.12 Game End, Endgame Scoring, Score Seasons/Creatures, tiebreakers"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/3178949",
+      "title": "BGG Rules forum: Spirit track end-game area ruling",
+      "type": "bgg-forum",
+      "section": "Spirit area counts, not exact space"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

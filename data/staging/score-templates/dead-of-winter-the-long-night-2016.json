@@ -1,0 +1,87 @@
+{
+  "slug": "dead-of-winter-the-long-night-2016",
+  "name": "Dead of Winter: The Long Night",
+  "year": 2016,
+  "bggId": 193037,
+  "templateVersion": 1,
+  "variant": "standalone",
+  "playerCount": { "min": 2, "max": 5 },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "mainObjectiveDone",
+      "label": "Colony main objective completed",
+      "labelVi": "Hoàn thành mục tiêu chung",
+      "hint": "Checked only if the game ended by completing it; if morale or the round track hit 0 the main objective is skipped.",
+      "scope": "team",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "secretObjectiveDone",
+      "label": "Own secret objective completed",
+      "labelVi": "Hoàn thành mục tiêu bí mật",
+      "hint": "Each player checks their own secret objective (including betrayer or exiled variants).",
+      "scope": "player",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "playerWon",
+      "label": "Player wins",
+      "labelVi": "Người chơi thắng",
+      "hint": "A player wins if they completed their own secret objective when the game ends; several players may win, or none.",
+      "scope": "player",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "winCondition": "The game ends when morale reaches 0, the round track reaches 0, or the main objective is completed. When it ends for any reason, each player who completed their own secret objective wins and the rest lose, so several players can win or everyone can lose.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Morale 0, round track 0, or main objective completed."
+  },
+  "outcome": { "winLose": true },
+  "roles": [
+    {
+      "key": "survivor",
+      "label": "Survivor",
+      "labelVi": "Người sống sót",
+      "winCondition": "Completes own secret objective when the game ends",
+      "categoryKeys": ["mainObjectiveDone", "secretObjectiveDone", "playerWon"]
+    },
+    {
+      "key": "betrayer",
+      "label": "Betrayer / exiled",
+      "labelVi": "Kẻ phản bội / bị trục xuất",
+      "winCondition": "Completes own betrayal or exile secret objective",
+      "categoryKeys": ["secretObjectiveDone", "playerWon"]
+    }
+  ],
+  "notes": "family: coop. Hidden objectives; no points. The Long Night adds exiled secret objectives, despair tokens and first-player votes (not modelled). Rules checked on secondary summaries (Ultra BoardGames base-game page and RulesPal Long Night page); the official rulebook PDF could not be retrieved.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/dead-of-winter-the-long-night/rulebook",
+      "title": "Dead of Winter: The Long Night rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Winning and Losing the Game"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/dead-of-winter/game-rules.php",
+      "title": "Dead of Winter rules (Ultra BoardGames)",
+      "type": "other",
+      "section": "End of the game / Winning"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

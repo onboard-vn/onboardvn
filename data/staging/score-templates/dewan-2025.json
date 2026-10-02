@@ -1,0 +1,110 @@
+{
+  "slug": "dewan-2025",
+  "name": "Dewan",
+  "year": 2025,
+  "bggId": 439742,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {"min": 2, "max": 4},
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "storyTiles",
+      "label": "Completed story tiles (tile points)",
+      "labelVi": "Điểm thẻ truyện đã hoàn thành",
+      "hint": "Sum of the point values on your completed story tiles.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {"type": "sum"},
+      "countsToTotal": true
+    },
+    {
+      "key": "fires",
+      "label": "Fires (on completed story tiles and tucked cards)",
+      "labelVi": "Lửa (trên thẻ truyện hoàn thành và thẻ úp)",
+      "hint": "1 point per fire.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {"type": "multiply", "points": 1},
+      "countsToTotal": true
+    },
+    {
+      "key": "finalCamp",
+      "label": "Placed the final camp",
+      "labelVi": "Đặt trại cuối cùng",
+      "hint": "Counts as 1 additional fire (1 point).",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {"type": "expr", "expr": "value * 1"},
+      "countsToTotal": true
+    },
+    {
+      "key": "totalFiresForMajority",
+      "label": "Total fires from all sources (for most-fires bonus)",
+      "labelVi": "Tổng số lửa (để xét thưởng nhiều lửa nhất)",
+      "hint": "Enter your total fires including the final-camp fire. Most fires: 4 points, all tied players get it. Not added to score itself.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {"type": "sum"},
+      "countsToTotal": false
+    },
+    {
+      "key": "mostFires",
+      "label": "Most fires bonus",
+      "labelVi": "Thưởng nhiều lửa nhất",
+      "hint": "4 points to the player(s) with the most fires.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {"compare": "highest", "points": [4], "tieMode": "all-full", "excludeZero": true, "over": "value"}
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "campGroups",
+      "label": "Connected camp groups (2+ camps)",
+      "labelVi": "Nhóm trại liền kề (từ 2 trại)",
+      "hint": "4 points per group of at least 2 connected camps (may span terrains).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {"type": "multiply", "points": 4},
+      "countsToTotal": true
+    },
+    {
+      "key": "berries",
+      "label": "Berry tokens (board + tucked cards)",
+      "labelVi": "Quả mọng (thu từ bàn và thẻ úp)",
+      "hint": "2 points per berry collected from the board and on tucked cards.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {"type": "multiply", "points": 2},
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: set-collection. Tiebreaker not found in sources; unverified against printed rulebook (only BGA scoring summary). mostFires is a rankAward over its own input, so enter the same total in totalFiresForMajority and mostFires if the UI does not link them.",
+  "sources": [
+    {"url": "https://boardgamearena.com/gamepanel?game=dewan", "title": "Board Game Arena - Dewan game help (Scoring Summary)", "type": "other", "section": "Scoring Summary"}
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

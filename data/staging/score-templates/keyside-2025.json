@@ -1,0 +1,141 @@
+{
+  "name": "Keyside",
+  "year": 2025,
+  "bggId": 410628,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "harbours",
+      "label": "Harbour scoring tiles 1-12",
+      "labelVi": "Điểm các ô bến cảng",
+      "hint": "Per tile: keyples in harbour x tile requirement (capped per keyple, usually 12). Sum all 12 tiles.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Cottages and houses",
+      "labelVi": "Nhà nhỏ và nhà lớn",
+      "hint": "Sum of points on cottages/houses on your player mat per their colour conditions.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gems",
+      "label": "Gems",
+      "labelVi": "Đá quý",
+      "hint": "Per purple skill track level: 1 type = 1 pt, 2 types = 1 pt each, all gems = 1 pt each.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "statue",
+      "label": "Headland D (Statue)",
+      "labelVi": "Mũi đất D (Tượng)",
+      "hint": "8 points if you built it.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 8
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "headlandSupportBeach",
+      "label": "Headlands E (Support) and F (Beach)",
+      "labelVi": "Mũi đất E và F",
+      "hint": "Beach: 2 pts per keyple in the 2 adjacent harbours. Support counts as an extra keyple on its harbour (include in the harbour tile points).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "skillTiles",
+      "label": "Skill tiles",
+      "labelVi": "Thẻ kỹ năng",
+      "hint": "Printed values 5, 3 or 1 per tile (unspent).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resourceTiles",
+      "label": "Forest, quarry, wheat fields",
+      "labelVi": "Rừng, mỏ đá, ruộng lúa",
+      "hint": "3 points for each of the three you own.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied players share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Start player marker counts as any one resource/animal/fish/gem for scoring. Harbour tiles are randomised/double-sided so harbour points are entered as a total. Solo (Keytoma) mode not modelled. Sourced from RulesPal rulebook text of the official rules, not the PDF itself.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/keyside/rulebook",
+      "title": "Keyside Rulebook (RulesPal)",
+      "type": "other",
+      "section": "Game end and scoring; Harbour scoring tiles; Headlands"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/410628/keyside",
+      "title": "Keyside on BGG",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "slug": "keyside-2025",
+  "templateVersion": 1
+}

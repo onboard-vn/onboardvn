@@ -1,0 +1,65 @@
+{
+  "slug": "nekojima-2023",
+  "name": "Nekojima",
+  "year": 2023,
+  "bggId": 359029,
+  "templateVersion": 1,
+  "variant": "competitive",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "categories": [
+    {
+      "key": "toppled",
+      "label": "Knocked the structure down",
+      "labelVi": "Làm đổ công trình",
+      "hint": "The player who makes the pole structure fall (or leaves a cable hanging) loses",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "won",
+      "label": "Won",
+      "labelVi": "Thắng",
+      "hint": "Competitive mode: last player standing wins",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Competitive dexterity game: players take turns placing or stacking electrical poles; the player who brings the structure down loses and the last one standing wins.",
+  "endCondition": {
+    "type": "last-standing",
+    "target": null,
+    "description": "Structure collapses or a player is eliminated"
+  },
+  "notes": "family: dexterity-elimination. Official rulebook (BGG file 'Nekojima Rulebook (US).pdf') could not be downloaded, so elimination details, how players are eliminated, and cat/bird's-nest token effects are unverified. Cooperative mode is in nekojima-2023--coop.json.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/359029",
+      "title": "Nekojima (BGG, publisher description)",
+      "type": "other",
+      "section": "Description: competitive mode loser is the player who knocks the structure down"
+    },
+    {
+      "url": "https://www.hachetteboardgames.com/products/nekojima",
+      "title": "Nekojima (Hachette Boardgames US product page)",
+      "type": "publisher-page",
+      "section": "Description: be the last one standing in competitive mode"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

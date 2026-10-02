@@ -1,0 +1,60 @@
+{
+  "slug": "food-chain-magnate",
+  "name": "Food chain Magnate",
+  "year": 2015,
+  "bggId": 175914,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "cash",
+      "label": "Cash at end of game",
+      "labelVi": "Tiền mặt cuối game",
+      "hint": "Count your cash after finishing the phase in which the bank breaks the 2nd time (include income owed by the bank).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied player earlier in turn order wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends when the bank breaks for the second time; finish that restaurant-income phase (owed income is noted on paper, no salaries paid that turn)"
+  },
+  "notes": "family: money-count (richest player wins, no VP). Introductory variant ends when the bank breaks once. Milestones, employees etc. have no end-game points.",
+  "sources": [
+    {
+      "url": "https://www.qugs.org/rules/r175914.pdf",
+      "title": "Food Chain Magnate rulebook (Splotter Spellen)",
+      "type": "official-rulebook",
+      "section": "Overview (richest player wins); Phase 4 'Breaking the bank (2nd time)'"
+    },
+    {
+      "url": "https://cardboardappendix.com/games/food-chain-magnate/rulebook/",
+      "title": "Rulebook - Cardboard Appendix",
+      "type": "other",
+      "section": "End of game cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

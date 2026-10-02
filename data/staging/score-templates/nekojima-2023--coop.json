@@ -1,0 +1,54 @@
+{
+  "slug": "nekojima-2023--coop",
+  "name": "Nekojima",
+  "year": 2023,
+  "bggId": 359029,
+  "templateVersion": 1,
+  "variant": "coop",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "coop",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "levelReached",
+      "label": "Level reached (level counter)",
+      "labelVi": "Cấp độ đạt được",
+      "hint": "Cooperative goal is to go as far as possible; record the level on the level counter when the structure falls. Unverified against the rulebook",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative mode: the team works together to reach as far as possible before the structure falls.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Structure collapses"
+  },
+  "notes": "family: coop-dexterity. Only the publisher blurb ('go as far as possible') is verified; the progress metric is inferred from the included level counter and must be confirmed with the official rulebook.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/359029",
+      "title": "Nekojima (BGG, publisher description)",
+      "type": "other",
+      "section": "Description: in cooperative mode the goal is to go as far as possible"
+    },
+    {
+      "url": "https://www.hachetteboardgames.com/products/nekojima",
+      "title": "Nekojima (Hachette Boardgames US product page)",
+      "type": "publisher-page",
+      "section": "Components list"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

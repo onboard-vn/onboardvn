@@ -1,0 +1,74 @@
+{
+  "slug": "hot-streak",
+  "name": "Hot Streak",
+  "year": 2025,
+  "bggId": 446497,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 8
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "3 races, then everyone tallies money; richest wins"
+  },
+  "categories": [
+    {
+      "key": "startingMoney",
+      "label": "Starting money",
+      "labelVi": "Tiền khởi đầu",
+      "hint": "Community quick-setup guide says each player starts with $10; confirm against rulebook.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "raceNet",
+      "label": "Net money from bets in each race",
+      "labelVi": "Tiền lãi/lỗ từ vé cược mỗi chặng",
+      "hint": "Add payouts of both tickets after each race (mascot ticket pays by 1st/2nd/3rd, 4th = $0; side tickets pay only if correct; risky side can lose money). Race 3: one ticket is doubled. Balance never goes below $0.",
+      "scope": "player",
+      "input": "perRound",
+      "min": -100,
+      "max": 200,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "notes": "family: betting-race. Ticket payouts are printed on tickets (values vary per ticket, top of stack worth more), so they are entered as net per race. Official rulebook PDF is only on BGG (download blocked); payout rules taken from rulebook quotes in the BGG rules forum plus the community quick-setup guide, so tie-break and starting cash are unverified. 2-player and 9+ variants change setup only.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/thread/3536315",
+      "title": "BGG Rules forum: quotes of rulebook pp.16 and 26 (payouts, drafting)",
+      "type": "bgg-forum",
+      "section": "Payouts; betting tickets"
+    },
+    {
+      "url": "https://www.craiggiven.com/s/QuickSetupGuide_HotStreak.pdf",
+      "title": "Hot Streak Quick Setup guide (community)",
+      "type": "other",
+      "section": "Setup $10; payouts step 5; third race doubling"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/446497/hot-streak",
+      "title": "Hot Streak (BGG description)",
+      "type": "other",
+      "section": "After race #3, everyone tallies their money"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,88 @@
+{
+  "name": "Quacks",
+  "year": 2018,
+  "bggId": 244521,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 9,
+    "aggregate": "sum",
+    "endCondition": "After round 9"
+  },
+  "categories": [
+    {
+      "key": "trackVP",
+      "label": "Victory points on scoring track",
+      "labelVi": "Điểm trên track điểm",
+      "hint": "Marker position after round 9, before final conversions.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "rubiesLeft",
+      "label": "Rubies left after round 9",
+      "labelVi": "Ruby còn lại",
+      "hint": "2 rubies can be traded for 1 VP (repeatable).",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "coinsLeft",
+      "label": "Unspent coins in last round",
+      "labelVi": "Xu chưa dùng ở vòng cuối",
+      "hint": "5 coins can be traded for 1 VP (repeatable); coins = value of final scoring field.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 5)"
+      },
+      "countsToTotal": true,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "Tied players: whoever filled their pot the most in the last round wins; still tied means shared win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: running-track. Base game rules; expansions (Herb Witches, Alchemists) not modelled.",
+  "sources": [
+    {
+      "url": "https://gusandco.net/wp-content/uploads/2018/10/Quacksalber_Rules_English_v1.pdf",
+      "title": "The Quacks of Quedlinburg English rules",
+      "type": "official-rulebook",
+      "section": "End of round (F) and End of game"
+    },
+    {
+      "url": "https://overrules.mobi/en/quacks/rules/",
+      "title": "Quacks rules (Overrules)",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "slug": "quacks",
+  "templateVersion": 1,
+  "needsReview": false,
+  "confidence": "high"
+}

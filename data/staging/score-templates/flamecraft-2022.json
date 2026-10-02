@@ -1,0 +1,127 @@
+{
+  "slug": "flamecraft-2022",
+  "name": "Flamecraft",
+  "year": 2022,
+  "bggId": 336986,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "reputationTrack",
+      "label": "Reputation track at game end (before final bonuses)",
+      "labelVi": "Điểm Reputation trên track (trước thưởng cuối game)",
+      "hint": "Reputation gained during play from shops, enchantments, abilities and Sun Fancy Dragons.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverCoins",
+      "label": "Leftover Coins",
+      "labelVi": "Xu còn lại",
+      "hint": "1 Reputation per Coin returned to the Fountain; do this before scoring Fancy Dragons.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "moonDragons",
+      "label": "Moon Fancy Dragons fulfilled",
+      "labelVi": "Điểm Fancy Dragon (Moon)",
+      "hint": "Sum the Reputation printed on each Moon Fancy Dragon whose goal you fulfilled (after Coins are returned). Sun Dragons already scored during play do not count again.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "handArtisanDragons",
+      "label": "Artisan Dragons left in hand (tiebreaker)",
+      "labelVi": "Artisan Dragon còn trên tay (hòa)",
+      "hint": "Tiebreaker only.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "leftoverGoods",
+      "label": "Leftover Goods (tiebreaker)",
+      "labelVi": "Nguyên liệu còn lại (hòa)",
+      "hint": "Tiebreaker only.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "handArtisanDragons",
+      "dir": "highest",
+      "description": "Most Artisan Dragons left in hand"
+    },
+    {
+      "categoryKey": "leftoverGoods",
+      "dir": "highest",
+      "description": "Most leftover Goods in supply"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "When the last card of the Artisan deck or Enchantment deck is drawn/revealed, every player (including the trigger player) takes one final turn."
+  },
+  "notes": "family: running-track-plus-endgame-bonus. Reputation from shops/enchantments is tracked on the Reputation track during play; only leftover Coins (1 each) and Moon Fancy Dragon goals are added at the end. Fancy Dragon goal values are printed on the cards so they are a scorer input. Solo mode and Companion cards (rulebook pg. 17-18) not modelled.",
+  "sources": [
+    {
+      "url": "https://cardboardalchemy.com/Flamecraft_rulebook.pdf",
+      "title": "Flamecraft Rulebook (Cardboard Alchemy)",
+      "type": "official-rulebook",
+      "section": "End of the Game, Tiebreakers and Fancy Dragons (pg. 13)"
+    },
+    {
+      "url": "https://cdn.1j1ju.com/medias/17/69/d9-flamecraft-rulebook.pdf",
+      "title": "Flamecraft Rulebook (1j1ju)",
+      "type": "official-rulebook",
+      "section": "Search-result cross-check of end-of-game scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

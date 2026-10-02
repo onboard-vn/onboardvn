@@ -1,0 +1,198 @@
+{
+  "slug": "great-western-trail",
+  "name": "Great Western Trail",
+  "year": 2021,
+  "bggId": 341169,
+  "templateVersion": 1,
+  "variant": "second-edition",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "dollars",
+      "label": "Dollars owned",
+      "labelVi": "Tiền (đô la)",
+      "hint": "1 VP per 5 dollars.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Private buildings on board",
+      "labelVi": "Công trình tư nhân trên bản đồ",
+      "hint": "Sum of VP printed on your private buildings placed on the board.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cityCrests",
+      "label": "City crest VP",
+      "labelVi": "Điểm huy hiệu thành phố",
+      "hint": "VP unlocked by your discs on city crests (negative allowed, e.g. -6 for Kansas City disc).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "stations",
+      "label": "Train station VP",
+      "labelVi": "Điểm ga tàu",
+      "hint": "Sum of VP printed next to stations with your disc.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "hazards",
+      "label": "Hazard tiles VP",
+      "labelVi": "Điểm thẻ hiểm họa",
+      "hint": "Sum of VP on your collected hazard tiles.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cattle",
+      "label": "Cattle cards VP",
+      "labelVi": "Điểm thẻ bò",
+      "hint": "Sum of VP on cattle cards in your whole deck.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Objective cards",
+      "labelVi": "Điểm thẻ nhiệm vụ",
+      "hint": "Fulfilled cards add printed VP; unfulfilled subtract printed penalty. Net result (may be negative).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "stationMasters",
+      "label": "Station master tasks",
+      "labelVi": "Điểm thẻ trưởng ga",
+      "hint": "Sum of VP from each task on your station master tiles.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "workers",
+      "label": "Workers on 5th/6th space",
+      "labelVi": "Công nhân ở ô 5 và 6",
+      "hint": "4 VP per worker on the fifth or sixth space of any row.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "discSpace",
+      "label": "Cleared disc space",
+      "labelVi": "Ô đĩa đã mở",
+      "hint": "3 VP if the scoring disc space on your player board is cleared.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "jobMarket",
+      "label": "Job market token",
+      "labelVi": "Token chợ việc làm",
+      "hint": "2 VP if you hold the job market token.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 2
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Triggered when a worker tile fills the last job market space in Kansas City; other players take one final turn."
+  },
+  "notes": "family: point-salad-euro. The scoring pad has 11 categories matching the list above. Station master tasks (1 VP per worker; 3 VP per 2 objective cards / hazards / certificates / station spaces; 3 VP per green+orange outlaw pair; 2 VP per placed private building) are summed into one input. Unused objective cards in the deck must be removed or added to the objective area before scoring. Simmental variant adds no scoring categories. Verified only via a RulesPal mirror of the rulebook, not the PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/great-western-trail/rulebook",
+      "title": "Great Western Trail: Second Edition rulebook (RulesPal mirror)",
+      "type": "other",
+      "section": "The final scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,156 @@
+{
+  "slug": "lost-ruins-of-arnak-2020",
+  "name": "Lost Ruins of Arnak",
+  "year": 2020,
+  "bggId": 312484,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 1, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": { "count": 5, "aggregate": "sum", "endCondition": "Game ends after round V" },
+  "categories": [
+    {
+      "key": "research",
+      "label": "Research track (magnifying glass + notebook)",
+      "labelVi": "Đường nghiên cứu (kính lúp + sổ tay)",
+      "hint": "Add the points printed beside each token's final row. Lost Temple glass scores by arrival order (earlier = more).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "templeTiles",
+      "label": "Temple tiles",
+      "labelVi": "Thẻ đền",
+      "hint": "Sum of points shown on your temple tiles.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "idols",
+      "label": "Idols collected",
+      "labelVi": "Tượng thần đã thu",
+      "hint": "3 VP each, including idols placed in slots.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 3 },
+      "countsToTotal": true
+    },
+    {
+      "key": "emptyIdolSlots",
+      "label": "Empty idol slots",
+      "labelVi": "Ô tượng thần còn trống",
+      "hint": "Add the points printed on each idol slot that is still empty.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "guardians",
+      "label": "Guardians overcome",
+      "labelVi": "Thủ vệ đã đánh bại",
+      "hint": "5 VP each, whether or not you used the boon.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 5 },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardPoints",
+      "label": "Item and artifact cards",
+      "labelVi": "Thẻ vật phẩm và cổ vật",
+      "hint": "Sum of points in the lower right corner of each item/artifact in your deck.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "fearCards",
+      "label": "Fear cards",
+      "labelVi": "Thẻ sợ hãi",
+      "hint": "-1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": -1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "fearTiles",
+      "label": "Fear tiles",
+      "labelVi": "Ô sợ hãi",
+      "hint": "-2 VP each (if any).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": -2 },
+      "countsToTotal": true
+    },
+    {
+      "key": "reachedTempleFirst",
+      "label": "Reached Lost Temple first (tiebreak)",
+      "labelVi": "Đến Đền Cổ đầu tiên (phân định hòa)",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "researchScoreTiebreak",
+      "label": "Research score (tiebreak if nobody reached temple)",
+      "labelVi": "Điểm nghiên cứu (phân định hòa)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "reachedTempleFirst", "dir": "highest", "description": "Player who reached the Lost Temple first" },
+    { "categoryKey": "researchScoreTiebreak", "dir": "highest", "description": "If nobody reached the Lost Temple, highest research score" },
+    { "description": "Otherwise players remain tied." }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Research track and idol-slot point values and Lost Temple order values are printed on the board and not listed in the rulebook text, so they are scorer inputs. Fear tiles belong to an advanced/variant rule (rulebook p.23). Solo mode vs rival not modelled. Expansion The Missing Expedition not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/6f/e9/0c-lost-ruins-of-arnak-rulebook.pdf",
+      "title": "Lost Ruins of Arnak rulebook (CGE)",
+      "type": "official-rulebook",
+      "section": "Final Scoring (p.18); Idols (p.11); The Lost Temple (p.8)"
+    },
+    {
+      "url": "https://meepleshelf.com/blog/how-to-play-score-lost-ruins-of-arnak",
+      "title": "How to play and score Lost Ruins of Arnak (Meepleshelf)",
+      "type": "other",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

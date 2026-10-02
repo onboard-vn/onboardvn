@@ -1,0 +1,156 @@
+{
+  "templateVersion": 1,
+  "slug": "carnuta-2026",
+  "name": "Carnuta",
+  "year": 2026,
+  "bggId": 457386,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "honey",
+      "label": "Honey column points",
+      "labelVi": "Điểm cột Mật ong",
+      "hint": "Sum points of every card in this ingredient column (card points x ingredients it counts; double cards, Salt and bonus tokens count as extra ingredients).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "clover",
+      "label": "Clover column points",
+      "labelVi": "Điểm cột Cỏ ba lá",
+      "hint": "Sum points of every card in this ingredient column (card points x ingredients it counts; double cards, Salt and bonus tokens count as extra ingredients).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "flower",
+      "label": "Flower column points",
+      "labelVi": "Điểm cột Hoa",
+      "hint": "Sum points of every card in this ingredient column (card points x ingredients it counts; double cards, Salt and bonus tokens count as extra ingredients).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "egg",
+      "label": "Egg column points",
+      "labelVi": "Điểm cột Trứng",
+      "hint": "Sum points of every card in this ingredient column (card points x ingredients it counts; double cards, Salt and bonus tokens count as extra ingredients).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mushroom",
+      "label": "Mushroom column points",
+      "labelVi": "Điểm cột Nấm",
+      "hint": "Sum points of every card in this ingredient column (card points x ingredients it counts; double cards, Salt and bonus tokens count as extra ingredients).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "skull",
+      "label": "Skull column points",
+      "labelVi": "Điểm cột Đầu lâu",
+      "hint": "Sum points of every card in this ingredient column (card points x ingredients it counts; double cards, Salt and bonus tokens count as extra ingredients).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "berry",
+      "label": "Berry column points",
+      "labelVi": "Điểm cột Quả mọng",
+      "hint": "Sum points of every card in this ingredient column (card points x ingredients it counts; double cards, Salt and bonus tokens count as extra ingredients).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "butterfly",
+      "label": "Butterfly column points",
+      "labelVi": "Điểm cột Bướm",
+      "hint": "Sum points of every card in this ingredient column (card points x ingredients it counts; double cards, Salt and bonus tokens count as extra ingredients).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most points in a single ingredient column"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Game ends when a player plays their 11th card; finish the round (through the player to the Ancestor's right) then everyone plays one final turn. Each card's points depend on the ingredient icons in the potion (card shows own points, or points per count/set of ingredients), so per-column totals are scorer inputs. Double cards = 2 ingredients, Salt = +1 of the ingredient it is stacked on, Bonus Ingredient tokens = +1 ingredient. Solo variants are unofficial and not modelled. Rulebook not downloaded; verified from RulesPal text of the rulebook only.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/carnuta/rulebook",
+      "title": "Carnuta rulebook text (RulesPal)",
+      "type": "other",
+      "section": "End of the Game; Description of Points"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/457386/carnuta",
+      "title": "Carnuta on BoardGameGeek (identification)",
+      "type": "other",
+      "section": null
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

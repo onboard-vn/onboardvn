@@ -1,0 +1,132 @@
+{
+  "slug": "east-india-companies",
+  "name": "East India Companies",
+  "year": 2022,
+  "bggId": 354132,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Game ends after period 5"
+  },
+  "categories": [
+    {
+      "key": "treasury",
+      "label": "Treasury (GP)",
+      "labelVi": "Ngân quỹ (GP)",
+      "hint": "All money on your Treasury space at the end of period 5.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "presidencyShares",
+      "label": "Value of own Presidency Shares",
+      "labelVi": "Giá trị cổ phiếu Presidency của mình",
+      "hint": "Own Presidency Shares at current Stock Exchange value (not mortgaged ones). Enter total GP value.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "companyShares",
+      "label": "Value of Company Shares held",
+      "labelVi": "Giá trị cổ phiếu công ty đang giữ",
+      "hint": "Total current value of all other Company Shares you own. Enter total GP value.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "ownCompanyShareValue",
+      "label": "Value of own company's Shares (tiebreaker)",
+      "labelVi": "Giá trị cổ phiếu công ty mình (hòa)",
+      "hint": "Tiebreaker only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "initiativeRank",
+      "label": "Initiative order position (final tiebreaker)",
+      "labelVi": "Thứ tự initiative (hòa)",
+      "hint": "1 = first in initiative order. Tiebreaker only.",
+      "scope": "player",
+      "input": "number",
+      "min": 1,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "ownCompanyShareValue",
+      "dir": "highest",
+      "description": "Highest value of own company's Shares"
+    },
+    {
+      "categoryKey": "treasury",
+      "dir": "highest",
+      "description": "Highest final treasury"
+    },
+    {
+      "categoryKey": "initiativeRank",
+      "dir": "lowest",
+      "description": "First in initiative order"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "rounds",
+    "target": 5,
+    "description": "Game ends after period 5; no Shares may be sold after its Agent Placement phase."
+  },
+  "notes": "family: wealth-total. Final wealth = Presidency Shares (excluding optional-rule mortgaged ones) + all Company Shares at current value + Treasury. Share value comes from the Stock Exchange track marker; scorer enters totals in GP. Official rulebook PDF (BGG file 345224) could not be downloaded (Cloudflare block); rules taken from RulesPal's reproduction, so needsReview=true.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/east-india-companies/rulebook",
+      "title": "East India Companies rulebook text (RulesPal)",
+      "type": "other",
+      "section": "Final Scoring; Special Rules for Period 5"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/250252/east-india-companies-rules",
+      "title": "East India Companies Rules (HUCH, BGG files)",
+      "type": "bgg-file",
+      "section": "Not read (download blocked)"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

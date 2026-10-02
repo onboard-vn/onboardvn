@@ -1,0 +1,125 @@
+{
+  "slug": "sushi-go",
+  "name": "Sushi Go!",
+  "year": 2013,
+  "bggId": 133473,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "3 rounds, then puddings are scored once"
+  },
+  "categories": [
+    {
+      "key": "roundScores",
+      "label": "Points from each round",
+      "labelVi": "Điểm từng ván (3 ván)",
+      "hint": "Per round: maki most 6 / 2nd 3 (ties split, round down); tempura pair 5; sashimi set of 3 = 10; dumplings 1/3/6/10/15; nigiri squid 3, salmon 2, egg 1 (x3 on wasabi).",
+      "scope": "player",
+      "input": "perRound",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "puddings",
+      "label": "Pudding cards kept (all 3 rounds)",
+      "labelVi": "Số thẻ Pudding giữ được",
+      "hint": "Most puddings +6, fewest -6 (ties split, round down toward zero). 2 players: no penalty for fewest.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 10,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            6,
+            0,
+            0,
+            0,
+            -6
+          ],
+          "tieMode": "split-floor",
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "2": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                6,
+                0
+              ],
+              "tieMode": "split-floor",
+              "over": "value"
+            }
+          },
+          "3": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                6,
+                0,
+                -6
+              ],
+              "tieMode": "split-floor",
+              "over": "value"
+            }
+          },
+          "4": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                6,
+                0,
+                0,
+                -6
+              ],
+              "tieMode": "split-floor",
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": "highest",
+      "description": "Most pudding cards wins the tie"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: set-collection-rounds. Round scores are entered as totals per round (maki race, tempura, sashimi, dumpling, nigiri/wasabi not itemised). Pudding scoring is one rank award [6, 0.., -6] so a tie for most or fewest splits correctly and an all-equal table nets 0. Rare edge: a 4-way tie for fewest in a 5-player game gives -2 here, rulebook says remainder is ignored (-1). Two-player dummy-hand variant and pass-both-ways variant do not change scoring.",
+  "sources": [
+    {
+      "url": "https://www.gamewright.com/pdfs/Rules/SushiGoTM-RULES.pdf",
+      "title": "Sushi Go! Rules of Play (Gamewright)",
+      "type": "official-rulebook",
+      "section": "Scoring; Ending the game; Puddings; And the winner is"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/133473/sushi-go",
+      "title": "Sushi Go! (BGG)",
+      "type": "other",
+      "section": "Game identification"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

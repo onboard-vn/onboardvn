@@ -1,0 +1,63 @@
+{
+  "slug": "the-game-quick-and-easy",
+  "name": "The Game Quick and Easy",
+  "year": 2020,
+  "bggId": 296512,
+  "templateVersion": 1,
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "endCondition": {
+    "type": "objective",
+    "target": 50,
+    "description": "Ends when all 50 number cards are laid (win) or the active player cannot legally lay a card (loss)"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won (all 50 cards laid)",
+      "labelVi": "Cả đội thắng (đã đặt hết 50 lá)",
+      "hint": "Win only if every number card is laid on the two stacks",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "cardsLaid",
+      "label": "Cards laid on the stacks (of 50)",
+      "labelVi": "Số lá đã đặt (trên 50)",
+      "hint": "Count cards on both stacks, ideally 50",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 50,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Everyone wins together if all 50 number cards (1-10 in five colours) are laid on the ascending and descending stacks; the game is lost immediately when the active player cannot lay a card legally.",
+  "notes": "family: coop. Cards laid is a progress measure only. Professional version: exactly one card per turn, no number talk.",
+  "sources": [
+    {
+      "url": "https://www.nsv.de/wp-content/uploads/2024/04/TheGame_QE_GB.pdf",
+      "title": "The Game Quick & Easy rules (NSV, English)",
+      "type": "official-rulebook",
+      "section": "End of game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

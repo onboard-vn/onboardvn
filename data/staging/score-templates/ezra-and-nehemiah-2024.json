@@ -1,0 +1,161 @@
+{
+  "slug": "ezra-and-nehemiah-2024",
+  "name": "Ezra and Nehemiah",
+  "year": 2024,
+  "bggId": 386368,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the 3rd Sabbath, then end game scoring"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track before end game scoring",
+      "labelVi": "Điểm trên track trước khi tính điểm cuối",
+      "hint": "VP marker position after the 3rd Sabbath (temple, immediate rewards, Sabbath card scoring); add 100 if lapped.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "silver",
+      "label": "Leftover resources as Silver",
+      "labelVi": "Tài nguyên còn lại quy ra Bạc",
+      "hint": "Gold=3, Stone/Wood/Food=2, Cinders=1 Silver; 1 VP per 5 Silver (per 3 with the matching Gold Scroll tile).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "silver",
+        "gold",
+        "stone",
+        "wood",
+        "food",
+        "cinders"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor((silver + 3 * gold + 2 * (stone + wood + food) + cinders) / 5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "development",
+      "label": "Development tiles",
+      "labelVi": "Thẻ phát triển",
+      "hint": "VP printed on each Development tile (2 VP each).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "altarLeader",
+      "label": "Altar Leader",
+      "labelVi": "Người dẫn đầu bàn thờ",
+      "hint": "3 VP if you are the Altar Leader.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wallsGates",
+      "label": "Walls and Gates",
+      "labelVi": "Tường và cổng",
+      "hint": "VP printed on your Wall and Gate cards.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "scribes",
+      "label": "Scribes",
+      "labelVi": "Thầy ký",
+      "hint": "VP of the row of each Scribe.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "scrollTop",
+      "label": "Top-row Scroll tile conditions",
+      "labelVi": "Điều kiện thẻ cuộn hàng trên",
+      "hint": "VP from unique scoring conditions of your top-row Scroll tiles.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "altarPosition",
+      "label": "Altar Track position (tiebreak)",
+      "labelVi": "Vị trí trên bàn thờ (phân định hòa)",
+      "hint": "Further right wins; stacked markers: the lower one is ahead.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "altarPosition",
+      "dir": "highest",
+      "description": "Altar Marker furthest right on the Altar Track"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Solo: opponent scores like a player without Development tiles or Scroll tile conditions; you win a tie only as Altar Leader. Some Scroll tiles change silver conversion or add extra end scoring (counted in scrollTop). Text taken from the RulesPal rulebook reproduction, not the official PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/ezra-and-nehemiah/rulebook",
+      "title": "Ezra and Nehemiah rulebook (RulesPal)",
+      "type": "other",
+      "section": "End Game Scoring; Solo Mode"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

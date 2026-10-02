@@ -1,0 +1,165 @@
+{
+  "slug": "wreck-raiders-2019",
+  "name": "Wreck Raiders",
+  "year": 2019,
+  "bggId": 252877,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "exhibits",
+      "label": "Claimed Exhibits (coin value)",
+      "labelVi": "Triển lãm đã nhận (giá trị xu)",
+      "hint": "Sum of coin value printed on each claimed Exhibit.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "conchDecor",
+      "label": "Conch decorations used on Exhibits",
+      "labelVi": "Ốc xà cừ dùng làm trang trí",
+      "hint": "2 coins per Conch used as a decoration when claiming an Exhibit.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "vaultUnique",
+      "label": "Unique treasures in vault",
+      "labelVi": "Kho báu khác nhau trong hầm",
+      "hint": "1 coin per unique treasure (by picture) in the vault, any location.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "vaultRows",
+      "label": "Vault rows of one type",
+      "labelVi": "Hàng hầm cùng loại",
+      "hint": "Coin value shown for each row that is full of treasures of the same type.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "aquariumBottomsMiddles",
+      "label": "Aquarium Bottoms and Middles",
+      "labelVi": "Bể cá: tầng đáy và tầng giữa",
+      "hint": "Coin value displayed on every Bottom and Middle tile of all your aquariums.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "aquariumTops",
+      "label": "Aquarium Tops (formula)",
+      "labelVi": "Bể cá: tầng đỉnh (công thức)",
+      "hint": "Apply each Top's pink-bubble formula to its aquarium and add the results.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverTreasures",
+      "label": "Tiebreak: leftover treasures in displays",
+      "labelVi": "Phá hòa: kho báu thừa trong trưng bày",
+      "hint": "Not scored.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "leftoverSeashells",
+      "label": "Tiebreak: leftover seashells in basket",
+      "labelVi": "Phá hòa: vỏ sò còn lại",
+      "hint": "Not scored.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "leftoverTreasures",
+      "dir": "highest",
+      "description": "Most leftover treasures in your displays"
+    },
+    {
+      "categoryKey": "leftoverSeashells",
+      "dir": "highest",
+      "description": "Most leftover seashells in your basket"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Game ends when a player claims their 6th/5th/4th/4th Exhibit (2/3/4/5 players); every other player gets one more turn. Score track wraps at 50. Solo mode scores the same way (rival-based end triggers) and compares to a rating chart; not a separate file.",
+  "sources": [
+    {
+      "url": "https://board-game-rules.com/wp-content/uploads/2025/01/wreck-raiders_Official-Rules.pdf",
+      "title": "Wreck Raiders official rulebook",
+      "type": "official-rulebook",
+      "section": "Game End p.9; Final Scoring p.10; Solo p.11"
+    },
+    {
+      "url": "http://djnutte.com/BoardGameFiles/Rules/WreckRaiders.pdf",
+      "title": "Wreck Raiders rulebook (alternate copy)",
+      "type": "other",
+      "section": "same rulebook, cross-check only"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

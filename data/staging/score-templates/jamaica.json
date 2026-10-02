@@ -1,0 +1,92 @@
+{
+  "slug": "jamaica",
+  "name": "Jamaica",
+  "year": 2007,
+  "bggId": 28023,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "boardPosition",
+      "label": "White number on your ship's space (-5 if on or before the -5 space)",
+      "labelVi": "Số trắng trên ô tàu đang đứng",
+      "hint": "Ending on or before the -5 space costs 5 points.",
+      "scope": "player",
+      "input": "number",
+      "min": -5,
+      "max": null,
+      "countsToTotal": true,
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "key": "doubloons",
+      "label": "Doubloons in your holds",
+      "labelVi": "Doubloon trong khoang tàu",
+      "hint": "1 point per doubloon in holds.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "treasures",
+      "label": "Treasure cards minus cursed treasures",
+      "labelVi": "Kho báu trừ kho báu bị nguyền",
+      "hint": "Sum the printed values of revealed treasure cards; cursed ones are negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "countsToTotal": true,
+      "formula": {
+        "type": "sum"
+      }
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Player furthest along in the race wins."
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "A player reaches Port Royale after a full circuit; the current round is finished, then scores are counted."
+  },
+  "notes": "family: race-to-goal. Reaching Port Royale only ends the game; winner has the highest final score. Treasure card values are printed on the cards (not read). Two-player game adds a Ghost Ship (not scored as a player).",
+  "sources": [
+    {
+      "url": "https://www.orderofgamers.com/downloads/Jamaica_v1.2.pdf",
+      "title": "Jamaica rules summary v1.2",
+      "type": "official-rulebook",
+      "section": "End of the Game"
+    },
+    {
+      "url": "https://www.boardgamehalv.com/how-to-play-jamaica/",
+      "title": "How To Play Jamaica",
+      "type": "other",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

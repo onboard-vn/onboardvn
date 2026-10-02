@@ -1,0 +1,163 @@
+{
+  "slug": "nusfjord-big-box-2024",
+  "name": "Nusfjord: Big Box",
+  "year": 2024,
+  "bggId": 378979,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "ships",
+      "label": "Ships",
+      "labelVi": "Tàu",
+      "hint": "Sum of VP printed on your Ships on the Fishing track.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Buildings",
+      "labelVi": "Công trình",
+      "hint": "Sum of VP on your Buildings; asterisk (*) buildings score per their card condition.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "issuedShares",
+      "label": "Issued shares",
+      "labelVi": "Cổ phiếu đã phát hành",
+      "hint": "1 VP per issued Share in your possession, any color.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gold",
+      "label": "Gold",
+      "labelVi": "Vàng",
+      "hint": "1 VP per gold in your personal supply.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "freeBuildingSpaces",
+      "label": "Free building spaces",
+      "labelVi": "Ô công trình trống",
+      "hint": "-1 VP per free Building space on your Harbor board.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unissuedShares",
+      "label": "Unissued shares",
+      "labelVi": "Cổ phiếu chưa phát hành",
+      "hint": "-1 VP per Unissued Share in your possession.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "guestsSupply",
+      "label": "Guests in supply",
+      "labelVi": "Khách trong kho",
+      "hint": "Guests (Besøkende deck): 1/2 VP each, not rounded.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 0.5
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Besøkende (Guests)"
+    },
+    {
+      "key": "guestsOnShips",
+      "label": "Guests on Ships",
+      "labelVi": "Khách trên tàu",
+      "hint": "Guests (Besøkende deck): 1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Besøkende (Guests)"
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: tied players share the victory"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game lasts 7 rounds. Building VP are printed on cards; asterisk buildings (and Harbor Installation, 2 VP per Ship) depend on card text, so enter the computed VP in the buildings category. Some buildings let you cover negative-VP spaces with wood at game end (see card). Solo/advanced solo: same scoring, goal is highest score (30-40 is good).",
+  "sources": [
+    {
+      "url": "https://www.lookout-spiele.de/upload/en_nusfjordbigbox.html_Nusfjord_BigBox_169_Rules_EN_WEB_240109_compressed.pdf",
+      "title": "Nusfjord: Big Box Rules (Lookout Games)",
+      "type": "official-rulebook",
+      "section": "p.15 Game End and Scoring; p.17 Guests (Victory Points for Guests)"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/nusfjord/game-rules.php",
+      "title": "How to play Nusfjord (Ultraboardgames)",
+      "type": "other",
+      "section": "Game end and scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

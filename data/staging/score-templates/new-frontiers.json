@@ -1,0 +1,115 @@
+{
+  "slug": "new-frontiers",
+  "name": "New Frontiers",
+  "year": 2018,
+  "bggId": 255692,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 5 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpChips",
+      "label": "VP chips",
+      "labelVi": "Chip điểm (VP)",
+      "hint": "Total value of VP chips gained during play (1-VP and 5-VP chips).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "developments",
+      "label": "Developments (printed VP)",
+      "labelVi": "Công nghệ (VP in sẵn)",
+      "hint": "Sum of the number in each development's hexagon.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "colonies",
+      "label": "Colonies (printed VP, incl. home)",
+      "labelVi": "Thuộc địa (VP in sẵn, gồm quê nhà)",
+      "hint": "Sum of the number in each colony's hexagon, including the home colony. Explored worlds do not score.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusVp",
+      "label": "Bonus VP from '?' tiles",
+      "labelVi": "VP thưởng từ ô '?'",
+      "hint": "Variable bonuses on 9-cost developments and a few colonies, as written on each tile.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "goals",
+      "label": "Goal tiles (optional)",
+      "labelVi": "Thẻ mục tiêu (tùy chọn)",
+      "hint": "Only when playing with goals: VP from each goal tile in play.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true,
+      "optional": true
+    },
+    {
+      "key": "creditsAndGoods",
+      "label": "Credits + goods in empire (tiebreak)",
+      "labelVi": "Tín dụng + hàng hóa (phân định hòa)",
+      "hint": "Not counting items on stockpile tiles.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "creditsAndGoods", "dir": "highest", "description": "Most credits and goods in empire (excluding stockpile tiles)" },
+    { "description": "If still tied, tied players jointly win." }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "After a round in which any player has >10 mat spaces of developments, >7 colonies incl. home, fewer than 5 colonists after a Settle action, or the VP chip pool is emptied; finish that round."
+  },
+  "notes": "family: point-salad-euro. Printed VP values and '?' bonuses are on tiles, so they are scorer inputs. Remove explored worlds before scoring. Goals are an optional rule.",
+  "sources": [
+    {
+      "url": "https://www.riograndegames.com/wp-content/uploads/2018/08/New-Frontiers-Rules.pdf",
+      "title": "New Frontiers rules (Rio Grande Games)",
+      "type": "official-rulebook",
+      "section": "Game End and Winning (p.9); Developments/Colonies VP; Goals (p.11)"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/new-frontiers/game-rules.php",
+      "title": "How to play New Frontiers (Ultra Board Games)",
+      "type": "other",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

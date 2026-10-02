@@ -1,0 +1,136 @@
+{
+  "slug": "deep-regrets",
+  "name": "Deep Regrets",
+  "year": 2025,
+  "bggId": 397931,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "mountedFish",
+      "label": "Mounted fish (after slot multiplier and Regret penalty)",
+      "labelVi": "Cá treo (sau nhân hệ số ô và phạt Regret)",
+      "hint": "Fish value (incl. madness modifier, min 0) x slot multiplier (2x/3x). If you hold the highest Regret value, discard your highest-scoring mounted fish first (lowest in 2 players); Cloche is lost too, otherwise doubled.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fishInHand",
+      "label": "Fish in hand (sum of values)",
+      "labelVi": "Cá trên tay (tổng giá trị)",
+      "hint": "Sum of current fish values including the madness modifier (e.g. +2 foul / -2 fair at deep madness); a fish never counts below 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fishbucks",
+      "label": "Fishbucks ($ left)",
+      "labelVi": "Fishbucks ($ còn lại)",
+      "hint": "1 VP per 2 $ (10 $ = 5 VP).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 10,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "regretValue",
+      "label": "Total Regret value (tiebreak, penalty check)",
+      "labelVi": "Tổng giá trị Regret (hòa/xét phạt)",
+      "hint": "Sum of printed values on Regret cards. Highest value (ties all count) loses a mounted fish. Does not add points.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "regretCards",
+      "label": "Number of Regret cards (tiebreak)",
+      "labelVi": "Số thẻ Regret (hòa)",
+      "hint": "Only for tiebreak: fewer cards wins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "regretValue",
+      "dir": "lowest",
+      "description": "Lower total Regret value wins"
+    },
+    {
+      "categoryKey": "regretCards",
+      "dir": "lowest",
+      "description": "Fewer Regret cards wins; otherwise a tie"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "Weeklong expedition of days; the game ends immediately when the last fish leaves the final shoal (caught or discarded), then end-game scoring."
+  },
+  "notes": "family: end-game-categories. Mounted-fish slot multipliers, exact madness-track value modifiers and the 1 VP per 2 $ conversion are reconstructed from BGG designer replies and posted scoring examples (Max scores thread: total = mounted + fish in hand + $/2), NOT read from the rulebook p.22. Highest Regret value discards the fish with highest calculated value (after madness and slot); every tied player discards, even if all have 0. Solo/co-op is a campaign catalog mode, not modelled. Expansions (Lamentable Tentacles, Even Deeper Regrets) not modelled. Needs review against the official rulebook.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/thread/3501192/max-scores",
+      "title": "BGG: Max scores - exact score breakdown examples",
+      "type": "bgg-forum",
+      "section": "posts with mounted/fish/Fishbucks totals"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/3493669/tie-on-regrets-value-when-scoring",
+      "title": "BGG Rules: tie on Regret value; winner tiebreak order",
+      "type": "bgg-forum",
+      "section": "designer replies"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/3498628/discarding-a-fish-when-you-have-the-most-regret",
+      "title": "BGG Rules: which fish is discarded (calculated value)",
+      "type": "bgg-forum",
+      "section": "designer reply citing rulebook p.22"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/deep-regrets/",
+      "title": "Meeple Mountain review of Deep Regrets",
+      "type": "other",
+      "section": "scoring paragraph"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

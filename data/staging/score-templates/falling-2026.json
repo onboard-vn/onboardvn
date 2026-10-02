@@ -1,0 +1,49 @@
+{
+  "slug": "falling-2026",
+  "name": "Falling",
+  "year": 2026,
+  "bggId": 425024,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vp",
+      "label": "Victory points",
+      "labelVi": "Điểm chiến thắng",
+      "hint": "Total VP at game end; itemised sources not verified.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not verified."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: engine-building-vp. BGG text confirms victory points exist (also via card combos); itemised end-game scoring and tiebreaks not verified. Solo mode and 12 sidekick abilities not modelled.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/425024",
+      "title": "Falling (BGG page, description only; official rulebook not retrievable in this run)",
+      "type": "other",
+      "section": "Game description"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

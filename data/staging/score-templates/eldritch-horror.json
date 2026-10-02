@@ -1,0 +1,72 @@
+{
+  "slug": "eldritch-horror",
+  "name": "Eldritch Horror",
+  "year": 2013,
+  "bggId": 146021,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 1, "max": 8 },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Investigators won",
+      "labelVi": "Các điều tra viên thắng",
+      "hint": "Win immediately on solving 3 Mysteries; if the Ancient One awakened, win by solving the Final Mystery.",
+      "scope": "team",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "mysteriesSolved",
+      "label": "Mysteries solved",
+      "labelVi": "Số Mystery đã giải",
+      "hint": "Three solved Mysteries win the game.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "ancientOneAwakened",
+      "label": "Ancient One awakened (Doom reached 0)",
+      "labelVi": "Ancient One thức tỉnh",
+      "hint": "Doom reaching 0 awakens the Ancient One; investigators must then solve the Final Mystery.",
+      "scope": "team",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Investigators win by solving three Mysteries, or, if the Ancient One has awakened, by solving the Final Mystery. They lose if all investigators are eliminated, a card effect says so, or a Mythos card must be drawn from an empty deck; the awakened Ancient One adds its own loss conditions.",
+  "endCondition": {
+    "type": "objective",
+    "target": 3,
+    "description": "3 Mysteries solved (win), Final Mystery solved after awakening (win), or elimination / empty Mythos deck / card effect (loss)."
+  },
+  "outcome": { "winLose": true },
+  "notes": "family: coop. No points. Ancient-One-specific details and expansions not modelled. Verified only against secondary rule summaries; the official rulebook PDF could not be retrieved.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/eldritch-horror/game-rules.php",
+      "title": "Eldritch Horror rules (Ultra BoardGames)",
+      "type": "other",
+      "section": "End of the Game"
+    },
+    {
+      "url": "https://www.rulespal.com/eldritch-horror/rulebook",
+      "title": "Eldritch Horror rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Winning and Losing"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

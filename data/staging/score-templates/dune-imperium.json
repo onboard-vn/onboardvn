@@ -1,0 +1,141 @@
+{
+  "slug": "dune-imperium",
+  "name": "Dune: Imperium",
+  "year": 2020,
+  "bggId": 316554,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "Victory points on Score track",
+      "labelVi": "Điểm chiến thắng trên thanh điểm",
+      "hint": "Final position of your Score marker (influence VP, alliances, conflict, cards all included).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endgameIntrigueVp",
+      "label": "Endgame Intrigue VP",
+      "labelVi": "VP từ bài Intrigue Endgame",
+      "hint": "Extra VP from Endgame Intrigue cards played at game end.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "spice",
+      "label": "Spice (tiebreak)",
+      "labelVi": "Spice còn lại (phân định hòa)",
+      "hint": "Remaining spice.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "solari",
+      "label": "Solari (tiebreak)",
+      "labelVi": "Solari còn lại (phân định hòa)",
+      "hint": "Remaining Solari.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "water",
+      "label": "Water (tiebreak)",
+      "labelVi": "Nước còn lại (phân định hòa)",
+      "hint": "Remaining water.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "troops",
+      "label": "Garrisoned troops (tiebreak)",
+      "labelVi": "Quân đồn trú (phân định hòa)",
+      "hint": "Troops in your garrison.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "spice",
+      "dir": "highest",
+      "description": "Most spice"
+    },
+    {
+      "categoryKey": "solari",
+      "dir": "highest",
+      "description": "Most Solari"
+    },
+    {
+      "categoryKey": "water",
+      "dir": "highest",
+      "description": "Most water"
+    },
+    {
+      "categoryKey": "troops",
+      "dir": "highest",
+      "description": "Most garrisoned troops"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "target-score",
+    "target": 10,
+    "description": "Checked in the Recall phase: any player at 10+ VP, or the Conflict deck is empty."
+  },
+  "notes": "family: running-track. VP are gained during play and tracked on the Score track; at the end only Endgame Intrigue cards are resolved, then totals are compared. Tiebreakers: spice, Solari, water, garrisoned troops. Solo/2-player Rival (House Hagal) rules and expansions (Rise of Ix, Immortality, Bloodlines) not modelled. Verified via a RulesPal mirror of the official rulebook text, not the PDF itself.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/dune-imperium/rulebook",
+      "title": "Dune: Imperium rulebook (RulesPal mirror)",
+      "type": "other",
+      "section": "Phase 5 Recall; Endgame; Victory Points"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

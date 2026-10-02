@@ -1,0 +1,160 @@
+{
+  "slug": "distilled",
+  "name": "Distilled",
+  "year": 2022,
+  "bggId": 295895,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "spiritPoints",
+      "label": "Spirit points (sales, awards) on track",
+      "labelVi": "SP trên track",
+      "hint": "SP earned during play (sales, spirit awards, upgrades triggered in play).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "warehouse",
+      "label": "Unsold spirits in warehouse",
+      "labelVi": "Rượu tồn kho",
+      "hint": "SP on all cards in stack, barrel and recipe, plus 1 SP per flavor card.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bottleRegions",
+      "label": "Bottle collection by region",
+      "labelVi": "Bộ sưu tập chai theo vùng",
+      "hint": "Per region: 2=2, 3=4, 4=7, 5=10, 6+=15 SP; bottles without region do not count.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "if(americas>=6,15,if(americas==5,10,if(americas==4,7,if(americas==3,4,if(americas==2,2,0)))))+if(europe>=6,15,if(europe==5,10,if(europe==4,7,if(europe==3,4,if(europe==2,2,0)))))+if(asiaOceania>=6,15,if(asiaOceania==5,10,if(asiaOceania==4,7,if(asiaOceania==3,4,if(asiaOceania==2,2,0)))))"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "americas",
+        "europe",
+        "asiaOceania"
+      ]
+    },
+    {
+      "key": "bottleVariety",
+      "label": "Bottles from 3 different regions",
+      "labelVi": "Chai từ 3 vùng khác nhau",
+      "hint": "5 SP if you have at least one bottle from each of three regions.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "upgrades",
+      "label": "Distillery upgrades with SP",
+      "labelVi": "Nâng cấp nhà máy",
+      "hint": "Sum of end-game SP on your upgrade cards.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goals",
+      "label": "Distillery goals achieved",
+      "labelVi": "Mục tiêu nhà máy",
+      "hint": "SP printed on each achieved goal (cannot be achieved with zero).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "money",
+      "label": "Money remaining",
+      "labelVi": "Tiền còn lại",
+      "hint": "1 SP per 5 money, remainder ignored.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "moneyTiebreak",
+      "label": "Money remaining (tiebreak)",
+      "labelVi": "Tiền còn lại (phân định hòa)",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "moneyTiebreak",
+      "dir": "highest",
+      "description": "Most money remaining"
+    },
+    {
+      "description": "If still tied, share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Region names assumed Americas / Europe / Asia & Oceania from tasting flight descriptions. SP from per-spirit sales and awards are normally tracked on the SP track during play. Only the RulesPal summary was found; official rulebook not retrieved.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/distilled/rulebook",
+      "title": "Distilled rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Game End"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

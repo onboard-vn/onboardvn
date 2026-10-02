@@ -1,0 +1,118 @@
+{
+  "slug": "in-the-year-of-the-dragon",
+  "name": "In the Year of the Dragon",
+  "year": 2007,
+  "bggId": 31594,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 12,
+    "aggregate": "sum",
+    "endCondition": "Game ends after scoring at the end of round 12, then final scoring"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track position before final scoring",
+      "labelVi": "Điểm trên track trước khi tính điểm cuối",
+      "hint": "Marker position on the score track after round 12 (palaces, dragons on ladies/privileges, actions, festivals).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "persons",
+      "label": "Person tiles in palaces",
+      "labelVi": "Số nhân vật trong cung điện",
+      "hint": "2 VP per person tile in your palaces.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "monks",
+      "label": "Monks (Buddhas x palace floors)",
+      "labelVi": "Nhà sư (Phật x số tầng)",
+      "hint": "For each monk: Buddhas on it x floors of its palace; enter each monk's value.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "money",
+      "label": "Remaining money",
+      "labelVi": "Tiền còn lại",
+      "hint": "First sell all rice and fireworks tiles for 2 yuan each, then 1 VP per 3 yuan.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "yuan",
+        "rice",
+        "fireworks"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor((yuan + 2 * (rice + fireworks)) / 3)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "personTrack",
+      "label": "Person track position (tiebreak)",
+      "labelVi": "Vị trí trên track nhân vật (phân định hòa)",
+      "hint": "Higher/farther ahead on the person track wins ties.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "personTrack",
+      "dir": "highest",
+      "description": "Marker farthest ahead on the person track"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Season/round scoring happens on the score track during play (1 VP per palace, per dragon on court ladies and privileges at each round end; events add more), so trackScore is read from the board before adding final scoring. Not verified against the official Alea/Ravensburger PDF; text taken from the RulesPal rulebook reproduction.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/in-the-year-of-the-dragon/rulebook",
+      "title": "In the Year of the Dragon rulebook (RulesPal)",
+      "type": "other",
+      "section": "4th Phase: Scoring; Game End"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

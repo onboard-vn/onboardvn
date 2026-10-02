@@ -1,0 +1,50 @@
+{
+  "slug": "dig-your-way-out--team",
+  "name": "Dig your way out",
+  "year": null,
+  "bggId": 266504,
+  "templateVersion": 1,
+  "variant": "team",
+  "playerCount": {
+    "min": 4,
+    "max": 6
+  },
+  "mode": "team",
+  "winRule": "objective",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "tunnelPoints",
+      "label": "Tunnel points (team)",
+      "labelVi": "Điểm đường hầm (đội)",
+      "hint": "Spoon 1, Pickaxe 2, Shovel 3 per Dig action; first to the target ends the game",
+      "scope": "team",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Team mode (4 or 6 players): the first team to reach 16 (4 players) or 20 (6 players) Tunnel points escapes and wins; points are dug only in the team's own Cell Block.",
+  "endCondition": {
+    "type": "target-score",
+    "target": 16,
+    "description": "Team target 16 (4 players) / 20 (6 players)."
+  },
+  "notes": "family: race-to-target. Tunnel points come from Dig actions (Spoon 1, Pickaxe 2, Shovel 3). Game ends the instant a target is reached, so no tiebreak. Only the Dig action is confirmed as a point source; Background/Gang card effects that might add points were not itemised. Rulebook text read via a third-party transcription, not the publisher PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/dig-your-way-out/rulebook",
+      "title": "Dig Your Way Out rulebook transcription (RulesPal)",
+      "type": "other",
+      "section": "Goal; Dig; Team Mode"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

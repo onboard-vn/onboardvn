@@ -1,0 +1,78 @@
+{
+  "name": "FlipToons",
+  "year": 2025,
+  "bggId": 449185,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": null,
+    "aggregate": "best",
+    "endCondition": "A flip generates 30+ fame, then all players do one Final Flip"
+  },
+  "categories": [
+    {
+      "key": "finalFlipFame",
+      "label": "Fame generated in the Final Flip",
+      "labelVi": "Danh tiếng ở lượt lật cuối",
+      "hint": "Total fame from the 3x2 grid in the Final Flip.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "criticsChoice",
+      "label": "Critic's Choice card (+3)",
+      "labelVi": "Thẻ Critic's Choice (+3)",
+      "hint": "Held by the player with most fame (30+) in the triggering round; none if tied.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "Tied players shuffle, Flip and Check Fame again; repeat until one has the most fame."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "target-score",
+    "target": 30,
+    "description": "Once any player generates 30+ fame in Check Fame, everyone plays a Final Flip; also if toon deck and market are depleted."
+  },
+  "notes": "family: race-to-goal. Only the Final Flip decides the winner; earlier rounds are not summed. Season 2 expansion not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0525/7753/4134/files/FT_Rulebook_10_reduced.pdf?v=1747929807",
+      "title": "FlipToons rulebook (Thunderworks Games)",
+      "type": "official-rulebook",
+      "section": "Check Fame; Cleanup; Final Flip"
+    },
+    {
+      "url": "https://en.boardgamearena.com/gamepanel?game=fliptoons",
+      "title": "FlipToons on Board Game Arena",
+      "type": "other",
+      "section": "Rules cross-check"
+    }
+  ],
+  "slug": "fliptoons",
+  "templateVersion": 1,
+  "needsReview": false,
+  "confidence": "high"
+}

@@ -1,0 +1,60 @@
+{
+  "slug": "tinco",
+  "name": "Tinco",
+  "year": 2012,
+  "bggId": 102631,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score on scoring card at game end",
+      "labelVi": "Điểm trên thẻ ghi điểm",
+      "hint": "Per round: +1 for a Tinco with a token, -1 with no token, extra -1 for holding the white card.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "countsToTotal": true,
+      "formula": {
+        "type": "sum"
+      }
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker found in sources."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "target-score",
+    "target": null,
+    "description": "Ends when a player reaches the end of the score track (secondary sources say first to 5 points; reviewer says top or bottom of the card). Unverified."
+  },
+  "notes": "family: race-to-goal. Scores can go negative. Exact end threshold and tie rule unverified; official rulebook not obtained.",
+  "sources": [
+    {
+      "url": "https://www.tlamagames.com/en/board-games/tinco-en/",
+      "title": "Tinco (TLAMA games)",
+      "type": "publisher-page",
+      "section": "Scoring summary"
+    },
+    {
+      "url": "https://opinionatedgamers.com/2025/02/27/dale-yu-review-of-tinco/",
+      "title": "Dale Yu: Review of Tinco",
+      "type": "other",
+      "section": "Scoring"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

@@ -1,0 +1,188 @@
+{
+  "slug": "formaggio-2025",
+  "name": "Formaggio",
+  "year": 2025,
+  "bggId": 430533,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "banca",
+      "label": "Banca (Italian Cheese Bank)",
+      "labelVi": "Banca",
+      "hint": "Rows with 2+ cheeses score 2/5/9/10 (Bronze/Silver/Gold/Platinum); columns with 2/3/4 cheeses score 4/10/18. Platinum counts in the 3 columns beneath it. Enter the total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "venezia",
+      "label": "Venezia (Gondolas)",
+      "labelVi": "Venezia",
+      "hint": "Count each Gondola once per adjacent own cheese token, then use the board rubric.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "vigneto",
+      "label": "Vigneto (Wine)",
+      "labelVi": "Vigneto",
+      "hint": "Count complete Wine Bottles, then use the board rubric.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "regioni",
+      "label": "Regioni (Regions x Flags)",
+      "labelVi": "Regioni",
+      "hint": "Regions with your cheese x total flags on cities with your cheese.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "regions * flags"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "regions",
+        "flags"
+      ]
+    },
+    {
+      "key": "fruit",
+      "label": "Fruit (Fruited Cheese x Jam)",
+      "labelVi": "Trái cây",
+      "hint": "Fruit used for Fruited Cheese x Fruit used for Jam.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "fruitedCheese * jam"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "fruitedCheese",
+        "jam"
+      ]
+    },
+    {
+      "key": "orders",
+      "label": "Completed Order Cards",
+      "labelVi": "Đơn hàng hoàn thành",
+      "hint": "Number of completed Orders; points from the scoring rubric (e.g. 4 orders = 8 pts). Enter points from rubric.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "structures",
+      "label": "Structure scoring abilities",
+      "labelVi": "Khả năng Structure",
+      "hint": "Sum of end-game Structure ability points (player board and Structure tiles).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unusedResources",
+      "label": "Unused Resources",
+      "labelVi": "Tài nguyên chưa dùng",
+      "hint": "1 Prestige Point per 2 unused Resources.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cheeseMade",
+      "label": "Cheeses made (tiebreaker)",
+      "labelVi": "Số phô mai đã làm (hòa)",
+      "hint": "Tiebreaker only.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "cheeseMade",
+      "dir": "highest",
+      "description": "Player who made more cheese"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "When a player places their final Cheese Token they declare game end; the game ends after all players finish that turn."
+  },
+  "notes": "family: point-salad-euro. Venezia, Vigneto and Order point values come from rubrics printed on the board/score pad and are not in the rulebook text, so they are scorer inputs (Orders example: 4 orders = 8 pts; 4 bottles = 7 pts; 7 gondolas = 7 pts). Solo Corporation mode and Fromage-venue integration not modelled. Official PDF (BGG file 424579) could not be downloaded (Cloudflare block); text taken from RulesPal's reproduction, so needsReview=true.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/formaggio/rulebook",
+      "title": "Formaggio rulebook text (RulesPal)",
+      "type": "other",
+      "section": "Venues; Game-end; Orders"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/304499/formaggio-rulebook",
+      "title": "Formaggio Rulebook (R2i Games, BGG files)",
+      "type": "bgg-file",
+      "section": "Not read (download blocked)"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

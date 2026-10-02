@@ -1,0 +1,85 @@
+{
+  "slug": "pandemic",
+  "name": "Pandemic",
+  "year": 2008,
+  "bggId": 30549,
+  "templateVersion": 1,
+  "variant": null,
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won (all 4 cures discovered)",
+      "labelVi": "Cả đội thắng (tìm đủ 4 thuốc)",
+      "hint": "Win instantly when the 4th cure is discovered; lose on 8 outbreaks, no cubes left, or Player deck cannot be drawn",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "outbreaks",
+      "label": "Outbreaks at end",
+      "labelVi": "Số ổ dịch bùng phát",
+      "hint": "Optional: outbreak marker position (8 = defeat)",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 8,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "cures",
+      "label": "Cures discovered",
+      "labelVi": "Số thuốc đã tìm ra",
+      "hint": "Optional: cures discovered (4 = win)",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Players win collectively and immediately when all four cures are discovered. They lose if the 8th outbreak occurs, a disease cube color runs out when cubes must be added, or the Player Draw Pile cannot supply required cards.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Instant win on 4th cure; defeat on 8th outbreak, cube supply exhausted, or Player Draw Pile exhausted"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. No points. Source is a rules summary of the official rulebook, not the PDF itself (official Z-Man PDF not retrievable); verify against the rulebook. Epidemic-card count (difficulty) is not modelled.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/pandemic/game-rules.php",
+      "title": "Pandemic rules (UltraBoardGames)",
+      "type": "other",
+      "section": "End of the Game: Defeat / Victory"
+    },
+    {
+      "url": "https://www.zmangames.com/en/products/pandemic/",
+      "title": "Pandemic (Z-Man Games)",
+      "type": "publisher-page",
+      "section": "Product page"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

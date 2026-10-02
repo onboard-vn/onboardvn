@@ -1,0 +1,202 @@
+{
+  "templateVersion": 1,
+  "mode": "competitive",
+  "winRule": "highest",
+  "confidence": "high",
+  "needsReview": false,
+  "sharedVictoryOnTie": true,
+  "slug": "feya-s-swamp-2025",
+  "name": "Feya's Swamp",
+  "year": 2025,
+  "bggId": 438442,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the Turn Phase of round 4"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Victory points on score track",
+      "labelVi": "VP trên track",
+      "hint": "VP gained during the game (actions, celebrations, sailing, etc.).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "islandPoints",
+      "label": "Island scoring",
+      "labelVi": "Điểm đảo",
+      "hint": "Per island: your Settlements there x number of Spirit spaces on that island. Enter the total over all islands.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardLargestGroup",
+      "label": "Card: largest settlement group",
+      "labelVi": "Thẻ: nhóm khu định cư lớn nhất",
+      "hint": "Only if this score card is in play. Settlements in your largest connected group, squared.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "value*value"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardTemple",
+      "label": "Card: settlements next to Temple",
+      "labelVi": "Thẻ: khu định cư cạnh Temple",
+      "hint": "Only if in play. 5 VP per Settlement adjacent to a Temple space.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardIslandMajority",
+      "label": "Card: islands with most settlements",
+      "labelVi": "Thẻ: đảo chiếm đa số",
+      "hint": "Only if in play. 3 VP per island where you have the most Settlements (ties for first count).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardSingleSettlement",
+      "label": "Card: islands with exactly 1 settlement",
+      "labelVi": "Thẻ: đảo có đúng 1 khu định cư",
+      "hint": "Only if in play. 5 VP per island where you have exactly one Settlement.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardLargestIsland",
+      "label": "Card: settlements on largest island(s)",
+      "labelVi": "Thẻ: khu định cư trên đảo lớn nhất",
+      "hint": "Only if in play. 4 VP per Settlement on the largest island(s).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardSmallestIsland",
+      "label": "Card: settlements on smallest island(s)",
+      "labelVi": "Thẻ: khu định cư trên đảo nhỏ nhất",
+      "hint": "Only if in play. 4 VP per Settlement on the smallest island(s).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fish",
+      "label": "Fish on your Settlements",
+      "labelVi": "Cá trên khu định cư của bạn",
+      "hint": "1 VP per Fish still on your Settlement tiles.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "manaGems",
+      "label": "Mana Gems",
+      "labelVi": "Mana Gem",
+      "hint": "1 VP per Mana Gem in personal reserve.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gold",
+      "label": "Gold",
+      "labelVi": "Vàng",
+      "hint": "1 VP per 10 Gold in personal reserve.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/10)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: tied players share the victory."
+    }
+  ],
+  "notes": "family: point-salad-euro. Only 2 of the 6 score cards are in play each game (scorer enters 0 for cards not in play). Gold category: enter total Gold; points = floor(Gold/10).",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/feyasswamp.pdf",
+      "title": "Feya's Swamp rulebook (bghub mirror)",
+      "type": "official-rulebook",
+      "section": "p.14 Final score (steps 1-5, score cards)"
+    }
+  ]
+}

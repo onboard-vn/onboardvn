@@ -1,0 +1,45 @@
+{
+  "slug": "wayfinders-2019",
+  "name": "Wayfinders",
+  "year": 2019,
+  "bggId": 286156,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "victoryPoints",
+      "label": "Total victory points",
+      "labelVi": "Tổng điểm chiến thắng",
+      "hint": "Final VP total from island/exploration scoring as per rulebook",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: other. Rulebook not retrieved; scoring sources, end trigger and tiebreakers NOT verified. Entered as a single VP total.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/286156",
+      "title": "BGG game page (identification and publisher description only)",
+      "type": "other",
+      "section": "Description"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

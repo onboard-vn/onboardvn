@@ -1,0 +1,53 @@
+{
+  "slug": "dice-throne-x-men",
+  "name": "Dice Throne: X-Men",
+  "year": null,
+  "bggId": 403494,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (last player/team standing)",
+      "labelVi": "Thắng (người/đội cuối cùng còn sống)",
+      "hint": "Mark the winner: opponents reduced to 0 health",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Each player starts with 50 health; the last player (or team in 2v2/3v3) with health above 0 wins. No victory points.",
+  "endCondition": {
+    "type": "last-standing",
+    "target": 50,
+    "description": "All opponents reduced to 0 health."
+  },
+  "eliminationTracking": {
+    "resource": "health",
+    "start": 50,
+    "eliminatedCannotWin": true
+  },
+  "notes": "family: elimination. Win/lose only; hero sets are cross-compatible; modes 1v1, 2v2, 3v3, free-for-all. Official rulebook not accessible (publisher site blocked, BGG behind Cloudflare); verified only against a secondary summary.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Dice_Throne",
+      "title": "Dice Throne (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay / formats"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

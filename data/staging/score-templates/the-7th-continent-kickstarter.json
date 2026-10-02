@@ -1,0 +1,65 @@
+{
+  "slug": "the-7th-continent-kickstarter",
+  "name": "The 7th Continent Kickstarter",
+  "year": 2017,
+  "bggId": 180263,
+  "templateVersion": 1,
+  "variant": null,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Curse lifted (expedition won)",
+      "labelVi": "Phá lời nguyền (thắng)",
+      "hint": "Win by lifting every curse chosen at setup; lose if a Curse card is revealed from the Discard Pile once the Action Deck is empty, or other listed defeat triggers",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "actionDeckCardsLeft",
+      "label": "Action deck cards remaining",
+      "labelVi": "Số lá Action còn lại",
+      "hint": "Optional: cards left in the Action Deck at end",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Players win collectively by lifting all the curses they chose to fight at the start. They lose collectively when a Curse card is revealed from the Discard Pile while the Action Deck is empty (and the other defeat triggers in the End of the Game section).",
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "Win when all chosen curses are lifted; lose when a Curse card is drawn from the Discard Pile after the Action Deck runs out, or other listed triggers"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. No points. Source is a rules summary of the official rulebook; the full list of defeat triggers was only partly read. Individual explorers can be eliminated (Your adventure is over) without ending the game. Kickstarter vs Classic Edition rules assumed the same.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/the-7th-continent/game-rules.php",
+      "title": "The 7th Continent rules (UltraBoardGames)",
+      "type": "other",
+      "section": "End of the Game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

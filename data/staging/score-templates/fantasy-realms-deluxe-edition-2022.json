@@ -1,0 +1,214 @@
+{
+  "slug": "fantasy-realms-deluxe-edition-2022",
+  "name": "Fantasy Realms: Deluxe Edition",
+  "year": 2022,
+  "bggId": 363289,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "card1",
+      "label": "Card 1 final value",
+      "labelVi": "Giá trị lá 1",
+      "hint": "Base strength plus Bonus/Penalty after Blanking and Clearing; can be negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card2",
+      "label": "Card 2 final value",
+      "labelVi": "Giá trị lá 2",
+      "hint": "Base strength plus Bonus/Penalty after Blanking and Clearing; can be negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card3",
+      "label": "Card 3 final value",
+      "labelVi": "Giá trị lá 3",
+      "hint": "Base strength plus Bonus/Penalty after Blanking and Clearing; can be negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card4",
+      "label": "Card 4 final value",
+      "labelVi": "Giá trị lá 4",
+      "hint": "Base strength plus Bonus/Penalty after Blanking and Clearing; can be negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card5",
+      "label": "Card 5 final value",
+      "labelVi": "Giá trị lá 5",
+      "hint": "Base strength plus Bonus/Penalty after Blanking and Clearing; can be negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card6",
+      "label": "Card 6 final value",
+      "labelVi": "Giá trị lá 6",
+      "hint": "Base strength plus Bonus/Penalty after Blanking and Clearing; can be negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card7",
+      "label": "Card 7 final value",
+      "labelVi": "Giá trị lá 7",
+      "hint": "Base strength plus Bonus/Penalty after Blanking and Clearing; can be negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card8",
+      "label": "Card 8 final value (Necromancer / 8-card hand)",
+      "labelVi": "Giá trị lá 8",
+      "hint": "Only when the hand has 8 cards (Necromancer, or Extra Suits).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card9",
+      "label": "Card 9 final value (Outsider hand expansion)",
+      "labelVi": "Giá trị lá 9",
+      "hint": "Only with Extra Suits and Genie/Leprechaun/Portal; hand max 9.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Cursed Hoard (Extra Suits)"
+    },
+    {
+      "key": "additionalPoints",
+      "label": "Additional points",
+      "labelVi": "Điểm bổ sung",
+      "hint": "Extra points not tied to a card slot (e.g. bonuses printed outside the hand).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cursedItems",
+      "label": "Cursed Items (facedown) total",
+      "labelVi": "Tổng Cursed Items",
+      "hint": "Sum of all facedown Cursed Item cards; mostly negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Cursed Hoard (Cursed Items)"
+    },
+    {
+      "key": "totalBaseStrength",
+      "label": "Total base strength of hand (tiebreaker)",
+      "labelVi": "Tổng base strength (hòa)",
+      "hint": "Tiebreaker only: lowest wins.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "totalBaseStrength",
+      "dir": "lowest",
+      "description": "Hand with the lowest total base strength wins"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "Game ends when 10 cards are in the discard area (12 with Extra Suits)."
+  },
+  "notes": "family: hand-evaluation. Hand is 7 cards (8 with Extra Suits or Necromancer; up to 9 with Outsider cards). Enter each card's final value after bonuses, penalties, blanking and clearing. Cursed Items and Extra Suits are from the Cursed Hoard included in the Deluxe box. 2-player variant draws two cards and discards one; Chaos Realms variant not modelled. Tie after tiebreaker is not addressed in the rulebook; shared victory assumed.",
+  "sources": [
+    {
+      "url": "https://wizkids.com/posters/repository/wizkids/Fantasy-Realms-Deluxe---Rulebook-WEB-2023-01-03.pdf",
+      "title": "Fantasy Realms: Deluxe Edition Rulebook (WizKids)",
+      "type": "official-rulebook",
+      "section": "End of Game; Scoring Hands (pg. 2); The Cursed Hoard (pg. 7-9)"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

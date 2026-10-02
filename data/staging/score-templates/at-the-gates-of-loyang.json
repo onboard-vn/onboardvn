@@ -1,0 +1,80 @@
+{
+  "slug": "at-the-gates-of-loyang",
+  "name": "At the Gates of Loyang",
+  "year": 2009,
+  "bggId": 39683,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 1, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": { "count": 9, "aggregate": "sum", "endCondition": "game ends after 9 rounds (round in which Home fields are harvested)" },
+  "categories": [
+    {
+      "key": "prosperityPath",
+      "label": "Scoring marker on the Path of Prosperity",
+      "labelVi": "Vị trí marker trên Path of Prosperity",
+      "hint": "Space number reached by the scoring marker, before loan penalties.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "loans",
+      "label": "Loan cards taken",
+      "labelVi": "Số thẻ vay (Loan)",
+      "hint": "Each Loan moves the marker back 1 space at game end; loans are never repaid.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": -1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "cash",
+      "label": "Remaining cash (tiebreaker)",
+      "labelVi": "Tiền còn lại (hòa)",
+      "hint": "Leftover cash cannot buy extra steps; only used to break ties.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "vegetables",
+      "label": "Vegetables in fields and Storehouse (2nd tiebreaker)",
+      "labelVi": "Rau còn lại trong ruộng và kho (hòa lần 2)",
+      "hint": "Vegetables in the Shop do not count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "cash", "dir": "highest", "description": "Most remaining cash" },
+    { "categoryKey": "vegetables", "dir": "highest", "description": "Most vegetables in fields and Storehouses" },
+    { "description": "If still tied, the win is shared." }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: track-position (running-track). Verified only against a secondary rules transcription (UltraBoardGames); official rulebook PDF not located (web search budget exhausted), so confidence is medium and needsReview=true. Marker advances in play by paying cash (1 for first step per round, then the number of each space entered). Regular/Casual customers carry no end-game penalty; vegetables in Shop are irrelevant.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/at-the-gates-of-loyang/game-rules.php",
+      "title": "At the Gates of Loyang rules (UltraBoardGames)",
+      "type": "other",
+      "section": "Loans; End of the Game; Tiebreakers"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

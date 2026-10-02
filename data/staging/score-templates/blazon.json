@@ -1,0 +1,129 @@
+{
+  "slug": "blazon",
+  "name": "Blazon",
+  "year": 2021,
+  "bggId": 311610,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "track",
+      "label": "Prestige track",
+      "labelVi": "Điểm trên track Prestige",
+      "hint": "Prestige gained during play from Element cards (track position).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "distinctions",
+      "label": "Distinction markers",
+      "labelVi": "Điểm Distinction",
+      "hint": "Prestige on the distinction markers you placed during the game.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "heralds",
+      "label": "Unused Herald tokens",
+      "labelVi": "Herald chưa dùng",
+      "hint": "1 Prestige per unused Herald token.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "augmentations",
+      "label": "Augmentation symbols with most",
+      "labelVi": "Biểu tượng Augmentation nhiều nhất",
+      "hint": "Number of Augmentation symbols (of 5) where you have the most on your shield; 2 Prestige each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "animals",
+      "label": "Animal achievement tokens",
+      "labelVi": "Token động vật",
+      "hint": "2 Prestige per Animal achievement token.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fullShield",
+      "label": "Shield completely filled",
+      "labelVi": "Lấp đầy khiên",
+      "hint": "2 Prestige if every space on your shield is filled.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "if(value, 2, 0)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not found in available sources; check rulebook."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Official rulebook PDF not retrievable; final scoring items taken from two secondary sources (family gamers review, search summary). Tie handling for Augmentation majorities and the overall tiebreaker not verified. End triggers: a player reaches 50 Prestige, fills every shield space, or claims final Distinction; others take one last turn. Deluxe/expansions not modelled.",
+  "sources": [
+    {
+      "url": "https://www.thefamilygamers.com/blazon/",
+      "title": "Blazon - Design a Heraldic Shield (The Family Gamers)",
+      "type": "other",
+      "section": "End game and final scoring"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/311610/blazon",
+      "title": "Blazon (BoardGameGeek)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

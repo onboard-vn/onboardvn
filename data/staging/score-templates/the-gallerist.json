@@ -1,0 +1,210 @@
+{
+  "slug": "the-gallerist",
+  "name": "The Gallerist",
+  "year": 2015,
+  "bggId": 125153,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "moneyOnHand",
+      "label": "Money before final scoring",
+      "labelVi": "Tiền trước khi chấm điểm cuối",
+      "hint": "Money (cash) on hand when the game ends, before final scoring.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "marketMajorities",
+      "label": "International Market majorities",
+      "labelVi": "Đa số Thị trường quốc tế",
+      "hint": "Total money from the 3 market columns (top rows incl. auction assistants): most/2nd/3rd get the amounts printed per column (left column 6/3/1); ties add tied positions and split, rounded down.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "renownedWork",
+      "label": "Auctioned Renowned Work of Art",
+      "labelVi": "Tác phẩm Renowned đấu giá",
+      "hint": "Sales value of the Renowned Work you won, as if by the most famous discovered Artist of that art form.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "curatorCards",
+      "label": "Curator card collections",
+      "labelVi": "Thẻ Curator",
+      "hint": "Money for completed collections on your Curator card from exhibited works (max 4 exhibited incl. a Masterpiece, plus 1 auctioned work).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "reputationTiles",
+      "label": "Reputation tiles (money)",
+      "labelVi": "Thẻ Reputation (tiền)",
+      "hint": "Money from each Reputation tile on your board; any Influence they grant is scored on the Influence track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "exhibition",
+      "label": "Exhibited works (sales value)",
+      "labelVi": "Tác phẩm đang trưng bày",
+      "hint": "Sum of the sales value of each Work of Art currently exhibited in your Gallery.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "artDealerCards",
+      "label": "Art Dealer card sets",
+      "labelVi": "Thẻ Art Dealer",
+      "hint": "Money for completed sets of sold Works of Art on your Art Dealer card.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "influenceMoney",
+      "label": "Influence track money",
+      "labelVi": "Tiền từ thanh Ảnh hưởng",
+      "hint": "Money based on your position on the Influence track at game end.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "worksAcquired",
+      "label": "Works of Art acquired (tiebreak)",
+      "labelVi": "Số tác phẩm đã có (phân định hòa)",
+      "hint": "Tiebreak 1: most Works acquired (exhibited and sold).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "visitorsInGallery",
+      "label": "Visitors in Gallery (tiebreak)",
+      "labelVi": "Khách trong Gallery (phân định hòa)",
+      "hint": "Tiebreak 2: most Visitors in your Gallery.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "assistantsInPlay",
+      "label": "Assistants in play (tiebreak)",
+      "labelVi": "Trợ lý đang chơi (phân định hòa)",
+      "hint": "Tiebreak 3: most Assistants in play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "worksAcquired",
+      "dir": "highest",
+      "description": "Most Works of Art acquired (exhibited and sold)"
+    },
+    {
+      "categoryKey": "visitorsInGallery",
+      "dir": "highest",
+      "description": "Most Visitors in his Gallery"
+    },
+    {
+      "categoryKey": "assistantsInPlay",
+      "dir": "highest",
+      "description": "Most Assistants in play"
+    },
+    {
+      "description": "If still tied, all tied players win"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro (money-as-VP). Winner = most money after final scoring; all scoring is in money. Final scoring order: market majorities, auction of Renowned works, Reputation tiles, exhibition, Curator cards, Art Dealer cards, Influence. Column payouts of the middle/right market columns and Influence money values are printed on the board, so they are scorer inputs. Rulebook wording differs slightly between sources on exhibited-work limit (4 exhibited + 1 auctioned in the English rulebook). Scoring Expansion only changes intermediate scoring. Solo (Lacerda) scored the same way.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/be/d5/e8-the-gallerist-rulebook.pdf",
+      "title": "The Gallerist rulebook (English, Eagle-Gryphon)",
+      "type": "official-rulebook",
+      "section": "p.14 End of Game; p.15-16 Endgame Scoring and tiebreakers"
+    },
+    {
+      "url": "https://www.rulespal.com/the-gallerist/rulebook",
+      "title": "The Gallerist rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Endgame Scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

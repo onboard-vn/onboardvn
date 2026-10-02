@@ -1,0 +1,97 @@
+{
+  "slug": "zoo-tycoon",
+  "name": "Zoo Tycoon",
+  "year": 2022,
+  "bggId": 370757,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 7,
+    "aggregate": "best",
+    "endCondition": "Game ends after 7 rounds (years) and the final building step"
+  },
+  "categories": [
+    {
+      "key": "popularity",
+      "label": "Final Popularity",
+      "labelVi": "Độ nổi tiếng cuối cùng",
+      "hint": "After deducting Offspring discs in enclosures, applying Animal Welfare adjustments and final building.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    },
+    {
+      "key": "conservation",
+      "label": "Final Conservation",
+      "labelVi": "Bảo tồn cuối cùng",
+      "hint": "After scoring National Park, Breeding Program and Animal Welfare points and final building.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    },
+    {
+      "key": "eliminated",
+      "label": "Eliminated (negative money after round 7)",
+      "labelVi": "Bị loại (âm tiền sau vòng 7)",
+      "hint": "Players with negative money after round 7 cannot win.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "victoryPoints",
+      "label": "Victory points = lower of Popularity and Conservation",
+      "labelVi": "Điểm thắng = giá trị thấp hơn",
+      "hint": "Eliminated players cannot win.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "cat_eliminated == 1 ? 0 : min(cat_popularity, cat_conservation)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 7,
+    "description": "After round 7: eliminate players with negative money, deduct offspring from Popularity, score conservation projects, spend all money on construction, then compare"
+  },
+  "notes": "family: min-of-tracks. Enter Popularity and Conservation after all end-of-game steps; the Animal Welfare project points (5/3, -2 below -1) are added to whichever value is currently lower and must be applied by the scorer beforehand. Victory points input is derived (enter 0 for it). Co-op/solo variants not modelled.",
+  "sources": [
+    {
+      "url": "https://api.treecer.com/storage/1695/Zoo-Tycoon-The-Board-Game-English.pdf",
+      "title": "Zoo Tycoon: The Board Game rulebook (English)",
+      "type": "official-rulebook",
+      "section": "Gameplay Overview, End of the Game"
+    },
+    {
+      "url": "https://opinionatedgamers.com/2025/08/15/i-bought-a-zoo-alternate-title-the-new-zoo-review-a-solo-review-of-zoo-tycoon-the-board-game-the-new-shores-expansion/",
+      "title": "Zoo Tycoon review (Opinionated Gamers)",
+      "type": "other",
+      "section": "cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

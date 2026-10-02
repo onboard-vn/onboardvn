@@ -1,0 +1,175 @@
+{
+  "slug": "molly-house-2025",
+  "name": "Molly House",
+  "year": 2025,
+  "bggId": 349750,
+  "templateVersion": 1,
+  "variant": "multiplayer",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "joyEnd",
+      "label": "Joy at game end (before final scoring)",
+      "labelVi": "Joy khi kết thúc (trước tính điểm cuối)",
+      "hint": "Player joy marker on the joy track. Community Survival / hanged players: joy only counts if not hanged.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "loyalTokens",
+      "label": "Loyal tokens at open houses",
+      "labelVi": "Token trung thành ở nhà chưa bị đột kích",
+      "hint": "Community Survival only: 2 joy per own loyal token on an open molly house.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "trialLoss",
+      "label": "Joy lost at trial (indictments)",
+      "labelVi": "Joy mất khi bị xét xử",
+      "hint": "Community Survival only: total joy lowered by rolled indictment cards. Joy cannot fall below 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "0 - value"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "hanged",
+      "label": "Hanged (noose)",
+      "labelVi": "Bị treo cổ",
+      "hint": "Flip joy marker if a trial shows a noose, or in Community Infiltration if not a successful informer. Hanged players cannot win.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "informerSuccess",
+      "label": "Successful informer (token on a raided house)",
+      "labelVi": "Chỉ điểm thành công (token ở nhà bị đột kích)",
+      "hint": "Informer token placed on a molly house that has been raided by game end.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "informerVP",
+      "label": "Informer victory points (Community Infiltration only)",
+      "labelVi": "Điểm VP của người chỉ điểm (chỉ khi kết thúc Infiltration)",
+      "hint": "houseEvidence = evidence at your informer house; othersRep = other players' reputation matching that house; ownRep = your own reputation in all suits.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "houseEvidence",
+        "othersRep",
+        "ownRep"
+      ],
+      "min": 0,
+      "max": null,
+      "appliesWhen": "cat_informerSuccess == 1",
+      "formula": {
+        "type": "expr",
+        "expr": "2*houseEvidence + 2*othersRep - ownRep"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "playerWon",
+      "label": "Player wins",
+      "labelVi": "Người chơi thắng",
+      "hint": "Survival: highest joy, not hanged (ties share). Infiltration: highest positive informer VP (ties or none >0: all lose). Atrophy: all lose.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "joyEnd",
+      "dir": "highest",
+      "description": "Community Survival: tied players with the highest joy who are not hanged share the victory."
+    },
+    {
+      "categoryKey": "informerVP",
+      "dir": "highest",
+      "description": "Community Infiltration: if any players tie for highest VP, or no player scores above zero, all players lose."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "winCondition": "Three endings checked at End of the Week. Community Infiltration (all 4 houses raided or a raided house has 7+ evidence): everyone is hanged except successful informers; the informer with the highest positive VP wins (tie or none above zero = all lose). Community Survival (checked after Infiltration: community joy marker reached the threshold for the player count): pardon successful informers, failed informers get a major indictment, loyal tokens at open houses score 2 joy each, then trials; the highest-joy player who is not hanged wins (ties share). Community Atrophy (week 5 ends with neither): all players lose.",
+  "endCondition": {
+    "type": "rounds",
+    "target": 5,
+    "description": "Up to five weeks; game may end at End of the Week by Infiltration, Survival or Atrophy."
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "roles": [
+    {
+      "key": "mollie",
+      "label": "Molly (loyal or informer)",
+      "labelVi": "Molly (trung thành hoặc chỉ điểm)",
+      "winCondition": "Survival: most joy and not hanged. Infiltration: only successful informers can win, with the highest VP.",
+      "categoryKeys": [
+        "joyEnd",
+        "loyalTokens",
+        "trialLoss",
+        "hanged",
+        "informerSuccess",
+        "informerVP",
+        "playerWon"
+      ]
+    }
+  ],
+  "notes": "family: hidden-informer-competitive. Verified against the official rulebook (pp.7, 14, 15 Game End and Victory). Trial rolls (d10) depend on indictment cards: scorer enters total joy lost. Joy marker is 0 for informers in Infiltration. Solo rules are a separate rulebook and not modelled. 2-5 player range assumed from BGG (1-5 incl. solo); rulebook defines threshold per player count on the joy track.",
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/scl/fi/1gq7h9i9i5aeiwo2f3rpk/Molly-House-Rules-BGG.pdf?rlkey=nutkkrax4h7rf42rcfqjbyojg&e=1&dl=0",
+      "title": "Molly House Rules of Play (Wehrlegig Games)",
+      "type": "official-rulebook",
+      "section": "p.7 How the Game Ends; pp.14-15 Betraying the Mollies and Game End and Victory"
+    },
+    {
+      "url": "https://www.wehrlegig.com/products/molly-house",
+      "title": "Molly House product page (Wehrlegig Games)",
+      "type": "publisher-page",
+      "section": "Rules download link"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

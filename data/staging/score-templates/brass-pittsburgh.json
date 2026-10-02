@@ -1,0 +1,161 @@
+{
+  "templateVersion": 1,
+  "mode": "competitive",
+  "winRule": "highest",
+  "confidence": "high",
+  "needsReview": false,
+  "sharedVictoryOnTie": true,
+  "slug": "brass-pittsburgh",
+  "name": "Brass: Pittsburgh",
+  "year": 2024,
+  "bggId": 452264,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 2,
+    "aggregate": "sum",
+    "endCondition": "Each era ends after the round in which all players have used their final cards"
+  },
+  "categories": [
+    {
+      "key": "era1Links",
+      "label": "Era 1: train links",
+      "labelVi": "Kỳ 1: đường tàu",
+      "hint": "1 VP per link icon in locations adjacent to each of your train links (light and heavy).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "era1Industries",
+      "label": "Era 1: flipped industries",
+      "labelVi": "Kỳ 1: công nghiệp đã lật",
+      "hint": "VP at bottom left of each flipped industry tile.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "era2Links",
+      "label": "Era 2: train links",
+      "labelVi": "Kỳ 2: đường tàu",
+      "hint": "Same as era 1; all trains removed as scored.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "era2Industries",
+      "label": "Era 2: flipped industries",
+      "labelVi": "Kỳ 2: công nghiệp đã lật",
+      "hint": "VP of each flipped industry tile still on the board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "crownJewelBonus",
+      "label": "Crown Jewel end-of-era bonuses",
+      "labelVi": "Thưởng Crown Jewel cuối kỳ",
+      "hint": "Locomotive Works: 4 VP per heavy train built; Polyphase Alternator: VP = empty industry spaces on your player board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "otherVp",
+      "label": "Other VP gained during play",
+      "labelVi": "VP khác trong game",
+      "hint": "Coke market sale and pipeline VP bonuses etc. already moved on the track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incomeLevel",
+      "label": "Income level (tiebreak)",
+      "labelVi": "Mức thu nhập (phân định hòa)",
+      "hint": "Highest space on the income track.",
+      "scope": "player",
+      "input": "number",
+      "min": -10,
+      "max": 30,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "moneyRemaining",
+      "label": "Money remaining (tiebreak)",
+      "labelVi": "Tiền còn lại (phân định hòa)",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "incomeLevel",
+      "dir": "highest",
+      "description": "Highest space on the income track"
+    },
+    {
+      "categoryKey": "moneyRemaining",
+      "dir": "highest",
+      "description": "Most money"
+    },
+    {
+      "description": "If still tied, the tied players share the win."
+    }
+  ],
+  "notes": "family: point-salad-euro. Scoring happens at end of each era: first train links (pipeline links do not score; level I industries removed after era 1; era 1 light trains removed as scored, heavy trains stay), then flipped industry tiles (unflipped score nothing). Shortfall penalties are not stated on the pages read; if applicable subtract them in trackScore. Special industries (Locomotive Works, Polyphase Alternator) per the Crown Jewel panel.",
+  "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834",
+      "title": "Brass: Pittsburgh rulebook (Roxley)",
+      "type": "official-rulebook",
+      "section": "p.10-11 Crown Jewel Industries, End of Each Era, Winning the Game; differences table"
+    }
+  ]
+}

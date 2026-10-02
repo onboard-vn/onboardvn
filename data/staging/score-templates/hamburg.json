@@ -1,0 +1,162 @@
+{
+  "slug": "hamburg",
+  "name": "Hamburg",
+  "year": 2022,
+  "bggId": 314580,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 8,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the eighth season; final scoring follows"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Victory point track before final scoring",
+      "labelVi": "Điểm trên track trước khi tính cuối game",
+      "hint": "Current position on the VP track (100/200 tile counted).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cards",
+      "label": "Cards in display (printed points)",
+      "labelVi": "Thẻ trong khu vực (điểm in trên thẻ)",
+      "hint": "Every building / Zoo / Park card in your display is worth its printed points.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "laurel",
+      "label": "Laurel Wreath buildings",
+      "labelVi": "Công trình Laurel Wreath",
+      "hint": "Points per each building's own Laurel Wreath ability.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "majorities",
+      "label": "Active majority tokens",
+      "labelVi": "Token đa số đã lật",
+      "hint": "4 VP per majority token on its coloured side (max 5).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wallSides",
+      "label": "City wall sides with 3rd segment built",
+      "labelVi": "Nửa tường thành có đoạn thứ 3",
+      "hint": "3 VP per side (left/right) where the third segment is built.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "statues",
+      "label": "Hans Hummel statues",
+      "labelVi": "Tượng Hans Hummel",
+      "hint": "Printed points on each statue on your player board.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "clerics",
+      "label": "Clerics on church floor",
+      "labelVi": "Giáo sĩ trên sàn nhà thờ",
+      "hint": "For each cleric on the floor: 1 VP per building (right of board) or Zoo/Park (left) in that domain.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cityHall",
+      "label": "City Hall Square pawn position",
+      "labelVi": "Vị trí pawn ở City Hall Square",
+      "hint": "Points printed on the space your pawn reached (last space 18).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most money"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Many points are gained during play on the VP track; final-scoring items are added on top. Expansions 1 and 2 (e.g. Hans Hummel and the Lemonjette) not modelled. Clerics: 1 point per matching card per cleric on the floor under that domain's window.",
+  "sources": [
+    {
+      "url": "https://rules.queen-games.com/hamburg_en.pdf",
+      "title": "Hamburg rulebook EN (Queen Games)",
+      "type": "official-rulebook",
+      "section": "End of the game and final scoring; Phase IV majorities; city wall and statues"
+    },
+    {
+      "url": "https://new.queen-games.com/en/hamburg/",
+      "title": "Hamburg official page (Queen Games)",
+      "type": "publisher-page",
+      "section": "Link to rulebook"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

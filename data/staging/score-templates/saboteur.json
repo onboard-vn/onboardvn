@@ -1,0 +1,50 @@
+{
+  "slug": "saboteur",
+  "name": "Saboteur",
+  "year": 2004,
+  "bggId": 9220,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 3, "max": 10 },
+  "mode": "hidden-traitor",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "After 3 rounds, the player with the most gold nuggets wins"
+  },
+  "categories": [
+    {
+      "key": "goldNuggets",
+      "label": "Gold nuggets won per round",
+      "labelVi": "Vàng nhận được mỗi ván",
+      "hint": "Gold-Diggers win: each draws one gold card. Saboteurs win: each gets 3 nuggets (4 if only one Saboteur). Losers get 0.",
+      "scope": "player",
+      "input": "perRound",
+      "min": 0,
+      "max": 4,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "goldNuggets", "dir": "highest", "description": "No official tiebreak found; tied players share the win" }
+  ],
+  "sharedVictoryOnTie": true,
+  "roles": [
+    { "key": "digger", "label": "Gold-Digger", "labelVi": "Thợ mỏ", "winCondition": "A path card connects the start to a treasure card before cards run out" },
+    { "key": "saboteur", "label": "Saboteur", "labelVi": "Kẻ phá hoại", "winCondition": "Round ends with no path to the gold" }
+  ],
+  "notes": "family: rounds-hidden-role. Gold card values: 16 x1, 8 x2, 4 x3 nuggets; Gold-Diggers draw gold cards individually, so enter the sum of nuggets per round. Optional Selfish Dwarf and tournament variants not modelled. Rulebook PDF could not be downloaded; verified against a secondary source only.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Saboteur_(card_game)",
+      "title": "Saboteur (card game) - Wikipedia",
+      "type": "wiki",
+      "section": "Gameplay / scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

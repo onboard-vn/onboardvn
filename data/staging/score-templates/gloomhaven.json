@@ -1,0 +1,116 @@
+{
+  "slug": "gloomhaven",
+  "name": "Gloomhaven",
+  "year": 2017,
+  "bggId": 174430,
+  "templateVersion": 1,
+  "variant": "campaign scenario (2025 rulebook)",
+  "playerCount": { "min": 1, "max": 4 },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "scenarioCompleted",
+      "label": "Scenario completed (goal achieved, not lost)",
+      "labelVi": "Hoàn thành kịch bản",
+      "hint": "Lost if all characters are exhausted or a scenario loss condition occurs; if both happen in the same round it counts as lost.",
+      "scope": "team",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "scenarioLevel",
+      "label": "Scenario level (0-7)",
+      "labelVi": "Cấp độ kịch bản (0-7)",
+      "hint": "Recommended = average character level / 2, rounded up; may be set freely from 0 to 7.",
+      "scope": "team",
+      "input": "number",
+      "min": 0,
+      "max": 7,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "experience",
+      "label": "Experience gained (blue dial + completion bonus)",
+      "labelVi": "Kinh nghiệm nhận được",
+      "hint": "Enter the blue-dial XP, the scenario level and 1 if completed. Completion bonus is 4 + 2 x scenario level.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["dialXp", "level", "completed"],
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "dialXp + completed * (4 + 2 * level)" },
+      "countsToTotal": false
+    },
+    {
+      "key": "gold",
+      "label": "Gold gained from money tokens",
+      "labelVi": "Vàng nhận được",
+      "hint": "Money tokens looted x gold conversion by scenario level (0-1:2, 2-3:3, 4-5:4, 6:5, 7:6). Applies even if the scenario was lost.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["moneyTokens", "level"],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "moneyTokens * if(level <= 1, 2, if(level <= 3, 3, if(level <= 5, 4, if(level == 6, 5, 6))))"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "battleGoalChecks",
+      "label": "Battle goal checkmarks earned",
+      "labelVi": "Dấu check Battle Goal",
+      "hint": "Only if the scenario was completed and the goal met; every 3 checkmarks give a perk mark.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "masteries",
+      "label": "Masteries achieved this scenario",
+      "labelVi": "Mastery đạt được",
+      "hint": "Each new mastery gives one perk mark; each can be achieved once per character.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Party completes the scenario goal given in the scenario rules before all characters are exhausted or a loss condition triggers. Play continues to the end of the round once the end is triggered; completion and loss in the same round counts as a loss.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Scenario goal reached (completed) or all characters exhausted / loss condition (lost); finish the current round first."
+  },
+  "outcome": { "winLose": true },
+  "notes": "family: coop. No points; campaign progress tracked on the campaign sheet. Completed scenario also gives conclusion rewards (once per campaign), inspiration = 4 - number of characters, and prosperity/reputation per scenario text (not itemised). Lost scenario: characters keep XP, gold and treasure; party may return to Gloomhaven or replay. Solo mode, Frosthaven, Jaws of the Lion not modelled.",
+  "sources": [
+    {
+      "url": "https://drive.google.com/file/d/16TmmCKa6zVVObj2qM-vIj9RcEAC3nfMT/view",
+      "title": "Gloomhaven 2025 Rulebook (Cephalofair, linked from cephalofair.com/gloomhaven)",
+      "type": "official-rulebook",
+      "section": "p.15 Scenario Level / Battle Goals; p.45 Ending a Scenario; p.46 Completed Scenario"
+    },
+    {
+      "url": "https://www.rulespal.com/gloomhaven/rulebook",
+      "title": "Gloomhaven rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Scenario end and rewards cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

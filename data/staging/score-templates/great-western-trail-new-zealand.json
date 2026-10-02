@@ -1,0 +1,225 @@
+{
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "medium",
+  "needsReview": true,
+  "name": "Great Western Trail: New Zealand",
+  "bggId": 380607,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends when a bonus tile is placed on the last space of the bonus tile market; each other player gets one final turn."
+  },
+  "categories": [
+    {
+      "key": "pounds",
+      "label": "Pounds owned",
+      "labelVi": "Số bảng Anh đang có",
+      "hint": "1 VP per 5 pounds.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Private buildings on board",
+      "labelVi": "Công trình riêng trên bàn",
+      "hint": "Sum VP printed on placed private buildings.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tradingPosts",
+      "label": "Trading post crests",
+      "labelVi": "Trạm giao thương",
+      "hint": "VP unlocked by discs on trading posts (can be negative).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "harbours",
+      "label": "Small/medium harbours",
+      "labelVi": "Cảng nhỏ/vừa",
+      "hint": "VP from discs and storehouses on harbours.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pathfinder",
+      "label": "Pathfinder track",
+      "labelVi": "Đường dò lối",
+      "hint": "VP at your latest unlocked space.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tiles",
+      "label": "Hazard and bonus tiles",
+      "labelVi": "Thẻ hazard và bonus",
+      "hint": "Sum VP printed on collected tiles.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "deck",
+      "label": "Deck cards VP",
+      "labelVi": "VP từ bộ bài",
+      "hint": "VP on bonus cards (not objectives) and sheep cards in deck.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Objective cards",
+      "labelVi": "Thẻ mục tiêu",
+      "hint": "Fulfilled: add positives; unfulfilled: subtract negatives (can be negative).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "harbourmasters",
+      "label": "Harbourmaster tasks",
+      "labelVi": "Nhiệm vụ trưởng cảng",
+      "hint": "Sum VP from the harbourmaster tile tasks.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "workers",
+      "label": "Workers on 5th space",
+      "labelVi": "Thợ ở ô thứ 5",
+      "hint": "4 VP per worker on 5th space of a row.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "storehouses",
+      "label": "Cleared storehouse pairs",
+      "labelVi": "Cặp kho đã dọn",
+      "hint": "2 and/or 4 VP for clearing the corresponding pairs.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "handLimit",
+      "label": "Cleared hand-limit disc space",
+      "labelVi": "Ô giới hạn bài",
+      "hint": "3 VP if cleared.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusToken",
+      "label": "Bonus tile market token",
+      "labelVi": "Token chợ bonus",
+      "hint": "5 VP if you hold it.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker; victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Official rulebook not directly downloaded (BGG downloads blocked); scoring from RulesPal text of the 12 scoring-pad categories. Harbourmaster tile tasks vary (5 of 8 used); enter the total. Solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/great-western-trail-new-zealand/rulebook",
+      "title": "RulesPal rulebook summary",
+      "type": "other",
+      "section": "End of the Game / Final scoring"
+    }
+  ],
+  "slug": "great-western-trail-new-zealand",
+  "templateVersion": 1
+}

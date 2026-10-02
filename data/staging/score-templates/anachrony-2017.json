@@ -1,0 +1,210 @@
+{
+  "slug": "anachrony-2017",
+  "name": "Anachrony",
+  "year": 2017,
+  "bggId": 185343,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "buildings",
+      "label": "Buildings and Superprojects",
+      "labelVi": "Công trình và Siêu dự án",
+      "hint": "Sum of VP printed on/triggered by your buildings and superprojects (incl. passive end-game bonuses).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "anomalies",
+      "label": "Anomalies left on player board",
+      "labelVi": "Dị thường còn lại",
+      "hint": "-3 VP per Anomaly still on your board.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "timeTravel",
+      "label": "Time Travel track steps",
+      "labelVi": "Bước Du hành thời gian",
+      "hint": "Each step is worth VP (1 VP per step baseline; some cards raise it).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "morale",
+      "label": "Morale VP",
+      "labelVi": "Điểm Morale",
+      "hint": "VP shown at your Morale marker (negative at low morale, positive at high).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "vpTokens",
+      "label": "Victory Point tokens / evacuation",
+      "labelVi": "Thẻ VP / sơ tán",
+      "hint": "VP tokens collected (including evacuation of the Capital).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "warpPenalty",
+      "label": "Unremovable Warp tiles",
+      "labelVi": "Warp không gỡ được",
+      "hint": "-2 VP per Warp tile left on the Timeline.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endgameConditions",
+      "label": "Endgame Condition cards met",
+      "labelVi": "Điều kiện cuối game đạt",
+      "hint": "3 VP per condition met (ties all score in full).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "breakthroughs",
+      "label": "Breakthroughs",
+      "labelVi": "Đột phá",
+      "hint": "1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "breakthroughSets",
+      "label": "Breakthrough sets (circle+triangle+square)",
+      "labelVi": "Bộ đột phá (tròn+tam giác+vuông)",
+      "hint": "2 VP per set of three different shapes.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "water",
+      "label": "Water left (tiebreak)",
+      "labelVi": "Nước còn lại (phân định hòa)",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "resources",
+      "label": "Total resources left (tiebreak)",
+      "labelVi": "Tổng tài nguyên còn lại (phân định hòa)",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "water",
+      "dir": "highest",
+      "description": "Most Water"
+    },
+    {
+      "categoryKey": "resources",
+      "dir": "highest",
+      "description": "Most total Resources"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Building/superproject VP values are printed on components so entered as repeating. Per-player-board scoring pad also covers leader/path-specific bonuses (not itemised). Only two secondary summaries reached; official rulebook PDF not retrieved.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/anachrony/game-rules.php",
+      "title": "Anachrony rules (Ultra BoardGames)",
+      "type": "other",
+      "section": "End of the Game; Final Scoring"
+    },
+    {
+      "url": "https://www.rulespal.com/anachrony/rulebook",
+      "title": "Anachrony rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Ending the Game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

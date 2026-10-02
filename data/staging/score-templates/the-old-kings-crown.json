@@ -1,0 +1,99 @@
+{
+  "name": "The Old King's Crown",
+  "year": 2023,
+  "bggId": 357873,
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "winRule": "highest",
+  "categories": [
+    {
+      "key": "influence",
+      "label": "Influence in Supply",
+      "labelVi": "Influence trong kho",
+      "hint": "Total Influence tokens in your Supply (5-value tokens count 5).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "loreBonus",
+      "label": "Lore converted at game end",
+      "labelVi": "Lore quy đổi cuối ván",
+      "hint": "Only if your Site of Power has no cards: 1 Influence per 2 Lore.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "favour",
+      "label": "Holds Kingdom's Favour (tiebreak)",
+      "labelVi": "Giữ Kingdom's Favour (phân định hòa)",
+      "hint": "1 if you control the Kingdom's Favour.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "orderPos",
+      "label": "Order Track position (tiebreak)",
+      "labelVi": "Vị trí Order Track (phân định hòa)",
+      "hint": "1 = first on Order Track; lower number wins the tiebreak.",
+      "scope": "player",
+      "input": "number",
+      "min": 1,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "favour",
+      "dir": "highest",
+      "description": "Tied player who controls the Kingdom's Favour"
+    },
+    {
+      "categoryKey": "orderPos",
+      "dir": "lowest",
+      "description": "Otherwise the tied player highest on the Order Track"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: resource-count (winner = most Influence in Supply after final round; no separate point tally). Influence is the single running currency; enter the final Supply total. Standard game is 5 rounds (short 4, extended 6). Order Track position 1 is the best.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/the-old-kings-crown/rulebook",
+      "title": "RulesPal transcription of the official rulebook",
+      "type": "other",
+      "section": "Winning the Game; Supply (Lore to Influence at end); Kingdom's Favour tiebreak"
+    }
+  ],
+  "slug": "the-old-kings-crown",
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "medium",
+  "needsReview": true
+}

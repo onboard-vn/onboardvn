@@ -1,0 +1,76 @@
+{
+  "slug": "thien-menh",
+  "name": "Thiên Mệnh",
+  "year": 2023,
+  "bggId": 403186,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "victoryPoints",
+      "label": "Victory Points (final)",
+      "labelVi": "Điểm chiến thắng (cuối)",
+      "hint": "Total Victory Points gained from buildings; 50 VP wins instantly. Only players still in the game compete.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "won",
+      "label": "Winner",
+      "labelVi": "Người thắng",
+      "hint": "Last player standing, or 50 VP, or highest VP among surviving players when the deck runs out",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Win by (a) being the only player left (others eliminated by losing all Supply/health), (b) reaching 50 Victory Points, or (c) when the draw deck runs out and everyone has played the final round: highest Victory Points among players still in the game. Playing the Thien-Menh card reshuffles discard and draw deck, postponing (c).",
+  "endCondition": {
+    "type": "target-score",
+    "target": 50,
+    "description": "First to 50 VP, last player standing, or deck-out with highest VP"
+  },
+  "eliminationTracking": {
+    "resource": "Supply (health)",
+    "start": null,
+    "eliminatedCannotWin": true
+  },
+  "notes": "family: race-to-goal. Official rulebook not retrievable (BGG file download needs login); modelled from the BGG game description only. Tiebreaker for deck-out ties, starting Supply value and elimination details unverified.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/403186",
+      "title": "Thien Menh / Mandate of Heaven (BGG description)",
+      "type": "other",
+      "section": "Game description: 3 winning conditions"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/327417",
+      "title": "Thien Menh English Rulebook (BGG file, not accessed)",
+      "type": "bgg-file",
+      "section": "Not read"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

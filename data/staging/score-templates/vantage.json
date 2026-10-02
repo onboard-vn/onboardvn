@@ -1,0 +1,75 @@
+{
+  "slug": "vantage",
+  "name": "Vantage",
+  "year": 2025,
+  "bggId": 420033,
+  "templateVersion": 1,
+  "variant": null,
+  "playerCount": {
+    "min": 1,
+    "max": 6
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "missionCompleted",
+      "label": "Mission completed",
+      "labelVi": "Hoàn thành nhiệm vụ (Mission)",
+      "hint": "Randomly chosen mission completed",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "destinyCompleted",
+      "label": "Destiny completed",
+      "labelVi": "Hoàn thành Destiny",
+      "hint": "One of the destiny goals (e.g. escaping the planet) completed",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Game ends when a player completes a mission or a destiny, or a player's health, morale or time reaches 0 a second time. Mission victory, destiny victory, or epic victory (both).",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends on mission or destiny completion, or when a player's health, morale or time hits 0 a second time."
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. No points. Epic victory = both mission and destiny in the same game. Official rulebook is in a Dropbox folder (too large to download) and the box; verified only against the Stonemaier rules/FAQ page. Intrinsic (self-defined) success not modelled. Check rulebook before upgrading confidence.",
+  "sources": [
+    {
+      "url": "https://stonemaiergames.com/games/vantage/rules-faq/",
+      "title": "Vantage Rules & FAQ (Stonemaier Games)",
+      "type": "publisher-page",
+      "section": "Game end / victory types"
+    },
+    {
+      "url": "https://stonemaiergames.com/games/vantage/",
+      "title": "Vantage (Stonemaier Games)",
+      "type": "publisher-page",
+      "section": "Victory types"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/420033",
+      "title": "BoardGameGeek game page and publisher description",
+      "type": "bgg-forum",
+      "section": "Description"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

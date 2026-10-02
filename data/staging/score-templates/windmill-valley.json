@@ -1,0 +1,176 @@
+{
+  "slug": "windmill-valley",
+  "name": "Windmill valley",
+  "year": 2024,
+  "bggId": 403441,
+  "variant": "base",
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "VP on track before final scoring",
+      "labelVi": "VP trên track trước khi tính điểm cuối",
+      "hint": "All VP gained during the game including the extra last turn.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "contracts",
+      "label": "Contracts on Farm board",
+      "labelVi": "Hợp đồng trên Farm board",
+      "hint": "Score each of your Contracts individually (appendix pp.15-17); enter the sum.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "windmillGroups",
+      "label": "Empty Windmill groups",
+      "labelVi": "Nhóm Windmill đã trống",
+      "hint": "Count Tulip Bulbs in your Patches per color for each EMPTY Windmill Group only (enter 0 for colors whose group is not empty).",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "white + yellow + 2 * red + 2 * violet + 3 * black"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "white",
+        "yellow",
+        "red",
+        "violet",
+        "black"
+      ]
+    },
+    {
+      "key": "patchRows",
+      "label": "Complete Patch rows",
+      "labelVi": "Hàng Patch hoàn chỉnh",
+      "hint": "Each complete row scores its higher value if all bulbs share one color, otherwise the lower value. Enter the sum.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "patchColumns",
+      "label": "Complete Patch columns (negative penalties allowed)",
+      "labelVi": "Cột Patch hoàn chỉnh (cho phép điểm phạt)",
+      "hint": "Complete column with all different colors scores the printed number; any same-colored bulbs in a column (complete or not) lose the indicated VP. Enter net total.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bulbsPatches",
+      "label": "Tulip Bulbs in Patches (tiebreaker)",
+      "labelVi": "Số củ tulip trong Patches (hòa điểm)",
+      "hint": "First tiebreaker.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "bulbsStorage",
+      "label": "Tulip Bulbs in Storage (tiebreaker)",
+      "labelVi": "Số củ tulip trong kho (hòa điểm)",
+      "hint": "Second tiebreaker.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "windmills",
+      "label": "Windmills on Main board (tiebreaker)",
+      "labelVi": "Số Windmill trên bàn chính (hòa điểm)",
+      "hint": "Third tiebreaker.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "bulbsPatches",
+      "dir": "highest",
+      "description": "Most Tulip Bulbs in Patches"
+    },
+    {
+      "categoryKey": "bulbsStorage",
+      "dir": "highest",
+      "description": "Most Tulip Bulbs in Storage"
+    },
+    {
+      "categoryKey": "windmills",
+      "dir": "highest",
+      "description": "Most Windmills on the Main board"
+    },
+    {
+      "description": "If still tied, players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game end triggers when a player reaches the end of the Calendar; finish the round, everyone plays one more turn, then final scoring (Contracts, empty Windmill groups, complete rows/columns of Patches). Expert variant skips the extra turn. Promo/expansion modules and solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/scl/fi/g6v316nldifv2lgbay27u/windmill_rulebook.pdf?rlkey=81zrhd6exaruimevgl9gsp4m9&dl=0",
+      "title": "Windmill Valley rulebook (Board&Dice)",
+      "type": "official-rulebook",
+      "section": "Playing the Game p.5; Game End and Scoring p.12"
+    },
+    {
+      "url": "https://boardanddice.com/windmill-valley/",
+      "title": "Windmill Valley - Board&Dice",
+      "type": "publisher-page",
+      "section": "Rulebook download"
+    }
+  ],
+  "templateVersion": 1,
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "high",
+  "needsReview": false,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  }
+}

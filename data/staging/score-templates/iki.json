@@ -1,0 +1,202 @@
+{
+  "templateVersion": 1,
+  "mode": "competitive",
+  "winRule": "highest",
+  "confidence": "high",
+  "needsReview": false,
+  "sharedVictoryOnTie": true,
+  "slug": "iki",
+  "name": "IKI",
+  "year": null,
+  "bggId": 177478,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 13,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the 13th round (New Year's Day)"
+  },
+  "categories": [
+    {
+      "key": "scoreTrack",
+      "label": "IKI scored during the game",
+      "labelVi": "IKI trong game",
+      "hint": "IKI accumulated on the score track / score pad.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "characterTypes",
+      "label": "Different character types hired",
+      "labelVi": "Số loại nhân vật khác nhau",
+      "hint": "Buildings are not a type; retired Puppeteer counts as the type of your choice. 1:1, 2:4, 3:9, 4:16, 5:25.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 4,
+          "3": 9,
+          "4": 16,
+          "5": 25
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fishSeasons",
+      "label": "Fish: different seasons",
+      "labelVi": "Cá: số mùa khác nhau",
+      "hint": "1:3, 2:6, 3:10, 4:15 IKI.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 3,
+          "2": 6,
+          "3": 10,
+          "4": 15
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fishBonus",
+      "label": "Fish: most expensive of a season",
+      "labelVi": "Cá: con đắt nhất mỗi mùa",
+      "hint": "Add the value (1 or 7 IKI) of each season's most expensive fish you bought.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tobacco",
+      "label": "Tobacco Pouches",
+      "labelVi": "Túi thuốc lào",
+      "hint": "Value printed on tokens; double the total if you own at least one Pipe.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Buildings",
+      "labelVi": "Công trình",
+      "hint": "IKI value of your Buildings (see Appendix 2).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "koban",
+      "label": "Koban",
+      "labelVi": "Koban",
+      "hint": "3 IKI each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wood",
+      "label": "Wood",
+      "labelVi": "Gỗ",
+      "hint": "1 IKI each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mons",
+      "label": "Mons",
+      "labelVi": "Mon",
+      "hint": "1 IKI per 4 mons.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/4)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "firefighting",
+      "label": "Firefighting power (tiebreak)",
+      "labelVi": "Sức chữa cháy (phân định hòa)",
+      "hint": "Position on the Firefighting track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "firefighting",
+      "dir": "highest",
+      "description": "Highest Firefighting power"
+    },
+    {
+      "description": "Then the Firefighting marker highest on the stack; still tied: the tied players share the win."
+    }
+  ],
+  "notes": "family: point-salad-euro. Rice and Sandals are worth nothing. Tobacco Pouches: scorer enters the doubled value if a Pipe is owned. Fish bonus cap: 31 IKI total from fish.",
+  "sources": [
+    {
+      "url": "https://export.gigamic.com/wp-content/uploads/2021/07/RULES_IKI_EN.pdf",
+      "title": "IKI rulebook (Gigamic)",
+      "type": "official-rulebook",
+      "section": "p.10 End of the game and scoring; Appendices 2-3"
+    }
+  ]
+}

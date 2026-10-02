@@ -1,0 +1,59 @@
+{
+  "slug": "things-in-rings--co-op",
+  "name": "Things in Rings",
+  "year": 2024,
+  "bggId": 408547,
+  "templateVersion": 1,
+  "variant": "co-op",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won (every Finder emptied their hand)",
+      "labelVi": "Cả đội thắng (mọi Finder hết bài)",
+      "hint": "Lose if the Knower must place a clue but has none left.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Every Finder must place their 5 Things correctly. After each round of Finder turns the Knower places 1 new clue. If the Knower needs to place a clue but has none, everyone loses; if every Finder empties their hand first, everyone wins.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Win when all Finders empty their hands; lose when the Knower runs out of clues"
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  },
+  "notes": "family: coop. Variant for 2-4 players: Knower draws 10 Things, places 1 clue per player including self, keeps the rest as hand to place later clues.",
+  "sources": [
+    {
+      "url": "https://assets.allplay.com/board-games-things-in-rings-draft-rulebook-link.pdf",
+      "title": "Things in Rings rulebook (Allplay)",
+      "type": "official-rulebook",
+      "section": "Overview; Game End; Co-op variant"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/408547/things-in-rings",
+      "title": "Things in Rings (BGG)",
+      "type": "other",
+      "section": "Game identification"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,61 @@
+{
+  "slug": "hungry-monkey",
+  "name": "Hungry Monkey",
+  "year": 2022,
+  "bggId": 355735,
+  "templateVersion": 1,
+  "variant": "optional bean scoring (4 games)",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "After 4 games, or as soon as a player has 10+ beans after a game"
+  },
+  "categories": [
+    {
+      "key": "beans",
+      "label": "Beans (total value of Bean cards)",
+      "labelVi": "Tổng số hạt đậu (thẻ Bean)",
+      "hint": "Per game: 1st out draws 2 Bean cards, 2nd out draws 1 (4p: also 3rd gains a 1-bean), last player discards their lowest Bean card. Start with one facedown 1-bean.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "No tiebreaker: all tied players win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "winCondition": "Single game: first player to play all hand and row cards wins; last with cards loses. With bean scoring: most beans after the final scoring (10+ beans after a game or 4 games played).",
+  "endCondition": {
+    "type": "target-score",
+    "target": 10,
+    "description": "Final scoring triggers when any player has 10+ beans after a game, or after 4 games."
+  },
+  "notes": "family: climbing-shedding. Bean cards are 1, 2 or 3 beans (2/3 cards shuffled facedown), so the scorer enters the total bean value each player holds. 3rd-place bean applies only with 4 players; in 3 players third scores nothing, in 2 players second scores nothing. A loser of the previous game starts the next one.",
+  "sources": [
+    {
+      "url": "https://www.heidelbaer.de/HeidelBAER%20Games/Hungry%20Monkey/Hungry-monkey_Rules_ENG_RP-2024_v3_low.pdf",
+      "title": "Hungry Monkey rulebook (HeidelBAR Games)",
+      "type": "official-rulebook",
+      "section": "p.6 Game End; p.7 Optional Bean Scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

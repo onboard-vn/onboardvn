@@ -1,0 +1,71 @@
+{
+  "slug": "blind-business",
+  "name": "Blind Business",
+  "year": 2023,
+  "bggId": 371973,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "perfectHit",
+      "label": "Perfect hit (5 consecutive cards of one colour)",
+      "labelVi": "Golpe hoàn hảo (5 lá liên tiếp cùng màu)",
+      "hint": "Instant win: five consecutive numbers of one colour in your area (Flex Player can stand for any number).",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 0
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "finalScore",
+      "label": "Final score (per rulebook: card combinations x suit majorities)",
+      "labelVi": "Điểm cuối (theo luật)",
+      "hint": "Compute with the rulebook scoring table and enter the total; not modelled here.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "A player with 5 consecutive numbers in one colour wins immediately regardless of score; otherwise highest final score when the deck runs out.",
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "Fixed number of rounds by player count (5 players = 3 rounds); a round ends when every player has been active once."
+  },
+  "notes": "family: set-collection. Scoring depends on card count multiplier and majority bonuses per colour zone, but exact values and tiebreakers could not be read (official Devir rulebook PDF not downloadable). Needs rulebook check before modelling real categories.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/371973/blind-business",
+      "title": "BGG: Blind Business (publisher description, official rulebook file Rulebook_ENBB.pdf)",
+      "type": "publisher-page",
+      "section": "description"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/3537766",
+      "title": "BGG forum: designer answers on Flex Player / Wild Coach and instant win",
+      "type": "bgg-forum",
+      "section": "thread replies"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

@@ -1,0 +1,136 @@
+{
+  "name": "Black Forest",
+  "year": 2024,
+  "bggId": 420805,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Triggered when one or both provision markers on your Cooking wheel reach the end symbol; everyone takes one final turn."
+  },
+  "categories": [
+    {
+      "key": "glass",
+      "label": "Glass",
+      "labelVi": "Thủy tinh",
+      "hint": "1 VP per glass.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cookingWheel",
+      "label": "Cooking wheel position",
+      "labelVi": "Vị trí bánh xe nấu ăn",
+      "hint": "Points the large hand of the dial points at.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "smallEstates",
+      "label": "Small Estates",
+      "labelVi": "Điền trang nhỏ",
+      "hint": "2 VP per Small Estate.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pastureLivestock",
+      "label": "Livestock on Pastures",
+      "labelVi": "Gia súc trên đồng cỏ",
+      "hint": "1 VP per livestock on a Pasture; livestock elsewhere scores nothing.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildingPoints",
+      "label": "Buildings (printed stars)",
+      "labelVi": "Điểm công trình",
+      "hint": "Sum of the star values printed on your Buildings.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildingEndBonus",
+      "label": "End-of-game Building effects",
+      "labelVi": "Thưởng cuối game của công trình",
+      "hint": "Extra points from yellow lantern Building effects (e.g. Village Church, Farm Store).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "If a tied player triggered the end of the game, that player wins."
+    },
+    {
+      "description": "Otherwise the tied player who would be next to take a turn wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Building end-game effects vary per building, so entered as one number. Solo mode (5 years, own high score) not modelled.",
+  "sources": [
+    {
+      "url": "https://gamers-hq.de/media/pdf/16/b6/1e/BF_Rules_EN.pdf",
+      "title": "Black Forest Rules (EN)",
+      "type": "official-rulebook",
+      "section": "End of the game and scoring; Buildings: end of game points"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/420805/black-forest",
+      "title": "Black Forest - BGG (summary of scoring items)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "high",
+  "slug": "black-forest",
+  "templateVersion": 1,
+  "needsReview": false
+}

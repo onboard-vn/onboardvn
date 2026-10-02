@@ -1,0 +1,83 @@
+{
+  "slug": "the-vale-of-eternity-2023",
+  "name": "The Vale of Eternity",
+  "year": 2023,
+  "bggId": 385529,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 10,
+    "aggregate": "sum",
+    "endCondition": "Round end with a player at 60+ points, or after round 10"
+  },
+  "categories": [
+    {
+      "key": "score",
+      "label": "Final score (score track)",
+      "labelVi": "Điểm cuối trên track",
+      "hint": "Points are gained from card effects and tracked on the score board; can be reduced by effects but never below 0; may exceed 60",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "summonedCards",
+      "label": "Summoned cards",
+      "labelVi": "Số thẻ đã triệu hồi",
+      "hint": "Tiebreaker only: number of cards you summoned",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "summonedCards",
+      "dir": "highest",
+      "description": "Among tied players, most summoned cards wins"
+    },
+    {
+      "description": "If still tied, they share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "target-score",
+    "target": 60,
+    "description": "Game ends at the end of the round in which any player has 60+ points, or after the 10th round"
+  },
+  "notes": "family: race-to-goal. No itemised end-game scoring; all points come from card effects during play. Start player begins with 1 point, subsequent players by turn order rank. Solo/expansion not modelled.",
+  "sources": [
+    {
+      "url": "https://renegadegamestudios.com/content/File%20Storage%20for%20site/Rulebooks/Vale%20of%20Eternity/VoE_Rulebook_WEB.pdf",
+      "title": "The Vale of Eternity rulebook (Renegade Game Studios)",
+      "type": "official-rulebook",
+      "section": "Points; End of Game and Victory"
+    },
+    {
+      "url": "https://www.rulespal.com/the-vale-of-eternity/rulebook",
+      "title": "Vale of Eternity rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End of Game and Victory"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

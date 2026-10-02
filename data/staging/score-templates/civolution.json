@@ -1,0 +1,277 @@
+{
+  "slug": "civolution",
+  "name": "Civolution",
+  "year": 2024,
+  "bggId": 400602,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the Income phase of the 4th era, followed by final scoring"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track before final scoring",
+      "labelVi": "Điểm trên track trước chung cuộc",
+      "hint": "Success points already on the score track (add 100 per completed lap) after the 4th-era income phase.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalTechnology",
+      "label": "Final: Technology track",
+      "labelVi": "Chung cuộc: track Công nghệ",
+      "hint": "units = number printed on your disc's space on the Technology track; pointsPerUnit = category value shown under that category in the final scoring area (or on its covering tile).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "units",
+        "pointsPerUnit"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "units * pointsPerUnit"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalPrestige",
+      "label": "Final: Prestige track",
+      "labelVi": "Chung cuộc: track Uy tín",
+      "hint": "units = number printed on your disc's space on the Prestige track; pointsPerUnit = category value shown under that category in the final scoring area (or on its covering tile).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "units",
+        "pointsPerUnit"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "units * pointsPerUnit"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalKnowledge",
+      "label": "Final: Knowledge track",
+      "labelVi": "Chung cuộc: track Tri thức",
+      "hint": "units = number printed on your disc's space on the Knowledge track; pointsPerUnit = category value shown under that category in the final scoring area (or on its covering tile).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "units",
+        "pointsPerUnit"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "units * pointsPerUnit"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalConstruction",
+      "label": "Final: Construction track",
+      "labelVi": "Chung cuộc: track Xây dựng",
+      "hint": "units = number printed on your disc's space on the Construction track; pointsPerUnit = category value shown under that category in the final scoring area (or on its covering tile).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "units",
+        "pointsPerUnit"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "units * pointsPerUnit"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalCulture",
+      "label": "Final: Culture track",
+      "labelVi": "Chung cuộc: track Văn hóa",
+      "hint": "units = number printed on your disc's space on the Culture track; pointsPerUnit = category value shown under that category in the final scoring area (or on its covering tile).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "units",
+        "pointsPerUnit"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "units * pointsPerUnit"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalEvolution",
+      "label": "Final: Evolution",
+      "labelVi": "Chung cuộc: Tiến hóa",
+      "hint": "units = feature markers on your feature spaces; pointsPerUnit = category value in the final scoring area.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "units",
+        "pointsPerUnit"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "units * pointsPerUnit"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalProsperity",
+      "label": "Final: Prosperity",
+      "labelVi": "Chung cuộc: Thịnh vượng",
+      "hint": "units = active diamonds (food: 1 per 3 markers; money: 1 per 2 markers; settlements; storage); pointsPerUnit = category value.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "units",
+        "pointsPerUnit"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "units * pointsPerUnit"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalPopulation",
+      "label": "Final: Population",
+      "labelVi": "Chung cuộc: Dân số",
+      "hint": "units = your tribes on the continent; pointsPerUnit = category value.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "units",
+        "pointsPerUnit"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "units * pointsPerUnit"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalExpansion",
+      "label": "Final: Expansion",
+      "labelVi": "Chung cuộc: Mở rộng",
+      "hint": "units = territories where you have at least one tribe; pointsPerUnit = category value.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "units",
+        "pointsPerUnit"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "units * pointsPerUnit"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "consoleStages",
+      "label": "Console stage partition",
+      "labelVi": "Bảng stage trên console",
+      "hint": "Each installed card/chip scores the points shown left of its stage (stage 4/5 only if that stage tile is flipped active; income chip is 7 in stage 4 if active).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pointBonusCards",
+      "label": "Point-bonus cards",
+      "labelVi": "Thẻ thưởng điểm",
+      "hint": "Each card and income chip in the column of a point-bonus research card scores that card's printed value (the bonus card itself included).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "moduleUpgrades",
+      "label": "Module upgrades carried out (tiebreak)",
+      "labelVi": "Số lần nâng cấp module (phân định hòa)",
+      "hint": "First tiebreaker: more module upgrades wins.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "moduleUpgrades",
+      "dir": "highest",
+      "description": "Tied civilization with more module upgrades carried out wins"
+    },
+    {
+      "description": "If still tied, the tied civilization that comes first in seating order wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Success points are advanced on a score track during play (immediate rewards, era scoring of 4 random categories, statues); enter that running total as trackScore (add 100 per lap). Final scoring then scores all 9 categories with the per-unit value printed on the board (or on the covering scoring tile), then the console stage partition, then point-bonus cards. Per-unit values vary per game so they are scorer inputs. Solo (V.I.C.I automa) and Alternate-Loop expansion not modelled.",
+  "sources": [
+    {
+      "url": "https://deep-print-games.com/wp-content/uploads/2025/01/Civolution_Rules_US_web_v1_0.pdf",
+      "title": "Civolution rulebook (EN, v1.0) - Deep Print Games",
+      "type": "official-rulebook",
+      "section": "p.11-12 How do you gain success points; p.35-37 Score categories, End of the game, Final scoring, Who wins"
+    },
+    {
+      "url": "https://www.rulespal.com/civolution/rulebook",
+      "title": "Civolution rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Final scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

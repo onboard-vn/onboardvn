@@ -1,0 +1,87 @@
+{
+  "slug": "gloomhaven-jaws-of-the-lion-2020",
+  "name": "Gloomhaven: Jaws of the Lion",
+  "year": 2020,
+  "bggId": 291457,
+  "templateVersion": 1,
+  "variant": "campaign scenario",
+  "playerCount": { "min": 1, "max": 4 },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "scenarioCompleted",
+      "label": "Scenario completed (goal achieved)",
+      "labelVi": "Hoàn thành kịch bản",
+      "hint": "Failed if all characters become exhausted; then the scenario is replayed from the start.",
+      "scope": "team",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "experience",
+      "label": "Experience gained (blue dial + completion bonus)",
+      "labelVi": "Kinh nghiệm nhận được",
+      "hint": "Blue-dial XP plus the completion bonus (6 XP in the tutorial scenarios; later by scenario level per full rulebook).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "gold",
+      "label": "Gold gained",
+      "labelVi": "Vàng nhận được",
+      "hint": "Money tokens x conversion (2 gold each in the tutorial scenarios) plus scenario reward gold.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "battleGoalChecks",
+      "label": "Battle goal checkmarks earned",
+      "labelVi": "Dấu check Battle Goal",
+      "hint": "Earned only on a completed scenario; every 3 checkmarks give a perk.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Party achieves the goal in the scenario book before every character is exhausted. A failed scenario is replayed; XP, money and looted treasure earned in the failed attempt are kept.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Scenario goal reached, or all characters exhausted (failure)."
+  },
+  "outcome": { "winLose": true },
+  "notes": "family: coop. No points; progress is campaign-sheet based. Verified only against the tutorial Learn-to-Play book (pp.16, 18, 23); the full rules for the scenario-level gold/XP table and end-of-scenario sequence were not available, so conversion numbers are entered by the scorer. Solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://drive.google.com/file/d/1nhg_PpeXLq0vpN-1uQqsrAFzFIAlxQVX/view",
+      "title": "Jaws of the Lion Learn to Play book (Cephalofair, linked from product page)",
+      "type": "official-rulebook",
+      "section": "p.16 Failing a Scenario; p.18 Recording Money Rewards; p.23 Recording Experience Rewards"
+    },
+    {
+      "url": "https://drive.google.com/file/d/16TmmCKa6zVVObj2qM-vIj9RcEAC3nfMT/view",
+      "title": "Gloomhaven 2025 Rulebook (shared core scenario-end rules)",
+      "type": "official-rulebook",
+      "section": "p.45-46 Ending a Scenario / Completed Scenario"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

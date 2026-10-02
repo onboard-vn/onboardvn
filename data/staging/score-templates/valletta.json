@@ -1,0 +1,102 @@
+{
+  "slug": "valletta",
+  "name": "Valletta",
+  "year": 2017,
+  "bggId": 218920,
+  "templateVersion": 1,
+  "variant": "base game",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackPoints",
+      "label": "Points scored during play (street track)",
+      "labelVi": "Điểm ghi trên đường (trong lúc chơi)",
+      "hint": "Position of your figure on the street incl. 25/50 and 75/100 tokens",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildingPoints",
+      "label": "Points printed on your buildings",
+      "labelVi": "Điểm in trên các công trình",
+      "hint": "Sum the value in the bottom-right corner of each building you own",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goods",
+      "label": "Goods owned (gold, wood, stone, brick)",
+      "labelVi": "Tổng số hàng hóa",
+      "hint": "Total goods of any type; 1 VP per 3 goods, rounded down",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "houses",
+      "label": "Houses built (tiebreaker)",
+      "labelVi": "Số nhà đã xây",
+      "hint": "Not scored; used only to break ties",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 8,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "houses",
+      "dir": "highest",
+      "description": "Tied player who built the most houses wins"
+    },
+    {
+      "description": "If still tied, the tied players share the victory"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Final phase starts when a player moves Valette onto the last barrel, reaches space 25, or places an 8th house; each player then plays out their whole deck once"
+  },
+  "notes": "family: engine-tableau. Rulebook text read via a rules transcription site, not the publisher PDF. Building points are summed per building on the final tally; trackPoints is the street figure position (with tokens above 25) after in-game scoring.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/valletta/game-rules.php",
+      "title": "Valletta rules (UltraBoardGames transcription)",
+      "type": "other",
+      "section": "Scoring Points; End of the Game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

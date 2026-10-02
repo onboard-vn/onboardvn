@@ -1,0 +1,213 @@
+{
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "medium",
+  "needsReview": true,
+  "name": "Great Western Trail: Argentina",
+  "year": 2022,
+  "bggId": 364011,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends when a worker is placed on the last job-market space; each other player gets one final turn."
+  },
+  "categories": [
+    {
+      "key": "pesos",
+      "label": "Pesos owned",
+      "labelVi": "Số peso đang có",
+      "hint": "1 VP per 5 pesos.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Private buildings on board",
+      "labelVi": "Công trình riêng trên bàn",
+      "hint": "Sum VP printed on your placed private buildings.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "ships",
+      "label": "Ships",
+      "labelVi": "Tàu",
+      "hint": "VP unlocked by your discs on ships (subtract negatives).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cityMaps",
+      "label": "City maps",
+      "labelVi": "Bản đồ thành phố",
+      "hint": "VP unlocked by discs on city maps, incl. quays per disc.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "stations",
+      "label": "Train stations",
+      "labelVi": "Ga tàu",
+      "hint": "VP next to stations holding your disc; final station scores per disc.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "farmers",
+      "label": "Farmer tiles",
+      "labelVi": "Thẻ granjero",
+      "hint": "2 VP per collected farmer tile in front of you.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "deck",
+      "label": "Deck cards VP",
+      "labelVi": "VP từ bộ bài",
+      "hint": "Sum VP on exhaustion and cattle cards in whole deck (subtract negatives).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Objective cards",
+      "labelVi": "Thẻ mục tiêu",
+      "hint": "Fulfilled: add positives; unfulfilled: subtract negatives.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "stationMasters",
+      "label": "Station master tasks",
+      "labelVi": "Nhiệm vụ chủ ga",
+      "hint": "Sum VP from the station master tile tasks.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "workers",
+      "label": "Workers on 5th/6th row space",
+      "labelVi": "Thợ ở ô 5/6",
+      "hint": "4 VP per worker on 5th or 6th space of any worker row.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "discSpace",
+      "label": "Cleared disc space",
+      "labelVi": "Ô đĩa đã dọn",
+      "hint": "2 VP if cleared.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "jobToken",
+      "label": "Job market token",
+      "labelVi": "Token chợ việc",
+      "hint": "2 VP if you hold it.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker; victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Solo mode and other modes not modelled. Official rulebook not directly downloaded (BGG downloads blocked); scoring taken from RulesPal rulebook text of the 12 scoring-pad categories. Station master tasks vary per tile; enter the total.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/great-western-trail-argentina/rulebook",
+      "title": "RulesPal rulebook summary",
+      "type": "other",
+      "section": "End of the Game / Final scoring"
+    }
+  ],
+  "slug": "great-western-trail-argentina-2022",
+  "templateVersion": 1
+}

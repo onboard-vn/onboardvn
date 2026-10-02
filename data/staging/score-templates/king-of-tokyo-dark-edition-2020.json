@@ -1,0 +1,84 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "needsReview": true,
+  "confidence": "medium",
+  "tiebreakers": [],
+  "slug": "king-of-tokyo-dark-edition-2020",
+  "name": "King of Tokyo: Dark Edition",
+  "year": 2020,
+  "bggId": 293141,
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (20 VP or last monster alive)",
+      "labelVi": "Thắng (20 điểm hoặc sống sót cuối)",
+      "hint": "First to 20 victory points or last survivor",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "victoryPoints",
+      "label": "Victory points",
+      "labelVi": "Điểm chiến thắng",
+      "hint": "Reach 20 to win",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 20,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "alive",
+      "label": "Still alive",
+      "labelVi": "Còn sống",
+      "hint": "Monsters at 0 health are eliminated",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "winCondition": "A monster wins by reaching 20 victory points, or by being the last monster alive.",
+  "endCondition": {
+    "type": "target-score",
+    "target": 20,
+    "description": "20 VP or last monster standing"
+  },
+  "eliminationTracking": {
+    "resource": "health",
+    "start": 10,
+    "eliminatedCannotWin": true
+  },
+  "notes": "family: race-to-target + elimination. Wickedness track/tiles are ongoing powers, not modelled. Max health 10 is from general knowledge of the base game, not verified here. Tiebreak not specified in available source.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/king-of-tokyo-dark-edition/rulebook",
+      "title": "King of Tokyo Dark Edition rules transcription (RulesPal)",
+      "type": "other",
+      "section": "End of game"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/204219/rulebook-king-of-tokyo-dark-edition-english-iello",
+      "title": "Dark Edition rulebook EN (BGG file)",
+      "type": "bgg-file",
+      "section": "Game end"
+    }
+  ]
+}

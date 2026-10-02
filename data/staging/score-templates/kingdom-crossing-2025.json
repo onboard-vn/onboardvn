@@ -1,0 +1,127 @@
+{
+  "name": "Kingdom Crossing",
+  "year": 2025,
+  "bggId": 437245,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "prestigeTrack",
+      "label": "Prestige gained during game",
+      "labelVi": "Điểm Prestige trong game",
+      "hint": "Position of your marker on the Prestige track before final scoring.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "invest",
+      "label": "Invest track",
+      "labelVi": "Đường Invest",
+      "hint": "Spend 5 coins per space to advance first; score the Prestige on your marker's space.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "guilds",
+      "label": "Guild cards",
+      "labelVi": "Thẻ hội",
+      "hint": "Per guild (not Deer): cards in column x stars passed by matching resource marker.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "structures",
+      "label": "Structures",
+      "labelVi": "Công trình",
+      "hint": "Each Structure (including Home) scores by the lowest Resource marker's value.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "favors",
+      "label": "Favors of the Queen",
+      "labelVi": "Ân sủng Nữ hoàng",
+      "hint": "Score each Favor per its appendix text.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coins",
+      "label": "Remaining coins (tiebreak)",
+      "labelVi": "Xu còn lại (phân định hòa)",
+      "hint": "After spending 5 per Invest space.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "coins",
+      "dir": "highest",
+      "description": "Most remaining coins; if still tied, share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Printed values on Invest track, Structures and Favors are component-based so entered as totals. Solo (Paco & Paca) not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/kingdom-crossing/rulebook",
+      "title": "Kingdom Crossing Rulebook (RulesPal)",
+      "type": "other",
+      "section": "End of Game"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/306423/kingdom-crossing-english-rules",
+      "title": "Kingdom Crossing English rules (BGG file)",
+      "type": "bgg-file",
+      "section": "End of Game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "slug": "kingdom-crossing-2025",
+  "templateVersion": 1
+}

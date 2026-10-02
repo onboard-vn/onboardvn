@@ -1,0 +1,102 @@
+{
+  "slug": "tzolk-in-the-mayan-calendar-2012",
+  "name": "Tzolk'in: The Mayan Calendar",
+  "year": 2012,
+  "bggId": 126163,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "Victory points on score track (incl. 4th Food Day temples)",
+      "labelVi": "Điểm trên track (gồm thưởng đền ở Food Day cuối)",
+      "hint": "Running VP: buildings, skulls at Chichen Itza, Food Day temple steps and highest-on-temple bonus, minus 3 per unfed worker. Can be negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cornEquivalent",
+      "label": "Total corn after converting all resources",
+      "labelVi": "Tổng ngô sau khi đổi mọi tài nguyên",
+      "hint": "Convert every resource to corn at the market exchange rate, add leftover corn; then 1 VP per 4 corn (rounded down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 4)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "skulls",
+      "label": "Crystal skulls left",
+      "labelVi": "Sọ pha lê còn lại",
+      "hint": "3 VP per crystal skull you still hold.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 13,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "monuments",
+      "label": "Monument end-game points",
+      "labelVi": "Điểm từ Monument",
+      "hint": "Total VP printed effects of your monuments at game end.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most workers still on the gears (not in front of you or the bank)."
+    },
+    {
+      "description": "If still tied, all tied players win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends after the 4th Food Day (one full revolution of the Tzolk'in gear). Final scoring order per rulebook: convert resources to corn, 1/4 VP per corn, 3 VP per skull, then monument points. Temple end-of-game bonus (upper-right number; tied highest players split half) is scored on the last Food Day and is already on the track. Monument values are printed on tiles and entered as one number.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/3a/5b/8e-tzolkin-the-mayan-calendar-rulebook.pdf",
+      "title": "Tzolk'in: The Mayan Calendar Rulebook (CGE, via 1j1ju)",
+      "type": "official-rulebook",
+      "section": "Final Scoring; Temples / Food Days (p.13)"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/tzolkin/game-rules.php",
+      "title": "Tzolk'in rules (UltraBoardGames)",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

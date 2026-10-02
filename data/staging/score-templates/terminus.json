@@ -1,0 +1,189 @@
+{
+  "slug": "terminus",
+  "name": "Terminus",
+  "year": 2024,
+  "bggId": 350198,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "stations",
+      "label": "Stations adjacent to a Development",
+      "labelVi": "Trạm kề Development",
+      "hint": "1 Prestige per Station (not Hub) adjacent to at least 1 Development.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "hubsOne",
+      "label": "Hubs adjacent to exactly 1 Development",
+      "labelVi": "Hub kề 1 Development",
+      "hint": "2 Prestige per Hub.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "hubsTwo",
+      "label": "Hubs adjacent to 2+ Developments",
+      "labelVi": "Hub kề 2+ Development",
+      "hint": "3 Prestige per Hub.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "projects",
+      "label": "Public Projects",
+      "labelVi": "Dự án công cộng",
+      "hint": "Per Project with your Lobbyist: Prestige of the rightmost column with a Lobbyist whose requirement you met (not cumulative). Enter total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "agendas",
+      "label": "Personal Agendas",
+      "labelVi": "Chương trình riêng",
+      "hint": "Per Agenda: top row if requirement met, bottom row if Lobbyist placed and bottom requirement met (not cumulative). Enter total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "demand",
+      "label": "Demand track",
+      "labelVi": "Đường Demand",
+      "hint": "Prestige printed above your rightmost collected Demand token (not cumulative).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coins",
+      "label": "Coins remaining",
+      "labelVi": "Xu còn lại",
+      "hint": "1 Prestige per 4 Coins, rounded down; enter coin count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/4)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "stationsLeft",
+      "label": "Stations left on player board (tiebreak)",
+      "labelVi": "Trạm còn lại trên bảng (phân định hòa)",
+      "hint": "Fewest wins tiebreak 1.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "coinsTb",
+      "label": "Coins remaining (tiebreak)",
+      "labelVi": "Xu còn lại (phân định hòa)",
+      "hint": "Most wins tiebreak 2.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "stationsLeft",
+      "dir": "lowest",
+      "description": "Fewest remaining Stations on player board"
+    },
+    {
+      "categoryKey": "coinsTb",
+      "dir": "highest",
+      "description": "Most Coins"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 3,
+    "description": "Game ends when all players have passed in Year 3."
+  },
+  "notes": "family: point-salad-euro. Project/Agenda/Demand values are printed on cards/track (see rulebook appendix) so they are entered as totals. Demand track values appear as 5/6/7/10/17/25 in the rulebook figure; exact mapping to token count not verified. Solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://drive.google.com/file/d/1C2Q5vQZuXRG4vExBF4JLRPxmHwaqWQtj/view",
+      "title": "Terminus Rulebook (Inside Up Games, publisher-linked)",
+      "type": "official-rulebook",
+      "section": "End Game Scoring (p.19)"
+    },
+    {
+      "url": "https://insideupgames.com/our-games/terminus/",
+      "title": "Inside Up Games Terminus page",
+      "type": "publisher-page",
+      "section": "Rulebook link"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/terminus/",
+      "title": "Meeple Mountain review",
+      "type": "other",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

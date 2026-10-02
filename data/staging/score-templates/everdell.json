@@ -1,0 +1,114 @@
+{
+  "slug": "everdell",
+  "name": "Everdell",
+  "year": 2018,
+  "bggId": 199792,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "cardBase",
+      "label": "Base points of cards in city",
+      "labelVi": "Điểm gốc của thẻ trong thành phố",
+      "hint": "Sum base points printed on every Critter/Construction in your city.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pointTokens",
+      "label": "Point tokens",
+      "labelVi": "Thẻ điểm (point token)",
+      "hint": "Value of all point tokens collected.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "prosperityBonus",
+      "label": "Prosperity card bonus points",
+      "labelVi": "Điểm thưởng thẻ Prosperity (tím)",
+      "hint": "Bonus listed on purple Prosperity cards (e.g. Wife, Architect, King).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "journey",
+      "label": "Journey points",
+      "labelVi": "Điểm Journey",
+      "hint": "Points on Journey spaces used (autumn).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "events",
+      "label": "Events points",
+      "labelVi": "Điểm Events",
+      "hint": "Points of achieved Events, incl. deployed workers on special events.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most achieved Events (count)."
+    },
+    {
+      "description": "Most leftover resources."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Game ends when all players have passed after autumn. Solo mode (vs Rugwort) not modelled. Expansions' extra scoring not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/c6/cd/89-everdell-rulebook.pdf",
+      "title": "Everdell Rulebook (1j1ju mirror)",
+      "type": "official-rulebook",
+      "section": "End of game / scoring example, p.13-14"
+    },
+    {
+      "url": "https://rules.dized.com/game/0GI6_zUiQh2U27DV_13LJw/CSsVHl3qRyWy0oS5i2PUYA/end-game",
+      "title": "Dized Everdell end game",
+      "type": "other",
+      "section": "End game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

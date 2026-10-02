@@ -1,0 +1,111 @@
+{
+  "slug": "amsterdam",
+  "name": "Amsterdam",
+  "year": 2020,
+  "bggId": 314582,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 12,
+    "aggregate": "sum",
+    "endCondition": "Game ends after round 12 (phase IV skipped)"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Prestige points on track (before penalties)",
+      "labelVi": "Điểm uy tín trên track (trước phạt)",
+      "hint": "Points on the scoring track from play (deliveries, fast-delivery bonuses).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "penaltyTokens",
+      "label": "Penalty tokens",
+      "labelVi": "Token phạt",
+      "hint": "Count all penalty tokens (include 1 per card still below the board). 1st -3, 2nd -5, each further -7.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "value <= 0 ? 0 : (value == 1 ? -3 : (value == 2 ? -8 : -8 - (value - 2) * 7))"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endCards",
+      "label": "End-game scoring cards",
+      "labelVi": "Thẻ tính điểm cuối game",
+      "hint": "Total points from active cards with the game-end icon.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cityCrests",
+      "label": "Largest connected group of crests",
+      "labelVi": "Nhóm huy hiệu liền kề lớn nhất",
+      "hint": "3 points per crest in your largest group connected by bridges.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "districts",
+      "label": "District majorities",
+      "labelVi": "Đa số khu phố",
+      "hint": "Points from face-up District tiles for most crests; tie splits the two positions' points, rounded down.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied player who is further ahead on the Amstel canal wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Only a third-party rulebook transcription (RulesPal) could be reached; official PDF/BGG pages were not accessible, so values are not verified against the printed rulebook. Expansions (Specialized Workers, Secret Orders, Black-Marketeer, Extra Market Tiles) and solo TOM not modelled; Secret Orders add extra final points. Penalty cumulative table: 1:-3, 2:-8, 3:-15, 4:-22.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/amsterdam/rulebook",
+      "title": "Amsterdam rulebook (RulesPal transcription)",
+      "type": "other",
+      "section": "End of the Game: penalty tokens, end-game cards, city and district evaluation, tiebreak"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

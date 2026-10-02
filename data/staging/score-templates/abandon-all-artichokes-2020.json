@@ -1,0 +1,55 @@
+{
+  "slug": "abandon-all-artichokes-2020",
+  "name": "Abandon All Artichokes",
+  "year": 2020,
+  "bggId": 302260,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (hand free of Artichokes at end of own turn)",
+      "labelVi": "Thắng (bài rút không có Artichoke)",
+      "hint": "Refill your hand at end of your turn; if no Artichokes, you win immediately",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "The first player who refills their hand at the end of their own turn and has no Artichoke cards in it wins immediately. A hand without Artichokes mid-turn does not count.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends immediately when a player draws an Artichoke-free hand at end of turn"
+  },
+  "notes": "family: race-to-goal. No points and no tiebreaker (win is immediate on one player's turn). Player count 2-4 from publisher info, not from the rule PDF.",
+  "sources": [
+    {
+      "url": "https://gamewright.com/pdfs/Rules/AAArules_v2.pdf",
+      "title": "Abandon All Artichokes rules (Gamewright)",
+      "type": "official-rulebook",
+      "section": "Overview; Ending the Game"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/abandon-all-artichokes/game-rules.php",
+      "title": "How to play Abandon All Artichokes (UltraBoardGames)",
+      "type": "other",
+      "section": "Winning"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

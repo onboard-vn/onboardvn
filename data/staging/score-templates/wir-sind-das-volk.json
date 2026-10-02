@@ -1,0 +1,81 @@
+{
+  "slug": "wir-sind-das-volk",
+  "name": "Wir sind das Volk!",
+  "year": 2014,
+  "bggId": 165401,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "asymmetric",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": {
+    "count": 4,
+    "aggregate": "best",
+    "endCondition": "4 decades; East wins if neither side has won by then"
+  },
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (this player's side)",
+      "labelVi": "Thắng (phe của người chơi)",
+      "hint": "Check for the winning side per the win conditions in the roles.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "roles": [
+    {
+      "key": "east",
+      "label": "East Germany",
+      "labelVi": "Đông Đức",
+      "winCondition": "Wins immediately if it should get a Socialist but all 12 are on the board; or survives all 4 decades; or both states collapse simultaneously; or West is forced to collapse (4+ mass protest markers).",
+      "categoryKeys": [
+        "won"
+      ]
+    },
+    {
+      "key": "west",
+      "label": "West Germany",
+      "labelVi": "Tây Đức",
+      "winCondition": "Wins immediately if East must lose a Socialist but has none (Socialism fails); if East must dismantle more economy than it has (National insolvency); or if East collapses (4+ mass protest markers) while West does not.",
+      "categoryKeys": [
+        "won"
+      ]
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "No points. East wins: Triumph of Socialism (a new Socialist due while all 12 on board); both states collapse at once; or no one has won after 4 decades. West wins: Socialism fails (a Socialist must be removed but none on board); National insolvency (East must dismantle more than it has); or East collapses (4+ mass protest markers) while West does not. A state also loses if it collapses with 4+ mass protests.",
+  "endCondition": {
+    "type": "rounds",
+    "target": 4,
+    "description": "4 decades; checked each End of Decade; East wins if nobody has won."
+  },
+  "notes": "family: asymmetric-objective. Two players. West collapse (4+ mass protests) is an East win; East collapse is a West win; simultaneous collapse is an East win.",
+  "sources": [
+    {
+      "url": "https://www.histogame.de/WSDV/Wir.sind.das.Volk.Rules.pdf",
+      "title": "Wir sind das Volk! Rules (Histogame)",
+      "type": "official-rulebook",
+      "section": "9.9 Socialists phase; 9.10 Wir sind das Volk? (collapse, victory at game end); National insolvency (9.3)"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/165401/wir-sind-das-volk",
+      "title": "Wir sind das Volk! (BGG)",
+      "type": "other",
+      "section": "Identification"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

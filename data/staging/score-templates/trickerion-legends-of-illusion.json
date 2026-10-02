@@ -1,0 +1,130 @@
+{
+  "slug": "trickerion-legends-of-illusion",
+  "name": "Trickerion: Legends of Illusion",
+  "year": 2015,
+  "bggId": 163068,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the End Turn phase of the fifth turn"
+  },
+  "categories": [
+    {
+      "key": "fame",
+      "label": "Fame on track (before final scoring)",
+      "labelVi": "Fame hiện có",
+      "hint": "Fame earned from performances and advertising during the game.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "shards",
+      "label": "Unspent Trickerion Shards",
+      "labelVi": "Trickerion Shard chưa dùng",
+      "hint": "1 Fame each.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "coins",
+      "label": "Leftover coins",
+      "labelVi": "Xu còn lại",
+      "hint": "1 Fame per 3 coins (rounded down).",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3)"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "apprentices",
+      "label": "Apprentices",
+      "labelVi": "Học việc",
+      "hint": "2 Fame each.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "specialists",
+      "label": "Specialists (Assistant, Manager, Engineer)",
+      "labelVi": "Chuyên gia",
+      "hint": "3 Fame each.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Player ahead in Initiative Order wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "rounds",
+    "target": 5,
+    "description": "After the End Turn phase of turn 5, final scoring"
+  },
+  "notes": "family: point-salad-euro. Base game only. Dark Alley / Dawn of Technology expansions change final scoring (e.g. Dawn of Technology: 7 turns, 2 Fame per 3 shards; Dark Alley: specialists no longer score, +2 Fame per unused Special Assignment card, Level 3 trick bonuses) and are not modelled. Verified against two secondary summaries (UltraBoardGames, Nights Around a Table); official rulebook host unreachable, expansion rulebook confirms 'leftover assets score bonus Fame as usual'.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/trickerion/game-rules.php",
+      "title": "How to play Trickerion (UltraBoardGames)",
+      "type": "other",
+      "section": "Final scoring"
+    },
+    {
+      "url": "https://nightsaroundatable.com/2018/11/19/how-to-play-trickerion-legends-of-illusion/",
+      "title": "How to Play Trickerion (Nights Around a Table)",
+      "type": "other",
+      "section": "Final scoring / tie-breaker"
+    },
+    {
+      "url": "https://cdn.1j1ju.com/medias/30/71/85-trickerion-dawn-of-technology-rulebook.pdf",
+      "title": "Trickerion: Dawn of Technology rulebook",
+      "type": "official-rulebook",
+      "section": "End of the Game (expansion changes)"
+    },
+    {
+      "url": "http://trickerionboardgame.com/downloads/Rules%20of%20Play_final.pdf",
+      "title": "Trickerion Rules of Play (official; host unreachable)",
+      "type": "official-rulebook",
+      "section": "not read"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

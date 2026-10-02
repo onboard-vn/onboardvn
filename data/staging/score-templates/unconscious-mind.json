@@ -1,0 +1,96 @@
+{
+  "slug": "unconscious-mind",
+  "name": "Unconscious Mind",
+  "year": 2021,
+  "bggId": 329500,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "scoreTrack",
+      "label": "Victory points on score track",
+      "labelVi": "Điểm trên track",
+      "hint": "VP gained during play.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "reputationBonus",
+      "label": "Reputation track end bonus",
+      "labelVi": "Thưởng đường danh tiếng",
+      "hint": "Leaders of the reputation track score per cured client and published manuscript (reported as 2/1 per item for 1st/2nd); enter the points computed.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "caseStudy",
+      "label": "Case-Study client end-game points",
+      "labelVi": "Điểm bệnh nhân Case-Study",
+      "hint": "Points from case-study clients' end-game conditions.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "otherEndGame",
+      "label": "Other end-game points (e.g. leftover Bright Ideas, Treatises, Notebook)",
+      "labelVi": "Điểm cuối game khác",
+      "hint": "Enter any other end-game VP per the rulebook.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Freud's marker reaches the end of the Reputation track; the round is then completed (reported)"
+  },
+  "notes": "family: point-salad-euro. NOT verified against the rulebook (no PDF retrievable; scoring values only from reviews). Exact VP values, leftover Bright Idea value and tiebreaker are missing and must be confirmed from the official rulebook.",
+  "sources": [
+    {
+      "url": "https://www.boardgamequest.com/unconscious-mind-review/",
+      "title": "Unconscious Mind Review (Board Game Quest)",
+      "type": "other",
+      "section": "Reputation bonus"
+    },
+    {
+      "url": "https://boardgamesland.com/unconscious-mind-review/",
+      "title": "Unconscious Mind Review (Boardgamesland)",
+      "type": "other",
+      "section": "Scoring sources"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/unconscious-mind/",
+      "title": "Unconscious Mind Game Review (Meeple Mountain)",
+      "type": "other",
+      "section": "End trigger"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

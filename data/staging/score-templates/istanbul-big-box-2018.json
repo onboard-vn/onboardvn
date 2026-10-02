@@ -1,0 +1,120 @@
+{
+  "slug": "istanbul-big-box-2018",
+  "name": "Istanbul: Big Box",
+  "year": 2018,
+  "bggId": 251219,
+  "templateVersion": 1,
+  "variant": "base + Mocha & Baksheesh + Letters & Seals",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "rubies",
+      "label": "Rubies collected",
+      "labelVi": "Số ruby",
+      "hint": "First to 5 rubies (6 in a 2-player game) ends the game; most rubies wins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "lira",
+      "label": "Leftover Lira (tiebreaker 1)",
+      "labelVi": "Lira còn lại (hòa 1)",
+      "hint": "After using leftover bonus cards that give money/goods.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "goods",
+      "label": "Goods left on wheelbarrow (tiebreaker 2)",
+      "labelVi": "Hàng còn trên xe cút kít (hòa 2)",
+      "hint": "Count goods tokens still on the wheelbarrow.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "bonusCards",
+      "label": "Leftover bonus cards (tiebreaker 3)",
+      "labelVi": "Thẻ thưởng còn lại (hòa 3)",
+      "hint": "Count unused bonus cards.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "lira",
+      "dir": "highest",
+      "description": "Most leftover Lira"
+    },
+    {
+      "categoryKey": "goods",
+      "dir": "highest",
+      "description": "Most leftover goods on the wheelbarrow"
+    },
+    {
+      "categoryKey": "bonusCards",
+      "dir": "highest",
+      "description": "Most leftover bonus cards"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "target-score",
+    "target": 5,
+    "description": "Game ends after the round in which a player collects their 5th ruby (6th in a 2-player game); leftover bonus cards providing goods/money may be used before the tiebreak."
+  },
+  "notes": "family: running-track-race (ruby race). Ways of earning rubies are not itemised. Big Box adds Mocha & Baksheesh and Letters & Seals (end condition and tiebreak taken as unchanged from base per secondary source) and a 5x5 bazaar option. Verified against a rules summary only; official rulebook PDF could not be downloaded, so exact wording for expansions (and whether expansions alter the ruby target) is unconfirmed.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/istanbul/game-rules.php",
+      "title": "Istanbul rules (Ultra BoardGames)",
+      "type": "other",
+      "section": "End of the game"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Istanbul_(board_game)",
+      "title": "Istanbul (board game) - Wikipedia",
+      "type": "wiki",
+      "section": "Overview: first to acquire five rubies"
+    },
+    {
+      "url": "https://api.geekdo.com/api/geekitems?objectid=251219&objecttype=thing",
+      "title": "BGG: Istanbul Big Box contents description",
+      "type": "bgg-forum",
+      "section": "Item description"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

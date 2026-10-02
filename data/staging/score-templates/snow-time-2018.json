@@ -1,0 +1,62 @@
+{
+  "slug": "snow-time-2018",
+  "name": "Snow Time",
+  "year": 2018,
+  "bggId": 256438,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackPoints",
+      "label": "Points on score track",
+      "labelVi": "Điểm trên thanh điểm",
+      "hint": "Fruit points, fight points and lowest-level point are tracked during play; record the final track position.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "target-score",
+    "target": null,
+    "description": "Game ends when a player reaches the end of the score track (exact length not verified)."
+  },
+  "notes": "family: running-track-race. In-play scoring (not itemised): fruit on the level you hold, 1 fight point per defeated opponent, 1 point for the lowest surviving level; special bonus spaces on the track. 2-player variant uses two characters per player. Official rulebook not found online (only scans); length of the track, tiebreaker and exact bonus spaces are unverified, so needsReview.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/thread/2142771",
+      "title": "Concise review of Snow Time (BGG)",
+      "type": "bgg-forum",
+      "section": "gameplay description, race to a set VP total"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/2086836",
+      "title": "Snow Time reseña (BGG): game ends when someone reaches end of the score track",
+      "type": "bgg-forum",
+      "section": "review"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/2387460",
+      "title": "Rules thread quoting rulebook on same-level fight points (BGG)",
+      "type": "bgg-forum",
+      "section": "fight points"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

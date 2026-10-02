@@ -1,0 +1,54 @@
+{
+  "slug": "meo-no",
+  "name": "Mèo Nổ",
+  "year": 2015,
+  "bggId": null,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Last survivor",
+      "labelVi": "Người sống sót cuối cùng",
+      "hint": "Mark the sole remaining player.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value, 1, 0)"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "The last player still in the game wins; drawing an Exploding Kitten without a Defuse eliminates you.",
+  "notes": "family: elimination. Vietnamese edition of Exploding Kittens (assumed identical to the original base game). Official Vietnamese rulebook not fetched, so unverified against it; no points or ties.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Exploding_Kittens",
+      "title": "Exploding Kittens (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "endCondition": {
+    "type": "last-standing",
+    "target": null,
+    "description": "Play until one player remains"
+  },
+  "eliminationTracking": {
+    "resource": "lives",
+    "start": 1,
+    "eliminatedCannotWin": true
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "slug": "catan",
+  "name": "Catan",
+  "year": 1995,
+  "bggId": 13,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "settlements",
+      "label": "Settlements",
+      "labelVi": "Làng (settlement)",
+      "hint": "1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cities",
+      "label": "Cities",
+      "labelVi": "Thành phố (city)",
+      "hint": "2 VP each (replaces a settlement).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "longestRoad",
+      "label": "Longest Road card",
+      "labelVi": "Thẻ Đường dài nhất",
+      "hint": "2 VP; needs a continuous road of at least 5 segments.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "largestArmy",
+      "label": "Largest Army card",
+      "labelVi": "Thẻ Đội quân lớn nhất",
+      "hint": "2 VP; needs at least 3 played Knight cards.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "vpCards",
+      "label": "Victory point development cards",
+      "labelVi": "Thẻ điểm chiến thắng",
+      "hint": "1 VP each; kept hidden, revealed to win.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "target-score",
+    "target": 10,
+    "description": "A player with 10 or more victory points on their own turn wins immediately."
+  },
+  "notes": "family: running-track-race. Winner is the first player to reach 10 VP during their own turn, not the highest at a fixed end, so only one player normally reaches 10; the form records final totals. Rulebook gives no tiebreaker (the first player to reach 10 on their turn wins). 5-6 player extension and scenarios/expansions not modelled.",
+  "sources": [
+    {
+      "url": "https://www.catan.com/sites/default/files/2021-06/catan_base_rules_2020_200707.pdf",
+      "title": "CATAN base game rulebook (Catan Studio)",
+      "type": "official-rulebook",
+      "section": "Building (settlement/city VP), Special cards Longest Road and Largest Army, Victory Point cards, End of the game"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/catan/game-rules.php",
+      "title": "Catan rules (Ultra BoardGames)",
+      "type": "other",
+      "section": "Object of the game / victory points cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

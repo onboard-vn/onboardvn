@@ -1,0 +1,64 @@
+{
+  "slug": "onstage",
+  "name": "Onstage",
+  "year": 2024,
+  "bggId": 417224,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "Number of rounds equals the number of players"
+  },
+  "categories": [
+    {
+      "key": "blossoms",
+      "label": "Golden Blossoms per round",
+      "labelVi": "Hoa vàng mỗi vòng",
+      "hint": "Total Golden Blossoms on Performers you earned that round; if you alone have none, take all Performers onstage (or in line if none onstage). Enter one value per round.",
+      "scope": "player",
+      "input": "perRound",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied player with the highest card remaining in hand wins; if still tied, share the win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": null,
+    "description": "Play a number of rounds equal to the number of players."
+  },
+  "notes": "family: trick-taking. Each round's score = Golden Blossoms on earned Performers. A 2v2 team variant is mentioned in a summary but not in the rulebook text checked; not modelled.",
+  "sources": [
+    {
+      "url": "https://www.arcanewonders.com/wp-content/uploads/sites/6/2025/10/Rules_V2.pdf",
+      "title": "Onstage rulebook (Arcane Wonders)",
+      "type": "official-rulebook",
+      "section": "8 End of Round Scoring; 9 End of the Game"
+    },
+    {
+      "url": "https://board-game-rules.com/boardgames/onstage/",
+      "title": "Onstage summary (board-game-rules.com)",
+      "type": "other",
+      "section": "cross-check; also mentions a 2v2 team variant"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

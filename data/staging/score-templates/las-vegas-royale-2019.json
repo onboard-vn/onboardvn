@@ -1,0 +1,42 @@
+{
+  "slug": "las-vegas-royale-2019",
+  "name": "Las Vegas Royale",
+  "year": 2019,
+  "bggId": null,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 6 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "money",
+      "label": "Total money won (in $1,000s)",
+      "labelVi": "Tổng tiền thắng được (đơn vị $1.000)",
+      "hint": "Add up all banknotes collected from casinos.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    { "description": "Unverified; if still tied the group decides (shared victory)." }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: dice-majority-money. UNVERIFIED: no rulebook for Las Vegas Royale could be fetched, and BGG id / exact edition could not be identified (BGG blocked). Modelled on the base Las Vegas dice game (most money wins); Royale-specific modules/extra scoring are not modelled.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/las-vegas/game-rules.php",
+      "title": "Las Vegas rules (UltraBoardGames) - base game only",
+      "type": "other",
+      "section": "Object of the game"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

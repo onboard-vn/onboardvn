@@ -1,0 +1,93 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "winRule": "highest",
+  "rounds": null,
+  "confidence": "high",
+  "needsReview": false,
+  "slug": "lords-of-waterdeep-2012",
+  "name": "Lords of Waterdeep",
+  "year": 2012,
+  "bggId": 110327,
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "scoringStyle": "running-track",
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "Victory points on the scoring track",
+      "labelVi": "VP trên bảng điểm",
+      "hint": "VP gained during 8 rounds from Quests, Buildings, Intrigue and the VP tokens (before final scoring).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tavernAdventurers",
+      "label": "Adventurers left in Tavern",
+      "labelVi": "Nhà thám hiểm còn trong Tavern",
+      "hint": "1 VP per Adventurer cube remaining in your Tavern.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goldPairs",
+      "label": "Gold in Tavern",
+      "labelVi": "Vàng còn trong Tavern",
+      "hint": "1 VP per 2 Gold (rounded down). Enter total Gold.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "lordBonus",
+      "label": "Lord card bonus",
+      "labelVi": "Điểm thưởng thẻ Lord",
+      "hint": "Bonus VP as specified on your secret Lord card (e.g. per Quest type or Building controlled); reveal at end.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tie: player with the most Gold (raw Gold, not Gold/2) wins."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection (running VP + end bonuses). Game ends after round 8. Tiebreak is raw Gold held (not Gold/2) - goldPairs column only approximates it. Mandatory Intrigue/plot quest effects and Skullport/Undermountain expansions not itemised; expansion Lord cards still enter as lordBonus.",
+  "sources": [
+    {
+      "url": "https://media.wizards.com/downloads/dnd/DnD_LOW_Rulebook_EN.pdf",
+      "title": "Lords of Waterdeep Rulebook (Wizards of the Coast)",
+      "type": "official-rulebook",
+      "section": "Final Scoring (p.11); Game End"
+    }
+  ]
+}

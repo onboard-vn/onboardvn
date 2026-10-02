@@ -1,0 +1,55 @@
+{
+  "slug": "co-ty-phu",
+  "name": "Cờ Tỷ Phú",
+  "year": null,
+  "bggId": null,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Last player not bankrupt (winner)",
+      "labelVi": "Người cuối cùng chưa phá sản (thắng)",
+      "hint": "Tick for the winner: everyone else is bankrupt.",
+      "scope": "player",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "netWorth",
+      "label": "Net worth at stop (cash + property value)",
+      "labelVi": "Tổng tài sản khi dừng (tiền + giá trị đất)",
+      "hint": "Optional: only used to decide the winner if the group agrees to stop early.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "netWorth", "dir": "highest", "description": "Early stop only: highest net worth wins (house rule)" }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Monopoly-style game: players aim to drive opponents bankrupt; the last player left not bankrupt wins. Specific edition rules not obtained; the early-stop net-worth comparison is a common house rule, not verified.",
+  "endCondition": { "type": "last-standing", "target": null, "description": "All other players bankrupt" },
+  "eliminationTracking": { "resource": "cash", "start": null, "eliminatedCannotWin": true },
+  "notes": "family: elimination-economic. Vietnamese Monopoly-style game (Cờ Tỷ Phú); Vietnamese Wikipedia redirects the name to Monopoly. The exact edition rulebook (Fahasa product 8936121102366) was not found; rules inferred from Monopoly. Bankrupt = eliminated.",
+  "sources": [
+    {
+      "url": "https://vi.wikipedia.org/wiki/C%E1%BB%9D_t%E1%BB%B7_ph%C3%BA",
+      "title": "Cờ tỷ phú (Monopoly) - Wikipedia tiếng Việt",
+      "type": "wiki",
+      "section": "Introduction (aim: drive opponents to bankruptcy)"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

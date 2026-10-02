@@ -1,0 +1,112 @@
+{
+  "slug": "silver-gold",
+  "name": "Silver & Gold",
+  "year": 2019,
+  "bggId": 270673,
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after four rounds"
+  },
+  "categories": [
+    {
+      "key": "coinBoxes",
+      "label": "Crossed-off coin boxes (score card)",
+      "labelVi": "Ô xu đã gạch",
+      "hint": "1 point per crossed-off coin box (max 12)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 12,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "trophies",
+      "label": "Trophy points",
+      "labelVi": "Điểm cúp",
+      "hint": "Sum of the trophy numbers written for each completed coin row",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "palmTrees",
+      "label": "Palm tree boxes",
+      "labelVi": "Ô cọ",
+      "hint": "Sum of the numbers written in the palm tree boxes",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "treasureCards",
+      "label": "Completed treasure card points",
+      "labelVi": "Điểm thẻ kho báu hoàn thành",
+      "hint": "Sum of the points (top left) of completely filled treasure cards; incomplete cards score 0",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "seals",
+      "label": "Seal bonuses",
+      "labelVi": "Thưởng dấu ấn",
+      "hint": "Each seal gives 1 or 2 points per completed treasure card of its colour; all your seals count",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most completed grey treasure cards; then green, then orange, then purple."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: roll-write (flip-and-write with cards). Modelled from RulesPal text of the rulebook; official PDF not retrievable (BGG download needs login), so unverified against it. Tiebreak counts are not scored fields. Solo variant not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/silver-and-gold/rulebook",
+      "title": "Silver & Gold rulebook (RulesPal)",
+      "type": "other",
+      "section": "End of game scoring"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/270673",
+      "title": "Silver & Gold (BGG; official rules file SilverGold_PandaS_rule_web.pdf, not accessed)",
+      "type": "bgg-file",
+      "section": "Files"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

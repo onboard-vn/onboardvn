@@ -1,0 +1,67 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "needsReview": true,
+  "confidence": "medium",
+  "tiebreakers": [],
+  "slug": "barker-s-row-2018",
+  "name": "Barker's Row",
+  "year": 2018,
+  "bggId": 202443,
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (filled all 13 Grandstand seats first)",
+      "labelVi": "Thắng (lấp đầy 13 ghế khán đài trước)",
+      "hint": "Scored attractions bring Rubes into your Grandstand; first to fill it wins immediately",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "rubes",
+      "label": "Rubes in Grandstand",
+      "labelVi": "Số Rube trên khán đài",
+      "hint": "Out of 13 seats",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 13,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "winCondition": "First player to fill all 13 Grandstand seats with Rubes wins immediately.",
+  "endCondition": {
+    "type": "target-score",
+    "target": 13,
+    "description": "Game ends instantly when a player fills 13 Grandstand seats"
+  },
+  "notes": "family: race-to-target. Tiebreak not specified in available source. Verified only against a transcription; official rulebook not accessed.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/barkers-row/rulebook",
+      "title": "Barker's Row rules transcription (RulesPal)",
+      "type": "other",
+      "section": "Game end"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/202443",
+      "title": "Barker's Row on BGG",
+      "type": "bgg-file",
+      "section": "Game page + files"
+    }
+  ]
+}

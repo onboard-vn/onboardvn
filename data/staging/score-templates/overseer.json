@@ -1,0 +1,62 @@
+{
+  "slug": "overseer",
+  "name": "Overseers",
+  "year": 2015,
+  "bggId": 176803,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the third round"
+  },
+  "categories": [
+    {
+      "key": "roundScore",
+      "label": "Score tokens won per round",
+      "labelVi": "Điểm mỗi vòng",
+      "hint": "Round score from your 5 trait cards: Anger 6, Benevolence 4, Lust 3, Greed 2 each; Courage and Hope scale by count (see notes). Take scoring tokens each round.",
+      "scope": "player",
+      "input": "perRound",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "The player who never held the Leader card wins"
+    },
+    {
+      "description": "Still tied: shared victory"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: rounds. Each round: deal 6 trait cards, draft down to 5, vote on highest scorer, showdown, greed steal, then scoring. Per-card values from the rulebook text: Anger 6, Benevolence 4, Lust 3, Greed 2; Courage 2/10/18 and Hope 0/6/21 depend on number held (exact thresholds unverified). Character abilities modify scores (e.g. +3, -1 per card). Lowest scorer of a round becomes Leader next round. Official rulebook (BGG file 'English Overseers Rulebook') could not be downloaded without a BGG login; BGG id 176803 is listed as 'Overseers'.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/overseers/rulebook",
+      "title": "Overseers rulebook text (RulesPal)",
+      "type": "other",
+      "section": "Trait Cards table; Scoring; End of the Game"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/140466/english-overseers-rulebook",
+      "title": "English Overseers Rulebook (BGG file page, official)",
+      "type": "bgg-file",
+      "section": "Scoring; End of the Game"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

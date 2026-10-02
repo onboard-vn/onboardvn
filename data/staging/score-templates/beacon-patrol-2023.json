@@ -1,0 +1,119 @@
+{
+  "slug": "beacon-patrol-2023",
+  "name": "Beacon Patrol",
+  "year": 2023,
+  "bggId": 362976,
+  "templateVersion": 1,
+  "variant": "base game",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "lighthouses",
+      "label": "Explored lighthouse tiles (incl. HQ)",
+      "labelVi": "Ô hải đăng đã khám phá (tính cả HQ)",
+      "hint": "Tile touching tiles on all 4 sides and showing a lighthouse or the HQ: 3 pts each",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buoys",
+      "label": "Explored beacon buoy tiles",
+      "labelVi": "Ô phao tiêu đã khám phá",
+      "hint": "Fully explored tile with a beacon buoy: 2 pts each",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "otherExplored",
+      "label": "Other explored tiles",
+      "labelVi": "Ô khám phá khác",
+      "hint": "Every other fully explored tile: 1 pt each (no lighthouse or buoy)",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "windmills",
+      "label": "Windmills points (expansion)",
+      "labelVi": "Điểm cối xay gió (bản mở rộng)",
+      "hint": "Per fully explored windmill: 1 pt + 1 pt per adjacent open-ocean tile (orthogonal). Enter total",
+      "scope": "team",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Windmills mini-expansion"
+    },
+    {
+      "key": "piers",
+      "label": "Piers points (expansion)",
+      "labelVi": "Điểm bến tàu (bản mở rộng)",
+      "hint": "Per fully explored pier: 1 pt + 1 pt per building on its connected landmass. Enter total",
+      "scope": "team",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Piers mini-expansion"
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative: no win or loss, the team compares its total to the rank table (base game: 0-25 Novices, 26-35 Sailors, 36-45 Captains, 46-55 Navigators, 56+ Cartographers; thresholds shift up by 10 per expansion used).",
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "Game ends when all tiles have been placed or discarded"
+  },
+  "notes": "family: coop-explore-score. Only explored tiles (connected on all four sides) score. Solo campaign/objective variants exist as separate BGG files and are not modelled. Rank thresholds with 1 expansion: Novices 0-35, Sailors 36-45, Captains 46-55, Navigators 56-65, Cartographers 66+; with 2: 0-45, 46-55, 56-65, 66-75, 76+.",
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/scl/fi/mdckb76o29ui1dalzgg83/PANBPCORE-Beacon_Patrol-Rulebook-v2.pdf",
+      "title": "Beacon Patrol Rulebook v2 (Pandasaurus Games, linked from publisher product page)",
+      "type": "official-rulebook",
+      "section": "p.3 goal; p.6 Game End & Scoring; p.7-8 mini expansions and rank table"
+    },
+    {
+      "url": "https://pandasaurusgames.com/products/beacon-patrol",
+      "title": "Beacon Patrol (Pandasaurus Games product page)",
+      "type": "publisher-page",
+      "section": "Rulebook link"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/362976",
+      "title": "Beacon Patrol (BGG, designer description)",
+      "type": "other",
+      "section": "Description: goal is to explore as many tiles as possible"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,187 @@
+{
+  "slug": "glen-more-ii-chronicles",
+  "name": "Glen More II: Chronicles",
+  "year": 2020,
+  "bggId": 265188,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "inPlayScore",
+      "label": "Points gained so far (scoring rounds 1-3 and play)",
+      "labelVi": "Điểm đã có (3 vòng chấm điểm và trong game)",
+      "hint": "Victory points already earned before the final scoring round.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "scotsmenLead",
+      "label": "Scotsmen on Home Castle: lead over lowest",
+      "labelVi": "Quân Scotsmen ở Home Castle: hơn người ít nhất",
+      "hint": "Difference to the player with the fewest. 1/2/3/4/5+ = 1/2/3/5/8 VP. Castle Moil doubles your Scotsmen.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 2,
+          "3": 3,
+          "4": 5,
+          "5+": 8
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "landmarkLead",
+      "label": "Landmark cards: lead over lowest",
+      "labelVi": "Thẻ Landmark: hơn người ít nhất",
+      "hint": "Difference to the player with the fewest. 1/2/3/4/5+ = 1/2/3/5/8 VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 2,
+          "3": 3,
+          "4": 5,
+          "5+": 8
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "whiskyLead",
+      "label": "Whisky casks: lead over lowest",
+      "labelVi": "Thùng Whisky: hơn người ít nhất",
+      "hint": "Difference to the player with the fewest. 1/2/3/4/5+ = 1/2/3/5/8 VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 2,
+          "3": 3,
+          "4": 5,
+          "5+": 8
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "personLead",
+      "label": "Person tiles: lead over lowest",
+      "labelVi": "Thẻ Person: hơn người ít nhất",
+      "hint": "Difference to the player with the fewest. 1/2/3/4/5+ = 1/2/3/5/8 VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 2,
+          "3": 3,
+          "4": 5,
+          "5+": 8
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "territoryPenalty",
+      "label": "Territory size: tiles more than the smallest territory",
+      "labelVi": "Lãnh thổ: số ô nhiều hơn người ít nhất",
+      "hint": "Each tile above the player with the fewest tiles costs 3 VP (persons do not count).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coins",
+      "label": "Coins",
+      "labelVi": "Đồng xu",
+      "hint": "1 VP per coin (first 8 coins give 2 VP each with Armadale Castle; add the extra in landmark bonuses).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "landmarkBonus",
+      "label": "End-game landmark card bonuses",
+      "labelVi": "Điểm thưởng Landmark cuối game",
+      "hint": "Additional VP from landmark cards that score at game end.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most resources held"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority-diff. Scoring rounds 1-3 happen mid-game (when stacks A, B, C run out) and are recorded in the points-so-far field; the final round repeats the four-area comparison. Each comparison is the difference to the player with the least, not rank based. Chronicles modules (Haggis, Great Glen scoring cards, etc.) and solo/coop are not modelled.",
+  "sources": [
+    {
+      "url": "https://funtails.de/wp-content/uploads/2020/05/GM2_Rules_FT_EN_035_FINAL_200401_V02.pdf",
+      "title": "Glen More II: Chronicles Rulebook V2.0 (FunTails)",
+      "type": "official-rulebook",
+      "section": "Scoring and Ending the Game (p.18)"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/glen-more-ii-chronicles/game-rules.php",
+      "title": "Glen More II: Chronicles rules (UltraBoardGames)",
+      "type": "other",
+      "section": "End game scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

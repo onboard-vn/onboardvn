@@ -1,0 +1,156 @@
+{
+  "slug": "cuzco",
+  "name": "Cuzco",
+  "year": 2023,
+  "bggId": 368975,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": { "count": 6, "aggregate": "sum", "endCondition": "Game ends after the Palace phase of round 6; all players then attempt their last 3 missions and do final scoring" },
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "VP on track before final scoring",
+      "labelVi": "Điểm trên track (trước tổng kết)",
+      "hint": "VP gained during rounds: university, temple priests, market goods, missions, VP action, tiles. Includes the 6 VP per mission completed in rounds 1-6.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalMissions",
+      "label": "Missions completed in final attempt",
+      "labelVi": "Nhiệm vụ hoàn thành ở lượt cuối",
+      "hint": "Of your 3 remaining mission tiles, 6 VP for each you can complete at game end.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": { "type": "multiply", "points": 6 },
+      "countsToTotal": true
+    },
+    {
+      "key": "intiMedals",
+      "label": "Unused Inti medals",
+      "labelVi": "Huy hiệu Inti chưa dùng",
+      "hint": "2 VP per unused Inti medal.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 2 },
+      "countsToTotal": true
+    },
+    {
+      "key": "villageQuipu",
+      "label": "Villages where your quipu is on top",
+      "labelVi": "Làng có quipu của bạn nằm trên cùng",
+      "hint": "One entry per village: the VP printed on that village.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "feathers12",
+      "label": "Headdress with all 12 feathers",
+      "labelVi": "Đủ 12 lông vũ",
+      "hint": "6 VP, all-or-nothing.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": { "type": "multiply", "points": 6 },
+      "countsToTotal": true
+    },
+    {
+      "key": "circlets6",
+      "label": "All 6 circlet tiles activated",
+      "labelVi": "Kích hoạt đủ 6 vòng đầu",
+      "hint": "9 VP, all-or-nothing.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": { "type": "multiply", "points": 9 },
+      "countsToTotal": true
+    },
+    {
+      "key": "missions9",
+      "label": "9 missions completed",
+      "labelVi": "Hoàn thành 9 nhiệm vụ",
+      "hint": "9 VP: one per round plus the last 3 at game end.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": { "type": "multiply", "points": 9 },
+      "countsToTotal": true
+    },
+    {
+      "key": "quipu10",
+      "label": "All 10 quipu delivered",
+      "labelVi": "Giao đủ 10 quipu",
+      "hint": "10 VP, all-or-nothing.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": { "type": "multiply", "points": 10 },
+      "countsToTotal": true
+    },
+    {
+      "key": "tiles12",
+      "label": "12 farm/study tiles on mask board",
+      "labelVi": "12 ô nông trại/học tập",
+      "hint": "12 VP, all-or-nothing.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": { "type": "multiply", "points": 12 },
+      "countsToTotal": true
+    },
+    {
+      "key": "goods6",
+      "label": "6 goods bought",
+      "labelVi": "Mua đủ 6 hàng hóa",
+      "hint": "6 VP, all-or-nothing.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": { "type": "multiply", "points": 6 },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    { "description": "Tied player who is further ahead in player order (lower turn-order tile) wins." }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Stefan Feld / Queen Games 2023 dice-worker-placement Cuzco (not the Kiesling/Kramer Cuzco). In-round VP (university track 0-15, temple 1-3 per priest by round, goods, missions 6 each, VP action 2) are tracked on the score track and entered as trackVp; missions completed in rounds 1-6 are already inside trackVp. Partial achievements score nothing. Module 1 (pututus) and other modules not modelled.",
+  "sources": [
+    {
+      "url": "http://rules.queen-games.com/cuzco_en.pdf",
+      "title": "Cuzco rulebook (Queen Games, EN)",
+      "type": "official-rulebook",
+      "section": "p.13 End of the game / final scoring; p.11-12 phase III scoring"
+    },
+    {
+      "url": "http://rules.queen-games.com/cuzco_de.pdf",
+      "title": "Cuzco Spielregel (Queen Games, DE)",
+      "type": "official-rulebook",
+      "section": "Spielende / Schlusswertung"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

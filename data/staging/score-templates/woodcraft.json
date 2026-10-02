@@ -1,0 +1,97 @@
+{
+  "name": "Woodcraft",
+  "year": 2022,
+  "bggId": 355093,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "winRule": "highest",
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track (during play)",
+      "labelVi": "Điểm trên track (trong ván)",
+      "hint": "Points from orders, income phases, and abilities; add 50/100/150 markers.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "publicContracts",
+      "label": "Public contracts claimed",
+      "labelVi": "Hợp đồng công khai đã nhận",
+      "hint": "Full printed value of each public contract you claimed, even if shared.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftovers",
+      "label": "Leftovers (unused dice, blueberries, scrapwood, glue, saw tokens)",
+      "labelVi": "Đồ thừa",
+      "hint": "Add values of unused dice + blueberries + scrapwood/glue/saw tokens; 1 VP per 10.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 10)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "orders",
+      "label": "Completed orders x reputation space value",
+      "labelVi": "Đơn hoàn thành x mức uy tín",
+      "hint": "Reputation value after -2 per unfilled order, times completed orders (max 6 each).",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "completedOrders * reputationValue"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "completedOrders",
+        "reputationValue"
+      ]
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "The player who played later in every round wins; the starting player always loses ties."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Unfilled orders beside your board each cost 2 reputation spaces (reputation can't go below the start space): move your reputation counter first, then read its point value. Game ends after the income phase of round 14.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/woodcraft/rulebook",
+      "title": "RulesPal transcription of the official rulebook",
+      "type": "other",
+      "section": "End of Game; Final Scoring; Winning"
+    }
+  ],
+  "slug": "woodcraft",
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,137 @@
+{
+  "slug": "ca-h-n-guns-second-edition-2014",
+  "name": "Ca$h 'n Guns: Second Edition",
+  "year": 2014,
+  "bggId": 155362,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 4,
+    "max": 8
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "billsK",
+      "label": "Bills (total, in $1,000s)",
+      "labelVi": "Tiền giấy (tổng, đơn vị $1.000)",
+      "hint": "Bills are $5,000/$10,000/$20,000. Enter the total in thousands.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "diamondsK",
+      "label": "Diamonds (total value, in $1,000s)",
+      "labelVi": "Kim cương (tổng giá trị, $1.000)",
+      "hint": "Diamond cards are worth $1,000/$5,000/$10,000.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "diamondCards",
+      "label": "Number of diamond cards (for $60,000 bonus)",
+      "labelVi": "Số thẻ kim cương (thưởng $60.000)",
+      "hint": "Most diamond cards among survivors gets +$60,000; tie = nobody gets it.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            60
+          ],
+          "tieMode": "none",
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "paintings",
+      "label": "Paintings owned",
+      "labelVi": "Số tranh",
+      "hint": "Set value by count: 1=4, 2=12, 3=30, 4=60, 5=100, 6=150, 7=200, 8=300, 9=400, 10=500 (in $1,000s).",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 4,
+          "2": 12,
+          "3": 30,
+          "4": 60,
+          "5": 100,
+          "6": 150,
+          "7": 200,
+          "8": 300,
+          "9": 400,
+          "10+": 500
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 10
+    },
+    {
+      "key": "wounds",
+      "label": "Wounds at end (tiebreaker only)",
+      "labelVi": "Số vết thương (chỉ để phá hòa)",
+      "hint": "Players with 3 wounds are dead and cannot win. On a money tie, most wounds wins.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 3
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "wounds",
+      "dir": "highest",
+      "description": "On equal money, the player with the most wounds wins"
+    },
+    {
+      "description": "If still tied, victory is shared"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: end-game-categories (loot value). Values in $1,000s. Game lasts 8 turns; only players still alive (fewer than 3 wounds) can win - dead players should be excluded by the scorer. Other loot cards (e.g. First aid kit, New Godfather token) have no score value. Expansions (More Cash 'n More Guns, Team Spirit) not modelled. Source is a rules summary, not the printed rulebook.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/cash-and-guns/game-rules.php",
+      "title": "Cash N Guns rules (UltraBoardGames)",
+      "type": "other",
+      "section": "End of the game; loot values (cards, painting table)"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 8,
+    "description": "Game ends after 8 turns; richest surviving player wins"
+  }
+}

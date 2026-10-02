@@ -1,0 +1,83 @@
+{
+  "slug": "the-mind",
+  "name": "The Mind",
+  "year": 2018,
+  "bggId": 244992,
+  "templateVersion": 1,
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Win by completing all levels (2p: 12, 3p: 10, 4p: 8); lose when the last life is lost"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won (completed all levels)",
+      "labelVi": "Cả đội thắng (qua hết các level)",
+      "hint": "2p 12 levels, 3p 10, 4p 8",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "levelsCompleted",
+      "label": "Levels completed",
+      "labelVi": "Số level đã qua",
+      "hint": "Highest level completed",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 12,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "livesLeft",
+      "label": "Lives left",
+      "labelVi": "Số mạng còn lại",
+      "hint": "Lives remaining at the end",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "All players are one team; they win by completing every level in the stack and lose when the team's last life is gone. Blind mode continues afterwards for extra levels.",
+  "notes": "family: coop. Start lives/throwing stars: 2p 2/1, 3p 3/1, 4p 4/1; level rewards at 2,3,5,6,8,9; max 5 lives and 3 stars. Blind mode: after winning, replay from level 1 with cards face down; score is levels completed blind (use levelsCompleted).",
+  "sources": [
+    {
+      "url": "https://www.nsv.de/wp-content/uploads/2024/04/TheMind_GB.pdf",
+      "title": "The Mind rules (NSV, English)",
+      "type": "official-rulebook",
+      "section": "Preparing the game; End of the game"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/The_Mind_(card_game)",
+      "title": "The Mind (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

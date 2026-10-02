@@ -1,0 +1,47 @@
+{
+  "slug": "sleeping-gods-distant-skies",
+  "name": "Sleeping Gods: Distant Skies",
+  "year": 2022,
+  "bggId": 358320,
+  "templateVersion": 1,
+  "variant": null,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Story completed (campaign won)",
+      "labelVi": "Hoàn thành cốt truyện (thắng)",
+      "hint": "Cooperative campaign; no points (UNVERIFIED)",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative storytelling campaign: the crew completes the story objectives; no point scoring (exact ending conditions unverified).",
+  "endCondition": null,
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. UNVERIFIED: official rulebook not retrievable (web search budget exhausted, BGG/publisher blocked). Campaign, no point scoring per general knowledge; confirm ending and loss conditions against the rulebook.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/358320/sleeping-gods-distant-skies",
+      "title": "Sleeping Gods: Distant Skies (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

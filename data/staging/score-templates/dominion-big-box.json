@@ -1,0 +1,91 @@
+{
+  "slug": "dominion-big-box",
+  "name": "Dominion big box",
+  "year": 2017,
+  "bggId": 216849,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "estates",
+      "label": "Estates",
+      "labelVi": "Estate",
+      "hint": "1 VP each, count all cards in your deck, hand, discard.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "duchies",
+      "label": "Duchies",
+      "labelVi": "Duchy",
+      "hint": "3 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 3 },
+      "countsToTotal": true
+    },
+    {
+      "key": "provinces",
+      "label": "Provinces",
+      "labelVi": "Province",
+      "hint": "6 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 6 },
+      "countsToTotal": true
+    },
+    {
+      "key": "curses",
+      "label": "Curses",
+      "labelVi": "Curse",
+      "hint": "-1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": -1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "kingdomVp",
+      "label": "Other VP from kingdom cards",
+      "labelVi": "VP từ thẻ Kingdom khác",
+      "hint": "Net VP of kingdom victory cards in play (e.g. Gardens, Duke, Nobles); card text varies, total it yourself.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    { "description": "Tied player with the fewest turns wins." },
+    { "description": "If still tied, victory is shared." }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: engine-tableau. Game ends when the Province pile is empty or any 3 Supply piles are empty (end of that turn). Score = VP of all cards owned. Not verified against the official Rio Grande/Big Box rulebook text (unreachable in this run): tiebreaker and card values come from standard Dominion rules; Colony/Platinum (Prosperity) and expansion-specific end conditions not modelled. Needs review against the rulebook.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Dominion_(card_game)",
+      "title": "Dominion (card game) - Wikipedia",
+      "type": "wiki",
+      "section": "Gameplay: end conditions and scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

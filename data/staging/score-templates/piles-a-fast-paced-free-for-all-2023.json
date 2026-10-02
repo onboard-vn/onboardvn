@@ -1,0 +1,71 @@
+{
+  "slug": "piles-a-fast-paced-free-for-all-2023",
+  "name": "Piles! A Fast-Paced Free-For-All",
+  "year": 2023,
+  "bggId": 400752,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 8
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won the race (6 matching sets)",
+      "labelVi": "Thắng (6 chồng bài đủ bộ)",
+      "hint": "First player with all six piles face-up as matching sets slaps the table and wins; verify piles.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "completedSets",
+      "label": "Completed matching sets",
+      "labelVi": "Số chồng bài đã đủ bộ",
+      "hint": "Piles turned face-up as a matching set of four (0-6).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Real-time race with no turns: the first player whose six piles are all face-up matching sets declares 'Piles!'; if a pile is not a matching set, play resumes.",
+  "endCondition": {
+    "type": "objective",
+    "target": 6,
+    "description": "A player has six face-up piles, each a matching set, and the claim is verified"
+  },
+  "notes": "family: race-objective. No point scoring; no tiebreaker stated in the rulebook (first to claim wins). Variant: add one more set to the deck and deal eight centre cards (not modelled).",
+  "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0572/6322/6941/files/Piles_Rulebook_English_0d5cc470-d609-4ecc-8721-e8332cf90f1c.pdf",
+      "title": "Piles! Rulebook (Lost Boy Entertainment, English)",
+      "type": "official-rulebook",
+      "section": "How to Play; How to Win (pp. 5-6); Variant"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/400752/piles-a-fast-paced-free-for-all",
+      "title": "Piles! on BoardGameGeek (publisher description)",
+      "type": "other",
+      "section": "Description"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

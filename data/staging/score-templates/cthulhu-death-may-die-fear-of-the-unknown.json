@@ -1,0 +1,65 @@
+{
+  "slug": "cthulhu-death-may-die-fear-of-the-unknown",
+  "name": "Cthulhu: Death May Die - Fear of the Unknown",
+  "year": 2024,
+  "bggId": 373600,
+  "templateVersion": 1,
+  "variant": null,
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won the episode",
+      "labelVi": "Cả đội thắng tập",
+      "hint": "Elder One defeated per the episode's win condition",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "investigatorsAlive",
+      "label": "Investigators alive at end",
+      "labelVi": "Số điều tra viên còn sống",
+      "hint": "Count survivors at the end",
+      "scope": "team",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 5
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Standalone Season box using the same cooperative episode structure with upgraded rules; no point scoring.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Cooperative episode; win/lose determined by episode objectives (same two-act structure as the base game, upgraded rules not verified)."
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. No points. Rules not verified from the rulebook (downloads blocked); assumed same win/lose structure as the base game. Needs verification.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/373600",
+      "title": "BoardGameGeek game page and publisher description",
+      "type": "bgg-forum",
+      "section": "Description"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

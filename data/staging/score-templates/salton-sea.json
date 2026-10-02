@@ -1,0 +1,204 @@
+{
+  "slug": "salton-sea",
+  "name": "Salton Sea",
+  "year": 2024,
+  "bggId": 402663,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "inGameVp",
+      "label": "VP gained during the game",
+      "labelVi": "VP tích lũy trong ván",
+      "hint": "Exhausted claims, executed contracts, short-term objectives, development-track overflow, research card VP already scored.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "actionCards",
+      "label": "Total value of action cards in hand ($)",
+      "labelVi": "Tổng giá trị thẻ hành động trên tay ($)",
+      "hint": "2 VP for every $3 of value.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3) * 2"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "shares",
+      "label": "Shares x financial asset value",
+      "labelVi": "Cổ phần x giá trị tài sản",
+      "hint": "Sum over corporations of your share count times the VP shown on its financial assets value track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "brine",
+      "label": "Brine in warehouse",
+      "labelVi": "Brine trong kho",
+      "hint": "1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "geothermal",
+      "label": "Geothermal energy in warehouse",
+      "labelVi": "Địa nhiệt trong kho",
+      "hint": "3 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "lithium",
+      "label": "Lithium in warehouse",
+      "labelVi": "Lithium trong kho",
+      "hint": "5 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "research",
+      "label": "Permanent research cards VP x position",
+      "labelVi": "Thẻ nghiên cứu vĩnh viễn",
+      "hint": "For each permanent-effect card: printed VP times its slot position on your company board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Long-term objectives + Grey Stars",
+      "labelVi": "Mục tiêu dài hạn + Sao xám",
+      "hint": "Long-term objectives met (all who meet score) plus 1 VP per Grey Star on completed objective cards, only if development track end is reached.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unexecutedContracts",
+      "label": "Unexecuted contracts penalty (half VP)",
+      "labelVi": "Phạt hợp đồng chưa thực hiện",
+      "hint": "Enter half of the VP printed on contracts still on your company board; subtracted.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "-value"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "drillDamage",
+      "label": "Drill damage penalty",
+      "labelVi": "Phạt hư hại mũi khoan",
+      "hint": "Enter the VP loss shown at your drill damage indicator position; subtracted.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "-value"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "plantDamage",
+      "label": "Extraction plant damage penalty",
+      "labelVi": "Phạt hư hại nhà máy chiết xuất",
+      "hint": "Enter the VP loss shown at your plant damage indicator position; subtracted.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "-value"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "actionCards",
+      "dir": "highest",
+      "description": "Highest total value in action cards"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Game ends in the End of the Round phase when the claim deck cannot be refilled or two corporations have closed. Damage penalty amounts are printed on the damage tracks (icons not readable in the text), so they are scorer inputs. Solo/GMI mode not modelled.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/salton-sea.pdf",
+      "title": "Salton Sea rulebook (bghub)",
+      "type": "official-rulebook",
+      "section": "p.13 The End of the Game"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/272217/salton-sea-official-rulebook",
+      "title": "Salton Sea official rulebook (BGG files)",
+      "type": "bgg-file",
+      "section": "End of the game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

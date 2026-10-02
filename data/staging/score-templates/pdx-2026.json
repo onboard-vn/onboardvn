@@ -1,0 +1,91 @@
+{
+  "slug": "pdx-2026",
+  "name": "PDX",
+  "year": 2026,
+  "bggId": 439094,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "destinations",
+      "label": "Destination points on assigned tiles",
+      "labelVi": "Điểm điểm đến đã gán",
+      "hint": "Points printed on destination tiles assigned to your gates; reserve tiles do not score.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "privateOffices",
+      "label": "Private office icon bonuses",
+      "labelVi": "Thưởng văn phòng riêng",
+      "hint": "For each icon in your private offices, 1 point per matching icon on your assigned destination tiles.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "adCampaigns",
+      "label": "Ad campaign points",
+      "labelVi": "Điểm chiến dịch quảng cáo",
+      "hint": "Points on your completed advertising campaign cards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": "highest",
+      "description": "Most destination tiles (assigned)"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Game ends when 3 destination stacks are empty (one secondary source says 2 of 8; official guide says 3). Rulebook PDF (Dropbox) could not be downloaded; scoring taken from the official interactive rules guide plus a GeekDad preview. Tiebreaker and exact wording not verified against the rulebook text. Solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://pdx.waterworks.studio/",
+      "title": "PDX Interactive Rules Guide (Waterworks Games)",
+      "type": "publisher-page",
+      "section": "Summary: Three Ways to Score Points; game end"
+    },
+    {
+      "url": "https://geekdad.com/2026/02/kickstarter-tabletop-alert-pdx-takes-flight/",
+      "title": "GeekDad: PDX Takes Flight",
+      "type": "other",
+      "section": "Final scoring and tiebreaker"
+    },
+    {
+      "url": "https://www.bert.games/post/preview-game-pdx",
+      "title": "Preview of PDX (bert.games)",
+      "type": "other",
+      "section": "Private office icon scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

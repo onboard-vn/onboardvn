@@ -1,0 +1,100 @@
+{
+  "slug": "iss-vanguard",
+  "name": "ISS Vanguard",
+  "year": 2022,
+  "bggId": 325494,
+  "templateVersion": 1,
+  "variant": "campaign planetary exploration",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "explorationSuccess",
+      "label": "Planetary Exploration / Mission succeeded",
+      "labelVi": "Thám hiểm hành tinh / nhiệm vụ thành công",
+      "hint": "Lift-off with the mission complete. Lifting off with an incomplete mission applies Mission Failed penalties in the Ship Book.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "emergencyEvac",
+      "label": "Emergency Evac triggered",
+      "labelVi": "Phải sơ tán khẩn cấp",
+      "hint": "A Crewmember gaining a 4th Injury forces Evac: the exploration counts as a failure and non-Unique Discoveries are lost.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "crewLost",
+      "label": "Crewmembers died or abandoned",
+      "labelVi": "Thuyền viên chết hoặc bị bỏ lại",
+      "hint": "Count of Crewmembers who died, including those left outside the Lander at lift-off.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "discoveries",
+      "label": "Discoveries brought back",
+      "labelVi": "Khám phá mang về",
+      "hint": "Discoveries carried to the Ship Book (non-Unique ones are lost on Evac).",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Co-operative narrative campaign (20-60 hours) with no point score and no win/lose state defined in the rulebook. Each session alternates Ship Management and Planetary Exploration; each exploration is recorded as a success or a failure (Mission Failed, Emergency Evac) and the story continues in the Ship Book. Campaign ending and stand-alone Operations goals are in the sealed Ship Book/Operations Book and are not modelled.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Planetary Exploration ends on Lift-Off, Emergency Evac, or a Log or Mission card instructing it; the campaign itself ends per the Ship Book story."
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  },
+  "notes": "family: coop. No points. Verified against the official rulebook (Lift-Off, Planetary Exploration end conditions, Evac glossary); campaign progress is saved in the Ship Book and logbooks, so this template only records one session outcome. The Operations Book scenarios have their own goals that are not covered by the rulebook.",
+  "sources": [
+    {
+      "url": "https://awakenrealms.com/images/download/ISS_Vanguard/Rulebook/ISS_Rulebook_280x280mm_bleed3mm%20[48%20pages]_[corrected_17_04_2023].pdf",
+      "title": "ISS Vanguard Rulebook (Awaken Realms)",
+      "type": "official-rulebook",
+      "section": "Chapter I Game structure; Lift-Off action; Ending Planetary Exploration; Evac (glossary)"
+    },
+    {
+      "url": "https://api.geekdo.com/api/geekitems?objectid=325494&objecttype=thing",
+      "title": "BGG: ISS Vanguard (publisher description, co-operative campaign, 1-4 players)",
+      "type": "other",
+      "section": "Description"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,96 @@
+{
+  "slug": "one-night-ultimate-werewolf",
+  "name": "One Night Ultimate Werewolf",
+  "year": 2014,
+  "bggId": 147949,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 10
+  },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Player won",
+      "labelVi": "Người chơi thắng",
+      "hint": "Judge by final card (after night), not starting card",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "werewolfKilled",
+      "label": "Werewolf died in the vote",
+      "labelVi": "Có Sói chết khi vote",
+      "hint": "Any werewolf among the dead means the Village wins",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Village wins if at least one Werewolf dies, or if no player holds a Werewolf and nobody dies. Werewolf team wins if a player holds a Werewolf and no Werewolf dies. All players tied for most votes die. Tanner wins only by dying (special rules per role card).",
+  "roles": [
+    {
+      "key": "village",
+      "label": "Village team",
+      "labelVi": "Phe Dân",
+      "winCondition": "Kill at least one Werewolf",
+      "categoryKeys": [
+        "won"
+      ]
+    },
+    {
+      "key": "werewolf",
+      "label": "Werewolf team",
+      "labelVi": "Phe Sói",
+      "winCondition": "No Werewolf dies",
+      "categoryKeys": [
+        "won"
+      ]
+    },
+    {
+      "key": "tanner",
+      "label": "Tanner",
+      "labelVi": "Kẻ chán đời",
+      "winCondition": "Tanner dies; then Village and Werewolves lose",
+      "categoryKeys": [
+        "won"
+      ]
+    }
+  ],
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "One night, one discussion, one simultaneous vote"
+  },
+  "notes": "family: hidden-role-social. Official rulebook PDF unavailable; win/tie rules verified via UltraBoardGames. Tanner interaction and Vampire/other expansion teams not verified from a fetched source. Roles are determined by final card after the night.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/one-night-ultimate-werewolf/game-rules.php",
+      "title": "One Night Ultimate Werewolf rules (UltraBoardGames)",
+      "type": "other",
+      "section": "Win conditions; voting ties"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/One_Night_Ultimate_Werewolf",
+      "title": "One Night Ultimate Werewolf (Wikipedia)",
+      "type": "wiki",
+      "section": "Overview"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

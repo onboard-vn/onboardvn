@@ -1,0 +1,76 @@
+{
+  "slug": "star-realms-2014",
+  "name": "Star Realms",
+  "year": 2014,
+  "bggId": 147020,
+  "templateVersion": 1,
+  "variant": "2-player standard",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (opponent reduced to 0 Authority)",
+      "labelVi": "Thắng (đối thủ về 0 Authority)",
+      "hint": "First player to reduce the opponent's Authority to zero wins.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "authority",
+      "label": "Authority at game end",
+      "labelVi": "Authority cuối ván",
+      "hint": "Each player starts at 50; can exceed 50. Record for reference only.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Reduce the opponent's Authority to zero. Outposts must be destroyed before attacking Authority directly.",
+  "endCondition": {
+    "type": "elimination",
+    "target": 50,
+    "description": "Starting Authority 50 each; game ends when a player reaches 0"
+  },
+  "eliminationTracking": {
+    "resource": "Authority",
+    "start": 50,
+    "eliminatedCannotWin": true
+  },
+  "notes": "family: elimination-hp. Other formats in the Box Set rulebook (Free-For-All 3-6: last player standing wins; Hunter; Hunter First Blood; Emperor 3v3 with Admirals at 50 and Emperor at 60 Authority; Raid; Hydra; solo/coop Challenge cards) not modelled as separate files. Authority gain has no cap.",
+  "sources": [
+    {
+      "url": "https://starrealms.com/files/rules/SRBOX_Rulebook_1.1E_WEB.pdf",
+      "title": "Star Realms Box Set Rulebook 1.1E (Wise Wizard Games)",
+      "type": "official-rulebook",
+      "section": "Overview and Setup; Keeping Score; Formats (Standard, Free-For-All)"
+    },
+    {
+      "url": "https://starrealms.com/learn-to-play",
+      "title": "Star Realms - Learn to Play (official site)",
+      "type": "publisher-page",
+      "section": "Authority / goal of the game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,87 @@
+{
+  "name": "Chicago 1875: City of the Big Shoulders",
+  "year": 2021,
+  "bggId": 214880,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "personalFunds",
+      "label": "Money in Personal Funds",
+      "labelVi": "Tiền cá nhân",
+      "hint": "Cash left in your personal funds ($).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "shares",
+      "label": "Share payouts (one entry per Company)",
+      "labelVi": "Tiền bán cổ phần",
+      "hint": "For each Company: shares owned x final stock value ($). Company treasury does not count.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "publicGoals",
+      "label": "Public Goals won",
+      "labelVi": "Mục tiêu công khai",
+      "hint": "$200 per Public Goal won (ties each get $200). Optional module.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 200
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 5,
+      "optional": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "publicGoals",
+      "dir": "highest",
+      "description": "Most Public Goals completed"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: money-wealth. Winner is the highest total wealth in dollars (scoring unit is $). Public Goals are an optional module. Stock values stay unchanged at final payout. Solo rules and Advanced Supply Chain variant not modelled.",
+  "sources": [
+    {
+      "url": "https://www.quined.nl/wp-content/uploads/2025/05/CotBS_Rulebook_EN_V30_WEB.pdf",
+      "title": "City of the Big Shoulders rulebook v3.0 (Quined)",
+      "type": "official-rulebook",
+      "section": "End of Game Scoring (p.33) and Public Goals"
+    },
+    {
+      "url": "https://www.boardgamequest.com/city-of-the-big-shoulders-burden-of-destiny-review/",
+      "title": "City of the Big Shoulders review",
+      "type": "other",
+      "section": "cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "slug": "chicago-1875-city-of-the-big-shoulders"
+}

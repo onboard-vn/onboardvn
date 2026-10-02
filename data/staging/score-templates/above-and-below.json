@@ -1,0 +1,173 @@
+{
+  "slug": "above-and-below",
+  "name": "Above and Below",
+  "year": 2015,
+  "bggId": 172818,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "advancementPoints",
+      "label": "Goods on advancement track (village points)",
+      "labelVi": "Hàng hóa trên track phát triển",
+      "hint": "Each good scores the value printed above its slot; enter the total.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "buildings",
+      "label": "Buildings (houses, key, star, outposts)",
+      "labelVi": "Công trình",
+      "hint": "1 VP per building; empty cave cards do not count.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "reputationRank",
+      "label": "Reputation track position (rank)",
+      "labelVi": "Danh tiếng (xếp hạng)",
+      "hint": "Most +5, second +3, third +2 (2 players: only the top gets +3). Enter cube position (further down = higher).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            5,
+            3,
+            2
+          ],
+          "tieMode": "split-floor",
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "2": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                3
+              ],
+              "tieMode": "split-floor",
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "reputationSpace",
+      "label": "Reputation track space points",
+      "labelVi": "Điểm ô danh tiếng",
+      "hint": "Small VP symbol next to your cube (can be negative).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": null,
+      "max": null
+    },
+    {
+      "key": "cardBonuses",
+      "label": "Building card bonuses",
+      "labelVi": "Điểm thưởng từ thẻ",
+      "hint": "Fixed and per-item bonuses printed on buildings.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "coins",
+      "label": "Coins (tiebreaker)",
+      "labelVi": "Xu (phá hòa)",
+      "hint": "Tiebreaker only.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "villagers",
+      "label": "Villagers (tiebreaker)",
+      "labelVi": "Dân làng (phá hòa)",
+      "hint": "Tiebreaker only.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "coins",
+      "dir": "highest",
+      "description": "Most coins"
+    },
+    {
+      "categoryKey": "villagers",
+      "dir": "highest",
+      "description": "Most villagers"
+    },
+    {
+      "categoryKey": "buildings",
+      "dir": "highest",
+      "description": "Most buildings"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: end-game-categories. Game ends after 7 rounds. Reputation: enter the cube's depth position so a higher number ranks higher; rank bonus and the printed space points are separate. Source is a rules summary, not the printed rulebook.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/above-and-below/game-rules.php",
+      "title": "Above and Below rules (UltraBoardGames)",
+      "type": "other",
+      "section": "End of the Game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 7,
+    "description": "Game ends after seven rounds"
+  }
+}

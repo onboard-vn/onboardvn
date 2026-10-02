@@ -1,0 +1,70 @@
+{
+  "slug": "deep-rock-galactic-the-board-game",
+  "name": "Deep Rock Galactic: The Board Game",
+  "year": 2022,
+  "bggId": 348220,
+  "templateVersion": 1,
+  "variant": null,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Mission successful",
+      "labelVi": "Hoàn thành nhiệm vụ",
+      "hint": "Required minerals/objectives collected and the team escaped",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "mineralsCollected",
+      "label": "Minerals collected",
+      "labelVi": "Khoáng sản thu được",
+      "hint": "Mission quota is printed on the mission card",
+      "scope": "team",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Each mission is won by collecting the required minerals/objectives and escaping in the drop pod; lose if the threat marker is already at the end of the track when threat increases.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Win the current mission by meeting its mineral quota and escaping; lose when threat overflows."
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. No points. Mission quotas are mission-specific (scorer input). Rulebook PDF could not be downloaded; verified only against the publisher FAQ and BGG description. Check the 2nd Edition rulebook before upgrading confidence.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/348220",
+      "title": "BoardGameGeek game page and publisher description",
+      "type": "bgg-forum",
+      "section": "Description"
+    },
+    {
+      "url": "https://moodpublishing.com/pages/deep-rock-galactic-faq",
+      "title": "Deep Rock Galactic FAQ (MOOD Publishing)",
+      "type": "publisher-page",
+      "section": "Threat track / drop pod"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

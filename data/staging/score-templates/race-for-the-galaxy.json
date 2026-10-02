@@ -1,0 +1,102 @@
+{
+  "slug": "race-for-the-galaxy",
+  "name": "Race for the Galaxy",
+  "year": 2007,
+  "bggId": 28143,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpChips",
+      "label": "Victory point chips",
+      "labelVi": "Chip điểm chiến thắng",
+      "hint": "Total value of VP chips earned (Consume phase and powers).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tableauVp",
+      "label": "Printed VP on tableau cards",
+      "labelVi": "Điểm in trên bài trong bàn",
+      "hint": "Sum of VP printed on worlds and developments in your tableau (excluding 6-cost developments' variable VP).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "sixCostBonus",
+      "label": "6-cost development bonus VP",
+      "labelVi": "Điểm thưởng phát triển cost 6",
+      "hint": "End-of-game VP from each 6-cost development, per its card text.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "handAndGoods",
+      "label": "Cards in hand + goods on worlds (tiebreak)",
+      "labelVi": "Bài trên tay + hàng trên hành tinh (phân định hòa)",
+      "hint": "Counted after discarding at end of final round.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "handAndGoods",
+      "dir": "highest",
+      "description": "Most cards in hand plus goods on worlds"
+    },
+    {
+      "description": "If still tied, all tied players win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends at the end of the round in which a player has 12+ tableau cards or the last VP chip is taken. Final: tableau VP + VP chips + 6-cost development VP. Expansions (Gathering Storm, Brink of War, etc.) add prestige/goals not modelled. Printed 6-cost values are on component cards (scorer input).",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/6a/44/a4-race-for-the-galaxy-rulebook.pdf",
+      "title": "Race for the Galaxy rulebook (Rio Grande)",
+      "type": "official-rulebook",
+      "section": "Game End (p.10-11)"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/race-for-the-galaxy/game-rules.php",
+      "title": "How to play Race for the Galaxy",
+      "type": "other",
+      "section": "Game end cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

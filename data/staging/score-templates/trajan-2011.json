@@ -1,0 +1,48 @@
+{
+  "slug": "trajan-2011",
+  "name": "Trajan",
+  "year": 2011,
+  "bggId": 118048,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "victoryPoints",
+      "label": "Final victory points (score track, after final scoring)",
+      "labelVi": "Điểm chiến thắng cuối cùng (sau tính điểm cuối)",
+      "hint": "Read your marker on the VP track after the end-game scoring is resolved.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not verified against rulebook; confirm in the official rules."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: mixed-engine (mancala-style action selection scored on a VP track). Detailed end-game categories could not be verified: official rulebook and BGG were not reachable, so only the final VP total is modelled. Wikipedia confirms players score VP across six tactical facilities.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Trajan_(board_game)",
+      "title": "Trajan (board game) (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

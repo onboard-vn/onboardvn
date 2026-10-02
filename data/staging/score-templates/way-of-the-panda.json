@@ -1,0 +1,135 @@
+{
+  "slug": "way-of-the-panda",
+  "name": "Way of the Panda",
+  "year": 2017,
+  "bggId": 204575,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "VP on the Victory Point Track",
+      "labelVi": "VP trên track",
+      "hint": "Current VP gained during the game.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "strengthBracelet",
+      "label": "Bracelet x Lamp",
+      "labelVi": "Bracelet x Lamp",
+      "hint": "Number next to your topmost Bracelet tile x number next to your topmost Lamp tile.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "bracelet * lamp"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "bracelet",
+        "lamp"
+      ]
+    },
+    {
+      "key": "strengthCoin",
+      "label": "Coin x Chest",
+      "labelVi": "Coin x Chest",
+      "hint": "Number next to your topmost Coin tile x number next to your topmost Chest tile.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "coin * chest"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "coin",
+        "chest"
+      ]
+    },
+    {
+      "key": "strengthSword",
+      "label": "Sword x Mask",
+      "labelVi": "Sword x Mask",
+      "hint": "Number next to your topmost Sword tile x number next to your topmost Mask tile.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "sword * mask"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "sword",
+        "mask"
+      ]
+    },
+    {
+      "key": "expertEndBonus",
+      "label": "Expert game: End of Game Bonus Mandate VP",
+      "labelVi": "Điểm Mandate cuối game (bản Expert)",
+      "hint": "Only with Expert E-deck mandate card; enter VP gained.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most Action Points (Clan Marker on AP track after returning Guards at game end)"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends after the round in which a player places the 5th City Base, the last Building, or a City becomes the 2nd Capital."
+  },
+  "notes": "family: point-salad-euro. Final scoring adds Strength x Quest products for the topmost tile of each pair (Bracelet x Lamp, Coin x Chest, Sword x Mask) to the track VP; the numbers are the printed values on the topmost tiles of each stack (enter those two numbers). Expert mandate cards (E-deck) add end bonuses; D-deck bonuses are gained during play and are on the track. City cards not modelled. AP tiebreaker value is entered by the table, not in this template.",
+  "sources": [
+    {
+      "url": "https://desktopgames.com.ua/games/4950/way-of-the-panda.pdf",
+      "title": "Way of the Panda Rulebook (CMON; mirrored by Desktop Games UA)",
+      "type": "official-rulebook",
+      "section": "End of the Game / Final Scoring (p. 16); Rules Summary (p. 20); Expert Game (pp. 18-19)"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/204575/way-of-the-panda",
+      "title": "Way of the Panda (BGG)",
+      "type": "other",
+      "section": "Identification"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

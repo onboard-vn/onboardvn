@@ -1,0 +1,104 @@
+{
+  "slug": "super-kawaii-pets",
+  "name": "Super Kawaii Pets",
+  "year": 2022,
+  "bggId": 346951,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "happyAnimals",
+      "label": "Victory Points on Happy (flipped) Animals",
+      "labelVi": "Điểm các thú đã hạnh phúc",
+      "hint": "Sum of VP printed on your Animals flipped to their happy side.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "locations",
+      "label": "Victory Points on Locations",
+      "labelVi": "Điểm thẻ Location",
+      "hint": "Sum of VP printed on Location cards you obtained.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "sadAnimals",
+      "label": "Sad Animals left (play and hand)",
+      "labelVi": "Thú buồn còn lại (trên bàn + trên tay)",
+      "hint": "-1 point for each sad Animal, including those in hand.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "colorMajority",
+      "label": "Colour majority bonus (optional rule)",
+      "labelVi": "Thưởng đa số màu (luật tùy chọn)",
+      "hint": "Optional: 3 points per colour where you have the most horizontal cards (Happy Animals + Locations); 1 each on a tie. Enter total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "sadAnimals",
+      "dir": "lowest",
+      "description": "Fewest Sad Animals (in play and hand)"
+    },
+    {
+      "description": "If still tied, the win is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Game ends when a player has 10 horizontal cards (Happy Animals + Locations); finish the round so all have equal turns. Colour majority bonus is an optional rule and is modelled as non-optional-flagged input; leave 0 when not used. Solo mode: win by reaching 10 horizontal cards within the Turns deck, then +3 per colour with at least 5 horizontal cards; ratings 35/40/45/50+ (not modelled).",
+  "sources": [
+    {
+      "url": "https://www.arcanewonders.com/wp-content/uploads/2024/04/SKP-Rulebook_Print_v2.pdf",
+      "title": "Super Kawaii Pets Rulebook (Arcane Wonders)",
+      "type": "official-rulebook",
+      "section": "End of the Game and Scoring (p. 5); Optional Rules and Single Player (p. 6)"
+    },
+    {
+      "url": "https://www.arcanewonders.com/product/super-kawaii-pets/",
+      "title": "Super Kawaii Pets (Arcane Wonders product page)",
+      "type": "publisher-page",
+      "section": "Rulebook link"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

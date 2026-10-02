@@ -1,0 +1,230 @@
+{
+  "slug": "clans-of-caledonia",
+  "name": "Clans of Caledonia",
+  "year": 2017,
+  "bggId": 216132,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Game ends after round 5 (Glory scored each round)"
+  },
+  "categories": [
+    {
+      "key": "glory",
+      "label": "Glory track",
+      "labelVi": "Danh vọng",
+      "hint": "1 VP per step on the Glory track (including laps).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "basicGoods",
+      "label": "Basic goods in stock",
+      "labelVi": "Hàng cơ bản trong kho",
+      "hint": "1 VP per Basic good.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "processedGoods",
+      "label": "Processed goods in stock",
+      "labelVi": "Hàng chế biến trong kho",
+      "hint": "2 VP per Processed good.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "money",
+      "label": "Money",
+      "labelVi": "Tiền",
+      "hint": "1 VP per full 10 pounds; leftover money breaks ties.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 10)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "hops",
+      "label": "Hops on fulfilled contracts",
+      "labelVi": "Hops trên hợp đồng đã hoàn thành",
+      "hint": "1 VP per Hops imported listed on fulfilled Export contracts.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "imports",
+      "label": "Cotton / Tobacco / Sugar cane on fulfilled contracts",
+      "labelVi": "Bông / Thuốc lá / Mía trên hợp đồng",
+      "hint": "Rarest import 5 VP, middle 4, most imported 3 (tie: Cotton rarest, then Tobacco, then Sugar). Enter units and the VP each is worth.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cotton",
+        "tobacco",
+        "sugar",
+        "cottonVp",
+        "tobaccoVp",
+        "sugarVp"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "cotton * cottonVp + tobacco * tobaccoVp + sugar * sugarVp"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "exportContracts",
+      "label": "Fulfilled Export contracts (ranking)",
+      "labelVi": "Hợp đồng xuất khẩu đã hoàn thành (xếp hạng)",
+      "hint": "3-4p: 12 / 6 VP; 2p: 8 VP to the most only. Ties split, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            12,
+            6
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "2": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                8
+              ],
+              "tieMode": "split-floor",
+              "excludeZero": true,
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "settlements",
+      "label": "Settlements within Shipping reach (ranking)",
+      "labelVi": "Khu định cư trong tầm vận chuyển (xếp hạng)",
+      "hint": "Biggest group within shipping reach. 3-4p: 18 / 12 / 6; 2p: 12 / 0. Ties split, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            18,
+            12,
+            6
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "2": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                12,
+                0
+              ],
+              "tieMode": "split-floor",
+              "excludeZero": true,
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "moneyTiebreak",
+      "label": "Leftover money (tiebreak)",
+      "labelVi": "Tiền dư (phân định hòa)",
+      "hint": "Total pounds held.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "moneyTiebreak",
+      "dir": "highest",
+      "description": "Most leftover money"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Export and Settlement scoring override by player count (2 players differ). Solo mode uses fixed thresholds (Export: 7+ contracts 12, 6 = 8, 5 = 4; Settlement: 14+ = 18, 11-13 = 12, 8-10 = 6) and is not modelled. Glory is earned each round from the round's Scoring tile and tracked on the Glory track. Text taken from the RulesPal rulebook reproduction, not the official PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/clans-of-caledonia/rulebook",
+      "title": "Clans of Caledonia rulebook (RulesPal)",
+      "type": "other",
+      "section": "Final Scoring; Export Scoring; Settlement Scoring; Solo Scoring Thresholds"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

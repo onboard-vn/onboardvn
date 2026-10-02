@@ -1,0 +1,178 @@
+{
+  "slug": "recall",
+  "name": "Recall",
+  "year": 2024,
+  "bggId": 446493,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "VP gained during the game",
+      "labelVi": "VP tích lũy trong ván",
+      "hint": "Points already scored on the score track during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pathKnowledge",
+      "label": "Path of Knowledge (+ specialization)",
+      "labelVi": "Con đường Tri thức",
+      "hint": "Highest point symbol reached on each knowledge track, plus your specialization bonus if your marker is on this path.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pathAncients",
+      "label": "Path of Ancients (+ specialization)",
+      "labelVi": "Con đường Cổ xưa",
+      "hint": "2 VP per white, gray and black ability stone (not your own colour), plus specialization bonus.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pathLegends",
+      "label": "Path of Legends (+ specialization)",
+      "labelVi": "Con đường Huyền thoại",
+      "hint": "2 VP per vault built, plus specialization bonus.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pathEfficiency",
+      "label": "Path of Efficiency (+ specialization)",
+      "labelVi": "Con đường Hiệu suất",
+      "hint": "Points printed on all your keycards (incl. those in slots), plus specialization bonus.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pathAmbition",
+      "label": "Path of Ambition (+ specialization)",
+      "labelVi": "Con đường Tham vọng",
+      "hint": "Per relicube colour, points under your rightmost cube, plus specialization bonus.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pathPower",
+      "label": "Path of Power (+ specialization)",
+      "labelVi": "Con đường Quyền lực",
+      "hint": "Points at each monument location you built on, plus specialization bonus.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "remainingResources",
+      "label": "Followers on board + white-crystal equivalents",
+      "labelVi": "Tín đồ trên bàn + tinh thể (quy ra trắng)",
+      "hint": "Convert red=2, purple=3 white crystals; add followers on the main board. 1 VP per 3.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectiveMet",
+      "label": "Starting objective card fulfilled",
+      "labelVi": "Hoàn thành thẻ mục tiêu giữ kín",
+      "hint": "15 VP if the kept objective card's requirement is met.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 15
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": "highest",
+      "description": "Furthest on the white knowledge track"
+    },
+    {
+      "categoryKey": null,
+      "dir": "highest",
+      "description": "Then furthest on the gray knowledge track"
+    },
+    {
+      "categoryKey": null,
+      "dir": "highest",
+      "description": "Then furthest on the black knowledge track"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Game ends when the round tracker reaches the last space (17 rounds); path cards are scored bottom to top and everyone scores all six, with the specialization bonus (A/B side) only for paths where your marker sits. Each path category here is entered as one total (base + specialization) read off the cards. Solo-mode differences not modelled.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/recall.pdf",
+      "title": "Recall rulebook (bghub)",
+      "type": "official-rulebook",
+      "section": "p.11-13 End of Game, Final Scoring, The Winner"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,149 @@
+{
+  "slug": "covenant",
+  "name": "Covenant",
+  "year": 2025,
+  "bggId": 429863,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the third Council phase (Era marker on last space); then final scoring"
+  },
+  "categories": [
+    {
+      "key": "gpTrack",
+      "label": "Glory Points on track before final scoring",
+      "labelVi": "Điểm vinh quang trên track (trước tổng kết)",
+      "hint": "GP accumulated during play: project tiles each Council, dungeon enemies, tradition tiles, actions.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "throne",
+      "label": "King's Throne GP",
+      "labelVi": "Điểm Ngai vàng",
+      "hint": "Most/2nd/3rd most carts at the Throne (min 1 cart): 6/3/1 GP. Ties broken by carts on higher levels; if still tied all get full points.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Revealed objective tiles",
+      "labelVi": "Thẻ mục tiêu đã lật",
+      "hint": "Total GP from objective tiles shown: 1 tile with 4+ achievements, 2 tiles with 8+. Values per tile are on the rulebook p.40.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "achievementsReached",
+      "label": "Achievements reached on all Tracks",
+      "labelVi": "Số thành tựu đạt được",
+      "hint": "9 = 2 GP, 10 = 4, 11 = 6, 12 = 8; fewer than 9 scores nothing.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 12,
+      "formula": {
+        "type": "expr",
+        "expr": "value >= 9 ? (value - 8) * 2 : 0"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "enemyHalls",
+      "label": "Halls with your presence and an enemy",
+      "labelVi": "Sảnh có công trình của bạn và có kẻ địch",
+      "hint": "-2 GP per hall tile where you have a building and at least 1 enemy (pillar up to 3 halls, gate up to 2).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "toolColumns",
+      "label": "Tool column bonuses (total GP)",
+      "labelVi": "Thưởng cột công cụ (tổng GP)",
+      "hint": "Per column with forged tools (max 2): relic types x tools, dungeon enemies x tools, districts with presence x tools, pillars/gates x tools. Sum all columns.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "supportsResources",
+      "label": "Supports and leftover resources (units)",
+      "labelVi": "Support và tài nguyên còn lại (số đơn vị)",
+      "hint": "1 GP for every 3 combined units of support pieces and resources.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most achievements completed."
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. throne GP is entered as the resulting 6/3/1/0 (level-based tiebreak is resolved by the scorer). Objective tile values and tool-column bonuses depend on board state and are entered as GP totals. Solo mode (Council of the Elders) not modelled. Rulebook is image-only; read from page renders, pp.26-29 and 38-40.",
+  "sources": [
+    {
+      "url": "https://devirinvestments.s3.eu-west-1.amazonaws.com/media/8436625610010-Rules-EN-1.pdf",
+      "title": "Covenant rulebook (Devir, EN)",
+      "type": "official-rulebook",
+      "section": "p.26 Council phase; pp.27-29 Final scoring; p.38-39 Projects; p.40 Objectives"
+    },
+    {
+      "url": "https://devirgames.com/covenant",
+      "title": "Covenant (Devir product page)",
+      "type": "publisher-page",
+      "section": "Rules download"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

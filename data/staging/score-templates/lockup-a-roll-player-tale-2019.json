@@ -1,0 +1,297 @@
+{
+  "slug": "lockup-a-roll-player-tale-2019",
+  "name": "Lockup: A Roll Player Tale",
+  "year": 2019,
+  "bggId": 240855,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 6,
+    "aggregate": "sum",
+    "endCondition": "Game ends after 6 rounds and a final raid"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Reputation track (during play)",
+      "labelVi": "Điểm danh tiếng trên track",
+      "hint": "Current reputation marker before final scoring (starts at 10 standard / 0 advanced; includes crafted items, goals, raid losses; never below 0).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leaderGoal",
+      "label": "Leader goal card held at end",
+      "labelVi": "Thẻ mục tiêu Leader đang giữ",
+      "hint": "8 stars for the holder (6 in a 2-player game).",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 8,
+        "byPlayerCount": {
+          "2": {
+            "points": 6
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endGameGoal",
+      "label": "End game goal",
+      "labelVi": "Mục tiêu cuối game",
+      "hint": "Stars from the end game goal: most=8, second=4 (ties halve); 2 players: most=6 only; or flat bonus if the card is a shared condition.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bandits",
+      "label": "Bandits",
+      "labelVi": "Bandit (kẻ cướp)",
+      "hint": "3 stars each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "flayers",
+      "label": "Flayers",
+      "labelVi": "Flayer",
+      "hint": "2 stars each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cultists",
+      "label": "Cultists",
+      "labelVi": "Cultist",
+      "hint": "1 star per item card per Cultist.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "cultists * items"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "cultists",
+        "items"
+      ]
+    },
+    {
+      "key": "demons",
+      "label": "Demons",
+      "labelVi": "Demon",
+      "hint": "2 stars per valuable per Demon.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "demons * valuables * 2"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "demons",
+        "valuables"
+      ]
+    },
+    {
+      "key": "hobgoblins",
+      "label": "Hobgoblins",
+      "labelVi": "Hobgoblin",
+      "hint": "1 star per power cube per Hobgoblin.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "hobgoblins * powerCubes"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "hobgoblins",
+        "powerCubes"
+      ]
+    },
+    {
+      "key": "dwarves",
+      "label": "Dwarves",
+      "labelVi": "Dwarf (người lùn)",
+      "hint": "1/3/7/12/18/25/30 stars for 1/2/3/4/5/6/7+ Dwarves.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "table",
+        "table": {
+          "1": 1,
+          "2": 3,
+          "3": 7,
+          "4": 12,
+          "5": 18,
+          "6": 25,
+          "7+": 30
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "ratmen",
+      "label": "Ratmen",
+      "labelVi": "Ratman (người chuột)",
+      "hint": "-3/1/6/13/25 stars for 1/2/3/4/5+ Ratmen.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "table",
+        "table": {
+          "1": -3,
+          "2": 1,
+          "3": 6,
+          "4": 13,
+          "5+": 25
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "basicResources",
+      "label": "Scrap, potion and iron cubes left",
+      "labelVi": "Cube phế liệu, thuốc, sắt còn lại",
+      "hint": "1 star per cube.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goldCubes",
+      "label": "Gold cubes left",
+      "labelVi": "Cube vàng còn lại",
+      "hint": "2 stars per cube.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tomes",
+      "label": "Unplayed tome cards",
+      "labelVi": "Thẻ tome chưa dùng",
+      "hint": "1 star per unplayed tome in hand.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "firstPlayer",
+      "label": "First player marker",
+      "labelVi": "Token người chơi đầu",
+      "hint": "2 stars for the holder.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "itemCards",
+      "label": "Item cards (tiebreak)",
+      "labelVi": "Số thẻ item (phân định hòa)",
+      "hint": "Most item cards wins ties.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "itemCards",
+      "dir": "highest",
+      "description": "Tied player with the most item cards wins"
+    },
+    {
+      "description": "If still tied, the tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: running-track-plus-final-bonus. Reputation stars are tracked on the board track during play (items, instant goals, raids). Final scoring adds leader goal, end game goal, goons, leftover resources, unplayed tomes and the first player marker. Goons with printed values other than Bandit/Flayer are not listed in the rulebook text read. Solo mode (guards) and the Breakout expansion are not modelled. Valuables = shields, gems and magic on item/goon cards.",
+  "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0525/7753/4134/files/Lockup-Rulebook-Web.pdf?v=1700502976",
+      "title": "Lockup rulebook (Thunderworks Games)",
+      "type": "official-rulebook",
+      "section": "Game End / Final Scoring p.10; Claiming Goals p.13-14; Recruiting Goons p.15"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

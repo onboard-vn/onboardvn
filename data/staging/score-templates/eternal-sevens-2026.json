@@ -1,0 +1,67 @@
+{
+  "slug": "eternal-sevens-2026",
+  "name": "Eternal Sevens",
+  "year": 2026,
+  "bggId": 467816,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (emptied hand or earned stars)",
+      "labelVi": "Thắng (hết bài hoặc đủ sao)",
+      "hint": "Win by discarding your whole hand or by earning stars for completing horizontal sequences.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "stars",
+      "label": "Stars earned",
+      "labelVi": "Số sao",
+      "hint": "Stars from completed horizontal sequences; star target not verified.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not verified."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Two paths to victory: discard all cards from hand, or earn enough stars; players exceeding the pass limit are eliminated.",
+  "endCondition": {
+    "type": "elimination",
+    "target": null,
+    "description": "Round/game ends on emptied hand, star threshold, or elimination; exact thresholds not verified."
+  },
+  "notes": "family: shedding-game. Casual and Gamer modes (characters alter pass effects and how victory points and stars are earned) not modelled. Star target and VP rules not verified against the rulebook.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/467816",
+      "title": "Eternal Sevens (BGG page, description only; official rulebook not retrievable in this run)",
+      "type": "other",
+      "section": "Game description"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

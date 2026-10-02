@@ -1,0 +1,67 @@
+{
+  "slug": "the-elder-scrolls-betrayal-of-the-second-era",
+  "name": "The Elder Scrolls: Betrayal of the Second Era",
+  "year": 2025,
+  "bggId": 356080,
+  "templateVersion": 1,
+  "variant": "campaign",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Campaign won (endgame completed)",
+      "labelVi": "Thắng chiến dịch (hoàn thành endgame)",
+      "hint": "Win by completing the final endgame session; failing any guild quest step or the 12-day limit ends the campaign in defeat.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "sessionsCompleted",
+      "label": "Sessions completed",
+      "labelVi": "Số session hoàn thành",
+      "hint": "Guild quest sessions succeeded, including the endgame session.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative campaign of sessions: each session ends when the party succeeds or fails its guild quest (fail any step or exceed day 12 = campaign lost). After the second session, play the endgame session; completing it wins the campaign. Guild assist can be used once per campaign in sessions 1-2 only.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Session ends on guild quest success or failure; campaign ends on endgame success or failure"
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  },
+  "notes": "family: coop. No points; campaign legacy state (XP, journal, keywords) is not modelled. Rules text taken from a rulebook transcription (RulesPal), not the original PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/the-elder-scrolls-betrayal-of-the-second-era/rulebook",
+      "title": "The Elder Scrolls: Betrayal of the Second Era rulebook (RulesPal transcription)",
+      "type": "other",
+      "section": "Sessions / Failing a session / Final Victory and Defeat"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

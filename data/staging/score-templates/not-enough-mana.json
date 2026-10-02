@@ -1,0 +1,73 @@
+{
+  "slug": "not-enough-mana",
+  "name": "Not Enough Mana",
+  "year": 2022,
+  "bggId": 343990,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "lastWizard",
+      "label": "Last wizard standing",
+      "labelVi": "Pháp sư cuối cùng còn sống",
+      "hint": "Others are eliminated at 0 health or by Too Much Mana (K.O.) when unable to continue.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "finalHealth",
+      "label": "Health points remaining at end",
+      "labelVi": "Máu còn lại khi kết thúc",
+      "hint": "Informational only; max health is 10.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 10,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Eliminate all other wizards by reducing their health to 0 or by K.O. (Too Much Mana). The last wizard remaining wins.",
+  "endCondition": {
+    "type": "last-standing",
+    "target": 10,
+    "description": "Battle ends when one wizard remains; each wizard starts with 10 health"
+  },
+  "eliminationTracking": {
+    "resource": "health",
+    "start": 10,
+    "eliminatedCannotWin": true
+  },
+  "notes": "family: elimination-last-standing. A wizard is eliminated at 0 health or when having Too Much Mana and unable to continue. Team variant (4 or 6 wizards, last team standing wins) and astral-conjunction variant exist; not modelled separately.",
+  "sources": [
+    {
+      "url": "https://manual.notenoughmana.com",
+      "title": "Not Enough Mana manual (official)",
+      "type": "official-rulebook",
+      "section": "Goal; Setup (10 health); Game flow step 3-4; Variants"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/343990/not-enough-mana",
+      "title": "Not Enough Mana (BGG description)",
+      "type": "other",
+      "section": "Goal: last player wins"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,110 @@
+{
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 8,
+    "aggregate": "sum",
+    "endCondition": "8 rounds; Books scored at end of each age (rounds 2,4,6,8)"
+  },
+  "confidence": "medium",
+  "needsReview": true,
+  "name": "Nations",
+  "year": 2013,
+  "bggId": 126042,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "categories": [
+    {
+      "key": "gameVp",
+      "label": "Game VP tokens",
+      "labelVi": "VP token trong game",
+      "hint": "Sum of VP tokens at game end (incl. book scoring, may be negative).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "colonies",
+      "label": "Colonies",
+      "labelVi": "Thuộc địa",
+      "hint": "VP from Colonies.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wonders",
+      "label": "Wonders",
+      "labelVi": "Kỳ quan",
+      "hint": "VP from Wonders incl. special bonuses.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildingsMilitary",
+      "label": "Buildings and Military",
+      "labelVi": "Công trình và quân sự",
+      "hint": "VP per deployed Worker (1st, 2nd... printed values; excess gives none).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resources",
+      "label": "Resources sum",
+      "labelVi": "Tổng tài nguyên",
+      "hint": "Enter Gold+Food+Stone+Books+Military+Stability; 1 VP per full 10.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/10)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Resolved in order of play (earlier in turn order wins)."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Official rulebook not directly downloaded; scoring from RulesPal rulebook text (Final scoring A-E). Negative Stability/Military count in the Resources sum. Solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/nations/rulebook",
+      "title": "RulesPal rulebook summary",
+      "type": "other",
+      "section": "Final scoring"
+    }
+  ],
+  "slug": "nations",
+  "templateVersion": 1
+}

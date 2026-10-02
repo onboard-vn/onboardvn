@@ -1,0 +1,99 @@
+{
+  "slug": "imperial-settlers-2014",
+  "name": "Imperial Settlers",
+  "year": 2014,
+  "bggId": 154203,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "victoryTrack",
+      "label": "Victory Point track score",
+      "labelVi": "Điểm trên track VP",
+      "hint": "VP gained during play, as shown on the score board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "commonLocations",
+      "label": "Common Locations in Empire",
+      "labelVi": "Địa điểm thường",
+      "hint": "1 VP each at game end.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "factionLocations",
+      "label": "Faction Locations in Empire",
+      "labelVi": "Địa điểm phe",
+      "hint": "2 VP each at game end.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "extraEndVp",
+      "label": "Extra end-game VP from card abilities",
+      "labelVi": "VP thêm từ thẻ",
+      "hint": "E.g. Japanese Shrine/Gate; enter total of such bonuses (0 otherwise).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most Workers and Resources left (Goods are kept; Cleanup skipped in round 5)"
+    },
+    {
+      "description": "Then most cards left in hand"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. 5 rounds. Final score = VP track + printed VP of Locations in Empire (Common 1, Faction 2); razed/foundation cards do not count. Other factions/expansions (Atlanteans, Empires of the North, Why Can't We Be Friends) and solo/campaign not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/5b/22/14-imperial-settlers-rulebook.pdf",
+      "title": "Imperial Settlers rulebook (Portal Games)",
+      "type": "official-rulebook",
+      "section": "Game End and Ties"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

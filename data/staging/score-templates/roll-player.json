@@ -1,0 +1,143 @@
+{
+  "slug": "roll-player",
+  "name": "Roll Player",
+  "year": 2016,
+  "bggId": 169426,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "attributeGoals",
+      "label": "Attribute Goal stars",
+      "labelVi": "Sao từ mục tiêu thuộc tính",
+      "hint": "Total stars for the 6 Attribute Rows that meet the Class goal (exact number, range, or N+ after race/weapon adjustments).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "classColorDice",
+      "label": "Class-color dice",
+      "labelVi": "Xúc xắc cùng màu Class",
+      "hint": "1 star per die on your sheet matching your Class color.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 18,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "alignment",
+      "label": "Alignment card",
+      "labelVi": "Thẻ Alignment",
+      "hint": "Add or subtract the stars under your Alignment token.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "backstory",
+      "label": "Backstory matches",
+      "labelVi": "Khớp Backstory",
+      "hint": "Dice matching Backstory color+position: 0-1=0, 2-3=1, 4-5=3, 6=6 stars.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 1,
+          "3": 1,
+          "4": 3,
+          "5": 3,
+          "6": 6
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "armor",
+      "label": "Armor sets",
+      "labelVi": "Bộ giáp",
+      "hint": "Per set (Chain/Leather/Mystic): stars printed on cards for set size, +1 if set matches your Class color.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "traits",
+      "label": "Trait cards",
+      "labelVi": "Thẻ Trait",
+      "hint": "Sum stars from all Trait cards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most Gold remaining"
+    },
+    {
+      "categoryKey": "classColorDice",
+      "dir": "lowest",
+      "description": "Fewest dice in your Class color on your sheet"
+    },
+    {
+      "description": "Still tied: shared victory"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Reputation Stars are only scored at game end. Game ends after the round in which all players have filled every Attribute Row. Armor, Trait and Attribute Goal values are printed on cards, so they are entered as totals. Solo mode (not modelled): scoring identical plus 1 star per 8 Gold; rating Luminary 30-33, True Hero/Clan Leader higher, NPC <=21. Expansions not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0525/7753/4134/files/RollPlayer-Rulebook-Web.pdf?v=1700487079",
+      "title": "Roll Player Rulebook (Thunderworks Games)",
+      "type": "official-rulebook",
+      "section": "p.11-12 Game End / Final Scoring; p.12 tiebreakers; p.15 Solo"
+    },
+    {
+      "url": "https://www.rulespal.com/roll-player/rulebook",
+      "title": "Roll Player rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

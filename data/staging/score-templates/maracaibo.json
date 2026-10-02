@@ -1,0 +1,154 @@
+{
+  "slug": "maracaibo",
+  "name": "Maracaibo",
+  "year": 2019,
+  "bggId": 276025,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after round IV when a ship reaches space 22 and final scoring is done"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Victory point track before final scoring",
+      "labelVi": "Điểm trên track trước khi tính cuối game",
+      "hint": "Your marker on the VP track after interim scoring and play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalChoice",
+      "label": "Final scoring choice: score 2 VP",
+      "labelVi": "Lựa chọn cuối game: lấy 2 VP",
+      "hint": "Tick if you chose to score 2 VP instead of buying a project card or investing.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incomeVp",
+      "label": "Victory point income track",
+      "labelVi": "Track thu nhập điểm",
+      "hint": "VP at your marker position on the victory point income track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incomeDoubloon",
+      "label": "Doubloon income track (bonus VP)",
+      "labelVi": "Track thu nhập doubloon (điểm thưởng)",
+      "hint": "Extra VP at your marker position on the doubloon income track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cards",
+      "label": "Project cards and prestige buildings",
+      "labelVi": "Thẻ dự án và công trình prestige",
+      "hint": "VP on each project card in display (incl. one bought in final scoring) and on prestige investments. Cards in hand score nothing.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "influenceMajority",
+      "label": "Nations where you lead influence",
+      "labelVi": "Quốc gia dẫn đầu ảnh hưởng",
+      "hint": "3 VP per nation (France, Spain, England) where you have the most influence; ties each score; nothing if all markers still on 0.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "nobleRanks",
+      "label": "Noble ranks x nation multipliers",
+      "labelVi": "Cấp quý tộc x hệ số quốc gia",
+      "hint": "Per nation: noble rank (last red band reached) x multiplier (empty spaces + majority bonus 2/1/0 by ownership markers; ties get higher).",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "rankFrance * multFrance + rankSpain * multSpain + rankEngland * multEngland"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "rankFrance",
+        "multFrance",
+        "rankSpain",
+        "multSpain",
+        "rankEngland",
+        "multEngland"
+      ]
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: tied players are all winners."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Multiplier per nation = number of its empty spaces (all nation markers removed) plus majority bonus (most markers on board 2, second 1; tied nations get the higher value; if two tie for first the third gets 0). Career card completions and campaign story cards are scored during play. Solo variant and Uprising expansion not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/d7/d7/d9-maracaibo-rulebook.pdf",
+      "title": "Maracaibo rulebook EN (1j1ju copy)",
+      "type": "official-rulebook",
+      "section": "p.11 Final Scoring; p.12 Game End"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/maracaibo/game-rules.php",
+      "title": "Maracaibo rules summary (UltraBoardGames)",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

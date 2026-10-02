@@ -1,0 +1,57 @@
+{
+  "slug": "princess-jing",
+  "name": "Princess Jing",
+  "year": 2018,
+  "bggId": 218179,
+  "templateVersion": 1,
+  "variant": "The Princesses Run Away",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (princess reached her captain)",
+      "labelVi": "Thắng (công chúa đến chỗ đội trưởng)",
+      "hint": "First princess placed exactly in front of her waiting captain wins.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "The first player to place their princess exactly in front of the captain waiting for her wins the game.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends immediately when a princess reaches the captain's space."
+  },
+  "notes": "family: abstract-objective. No points; record which player won. Expert 'Legendary Animals' mode (secret objective cards) not modelled and its win rule is unverified. Verified against a rules summary; the official rulebook PDF (BGG file 193290) could not be downloaded.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/princess-jing/game-rules.php",
+      "title": "Princess Jing rules (Ultra BoardGames)",
+      "type": "other",
+      "section": "End of the Game"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/193290/princess-jing-rules-en-2019",
+      "title": "Princess Jing official rules EN (Matagot, BGG file)",
+      "type": "bgg-file",
+      "section": "not read - download blocked"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

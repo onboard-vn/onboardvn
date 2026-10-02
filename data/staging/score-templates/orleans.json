@@ -1,0 +1,117 @@
+{
+  "slug": "orleans",
+  "name": "Orléans",
+  "year": 2014,
+  "bggId": 164928,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "coins",
+      "label": "Coins",
+      "labelVi": "Đồng xu",
+      "hint": "1 VP per coin.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goods",
+      "label": "Goods tiles",
+      "labelVi": "Hàng hóa",
+      "hint": "Brocade 5, Wool 4, Wine 3, Cheese 2, Grain 1 VP each.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "brocade*5+wool*4+wine*3+cheese*2+grain*1"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "brocade",
+        "wool",
+        "wine",
+        "cheese",
+        "grain"
+      ]
+    },
+    {
+      "key": "stationsCitizens",
+      "label": "Trading stations + citizen tiles",
+      "labelVi": "Trạm giao thương + thẻ công dân",
+      "hint": "Each is worth VP equal to your Development Status.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "(stations+citizens)*devStatus"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "stations",
+        "citizens",
+        "devStatus"
+      ]
+    },
+    {
+      "key": "devTrack",
+      "label": "Development track position (tiebreak)",
+      "labelVi": "Vị trí track phát triển (phân định hòa)",
+      "hint": "Further ahead on the Development Track wins ties.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "devTrack",
+      "dir": "highest",
+      "description": "Player further ahead on the Development Track"
+    },
+    {
+      "description": "If still tied, multiple winners."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Before scoring, the player with the most Trading Stations takes the last Citizen Tile (nobody on a tie); include it in citizens. Only two secondary rule summaries were reachable (official rulebook PDF not retrieved), so confidence is medium.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/orleans/game-rules.php",
+      "title": "Orleans rules (Ultra BoardGames)",
+      "type": "other",
+      "section": "End of the Game"
+    },
+    {
+      "url": "https://www.rulespal.com/orleans/rulebook",
+      "title": "Orleans rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End of the Game and Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

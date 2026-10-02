@@ -1,0 +1,172 @@
+{
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 7,
+    "aggregate": "sum",
+    "endCondition": "7 rounds; Emperor scoring after rounds 3, 5, 7"
+  },
+  "confidence": "medium",
+  "needsReview": true,
+  "name": "Grand Austria Hotel Deluxe",
+  "year": 2015,
+  "bggId": 182874,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "VP on score track before final scoring",
+      "labelVi": "Điểm trên track (trước tính điểm cuối)",
+      "hint": "VP from guests, politics, rooms, Emperor scoring and Emperor tiles gained during play.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "staffVp",
+      "label": "Staff cards VP (game end)",
+      "labelVi": "VP từ thẻ nhân viên",
+      "hint": "Sum VP from game-end Staff cards (e.g. per occupied room/colour, per Staff played).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "roomRow1",
+      "label": "Occupied rooms, row 1",
+      "labelVi": "Phòng có khách, hàng 1",
+      "hint": "1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "roomRow2",
+      "label": "Occupied rooms, row 2",
+      "labelVi": "Phòng có khách, hàng 2",
+      "hint": "2 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "roomRow3",
+      "label": "Occupied rooms, row 3",
+      "labelVi": "Phòng có khách, hàng 3",
+      "hint": "3 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "roomRow4",
+      "label": "Occupied rooms, top row",
+      "labelVi": "Phòng có khách, hàng trên cùng",
+      "hint": "4 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "krones",
+      "label": "Krones left",
+      "labelVi": "Tiền krone còn lại",
+      "hint": "1 VP per krone.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "kitchen",
+      "label": "Dishes/drinks left in Kitchen",
+      "labelVi": "Món ăn/đồ uống còn trong bếp",
+      "hint": "1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cafeGuests",
+      "label": "Guests left in Café",
+      "labelVi": "Khách còn trong quán cà phê",
+      "hint": "-5 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -5
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most dishes, drinks and krones left (per RulesPal summary; verify in official rulebook)."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Deluxe edition assumed to use base-game scoring; Deluxe-only components (extra modules) not verified. Official rulebook PDF (BGG file 200467) was not downloadable (403); based on RulesPal summary only, so tiebreak and exact penalty values need confirmation. Row VP values assume rooms rows 1-4 as summarised.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/grand-austria-hotel/rulebook",
+      "title": "RulesPal rulebook summary",
+      "type": "other",
+      "section": "Game End and Final Scoring"
+    }
+  ],
+  "slug": "grand-austria-hotel-deluxe",
+  "templateVersion": 1
+}

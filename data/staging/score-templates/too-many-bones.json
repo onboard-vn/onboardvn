@@ -1,0 +1,61 @@
+{
+  "slug": "too-many-bones",
+  "name": "Too Many Bones",
+  "year": 2017,
+  "bggId": 192135,
+  "templateVersion": 1,
+  "variant": null,
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Tyrant defeated",
+      "labelVi": "Đánh bại Tyrant",
+      "hint": "Win by defeating the Tyrant boss",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "tyrantsDefeated",
+      "label": "Tyrants defeated",
+      "labelVi": "Số Tyrant bị hạ",
+      "hint": "Campaign progress counter",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative dice-driven campaign: the party wins by defeating the Tyrant before the run ends; no victory points.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends when the Tyrant is defeated (win) or all Gearlocs are knocked out in a way that ends the run (loss)"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. UNVERIFIED: official rulebook could not be retrieved (web search budget exhausted, BGG/publisher blocked). Win/lose summary from general knowledge; confirm exact victory/defeat conditions against the rulebook.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/192135/too-many-bones",
+      "title": "Too Many Bones (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

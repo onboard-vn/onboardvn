@@ -1,0 +1,55 @@
+{
+  "name": "Dixit",
+  "year": 2008,
+  "bggId": 39856,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 8
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Points on scoring track",
+      "labelVi": "Điểm trên track",
+      "hint": "Storyteller 3 if some but not all guess; 0 if all or none (others 2). Guessers 3; +1 per vote on your own card.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "target-score",
+    "target": 30,
+    "description": "Game ends at end of a turn when any player reaches or exceeds 30 points."
+  },
+  "notes": "family: race-to-goal. Per-turn scoring is tracked on the board; enter final track values. Ties share victory.",
+  "sources": [
+    {
+      "url": "https://cdn.svc.asmodee.net/production-libellud/uploads/2022/03/DIXIT_REFRESH_RULES_US-UK-AU_BD.pdf",
+      "title": "Dixit (Refresh) rulebook",
+      "type": "official-rulebook",
+      "section": "Solve the riddle; End of game"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Dixit_(board_game)",
+      "title": "Dixit - Wikipedia",
+      "type": "wiki",
+      "section": "Gameplay"
+    }
+  ],
+  "slug": "dixit",
+  "templateVersion": 1,
+  "needsReview": false,
+  "confidence": "high"
+}

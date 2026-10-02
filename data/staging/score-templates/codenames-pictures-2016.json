@@ -1,0 +1,81 @@
+{
+  "slug": "codenames-pictures-2016",
+  "name": "Codenames: Pictures",
+  "year": 2016,
+  "bggId": 198773,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 8
+  },
+  "mode": "team",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won",
+      "labelVi": "Đội thắng",
+      "hint": "Team covered all its agent cards, or the opponent touched the assassin",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "agentsFound",
+      "label": "Agents contacted",
+      "labelVi": "Số điệp viên đã tìm thấy",
+      "hint": "Cards covered with the team's colour (9 for starting team, 8 for the other)",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 9,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "assassinHit",
+      "label": "Contacted the assassin (lost)",
+      "labelVi": "Chạm sát thủ (thua)",
+      "hint": "Touching the assassin ends the game at once and that team loses",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "The first team to cover all of its agent cards wins, even on the opposing team's turn. A team that contacts the assassin loses immediately.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "All of one team's agents revealed, or assassin contacted"
+  },
+  "notes": "family: team-deduction. Same rules as Codenames with picture cards (20 cards, 9/8 agents). Official CGE rulebook PDF could not be downloaded; verified via UltraBoardGames Codenames rules only. Agent counts per team (9/8) and the 20-card grid are from general knowledge of the game, not from a fetched source.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/codenames/game-rules.php",
+      "title": "Codenames rules (UltraBoardGames)",
+      "type": "other",
+      "section": "Winning and losing; assassin"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/198773",
+      "title": "Codenames: Pictures (BGG)",
+      "type": "other",
+      "section": null
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

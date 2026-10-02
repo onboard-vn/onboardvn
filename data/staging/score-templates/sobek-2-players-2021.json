@@ -1,0 +1,93 @@
+{
+  "slug": "sobek-2-players-2021",
+  "name": "Sobek: 2 Players",
+  "year": 2021,
+  "bggId": 332944,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "soldSets",
+      "label": "Sold sets (tiles x Scarabs)",
+      "labelVi": "Bộ đã bán (số tile x Scarab)",
+      "hint": "For each set sold: number of tiles x total Scarabs on those tiles; enter the sum over all sets.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tokens",
+      "label": "Deben + Pirogue token values (incl. corruption bonus)",
+      "labelVi": "Giá trị token Deben + Pirogue (gồm thưởng tham nhũng)",
+      "hint": "Sum of Deben tokens and point-valued Pirogue tokens; include Deben drawn for having least Corruption (1 + 1 per 3 less).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "corruption",
+      "label": "Corruption points (tiebreaker, not added)",
+      "labelVi": "Điểm tham nhũng (chỉ để hoà)",
+      "hint": "Tiles on Corruption board + end-of-game leftover hand tiles + Pirogue corruption values. Already converted to Deben tokens.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "corruption",
+      "dir": "lowest",
+      "description": "Least corrupted player wins"
+    },
+    {
+      "description": "If still tied, players start a new game (no shared win)."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends immediately when a player has no valid action on their turn."
+  },
+  "notes": "family: set-collection. Unsold hand tiles go to Corruption (sets of 3+ still in the loser's hand are removed). The Corruption count is enter-only to document the Deben bonus; enter the bonus Deben in tokens.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/64/8d/d3-sobek-2-players-rulebook.pdf",
+      "title": "Sobek: 2 Players Rulebook",
+      "type": "official-rulebook",
+      "section": "End of the game; Corruption count; Final scoring (pp. 11-12)"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/sobek-2-players/",
+      "title": "Sobek: 2 Players review (Meeple Mountain)",
+      "type": "other",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

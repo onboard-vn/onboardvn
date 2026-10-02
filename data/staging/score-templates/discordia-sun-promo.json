@@ -1,0 +1,76 @@
+{
+  "slug": "discordia-sun-promo",
+  "name": "Discordia & Sun promo",
+  "year": 2022,
+  "bggId": 360206,
+  "templateVersion": 1,
+  "variant": "base game with Sun promo",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "lowest",
+  "scoringStyle": "objective-only",
+  "rounds": {
+    "count": 4,
+    "aggregate": "best",
+    "endCondition": "Game ends after the 4th year (incl. both end-of-year events), or immediately when a player has no workers left in reserve"
+  },
+  "categories": [
+    {
+      "key": "workersInReserve",
+      "label": "Workers left in your reserve",
+      "labelVi": "Số worker còn trong kho",
+      "hint": "Fewest wins. 0 at any time during the game = immediate win. At year 4 end, workers on City Tiles/Towers are not counted.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "workersOnTiles",
+      "label": "Workers placed on City Tiles/Towers",
+      "labelVi": "Worker đang đặt trên City Tile/Tháp",
+      "hint": "Tiebreaker only: fewest wins.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "workersOnTiles",
+      "dir": "lowest",
+      "description": "Fewest Workers placed on City Tiles/Towers wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "No victory points. Win at once by having no Workers in your reserve at any time; otherwise the player with the fewest Workers in reserve after the 4th year and its two end-of-year events wins.",
+  "notes": "family: race-objective. Sun promo (5 wooden discs placed on bonus spaces below the Seasons Boat) only adds variance to bonus spaces and does not change end scoring. Solo: win by having no workers in reserve by the end of year 4. workersOnTiles is tiebreaker only and has countsToTotal=false. Expansions (Magna etc.) not modelled.",
+  "sources": [
+    {
+      "url": "http://irongames.bplaced.net/extras/Discordia_rules_EN.pdf",
+      "title": "Discordia rulebook EN (Irongames)",
+      "type": "official-rulebook",
+      "section": "Goal of the game; 8. New year; 9. End of the game"
+    },
+    {
+      "url": "https://www.irongames.de/wordpress/index.php/the-games/discordia-2022/discordia-sun-2022/",
+      "title": "Discordia Sun (Irongames)",
+      "type": "publisher-page",
+      "section": "Promo description"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

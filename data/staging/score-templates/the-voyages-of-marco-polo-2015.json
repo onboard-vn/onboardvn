@@ -1,0 +1,155 @@
+{
+  "slug": "the-voyages-of-marco-polo-2015",
+  "name": "The Voyages of Marco Polo",
+  "year": 2015,
+  "bggId": 171623,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track (VP during play)",
+      "labelVi": "Điểm trên track",
+      "hint": "VP gained during play (contracts, trading post milestones, etc.).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goalCards",
+      "label": "Goal cards (2)",
+      "labelVi": "Thẻ mục tiêu (2)",
+      "hint": "VP from your 2 goal cards.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coins",
+      "label": "Coins left",
+      "labelVi": "Đồng xu còn lại",
+      "hint": "1 VP per 10 coins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/10)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "beijing",
+      "label": "Beijing trading post space",
+      "labelVi": "Trạm giao thương Bắc Kinh",
+      "hint": "VP printed on the space your Beijing post occupies (0 if none).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goods",
+      "label": "Goods left (Beijing only)",
+      "labelVi": "Hàng hóa còn lại (cần trạm Bắc Kinh)",
+      "hint": "1 VP per 2 goods, only if you have a Beijing trading post. Camels are not goods.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "contracts",
+      "label": "Contracts completed",
+      "labelVi": "Hợp đồng đã hoàn thành",
+      "hint": "Count for the most-contracts bonus.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "contractBonus",
+      "label": "Most contracts bonus",
+      "labelVi": "Thưởng nhiều hợp đồng nhất",
+      "hint": "7 VP to the player(s) with the most completed contracts.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 7
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "camels",
+      "label": "Camels (tiebreak)",
+      "labelVi": "Lạc đà (phân định hòa)",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "camels",
+      "dir": "highest",
+      "description": "Most camels"
+    },
+    {
+      "description": "If still tied, multiple winners."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Goal card values depend on which cards are dealt (printed on cards). Per UltraBoardGames, camels are not goods. Characters have special abilities not modelled. Only secondary summary found; official rulebook not retrieved.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/the-voyages-of-marco-polo/game-rules.php",
+      "title": "Voyages of Marco Polo rules (Ultra BoardGames)",
+      "type": "other",
+      "section": "End of the Game; Final Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

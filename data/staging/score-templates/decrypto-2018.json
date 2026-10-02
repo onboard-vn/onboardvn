@@ -1,0 +1,96 @@
+{
+  "slug": "decrypto-2018",
+  "name": "Decrypto",
+  "year": 2018,
+  "bggId": 225694,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 8
+  },
+  "mode": "team",
+  "winRule": "objective",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 8,
+    "aggregate": "sum",
+    "endCondition": "Team with 2 Interception tokens wins; 2 Miscommunication tokens loses; tiebreak after round 8"
+  },
+  "categories": [
+    {
+      "key": "interceptions",
+      "label": "Interception tokens",
+      "labelVi": "Token chặn mã",
+      "hint": "+1 each time the team intercepts the opponent's code; 2 wins",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "miscommunications",
+      "label": "Miscommunication tokens",
+      "labelVi": "Token hiểu sai mã",
+      "hint": "-1 each; 2 loses",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "won",
+      "label": "Team won",
+      "labelVi": "Đội thắng",
+      "hint": "Win by 2 interceptions or opponent's 2 miscommunications; otherwise tiebreak",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Net tokens (+1 per Interception, -1 per Miscommunication); most wins"
+    },
+    {
+      "description": "Each team guesses the opponent's four keywords; most correct wins"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "winCondition": "Collect 2 Interception tokens to win; collect 2 Miscommunication tokens to lose. If both or neither happen by the end of round 8, higher net token score wins, then most correctly guessed enemy keywords; else shared victory.",
+  "endCondition": {
+    "type": "objective",
+    "target": 2,
+    "description": "2 Interception or 2 Miscommunication tokens, or end of round 8"
+  },
+  "notes": "family: team-deduction. Text matches the official rules as reproduced by UltraBoardGames; official Scorpion Masque/IELLO PDF could not be downloaded to cross-check, so confidence is medium. Net score tiebreak is shown as per-category values but not counted to total.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/decrypto/game-rules.php",
+      "title": "Decrypto rules (UltraBoardGames)",
+      "type": "other",
+      "section": "Object of the Game; End of the Round; Tiebreaker"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/225694",
+      "title": "Decrypto (BGG)",
+      "type": "other",
+      "section": null
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

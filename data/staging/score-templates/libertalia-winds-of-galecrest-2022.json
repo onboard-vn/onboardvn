@@ -1,0 +1,59 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "winRule": "highest",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the third voyage"
+  },
+  "confidence": "high",
+  "needsReview": false,
+  "slug": "libertalia-winds-of-galecrest-2022",
+  "name": "Libertalia: Winds of Galecrest",
+  "year": 2022,
+  "bggId": 356033,
+  "playerCount": {
+    "min": 1,
+    "max": 6
+  },
+  "scoringStyle": "rounds",
+  "categories": [
+    {
+      "key": "voyageDoubloons",
+      "label": "Doubloons converted per voyage",
+      "labelVi": "Doubloon quy đổi mỗi chuyến",
+      "hint": "After each voyage add your doubloons (incl. anchor abilities, loot) to the score dial, then discard them.",
+      "scope": "player",
+      "input": "perRound",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tie: the tied player with the highest reputation wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: running-track-sum. Score dial caps at 99 after the third voyage; surplus is kept as doubloons (enter the true total here). Solo (Automa) rules in the separate Automa rulebook are not modelled.",
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/sh/4ij2wutuvyvfmmw/AADFVDF35NtqsQbsfPFtVyZ8a?dl=0",
+      "title": "Libertalia: Winds of Galecrest rulebook Lib_Rulebook_r9 (Stonemaier Games download folder)",
+      "type": "official-rulebook",
+      "section": "Score dials (p.5); Reputation; End of Game (p.6)"
+    },
+    {
+      "url": "https://stonemaiergames.com/games/libertalia/rules-faq/",
+      "title": "Stonemaier Libertalia Rules & FAQ",
+      "type": "publisher-page",
+      "section": "Rulebook download link"
+    }
+  ]
+}

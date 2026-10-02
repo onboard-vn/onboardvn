@@ -1,0 +1,53 @@
+{
+  "slug": "dice-throne-adventures",
+  "name": "Dice Throne Adventures",
+  "year": 2022,
+  "bggId": 281332,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 6
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Heroes won (scenario/boss defeated)",
+      "labelVi": "Phe anh hung thang (hoan thanh kich ban)",
+      "hint": "Mark whether the team beat the scenario",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative: players win by beating the scenario's boss/objective before the heroes are defeated.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Scenario objective met, or heroes defeated."
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  },
+  "notes": "family: coop. Win/lose only; specific end conditions per scenario/campaign not verified. Official rulebook not obtained.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/281332",
+      "title": "Dice Throne Adventures (BGG)",
+      "type": "other",
+      "section": "game page (not readable, blocked)"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

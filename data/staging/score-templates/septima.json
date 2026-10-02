@@ -1,0 +1,157 @@
+{
+  "slug": "septima",
+  "name": "Septima",
+  "year": 2023,
+  "bggId": 360692,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "wisdomTokens",
+      "label": "Wisdom tokens earned during the game",
+      "labelVi": "Token Trí tuệ đã nhận",
+      "hint": "Tally of Wisdom tokens collected.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "loyalCitizens",
+      "label": "Loyal Citizens in Crowd / Trial Chambers",
+      "labelVi": "Dân trung thành",
+      "hint": "3-4 Loyal: 3 Wisdom; 5-6 Loyal: 7 Wisdom.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "expr",
+        "expr": "value >= 5 ? 7 : (value >= 3 ? 3 : 0)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "patientTracks",
+      "label": "Patient tracks (highest level on each)",
+      "labelVi": "Thanh bệnh nhân",
+      "hint": "Wisdom printed at the highest level reached on each of the three Patient tracks.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "allThreeLevels",
+      "label": "Levels reached on all three Patient tracks",
+      "labelVi": "Cấp đạt ở cả 3 thanh",
+      "hint": "6 Wisdom for each level reached on all three tracks (lowest of the three).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 6
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "luckCharms",
+      "label": "Remaining Good Luck Charms",
+      "labelVi": "Bùa may mắn còn lại",
+      "hint": "2 Wisdom each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "potions",
+      "label": "Remaining Potions",
+      "labelVi": "Thuốc còn lại",
+      "hint": "1 Wisdom each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pairs",
+      "label": "Pairs of Ingredients/Crystals",
+      "labelVi": "Cặp nguyên liệu/tinh thể",
+      "hint": "1 Wisdom per pair of remaining Ingredients and Crystals in any combination.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "book",
+      "label": "Book of Divinations objectives",
+      "labelVi": "Mục tiêu Book of Divinations",
+      "hint": "Score met objectives, up to one per Witch in your Coven.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": "highest",
+      "description": "Most Witches in the Coven"
+    },
+    {
+      "description": "If still tied, the tied players share the title of Septima."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Final scoring happens after the Summer (4th) Season trial(s). Patient track values are printed on the player board so the total is a scorer input; track 'pairs' counts combined Ingredients and Crystals. Solo (Black Widow) mode not modelled. Loyal Citizen thresholds from the Trial & Scoring Aid text.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/septima.pdf",
+      "title": "Septima rulebook (bghub)",
+      "type": "official-rulebook",
+      "section": "End of the Game; Trial & Scoring Aid (Final Scoring side)"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,99 @@
+{
+  "slug": "caylus-2005",
+  "name": "Caylus",
+  "year": 2005,
+  "bggId": 18602,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "prestige",
+      "label": "Prestige points on track",
+      "labelVi": "Điểm uy tín trên thanh điểm",
+      "hint": "Prestige points gained during play (buildings, castle, church, favors, etc.).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gold",
+      "label": "Gold cubes left",
+      "labelVi": "Khối vàng còn lại",
+      "hint": "3 prestige points per gold cube.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cubes",
+      "label": "Other cubes left",
+      "labelVi": "Khối nguyên liệu còn lại",
+      "hint": "1 prestige point per 3 cubes (food, wood, stone, cloth; not gold).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/3)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "deniers",
+      "label": "Deniers left",
+      "labelVi": "Đồng denier còn lại",
+      "hint": "1 prestige point per 4 deniers.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/4)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: all tied players win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends right after Towers scoring (bailiff reaches the Towers scoring space or all 14 Tower parts are built)."
+  },
+  "notes": "family: running-track. Final conversion rates are from the main rulebook; cube count excludes gold. Two-player rules and Magna Carta changes were not checked. Verified only via a RulesPal mirror, not the PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/caylus/rulebook",
+      "title": "Caylus rulebook (RulesPal mirror)",
+      "type": "other",
+      "section": "End of the Game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

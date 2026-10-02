@@ -1,0 +1,81 @@
+{
+  "slug": "horseless-carriage",
+  "name": "Horseless Carriage",
+  "year": 2022,
+  "bggId": 350205,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 7,
+    "aggregate": "sum",
+    "endCondition": "Game ends in phase 6 once the timecard marker has been turned over, or in year 7 when no factory floor expansion could be placed in phase 3"
+  },
+  "categories": [
+    {
+      "key": "wealth",
+      "label": "Wealth (wealth accumulation track)",
+      "labelVi": "Tài sản (track tích lũy)",
+      "hint": "Total dollars scored from car sales in phase 5: price marker of the price segment per car, +$1 per truck, +$2 per sports car. Record the final track value.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "salesFocus",
+      "label": "Sales focus position (tiebreak)",
+      "labelVi": "Vị trí Sales focus (phân định hòa)",
+      "hint": "Higher position on the engineering/sales focus track wins ties; enter the focus-track value (higher = more sales focus).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "salesFocus",
+      "dir": "highest",
+      "description": "Among tied players, the one with the highest sales focus wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: running-track. Wealth is accumulated only from car sales during phase 5 each year; no end-game bonus is stated in the rulebook text consulted. The official PDF (cardboardappendix mirror) is image-only/corrupt for text extraction here, so rules were read from the Cardboard Appendix transcription of the official rulebook and cross-checked with RulesPal; hence not marked high. 2nd edition clarifications not separately verified.",
+  "sources": [
+    {
+      "url": "https://cardboardappendix.com/games/horseless-carriage/rulebook/",
+      "title": "Horseless Carriage rulebook (Cardboard Appendix transcription)",
+      "type": "other",
+      "section": "Phase 5 Sell, Sell, Sell!; Phase 6 Finish?; Victory"
+    },
+    {
+      "url": "https://www.rulespal.com/horseless-carriage/rulebook",
+      "title": "Horseless Carriage rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Phase 6 Finish?; Winner determination"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/251309/english-rulebook",
+      "title": "Horseless Carriage English rulebook (BGG file, Splotter)",
+      "type": "bgg-file",
+      "section": "Victory"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

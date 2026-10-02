@@ -1,0 +1,90 @@
+{
+  "slug": "townsfolk-tussle",
+  "name": "Townsfolk Tussle",
+  "year": 2022,
+  "bggId": 312859,
+  "templateVersion": 1,
+  "variant": "4-round game",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": {
+    "count": 4,
+    "aggregate": "rounds-won",
+    "endCondition": "Game ends when the final Ruffian (round 4, the Final Fight) is defeated or all townsfolk are knocked out in a fight"
+  },
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won (final Ruffian defeated)",
+      "labelVi": "Cả đội thắng (hạ Ruffian cuối)",
+      "hint": "Win by defeating the Ruffian in the Final Fight.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "ruffiansDefeated",
+      "label": "Ruffians defeated",
+      "labelVi": "Số Ruffian đã hạ",
+      "hint": "One Ruffian per round, 4 in the standard game.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "specialObjective",
+      "label": "Final Fight special objective completed",
+      "labelVi": "Hoàn thành mục tiêu đặc biệt của Final Fight",
+      "hint": "Optional bonus objective of the Final Fight; it leads to a different ending.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "optional": true
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "A game is 4 rounds (3 in 3-Round Mode); each round is a Town Phase then a Fight Phase against one Ruffian. Defeat the Ruffian in every fight, including the Final Fight, to win. You lose if all townsfolk are knocked out during a fight (or all remaining townsfolk are removed with no way to return), or if a Final Fight's own lose condition triggers. A Final Fight can end in 3 endings: win, win with its special objective, or loss.",
+  "endCondition": {
+    "type": "objective",
+    "target": 4,
+    "description": "Defeat 4 Ruffians (3 in 3-Round Mode); the last is the Final Fight"
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  },
+  "notes": "family: coop. No victory points; Coins and Feats of Mettle only feed in-game progression. Players may also play solo. Ruffian count is 3 in 3-Round Mode (rules on p.34). Several Ruffians and Final Fights have their own extra lose conditions (scenario cards).",
+  "sources": [
+    {
+      "url": "https://drive.google.com/file/d/11UREsaMg7x8CDx7-qevD393ysy1IYrj9/view?usp=sharing",
+      "title": "Townsfolk Tussle Rules & Results Booklet (Panic Roll, linked from publisher page)",
+      "type": "official-rulebook",
+      "section": "p.20 Losing the Game / Defeating the Ruffian; p.21 Final Fight; p.22 Results"
+    },
+    {
+      "url": "https://www.panicroll.com/townsfolk-tussle",
+      "title": "Townsfolk Tussle (Panic Roll product page)",
+      "type": "publisher-page",
+      "section": "rulebook link"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

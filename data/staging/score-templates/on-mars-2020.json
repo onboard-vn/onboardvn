@@ -1,0 +1,203 @@
+{
+  "slug": "on-mars-2020",
+  "name": "On Mars",
+  "year": 2020,
+  "bggId": 184267,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "ongoingOP",
+      "label": "Opportunity Points on track (before final scoring)",
+      "labelVi": "OP đang có trên track",
+      "hint": "Current OP on the score track when the game ends.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "progressCubes",
+      "label": "Progress cubes in Progress area",
+      "labelVi": "Khối tiến bộ",
+      "hint": "1/2/4/7/11 OP for 1/2/3/4/5 cubes.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 2,
+          "3": 4,
+          "4": 7,
+          "5": 11
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 5
+    },
+    {
+      "key": "ships",
+      "label": "Ships in Hangar",
+      "labelVi": "Tàu trong Hangar",
+      "hint": "3 OP per ship.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "colonist",
+      "label": "Highest colonist position (OP printed next to it)",
+      "labelVi": "Điểm của colonist cao nhất",
+      "hint": "After returning colonists to Living Quarters, read OP next to your highest colonist.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "techTiles",
+      "label": "Tech tiles in Laboratory (sum of column OP)",
+      "labelVi": "Tech tile trong phòng thí nghiệm",
+      "hint": "Each tile = OP printed under its column.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "advBuildingsL1",
+      "label": "Advanced buildings from Level 1 blueprints",
+      "labelVi": "Công trình nâng cao (Lv1)",
+      "hint": "3 OP each.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "advBuildingsL3",
+      "label": "Advanced buildings from Level 3 blueprints",
+      "labelVi": "Công trình nâng cao (Lv3)",
+      "hint": "5 OP each.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "unbuiltL1",
+      "label": "Unbuilt Level 1 blueprints",
+      "labelVi": "Blueprint Lv1 chưa xây",
+      "hint": "-3 OP each.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "unbuiltL3",
+      "label": "Unbuilt Level 3 blueprints",
+      "labelVi": "Blueprint Lv3 chưa xây",
+      "hint": "-5 OP each.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -5
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "scientists",
+      "label": "Scientist matches (advanced buildings of indicated types, any owner)",
+      "labelVi": "Nhà khoa học",
+      "hint": "3 OP per advanced building of the type shown on each Scientist; count total matches across all your Scientists.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "earthContracts",
+      "label": "Earth Contracts net OP",
+      "labelVi": "Hợp đồng Trái Đất (ròng)",
+      "hint": "Add OP of completed contracts, subtract OP of failed ones (may be negative).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most Crystals"
+    },
+    {
+      "description": "Most advanced buildings"
+    },
+    {
+      "description": "Most Progress cubes in Progress area"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Triggered when the Remaining Missions marker reaches the end of its track (3 missions and/or high colony level); finish the round, then play 1 more round without Shuttle phase"
+  },
+  "notes": "family: point-salad-euro. Verified only against a secondary rules summary (UltraBoardGames), not the official rulebook text; official PDF not retrievable. Earth contract OP and tech column OP are component-printed values entered by the scorer. Mid-game OP (complexes, missions etc.) are tracked on the score track.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/on-mars/game-rules.php",
+      "title": "How to play On Mars (UltraBoardGames)",
+      "type": "other",
+      "section": "End of the Game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

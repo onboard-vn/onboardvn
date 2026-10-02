@@ -1,0 +1,118 @@
+{
+  "slug": "snow-colony-2025",
+  "name": "Snow Colony",
+  "year": 2025,
+  "bggId": 447267,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "buildingPoints",
+      "label": "Building points (bottom-right of building cards)",
+      "labelVi": "Điểm công trình",
+      "hint": "Sum the VP printed on every building in your town (end-game scoring).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "runningPoints",
+      "label": "Points gained during play",
+      "labelVi": "Điểm tích lũy trong ván",
+      "hint": "VP collected by landing on spaces during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goalCards",
+      "label": "Bonus goal cards",
+      "labelVi": "Thẻ mục tiêu thưởng",
+      "hint": "Sum VP of goal cards fulfilled (starting goal and any bought with fish).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "touristCards",
+      "label": "Tourist (visitor) cards fulfilled",
+      "labelVi": "Thẻ du khách hoàn thành",
+      "hint": "Sum VP of fulfilled tourist cards; unfulfilled ones score nothing.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "igloos",
+      "label": "Igloos placed",
+      "labelVi": "Số igloo đã đặt",
+      "hint": "Points depend on the number of igloos placed; enter the VP from the igloo scoring track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "objective",
+    "target": 8,
+    "description": "Game ends when a player places their 8th igloo; the current round is completed so everyone has equal turns."
+  },
+  "notes": "family: end-game-categories. Igloo VP values, tiebreaker, and exact tourist/goal values are printed on components or in the rulebook and were not verified; modelled as scorer inputs. Based on BGG rules threads and a review (publisher's rulebook not downloadable). Igloos are earned by completing a loop of your town or accumulating 5 staff penguins on a building.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/thread/3662719/game-end",
+      "title": "Game End (BGG rules thread, publisher rep reply)",
+      "type": "bgg-forum",
+      "section": "game ends with eighth igloo, full round played"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/3581666",
+      "title": "Snow Colony Review (BGG)",
+      "type": "bgg-forum",
+      "section": "final scoring: buildings, in-game points, goal cards, igloos"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/3649027",
+      "title": "Staff Penguins required for building points? (BGG)",
+      "type": "bgg-forum",
+      "section": "building points are end-game scoring"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

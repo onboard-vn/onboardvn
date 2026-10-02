@@ -1,0 +1,67 @@
+{
+  "slug": "dnup-2025",
+  "name": "DNUP",
+  "year": 2025,
+  "bggId": 432456,
+  "templateVersion": 1,
+  "variant": "3-5 players",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "First player to reach 4 or more letter tokens wins immediately"
+  },
+  "categories": [
+    {
+      "key": "letterTokens",
+      "label": "Letter tokens won per round",
+      "labelVi": "Số token chữ thắng mỗi ván",
+      "hint": "First player out of cards: 2 tokens; second player out: 1 token (round ends then).",
+      "scope": "player",
+      "input": "perRound",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "Not needed: game ends immediately when a player reaches 4+ tokens, after that round's awards."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "First player to get 4 or more letter tokens wins immediately. In the 2-player game, first to win 2 rounds wins.",
+  "endCondition": {
+    "type": "target-score",
+    "target": 4,
+    "description": "Round ends when the second player empties their hand."
+  },
+  "notes": "family: climbing-shedding. 2-player variant: round winner takes the round (no tokens), first to 2 round wins; use letterTokens = 1 per round won and win at 2. BGG description (secondary) differs slightly: most points once someone has 4+; official rulebook says immediate win at 4+.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/dnup.pdf",
+      "title": "DNUP rulebook (Asmodee, mirrored by bghub)",
+      "type": "official-rulebook",
+      "section": "End of the Round; End of the Game; 2-Player Game"
+    },
+    {
+      "url": "https://api.geekdo.com/api/geekitems?objectid=432456&objecttype=thing",
+      "title": "BGG DNUP description",
+      "type": "other",
+      "section": "description"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

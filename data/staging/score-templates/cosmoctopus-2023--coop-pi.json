@@ -1,0 +1,65 @@
+{
+  "slug": "cosmoctopus-2023--coop-pi",
+  "name": "Cosmoctopus",
+  "year": 2023,
+  "bggId": 362020,
+  "templateVersion": 1,
+  "variant": "coop-pi",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "All players gained 8 tentacles before the Private Investigator",
+      "labelVi": "Tất cả người chơi đủ 8 xúc tu trước Thám tử",
+      "hint": "Team wins only if every player reaches 8 tentacles before the PI does.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "piTentacles",
+      "label": "Private Investigator tentacles (progress tracker)",
+      "labelVi": "Xúc tu của Thám tử (thanh tiến độ)",
+      "hint": "PI gains 1 tentacle at 8 of a resource, or 2 plus Forbidden Knowledge at 13. PI wins at 8.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 8,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "endCondition": {
+    "type": "target-score",
+    "target": 8,
+    "description": "PI wins by reaching 8 tentacles first; players win when each of them has gained 8 tentacles."
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "winCondition": "Every player must gain 8 tentacles before the Private Investigator does; if the PI reaches 8 first, everyone loses.",
+  "notes": "family: coop. Solo play uses the same PI rules. PI difficulty by starting resources: Naive 1, Tenacious 2, Relentless 3, Obsessive 5 of each type. Each player who reaches 8 leaves play and donates their Move bonus to others.",
+  "sources": [
+    {
+      "url": "https://luckyduckgames.com/usa/index.php?controller=attachment&id_attachment=1336",
+      "title": "Cosmoctopus official rulebook EN (Paper Fort Games / Lucky Duck)",
+      "type": "official-rulebook",
+      "section": "p.8 Gaining Tentacles; p.9 Winning the Game; p.12 express game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

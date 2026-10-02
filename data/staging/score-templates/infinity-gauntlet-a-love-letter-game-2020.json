@@ -1,0 +1,89 @@
+{
+  "templateVersion": 1,
+  "slug": "infinity-gauntlet-a-love-letter-game-2020",
+  "name": "Infinity Gauntlet: A Love Letter Game",
+  "year": 2020,
+  "bggId": 304285,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "asymmetric",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Winning side",
+      "labelVi": "Phe thắng",
+      "hint": "Tick if the scored side won (Thanos or Heroes).",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "thanosSnapped",
+      "label": "Thanos snapped with all 6 Infinity Stones",
+      "labelVi": "Thanos búng tay với đủ 6 Đá Vô Cực",
+      "hint": "Instant Thanos win.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "roleKey": "thanos"
+    }
+  ],
+  "tiebreakers": [],
+  "roles": [
+    {
+      "key": "thanos",
+      "label": "Thanos (team of 1)",
+      "labelVi": "Thanos",
+      "winCondition": "Reduce the hero life track to 0, or snap with all 6 Infinity Stones in front of / in hand on his turn.",
+      "categoryKeys": [
+        "won",
+        "thanosSnapped"
+      ]
+    },
+    {
+      "key": "heroes",
+      "label": "Heroes (all other players)",
+      "labelVi": "Các anh hùng",
+      "winCondition": "Reduce Thanos's life track to 0.",
+      "categoryKeys": [
+        "won"
+      ]
+    }
+  ],
+  "winCondition": "Heroes win immediately when Thanos's life reaches 0. Thanos wins immediately when the hero life reaches 0, or on his turn if all 6 Infinity Stones are faceup in front of him and/or in his hand and he snaps.",
+  "endCondition": {
+    "type": "last-standing",
+    "target": null,
+    "description": "Either team's life track reaches 0, or Thanos snaps"
+  },
+  "sharedVictoryOnTie": false,
+  "notes": "family: asymmetric-team. 1 vs many; no points. Starting life: hero track at top space, Thanos track set by total player count. 2-player game: hero takes 2 turns per Thanos turn. Rulebook text per UltraBoardGames summary (no official PDF downloaded).",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/infinity-gauntlet/game-rules.php",
+      "title": "Infinity Gauntlet rules (UltraBoardGames)",
+      "type": "other",
+      "section": "End of the Game"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/304285/infinity-gauntlet-a-love-letter-game",
+      "title": "Infinity Gauntlet on BoardGameGeek (identification)",
+      "type": "other",
+      "section": null
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,83 @@
+{
+  "slug": "everbloom-2025",
+  "name": "Everbloom",
+  "year": 2025,
+  "bggId": 369897,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "playPoints",
+      "label": "Points scored during play",
+      "labelVi": "Điểm ghi trong lúc chơi",
+      "hint": "Points from pollinating hybrid beings, as shown on the score track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "nectarBiomes",
+      "label": "Nectar points by biome",
+      "labelVi": "Điểm Nectar theo biome",
+      "hint": "End-of-game points for nectar collected in each biome (values per the rulebook / faction board).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bloomTrack",
+      "label": "Bloom track progress",
+      "labelVi": "Tiến độ Bloom track",
+      "hint": "End-of-game points for your position on the bloom track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not verified; check the rulebook."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-bidding-set-collection (unverified). Rulebook PDF (BGG file 328239) could not be downloaded; only the designer's description was used: after the final round points come from nectar per biome and bloom track progress. Exact values, tiebreak and whether 'points during play' exist on a track are unverified. Rival/solo modes not modelled.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/369897/everbloom",
+      "title": "Everbloom (BGG, designer description)",
+      "type": "other",
+      "section": "Description"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/328239/everbloom-rulebook-v10",
+      "title": "Everbloom main rulebook v2 (Nerdvana Games, not read)",
+      "type": "official-rulebook",
+      "section": "Final scoring (not verified)"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

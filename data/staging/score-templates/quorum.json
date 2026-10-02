@@ -1,0 +1,249 @@
+{
+  "slug": "quorum",
+  "name": "Quorum",
+  "year": 2025,
+  "bggId": 429851,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "africaProvince",
+      "label": "Africa province",
+      "labelVi": "Tỉnh Châu Phi",
+      "hint": "Counted: cards with power 1 in your play zone. Rank 1 = full influence token value, rank 2 = value minus 1, etc. Rank 0 if you never advanced here.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cards",
+        "influence",
+        "rank"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "rank>0?cards*max(0,influence-rank+1):0"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "asiaProvince",
+      "label": "Asia province",
+      "labelVi": "Tỉnh Châu Á",
+      "hint": "Counted: cards with power 2 in your play zone. Rank 1 = full influence token value, rank 2 = value minus 1, etc. Rank 0 if you never advanced here.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cards",
+        "influence",
+        "rank"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "rank>0?cards*max(0,influence-rank+1):0"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "germaniaProvince",
+      "label": "Germania province",
+      "labelVi": "Tỉnh Germania",
+      "hint": "Counted: Intrigue cards in your play zone. Rank 1 = full influence token value, rank 2 = value minus 1, etc. Rank 0 if you never advanced here.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cards",
+        "influence",
+        "rank"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "rank>0?cards*max(0,influence-rank+1):0"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "galliaProvince",
+      "label": "Gallia province",
+      "labelVi": "Tỉnh Gallia",
+      "hint": "Counted: Military cards in your play zone. Rank 1 = full influence token value, rank 2 = value minus 1, etc. Rank 0 if you never advanced here.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cards",
+        "influence",
+        "rank"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "rank>0?cards*max(0,influence-rank+1):0"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "hispaniaProvince",
+      "label": "Hispania province",
+      "labelVi": "Tỉnh Hispania",
+      "hint": "Counted: Trade cards in your play zone. Rank 1 = full influence token value, rank 2 = value minus 1, etc. Rank 0 if you never advanced here.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cards",
+        "influence",
+        "rank"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "rank>0?cards*max(0,influence-rank+1):0"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "macedoniaProvince",
+      "label": "Macedonia province",
+      "labelVi": "Tỉnh Macedonia",
+      "hint": "Counted: Architecture cards in your play zone. Rank 1 = full influence token value, rank 2 = value minus 1, etc. Rank 0 if you never advanced here.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cards",
+        "influence",
+        "rank"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "rank>0?cards*max(0,influence-rank+1):0"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "military",
+      "label": "Military cards",
+      "labelVi": "Bài Quân sự",
+      "hint": "5 per pair of consecutive power values; 10 per 1-2-3 trio (a trio scores 10 only).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "pairs",
+        "trios"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "5*pairs+10*trios"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "trade",
+      "label": "Trade cards",
+      "labelVi": "Bài Thương mại",
+      "hint": "Per product type: 2 matching = 2, 3 = 4, 4+ = 6; single products score 0.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "sets2",
+        "sets3",
+        "sets4plus"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "2*sets2+4*sets3+6*sets4plus"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "architecture",
+      "label": "Architecture cards",
+      "labelVi": "Bài Kiến trúc",
+      "hint": "Number of different architecture cards: 1=1, 2=4, 3=8, 4=12, 5=18, 6=24.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 4,
+          "3": 8,
+          "4": 12,
+          "5": 18,
+          "6": 24
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "intrigue",
+      "label": "Intrigue cards",
+      "labelVi": "Bài Âm mưu",
+      "hint": "Intrigue cards x cards with power 3 in your play zone.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "intrigueCards",
+        "power3Cards"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "intrigueCards*power3Cards"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "totalInfluence",
+      "label": "Total province influence",
+      "labelVi": "Tổng ảnh hưởng các tỉnh",
+      "hint": "Tiebreaker only: higher total province advancement wins.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "totalInfluence",
+      "dir": "highest",
+      "description": "Highest total influence across provinces"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. 12 turns, everything scores at the end. Province scoring in order Africa, Asia, Germania, Gallia, Hispania, Macedonia: first-ranked player multiplies the relevant card count by the province's influence token (1-4, modified by God cards); second-ranked uses token minus 1; only players who advanced at least one space score; same-space ties favour the lower marker. Sources disagree whether 3rd/4th rank continue down (floor 0): the formula allows it, enter rank 0 for non-scoring players. Not verified against the official Devir rulebook PDF (not downloadable); based on detailed reviews. Military trio vs pairs interaction per the review's example (trio = 10, not 10 plus pairs).",
+  "sources": [
+    {
+      "url": "https://padresfrikis.com/resena-quorum-juego-de-mesa/",
+      "title": "Quorum reseña (Padres Frikis) - rules walkthrough",
+      "type": "other",
+      "section": "Final de la partida, puntuaciones y ganador/a"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/quorum/",
+      "title": "Quorum Game Review (Meeple Mountain)",
+      "type": "other",
+      "section": "Scoring description"
+    },
+    {
+      "url": "https://www.elclubdante.es/quorum-resena-by-gixmo/",
+      "title": "Quorum reseña (El Club Dante)",
+      "type": "other",
+      "section": "Puntuación"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,94 @@
+{
+  "slug": "the-quest-for-el-dorado",
+  "name": "The Quest for El Dorado",
+  "year": 2017,
+  "bggId": 217372,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "reachedElDorado",
+      "label": "Reached El Dorado (all required pieces)",
+      "labelVi": "Đã tới El Dorado",
+      "hint": "2-player game: both pieces must arrive.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "blockades",
+      "label": "Blockade tiles collected",
+      "labelVi": "Số Blockade đã thu",
+      "hint": "Tiebreaker: most blockades.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "highestBlockade",
+      "label": "Power value of highest blockade tile",
+      "labelVi": "Giá trị blockade cao nhất",
+      "hint": "Second tiebreaker.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "blockades",
+      "dir": "highest",
+      "description": "Most blockades collected among tied finishers"
+    },
+    {
+      "categoryKey": "highestBlockade",
+      "dir": "highest",
+      "description": "Highest-power blockade"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "First to reach one of the 3 El Dorado spaces triggers a final round so everyone has equal turns; among those who reach El Dorado, tie-break by most blockades then highest-power blockade.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Final round after a player reaches a finishing space; game over when the round completes."
+  },
+  "notes": "family: race-to-goal. 2-player game requires both playing pieces to reach El Dorado. Blockade tile values printed on tiles. Based on rule summaries; official rulebook PDF not downloaded.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/the-quest-for-el-dorado/game-rules.php",
+      "title": "Quest for El Dorado rules (Ultraboardgames)",
+      "type": "other",
+      "section": "End of game"
+    },
+    {
+      "url": "https://www.rulespal.com/the-quest-for-el-dorado/rulebook",
+      "title": "El Dorado rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Game end / ties"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

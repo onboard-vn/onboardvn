@@ -1,0 +1,78 @@
+{
+  "slug": "a-gentle-rain-2021",
+  "name": "A Gentle Rain",
+  "year": 2021,
+  "bggId": 334011,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 1
+  },
+  "mode": "solo",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "blossoms",
+      "label": "Blossoms opened",
+      "labelVi": "Số hoa nở",
+      "hint": "One blossom opens each time a 2x2 square of touching tiles is completed. All 8 lily types must bloom to win.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 8,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tilesLeft",
+      "label": "Unplayed tiles left",
+      "labelVi": "Số tile còn lại",
+      "hint": "Tiles remaining in the stack when the 8th blossom opens; discarded tiles do not count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Solo: win by getting all 8 lily types to bloom before the tile stack runs out; the score (blossoms + tiles left) measures how well.",
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "Ends when all 8 blossoms are open or the tiles run out."
+  },
+  "notes": "family: solo-tile-laying. Score formula (1 per blossom + 1 per unplayed tile; discarded tiles score nothing) inferred from BGG designer/player forum answers (e.g. 8 blossoms + 4 tiles left = 12); official rulebook PDF could not be downloaded, so numbers should be checked against the rulebook.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/thread/3446557",
+      "title": "BGG forum: Do the discarded tiles influence my score?",
+      "type": "bgg-forum",
+      "section": "thread replies"
+    },
+    {
+      "url": "https://boardgamegeek.com/thread/3581980",
+      "title": "BGG solo review: goal is 8 blooms with as many tiles left as possible",
+      "type": "bgg-forum",
+      "section": "review text"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/334011/a-gentle-rain",
+      "title": "A Gentle Rain (BGG page / publisher description)",
+      "type": "other",
+      "section": "description"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

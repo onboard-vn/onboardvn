@@ -1,0 +1,194 @@
+{
+  "name": "Terra Mystica",
+  "year": 2012,
+  "bggId": 120677,
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "winRule": "highest",
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "Victory points on track (during play)",
+      "labelVi": "Điểm trên track (trong ván)",
+      "hint": "VP gained during the 6 rounds (scoring tiles, favors, towns, etc.).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fireCult",
+      "label": "Fire cult track ranking",
+      "labelVi": "Xếp hạng nấc Lửa",
+      "hint": "Highest 8 VP, 2nd 4, 3rd 2; ties split and round down. Must be above space 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4,
+            2
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "waterCult",
+      "label": "Water cult track ranking",
+      "labelVi": "Xếp hạng nấc Nước",
+      "hint": "Highest 8 VP, 2nd 4, 3rd 2; ties split and round down. Must be above space 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4,
+            2
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "earthCult",
+      "label": "Earth cult track ranking",
+      "labelVi": "Xếp hạng nấc Đất",
+      "hint": "Highest 8 VP, 2nd 4, 3rd 2; ties split and round down. Must be above space 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4,
+            2
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "airCult",
+      "label": "Air cult track ranking",
+      "labelVi": "Xếp hạng nấc Khí",
+      "hint": "Highest 8 VP, 2nd 4, 3rd 2; ties split and round down. Must be above space 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4,
+            2
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "network",
+      "label": "Largest connected area (buildings)",
+      "labelVi": "Khu vực liên kết lớn nhất",
+      "hint": "Count buildings in largest connected group. 1st 18, 2nd 12, 3rd 6; ties split.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            18,
+            12,
+            6
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coins",
+      "label": "Coins after converting resources",
+      "labelVi": "Xu sau khi quy đổi tài nguyên",
+      "hint": "Convert workers, priests, and power to coins first; 1 VP per 3 coins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: players tied on VP all win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Enter 'Victory points on track' as the VP marker value before final scoring. Cult ranking: all four tracks, ties share the summed points of the tied ranks rounded down (Rulespal rulebook text omits the exact tie rounding; split-floor and the 'must have advanced on the track' condition follow the known rule and BGA summary). Area scoring counts buildings in the largest connected network (indirect adjacency via shipping counts, per known rule, not confirmed in retrieved text). Coin conversion: workers/priests/power value per rulebook appendix (not retrieved), then 1 VP per 3 coins. Town and scoring-tile VPs are included in the track value.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/terra-mystica/rulebook",
+      "title": "RulesPal transcription of the official rulebook",
+      "type": "other"
+    },
+    {
+      "url": "https://en.boardgamearena.com/gamepanel?game=terramystica",
+      "title": "Board Game Arena Terra Mystica game panel",
+      "type": "other",
+      "section": "Final scoring: cult 8/4/2, area 18/12/6, coins 1 VP per 3"
+    }
+  ],
+  "slug": "terra-mystica",
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,111 @@
+{
+  "slug": "shogun-no-katana-2023",
+  "name": "Shogun no Katana",
+  "year": 2023,
+  "bggId": 319807,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "contracts",
+      "label": "Sword contracts and in-game VP",
+      "labelVi": "Hợp đồng kiếm và VP trong ván",
+      "hint": "VP gained delivering sword contracts and other VP tracked during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "daimyoSets",
+      "label": "Daimyo house set collections",
+      "labelVi": "Bộ sưu tập nhà Daimyo",
+      "hint": "VP from sets of different house flags; values read from the rulebook table.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "honorCards",
+      "label": "Honor / end-game objective cards",
+      "labelVi": "Thẻ Danh dự",
+      "hint": "VP from the honor cards gained when passing, using each card's multiplier.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "shogunSword",
+      "label": "Shogun no Katana (Shogun's Honor)",
+      "labelVi": "Thanh Shogun no Katana",
+      "hint": "VP for the Shogun sword (halved if unfinished or corrected; 0 with a dishonor card, per secondary sources).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "other",
+      "label": "Other VP / adjustments",
+      "labelVi": "VP khác / điều chỉnh",
+      "hint": "Any remaining bonuses or penalties; may be negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not verified; check the rulebook."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Official rulebook PDF (postscriptum-games.it) could not be downloaded in this environment, so exact point values, tiebreakers and end trigger are NOT verified; categories are scorer inputs based on review summaries (4 rounds; contracts, Daimyo sets, honor cards, Shogun sword). Needs a rulebook pass.",
+  "sources": [
+    {
+      "url": "https://postscriptum-games.it/wp-content/uploads/2020/11/Shogun-no-Katana-rulesLR.pdf",
+      "title": "Shogun no Katana rulebook (Post Scriptum)",
+      "type": "official-rulebook",
+      "section": "Not read; download failed"
+    },
+    {
+      "url": "https://talkingshelfspace.com/review-shogun-no-katana/",
+      "title": "Review of Shogun no Katana (Talking Shelf Space)",
+      "type": "other",
+      "section": "Scoring overview"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

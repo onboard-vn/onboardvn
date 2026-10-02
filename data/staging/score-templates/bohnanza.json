@@ -1,0 +1,52 @@
+{
+  "slug": "bohnanza",
+  "name": "Bohnanza",
+  "year": 1997,
+  "bggId": 11,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 7
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "coins",
+      "label": "Gold coins",
+      "labelVi": "Số đồng vàng",
+      "hint": "After harvesting every field at game end, count the cards in your gold coin stack (1 coin each). Cards in hand do not count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "Tied player seated furthest from the starting player (clockwise) wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: set-collection. Game ends when the draw pile is exhausted the 3rd time (3 players with the 3-new-beans variant: 2nd time; 2-player duel: 1st time). Harvest all fields at the end, then count the coin stack. Cards still in hand score nothing.",
+  "sources": [
+    {
+      "url": "https://www.riograndegames.com/wp-content/uploads/2013/02/Bohnanza-Rules.pdf",
+      "title": "Bohnanza rulebook (Rio Grande Games / AMIGO v5.0)",
+      "type": "official-rulebook",
+      "section": "p.6 The End of the Game; p.7 variants"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

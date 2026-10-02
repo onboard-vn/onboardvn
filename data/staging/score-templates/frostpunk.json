@@ -1,0 +1,89 @@
+{
+  "slug": "frostpunk",
+  "name": "Frostpunk: The Board Game",
+  "year": 2022,
+  "bggId": 311988,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Scenario goal completed",
+      "labelVi": "Hoàn thành mục tiêu kịch bản",
+      "hint": "Win only by completing the goal printed on the Scenario cards.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "hopeTokens",
+      "label": "Hope tokens left at end",
+      "labelVi": "Hope còn lại khi kết thúc",
+      "hint": "Lose if the last Hope token is removed.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "optional": true
+    },
+    {
+      "key": "discontentTokens",
+      "label": "Discontent tokens on track at end",
+      "labelVi": "Discontent trên track khi kết thúc",
+      "hint": "Lose when a 6th Discontent token is placed.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "optional": true
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative: win by completing the goal of the scenario (see Scenario cards). Lose if any of: last Hope token removed; a 6th Discontent token placed; the Generator breaks down a second time; any Sickness marker on space 26+ in the Preparation Phase; Hunger level 25+ after spending Food in the Hunger Phase; the Corpse marker reaches the last space of the Corpse track.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends on a lose condition or when the scenario goal is completed"
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  },
+  "notes": "family: coop. No points. The exact scenario goal differs per scenario (scenario book not fully modelled). Hope/Discontent counters are optional reference fields only.",
+  "sources": [
+    {
+      "url": "https://glasscannonunplugged.com/wp-content/uploads/2022/06/Frostpunk_Rulebook.pdf",
+      "title": "Frostpunk: The Board Game Rulebook (Glass Cannon Unplugged)",
+      "type": "official-rulebook",
+      "section": "p.16 How to Win and Lose; p.30 End of Game"
+    },
+    {
+      "url": "https://glasscannonunplugged.com/frostpunk-the-board-game/",
+      "title": "Frostpunk: The Board Game (publisher page)",
+      "type": "publisher-page",
+      "section": "rulebook and scenario book downloads"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

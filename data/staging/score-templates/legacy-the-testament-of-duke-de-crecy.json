@@ -1,0 +1,69 @@
+{
+  "slug": "legacy-the-testament-of-duke-de-crecy",
+  "name": "Legacy: The Testament of Duke de Crecy",
+  "year": 2013,
+  "bggId": 52461,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "After three generations"
+  },
+  "categories": [
+    {
+      "key": "honorTrack",
+      "label": "Honor points on track (children, titles, charity, family benefits, prestige conversions)",
+      "labelVi": "Điểm Honor trên track",
+      "hint": "Honor gained during play incl. prestige converted at end of each generation.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "secretMission",
+      "label": "Secret mission",
+      "labelVi": "Nhiệm vụ bí mật",
+      "hint": "Honor for fulfilled mission card(s).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Official rulebook PDF could not be retrieved; built from reviews/publisher descriptions only (prestige-to-honor table, per-child/title/charity values and tiebreaker not verified).",
+  "sources": [
+    {
+      "url": "https://boardgamestories.com/learn-to-play/legacy-the-testament-of-duke-de-crecy-solo-variant/",
+      "title": "Legacy How To Play (Boardgame Stories)",
+      "type": "other",
+      "section": "Scoring overview"
+    },
+    {
+      "url": "http://hiewandboardgames.blogspot.com/2014/11/legacy-testament-of-duke-de-crecy-aka.html",
+      "title": "Hiew's Boardgame Blog: Legacy",
+      "type": "other",
+      "section": "Scoring sources"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

@@ -1,0 +1,87 @@
+{
+  "slug": "tiwanaku--coop",
+  "name": "Tiwanaku",
+  "year": 2022,
+  "bggId": 267979,
+  "templateVersion": 1,
+  "variant": "coop-vs-otoma",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "groupScore",
+      "label": "Group score (shared marker, after final offering)",
+      "labelVi": "Điểm nhóm (marker chung, sau lễ vật cuối)",
+      "hint": "Shared score track of the group, including the final offering.",
+      "scope": "team",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "otomaScore",
+      "label": "Otoma people score",
+      "labelVi": "Điểm người Otoma",
+      "hint": "Otoma score marker, after their final offering and 1 VP for each empty gameboard space.",
+      "scope": "team",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "won",
+      "label": "Group won (more VP than Otoma)",
+      "labelVi": "Nhóm thắng (nhiều điểm hơn Otoma)",
+      "hint": "Strictly more VP than the Otoma; a tie goes to the Otoma.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative: the game ends when nobody has a Terrain tile behind their screen at end of a turn; the group and the Otoma make a final offering and the Otoma score 1 VP per empty gameboard space. The group wins only with strictly more VP than the Otoma (a tie is an Otoma win). Solo: same comparison against the Otoma, with no final divination round after all tiles are placed.",
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "Cooperative: no Terrain tiles left behind any screen at end of a turn"
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  },
+  "notes": "family: coop-vs-automa. Solo mode (long scenarios only, 45 spaces) uses the same win test: you win with more VP than the Otoma, ties go to the Otoma. Coop needs the long scenario and 2-4 players (4 players form 2 pairs). Difficulty modes (easy/normal/expert) change Otoma meeple count only.",
+  "sources": [
+    {
+      "url": "https://sitdown-games.com/wp-content/uploads/2026/01/TIW-RULES-RETAIL-LD-EN.pdf",
+      "title": "Tiwanaku rulebook (Sit Down!, retail EN)",
+      "type": "official-rulebook",
+      "section": "p.5-6 Divine/Offer/End of the game"
+    },
+    {
+      "url": "https://sitdown-games.com/produit/tiwanaku/",
+      "title": "Tiwanaku product page (Sit Down!)",
+      "type": "publisher-page",
+      "section": "rulebook downloads"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

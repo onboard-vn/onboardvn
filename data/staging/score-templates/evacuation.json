@@ -1,0 +1,131 @@
+{
+  "name": "Evacuation",
+  "year": 2023,
+  "bggId": 382843,
+  "templateVersion": 1,
+  "variant": "race-mode",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "winCondition": "After end-of-game bonuses/penalties, a player with all 3 New World production markers at 8+ and 3 stadiums on the New World wins (several: most happy faces, tied share). If nobody qualifies, best lowest production marker wins; ties: 3+ New World stadiums, then happy faces, then second and third lowest markers.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "A player has all 3 production markers at 8+ and 3 stadiums on the New World (game ends after that phase), or at the end of year 4."
+  },
+  "categories": [
+    {
+      "key": "lowestProduction",
+      "label": "Lowest production marker (after adjustments)",
+      "labelVi": "Marker sản xuất thấp nhất (sau điều chỉnh)",
+      "hint": "Apply -1 per penalty chip, -1 per unevacuated Old World site, -1 per missing stadium; then +2 most happy faces (+1 in 2p) / +1 second.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 12
+    },
+    {
+      "key": "secondLowest",
+      "label": "Second lowest production marker",
+      "labelVi": "Marker thấp thứ nhì",
+      "hint": "Tiebreak only.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 12
+    },
+    {
+      "key": "thirdLowest",
+      "label": "Third lowest production marker",
+      "labelVi": "Marker thấp thứ ba",
+      "hint": "Tiebreak only.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 12
+    },
+    {
+      "key": "stadiums",
+      "label": "Stadiums on the New World",
+      "labelVi": "Sân vận động ở Tân Thế Giới",
+      "hint": "Count only those on the New World.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 3
+    },
+    {
+      "key": "happyFaces",
+      "label": "Happy faces",
+      "labelVi": "Mặt cười",
+      "hint": "Faces on New World stadiums.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "meetsWin",
+      "label": "Meets win condition after adjustments",
+      "labelVi": "Đạt điều kiện thắng",
+      "hint": "All 3 markers at 8+ and 3 stadiums on New World.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "happyFaces",
+      "dir": "highest",
+      "description": "Most happy faces (if several players meet the win condition; tied share victory)"
+    },
+    {
+      "categoryKey": "lowestProduction",
+      "dir": "highest",
+      "description": "If nobody meets it: best lowest production marker, then stadiums >= 3, happy faces, second then third lowest markers"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: objective-race. Race Mode is the recommended mode. Points Mode is modelled in evacuation--points. Generous bonus variant and Advanced Action variant not modelled.",
+  "sources": [
+    {
+      "url": "https://deliciousgames.org/image/catalog/rules/Evacuation%20-%20Rulebook%2011%20web_compressed.pdf",
+      "title": "Evacuation Rulebook (Delicious Games)",
+      "type": "official-rulebook",
+      "section": "End of Game (Race Mode) p.13-15; Points Mode p.16-18"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "slug": "evacuation"
+}

@@ -1,0 +1,174 @@
+{
+  "slug": "ora-et-labora",
+  "name": "Ora et Labora",
+  "year": 2011,
+  "bggId": 70149,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "coins",
+      "label": "5-coin tiles",
+      "labelVi": "Thẻ 5 xu",
+      "hint": "Each 5-coin tile = 2 VP. Wine/whiskey also counts as 1 coin.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "books",
+      "label": "Book tiles",
+      "labelVi": "Thẻ Sách",
+      "hint": "2 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "ceramics",
+      "label": "Ceramic tiles",
+      "labelVi": "Thẻ Gốm",
+      "hint": "3 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "ornaments",
+      "label": "Ornament tiles",
+      "labelVi": "Thẻ Trang sức",
+      "hint": "4 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "reliquaries",
+      "label": "Reliquary tiles",
+      "labelVi": "Thẻ Thánh tích",
+      "hint": "8 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 8
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wonders",
+      "label": "Wonder tiles",
+      "labelVi": "Thẻ Kỳ quan",
+      "hint": "30 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 30
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wineWhiskey",
+      "label": "Wine / Whiskey tiles",
+      "labelVi": "Thẻ Rượu vang / Whiskey",
+      "hint": "1 VP each (only one of the two exists per variant).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "economicValue",
+      "label": "Economic value of buildings and settlements",
+      "labelVi": "Giá trị kinh tế công trình và khu định cư",
+      "hint": "Sum of the economic values printed on all your buildings and settlements (not dwelling values).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "settlements",
+      "label": "Settlement scoring",
+      "labelVi": "Điểm khu định cư",
+      "hint": "Per settlement: its dwelling value + dwelling values of orthogonally adjacent buildings (water = 3; negative values count only next to a settlement). Building next to 2 settlements counts for each.",
+      "scope": "player",
+      "input": "repeating",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: multiple winners on a tie"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Goods tile values read from the 2012 English rulebook p.7. Rulebook example (1 wine + 4 coins = total of 2) does not obviously match 5 coins = 2 VP plus wine = 1 VP; values were entered as printed. A Wonder is bought with one book, ceramic, ornament and reliquary set. 2-player game has no final settlement phase but scoring is otherwise the same. Short/solo variants use the same scoring.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/58/af/d4-ora-labora-rulebook.pdf",
+      "title": "Ora et Labora Rulebook (Lookout Games)",
+      "type": "official-rulebook",
+      "section": "p.7 Scoring; two-player section p.13"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/ora-et-labora/game-rules.php",
+      "title": "How to play Ora et Labora (Ultraboardgames)",
+      "type": "other",
+      "section": "Scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

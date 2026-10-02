@@ -1,0 +1,300 @@
+{
+  "slug": "baghdad-the-city-of-peace",
+  "name": "Baghdad: The City of Peace",
+  "year": 2025,
+  "bggId": 425630,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "patientsTile",
+      "label": "Scoring tile: Patients on player board",
+      "labelVi": "Thẻ điểm: Bệnh nhân",
+      "hint": "Multiplier on the Scoring tile x count. For River tiles add multipliers of your Boats in that port; for Palace tiles add your Architects' multipliers. Leave 0 if the tile is not in play.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "multiplier",
+        "count"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "multiplier * count"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "studentsTile",
+      "label": "Scoring tile: Students on player board",
+      "labelVi": "Thẻ điểm: Học sinh",
+      "hint": "Multiplier on the Scoring tile x count. For River tiles add multipliers of your Boats in that port; for Palace tiles add your Architects' multipliers. Leave 0 if the tile is not in play.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "multiplier",
+        "count"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "multiplier * count"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "artefactTypesTile",
+      "label": "Scoring tile: Types of Artefacts on player board",
+      "labelVi": "Thẻ điểm: Loại Artefact",
+      "hint": "Multiplier on the Scoring tile x count. For River tiles add multipliers of your Boats in that port; for Palace tiles add your Architects' multipliers. Leave 0 if the tile is not in play.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "multiplier",
+        "count"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "multiplier * count"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "booksTile",
+      "label": "Scoring tile: Books on player board",
+      "labelVi": "Thẻ điểm: Sách",
+      "hint": "Multiplier on the Scoring tile x count. For River tiles add multipliers of your Boats in that port; for Palace tiles add your Architects' multipliers. Leave 0 if the tile is not in play.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "multiplier",
+        "count"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "multiplier * count"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "boatsInPortTile",
+      "label": "Scoring tile: Boats in port",
+      "labelVi": "Thẻ điểm: Thuyền ở cảng",
+      "hint": "Multiplier on the Scoring tile x count. For River tiles add multipliers of your Boats in that port; for Palace tiles add your Architects' multipliers. Leave 0 if the tile is not in play.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "multiplier",
+        "count"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "multiplier * count"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildingsTile",
+      "label": "Scoring tile: Buildings constructed",
+      "labelVi": "Thẻ điểm: Công trình đã xây",
+      "hint": "Multiplier on the Scoring tile x count. For River tiles add multipliers of your Boats in that port; for Palace tiles add your Architects' multipliers. Leave 0 if the tile is not in play.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "multiplier",
+        "count"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "multiplier * count"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "architectsTile",
+      "label": "Scoring tile: Architects in the Palace area",
+      "labelVi": "Thẻ điểm: Kiến trúc sư trong Palace",
+      "hint": "Multiplier on the Scoring tile x count. For River tiles add multipliers of your Boats in that port; for Palace tiles add your Architects' multipliers. Leave 0 if the tile is not in play.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "multiplier",
+        "count"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "multiplier * count"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "nightCardsTile",
+      "label": "Scoring tile: Night Characters (discard + met on board)",
+      "labelVi": "Thẻ điểm: Thẻ Night Character",
+      "hint": "Multiplier on the Scoring tile x count. For River tiles add multipliers of your Boats in that port; for Palace tiles add your Architects' multipliers. Leave 0 if the tile is not in play.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "multiplier",
+        "count"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "multiplier * count"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "level5Building",
+      "label": "Level 5 Building",
+      "labelVi": "Công trình cấp 5",
+      "hint": "Points of the level five Building you constructed.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "palacePiece",
+      "label": "Palace base / dome piece",
+      "labelVi": "Mảnh base/dome Palace",
+      "hint": "Points of the base piece or dome piece you built.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "nightCharacterPoints",
+      "label": "Night Character card points",
+      "labelVi": "Điểm thẻ Night Character",
+      "hint": "Sum of points on Night Characters in your discard and on your board with requirement met.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "artefactPoints",
+      "label": "Artefacts points",
+      "labelVi": "Điểm Artefact",
+      "hint": "Total shown on your player board for Artefacts collected.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "favourTrack",
+      "label": "Favour track position",
+      "labelVi": "Vị trí Favour track",
+      "hint": "Points (can be negative) shown on your player board for your Favour marker.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "shameTokens",
+      "label": "Shame tokens",
+      "labelVi": "Thẻ Shame",
+      "hint": "-3 each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "favourPosition",
+      "label": "Favour track position (tiebreak)",
+      "labelVi": "Vị trí Favour (hòa)",
+      "hint": "Tiebreaker 2 only: higher on Favour track wins.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Player with the highest score in the first row of the scorepad wins."
+    },
+    {
+      "categoryKey": "favourPosition",
+      "dir": "highest",
+      "description": "Higher on the Favour track"
+    },
+    {
+      "description": "If still tied, tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Scoring follows the official scorepad. Game ends when all Character cards are drawn and played from hands. Eight Scoring tiles are randomised each game (four River, four Palace); rows vs counts as listed: Patients, Students, Artefact types, Books, Boats in port, Buildings, Architects, Night Characters; tile multiplier comes from the tile plus your Boats/Architects. Source rulebook is the pre-release draft v2 (Jan 2025) from the publisher; final retail rulebook (BGG file 436335) could not be downloaded, so tiebreak first-row wording and Hospital/Character card bonus scoring should be re-checked. Solo/2-player bot not modelled.",
+  "sources": [
+    {
+      "url": "https://drive.google.com/drive/folders/1JFJiVK4JzEi5Ex39BdQb6nMo37n23Ycp",
+      "title": "Baghdad Rules Draft2 19JAN25 (publisher Google Drive, linked from alleycatgames.com/baghdad)",
+      "type": "publisher-page",
+      "section": "p.9 End Game Scoring, Scoring Example (p.10)"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/312773/final-baghdad-rulebook",
+      "title": "Final Baghdad rulebook (BGG files, not downloadable here)",
+      "type": "bgg-file",
+      "section": "Not verified"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,110 @@
+{
+  "name": "Shipyard (Second Edition)",
+  "year": 2023,
+  "bggId": 393179,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "winRule": "highest",
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "Victory points on scoring track",
+      "labelVi": "Điểm trên track",
+      "hint": "Shakedown cruise points: crew, equipment, speed, officials, Blue Riband.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "redContract",
+      "label": "Red Government Contract",
+      "labelVi": "Hợp đồng chính phủ đỏ",
+      "hint": "Your remaining red contract, evaluated on your whole fleet/employees.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "blueContract",
+      "label": "Blue Government Contract",
+      "labelVi": "Hợp đồng chính phủ xanh",
+      "hint": "Your remaining blue contract, evaluated on your whole fleet/employees.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "traderBonus",
+      "label": "Trader employee bonus points",
+      "labelVi": "Điểm thưởng nhân viên Trader",
+      "hint": "Bonus points printed on your Trader employee cards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "guilders",
+      "label": "Guilders left (tiebreak)",
+      "labelVi": "Guilder còn lại (phân định hòa)",
+      "hint": "Most guilders wins ties.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "guilders",
+      "dir": "highest",
+      "description": "Most guilders"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Points are tracked on the scoring track as ships finish their shakedown cruise; enter track value before the end-of-game contract reveal. Contract values depend on the contract tile in play (tables like 1-2-4-6-8-12 for lifebuoys/lanterns/lifeboats, 3 pts per pair, etc.) so they are entered as totals. Solo game uses 2 contracts and score bands (60/80/95+) and is not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/shipyard-second-edition/rulebook",
+      "title": "RulesPal transcription of the official rulebook",
+      "type": "other",
+      "section": "End of the Game; Winning the Game; Government Contracts; Employees (Trader)"
+    }
+  ],
+  "slug": "shipyard-second-edition-2023",
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "medium",
+  "needsReview": true
+}

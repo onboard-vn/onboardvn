@@ -1,0 +1,126 @@
+{
+  "slug": "tiletum",
+  "name": "Tiletum",
+  "year": 2022,
+  "bggId": 351913,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the Fair phase of round 4"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Victory Point track (before final scoring)",
+      "labelVi": "Điểm trên track (trước tính cuối)",
+      "hint": "VP from the scoring track at end of round 4 (Fairs, King track, contracts, cathedrals during play).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "housesPillars",
+      "label": "Houses x Pillars on map",
+      "labelVi": "Nhà x Cột trên bản đồ",
+      "hint": "Houses on map multiplied by Pillars on map.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "houses",
+        "pillars"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "houses * pillars"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "completedBuildings",
+      "label": "Completed Buildings",
+      "labelVi": "Công trình hoàn thành",
+      "hint": "Buildings with a Crest and all Rooms filled with Characters: 3:5, 4:10, 5:20, 6:30.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 5,
+          "4": 10,
+          "5": 20,
+          "6": 30
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverResources",
+      "label": "Resources left in supply",
+      "labelVi": "Tài nguyên còn lại",
+      "hint": "1 VP per 4 leftover Resources (rounded down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 4)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "turnOrder",
+      "label": "Turn Order position (tiebreak)",
+      "labelVi": "Thứ tự lượt (phân định hòa)",
+      "hint": "1 = first in turn order.",
+      "scope": "player",
+      "input": "number",
+      "min": 1,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "turnOrder",
+      "dir": "lowest",
+      "description": "Tied player first in Turn Order wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Only a third-party rulebook transcription (RulesPal) could be reached; official PDF/BGG pages were not accessible, so values are not verified against the printed rulebook. Score track never goes below 0; +100/+200 marker for higher scores. Fair scoring and King track scoring are part of play, already on the track. Helper ability and solo variants not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/tiletum/rulebook",
+      "title": "Tiletum rulebook (RulesPal transcription)",
+      "type": "other",
+      "section": "End of the Game and Final Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,146 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "winRule": "highest",
+  "rounds": null,
+  "confidence": "high",
+  "needsReview": false,
+  "slug": "world-wonders-2023",
+  "name": "World Wonders",
+  "year": 2023,
+  "bggId": 365258,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "population",
+      "label": "Population rings reached",
+      "labelVi": "Vòng dân số đạt được",
+      "hint": "1 VP per Ring your marker reached or passed on the Population track.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leastResource",
+      "label": "Lowest of Food / Ceramics / Gear tracks",
+      "labelVi": "Tài nguyên thấp nhất",
+      "hint": "VP = value of your lowest of the three Resource tracks.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "monuments",
+      "label": "Rings on Monument cards",
+      "labelVi": "Vòng trên thẻ Monument",
+      "hint": "1 VP per Ring printed on your Monument cards.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "naturalResources",
+      "label": "Natural Resources adjacent to your pieces",
+      "labelVi": "Tài nguyên tự nhiên kề công trình",
+      "hint": "1 VP per visible Natural Resource adjacent to at least one of your placed pieces.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cityDistricts",
+      "label": "City Districts",
+      "labelVi": "Khu đô thị",
+      "hint": "1 VP per Building Tile surrounded on all sides by non-green features.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "loans",
+      "label": "Unpaid loans",
+      "labelVi": "Khoản vay chưa trả",
+      "hint": "-2 VP for each loan not repaid by game end.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "publicObjectives",
+      "label": "Public Objective cards (advanced)",
+      "labelVi": "Thẻ mục tiêu công khai (nâng cao)",
+      "hint": "Advanced play only: VP for 1st/2nd place on each Public Objective (printed rings); tied 1st share sum of 1st+2nd rounded up.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "monuments",
+      "dir": "highest",
+      "description": "Tie: the player with the most Monuments wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: end-game-categories. Game ends after 10 rounds or at the end of the round where a player reaches the last Population space. Solo Automaton mode (compare against sum of 3 resources, +Automaton Monument VP on hard) not modelled. Public Objective values are printed on cards, hence manual input; set to 0 in the basic game.",
+  "sources": [
+    {
+      "url": "https://www.arcanewonders.com/wp-content/uploads/2023/06/ENGLISH-rule-book-AW-rev-1-web.pdf",
+      "title": "World Wonders English rulebook (Arcane Wonders)",
+      "type": "official-rulebook",
+      "section": "End of Game and Scoring (p.5); Loans; Public Objective Cards"
+    },
+    {
+      "url": "https://www.arcanewonders.com/product/world-wonders/",
+      "title": "Arcane Wonders World Wonders product page",
+      "type": "publisher-page",
+      "section": null
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "slug": "take-5-30th-anniversary-edition-2024",
+  "name": "Take 5: 30th Anniversary Edition",
+  "year": 2024,
+  "bggId": 406321,
+  "templateVersion": 1,
+  "playerCount": {
+    "min": 2,
+    "max": 10
+  },
+  "mode": "competitive",
+  "winRule": "lowest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "Play rounds until a player reaches 66 or more bullheads (or an agreed target/number of rounds)"
+  },
+  "endCondition": {
+    "type": "target-score",
+    "target": 66,
+    "description": "Game ends at the end of the round in which any player reaches 66+ bullheads; fewest total wins"
+  },
+  "categories": [
+    {
+      "key": "bullheads",
+      "label": "Bullheads taken this round",
+      "labelVi": "Số đầu bò nhận trong ván",
+      "hint": "Count bullheads on cards in your bull pile; enter each round (1 per card; ends in 5 = 2; multiples of 10 = 3; doubles = 5; 55 = 7)",
+      "scope": "player",
+      "input": "perRound",
+      "min": 0,
+      "max": 200,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "winCondition": null,
+  "notes": "family: penalty-points (lowest wins). Verified against the base Amigo 6 nimmt!/Take 5 rulebook; the 30th Anniversary edition rulebook itself was not obtained, so edition-specific changes (if any) are unverified. Pro variant for 2-6 players uses 10N+4 cards but scoring is unchanged.",
+  "sources": [
+    {
+      "url": "https://blog.amigo-spiele.de/content/ap/rule/04910-GB-AmigoRule.pdf",
+      "title": "6 nimmt! rules (AMIGO, English)",
+      "type": "official-rulebook",
+      "section": "Bullheads; The End of a Round; The End of the Game"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/6_nimmt!",
+      "title": "6 nimmt! (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

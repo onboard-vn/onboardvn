@@ -1,0 +1,192 @@
+{
+  "name": "Evacuation",
+  "year": 2023,
+  "bggId": 382843,
+  "templateVersion": 1,
+  "variant": "points-mode",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "lowestProduction",
+      "label": "Points for lowest production marker",
+      "labelVi": "Điểm marker sản xuất thấp nhất",
+      "hint": "Read from your game overview card (e.g. 8=10, 10=19, 12=25; +3 per step above 10).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "goalCards",
+      "label": "Goal cards",
+      "labelVi": "Thẻ mục tiêu",
+      "hint": "Sum VP of your 3 kept goal cards.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "oldSites",
+      "label": "Old World sites not evacuated",
+      "labelVi": "Địa điểm Cựu Thế Giới chưa sơ tán",
+      "hint": "2 VP lost per site.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "oldPop",
+      "label": "Population tokens that could have been evacuated",
+      "labelVi": "Dân chưa sơ tán",
+      "hint": "1 VP lost per token on unevacuated sites.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "missingStadiums",
+      "label": "Missing stadiums (of 3 on New World)",
+      "labelVi": "Thiếu sân vận động",
+      "hint": "3 VP lost per missing stadium.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 3
+    },
+    {
+      "key": "penaltyChips",
+      "label": "Penalty chips",
+      "labelVi": "Chip phạt",
+      "hint": "3 VP lost per penalty chip.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "happyFacesRank",
+      "label": "Happy faces ranking",
+      "labelVi": "Xếp hạng mặt cười",
+      "hint": "Only players with 3+ stadiums on New World and >0 faces. 6/4/1 (2p: 4/0), ties split rounded down.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            6,
+            4,
+            1
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "count"
+        },
+        "byPlayerCount": {
+          "2": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                4,
+                0
+              ],
+              "tieMode": "split-floor",
+              "excludeZero": true,
+              "over": "count"
+            }
+          }
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "publicObjectives",
+      "label": "Public objective cards (optional module)",
+      "labelVi": "Mục tiêu công khai",
+      "hint": "VP on cards taken.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "optional": true
+    },
+    {
+      "key": "lineMajorities",
+      "label": "Line majorities (optional module)",
+      "labelVi": "Đa số theo hàng",
+      "hint": "3 lines, 6/4/1 each (2p 4/0), ties split.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "optional": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "None: tied players remain tied"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Points Mode always runs 4 years. Lowest-production point table is printed on the game overview card (only three values seen in rules text). Happy-face ranking is computed here; optional module points are scorer inputs.",
+  "sources": [
+    {
+      "url": "https://deliciousgames.org/image/catalog/rules/Evacuation%20-%20Rulebook%2011%20web_compressed.pdf",
+      "title": "Evacuation Rulebook (Delicious Games)",
+      "type": "official-rulebook",
+      "section": "End of Game (Race Mode) p.13-15; Points Mode p.16-18"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "slug": "evacuation--points"
+}

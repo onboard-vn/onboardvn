@@ -1,0 +1,28 @@
+{
+  "slug": "radlands",
+  "name": "Radlands",
+  "year": 2021,
+  "bggId": 329082,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {"min": 2, "max": 2},
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {"key": "won", "label": "Won (opponent's camps all destroyed)", "labelVi": "Thắng (phá hết trại đối thủ)", "hint": "Tick for the player who destroyed all of the opponent's camps.", "scope": "player", "input": "bool", "formula": {"type": "sum"}, "countsToTotal": true},
+    {"key": "campsRemaining", "label": "Camps remaining", "labelVi": "Số trại còn lại", "hint": "Record only; not scored.", "scope": "player", "input": "count", "min": 0, "max": 3, "formula": {"type": "sum"}, "countsToTotal": false}
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Two players each defend three camps; the first player to destroy all three of the opponent's camps wins.",
+  "endCondition": {"type": "objective", "target": null, "description": "A player has all of their camps destroyed."},
+  "notes": "family: objective-only. Win condition and 2-player count recalled from general knowledge; official rulebook not retrieved (all rulebook downloads and web search were unavailable), so unverified. Check the Roxley rulebook.",
+  "sources": [
+    {"url": "https://boardgamegeek.com/boardgame/329082", "title": "Radlands - BoardGameGeek", "type": "other", "section": "Game page (not retrieved; blocked)"},
+    {"url": "https://en.wikipedia.org/wiki/Radlands", "title": "Radlands - Wikipedia", "type": "wiki", "section": "Game identification only"}
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

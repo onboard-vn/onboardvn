@@ -1,0 +1,59 @@
+{
+  "slug": "grow-sky-2024",
+  "name": "Grow Sky",
+  "year": 2024,
+  "bggId": 428682,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 1, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "medals",
+      "label": "Medal gauge",
+      "labelVi": "Thang huy chương",
+      "hint": "Final position of your medal gauge (after converting leftover resources/missions via Exploration at game end).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    { "description": "Tiebreak procedure not verified from the rulebook; check the rulebook." }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "target-score",
+    "target": 15,
+    "description": "When a player reaches 15 medals or fills their engine room, finish the round and play one more full round (triggering player starts it)."
+  },
+  "notes": "family: running-track. Medals come from flights, development, waiting, route/goal missions; point values are tracked on the medal gauge during play, so only the final gauge position is entered. Final-round conversion of leftover resources and mission ranks into Exploration steps can still add medals. Exact tiebreaker and conversion details not verified (official CMON rulebook PDF could not be downloaded; sources are product pages and Japanese reviews).",
+  "sources": [
+    {
+      "url": "https://www.cmon.com/products/grow-sky/",
+      "title": "CMON - Grow Sky (rulebook download listed on page)",
+      "type": "publisher-page",
+      "section": "Product description: end trigger and medals"
+    },
+    {
+      "url": "https://chokobodo.com/grow-sky/",
+      "title": "Grow Sky rules overview (chokobodo, Japanese)",
+      "type": "other",
+      "section": "Game end and final round"
+    },
+    {
+      "url": "https://bodoge.hoobby.net/games/grow-sky/reviews/50167",
+      "title": "Grow Sky review (Hobby Japan board game database)",
+      "type": "other",
+      "section": "End conditions"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

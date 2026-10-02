@@ -1,0 +1,83 @@
+{
+  "templateVersion": 1,
+  "slug": "here-to-slay",
+  "name": "Here to Slay",
+  "year": 2020,
+  "bggId": 299252,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won the game",
+      "labelVi": "Thắng",
+      "hint": "Tick for the winner.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "monstersSlain",
+      "label": "Monster cards slain",
+      "labelVi": "Số quái đã hạ",
+      "hint": "Monsters slain; 3 wins immediately.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "classesInParty",
+      "label": "Different classes in party (incl. Party Leader)",
+      "labelVi": "Số class khác nhau trong đội",
+      "hint": "Counted at end of your turn; 6 different classes wins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "First player to slay 3 Monster cards, or to end their turn with a Party (including the Party Leader) showing six different classes, wins.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "A player slays 3 Monsters or ends a turn with 6 different classes"
+  },
+  "sharedVictoryOnTie": false,
+  "notes": "family: objective-race. No points. Counts are informational. Expansions, the Warriors & Druids pack and solo variants are not modelled. Rulebook text per RulesPal (no official PDF downloaded).",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/here-to-slay/rulebook",
+      "title": "Here to Slay rulebook text (RulesPal)",
+      "type": "other",
+      "section": "How to Win"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/299252/here-to-slay",
+      "title": "Here to Slay on BoardGameGeek (identification)",
+      "type": "other",
+      "section": null
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

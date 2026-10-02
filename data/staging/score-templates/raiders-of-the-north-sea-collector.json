@@ -1,0 +1,162 @@
+{
+  "slug": "raiders-of-the-north-sea-collector",
+  "name": "Raiders of the North Sea Collector",
+  "year": null,
+  "bggId": 170042,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "Victory Point track (incl. +50 if Ship card flipped)",
+      "labelVi": "Điểm trên track VP (+50 nếu đã lật thẻ thuyền)",
+      "hint": "Points scored during raids and offerings; add 50 if the Ship card shows the 50 VP side",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "valkyrieTrackVp",
+      "label": "Valkyrie Track VP",
+      "labelVi": "Điểm track Valkyrie",
+      "hint": "Read the VP printed beside your marker; max 15 VP (7 Valkyrie)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 15,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "armouryTrackVp",
+      "label": "Armoury Track VP",
+      "labelVi": "Điểm track Giáp",
+      "hint": "Read the VP printed beside your Armour marker on the board",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "offeringTilesVp",
+      "label": "Collected Offering Tiles VP",
+      "labelVi": "Điểm thẻ Cúng tế",
+      "hint": "Sum the VP printed on your Offering Tiles",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "hiredCrewVp",
+      "label": "Hired Crew end-game VP",
+      "labelVi": "Điểm thủy thủ thuê",
+      "hint": "Only crew cards that show an end-game VP value",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gold",
+      "label": "Gold",
+      "labelVi": "Vàng",
+      "hint": "1 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "iron",
+      "label": "Iron",
+      "labelVi": "Sắt",
+      "hint": "1 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "livestock",
+      "label": "Livestock",
+      "labelVi": "Gia súc",
+      "hint": "2 Livestock = 1 VP; a lone one scores nothing",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "valkyrieTrackVp",
+      "dir": "highest",
+      "description": "Player furthest up the Valkyrie Track"
+    },
+    {
+      "categoryKey": "armouryTrackVp",
+      "dir": "highest",
+      "description": "Then player furthest up the Armoury Track"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends when 1 Fortress raid remains, the Offering draw pile is empty, or no Valkyrie remain on the board; then each player (including the current one) takes one final turn."
+  },
+  "notes": "family: tracks-and-tiles. Track VP values (Valkyrie, Armoury), Offering Tile VP and Hired Crew VP are board/component-printed, so they are scorer inputs. Collector edition expansions/promos not verified; base-game end scoring assumed. Rulebook read via a third-party transcription, not the publisher PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/raiders-of-the-north-sea/rulebook",
+      "title": "Raiders of the North Sea rulebook transcription (RulesPal)",
+      "type": "other",
+      "section": "Scoring Raids; End of the Game; End-Game Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,83 @@
+{
+  "slug": "acquire-1963",
+  "name": "Acquire",
+  "year": 1964,
+  "bggId": 5,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "cash",
+      "label": "Cash on hand",
+      "labelVi": "Tiền mặt hiện có",
+      "hint": "Money held after mergers during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endBonuses",
+      "label": "Majority/minority bonuses at game end",
+      "labelVi": "Thưởng cổ đông lớn/nhỏ cuối game",
+      "hint": "Sum bonuses for all active chains per the stock price chart; ties split and rounded up to $100.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "stockSales",
+      "label": "Stock sold back to bank",
+      "labelVi": "Tiền bán cổ phiếu",
+      "hint": "Sell all shares at the price for each active chain's name and size; chains off board are worth 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "If tied for most money, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: money-economy. Scores are dollars, not VP. End: a player announces all active chains are safe or one chain has 41+ tiles. Verified on Renegade modern rulebook (Classic Mode); the 1963/Avalon Hill editions use the same end-game flow, but price chart values vary by edition, so bonuses/stock values are scorer inputs. Tycoon mode (tertiary bonus) not modelled.",
+  "sources": [
+    {
+      "url": "https://renegadegamestudios.com/content/File%20Storage%20for%20site/Rulebooks/Acquire/Acquire_RGS_Rulebook_WEB.pdf",
+      "title": "Acquire Rulebook (Renegade)",
+      "type": "official-rulebook",
+      "section": "The End of the Game, p.11-12; ties p.9"
+    },
+    {
+      "url": "https://acquisitiongames.com/index.php/lloyds-rules-of-acquire/lloyds-changes-to-the-rules-of-acquire",
+      "title": "Lloyd's Rules of Acquire",
+      "type": "other",
+      "section": "Tie handling cross-check"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,65 @@
+{
+  "slug": "archaeology-the-new-expedition",
+  "name": "Archaeology - The New Expedition",
+  "year": 2016,
+  "bggId": 191300,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "soldSets",
+      "label": "Value of treasure sets sold to the museum",
+      "labelVi": "Giá trị các bộ kho báu đã bán",
+      "hint": "One entry per set sold: the selling value printed on the card for that set size. Each set is valued separately.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardsSold",
+      "label": "Total cards sold (tiebreaker)",
+      "labelVi": "Tổng số lá đã bán (hoà)",
+      "hint": "Total treasure cards sold to the museum; fewer wins a tie.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "cardsSold",
+      "dir": "lowest",
+      "description": "Fewest total cards sold to the museum"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: set-collection. Score = money from sets sold during the game; cards still in hand and unused Tent cards score nothing. Game ends when the dig site is empty and every hand is empty. Selling values are printed on each treasure card, so they are scorer inputs.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/archaeology/game-rules.php",
+      "title": "Archaeology: The New Expedition rules summary (UltraBoardGames)",
+      "type": "other",
+      "section": "End of the Game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,74 @@
+{
+  "slug": "lord-of-the-rings-fate-of-the-fellowship",
+  "name": "Lord of the Rings: Fate of the Fellowship",
+  "year": 2025,
+  "bggId": 436217,
+  "templateVersion": 1,
+  "variant": "base game",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Fellowship wins (One Ring destroyed)",
+      "labelVi": "Hội Nhẫn thắng (Chiếc Nhẫn bị hủy)",
+      "hint": "Won if the group destroys the One Ring before Frodo loses all Hope.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "hopeRemaining",
+      "label": "Hope remaining at the end",
+      "labelVi": "Hope còn lại khi kết thúc",
+      "hint": "Read the Hope marker at game end; Frodo losing all Hope is a defeat.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Cooperative; no points. The group wins by destroying the One Ring before Frodo loses all Hope (publisher description). Other defeat triggers (Shadow, Nazgul, haven or objective failures) and the per-game objective cards are not verified and not modelled.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends when the Ring is destroyed (win) or Frodo loses all Hope (loss); other loss triggers unverified."
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  },
+  "notes": "family: coop. No points. The official Z-Man rulebook (BGG file 413639, ZMGPSM0101_Rulebook_English_WEB.pdf) could not be downloaded from this environment, so only the publisher-stated win and Hope-loss conditions are recorded; needs verification against the rulebook for exact end conditions and the solo adventure. 24 objectives, 13 characters (2 per player), 1-5 players per publisher.",
+  "sources": [
+    {
+      "url": "https://api.geekdo.com/api/geekitems?objectid=436217&objecttype=thing",
+      "title": "BGG: Lord of the Rings Fate of the Fellowship (publisher description)",
+      "type": "other",
+      "section": "Description: game is won if the group destroys the One Ring before Frodo loses all hope"
+    },
+    {
+      "url": "https://www.zmangames.com/en/products/the-lord-of-the-rings-fate-of-the-fellowship/",
+      "title": "Z-Man Games product page",
+      "type": "publisher-page",
+      "section": "Overview (cooperative, 1-5 players, 24 objectives, Hope marker)"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

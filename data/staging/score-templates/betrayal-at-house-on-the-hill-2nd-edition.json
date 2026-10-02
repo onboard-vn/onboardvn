@@ -1,0 +1,73 @@
+{
+  "slug": "betrayal-at-house-on-the-hill-2nd-edition",
+  "name": "Betrayal at House on the Hill (2nd edition)",
+  "year": 2010,
+  "bggId": 10547,
+  "templateVersion": 1,
+  "variant": "2nd edition",
+  "playerCount": {
+    "min": 3,
+    "max": 6
+  },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "heroesWon",
+      "label": "Heroes won",
+      "labelVi": "Phe anh hùng thắng",
+      "hint": "Tick if the heroes met their haunt win condition; otherwise the traitor side won.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "No points. After the haunt starts, each haunt scenario in the Traitor's Tome / Secrets of Survival books states its own win condition for the heroes and for the traitor; the side that fulfils it wins.",
+  "roles": [
+    {
+      "key": "heroes",
+      "label": "Heroes",
+      "labelVi": "Anh hùng",
+      "winCondition": "Fulfil the heroes' objective in the active haunt scenario."
+    },
+    {
+      "key": "traitor",
+      "label": "Traitor (and monsters)",
+      "labelVi": "Kẻ phản bội",
+      "winCondition": "Fulfil the traitor's objective in the active haunt scenario."
+    }
+  ],
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends when one side meets its haunt-specific win condition."
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  },
+  "notes": "family: hidden-traitor. Per-haunt (50 scenarios) win conditions are not modelled; record which side won. Official rulebook text not retrieved; based on general description (Wikipedia) and known game structure.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Betrayal_at_House_on_the_Hill",
+      "title": "Betrayal at House on the Hill (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/10547",
+      "title": "Betrayal at House on the Hill (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

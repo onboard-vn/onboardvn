@@ -1,0 +1,84 @@
+{
+  "slug": "nemesis-lockdown--coop",
+  "name": "Nemesis Lockdown",
+  "year": 2022,
+  "bggId": 310100,
+  "templateVersion": 1,
+  "variant": "fully-cooperative",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "allObjectivesDone",
+      "label": "All public Solo/Coop Objectives fulfilled",
+      "labelVi": "Hoàn thành tất cả mục tiêu công khai",
+      "hint": "One public Solo/Coop Objective card per player; ALL must be fulfilled.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "survivors",
+      "label": "Characters alive after the Victory Check",
+      "labelVi": "Số nhân vật còn sống sau Victory Check",
+      "hint": "At least 1 Character must survive; the one fulfilling an objective must be alive.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "won",
+      "label": "Team wins",
+      "labelVi": "Cả đội thắng",
+      "hint": "All objectives fulfilled and at least 1 Character survives.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Fully cooperative mode: draw one public Solo/Coop Objective card per player. The team wins if ALL these Objectives are fulfilled and at least 1 Character survives the Victory Check (a Character tied to an Objective must be alive after it). Solo mode: fulfil your Objective and survive.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends when the Time token reaches the red purge slot or the Autodestruction/Alert slot and advances further, the Facility explodes (13th Fire or 11th Malfunction marker), or the last living Character in the Facility leaves or dies; then the Victory Check is resolved."
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. No points. Verified against the official rulebook (Solo & Cooperative Mode section). Solo mode uses the same win test with 2 Solo/Coop Objective cards (choose one after the first Encounter); not a separate file.",
+  "sources": [
+    {
+      "url": "https://awakenrealms.com/images/download/Nemesis_Lockdown/ENG/Nemesis_LD_Rulebook_280x280mm_bleed3mm-32-pages.pdf",
+      "title": "Nemesis: Lockdown Rulebook (Awaken Realms)",
+      "type": "official-rulebook",
+      "section": "p.10 Player Goals and Objectives; p.12 End of the Game / Victory Check; Solo & Cooperative mode"
+    },
+    {
+      "url": "https://api.geekdo.com/api/geekitems?objectid=310100&objecttype=thing",
+      "title": "BGG: Nemesis Lockdown (publisher description, 1-5 players, stand-alone)",
+      "type": "other",
+      "section": "Description"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

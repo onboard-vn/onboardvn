@@ -1,0 +1,78 @@
+{
+  "slug": "ultimate-werewolf",
+  "name": "Ultimate Werewolf",
+  "year": 2008,
+  "bggId": null,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 5,
+    "max": 75
+  },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Player's team won",
+      "labelVi": "Phe của người chơi thắng",
+      "hint": "Judge by the role/team the player ended the game with.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value, 1, 0)"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Village wins when all werewolves are eliminated; Werewolves win when they equal or outnumber the villagers. Neutral roles (e.g. Vampires) have their own goals that depend on the role cards in play.",
+  "notes": "family: hidden-role-social. Official Bezier rulebook not fetched; only core win conditions confirmed via Wikipedia. Neutral/special role goals depend on the cards used and are not modelled.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Ultimate_Werewolf",
+      "title": "Ultimate Werewolf (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "roles": [
+    {
+      "key": "village",
+      "label": "Village team",
+      "labelVi": "Phe Dân",
+      "winCondition": "Eliminate all werewolves",
+      "categoryKeys": [
+        "won"
+      ]
+    },
+    {
+      "key": "werewolf",
+      "label": "Werewolf team",
+      "labelVi": "Phe Sói",
+      "winCondition": "Werewolves equal or outnumber the villagers",
+      "categoryKeys": [
+        "won"
+      ]
+    },
+    {
+      "key": "neutral",
+      "label": "Neutral role (e.g. Vampire)",
+      "labelVi": "Vai trò trung lập (vd. Ma cà rồng)",
+      "winCondition": "Role-specific goal printed on the role card",
+      "categoryKeys": [
+        "won"
+      ]
+    }
+  ],
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Play day/night cycles until a faction meets its win condition"
+  }
+}

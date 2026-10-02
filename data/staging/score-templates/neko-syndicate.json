@@ -1,0 +1,122 @@
+{
+  "slug": "neko-syndicate",
+  "name": "Neko Syndicate",
+  "year": 2024,
+  "bggId": 415792,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 15,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the 15th turn"
+  },
+  "categories": [
+    {
+      "key": "level1",
+      "label": "Level 1 (top) subtotal",
+      "labelVi": "Tổng điểm tầng",
+      "hint": "Per level: +1 per delivered cube, + printed bonus per fully completed card, -2 per loose cube, -2 per card with no delivery, -2 per missing card in the 10-card structure. Multiplier x4 applied.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "level2",
+      "label": "Level 2 subtotal",
+      "labelVi": "Tổng điểm tầng",
+      "hint": "Per level: +1 per delivered cube, + printed bonus per fully completed card, -2 per loose cube, -2 per card with no delivery, -2 per missing card in the 10-card structure. Multiplier x3 applied.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "level3",
+      "label": "Level 3 subtotal",
+      "labelVi": "Tổng điểm tầng",
+      "hint": "Per level: +1 per delivered cube, + printed bonus per fully completed card, -2 per loose cube, -2 per card with no delivery, -2 per missing card in the 10-card structure. Multiplier x2 applied.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "level4",
+      "label": "Level 4 (bottom) subtotal",
+      "labelVi": "Tổng điểm tầng",
+      "hint": "Per level: +1 per delivered cube, + printed bonus per fully completed card, -2 per loose cube, -2 per card with no delivery, -2 per missing card in the 10-card structure. Multiplier x1 applied.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "missions",
+      "label": "Mission points",
+      "labelVi": "Điểm nhiệm vụ",
+      "hint": "Points at each scoring-marker position on the Kumicho's Path plus bonus 5/3/1/0 for relative order (ties share the same bonus).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "More completed deliveries gets +1 prestige point"
+    },
+    {
+      "description": "Still tied: shared victory"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Level multiplier mapping (level 1 top x4 ... level 4 bottom x1) is inferred from the rulebook text (upper levels 4x, lower 1x; example shows level 2 = x3). Per-level subtotal must be computed by the scorer before entering (can be negative). CatANNA solo mode not modelled. Official EN rulebook (BGG file 'Neko Syndicate Rulebook') could not be downloaded without a BGG login.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/neko-syndicate/rulebook",
+      "title": "Neko Syndicate rulebook text (RulesPal)",
+      "type": "other",
+      "section": "Game End and Scoring"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/280148/neko-syndicate-rulebook",
+      "title": "Neko Syndicate Rulebook (BGG file page, official)",
+      "type": "bgg-file",
+      "section": "Final scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

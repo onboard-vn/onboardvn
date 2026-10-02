@@ -1,0 +1,84 @@
+{
+  "slug": "a-fake-artist-goes-to-new-york-2011",
+  "name": "A Fake Artist Goes to New York",
+  "year": 2011,
+  "bggId": 135779,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 5,
+    "max": 10
+  },
+  "mode": "hidden-traitor",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "First player to reach 5 points wins"
+  },
+  "categories": [
+    {
+      "key": "points",
+      "label": "Points earned (all rounds)",
+      "labelVi": "Điểm tích lũy (mọi ván)",
+      "hint": "Fake Artist wins: Fake Artist and Question Master +2 each. Real artists win: each artist +1. First to 5 wins.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not specified in sources; if several players reach 5 in the same round, play on or share the win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "roles": [
+    {
+      "key": "questionMaster",
+      "label": "Question Master",
+      "labelVi": "Quản trò",
+      "winCondition": "Scores 2 if the Fake Artist wins; does not draw"
+    },
+    {
+      "key": "fakeArtist",
+      "label": "Fake Artist",
+      "labelVi": "Họa sĩ giả",
+      "winCondition": "Not identified by most votes, or identified but names the title correctly"
+    },
+    {
+      "key": "artist",
+      "label": "Artist",
+      "labelVi": "Họa sĩ thật",
+      "winCondition": "Fake Artist is pointed at most and fails to name the title"
+    }
+  ],
+  "endCondition": {
+    "type": "target-score",
+    "target": 5,
+    "description": "Game ends when a player has 5 points; Question Master role rotates left each round"
+  },
+  "notes": "family: hidden-role-social. Official Oink rulebook PDF could not be downloaded (BGG login wall); point values taken from Wikipedia and UltraBoardGames and not verified against the rulebook. Enter each player's running point total.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/A_Fake_Artist_Goes_to_New_York",
+      "title": "A Fake Artist Goes to New York (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay: voting and points"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/a-fake-artist-goes-to-new-york/game-rules.php",
+      "title": "A Fake Artist Goes to New York rules (UltraBoardGames)",
+      "type": "other",
+      "section": "Object of the Game; Game Play"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

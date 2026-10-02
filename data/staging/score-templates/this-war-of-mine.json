@@ -1,0 +1,75 @@
+{
+  "slug": "this-war-of-mine",
+  "name": "This War of Mine: The Board Game",
+  "year": 2017,
+  "bggId": 188920,
+  "templateVersion": 1,
+  "variant": null,
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Survived until the war ended",
+      "labelVi": "Sống sót đến khi chiến tranh kết thúc",
+      "hint": "Scenario win: shelter survives until the war-end condition",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "survivorsAlive",
+      "label": "Survivors alive at end",
+      "labelVi": "Số người sống sót",
+      "hint": "Count of surviving characters",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "daysSurvived",
+      "label": "Days survived",
+      "labelVi": "Số ngày sống sót",
+      "hint": "Day counter reached",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative survival: the group wins by keeping the shelter alive until the scenario end condition; loses if all survivors die or leave.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends when the war ends (win) or all survivors die/leave (loss)"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. UNVERIFIED: official rulebook could not be retrieved (web search budget exhausted, BGG/publisher blocked). Win/lose summary from general knowledge; confirm exact victory/defeat conditions against the rulebook.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/188920/this-war-of-mine-the-board-game",
+      "title": "This War of Mine: The Board Game (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

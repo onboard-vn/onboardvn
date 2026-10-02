@@ -1,0 +1,186 @@
+{
+  "slug": "wyrmspan",
+  "name": "Wyrmspan",
+  "year": 2024,
+  "bggId": 410201,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "guildMarkers",
+      "label": "Dragon Guild markers",
+      "labelVi": "Điểm Dragon Guild",
+      "hint": "VP shown where your markers sit on the Dragon Guild board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "dragonPoints",
+      "label": "Printed points on dragons",
+      "labelVi": "Điểm in trên rồng",
+      "hint": "Printed VP on visible dragons on your mat (not in hand, not tucked).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endGameAbilities",
+      "label": "End-game abilities",
+      "labelVi": "Khả năng cuối game",
+      "hint": "VP from end-game abilities of visible dragons.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "eggs",
+      "label": "Eggs",
+      "labelVi": "Trứng",
+      "hint": "1 VP per egg unless a card says otherwise.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cached",
+      "label": "Cached resources",
+      "labelVi": "Tài nguyên cất",
+      "hint": "1 VP per cached resource unless otherwise specified.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tucked",
+      "label": "Tucked cards",
+      "labelVi": "Thẻ giấu",
+      "hint": "1 VP per tucked dragon card unless otherwise specified.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Public objectives",
+      "labelVi": "Mục tiêu công khai",
+      "hint": "VP printed on the spaces your 4 objective markers occupy (ties take full value of the place).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coins",
+      "label": "Remaining coins",
+      "labelVi": "Xu còn lại",
+      "hint": "1 VP per coin.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "otherItems",
+      "label": "Other remaining items",
+      "labelVi": "Vật phẩm còn lại",
+      "hint": "Resources + dragon cards + cave cards left; 1 VP per 4, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 4)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "visibleDragons",
+      "label": "Visible dragons (tiebreaker)",
+      "labelVi": "Số rồng hiển thị (hòa)",
+      "hint": "Not scored; excludes tucked cards.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 0
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "visibleDragons",
+      "dir": "highest",
+      "description": "Most visible dragons on player mat (not tucked)"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Objective tile VP values vary per tile so they are entered as totals; objective ties are friendly (each tied player gets full VP of the place). Solo mode not modelled. Verified only against RulesPal rulebook text; official PDF not retrieved.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/wyrmspan/rulebook",
+      "title": "Wyrmspan rulebook text (RulesPal)",
+      "type": "other",
+      "section": "Game End and Scoring; Round End/Upkeep"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

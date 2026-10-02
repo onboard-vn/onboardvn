@@ -1,0 +1,88 @@
+{
+  "slug": "hoplomachus-victorum",
+  "name": "Hoplomachus: Victorum",
+  "year": 2023,
+  "bggId": 313889,
+  "templateVersion": 1,
+  "variant": "campaign",
+  "playerCount": {
+    "min": 1,
+    "max": 1
+  },
+  "mode": "solo",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "campaignWon",
+      "label": "Campaign won (scion defeated)",
+      "labelVi": "Thắng chiến dịch (đánh bại Scion)",
+      "hint": "Tick if your hero defeated the scion in Act IV.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "actsCompleted",
+      "label": "Acts completed (primuses/scion defeated)",
+      "labelVi": "Số chặng hoàn thành",
+      "hint": "Primuses defeated in acts I-III plus the scion in act IV (0-4).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "blessingsLeft",
+      "label": "Blessings unspent",
+      "labelVi": "Phước lành còn lại",
+      "hint": "Each unspent blessing gives a bonus in the scion fight; record for your legacy.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Defeat three primuses in acts I-III, then complete the goal of the Scion event in act IV to win the campaign. If your hero is ever defeated (and no blessing saves them), you lose.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Campaign ends when the scion event is won or the hero is defeated"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "sharedVictoryOnTie": false,
+  "notes": "family: coop-solo-campaign. No point score; difficulty level sets starting blessings. Hero legacy details are recorded on the tracking pad and are not modelled.",
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/scl/fi/dxeltx77g3b9w0fke5g1w/HVictorum-Rulebook.pdf?rlkey=eplnl6zoxau73k9gf4pgl12xs&e=1&dl=0",
+      "title": "Hoplomachus: Victorum Rulebook (Chip Theory Games)",
+      "type": "official-rulebook",
+      "section": "Overview (p.4) ; Blessings; Scion events"
+    },
+    {
+      "url": "https://chiptheorygames.com/pages/support/hoplomachus-victorum",
+      "title": "Hoplomachus: Victorum support (Chip Theory Games)",
+      "type": "publisher-page",
+      "section": "Rulebook download"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,141 @@
+{
+  "slug": "alchemists",
+  "name": "Alchemists",
+  "year": 2014,
+  "bggId": 161970,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "reputation",
+      "label": "Reputation points",
+      "labelVi": "Điểm danh tiếng",
+      "hint": "All reputation on the scoring track becomes victory points.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": null
+    },
+    {
+      "key": "artifacts",
+      "label": "Artifact victory points",
+      "labelVi": "Điểm artifact",
+      "hint": "Sum of VP on your artifacts (some variable, see card). Count Magic Mirror first; Wisdom Idol after the Big Revelation.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "grants",
+      "label": "Grant victory points",
+      "labelVi": "Điểm grant",
+      "hint": "Each grant tile is worth 1 or 2 VP.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "goldConversion",
+      "label": "Gold and favor cards to VP",
+      "labelVi": "Vàng và thẻ favor đổi điểm",
+      "hint": "1 VP per 3 gold; each unused favor card counts as 2 gold. Hand ingredients are worth nothing.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "floor((gold + 2 * favorCards) / 3)"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "gold",
+        "favorCards"
+      ],
+      "min": 0
+    },
+    {
+      "key": "theorySeals",
+      "label": "Theory seals after the Big Revelation",
+      "labelVi": "Điểm seal sau Big Revelation",
+      "hint": "Correct gold seal +5, correct silver seal +3, unstarred correct 0. Wrong starred seal -4; wrong unstarred seal -4 unless properly hedged.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "5 * goldCorrect + 3 * silverCorrect - 4 * (wrongStarred + wrongUnhedged)"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "goldCorrect",
+        "silverCorrect",
+        "wrongStarred",
+        "wrongUnhedged"
+      ],
+      "min": 0
+    },
+    {
+      "key": "leftoverGold",
+      "label": "Leftover gold (tiebreaker)",
+      "labelVi": "Vàng dư (tiebreak)",
+      "hint": "Gold remaining after buying VP at 3 gold each (favor cards counted as 2 gold).",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "(gold + 2 * favorCards) % 3"
+      },
+      "countsToTotal": false,
+      "inputs": [
+        "gold",
+        "favorCards"
+      ],
+      "min": 0
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "leftoverGold",
+      "dir": "highest",
+      "description": "Most leftover gold pieces after converting gold to VP"
+    },
+    {
+      "description": "If still tied, players remain tied."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: deduction. Master and apprentice variants share the same final scoring. Reputation bonuses/penalties and the red/green/blue track zones do not apply during final scoring. Properly hedged = unstarred seal hedged against the single wrong aspect; if more than one aspect is wrong no seal is hedged. Expansion Alchemists: King's Golem not modelled. Rule text from RulesPal transcription of the CGE rulebook; original PDF link was unavailable.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/alchemists/rulebook",
+      "title": "Alchemists rulebook (RulesPal transcription of CGE rules)",
+      "type": "other",
+      "section": "Final Scoring; The Big Revelation; The Winner"
+    },
+    {
+      "url": "https://www.czechgames.com/alchemists/rules",
+      "title": "CGE Alchemists rules page (publisher)",
+      "type": "publisher-page",
+      "section": "Rules (PDF not retrievable)"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,85 @@
+{
+  "slug": "fishing",
+  "name": "Fishing",
+  "year": 2024,
+  "bggId": 419195,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 8,
+    "aggregate": "sum",
+    "endCondition": "After the 8th round, or immediately if the ocean stack cannot refill hands (Overfishing)"
+  },
+  "categories": [
+    {
+      "key": "cardsCaught",
+      "label": "Cards caught per round",
+      "labelVi": "Số lá bắt được mỗi vòng",
+      "hint": "1 point per card caught that round (including the -3 card itself). Enter one value per round.",
+      "scope": "player",
+      "input": "perRound",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "minusThree",
+      "label": "-3 points cards caught",
+      "labelVi": "Lá -3 điểm đã bắt",
+      "hint": "Each caught -3 card is -3 immediately (it still counts 1 as a caught card).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 8,
+    "description": "8 rounds; Overfishing ends the game early and the highest score still wins."
+  },
+  "notes": "family: trick-taking. Hand size per round varies (8-13 cards) so caught-card counts differ per round.",
+  "sources": [
+    {
+      "url": "https://www.riograndegames.com/wp-content/uploads/2024/07/Fishing.pdf",
+      "title": "Fishing rulebook (Rio Grande Games)",
+      "type": "official-rulebook",
+      "section": "End of the round; Buoy card -3 points; End of the game"
+    },
+    {
+      "url": "https://gamers-hq.de/media/pdf/2a/cd/df/2f_fishing_rules_us_web.pdf",
+      "title": "Fishing rules (2F-Spiele US copy)",
+      "type": "official-rulebook",
+      "section": "cross-check"
+    },
+    {
+      "url": "https://www.boardgamevideo.com/games/419195-fishing",
+      "title": "Fishing - BGG description summary",
+      "type": "other",
+      "section": "cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

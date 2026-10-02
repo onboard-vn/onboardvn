@@ -1,0 +1,141 @@
+{
+  "slug": "daitoshi",
+  "name": "Daitoshi",
+  "year": 2024,
+  "bggId": 402677,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "inGamePoints",
+      "label": "Victory points scored during play",
+      "labelVi": "Điểm tích lũy trong ván",
+      "hint": "Points gained throughout the game (players score for almost everything).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wildernessRiver",
+      "label": "River wilderness track",
+      "labelVi": "Track Sông",
+      "hint": "Points from progress on the river track; subtract points for unresolved Yokai conflicts still in your factory. Enter net value (may be negative).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wildernessMountains",
+      "label": "Mountains wilderness track",
+      "labelVi": "Track Núi",
+      "hint": "Points from progress on the mountains track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wildernessForests",
+      "label": "Forests wilderness track",
+      "labelVi": "Track Rừng",
+      "hint": "Points from progress on the forests track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wildernessUnderground",
+      "label": "Underground wilderness track",
+      "labelVi": "Track Hầm ngầm",
+      "hint": "Points from progress on the underground track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pilgrimage",
+      "label": "Pilgrimage path scoring (total)",
+      "labelVi": "Điểm đường hành hương (tổng)",
+      "hint": "Multiplier-based scoring for harmony with Yokai, university contributions, inventions and reputation; see player aid.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftovers",
+      "label": "Leftover resources and workers",
+      "labelVi": "Tài nguyên và worker còn lại",
+      "hint": "A few extra points for leftover resources and workers; see rulebook for rate.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. UNVERIFIED: the official rulebook (BGG file 285734, Devir) could not be downloaded (BGG blocked, Devir page has no PDF link), so exact point values per track/path and the tiebreaker are not known; categories follow review descriptions only. Game end: final round starts when the second-to-last wilderness hex on any track is revealed, everyone gets one more turn. Needs the rulebook to turn number inputs into exact formulas.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/filepage/285734/rulebook",
+      "title": "Daitoshi rulebook (BGG files, not retrievable)",
+      "type": "bgg-file",
+      "section": "Final scoring (not read)"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/daitoshi/",
+      "title": "Daitoshi review (Meeple Mountain)",
+      "type": "other",
+      "section": "Scoring overview"
+    },
+    {
+      "url": "https://tabletopping.games/2025/02/07/daitoshi/",
+      "title": "Daitoshi review (Tabletopping)",
+      "type": "other",
+      "section": "End game and scoring"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

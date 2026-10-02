@@ -1,0 +1,62 @@
+{
+  "slug": "coup",
+  "name": "Coup",
+  "year": 2012,
+  "bggId": 131357,
+  "templateVersion": 1,
+  "variant": "base game",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Last player with influence (win)",
+      "labelVi": "Người sống sót cuối cùng (thắng)",
+      "hint": "Tick for the sole surviving player",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Eliminate the influence of all other players; the last player with at least one face-down influence card wins. There is no second place.",
+  "endCondition": {
+    "type": "last-standing",
+    "target": null,
+    "description": "Game ends when only one player still has an unrevealed influence card"
+  },
+  "eliminationTracking": {
+    "resource": "influence cards (2 each)",
+    "start": 2,
+    "eliminatedCannotWin": true
+  },
+  "notes": "family: elimination. No points. Each player starts with 2 influence cards and 2 coins (2-player: starting player gets 1 coin). Rulebook text read via a rules transcription site, not the publisher PDF; Reformation/Rebellion/Anarchy variants not modelled.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/coup/game-rules.php",
+      "title": "Coup rules (UltraBoardGames transcription)",
+      "type": "other",
+      "section": "Object of the Game; Game Play"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Coup_(card_game)",
+      "title": "Coup (card game) - Wikipedia",
+      "type": "wiki",
+      "section": "Gameplay"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

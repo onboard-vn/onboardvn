@@ -1,0 +1,65 @@
+{
+  "name": "Brew Crafters",
+  "year": 2013,
+  "bggId": 139898,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after three years of four seasons"
+  },
+  "categories": [
+    {
+      "key": "reputation",
+      "label": "Reputation (Rep) total",
+      "labelVi": "Tổng điểm danh tiếng (Rep)",
+      "hint": "Final Rep on the track: batches sold, expansions, specialty workers, research, collaborations, gold labels, minus loans (-2 each).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not verified; check the official rulebook."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: running-track. Official rulebook PDF could not be retrieved (publisher link dead, Scribd paywalled), so only the high-level rule from reviews is modelled: three years, most Rep wins; gold-label specialty recipes give bonus Rep earned in play. Exact end-of-game bonuses and tiebreaker not verified. Do not confuse with the Travel Card Game (ends at 21 Rep).",
+  "sources": [
+    {
+      "url": "https://geekdad.com/2013/11/brew-crafters-board-game/",
+      "title": "Brew Crafters review (GeekDad)",
+      "type": "other",
+      "section": "Overview"
+    },
+    {
+      "url": "https://www.bierdame.com/board-game-brew-crafters/",
+      "title": "Brew Crafters (Bierdame) - Rep sources and loans",
+      "type": "other",
+      "section": "Scoring overview"
+    },
+    {
+      "url": "https://www.scribd.com/document/179453899/BrewCrafters-rulebook-pdf",
+      "title": "BrewCrafters Rulebook PDF (not readable)",
+      "type": "official-rulebook",
+      "section": "unverified"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true,
+  "slug": "brewcrafters-2013",
+  "templateVersion": 1
+}

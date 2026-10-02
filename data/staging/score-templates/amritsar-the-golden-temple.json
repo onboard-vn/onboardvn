@@ -1,0 +1,114 @@
+{
+  "slug": "amritsar-the-golden-temple",
+  "name": "Amritsar: The Golden Temple",
+  "year": 2023,
+  "bggId": 386502,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the third Decade (4 rounds each)"
+  },
+  "categories": [
+    {
+      "key": "ppTrack",
+      "label": "Prestige Points (PP) earned during game",
+      "labelVi": "PP đã có trong ván",
+      "hint": "PP marked on the track after the third Decade scoring (including majorities).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "knowledge",
+      "label": "Knowledge Tracks",
+      "labelVi": "Đường Tri thức",
+      "hint": "PP printed on the last space reached on each Knowledge Track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Played Objectives",
+      "labelVi": "Mục tiêu đã chơi",
+      "hint": "Reveal the Objectives placed on your board and score each one if fulfilled.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tileEndBonus",
+      "label": "District Tile end-game effects",
+      "labelVi": "Hiệu ứng cuối game của Tile",
+      "hint": "Only if you have such tile effects: 1 PP per leftover Donation Counter on Elephant, per Resource, or per Coin.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goldenTempleDonations",
+      "label": "Donations to the Golden Temple (tiebreak)",
+      "labelVi": "Quyên góp cho Đền Vàng (phân định hòa)",
+      "hint": "Number of donations to the Golden Temple.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "goldenTempleDonations",
+      "dir": "highest",
+      "description": "Most donations made to the Golden Temple"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Only a third-party rulebook transcription (RulesPal) could be reached; official PDF/BGG pages were not accessible, so values are not verified against the printed rulebook. Objective values vary per card (majority 5/2 PP, knowledge 5-6 PP, donation spread tables); enter the total. Decade scoring (district majorities, taxes, income) is in-game and tracked on PP. Solo Maharajah mode not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/amritsar-the-golden-temple/rulebook",
+      "title": "Amritsar: The Golden Temple rulebook (RulesPal transcription)",
+      "type": "other",
+      "section": "End of Game; The Objectives; District Tiles end-of-game effects"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

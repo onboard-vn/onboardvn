@@ -1,0 +1,110 @@
+{
+  "slug": "barrage",
+  "name": "Barrage",
+  "year": 2019,
+  "bggId": 251247,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "Victory points on track (during play)",
+      "labelVi": "Điểm trên track",
+      "hint": "VP marker value before final scoring (income, contracts, energy rank, Bonus tiles).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objective",
+      "label": "Objective tile",
+      "labelVi": "Thẻ mục tiêu",
+      "hint": "Top 3 players score 15 / 10 / 5 VP; ties split, rounded up. Enter the VP awarded.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 15,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverItems",
+      "label": "Leftover machineries and credits",
+      "labelVi": "Máy móc và tín dụng còn lại",
+      "hint": "Excavators + Concrete Mixers + Credits in supply (not on Construction Wheel); 1 VP per 5.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "waterDrops",
+      "label": "Water drops in Personal Dams",
+      "labelVi": "Giọt nước trong đập cá nhân",
+      "hint": "1 VP per drop.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "lastRoundEnergy",
+      "label": "Energy units produced in last round (tiebreaker)",
+      "labelVi": "Năng lượng vòng cuối (hòa)",
+      "hint": "Not scored; breaks ties.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 0
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "lastRoundEnergy",
+      "dir": "highest",
+      "description": "Most Energy Units produced in the last round"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Game ends after round 5 scoring. Objective tie rule is 'split, round up' which rankAward cannot express, so the awarded VP is entered directly. Solo/automa and 2-player variants not modelled. Verified only against RulesPal rulebook text; official PDF not retrieved.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/barrage/rulebook",
+      "title": "Barrage rulebook text (RulesPal)",
+      "type": "other",
+      "section": "Aim of the Game; Phase 4 Scoring; End of the Game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

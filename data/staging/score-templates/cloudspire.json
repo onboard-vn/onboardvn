@@ -1,0 +1,133 @@
+{
+  "slug": "cloudspire",
+  "name": "Cloudspire",
+  "year": 2019,
+  "bggId": 262211,
+  "templateVersion": 1,
+  "variant": "2-4 players",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after 4 waves, or immediately when only one faction's fortress gate remains"
+  },
+  "categories": [
+    {
+      "key": "gateDefeated",
+      "label": "Own fortress gate defeated in the final wave",
+      "labelVi": "Cổng pháo đài bị hạ ở wave cuối",
+      "hint": "If your gate is defeated in the last wave, your fortress power counts as 0.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "gateHealth",
+      "label": "Fortress gate health",
+      "labelVi": "Máu cổng pháo đài",
+      "hint": "Current gate health at the end of wave 4.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_gateDefeated == 0"
+    },
+    {
+      "key": "advancements",
+      "label": "Fortress advancements purchased",
+      "labelVi": "Số nâng cấp pháo đài đã mua",
+      "hint": "1 fortress power per advancement owned (pegs placed) at game end.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_gateDefeated == 0"
+    },
+    {
+      "key": "sourceRemaining",
+      "label": "Source remaining (tiebreaker)",
+      "labelVi": "Source còn lại (phá hòa)",
+      "hint": "Second tiebreaker only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "spiresInPlay",
+      "label": "Spires in play (tiebreaker)",
+      "labelVi": "Số tháp trên bàn (phá hòa)",
+      "hint": "Third tiebreaker only.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "gateHealth",
+      "dir": "highest",
+      "description": "Most fortress gate health"
+    },
+    {
+      "categoryKey": "sourceRemaining",
+      "dir": "highest",
+      "description": "Most remaining Source"
+    },
+    {
+      "categoryKey": "spiresInPlay",
+      "dir": "highest",
+      "description": "Most spires in play"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "winCondition": "Primary goal: defeat the opposing fortress gate(s). In 2 players the game ends immediately when a gate is defeated and the remaining player wins; in 3-4 players it ends immediately only when one gate remains. Otherwise after wave 4 compare fortress power = gate health + fortress advancements owned.",
+  "endCondition": {
+    "type": "rounds",
+    "target": 4,
+    "description": "4 waves, or earlier when only one fortress gate remains"
+  },
+  "notes": "family: fortress-power-compare. Team play (2 vs 2): add teammates' fortress power; highest team total wins (entered per player here, sum manually). A player whose gate was defeated early still plays on in 3-4p games; if defeated in the last wave their power is 0. Solo/co-op scenario books are not modelled.",
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/scl/fi/as4q6xhmgr6j87o9vmp5r/Cloudspire-Rulebook_v2.pdf?rlkey=s72c4heuj3g57oe4oltj9izgz&e=1&dl=0",
+      "title": "Cloudspire Rulebook v2 (Chip Theory Games)",
+      "type": "official-rulebook",
+      "section": "p.22 Winning the Game (2p); p.33-34 Winning the Game (3-4p) and Team Play"
+    },
+    {
+      "url": "https://chiptheorygames.com/products/cloudspire",
+      "title": "Cloudspire (Chip Theory Games product page)",
+      "type": "publisher-page",
+      "section": "rulebook downloads"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

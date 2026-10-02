@@ -1,0 +1,183 @@
+{
+  "slug": "kingdomino-origin",
+  "name": "Kingdomino Origin",
+  "year": 2021,
+  "bggId": 340041,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "regionPoints",
+      "label": "Region points (squares x fires)",
+      "labelVi": "Điểm vùng (ô x lửa)",
+      "hint": "Per region: number of squares times Fire symbols (printed + Fire tokens) inside it; a region without fire scores 0. Enter the sum over regions.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resourcesLeft",
+      "label": "Wooden resources left (Totem Mode)",
+      "labelVi": "Tài nguyên gỗ còn lại (Totem)",
+      "hint": "1 point per wooden resource still on your dominoes (Totem Mode only).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Totem Mode"
+    },
+    {
+      "key": "totemBonus",
+      "label": "Totem tiles bonus (Totem Mode)",
+      "labelVi": "Điểm totem (Totem)",
+      "hint": "Sum of bonus points printed on the Totem tiles you hold.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Totem Mode"
+    },
+    {
+      "key": "hunterGatherers",
+      "label": "Hunter-gatherer points (Tribe Mode)",
+      "labelVi": "Điểm thợ săn hái lượm (Tribe)",
+      "hint": "One entry per hunter-gatherer: points from its own condition (resources/fires around it).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Tribe Mode"
+    },
+    {
+      "key": "warriors",
+      "label": "Warrior group points (Tribe Mode)",
+      "labelVi": "Điểm chiến binh (Tribe)",
+      "hint": "One entry per orthogonally connected warrior group: warriors x total power; a lone warrior = its power.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Tribe Mode"
+    },
+    {
+      "key": "empireOfFire",
+      "label": "Empire of fire (optional)",
+      "labelVi": "Đế chế lửa (tuỳ chọn)",
+      "hint": "+10 if your hut is in the centre of your territory.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 10
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Optional rule"
+    },
+    {
+      "key": "homoHabilis",
+      "label": "Homo Habilis (optional)",
+      "labelVi": "Homo Habilis (tuỳ chọn)",
+      "hint": "+5 if your 5x5 territory is complete and no domino was discarded.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 5
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Optional rule"
+    },
+    {
+      "key": "biggestRegion",
+      "label": "Biggest region (tiebreaker)",
+      "labelVi": "Vùng lớn nhất (hoà)",
+      "hint": "Size of your largest region, with or without fire.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "fireSymbols",
+      "label": "Fire symbols (tiebreaker)",
+      "labelVi": "Tổng biểu tượng lửa (hoà)",
+      "hint": "Total Fire symbols in your territory.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "biggestRegion",
+      "dir": "highest",
+      "description": "Biggest region, whether or not it contains fire"
+    },
+    {
+      "categoryKey": "fireSymbols",
+      "dir": "highest",
+      "description": "Most Fire symbols"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Three modes: Discovery (regionPoints only), Totem (+resourcesLeft +totemBonus), Tribe (+cavemen; resources placed at setup score nothing and Totem tiles are not used). Empire of fire and Homo Habilis are optional rules for any mode. 2-player Neolithic option uses 7x7 territories (not modelled). Totem tile values and hunter-gatherer conditions are printed on components and not given in the rulebook text, so they are scorer inputs.",
+  "sources": [
+    {
+      "url": "https://www.blueorangegames.com/webroot/img/games/rules/9b3bb79946c9fa384f2f5c24778469da-Kingdomino-Origins.pdf",
+      "title": "Kingdomino Origins rulebook (Blue Orange)",
+      "type": "official-rulebook",
+      "section": "pp.3-6 End of the Game (each mode), Cavemen, optional rules"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

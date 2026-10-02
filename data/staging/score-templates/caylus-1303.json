@@ -1,0 +1,74 @@
+{
+  "slug": "caylus-1303",
+  "name": "Caylus 1303",
+  "year": 2019,
+  "bggId": 284818,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 9,
+    "aggregate": "sum",
+    "endCondition": "Game ends at the end of the ninth round"
+  },
+  "categories": [
+    {
+      "key": "prestige",
+      "label": "Prestige Points",
+      "labelVi": "Điểm Prestige",
+      "hint": "Total Prestige Points tokens revealed at game end.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gold",
+      "label": "Gold remaining",
+      "labelVi": "Vàng còn lại",
+      "hint": "2 Prestige Points per Gold resource left.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker; tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Prestige Points are gained during play (buildings, Castle deliveries, monuments) and kept facedown until the end. Only gold converts at end (2 PP each); the rulebook's resource icon was unreadable in the PDF text, gold confirmed by UltraBoardGames' rules page.",
+  "sources": [
+    {
+      "url": "https://desktopgames.com.ua/games/4398/e4_caylus_1303_rulebook.pdf",
+      "title": "Caylus 1303 Rulebook",
+      "type": "official-rulebook",
+      "section": "p.7 End of Game"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/caylus-1303/game-rules.php",
+      "title": "How to play Caylus 1303",
+      "type": "other",
+      "section": "End of game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

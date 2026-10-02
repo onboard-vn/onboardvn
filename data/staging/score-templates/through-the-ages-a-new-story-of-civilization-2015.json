@@ -1,0 +1,86 @@
+{
+  "slug": "through-the-ages-a-new-story-of-civilization-2015",
+  "name": "Through the Ages: A New Story of Civilization",
+  "year": 2015,
+  "bggId": 182028,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "culture",
+      "label": "Culture points (culture track, at game end)",
+      "labelVi": "Điểm văn hóa (trên track khi kết thúc)",
+      "hint": "Read the culture track after the last round; culture is scored continuously during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "ageIIIEvents",
+      "label": "Culture from Age III events evaluated at game end",
+      "labelVi": "Điểm văn hóa từ sự kiện Age III lúc kết thúc",
+      "hint": "Evaluate all Age III events in the current and next events decks; add culture gained (negative if lost).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endBonuses",
+      "label": "Other end-of-game bonuses",
+      "labelVi": "Thưởng cuối game khác",
+      "hint": "Any end-of-game bonuses printed on cards in play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "No tiebreaker: tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "winCondition": "Most culture points after the final round and final scoring wins. Game also ends immediately if only one player remains after a player is eliminated by a war/aggression loss.",
+  "endCondition": {
+    "type": "last-standing",
+    "target": null,
+    "description": "Normally ends when Age III ends (last round completed so all players have equal turns); ends early if only one player is left in the game, who wins."
+  },
+  "notes": "family: running-track-plus-events. Culture is tracked on the board during play; final scoring adds Age III events and end-of-game card bonuses. Starting-player counts as current player for tie resolution in end-game events. Solo/team variants not covered.",
+  "sources": [
+    {
+      "url": "https://filemanager.czechgames.com/storage/files/through-the-ages-a-new-story-of-civilization/rules/through-the-ages-new-story-rules-en.pdf",
+      "title": "Through the Ages: A New Story of Civilization rulebook (Czech Games Edition)",
+      "type": "official-rulebook",
+      "section": "p.1 Game Flow (final scoring); Evaluating an Event; card glossary (Bill Gates)"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

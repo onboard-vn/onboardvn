@@ -1,0 +1,171 @@
+{
+  "slug": "orloj",
+  "name": "Orloj: The Prague Astronomical Clock",
+  "year": 2025,
+  "bggId": 429405,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "scoreTrack",
+      "label": "Victory Points on score track",
+      "labelVi": "VB trên track điểm",
+      "hint": "Score marker total from in-play scoring (add 100 if the marker is flipped).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "masteryWindow1",
+      "label": "Mastery window 1",
+      "labelVi": "Vitrail kỹ năng 1",
+      "hint": "Needs experience marker on space 7. Primary value (highest marker; ties all get it) or secondary value (past brick line) x conditions met; values printed on the window.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "masteryWindow2",
+      "label": "Mastery window 2",
+      "labelVi": "Vitrail kỹ năng 2",
+      "hint": "Same as window 1.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "masteryWindow3",
+      "label": "Mastery window 3",
+      "labelVi": "Vitrail kỹ năng 3",
+      "hint": "Same as window 1.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "surplusGold",
+      "label": "Gold tokens after exchange",
+      "labelVi": "Vàng sau khi quy đổi",
+      "hint": "Trade all resources/coins at 3 identical resources = 1 gold (coin = wild); 1 VP per gold.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "deviations",
+      "label": "Broken-gear deviations",
+      "labelVi": "Độ lệch bánh răng hỏng",
+      "hint": "-1 VP per broken-gear icon still visible on your deviation tokens.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "assistants",
+      "label": "Assistants on workshop cards",
+      "labelVi": "Trợ lý trên thẻ xưởng",
+      "hint": "Sum of end-game bonuses of assistants placed on workshop cards (6 VP; 1 per upgrade level; 4 per skill marker at IV; 5 per full apostle column; 3 per lunar circle / zodiac with your worker).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "commonGoalWindows",
+      "label": "Common goal windows",
+      "labelVi": "Vitrail mục tiêu chung",
+      "hint": "By worker order on each common-goal window: 1st 8 VP, 2nd 6 VP, 3rd 4 VP. Enter the total over the three windows.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "apostlesOnPanel",
+      "label": "Apostles on panel (tiebreak)",
+      "labelVi": "Số tông đồ trên bảng (phân định hòa)",
+      "hint": "Count apostles placed on your apostle panel.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "apostlesOnPanel",
+      "dir": "highest",
+      "description": "Most apostles on the player panel; if still tied the victory is shared"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Source is the official Czech rulebook (Bohemian Games, sections 11-12 and overview p.22); English rulebook on BGG could not be downloaded. Mastery window values are printed on the stained glass (random set of three per game), so enter each window as a subtotal; see rulebook 12.1. Game ends after the round in which the last calendar circle is built or the 4th rooster crow. Solo (Josef Manes) variant not modelled.",
+  "sources": [
+    {
+      "url": "https://www.hras.cz/user/related_files/orloj_pravidla_comressed.pdf",
+      "title": "Orloj - ceska pravidla (Bohemian Games official rulebook, CZ)",
+      "type": "official-rulebook",
+      "section": "11 Konec hry (p.15); 12 Zaverecne bodovani (p.16); Prehled p.22 (assistants, windows)"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/297298/orloj-rulebook-en",
+      "title": "Orloj Rulebook EN (BGG file page)",
+      "type": "bgg-file",
+      "section": "Final scoring (not downloadable; listed for reference)"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

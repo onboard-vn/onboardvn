@@ -1,0 +1,174 @@
+{
+  "slug": "carnegie",
+  "name": "Carnegie",
+  "year": 2022,
+  "bggId": 310873,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 20,
+    "aggregate": "sum",
+    "endCondition": "Game lasts 20 rounds"
+  },
+  "categories": [
+    {
+      "key": "immediateVp",
+      "label": "VP on score track",
+      "labelVi": "Điểm trên thanh điểm",
+      "hint": "Immediate VP already earned during play (score marker position).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "connections",
+      "label": "City connections",
+      "labelVi": "Kết nối thành phố",
+      "hint": "Up to 36 VP: network linking New York, Chicago, New Orleans, San Francisco; read from the board table using your lowest transport level.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 36,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "actionChoice",
+      "label": "Unused Action Choice tile",
+      "labelVi": "Ô Action Choice chưa dùng",
+      "hint": "3 VP if you still have your Action Choice tile (3-4 players only).",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "employees",
+      "label": "Active employees",
+      "labelVi": "Nhân viên đang hoạt động",
+      "hint": "1 VP per active employee (not on Missions, not the permanent HR employee).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "deptTop",
+      "label": "Departments built (top row)",
+      "labelVi": "Phòng ban hàng trên",
+      "hint": "3 VP per Department in the top row.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "deptOther",
+      "label": "Departments built (other rows)",
+      "labelVi": "Phòng ban hàng khác",
+      "hint": "2 VP per Department elsewhere.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "projectTabs",
+      "label": "Project tab VP",
+      "labelVi": "Điểm thẻ dự án",
+      "hint": "Sum across Housing (max 6), Commerce (max 9), Industry (max 12), Public Infrastructure (max 15).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "constructions",
+      "label": "Construction projects",
+      "labelVi": "Điểm công trình",
+      "hint": "0-3 VP per built project depending on its city.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "donations",
+      "label": "Donations",
+      "labelVi": "Quyên góp",
+      "hint": "VP per donation disc (max 12 each, some bonuses raise it).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 20,
+    "description": "After 20 rounds."
+  },
+  "notes": "family: point-salad-euro. Exact per-donation, per-city and project-tab tables are printed on the board/tabs, so they are entered as numbers rather than modelled. Any end-of-game money conversion was not confirmed. Solo game not modelled. Verified only from a RulesPal summary, not the official PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/carnegie/rulebook",
+      "title": "Carnegie rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End of the Game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

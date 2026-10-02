@@ -1,0 +1,68 @@
+{
+  "slug": "spots-2022",
+  "name": "Spots",
+  "year": 2022,
+  "bggId": 372559,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "scoredDogs",
+      "label": "Scored dog cards (face down)",
+      "labelVi": "Thẻ chó đã ghi điểm",
+      "hint": "First to 6 scored dogs wins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "won",
+      "label": "Won (first to 6 scored dogs)",
+      "labelVi": "Thắng (đủ 6 chó đầu tiên)",
+      "hint": "Check for the player who scored 6 dogs.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "First player to have 6 scored dog cards wins immediately; no points are tallied.",
+  "endCondition": {
+    "type": "target-score",
+    "target": 6,
+    "description": "Game ends as soon as a player scores their sixth dog card."
+  },
+  "notes": "family: race-to-goal. Solo play (1 player) exists, treated as same target. Tie handling not found in secondary sources; rulebook not read.",
+  "sources": [
+    {
+      "url": "https://www.creativegamelife.com/spots-board-game-rules-strategy",
+      "title": "Spots Board Game Guide",
+      "type": "other",
+      "section": "Win condition"
+    },
+    {
+      "url": "https://board-game-rules.com/boardgames/spots/",
+      "title": "Spots - Board Game Rules",
+      "type": "other",
+      "section": "Objective"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

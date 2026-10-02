@@ -1,0 +1,68 @@
+{
+  "slug": "village-pillage",
+  "name": "Village Pillage",
+  "year": 2018,
+  "bggId": 247342,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "relics",
+      "label": "Relics bought",
+      "labelVi": "Số di vật đã mua",
+      "hint": "First to 3 relics wins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "won",
+      "label": "Won (first to 3 relics)",
+      "labelVi": "Thắng (đủ 3 di vật đầu tiên)",
+      "hint": "",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "First player to collect 3 relics wins; no points are tallied.",
+  "endCondition": {
+    "type": "target-score",
+    "target": 3,
+    "description": "Game ends when a player buys their third relic."
+  },
+  "notes": "family: race-to-goal. Tie handling not found; official rulebook not obtained.",
+  "sources": [
+    {
+      "url": "https://jellybean.games/village-pillage/",
+      "title": "Village Pillage (Jellybean Games)",
+      "type": "publisher-page",
+      "section": "How to win"
+    },
+    {
+      "url": "https://dicetower.com/video/how-play-village-pillage-3-minutes-rules-girl",
+      "title": "How to Play Village Pillage",
+      "type": "video",
+      "section": "Overview"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,86 @@
+{
+  "name": "Bus",
+  "year": 1999,
+  "bggId": 552,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends immediately when the last time stone is taken, or at round end if only one player has action markers left or no building spots remain."
+  },
+  "categories": [
+    {
+      "key": "passengerPoints",
+      "label": "Victory point track (passengers)",
+      "labelVi": "Điểm trên track (hành khách)",
+      "hint": "1 VP per passenger transported (Vrrooomm! action only).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "timeStones",
+      "label": "Time stones held",
+      "labelVi": "Đá thời gian",
+      "hint": "Each time stone is -1 VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "timeStones",
+      "dir": "highest",
+      "description": "Tied players: the one with the most time stones wins"
+    },
+    {
+      "description": "Then the player whose disk is at the bottom of the stack on the VP track (reached that score first) wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: running-track. Only the Vrrooomm! action scores. Needs min 0 on VP track; time stones are entered as count and subtracted. Rules read from the English edition rules (Capstone/Splotter).",
+  "sources": [
+    {
+      "url": "https://www.goblins.net/files/downloads/Bus_English_rules.pdf",
+      "title": "Bus English rules",
+      "type": "official-rulebook",
+      "section": "End of the Game; Vrrooomm!; Clock action"
+    },
+    {
+      "url": "http://www.splotter.nl/english/bus.html",
+      "title": "Splotter Spellen - Bus",
+      "type": "publisher-page",
+      "section": "Game page"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/bus-review-a-double-decker-serving-of-worker-placement/",
+      "title": "Bus review (cross-check: 1 VP per passenger, -1 per time stone)",
+      "type": "other",
+      "section": "Scoring"
+    }
+  ],
+  "confidence": "high",
+  "slug": "bus",
+  "templateVersion": 1,
+  "needsReview": false
+}

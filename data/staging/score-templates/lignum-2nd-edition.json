@@ -1,0 +1,88 @@
+{
+  "slug": "lignum-2nd-edition",
+  "name": "Lignum (Second Edition)",
+  "year": 2017,
+  "bggId": 222407,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 8,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the second winter (8 seasons over 2 years), followed by a final sale"
+  },
+  "categories": [
+    {
+      "key": "money",
+      "label": "Dollars after final sale",
+      "labelVi": "Tiền sau đợt bán cuối",
+      "hint": "Dollars on hand after the final sale (sell all wood in sale/drying areas, plus all wood of one kind from the river). Dollars are victory points.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tasks",
+      "label": "Completed tasks (advanced/expert)",
+      "labelVi": "Nhiệm vụ hoàn thành (nâng cao/chuyên gia)",
+      "hint": "Dollars printed on each fully completed task card, paid at game end; incomplete tasks give nothing.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "loans",
+      "label": "Loan cards outstanding",
+      "labelVi": "Thẻ vay chưa trả",
+      "hint": "Number of unreturned loan cards (0-2): pay 7 dollars for one, 16 dollars total for two.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": -7,
+          "2": -16
+        }
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro (money-as-VP). Rulebook text consulted states only that the player with the most dollars wins; no tiebreaker found. Tasks apply only in the advanced and expert games (basic game has none). Loan repayment amounts taken from the rules summary; unverified against the printed Capstone rulebook PDF (BGG file download blocked), so needsReview. Joinery and Buildings expansion not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/lignum/rulebook",
+      "title": "Lignum rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Game End - Final Sale; Loan Cards; Advanced Game (Tasks)"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/148663/lignum-rulebook-english",
+      "title": "Lignum Rulebook - English (BGG file)",
+      "type": "bgg-file",
+      "section": "Game End - Final Sale"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

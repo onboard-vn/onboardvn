@@ -1,0 +1,103 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "winRule": "highest",
+  "rounds": null,
+  "confidence": "high",
+  "needsReview": false,
+  "slug": "applejack-2022",
+  "name": "Applejack",
+  "year": 2022,
+  "bggId": 367662,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "finalHarvest",
+      "label": "Final harvest (all 7 varieties, die = 3)",
+      "labelVi": "Thu hoạch cuối (7 loại táo, xúc xắc = 3)",
+      "hint": "Sum honey from every area of every variety after subtracting 3 per area; enter the total BEFORE doubling (doubled automatically). Areas of 3 or fewer apples give nothing.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "value * 2"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "varietyBonus",
+      "label": "Profitable varieties in final harvest",
+      "labelVi": "Số loại táo có lãi ở vụ cuối",
+      "hint": "Varieties that yielded at least 1 honey in the final harvest (needs 4+ contiguous apples): 4/5/6/7 varieties = 4/11/21/35 honey.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 7,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 4,
+          "5": 11,
+          "6": 21,
+          "7": 35
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "blossoms",
+      "label": "Blossoms on tree tiles",
+      "labelVi": "Số hoa trên ô cây",
+      "hint": "1 honey per blossom on your tree tiles (last blossom scoring).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "honeySupply",
+      "label": "Honey in personal supply",
+      "labelVi": "Mật ong còn trong kho",
+      "hint": "Add all honey you still hold.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: tied players all win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection (area harvest + variety bonus). Honey earned and spent during play is not itemised; only leftover honey counts. Solo/campaign mode (goal 65 honey, 80 for extra) and optional modules (individual orchards, apple tiles, additional tree tile) not modelled. Rulebook layout verified from page image of final scoring spread (p.8 of the rulebook).",
+  "sources": [
+    {
+      "url": "https://gamebuilders.de/wp-content/uploads/2022/09/Applejack_rules_english.pdf",
+      "title": "Applejack English rulebook (publisher)",
+      "type": "official-rulebook",
+      "section": "End of the game; The final scoring (steps 1-5)"
+    }
+  ]
+}

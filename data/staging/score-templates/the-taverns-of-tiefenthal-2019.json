@@ -1,0 +1,89 @@
+{
+  "slug": "the-taverns-of-tiefenthal-2019",
+  "name": "The Taverns of Tiefenthal",
+  "year": 2019,
+  "bggId": 269207,
+  "templateVersion": 1,
+  "variant": "base game",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 8,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the 8th round"
+  },
+  "categories": [
+    {
+      "key": "cardVP",
+      "label": "Victory Points on all your cards",
+      "labelVi": "Điểm trên tất cả các lá bài",
+      "hint": "Count VP in the top-right corner of every card in draw and discard stacks",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "doubloons",
+      "label": "Doubloons stored (tiebreaker)",
+      "labelVi": "Doubloon còn lại",
+      "hint": "Not scored; tiebreaker with Beer",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "beer",
+      "label": "Beer stored (tiebreaker)",
+      "labelVi": "Bia còn lại",
+      "hint": "Not scored; tiebreaker with Doubloons",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied player with more Doubloons and Beer stored in total wins"
+    },
+    {
+      "description": "If still tied, the tied players share the victory"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 8,
+    "description": "Game ends after the 8th round"
+  },
+  "notes": "family: engine-tableau. Doubloons and Beer are entered separately but only their sum matters for the tiebreak. Rulebook text read via a rules transcription site, not the publisher PDF; expansion modules not modelled.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/the-taverns-of-tiefenthal/game-rules.php",
+      "title": "The Taverns of Tiefenthal rules (UltraBoardGames transcription)",
+      "type": "other",
+      "section": "End of the Game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

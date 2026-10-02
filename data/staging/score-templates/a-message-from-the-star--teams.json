@@ -1,0 +1,82 @@
+{
+  "year": 2024,
+  "bggId": 399987,
+  "templateVersion": 1,
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "alienGuess",
+      "label": "Alien guesses Scientists' message words",
+      "labelVi": "Alien đoán đúng từ của Scientists",
+      "hint": "1 point per correct word of the 3 (all 3 must be written before reveal).",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "scientistGuess",
+      "label": "Scientists guess Alien's message words",
+      "labelVi": "Scientists đoán đúng từ của Alien",
+      "hint": "1 point per correct word of the 3.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cipherLetters",
+      "label": "Cipher letters guessed (trust, amplify, suspicion)",
+      "labelVi": "Chữ cái mật mã đoán đúng",
+      "hint": "1 point per correct cipher letter of the 6 (3 trust, 2 amplify, 1 suspicion).",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://assets.allplay.com/board-games-a-message-from-the-stars-rulebook-link.pdf",
+      "title": "A Message From The Stars rulebook (Allplay)",
+      "type": "official-rulebook",
+      "section": "p.2 Objective, p.3 Final Guess, p.4 Team vs Team"
+    }
+  ],
+  "slug": "a-message-from-the-star--teams",
+  "name": "A Message From The Stars",
+  "variant": "teams",
+  "playerCount": {
+    "min": 4,
+    "max": 8
+  },
+  "mode": "team",
+  "winRule": "highest",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "3 rounds of transmissions, then the final guess"
+  },
+  "tiebreakers": [],
+  "endCondition": {
+    "type": "rounds",
+    "target": 3,
+    "description": "Team vs team lasts 3 rounds, then each team scores its own final guess."
+  },
+  "notes": "family: team-score-higher-better. 2 teams, each with 1 Alien and 1+ Scientists; both Aliens share the same cipher. Each team scores its own 12-point final guess; the higher team score wins. Enter each team's score as its own team; tiebreaker not stated in the rulebook.",
+  "confidence": "high",
+  "needsReview": false,
+  "winCondition": "The team with the higher final-guess score (max 12) wins."
+}

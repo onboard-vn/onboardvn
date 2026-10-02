@@ -1,0 +1,65 @@
+{
+  "slug": "agent-avenue-2024",
+  "name": "Agent Avenue",
+  "year": 2024,
+  "bggId": 422732,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won",
+      "labelVi": "Thắng",
+      "hint": "Win by catching the opponent's meeple, having 3 Codebreakers in play, or opponent having 3 Daredevils in play",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "If both players meet end conditions at once, the active player (whose turn it is) wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Checked in the End step of each turn: catch the opponent's meeple (reach or pass its position) to win; 3 Codebreakers in play wins; 3 Daredevils in play loses. If the agent deck is empty and the opponent cannot play, the player closer to catching the other's meeple wins.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends at the first met win/loss condition in the End step"
+  },
+  "notes": "family: race-to-goal. No points. Two-player game; a team variant for 3-4 players exists (not modelled). Details from rules summaries; official rulebook not downloaded.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/agent-avenue/rulebook",
+      "title": "Agent Avenue Rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End step / win conditions"
+    },
+    {
+      "url": "https://merchantsofplay.com/howtoplay/agent-avenue/",
+      "title": "How to Play Agent Avenue (Merchants of Play)",
+      "type": "publisher-page",
+      "section": "How to play"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/422732/agent-avenue",
+      "title": "Agent Avenue (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

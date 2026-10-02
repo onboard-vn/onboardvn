@@ -1,0 +1,252 @@
+{
+  "slug": "ra-1999",
+  "name": "Ra (1999)",
+  "year": 1999,
+  "bggId": 12,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the third epoch"
+  },
+  "categories": [
+    {
+      "key": "gods",
+      "label": "God tiles scored (all epochs)",
+      "labelVi": "Thẻ Thần (cả 3 kỷ)",
+      "hint": "2 points per God tile at each epoch end; enter total tiles scored across epochs.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pharaohs",
+      "label": "Pharaoh awards per epoch",
+      "labelVi": "Điểm Pharaoh mỗi kỷ",
+      "hint": "Most Pharaohs +5, fewest -2 (ties: all tied; none if everyone equal). Enter each epoch's result.",
+      "scope": "player",
+      "input": "perRound",
+      "min": -2,
+      "max": 5,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "nile",
+      "label": "Nile / Flood per epoch",
+      "labelVi": "Nile / Flood mỗi kỷ",
+      "hint": "1 point per Flood and Nile tile, only if you hold at least one Flood tile. Enter each epoch's result.",
+      "scope": "player",
+      "input": "perRound",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "civilizations",
+      "label": "Civilization awards per epoch",
+      "labelVi": "Điểm Văn minh mỗi kỷ",
+      "hint": "None -5; 3 different +5; 4 different +10; 5 different +15. Enter each epoch's result.",
+      "scope": "player",
+      "input": "perRound",
+      "min": -5,
+      "max": 15,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gold",
+      "label": "Gold tiles scored (all epochs)",
+      "labelVi": "Thẻ Vàng (cả 3 kỷ)",
+      "hint": "3 points per Gold tile at each epoch end; enter total tiles scored.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "monumentTypes",
+      "label": "Different monument types (end of game)",
+      "labelVi": "Số loại Monument khác nhau",
+      "hint": "Points by number of different monument types.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 8,
+      "formula": {
+        "type": "table",
+        "table": {
+          "1": 1,
+          "2": 2,
+          "3": 3,
+          "4": 4,
+          "5": 5,
+          "6": 6,
+          "7": 10,
+          "8": 15
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "monumentSets",
+      "label": "Identical monument sets (end of game)",
+      "labelVi": "Bộ Monument giống nhau",
+      "hint": "Per group of identical monuments: 3 = 5, 4 = 10, 5 = 15.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "threes * 5 + fours * 10 + fives * 15"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "threes",
+        "fours",
+        "fives"
+      ]
+    },
+    {
+      "key": "sunTotal",
+      "label": "Sun disc total (end of game)",
+      "labelVi": "Tổng Sun disc (cuối game)",
+      "hint": "Sum of your sun values: highest +5, lowest -5, ties all receive.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            5,
+            -5
+          ],
+          "tieMode": "all-full",
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "2": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                5,
+                -5
+              ],
+              "tieMode": "all-full",
+              "over": "value"
+            }
+          },
+          "3": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                5,
+                0,
+                -5
+              ],
+              "tieMode": "all-full",
+              "over": "value"
+            }
+          },
+          "4": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                5,
+                0,
+                0,
+                -5
+              ],
+              "tieMode": "all-full",
+              "over": "value"
+            }
+          },
+          "5": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                5,
+                0,
+                0,
+                0,
+                -5
+              ],
+              "tieMode": "all-full",
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "sunHighest",
+      "label": "Highest sun tile (tiebreak)",
+      "labelVi": "Sun cao nhất (phân định hòa)",
+      "hint": "Highest single sun value.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "sunHighest",
+      "dir": "highest",
+      "description": "Among tied players, the one with the highest-numbered sun tile wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-set-collection. Official rulebook (Rio Grande / 25th Century) could not be downloaded (site blocked automated access), so numbers come from a secondary rules summary and general knowledge: verify the monument table (types 1-6 = 1 point each, 7 = 10, 8 = 15 total vs additive) and the nile/flood handling. Sun discs score only at game end. Pharaoh award is entered per epoch because 'all equal = no points' cannot be derived automatically. Starting points (10 per player, or 2-player variants) and Traders expansion are not modelled; scores cannot go below 1 on the track.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/ra/game-rules.php",
+      "title": "Ra game rules (Ultraboardgames)",
+      "type": "other",
+      "section": "Scoring: epoch and end-of-game"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Ra_(board_game)",
+      "title": "Ra (board game) - Wikipedia",
+      "type": "wiki",
+      "section": "Gameplay"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

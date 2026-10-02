@@ -1,0 +1,98 @@
+{
+  "slug": "le-havre",
+  "name": "Le Havre",
+  "year": 2008,
+  "bggId": 35677,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "buildingsShips",
+      "label": "Buildings and ships (printed value)",
+      "labelVi": "Công trình và tàu (giá trị in trên thẻ)",
+      "hint": "Number to the left of each card name, for every building and ship you own.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusValue",
+      "label": "Additional value of plus-symbol buildings",
+      "labelVi": "Giá trị cộng thêm của công trình có dấu +",
+      "hint": "E.g. Bank, Storehouse and other buildings with a + value that depends on your other cards; see card text.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cash",
+      "label": "Cash (Francs)",
+      "labelVi": "Tiền mặt (Franc)",
+      "hint": "Francs in hand. Goods in supply are worth nothing (except via Storehouse).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "loans",
+      "label": "Unpaid loans",
+      "labelVi": "Khoản vay chưa trả",
+      "hint": "Deduct 7 Francs per Loan card not repaid.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -7
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: tied players are all winners."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: wealth-tally. Winner is the richest player after the final action. Some + values come from building text (Bank: +3 per industrial building and per economic building; Storehouse: half a Franc per goods token, rounded down). Shortened game and solo variants use the same wealth count.",
+  "sources": [
+    {
+      "url": "http://www.djnutte.com/BoardGameFiles/Rules/LeHavre.pdf",
+      "title": "Le Havre official English rules (2017 web, mirrored copy)",
+      "type": "official-rulebook",
+      "section": "Game End and Winner (p.8); Buildings overview: Bank, Storehouse; Loan Cards"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/le-havre/game-rules.php",
+      "title": "Le Havre rules summary (UltraBoardGames)",
+      "type": "other",
+      "section": "End of the game cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,59 @@
+{
+  "slug": "tir-na-nog",
+  "name": "Tír na nÓg",
+  "year": 2024,
+  "bggId": 343433,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "rowScores",
+      "label": "Row scores (goal cards)",
+      "labelVi": "Điểm các hàng (thẻ mục tiêu)",
+      "hint": "Sum of points from your 5 tableau rows, each scored per its goal card",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "connectedColors",
+      "label": "Connected-color majorities",
+      "labelVi": "Đa số thẻ cùng màu liền kề",
+      "hint": "Points for having the most connected story cards of each color",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: tableau-building. Per the publisher description: after five rounds each row is scored by its goal card and players earn points for most connected story cards of each color; highest score wins. Exact goal-card values, majority payouts and tiebreakers NOT verified (rulebook not retrieved), so entered as scorer totals. Solo mode (1p) not modelled.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/343433",
+      "title": "BGG game page (identification and publisher description only)",
+      "type": "other",
+      "section": "Description"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

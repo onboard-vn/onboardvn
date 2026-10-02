@@ -1,0 +1,56 @@
+{
+  "slug": "everstone-discovering-ignis",
+  "name": "Everstone: Discovering Ignis",
+  "year": 2024,
+  "bggId": 392403,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "reputation",
+      "label": "Reputation points",
+      "labelVi": "Điểm Reputation",
+      "hint": "Reputation from quests, shared achievements, gemstone tracks, locations and relic cards; game ends after round when a player reaches 10.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "target-score",
+    "target": 10,
+    "description": "When a player reaches 10 Reputation, all players finish equal turns, then the game ends."
+  },
+  "notes": "family: race-to-target. Official rulebook PDF not retrievable; built from reviews. Tiebreaker not verified. Reputation can exceed 10 in the final equal-turns round.",
+  "sources": [
+    {
+      "url": "https://www.whatboardgame.com/post/everstone-discovering-ignis-board-game-review",
+      "title": "Everstone review (WhatBoardGame)",
+      "type": "other",
+      "section": "End condition"
+    },
+    {
+      "url": "https://www.boardgamequest.com/everstone-discovering-ignis-review/",
+      "title": "Everstone review (Board Game Quest)",
+      "type": "other",
+      "section": "Reputation sources"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

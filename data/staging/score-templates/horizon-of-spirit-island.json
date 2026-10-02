@@ -1,0 +1,122 @@
+{
+  "slug": "horizon-of-spirit-island",
+  "name": "Horizon of spirit island",
+  "year": 2022,
+  "bggId": 367498,
+  "templateVersion": 1,
+  "variant": "base game",
+  "playerCount": {
+    "min": 1,
+    "max": 3
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Spirits win (Invaders driven off)",
+      "labelVi": "Các Spirit thắng (đuổi được Invader)",
+      "hint": "Win immediately when the current Terror Level victory condition is met, or when the Fear Deck is emptied.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "terrorLevel",
+      "label": "Terror Level at the end",
+      "labelVi": "Cấp Terror khi kết thúc",
+      "hint": "TL1: clear all Invaders. TL2: clear all Towns and Cities. TL3: clear all Cities.",
+      "scope": "team",
+      "input": "count",
+      "min": 1,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "blightPoolEmpty",
+      "label": "Defeat: Blight Pool ran out",
+      "labelVi": "Thua: hết Blight trong kho",
+      "hint": "Island overrun by Blight.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "spiritDestroyed",
+      "label": "Defeat: a Spirit has no Presence left",
+      "labelVi": "Thua: một Spirit mất hết Presence",
+      "hint": "Any Spirit with no Presence on the Island.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "invaderDeckEmpty",
+      "label": "Defeat: Invader Deck empty when Exploring",
+      "labelVi": "Thua: hết bài Invader",
+      "hint": "Need to reveal an Invader card to Explore but the deck is empty.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Cooperative; no points. Win as soon as the current Terror Level victory condition is met (Level 1 no Invaders, Level 2 no Towns or Cities, Level 3 no Cities) after resolving the current effect, or immediately when the Fear Deck is emptied. Lose if the Blight Pool runs out, any Spirit has no Presence left, or an Invader card must be revealed from an empty Invader Deck.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends immediately on victory (Terror Level condition or empty Fear Deck) or defeat (no Blight, Spirit destroyed, empty Invader Deck)."
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  },
+  "notes": "family: coop. No official points. Verified from Dized rules (licensed rulebook mirror) and BGG publisher description; the official rulebook PDF could not be downloaded, so confidence is medium. The Spirit Island optional performance score is defined in the Spirit Island Rules Reference, not found for Horizons, so it is not modelled. Dized lists 1-3 players; difficulty adjustments are optional.",
+  "sources": [
+    {
+      "url": "https://rules.dized.com/game/_7rPptSyRn6_unBi4-2eVg/VEwczo2fTwuONZ50apVctg/win-condition",
+      "title": "Dized Rules: Horizons of Spirit Island - Win Condition",
+      "type": "other",
+      "section": "Win Condition"
+    },
+    {
+      "url": "https://rules.dized.com/game/_7rPptSyRn6_unBi4-2eVg/Er4rmDSPRp2QYlkPGAU8xg/lose-condition",
+      "title": "Dized Rules: Horizons of Spirit Island - Lose Condition",
+      "type": "other",
+      "section": "Lose Condition"
+    },
+    {
+      "url": "https://rules.dized.com/game/_7rPptSyRn6_unBi4-2eVg/wn7CB3PdRsu_JadgDlX3IA/game-overview",
+      "title": "Dized Rules: Horizons of Spirit Island - Game Overview",
+      "type": "other",
+      "section": "Game Overview (1-3 players, cooperative)"
+    },
+    {
+      "url": "https://api.geekdo.com/api/geekitems?objectid=367498&objecttype=thing",
+      "title": "BGG: Horizons of Spirit Island (description, 1-3 players)",
+      "type": "other",
+      "section": "Description"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

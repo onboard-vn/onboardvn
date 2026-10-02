@@ -1,0 +1,209 @@
+{
+  "slug": "darwin-s-journey-collector-s-edition",
+  "name": "Darwin's Journey: Collector's Edition",
+  "year": 2021,
+  "bggId": 322289,
+  "templateVersion": 1,
+  "variant": "collectors-edition",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Game lasts five rounds, then final scoring"
+  },
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "VP gained during play",
+      "labelVi": "Điểm đã nhận trong ván",
+      "hint": "Score track position (Beagle goals, majorities, etc.).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Achieved Objectives",
+      "labelVi": "Nhiệm vụ đã hoàn thành",
+      "hint": "Sum of end-game VP on achieved Objective tiles (e.g. 5 or 8), plus paired-objective bonuses (4 VP).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "waxSeals",
+      "label": "Workers with full Wax Seals",
+      "labelVi": "Công nhân đủ dấu sáp",
+      "hint": "3 VP per worker with 5 seals; 6 seals gives 10 VP total per worker. Enter 3 or 10 per worker.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tents",
+      "label": "All 5 Tents placed",
+      "labelVi": "Đã đặt đủ 5 lều",
+      "hint": "5 VP if all 5 Tents are on Campsites.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "books",
+      "label": "Books reached on Theory of Evolution track",
+      "labelVi": "Số sách trên đường tiến hóa",
+      "hint": "Books reached or passed (include +1 for the Book Multiplier Objective).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "museumModifier",
+      "label": "Museum modifier",
+      "labelVi": "Hệ số bảo tàng",
+      "hint": "Same for all players: 2 + number of Museum rows with all four tiles placed.",
+      "scope": "player",
+      "input": "number",
+      "min": 2,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "evolutionBooks",
+      "label": "Theory of Evolution VP",
+      "labelVi": "Điểm đường tiến hóa",
+      "hint": "Museum modifier x books reached.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "cat_museumModifier * cat_books"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coins",
+      "label": "Leftover Coins",
+      "labelVi": "Xu còn lại",
+      "hint": "1 VP per full set of 5 Coins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "knowledge",
+      "label": "Leftover Temporary Knowledge",
+      "labelVi": "Kiến thức tạm còn lại",
+      "hint": "1 VP per token.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "evolutionPos",
+      "label": "Evolution marker position (tiebreak)",
+      "labelVi": "Vị trí đường tiến hóa (phân định hòa)",
+      "hint": "Space number of your Evolution marker.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "coinsLeft",
+      "label": "Leftover Coins (tiebreak)",
+      "labelVi": "Xu còn lại (phân định hòa)",
+      "hint": "Raw number of Coins left.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "evolutionPos",
+      "dir": "highest",
+      "description": "Furthest on Theory of Evolution track"
+    },
+    {
+      "categoryKey": "coinsLeft",
+      "dir": "highest",
+      "description": "Most leftover Coins"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 5,
+    "description": "After round five; cleanup is skipped and final scoring follows."
+  },
+  "notes": "family: point-salad-euro. books and museumModifier are inputs only; evolutionBooks multiplies them. Collector's Edition assumed to share base rules; expansion content not modelled. Solo (Alfred) not modelled. Verified only via a RulesPal mirror, not the PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/darwins-journey/rulebook",
+      "title": "Darwin's Journey rulebook (RulesPal mirror)",
+      "type": "other",
+      "section": "Final Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

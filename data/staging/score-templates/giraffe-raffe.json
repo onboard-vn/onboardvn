@@ -1,0 +1,61 @@
+{
+  "slug": "giraffe-raffe",
+  "name": "Giraffe Raffe",
+  "year": 2024,
+  "bggId": 428639,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "lost",
+      "label": "Could not play a card or apple (lost)",
+      "labelVi": "Không thể đánh bài/táo (thua)",
+      "hint": "The player unable to take their turn loses; mark that player.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "No points. If a player cannot play cards to a tree or play an apple on their turn, they lose. Official text does not state who wins at 3+ players; reviews describe it as generating a loser rather than a single winner.",
+  "endCondition": {
+    "type": "elimination",
+    "target": null,
+    "description": "Game ends when a player cannot take a turn."
+  },
+  "notes": "family: climbing-shedding. Official rulebook not obtained (BGG file download blocked); rules summary taken from publisher blurb, BoardGameArena help and a review. Solo mode vs giraffe robot not modelled. Winner definition for 3+ players and any multi-round scoring unverified.",
+  "sources": [
+    {
+      "url": "https://en.doc.boardgamearena.com/Gamehelpgirafferaffe",
+      "title": "Giraffe Raffe - Board Game Arena help",
+      "type": "other",
+      "section": "Overview, Turn, Game End"
+    },
+    {
+      "url": "https://www.boardseyeview.net/post/giraffe-raffe",
+      "title": "Giraffe Raffe review (Boards Eye View)",
+      "type": "other",
+      "section": "review text"
+    },
+    {
+      "url": "https://api.geekdo.com/api/geekitems?objectid=428639&objecttype=thing",
+      "title": "BGG Giraffe Raffe description",
+      "type": "other",
+      "section": "description"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

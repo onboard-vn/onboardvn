@@ -1,0 +1,101 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "winRule": "highest",
+  "rounds": null,
+  "confidence": "high",
+  "needsReview": false,
+  "slug": "suburbia-collector-edition",
+  "name": "Suburbia (Collector's Edition)",
+  "year": 2018,
+  "bggId": 267367,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "population",
+      "label": "Population on the board at end",
+      "labelVi": "Dân số trên bảng",
+      "hint": "Population track after your last turn (before goals and money; red lines are ignored in final scoring).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 160,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "publicGoals",
+      "label": "Public goal Population bonuses won",
+      "labelVi": "Thưởng dân số mục tiêu công khai",
+      "hint": "Add the printed Population bonus of each public goal you alone achieved (ties: nobody scores it).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "privateGoal",
+      "label": "Private goal Population bonus",
+      "labelVi": "Thưởng dân số mục tiêu bí mật",
+      "hint": "Printed Population bonus on your private goal tile if you alone achieved it (ties on that goal: none).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "moneyPopulation",
+      "label": "Money converted to Population",
+      "labelVi": "Tiền quy đổi thành dân số",
+      "hint": "Enter your money after goals are decided: 1 Population per full $5.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 5)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tie: highest Reputation, then highest Income, then most remaining money (excluding the money converted to Population)."
+    },
+    {
+      "description": "Still tied: tied players play again."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: end-game-categories (Population track + goals + money). Goal Population values are printed on each goal tile and vary, so they are scorer inputs; goals must be resolved before converting money (Billionaire / Spendthrift goals use money held before conversion). Solo ladder (Lone Architect, Dale the Bot) and Suburbia expansion tiles not modelled. Verified in the Suburbia 2nd Edition / Collector's Edition rules reference (Bezier Games, v2.3.1), which is image-only; page 5 read visually.",
+  "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0740/4855/files/SUB2_online_Rules_Reference_2.3.1.pdf?v=1773923974",
+      "title": "Suburbia Second Edition rules reference (Bezier Games)",
+      "type": "official-rulebook",
+      "section": "p.5 End of the Game; Final Scoring; Convert Money to Population; Winning and Tiebreaking"
+    },
+    {
+      "url": "https://beziergames.com/products/suburbia-second-edition",
+      "title": "Bezier Games Suburbia product page (rules link)",
+      "type": "publisher-page",
+      "section": null
+    }
+  ]
+}

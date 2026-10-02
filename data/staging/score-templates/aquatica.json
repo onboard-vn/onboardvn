@@ -1,0 +1,97 @@
+{
+  "slug": "aquatica",
+  "name": "Aquatica",
+  "year": 2021,
+  "bggId": 283393,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "characters",
+      "label": "Character cards in hand (incl. King)",
+      "labelVi": "Thẻ nhân vật trên tay",
+      "hint": "1 Prosperity Point per Character card in hand, including your King; discarded ones do not count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goals",
+      "label": "Goal track points",
+      "labelVi": "Điểm Goal (Manta)",
+      "hint": "Sum of points shown above each of your Mantas on the Goal Tracks.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "locations",
+      "label": "Locations in Scoring Pile",
+      "labelVi": "Địa điểm trong Scoring Pile",
+      "hint": "Sum of points printed on Locations in your Scoring Pile; Locations still on your player board score 0.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mantasReserve",
+      "label": "Mantas in reserve (tiebreak)",
+      "labelVi": "Manta còn trong kho (hòa)",
+      "hint": "Only used to break ties.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "mantasReserve",
+      "dir": "highest",
+      "description": "Most Mantas in personal reserve"
+    },
+    {
+      "description": "Then lowest number on King card; without Kings, last player in turn order wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Goal Track point values are printed on the board/tokens and not in the rulebook text, so entered as a number. End: after any of 4 goals claimed by one player, Location deck empty or Ocean Character deck empty, each player takes one final turn. Solo mode and Advanced Mode goals not modelled.",
+  "sources": [
+    {
+      "url": "https://www.arcanewonders.com/wp-content/uploads/2021/05/AQUATICA_rules_200x200_JANUARY.pdf",
+      "title": "Aquatica Rulebook (Arcane Wonders)",
+      "type": "official-rulebook",
+      "section": "p.24 Goals; p.25 End of the Game / Counting Prosperity Points"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

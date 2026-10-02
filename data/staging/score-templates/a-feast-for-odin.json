@@ -1,0 +1,276 @@
+{
+  "slug": "a-feast-for-odin",
+  "name": "A Feast for Odin",
+  "year": 2016,
+  "bggId": 177736,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 7,
+    "aggregate": "sum",
+    "endCondition": "Game ends right after the Feast phase of the final round"
+  },
+  "categories": [
+    {
+      "key": "whalingBoats",
+      "label": "Whaling boats",
+      "labelVi": "Thuyền săn cá voi",
+      "hint": "3 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "knarrs",
+      "label": "Knarrs",
+      "labelVi": "Thuyền knarr",
+      "hint": "5 VP each (not emigrated)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "longships",
+      "label": "Longships",
+      "labelVi": "Thuyền dài",
+      "hint": "8 VP each (not emigrated)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 8
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "emigratedKnarrs",
+      "label": "Knarrs used for emigration",
+      "labelVi": "Knarr di cư",
+      "hint": "18 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 18
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "emigratedLongships",
+      "label": "Longships used for emigration",
+      "labelVi": "Thuyền dài di cư",
+      "hint": "21 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 21
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "explorationBoards",
+      "label": "Exploration boards",
+      "labelVi": "Bảng khám phá",
+      "hint": "Sum of values printed top right (4-38)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Sheds and houses",
+      "labelVi": "Kho và nhà",
+      "hint": "Printed values: shed 8, stone house 10, long house 17",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "sheep",
+      "label": "Sheep",
+      "labelVi": "Cừu",
+      "hint": "2 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pregnantSheep",
+      "label": "Pregnant sheep",
+      "labelVi": "Cừu mang thai",
+      "hint": "3 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cattle",
+      "label": "Cattle",
+      "labelVi": "Bò",
+      "hint": "3 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pregnantCattle",
+      "label": "Pregnant cattle",
+      "labelVi": "Bò mang thai",
+      "hint": "4 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "occupations",
+      "label": "Occupation cards",
+      "labelVi": "Thẻ nghề",
+      "hint": "Printed value of occupations in play",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "silver",
+      "label": "Silver in supply",
+      "labelVi": "Bạc trong kho",
+      "hint": "1 VP each; silver on boards is worthless",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalIncome",
+      "label": "Final income",
+      "labelVi": "Thu nhập cuối game",
+      "hint": "Income of the last round taken as points instead",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "boardPenalties",
+      "label": "Negative points of boards and buildings",
+      "labelVi": "Điểm âm của bảng và công trình",
+      "hint": "Enter as negative total (home board, exploration boards, sheds, houses)",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "penaltyTiles",
+      "label": "Penalty / thing penalty tiles",
+      "labelVi": "Thẻ phạt",
+      "hint": "-3 VP each, includes misplaced adjacent goods",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Verified against a secondary full-text transcription of the rulebook (UltraBoardGames); official PDF not downloadable (publisher 403). Home board negative points are printed on the board, so entered as one total. Ties: multiple winners per rules. Expansion (Norwegians, Bonus Plan) not modelled.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/a-feast-for-odin/game-rules.php",
+      "title": "A Feast for Odin rules (UltraBoardGames)",
+      "type": "other",
+      "section": "End of the Game - Positive/Negative Points"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/177736",
+      "title": "A Feast for Odin - BGG page (identification only)",
+      "type": "other",
+      "section": "Game identity"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

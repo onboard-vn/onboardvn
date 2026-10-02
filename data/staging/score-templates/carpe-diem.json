@@ -1,0 +1,130 @@
+{
+  "slug": "carpe-diem",
+  "name": "Carpe Diem",
+  "year": 2018,
+  "bggId": 245934,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Four scoring periods then final scoring"
+  },
+  "categories": [
+    {
+      "key": "scoreTrack",
+      "label": "Score track after 4 scoring periods",
+      "labelVi": "Điểm trên track sau 4 kỳ chấm",
+      "hint": "VP tracked during play (scoring cards, penalties of -4 per unmet card).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "villas",
+      "label": "Completed villas (chimney table)",
+      "labelVi": "Biệt thự hoàn chỉnh",
+      "hint": "Sum VP from your overview board table per completed villa by chimneys; incomplete villas score 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "remainingItems",
+      "label": "Remaining items (wares, coins, bread, building tiles)",
+      "labelVi": "Vật phẩm còn lại",
+      "hint": "Count items on storage; 1 VP per 2 items, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "banderole",
+      "label": "Banderole bar position",
+      "labelVi": "Vị trí trên thanh banderole",
+      "hint": "VP shown on the space with your disc.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fountainCards",
+      "label": "Fountain cards",
+      "labelVi": "Thẻ đài phun nước",
+      "hint": "VP from both fountain cards (2 VP per matching building in your district for the cards shown).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "frameGoals",
+      "label": "Frame achievements",
+      "labelVi": "Thành tựu khung",
+      "hint": "3-4 VP per frame goal whose line hits a completed matching building/landscape.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Among tied players, the one furthest back (last) on the banderole bar wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Villa chimney table and frame goal values are printed on player boards (example: 3 chimneys=3 VP, 5 chimneys=7 VP; baker dwelling goal 4 VP, villa goal 3 VP), so entered as totals. Score track covers the four in-game scoring periods. Tiebreaker needs banderole rank, not modelled as a category.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/09/24/79-carpe-diem-rulebook.pdf",
+      "title": "Carpe Diem Rulebook (Ravensburger)",
+      "type": "official-rulebook",
+      "section": "End of the Game, p.11-12"
+    },
+    {
+      "url": "https://www.yucata.de/en/Rules/CarpeDiem",
+      "title": "Yucata Carpe Diem rules",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

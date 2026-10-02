@@ -1,0 +1,64 @@
+{
+  "slug": "cosmoctopus-2023",
+  "name": "Cosmoctopus",
+  "year": 2023,
+  "bggId": 362020,
+  "templateVersion": 1,
+  "variant": "competitive",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "tentacles",
+      "label": "Tentacles gained",
+      "labelVi": "Số xúc tu đạt được",
+      "hint": "First player to gain their 8th tentacle wins immediately (express game: everyone starts with 3).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 8,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "forbiddenKnowledge",
+      "label": "Forbidden Knowledge tiles (13 resources of one type = +2 tentacles)",
+      "labelVi": "Thẻ Forbidden Knowledge (đã tính vào xúc tu)",
+      "hint": "Informational only: each tile already granted 2 tentacles.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "endCondition": {
+    "type": "target-score",
+    "target": 8,
+    "description": "The game ends immediately when a player gains their 8th tentacle."
+  },
+  "winCondition": "First player to gain 8 tentacles wins.",
+  "notes": "family: running-track. Game ends the instant someone reaches 8, so ties cannot occur. Express game: each player starts with 3 tentacles. Co-op / solo with the Private Investigator is in cosmoctopus-2023--coop-pi.json.",
+  "sources": [
+    {
+      "url": "https://luckyduckgames.com/usa/index.php?controller=attachment&id_attachment=1336",
+      "title": "Cosmoctopus official rulebook EN (Paper Fort Games / Lucky Duck)",
+      "type": "official-rulebook",
+      "section": "p.8 Gaining Tentacles; p.9 Winning the Game; p.12 express game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

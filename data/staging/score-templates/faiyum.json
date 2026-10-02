@@ -1,0 +1,70 @@
+{
+  "slug": "faiyum",
+  "name": "Faiyum",
+  "year": 2020,
+  "bggId": 318983,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "reputation",
+      "label": "Reputation on the reputation track",
+      "labelVi": "Danh tiếng trên thanh danh tiếng",
+      "hint": "Final reputation, including the 50/100 marker and reputation from your quit-game natural disaster card.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftovers",
+      "label": "Leftover resources and money (tiebreak)",
+      "labelVi": "Tài nguyên và tiền còn lại (phân định hòa)",
+      "hint": "Total leftover resources and money; only used to break ties.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "leftovers",
+      "dir": "highest",
+      "description": "Tied player with more leftover resources and money wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "Triggered when the 4th natural disaster is placed in the card market; each player then quits by taking a natural disaster card (reputation 10/6/3/1 depending on player count; last to quit gets none)."
+  },
+  "notes": "family: running-track. Reputation is tracked on the board during play. Quitting players take the natural disaster card giving most reputation (2p: 6,0,0,0; 3p: 10,6,0,0; 4p: 10,6,3,0; 5p: 10,6,3,1). Rulebook does not define whether leftover resources and money are summed or ranked separately; modelled as one combined count. Solo campaign goals not modelled. Verified via a RulesPal mirror of the rulebook, not the PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/faiyum/rulebook",
+      "title": "Faiyum rulebook (RulesPal mirror)",
+      "type": "other",
+      "section": "Final Turns and Triggering the End of the Game; natural disaster table"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

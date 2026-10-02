@@ -1,0 +1,137 @@
+{
+  "templateVersion": 1,
+  "mode": "competitive",
+  "winRule": "highest",
+  "confidence": "high",
+  "needsReview": false,
+  "sharedVictoryOnTie": true,
+  "slug": "marrakesh",
+  "name": "Marrakesh",
+  "year": null,
+  "bggId": 342810,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after 3 seasons and final scoring"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Points on score track (incl. season scoring)",
+      "labelVi": "Điểm trên track (gồm chấm điểm mùa)",
+      "hint": "Points scored during the game and at each season's scoring.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "filledSectors",
+      "label": "Completely filled sectors",
+      "labelVi": "Khu vực đã lấp đầy",
+      "hint": "Each sector (not the souk) with 8 keshis + 1 water vendor keshi: 10 points.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "oases",
+      "label": "Oases (best 3)",
+      "labelVi": "Ốc đảo (tối đa 3)",
+      "hint": "Total value of your 3 highest-value claimed oases (Expansion 5 only).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Expansion 5: Oases & Desert Towns"
+    },
+    {
+      "key": "remainingResources",
+      "label": "Remaining resources + goods keshis",
+      "labelVi": "Tài nguyên và keshi hàng còn lại",
+      "hint": "Dinars + water + dates + goods keshis; points = floor(total/2).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "palaceStairs",
+      "label": "Palace staircase position (tiebreak)",
+      "labelVi": "Vị trí thang Palace (phân định hòa)",
+      "hint": "Position on the palace staircase.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "mosqueStairs",
+      "label": "Mosque staircase position (tiebreak)",
+      "labelVi": "Vị trí thang Mosque (phân định hòa)",
+      "hint": "Position on the mosque staircase.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "palaceStairs",
+      "dir": "highest",
+      "description": "Player leading on the palace staircase"
+    },
+    {
+      "categoryKey": "mosqueStairs",
+      "dir": "highest",
+      "description": "Player leading on the mosque staircase"
+    },
+    {
+      "description": "If still tied, the tied players share the victory."
+    }
+  ],
+  "notes": "family: point-salad-euro. Season scoring (3 times) is part of the track. Remaining-resources category: enter the sum of dinars, water, dates and goods keshis. Oases/Desert Towns belong to Expansion 5 and are entered as a total; other expansions not modelled.",
+  "sources": [
+    {
+      "url": "https://rules.queen-games.com/marrakesh_en.pdf",
+      "title": "Marrakesh rulebook (Queen Games)",
+      "type": "official-rulebook",
+      "section": "p.14 End of the Game and Final Scoring; p.7 game end"
+    }
+  ]
+}

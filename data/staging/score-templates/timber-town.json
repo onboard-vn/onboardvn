@@ -1,0 +1,173 @@
+{
+  "slug": "timber-town",
+  "name": "Timber Town",
+  "year": 2025,
+  "bggId": 436561,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "redTiles",
+      "label": "Red construction-site tiles",
+      "labelVi": "Ô công trường đỏ",
+      "hint": "Each red tile always scores 2.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 16,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "green",
+      "label": "Green parks (per scoring card)",
+      "labelVi": "Công viên xanh",
+      "hint": "Points per the green scoring card in play (Garden/Playground/Estate/Arboretum).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "purple",
+      "label": "Purple temples (per scoring card, incl. Shrine +6 majority)",
+      "labelVi": "Đền tím",
+      "hint": "Points per the purple scoring card (Shrine/Hermitage/Monastery/Pagoda); Shrine adds +6 for more purple tiles than opponent.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "orange",
+      "label": "Orange markets (per scoring card)",
+      "labelVi": "Chợ cam",
+      "hint": "Points per the orange scoring card (Food/Textile/Flower/Luxury).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "blue",
+      "label": "Blue workshops (per scoring card)",
+      "labelVi": "Xưởng xanh dương",
+      "hint": "Points per the blue scoring card (Cooper/Tailor/Carpenter/Blacksmith).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "yellow",
+      "label": "Yellow homes (per scoring card)",
+      "labelVi": "Nhà vàng",
+      "hint": "Points per the yellow scoring card (Cottage/Cabin/Chalet/Lodge).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "beaverTokens",
+      "label": "Beaver tokens that can cross the town",
+      "labelVi": "Beaver token đi xuyên thị trấn",
+      "hint": "5 per beaver token able to travel left edge to right edge via connected boardwalks, passing its brown tile.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unusedConstruction",
+      "label": "Unused construction tokens",
+      "labelVi": "Token xây dựng chưa dùng",
+      "hint": "1 per unused construction token, including a one-colour raft.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "builderBeaver",
+      "label": "Builder beaver (first to fill 16 spaces)",
+      "labelVi": "Builder beaver (lấp đầy 16 ô đầu tiên)",
+      "hint": "5 points to the first player to fill all 16 town spaces.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "value ? 5 : 0"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "builderBeaver",
+      "dir": "highest",
+      "description": "Player who took the builder beaver wins; if neither did, the win is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: tile-placement-pattern. Scoring cards differ each game (one per colour: green, purple, orange, blue, yellow; red and brown fixed), so tile-colour points are scorer inputs computed from that game's cards (appendix lists all card variants). Brown tiles score nothing themselves. Game ends when neither player can claim another tile.",
+  "sources": [
+    {
+      "url": "https://drive.google.com/file/d/1nl3TNJ9Ly-5tZlsuNDS4M1Wigz9cznw3/view",
+      "title": "Timber Town Rulebook (Alley Cat Games, linked from publisher page)",
+      "type": "official-rulebook",
+      "section": "End Game; Scoring (p. 8); Appendix: Building Tiles (pp. 10-15)"
+    },
+    {
+      "url": "https://www.alleycatgames.com/timbertown",
+      "title": "Timber Town (Alley Cat Games)",
+      "type": "publisher-page",
+      "section": "Rulebook link"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

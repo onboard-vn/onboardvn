@@ -1,0 +1,121 @@
+{
+  "slug": "nemesis-lockdown",
+  "name": "Nemesis Lockdown",
+  "year": 2022,
+  "bggId": 310100,
+  "templateVersion": 1,
+  "variant": null,
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "objectiveDone",
+      "label": "Chosen objective fulfilled",
+      "labelVi": "Hoàn thành mục tiêu đã chọn",
+      "hint": "Reveal the kept Objective card at the end; all its requirements must be met.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "survived",
+      "label": "Survived (Isolation Room, CSS Pod or Bunker)",
+      "labelVi": "Sống sót (Phòng cách ly, CSS Pod hoặc Hầm trú ẩn)",
+      "hint": "Character is alive after the game end: locked in Isolation Room, evacuated in a CSS Pod, or in the Bunker.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "contingencyOk",
+      "label": "Passed the Active Contingency",
+      "labelVi": "Qua được Contingency đang kích hoạt",
+      "hint": "Revealed Active Contingency must not kill the Character.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "contaminationOk",
+      "label": "Passed the Contamination check",
+      "labelVi": "Qua kiểm tra nhiễm bệnh",
+      "hint": "Infected Characters draw 4 cards; any Contamination card means death.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "playerWon",
+      "label": "Player wins",
+      "labelVi": "Người chơi thắng",
+      "hint": "Objective done AND survived AND passed Contingency and Contamination. Any number of players may win.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Semi-cooperative: each player wins individually. After a game-end trigger (Time token reaches the Autodestruction/Alert/final purge slot, or the last Character leaves) and with at least 1 Character safe (Isolation Room, CSS Pod or Bunker), run the Victory Check: Contingency check, Contamination check, then Objective check. A player wins if their chosen Objective is fulfilled and they did not fail the Contingency or Contamination check. Several players may win or none. If the Facility explodes, all Characters in it die including those in Isolation Rooms.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends when the Time token reaches the red purge slot or the Autodestruction/Alert slot and advances further, the Facility explodes (13th Fire or 11th Malfunction marker), or the last living Character in the Facility leaves or dies; then the Victory Check is resolved."
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "roles": [
+    {
+      "key": "crew",
+      "label": "Crew member (secret objectives)",
+      "labelVi": "Thành viên phi hành đoàn (mục tiêu bí mật)",
+      "winCondition": "Fulfil the chosen Objective and survive the Victory Check",
+      "categoryKeys": [
+        "objectiveDone",
+        "survived",
+        "contingencyOk",
+        "contaminationOk",
+        "playerWon"
+      ]
+    }
+  ],
+  "notes": "family: semi-coop-objective. No points. Verified against the official rulebook (pp.10-12). Fully cooperative and solo modes use the Solo / Coop Objectives deck; fully coop modelled in nemesis-lockdown--coop.json. Individual Objective card texts and Contingency types are not modelled (scorer records the result).",
+  "sources": [
+    {
+      "url": "https://awakenrealms.com/images/download/Nemesis_Lockdown/ENG/Nemesis_LD_Rulebook_280x280mm_bleed3mm-32-pages.pdf",
+      "title": "Nemesis: Lockdown Rulebook (Awaken Realms)",
+      "type": "official-rulebook",
+      "section": "p.10 Player Goals and Objectives; p.12 End of the Game / Victory Check; Solo & Cooperative mode"
+    },
+    {
+      "url": "https://api.geekdo.com/api/geekitems?objectid=310100&objecttype=thing",
+      "title": "BGG: Nemesis Lockdown (publisher description, 1-5 players, stand-alone)",
+      "type": "other",
+      "section": "Description"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

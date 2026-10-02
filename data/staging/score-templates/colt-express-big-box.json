@@ -1,0 +1,113 @@
+{
+  "slug": "colt-express-big-box",
+  "name": "Colt Express Big Box",
+  "year": null,
+  "bggId": 341504,
+  "templateVersion": 1,
+  "variant": "base game scoring",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "purses",
+      "label": "Purses total ($)",
+      "labelVi": "Tổng tiền túi ($)",
+      "hint": "Reveal and add the face values of your purses ($250-$500 each)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "jewels",
+      "label": "Jewels",
+      "labelVi": "Ngọc",
+      "hint": "$500 each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 500
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "strongboxes",
+      "label": "Strongboxes",
+      "labelVi": "Két sắt",
+      "hint": "$1000 each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1000
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gunslinger",
+      "label": "Gunslinger prize",
+      "labelVi": "Giải Xạ thủ",
+      "hint": "$1000 to each player who fired the most bullets (fewest own Bullet cards left); ties each get it",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "multiply",
+        "points": 1000
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bulletsReceived",
+      "label": "Bullet cards received",
+      "labelVi": "Số đạn bị trúng",
+      "hint": "Tiebreaker only: fewer is better",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "bulletsReceived",
+      "dir": "lowest",
+      "description": "Tied player who received the fewest Bullet cards wins"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 5,
+    "description": "Game ends after the fifth Round."
+  },
+  "notes": "family: set-collection-money. Values are in dollars. 2-player variant: each player has two bandits; sum the loot of both bandits, and the Gunslinger total excludes bullets one of your bandits shot at the other. Big Box expansion modules (Horses & Stagecoach, Marshal & Prisoners) and any extra loot types or scoring changes were NOT verified. Rulebook read via a third-party transcription, not the publisher PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/colt-express/rulebook",
+      "title": "Colt Express rulebook transcription (RulesPal)",
+      "type": "other",
+      "section": "Object of the Game; End of the Game; 2 Bandits Per Player"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

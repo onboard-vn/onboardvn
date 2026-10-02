@@ -1,0 +1,73 @@
+{
+  "slug": "things-in-rings",
+  "name": "Things in Rings",
+  "year": 2024,
+  "bggId": 408547,
+  "templateVersion": 1,
+  "variant": "competitive",
+  "playerCount": {
+    "min": 3,
+    "max": 6
+  },
+  "mode": "asymmetric",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "emptiedHand",
+      "label": "Emptied hand first (placed last thing correctly)",
+      "labelVi": "Hết bài đầu tiên (đặt đúng thẻ cuối)",
+      "hint": "A Finder wins by correctly placing the last Thing in hand without drawing another.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "roleKey": "finder"
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "One player is the Knower and does not compete. The first Finder to place the last Thing from their hand correctly (without drawing another) wins. Finders may then guess the secret rules for bragging rights only.",
+  "roles": [
+    {
+      "key": "knower",
+      "label": "Knower",
+      "labelVi": "Người biết luật",
+      "winCondition": "Facilitates only; checks placements against the secret rules and does not win or lose.",
+      "categoryKeys": []
+    },
+    {
+      "key": "finder",
+      "label": "Finder",
+      "labelVi": "Người chơi tìm luật",
+      "winCondition": "First to empty their hand by correct placements",
+      "categoryKeys": [
+        "emptiedHand"
+      ]
+    }
+  ],
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends immediately when any Finder places the last Thing in hand correctly"
+  },
+  "notes": "family: deduction-hand-shedding. Finders start with 5 Things; wrong placement = Thing is moved, you draw 1 and end your turn. 1-3 rings by difficulty. Rulebook is the publisher-hosted Allplay file (filename says 'draft'); BGG English rulebook TIR_rulebook_v17 not retrievable (BGG blocks download). 2-player play uses the co-op variant file.",
+  "sources": [
+    {
+      "url": "https://assets.allplay.com/board-games-things-in-rings-draft-rulebook-link.pdf",
+      "title": "Things in Rings rulebook (Allplay)",
+      "type": "official-rulebook",
+      "section": "Overview; Game End; Co-op variant"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/408547/things-in-rings",
+      "title": "Things in Rings (BGG)",
+      "type": "other",
+      "section": "Game identification"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

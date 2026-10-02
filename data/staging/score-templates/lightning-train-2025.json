@@ -1,0 +1,103 @@
+{
+  "name": "Lightning Train",
+  "year": 2025,
+  "bggId": 445673,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 12,
+    "aggregate": "sum",
+    "endCondition": "Ends one round after Transcontinental Railroad plus Houston/Seattle connection, or after round 12"
+  },
+  "categories": [
+    {
+      "key": "scoreTrack",
+      "label": "Score track before end scoring",
+      "labelVi": "Điểm trên track",
+      "hint": "Deliveries, stations, bonuses and final deliveries scored during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "locomotives",
+      "label": "Locomotives on Transcontinental route",
+      "labelVi": "Đầu máy trên tuyến xuyên lục địa",
+      "hint": "2 points per locomotive chip on the route (if ever established).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "loans",
+      "label": "Loan chips",
+      "labelVi": "Chip vay",
+      "hint": "-2 per loan chip anywhere (bag, boarding area, warehouse).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goalCards",
+      "label": "Goal (mogul) cards",
+      "labelVi": "Thẻ mục tiêu",
+      "hint": "Revealed at game end; total of all goal cards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied players share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. Locomotive points awarded when the Transcontinental Railroad is established, can be entered here if not already moved on the track. Solo and 2-player (Conway) variants not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/lightning-train/rulebook",
+      "title": "Lightning Train Rulebook (RulesPal)",
+      "type": "other",
+      "section": "Game End; Scoring"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/445673/lightning-train",
+      "title": "Lightning Train on BGG",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "slug": "lightning-train-2025",
+  "templateVersion": 1
+}

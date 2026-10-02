@@ -1,0 +1,161 @@
+{
+  "slug": "trismegistus",
+  "name": "Trismegistus",
+  "year": 2026,
+  "bggId": 440942,
+  "variant": "base",
+  "categories": [
+    {
+      "key": "gameVp",
+      "label": "VP collected during the game",
+      "labelVi": "VP thu được trong game",
+      "hint": "Running VP total before final scoring.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "publications",
+      "label": "Completed Publications",
+      "labelVi": "Ấn phẩm hoàn thành",
+      "hint": "Reveal Theory tiles in fully covered sideboard sections: sum of each tile's VP x its Publication value.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mastery",
+      "label": "Mastery tracks",
+      "labelVi": "Các track Mastery",
+      "hint": "Highest VP reached on each of the 4 Mastery tracks (spaces 9/10/11 are worth 2/4/7); enter the sum.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "booksInStudy",
+      "label": "Book markers in Study",
+      "labelVi": "Book trong Study",
+      "hint": "1-7 books score 1/2/4/8/16/25/36.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 7,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 2,
+          "3": 4,
+          "4": 8,
+          "5": 16,
+          "6": 25,
+          "7": 36
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goldLeft",
+      "label": "Remaining Gold and Extra Potency",
+      "labelVi": "Vàng và Extra Potency còn lại",
+      "hint": "1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resourcesLeft",
+      "label": "Remaining Metals, Essences and Aqua Regia",
+      "labelVi": "Kim loại, Essence, Aqua Regia còn lại",
+      "hint": "1 VP per 3 combined (excluding Extra Potency/Gold).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "experiments",
+      "label": "Performed Experiments (tiebreaker)",
+      "labelVi": "Số thí nghiệm đã làm (hòa điểm)",
+      "hint": "Second tiebreaker.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "booksInStudy",
+      "dir": "highest",
+      "description": "Most Books in Study"
+    },
+    {
+      "categoryKey": "experiments",
+      "dir": "highest",
+      "description": "Most performed Experiments"
+    },
+    {
+      "description": "If still tied, players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: point-salad-euro. 3 rounds then final scoring (before it, exhaust leftover Gold to cross grid spaces without rewards). Modules (Batteries, Events, Expert Study with 8th Book, Familiars) and the solo rulebook are not modelled. Publication/Mastery values depend on tiles, so entered as totals. The 5-round roll-and-write is a different product (BGG 447137).",
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/scl/fi/57q0skxes2ffi9vxd2occ/tris_rulebook_web.pdf?rlkey=fpowhmsw2po165f8frv51sao7&dl=0",
+      "title": "Trismegistus rulebook (Board&Dice download page)",
+      "type": "official-rulebook",
+      "section": "Final scoring p.17"
+    },
+    {
+      "url": "https://boardanddice.com/trismegistus-newedition/",
+      "title": "Trismegistus - Board&Dice",
+      "type": "publisher-page",
+      "section": "Rulebook download link"
+    }
+  ],
+  "templateVersion": 1,
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "high",
+  "needsReview": false,
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  }
+}

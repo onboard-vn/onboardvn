@@ -1,0 +1,93 @@
+{
+  "name": "John Company: Second Edition",
+  "year": 2022,
+  "bggId": 332686,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "Victory point marker before final scoring",
+      "labelVi": "Điểm trên track VP (trước chung cuộc)",
+      "hint": "Running family VP marker: prizes, luxuries, spouses, offices etc. gained during play. Can be negative.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": null,
+      "max": null
+    },
+    {
+      "key": "powerAward",
+      "label": "Power award (final scoring step 1)",
+      "labelVi": "Điểm thưởng Power",
+      "hint": "Total power: enterprises/shares by Power track, laws +1, PM bonus, blackmail/spouse cards, trophies +1. Most and 2nd most power score per board table (depends on final turn); tie for most = lower value to tied only, no 2nd award.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "courtScore",
+      "label": "Company shares, failure penalty and workshops",
+      "labelVi": "Cổ phần Company + xưởng",
+      "hint": "Survived: shares x Court VP (max +/-3). Failed: minus shares x Court VP, plus 1 per workshop. Set failed=1 if the Company failed.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "if(failed >= 1, workshops - shares * courtVp, shares * courtVp)"
+      },
+      "countsToTotal": true,
+      "min": null,
+      "inputs": [
+        "shares",
+        "courtVp",
+        "workshops",
+        "failed"
+      ],
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most window icons"
+    },
+    {
+      "description": "Then Prime Minister order (clockwise starting with the Prime Minister)"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Scoring is mostly the running VP marker; the final steps add the power award (values printed on the board table, so entered as points), Court share value and workshops. Workshops only score in final scoring when the Company failed. Final retirement/failure card effects are not modelled. Solo and other modes not modelled.",
+  "sources": [
+    {
+      "url": "https://gamers-hq.de/media/pdf/e9/14/7b/John_Company_Rules_-BGG-_Final.pdf",
+      "title": "John Company Rules (BGG final PDF, mirrored)",
+      "type": "official-rulebook",
+      "section": "Final Scoring (p.9)"
+    },
+    {
+      "url": "https://www.rulespal.com/john-company/rulebook",
+      "title": "John Company rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "slug": "john-company-second-edition-2022"
+}

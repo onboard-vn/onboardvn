@@ -1,0 +1,119 @@
+{
+  "slug": "bonsai",
+  "name": "Bonsai",
+  "year": 2023,
+  "bggId": 366994,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "leaves",
+      "label": "Leaf tiles",
+      "labelVi": "Số lá",
+      "hint": "3 points per leaf tile in your bonsai",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "flowers",
+      "label": "Flower points",
+      "labelVi": "Điểm hoa",
+      "hint": "Per flower: 1 point per side not touching another tile (max 5); enter the total",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fruits",
+      "label": "Fruit tiles",
+      "labelVi": "Số quả",
+      "hint": "7 points per fruit tile",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 7
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "parchments",
+      "label": "Parchment card points",
+      "labelVi": "Điểm thẻ giấy da",
+      "hint": "Sum of end-game bonuses on your revealed Parchment cards (wood tiles score 0)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goalTiles",
+      "label": "Goal tile points",
+      "labelVi": "Điểm thẻ mục tiêu",
+      "hint": "Sum of points on claimed Goal tiles",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Among tied players, the one seated farthest clockwise from the starting player wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: tile-placement-points. Wood tiles 0. Game ends after the last card is revealed and everyone has a final turn. Flower rule (1 per free side, max 5) and tiebreaker from rules summaries; one summary contradicted leaf/flower values, so values should be rechecked against the official rulebook. Solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/bonsai/rulebook",
+      "title": "Bonsai Rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End game scoring"
+    },
+    {
+      "url": "https://rules.dized.com/game/aSBi6PMRQ4qV33AOFnwobA/kRz_OCUJTdywZuEYkq793A/end-of-the-game",
+      "title": "Bonsai - End of the game (Dized)",
+      "type": "other",
+      "section": "End of the game / tiebreaker"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/bonsai/",
+      "title": "Bonsai review (Meeple Mountain)",
+      "type": "other",
+      "section": "Scoring overview"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

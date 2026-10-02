@@ -1,0 +1,111 @@
+{
+  "slug": "entropy-2026",
+  "name": "Entropy",
+  "year": 2026,
+  "bggId": 462941,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpTokens",
+      "label": "VP tokens gained during the game",
+      "labelVi": "VP từ token trong ván",
+      "hint": "Sum of your Victory Point tokens.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "lifeformObjectives",
+      "label": "Lifeform Objective tiles",
+      "labelVi": "Ô mục tiêu Lifeform",
+      "hint": "VP on claimed big and small Lifeform Objective tiles.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mainObjective",
+      "label": "Main Objective VP",
+      "labelVi": "VP mục tiêu chính",
+      "hint": "VP from Main Objective progress and fulfilled conditions (per your mission card/objective).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverItems",
+      "label": "Remaining Life cards + Entropy + Mass + Energy",
+      "labelVi": "Bài Life, Entropy, Mass, Energy còn lại",
+      "hint": "Count all together; 1 VP per full 4 (not VP itself).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "leftoverVp",
+      "label": "VP for leftovers",
+      "labelVi": "VP từ phần còn lại",
+      "hint": "1 VP for every 4 remaining Life cards, Entropy, Mass and Energy combined.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(cat_leftoverItems / 4)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Triggered when 2 Objectives are completed (rightmost Main Objective track space and/or claiming the big Lifeform Objective tile); finish the round, play one more round, then Final Scoring."
+  },
+  "notes": "family: point-salad-euro. The leftoverItems helper is a raw count (countsToTotal false); leftoverVp converts it at 1 VP per 4. Main Objective values depend on the chosen Main Objective tile (printed on the board/tiles), so the scorer enters the computed total. Solo mode and promos not modelled. Verified via a RulesPal mirror of the English rulebook, not the PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/entropy/rulebook",
+      "title": "Entropy rulebook (RulesPal mirror)",
+      "type": "other",
+      "section": "End of the Game; Final Scoring and example"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

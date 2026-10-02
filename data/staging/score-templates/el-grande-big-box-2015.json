@@ -1,0 +1,88 @@
+{
+  "slug": "el-grande-big-box-2015",
+  "name": "El Grande Big Box",
+  "year": 2015,
+  "bggId": 171908,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 5 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 9,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the third general scoring (after round 9)"
+  },
+  "categories": [
+    {
+      "key": "scoringRound1",
+      "label": "General scoring 1 (after round 3)",
+      "labelVi": "Chấm điểm lần 1 (sau vòng 3)",
+      "hint": "Castillo (5/3/1) + each region by Caballeros majority + King's region +2 + home region +2, as moved on the score track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "scoringRound2",
+      "label": "General scoring 2 (after round 6)",
+      "labelVi": "Chấm điểm lần 2 (sau vòng 6)",
+      "hint": "Same as scoring 1, plus any points from Special Scoring action cards played in rounds 4-6.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "scoringRound3",
+      "label": "General scoring 3 (after round 9)",
+      "labelVi": "Chấm điểm lần 3 (sau vòng 9)",
+      "hint": "Final general scoring; includes Castillo, all regions, King's and home-region bonuses.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "specialScoring",
+      "label": "Special scoring and action-card points",
+      "labelVi": "Điểm từ thẻ Chấm điểm đặc biệt / hành động",
+      "hint": "Points from Special Scoring cards (5/6/7-point regions, Castillo) and other action cards played between scorings.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    { "description": "No tiebreaker: players tied for most points share the victory." }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: auction-money (actually area-majority on a running score track; the in-play card auction decides turn order). Region values are printed on the board scoreboards; tied players score for the next lower rank; 2 players score only 1st place, 3 players 1st and 2nd; Grandes do not count for majority; King's/home bonus +2 need a sole majority. Simplified to the score track split by scoring event; itemising each region needs the board values. Rules checked against the standard El Grande rulebook (Z-Man); the Big Box rulebook PDF (BGG file 115171) could not be downloaded, and Big Box expansions (Intrigue/King, Grande Inquisitor etc.) are not modelled.",
+  "sources": [
+    {
+      "url": "https://images.zmangames.com/filer_public/ec/f8/ecf8e954-59b8-4ed4-9b7e-37ebb3458c65/zm7560_el_grande_rules.pdf",
+      "title": "El Grande rules (Z-Man Games)",
+      "type": "official-rulebook",
+      "section": "Scoring (pp. 5-8), Game end"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/El_Grande_(board_game)",
+      "title": "El Grande (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay: three scoring rounds"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

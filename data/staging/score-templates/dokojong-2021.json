@@ -1,0 +1,70 @@
+{
+  "slug": "dokojong-2021",
+  "name": "Dokojong",
+  "year": 2021,
+  "bggId": 330401,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "scoreTokens",
+      "label": "Score tokens flipped to gold",
+      "labelVi": "Số medal vàng",
+      "hint": "Score a half-medal when 3 X-marks of yours are revealed without your dog being found. Two gold = win.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 2
+    },
+    {
+      "key": "penalties",
+      "label": "Penalty tokens taken",
+      "labelVi": "Số penalty",
+      "hint": "Third Penalty eliminates you.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 3
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "A player who flips both Score tokens gold wins outright; if all other players are eliminated (3 Penalties each), the last player wins.",
+  "endCondition": {
+    "type": "last-standing",
+    "target": 2,
+    "description": "Game ends immediately when someone has 2 gold Score tokens or only one player remains"
+  },
+  "eliminationTracking": {
+    "resource": "Penalty tokens (3 = eliminated)",
+    "start": 3,
+    "eliminatedCannotWin": true
+  },
+  "notes": "family: deduction. Rules from a rulebook transcription (RulesPal); original rulebook not retrieved.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/dokojong/rulebook",
+      "title": "Dokojong rulebook (RulesPal transcription)",
+      "type": "other",
+      "section": "Gameplay; End of Game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

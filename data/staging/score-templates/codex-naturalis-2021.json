@@ -1,0 +1,79 @@
+{
+  "slug": "codex-naturalis-2021",
+  "name": "Codex Naturalis",
+  "year": 2021,
+  "bggId": 314503,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "scoreTrack",
+      "label": "Score track points",
+      "labelVi": "Điểm trên track",
+      "hint": "Points from cards played (and Gold cards) on the score track; may exceed 29.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Objective card points (2 common + 1 secret)",
+      "labelVi": "Điểm thẻ Mục tiêu (2 chung + 1 bí mật)",
+      "hint": "Add points from both common objectives and your secret objective at game end; each card in the play area counts once per objective.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "objectives",
+      "dir": "highest",
+      "description": "Most Objective card points"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "target-score",
+    "target": 20,
+    "description": "A player reaching 20 points (or both decks empty) triggers the end; finish the round, then everyone plays one last turn."
+  },
+  "notes": "family: running-track-plus-objectives. Objective values are printed on cards (2 or 3 points per pattern/set), so objective points are entered as one total. Immediate points during play (resources, Gold cards) are tracked on the score track.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/a7/d7/66-codex-naturalis-rulebook.pdf",
+      "title": "Codex Naturalis Rulebook (Bombyx, via 1jour-1jeu)",
+      "type": "official-rulebook",
+      "section": "End of game"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/314503/codex-naturalis",
+      "title": "Codex Naturalis (BGG)",
+      "type": "other",
+      "section": "Identification"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}
