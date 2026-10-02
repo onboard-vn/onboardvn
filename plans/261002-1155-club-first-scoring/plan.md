@@ -1,10 +1,10 @@
 ---
 title: "Club-first + score calculator + mobile prep"
-description: "Club private + lịch sử ván + máy tính điểm theo game (template jsonb versioned) + sync club ngoài + API v1 cho Android native"
-status: pending
+description: "Club private + identities/guests + lịch sử ván + máy tính điểm theo game + sync club ngoài (plugin private) + một app Expo cho iOS/Android/web"
+status: in-progress
 priority: P1
 effort: "27d"
-branch: main
+branch: feat/club-first-scoring
 tags: [clubs, plays, scoring, sync, mobile, openapi]
 created: 2026-10-02
 ---
@@ -19,7 +19,7 @@ Thay thứ tự P1c còn lại ([plan P1c](../260925-0009-p1c-players-community/
 3. Ghi ván bất kỳ lúc nào; Kèo prefill được ván. Comment thread trong Kèo. Link-out BGG/BGW/BG Stats/Boardgami trên trang game, không clone.
 4. Sync club ngoài: adapter cô lập (ACL), chỉ GET `RSC: 1`; import vào DB với `external_source`+`external_id`; dữ liệu member private, không commit git; chạy tay/cron trên VPS. Ghi ngược (nickname/avatar) = để sau.
 5. (bổ sung) Bộ lọc giàu cho catalog + tủ club: số người (+ BGG best), band độ nặng, thời gian, thể loại, cơ chế, `scoringFamily`, owner, có bảng điểm, độ tin cậy template. Dữ liệu enrichment (`enrichment/batch-*.json`) import vào `games`/`categories`/`game_categories` sẵn có. Research template theo lô `scoringFamily × weightBand`.
-6. Mobile native: Android Kotlin/Compose trước, SwiftUI sau; 1 backend. OpenAPI 3.1 từ Zod, `/v1`, bearer better-auth, phân trang. Bỏ Expo khỏi docs.
+6. ~~Mobile native Kotlin/SwiftUI~~ → **đã thay bằng một app Expo** (xem Decisions cuối file).
 
 ## Quy tắc xuyên suốt
 - `routes → service → repo` ([docs/architecture.md](../../docs/architecture.md)); Zod/DTO ở `packages/shared`.
@@ -27,6 +27,21 @@ Thay thứ tự P1c còn lại ([plan P1c](../260925-0009-p1c-players-community/
 - Migration sinh tuần tự (`drizzle-kit generate`) → phase có migration chạy **tuần tự**: 1 → 3 → 4 → 5 → 6 → 7.
 - File đăng ký dùng chung (1 owner/lúc, chỉ append): `apps/api/src/db/schema/index.ts`, `apps/api/src/app.ts:45-61`, `packages/shared/src/index.ts`, `apps/api/drizzle/*`.
 - Server luôn tự tính lại tổng điểm/người thắng; không tin client.
+
+## Trạng thái (2026-10-02, cuối session)
+| Phase | Trạng thái |
+|---|---|
+| 1 Club core | ✅ xong (API + web + e2e `apps/web/e2e/clubs.spec.ts`) |
+| 2 Score engine | ✅ xong (`packages/shared/src/scoring`), v4 dở trên nhánh `wip/scoring-v4` |
+| 3 Enrichment + templates DB | 🟡 BGG metadata + 551 templates đã import; bộ lọc catalog chưa làm |
+| 4 Plays + identities + guests | 🟡 backend xong (migration 0021/0022, SSE, claim); UI Expo mới là mock |
+| 5 Club tabs + comment Kèo | ⬜ |
+| 6 Template contributions | ⬜ |
+| 7 External sync | ✅ plugin private `onboard-vn/onboardvn-private`; 100 ngày + 59 khách đã sync (dev + VPS) |
+| 8 API mobile | 🟡 bearer + CORS dev; OpenAPI `/v1` chưa |
+| 9 App | 🔁 chuyển sang Expo (`apps/mobile`, SDK 57) |
+
+**Tạm dừng: toàn bộ phần tính điểm** (UI bảng điểm, rà soát template) — chủ nhân sẽ tham khảo BG Stats trước. Không làm tiếp khi chưa được yêu cầu. Handoff: [plans/handoffs/onboardvn-club-first-20261002-1625.md](../handoffs/onboardvn-club-first-20261002-1625.md).
 
 ## Phases
 | # | Phase | Effort | Depends | Song song |

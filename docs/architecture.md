@@ -14,15 +14,22 @@
                           │
                  packages/config (tsconfig, eslint)
 
-apps/mobile (Expo, phase P5) sẽ dùng chung apps/api qua hono/client RPC.
+apps/mobile (Expo Router, SDK 57) là client chính cho iOS + Android + web; apps/web (Next.js) chỉ sửa lỗi, bỏ khi Expo web đủ tính năng.
 ```
+
+## Club, danh tính, ván chơi, đồng bộ club ngoài
+
+- **Club** private (owner/admin/member), mã mời lưu hash; Kèo visibility `club` chỉ member hiện tại xem/ghi.
+- **`identities`** (member | guest | external) là đơn vị ngồi bàn và chơi ván. Khách: tên gọi + năm sinh tuỳ chọn, gắn người mời; nhận hồ sơ qua link hoặc yêu cầu được người mời/admin duyệt → gộp vào user trong một transaction.
+- **Ván chơi** (`plays`, `play_players`, `play_events`): pin version score template, server luôn tính lại bằng engine `packages/shared/src/scoring`; sửa theo từng ô (op id idempotent, last-write-wins từng ô), đẩy thay đổi qua SSE `/api/plays/:id/stream`. Presence giữ trong RAM (một node).
+- **Đồng bộ club ngoài**: repo public chỉ có interface `ExternalClubSource` + sync service + CLI `sync:club`; adapter cụ thể là plugin private nạp qua `EXTERNAL_CLUB_PLUGIN`/`EXTERNAL_CLUB_BASE_URL`. Dữ liệu club/BGG thô ở `data/private/` (gitignore) và bảng `game_external_metadata` (không trả cho người chưa đăng nhập; bật bằng `SHOW_EXTERNAL_METADATA`).
 
 ## Vì sao Hono thay vì NestJS
 
 Chọn **Hono** làm backend framework thay vì NestJS:
 
 - Ít boilerplate hơn NestJS (không cần decorator/module/DI container cho một API quy mô vừa).
-- `hono/client` cho typed RPC end-to-end: `apps/web` và (sau này) `apps/mobile` (Expo) gọi API với type an toàn, không cần codegen riêng.
+- `hono/client` cho typed RPC end-to-end: `apps/web` và `apps/mobile` (Expo) gọi API với type an toàn, không cần codegen riêng.
 - Đánh đổi: mất DI container và cấu trúc module chuẩn hoá của NestJS — nhóm tự quản lý ranh giới module bằng convention (xem bên dưới) thay vì framework ép buộc.
 
 ## Layout module API (apps/api)
