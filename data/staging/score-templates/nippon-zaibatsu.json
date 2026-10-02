@@ -3,7 +3,7 @@
   "name": "Nippon: Zaibatsu",
   "year": 2025,
   "bggId": 434367,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base",
   "playerCount": {
     "min": 2,
@@ -29,53 +29,16 @@
       "max": null
     },
     {
-      "key": "objTracks",
-      "label": "Personal objectives: Ships, Machines, Trains, R&D, Mining, Finance",
-      "labelVi": "Mục tiêu cá nhân: Tàu, Máy, Tàu hỏa, R&D, Khai khoáng, Tài chính",
-      "hint": "Per Favor token whose track threshold is reached: lower threshold 5/8/10 VP for level 1/2/3, higher threshold 10/16/20. Enter how many tokens by level and threshold, summed over all 6 tracks.",
-      "scope": "player",
-      "input": "counts",
-      "formula": {
-        "type": "expr",
-        "expr": "lvl1Lower*5+lvl2Lower*8+lvl3Lower*10+lvl1Higher*10+lvl2Higher*16+lvl3Higher*20"
-      },
-      "countsToTotal": true,
-      "inputs": [
-        "lvl1Lower",
-        "lvl2Lower",
-        "lvl3Lower",
-        "lvl1Higher",
-        "lvl2Higher",
-        "lvl3Higher"
-      ]
-    },
-    {
-      "key": "objFactories",
-      "label": "Personal objective: Factories",
-      "labelVi": "Mục tiêu cá nhân: Nhà máy",
-      "hint": "VP shown beside your rightmost built Factory, in the column of your Favor token's level (1st/2nd/3rd value). Read from the board.",
+      "key": "personalObjectives",
+      "label": "Personal objectives VP total",
+      "labelVi": "Tổng điểm mục tiêu cá nhân",
+      "hint": "Sum of all personal objectives from your player board: six Favor-token tracks (5/8/10 VP lower, 10/16/20 VP higher threshold by level), Factories and Contracts (VP beside your rightmost built Factory / fulfilled Contract in your Favor token's level column).",
       "scope": "player",
       "input": "number",
       "formula": {
         "type": "sum"
       },
-      "countsToTotal": true,
-      "min": 0,
-      "max": null
-    },
-    {
-      "key": "objContracts",
-      "label": "Personal objective: Contracts",
-      "labelVi": "Mục tiêu cá nhân: Hợp đồng",
-      "hint": "VP shown beside your rightmost fulfilled Contract, in the column of your Favor token's level. Read from the board.",
-      "scope": "player",
-      "input": "number",
-      "formula": {
-        "type": "sum"
-      },
-      "countsToTotal": true,
-      "min": 0,
-      "max": null
+      "countsToTotal": true
     },
     {
       "key": "goodsResources",
@@ -110,7 +73,8 @@
   ],
   "tiebreakers": [
     {
-      "description": "The tied player who took their turn later (later in turn order) wins."
+      "description": "The tied player who took their turn later (later in turn order) wins.",
+      "descriptionVi": "Người hòa đi lượt sau (muộn hơn trong thứ tự) thắng."
     }
   ],
   "sharedVictoryOnTie": false,
@@ -130,5 +94,8 @@
     }
   ],
   "confidence": "high",
-  "needsReview": false
+  "needsReview": false,
+  "uiHint": "generic",
+  "uiHintReason": "Objective rows are printed on the player board; one total replaces three entries.",
+  "winConditionVi": "Điểm cao nhất thắng. Hòa thì người đi sau trong thứ tự lượt thắng."
 }

@@ -103,22 +103,26 @@
     {
       "categoryKey": "spice",
       "dir": "highest",
-      "description": "Most spice"
+      "description": "Most spice",
+      "descriptionVi": "Nhiều spice nhất"
     },
     {
       "categoryKey": "solari",
       "dir": "highest",
-      "description": "Most Solari"
+      "description": "Most Solari",
+      "descriptionVi": "Nhiều Solari nhất"
     },
     {
       "categoryKey": "water",
       "dir": "highest",
-      "description": "Most water"
+      "description": "Most water",
+      "descriptionVi": "Nhiều nước nhất"
     },
     {
       "categoryKey": "troops",
       "dir": "highest",
-      "description": "Most garrisoned troops"
+      "description": "Most garrisoned troops",
+      "descriptionVi": "Nhiều quân đóng trong doanh trại nhất"
     }
   ],
   "sharedVictoryOnTie": false,
@@ -137,5 +141,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Score track plus endgame intrigue VP; tiebreak resources are collapsed.",
+  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc khi có người đạt 10 VP hoặc hết bài Xung đột (kiểm tra ở pha Recall)."
 }

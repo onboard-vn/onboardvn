@@ -162,7 +162,8 @@
     {
       "categoryKey": null,
       "dir": null,
-      "description": "Player/team holding the Praefectus Magnus wins; otherwise the tied player who would receive it next"
+      "description": "Player/team holding the Praefectus Magnus wins; otherwise the tied player who would receive it next",
+      "descriptionVi": "Người (đội) giữ Praefectus Magnus thắng; nếu không thì người hòa sẽ nhận nó tiếp theo."
     }
   ],
   "sharedVictoryOnTie": false,
@@ -182,5 +183,8 @@
     }
   ],
   "confidence": "high",
-  "needsReview": false
+  "needsReview": false,
+  "uiHint": "generic",
+  "uiHintReason": "Each god needs card count plus one board metric; both are physically countable.",
+  "winConditionVi": "Điểm cao nhất thắng. Hòa thì người giữ Praefectus Magnus thắng; nếu không, người sẽ nhận nó tiếp theo."
 }

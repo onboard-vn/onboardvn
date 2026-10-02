@@ -272,5 +272,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Scoring pad rows are direct counts or board totals.",
+  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc ngay sau pha Feast của vòng cuối. Hòa thì cùng thắng."
 }

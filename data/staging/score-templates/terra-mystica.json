@@ -165,7 +165,8 @@
   ],
   "tiebreakers": [
     {
-      "description": "No tiebreaker: players tied on VP all win."
+      "description": "No tiebreaker: players tied on VP all win.",
+      "descriptionVi": "Không có luật phân định: người hòa điểm cùng thắng."
     }
   ],
   "sharedVictoryOnTie": true,
@@ -190,5 +191,8 @@
   "scoringStyle": "end-game-categories",
   "rounds": null,
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Cult track positions and largest network are compared across players; engine derives awards.",
+  "winConditionVi": "Điểm cao nhất thắng. Hòa điểm thì cùng thắng."
 }

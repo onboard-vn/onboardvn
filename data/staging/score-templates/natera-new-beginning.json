@@ -3,9 +3,12 @@
   "name": "Natera: New Beginning",
   "year": 2025,
   "bggId": 379761,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base",
-  "playerCount": { "min": 1, "max": 4 },
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
   "mode": "competitive",
   "winRule": "highest",
   "scoringStyle": "end-game-categories",
@@ -24,7 +27,10 @@
       "input": "count",
       "min": 0,
       "max": null,
-      "formula": { "type": "multiply", "points": 7 },
+      "formula": {
+        "type": "multiply",
+        "points": 7
+      },
       "countsToTotal": true
     },
     {
@@ -36,7 +42,10 @@
       "input": "count",
       "min": 0,
       "max": null,
-      "formula": { "type": "multiply", "points": 3 },
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
       "countsToTotal": true
     },
     {
@@ -48,7 +57,10 @@
       "input": "count",
       "min": 0,
       "max": null,
-      "formula": { "type": "multiply", "points": 3 },
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
       "countsToTotal": true
     },
     {
@@ -60,31 +72,37 @@
       "input": "number",
       "min": 0,
       "max": null,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": true
     },
     {
       "key": "specialists",
-      "label": "Specialist cards",
-      "labelVi": "Thẻ chuyên gia",
+      "label": "Specialist cards VP total",
+      "labelVi": "Tổng điểm thẻ chuyên gia",
       "hint": "Sum of VP indicated on your specialist cards.",
       "scope": "player",
-      "input": "repeating",
+      "input": "number",
       "min": 0,
       "max": null,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": true
     },
     {
       "key": "explorationCards",
-      "label": "Exploration cards",
-      "labelVi": "Thẻ khám phá",
+      "label": "Exploration cards VP total",
+      "labelVi": "Tổng điểm thẻ khám phá",
       "hint": "Sum of VP on your exploration cards played.",
       "scope": "player",
-      "input": "repeating",
+      "input": "number",
       "min": 0,
       "max": null,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": true
     },
     {
@@ -100,7 +118,11 @@
         "type": "rankAward",
         "rankAward": {
           "compare": "highest",
-          "points": [7, 3, 1],
+          "points": [
+            7,
+            3,
+            1
+          ],
           "tieMode": "split-floor",
           "excludeZero": true,
           "over": "value"
@@ -121,7 +143,11 @@
         "type": "rankAward",
         "rankAward": {
           "compare": "highest",
-          "points": [7, 3, 1],
+          "points": [
+            7,
+            3,
+            1
+          ],
           "tieMode": "split-floor",
           "excludeZero": true,
           "over": "value"
@@ -142,7 +168,11 @@
         "type": "rankAward",
         "rankAward": {
           "compare": "highest",
-          "points": [7, 3, 1],
+          "points": [
+            7,
+            3,
+            1
+          ],
           "tieMode": "split-floor",
           "excludeZero": true,
           "over": "value"
@@ -163,7 +193,11 @@
         "type": "rankAward",
         "rankAward": {
           "compare": "highest",
-          "points": [7, 3, 1],
+          "points": [
+            7,
+            3,
+            1
+          ],
           "tieMode": "split-floor",
           "excludeZero": true,
           "over": "value"
@@ -179,7 +213,9 @@
       "input": "number",
       "min": 0,
       "max": null,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": false
     }
   ],
@@ -187,7 +223,8 @@
     {
       "categoryKey": "totalAuthority",
       "dir": "highest",
-      "description": "Highest total authority over the four regions"
+      "description": "Highest total authority over the four regions",
+      "descriptionVi": "Tổng quyền lực cao nhất trên 4 vùng thắng."
     }
   ],
   "sharedVictoryOnTie": false,
@@ -207,5 +244,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Card rows are single VP totals; authority tracks are compared across players.",
+  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc sau mùa thứ 4."
 }

@@ -82,7 +82,8 @@
     {
       "categoryKey": null,
       "dir": null,
-      "description": "Share the victory on a tie (per secondary rules summary)."
+      "description": "Share the victory on a tie (per secondary rules summary).",
+      "descriptionVi": "Hòa thì cùng thắng (theo tóm tắt luật thứ cấp)."
     }
   ],
   "sharedVictoryOnTie": true,
@@ -114,5 +115,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Rounds table: one total per player per round.",
+  "winConditionVi": "Chơi số vòng bằng số người (2 người: 2 vòng); tổng điểm cao nhất thắng."
 }

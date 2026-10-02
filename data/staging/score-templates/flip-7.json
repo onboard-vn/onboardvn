@@ -5,7 +5,10 @@
   "bggId": 420087,
   "templateVersion": 1,
   "variant": "base",
-  "playerCount": { "min": 3, "max": 18 },
+  "playerCount": {
+    "min": 3,
+    "max": 18
+  },
   "mode": "competitive",
   "winRule": "highest",
   "scoringStyle": "rounds",
@@ -24,7 +27,9 @@
       "input": "number",
       "min": 0,
       "max": 78,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": true
     },
     {
@@ -36,7 +41,10 @@
       "input": "bool",
       "min": null,
       "max": null,
-      "formula": { "type": "expr", "expr": "if(value, cat_numberSum, 0)" },
+      "formula": {
+        "type": "expr",
+        "expr": "if(value, cat_numberSum, 0)"
+      },
       "countsToTotal": true
     },
     {
@@ -48,7 +56,9 @@
       "input": "number",
       "min": 0,
       "max": 30,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": true
     },
     {
@@ -60,12 +70,18 @@
       "input": "bool",
       "min": null,
       "max": null,
-      "formula": { "type": "exclusiveBonus", "points": 15 },
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 15
+      },
       "countsToTotal": true
     }
   ],
   "tiebreakers": [
-    { "description": "Rulebook text read does not define a tie at 200+; play another round if tied for most points (common ruling, unverified)." }
+    {
+      "description": "Rulebook text read does not define a tie at 200+; play another round if tied for most points (common ruling, unverified).",
+      "descriptionVi": "Chưa có luật hòa ở mốc 200+; hòa điểm cao nhất thì chơi thêm 1 vòng."
+    }
   ],
   "sharedVictoryOnTie": false,
   "notes": "family: rounds (press-your-luck; round scores accumulate). Score a player's round: Number sum, x2 first, then add modifiers, then +15 for Flip 7; a busted player scores 0 that round. Enter one scoring per round. Game ends at end of round where anyone has >=200; most points wins. Tie handling not found in rulebook text.",
@@ -84,5 +100,8 @@
     }
   ],
   "confidence": "high",
-  "needsReview": false
+  "needsReview": false,
+  "uiHint": "generic",
+  "uiHintReason": "Rounds table: one total per player per round.",
+  "winConditionVi": "Ván kết thúc ở vòng có người đạt 200 điểm; điểm cao nhất thắng."
 }

@@ -337,3 +337,48 @@ describe('template validation', () => {
     expect(fails(tpl([cat('a', { formula: { type: 'expr', expr: 'process' } })]), [p('a')])).toBe('TEMPLATE_INVALID');
   });
 });
+
+describe('derived categories and outcome expressions', () => {
+  const heists = cat('heists', { scope: 'team', input: 'perRound', roundInput: 'bool', countsToTotal: false });
+  const t = tpl(
+    [
+      heists,
+      cat('wins', { scope: 'team', input: 'derived', countsToTotal: false, formula: { type: 'expr', expr: 'countTrue(cat_heists)' } }),
+      cat('losses', { scope: 'team', input: 'derived', countsToTotal: false, formula: { type: 'expr', expr: 'sumRounds(cat_heists) * 0 + count(cat_heists) - cat_wins' } }),
+    ],
+    {
+      mode: 'coop',
+      winRule: 'objective',
+      outcome: { winWhen: 'cat_wins >= 2', loseWhen: 'cat_losses >= 2' },
+      endCondition: { when: 'cat_wins >= 2 || cat_losses >= 2' },
+    },
+  );
+  const team = (h: RawValue) => [p('a', { heists: h }), p('b', { heists: h })];
+
+  it('derives wins, losses, outcome and end', () => {
+    const r = run(t, team([1, 0, 1]));
+    expect(r.teams[0]?.categories).toMatchObject({ wins: 2, losses: 1 });
+    expect(r).toMatchObject({ outcome: 'win', ended: true, winners: ['a', 'b'] });
+    expect(run(t, team([0, 0]))).toMatchObject({ outcome: 'loss', ended: true, winners: [] });
+    expect(run(t, team([1]))).toMatchObject({ outcome: null, ended: false });
+  });
+
+  it('explicit outcome overrides derived outcome', () => {
+    expect(run(t, team([1, 1]), { outcome: 'loss' }).outcome).toBe('loss');
+  });
+
+  it('rejects non 0/1 per-round values and exclusive collisions', () => {
+    expect(fails(t, team([2]))).toBe('INPUT_INVALID');
+    const ex = tpl([cat('w', { input: 'perRound', roundInput: 'exclusive' })]);
+    expect(fails(ex, [p('a', { w: [1] }), p('b', { w: [1] })])).toBe('INPUT_INVALID');
+    expect(fails(ex, [p('a', { w: [1, 0] }), p('b', { w: [0, 1] })])).toBe('OK');
+  });
+
+  it('rejects malformed derived or roundInput categories and unknown outcome identifiers', () => {
+    const compile = (u: ScoreTemplate) => compileTemplate(u).ok;
+    expect(compile(tpl([cat('d', { input: 'derived' })]))).toBe(false);
+    expect(compile(tpl([cat('n', { roundInput: 'bool' })]))).toBe(false);
+    expect(compile(tpl([cat('n')], { outcome: { winWhen: 'cat_missing > 0' } }))).toBe(false);
+    expect(compile(tpl([cat('n')], { endCondition: { when: 'cat_n >' } }))).toBe(false);
+  });
+});

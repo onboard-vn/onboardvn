@@ -3,7 +3,7 @@
   "name": "Gaia Project",
   "year": 2017,
   "bggId": 220308,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base (expansion The Lost Fleet not modelled)",
   "playerCount": {
     "min": 1,
@@ -27,28 +27,14 @@
       "countsToTotal": true
     },
     {
-      "key": "finalTile1",
-      "label": "Final scoring tile 1",
-      "labelVi": "Ô tính điểm cuối 1",
-      "hint": "Rank on the tile's track: 1st/2nd/3rd/4th = 18/12/6/0; ties split the VP of the shared ranks evenly. Enter VP gained.",
+      "key": "finalTiles",
+      "label": "Final scoring tiles VP total",
+      "labelVi": "Tổng điểm 2 ô tính điểm cuối",
+      "hint": "VP from both final scoring tiles: 1st/2nd/3rd/4th = 18/12/6/0 each; ties split the VP of the shared ranks evenly.",
       "scope": "player",
       "input": "number",
       "min": 0,
-      "max": 18,
-      "formula": {
-        "type": "sum"
-      },
-      "countsToTotal": true
-    },
-    {
-      "key": "finalTile2",
-      "label": "Final scoring tile 2",
-      "labelVi": "Ô tính điểm cuối 2",
-      "hint": "Same as tile 1.",
-      "scope": "player",
-      "input": "number",
-      "min": 0,
-      "max": 18,
+      "max": 36,
       "formula": {
         "type": "sum"
       },
@@ -71,20 +57,15 @@
     },
     {
       "key": "leftoverResources",
-      "label": "Leftover credits, knowledge, ore",
-      "labelVi": "Credit, knowledge, ore còn lại",
-      "hint": "1 VP per 3 resources in any combination.",
+      "label": "Leftover credits + knowledge + ore",
+      "labelVi": "Credit + knowledge + ore còn lại",
+      "hint": "Total of credits, knowledge and ore; 1 VP per 3 in any combination.",
       "scope": "player",
-      "input": "counts",
-      "inputs": [
-        "credits",
-        "knowledge",
-        "ore"
-      ],
+      "input": "count",
       "min": 0,
       "formula": {
         "type": "expr",
-        "expr": "floor((credits+knowledge+ore)/3)"
+        "expr": "floor(value / 3)"
       },
       "countsToTotal": true
     }
@@ -113,5 +94,8 @@
     }
   ],
   "confidence": "high",
-  "needsReview": false
+  "needsReview": false,
+  "uiHint": "generic",
+  "uiHintReason": "Track VP plus final tiles, research levels and one leftover-resource total.",
+  "winConditionVi": "Điểm cao nhất thắng. Hòa thì cùng thắng. Ván kết thúc sau vòng 6."
 }

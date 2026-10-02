@@ -92,7 +92,8 @@
     {
       "categoryKey": "lastRoundEnergy",
       "dir": "highest",
-      "description": "Most Energy Units produced in the last round"
+      "description": "Most Energy Units produced in the last round",
+      "descriptionVi": "Sản xuất nhiều năng lượng nhất ở vòng cuối thắng."
     }
   ],
   "sharedVictoryOnTie": false,
@@ -106,5 +107,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Track VP plus direct end counts; last-round energy only for ties.",
+  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc sau vòng 5."
 }

@@ -49,6 +49,7 @@ export interface ScoreResult {
   tieUnresolved: boolean;
   tiedIds: string[];
   outcome: 'win' | 'loss' | null;
+  ended: boolean | null;
   warnings: string[];
 }
 
@@ -226,6 +227,15 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
     return sumOf(e.memberIds.map((m) => points.player.get(m)?.get(key) ?? 0));
   };
 
+  const catRef = (e: Entity, key: string): ExprValue => {
+    const cat = byKey.get(key) as ScoreCategory;
+    if (cat.input !== 'perRound' || cat.roundInput === undefined) return catPoint(e, key);
+    const n = norms.get(key) as Map<string, Norm>;
+    if (cat.scope === e.scope) return n.get(e.id)?.list ?? [];
+    if (e.scope === 'player') return n.get(playerTeam.get(e.id) ?? '')?.list ?? [];
+    return e.memberIds.flatMap((m) => n.get(m)?.list ?? []);
+  };
+
   const normalize = (cat: ScoreCategory, entities: Entity[]): Map<string, Norm> => {
     const out = new Map<string, Norm>();
     const aggregate = template.rounds?.aggregate ?? 'sum';
@@ -235,11 +245,16 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
       const named = new Map<string, number>();
       let list: number[] | null = null;
       let value = 0;
-      if (cat.input === 'repeating' || cat.input === 'perRound') {
+      if (cat.input === 'derived') {
+        // value is computed by the category formula
+      } else if (cat.input === 'repeating' || cat.input === 'perRound') {
         if (raw === undefined) list = [];
         else if (Array.isArray(raw)) list = raw.map((x) => toNumber(x, path));
         else if (typeof raw === 'object') list = bad('expected a list of numbers', path);
         else list = [toNumber(raw, path)];
+        if (cat.roundInput === 'bool' || cat.roundInput === 'exclusive') {
+          if (list.some((x) => x !== 0 && x !== 1)) bad('expected 0/1 per round', path);
+        }
         value = sumOf(list);
       } else if (cat.input === 'counts') {
         if (raw !== undefined && (typeof raw !== 'object' || Array.isArray(raw))) bad('expected an object of counts', path);
@@ -256,7 +271,13 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
       }
       out.set(e.id, { value, list, named });
     }
-    if (cat.input === 'perRound') {
+    if (cat.input === 'perRound' && cat.roundInput === 'exclusive') {
+      const lists = [...out.values()].map((n) => n.list as number[]);
+      for (let r = 0; r < Math.max(0, ...lists.map((l) => l.length)); r++) {
+        if (sumOf(lists.map((l) => l[r] ?? 0)) > 1) bad(`more than one entity selected in round ${r + 1}`, `categories.${cat.key}`);
+      }
+    }
+    if (cat.input === 'perRound' && (cat.roundInput ?? 'number') === 'number') {
       const lists = [...out.values()].map((n) => n.list as number[]);
       const rounds = Math.max(0, ...lists.map((l) => l.length));
       const lowest = template.winRule === 'lowest';
@@ -291,7 +312,7 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
           if (name === 'value') return cat.input === 'repeating' ? (n.list as number[]) : n.value;
           if (name === 'players') return playerCount;
           if (n.named.has(name)) return n.named.get(name);
-          if (name.startsWith('cat_') && byKey.has(name.slice(4))) return catPoint(e, name.slice(4));
+          if (name.startsWith('cat_') && byKey.has(name.slice(4))) return catRef(e, name.slice(4));
           return undefined;
         },
       });
@@ -360,11 +381,30 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
     }
   }
 
+  const tableEntity = (teams[0] ?? players[0]) as Entity;
+  const evalTable = (src: string | null | undefined): number | null => {
+    if (!src) return null;
+    const r = evaluateExpr(exprs.get(src) as CompiledExpr, {
+      warnings,
+      lookup: (name): ExprValue | undefined => {
+        if (name === 'players') return playerCount;
+        if (name.startsWith('cat_') && byKey.has(name.slice(4))) return catRef(tableEntity, name.slice(4));
+        return undefined;
+      },
+    });
+    if (!r.ok) throw new InputFailure({ ...r.error, path: 'expr' });
+    return r.value;
+  };
+  const derivedOutcome: 'win' | 'loss' | null =
+    evalTable(template.outcome?.winWhen) ? 'win' : evalTable(template.outcome?.loseWhen) ? 'loss' : null;
+  const outcome = input.outcome ?? derivedOutcome;
+  const ended = template.endCondition?.when ? evalTable(template.endCondition.when) !== 0 : null;
+
   const counted = template.categories.filter((c) => c.countsToTotal && !c.multiplierOf?.length);
   const outcomeRule = template.outcome;
   const gated =
-    (outcomeRule?.scoreOnlyIfWin && input.outcome !== 'win') || (outcomeRule?.scoreOnlyIfLose && input.outcome !== 'loss');
-  if ((outcomeRule?.scoreOnlyIfWin || outcomeRule?.scoreOnlyIfLose) && input.outcome === undefined) {
+    (outcomeRule?.scoreOnlyIfWin && outcome !== 'win') || (outcomeRule?.scoreOnlyIfLose && outcome !== 'loss');
+  if ((outcomeRule?.scoreOnlyIfWin || outcomeRule?.scoreOnlyIfLose) && outcome === null) {
     bad('outcome is required by this template', 'outcome');
   }
   const playerTotal = new Map<string, number>();
@@ -403,7 +443,7 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
   if (input.winners) {
     winnerEntities = input.winners.map((id) => (playerById.get(id) ?? teams.find((t) => t.id === id)) as Entity);
   } else if (template.mode === 'coop') {
-    winnerEntities = input.outcome === 'win' ? players : [];
+    winnerEntities = outcome === 'win' ? players : [];
   } else if (rankable) {
     const leaders = rankSet.filter((e) => rankOf.get(e.id) === 1);
     if (leaders.length > 1 && !template.sharedVictoryOnTie) {
@@ -447,7 +487,8 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
     winnerTeams,
     tieUnresolved,
     tiedIds,
-    outcome: input.outcome ?? null,
+    outcome,
+    ended,
     warnings,
   };
 }
