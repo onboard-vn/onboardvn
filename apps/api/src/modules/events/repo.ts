@@ -1,8 +1,9 @@
 import type { MeetupStatus, MeetupVisibility, ParticipantStatus } from '@onboard/shared';
-import { and, asc, eq, exists, gte, inArray, lt, or, sql, type SQL } from 'drizzle-orm';
+import { and, asc, eq, exists, gte, inArray, lt, ne, or, sql, type SQL } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import {
   cafes,
+  clubMembers,
   friendships,
   games,
   meetupParticipants,
@@ -66,6 +67,15 @@ function friendsWithCreator(viewerId: string): SQL {
   );
 }
 
+function isClubMemberSubquery(viewerId: string): SQL {
+  return exists(
+    db
+      .select({ x: sql`1` })
+      .from(clubMembers)
+      .where(and(eq(clubMembers.clubId, meetups.clubId), eq(clubMembers.userId, viewerId))),
+  );
+}
+
 function isParticipantSubquery(viewerId: string): SQL {
   return exists(
     db
@@ -79,17 +89,23 @@ function isParticipantSubquery(viewerId: string): SQL {
 
 /** Single predicate reused by list, calendar, `/me/events`: creator + any participant (incl.
  * `invited`) always see it; `public` is open; `friends` requires friendship with the creator;
- * `private` is excluded here (only reachable via `?code=` on the detail route). Either direction
- * of a block hides it. */
+ * `private` is excluded here (only reachable via `?code=` on the detail route); `club` requires
+ * current club membership, even for the creator. Either direction of a block hides it. */
 export function visibleMeetupsWhere(viewerId: string | null): SQL {
   if (!viewerId) return eq(meetups.visibility, 'public');
   return and(
     sql`not ${blockedWithCreator(viewerId)}`,
     or(
-      eq(meetups.createdBy, viewerId),
-      isParticipantSubquery(viewerId),
-      eq(meetups.visibility, 'public'),
-      and(eq(meetups.visibility, 'friends'), friendsWithCreator(viewerId)),
+      and(eq(meetups.visibility, 'club'), isClubMemberSubquery(viewerId)),
+      and(
+        ne(meetups.visibility, 'club'),
+        or(
+          eq(meetups.createdBy, viewerId),
+          isParticipantSubquery(viewerId),
+          eq(meetups.visibility, 'public'),
+          and(eq(meetups.visibility, 'friends'), friendsWithCreator(viewerId)),
+        ),
+      ),
     ),
   )!;
 }
@@ -101,6 +117,7 @@ export function myMeetupsWhere(viewerId: string): SQL {
   return and(
     sql`not ${blockedWithCreator(viewerId)}`,
     or(eq(meetups.createdBy, viewerId), isParticipantSubquery(viewerId)),
+    or(ne(meetups.visibility, 'club'), isClubMemberSubquery(viewerId)),
   )!;
 }
 
@@ -166,6 +183,7 @@ export interface MeetupRow {
   wardCode: string | null;
   capacity: number | null;
   visibility: MeetupVisibility;
+  clubId: string | null;
   inviteCodeHash: string;
   status: MeetupStatus;
   createdBy: string;

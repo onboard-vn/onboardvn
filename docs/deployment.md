@@ -152,3 +152,14 @@ ss -ltn
 ```
 
 Không được thấy port Postgres (mặc định 5432) publish ra host — `compose.prod.yml` không map port cho service `postgres`, chỉ network nội bộ.
+
+## Đồng bộ club từ app ngoài (tùy chọn)
+
+Tắt mặc định. Bật bằng 2 biến môi trường của API: `EXTERNAL_CLUB_PLUGIN` (đường dẫn tuyệt đối tới module ESM plugin, mount vào container) và `EXTERNAL_CLUB_BASE_URL` (truyền cho plugin). Plugin implement `ExternalClubSource` ([types.ts](../apps/api/src/integrations/external-club/types.ts)) và nằm ngoài repo công khai.
+
+```bash
+# backup DB trước lần chạy đầu (có migration), rồi:
+pnpm --filter @onboard/api sync:club --club <slug> [--from YYYY-MM-DD] [--to YYYY-MM-DD] [--dry-run]
+```
+
+`--dry-run` chạy toàn bộ trong 1 transaction rồi rollback và in số lượng tạo/sửa. Chạy lại nhiều lần là idempotent (ánh xạ qua `external_refs`). Mỗi ngày thành 1 Kèo `club`, mỗi bàn thành 1 `meetup_tables`; người chơi chưa có tài khoản nằm ở `meetup_table_external_players` (không tạo user giả).

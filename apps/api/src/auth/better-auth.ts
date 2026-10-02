@@ -8,6 +8,7 @@ import * as schema from '../db/schema/index.js';
 import { env } from '../lib/env.js';
 import { logger } from '../lib/logger.js';
 import { mailer, resetPasswordEmail, verifyEmail } from '../lib/mailer/index.js';
+import { handOverClubsBeforeUserDelete } from '../modules/clubs/service.js';
 import { goingMeetupIdsForUser, promoteWaitlistForMeetups } from '../modules/events/service.js';
 import { sendOtpEmail } from './otp-mailer.js';
 import { profileGuard } from './profile-guard.js';
@@ -79,6 +80,7 @@ export const auth = betterAuth({
       },
       delete: {
         before: async (user) => {
+          await handOverClubsBeforeUserDelete(user.id);
           try {
             pendingWaitlistPromotions.set(user.id, await goingMeetupIdsForUser(user.id));
           } catch (err) {

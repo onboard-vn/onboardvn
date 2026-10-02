@@ -6,3 +6,6 @@ export * from './locations.js';
 export * from './meetups.js';
 export * from './shelf.js';
 export * from './social.js';
+export * from './scoring.js';
+export * from './clubs.js';
+export * from './external.js';

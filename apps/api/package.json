@@ -20,6 +20,8 @@
     "db:migrate": "tsx --env-file-if-exists=.env src/db/migrate.ts",
     "db:seed": "tsx --env-file-if-exists=.env src/db/seed.ts",
     "db:seed-locations": "tsx --env-file-if-exists=.env src/db/seed-locations.ts",
+    "db:import-club-games": "tsx --env-file-if-exists=.env src/db/import-club-games.ts",
+    "sync:club": "tsx --env-file-if-exists=.env src/integrations/external-club/sync-cli.ts",
     "db:studio": "drizzle-kit studio",
     "dataset:export": "tsx --env-file-if-exists=.env src/dataset/export-cli.ts",
     "dataset:import": "tsx --env-file-if-exists=.env src/dataset/import-cli.ts",

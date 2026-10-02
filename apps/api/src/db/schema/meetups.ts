@@ -11,6 +11,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { users } from './auth.js';
 import { cafes } from './cafes.js';
+import { clubs } from './clubs.js';
 import { games } from './games.js';
 import { provinces, wards } from './locations.js';
 
@@ -32,9 +33,10 @@ export const meetups = pgTable(
       .references(() => provinces.code),
     wardCode: text().references(() => wards.code),
     capacity: smallint(),
-    visibility: text({ enum: ['public', 'friends', 'private'] })
+    visibility: text({ enum: ['public', 'friends', 'private', 'club'] })
       .default('public')
       .notNull(),
+    clubId: uuid().references(() => clubs.id, { onDelete: 'set null' }),
     /** Raw invite token is never stored — only its sha256 hash; the raw value is returned once
      * on create/rotate. */
     inviteCodeHash: text().notNull().unique(),
@@ -56,7 +58,12 @@ export const meetups = pgTable(
       sql`${table.cafeId} is not null or ${table.addressLine} is not null`,
     ),
     index('meetups_province_starts_at_idx').on(table.provinceCode, table.startsAt),
+    check(
+      'meetups_club_visibility_chk',
+      sql`${table.visibility} <> 'club' or ${table.clubId} is not null`,
+    ),
     index('meetups_starts_at_idx').on(table.startsAt),
+    index('meetups_club_id_starts_at_idx').on(table.clubId, table.startsAt),
   ],
 );
 
@@ -125,6 +132,7 @@ export const adminAuditLog = pgTable('admin_audit_log', {
 
 export const meetupsRelations = relations(meetups, ({ one, many }) => ({
   cafe: one(cafes, { fields: [meetups.cafeId], references: [cafes.id] }),
+  club: one(clubs, { fields: [meetups.clubId], references: [clubs.id] }),
   province: one(provinces, { fields: [meetups.provinceCode], references: [provinces.code] }),
   ward: one(wards, { fields: [meetups.wardCode], references: [wards.code] }),
   creator: one(users, { fields: [meetups.createdBy], references: [users.id] }),

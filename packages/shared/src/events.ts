@@ -1,7 +1,8 @@
 import { z } from 'zod';
+import { clubRefSchema } from './clubs.js';
 import { friendSummarySchema } from './social.js';
 
-export const meetupVisibilityEnum = z.enum(['public', 'friends', 'private']);
+export const meetupVisibilityEnum = z.enum(['public', 'friends', 'private', 'club']);
 export type MeetupVisibility = z.infer<typeof meetupVisibilityEnum>;
 
 export const meetupStatusEnum = z.enum(['scheduled', 'cancelled']);
@@ -51,6 +52,7 @@ export const meetupCreateSchema = z
     wardCode: z.string().min(1).optional(),
     capacity: capacitySchema.optional(),
     visibility: meetupVisibilityEnum.default('public'),
+    clubId: z.uuid().optional(),
     table: meetupTableCreateSchema.optional(),
   })
   .refine((input) => input.cafeId !== undefined || input.addressLine !== undefined, {
@@ -64,6 +66,10 @@ export const meetupCreateSchema = z
   .refine((input) => !input.endsAt || new Date(input.endsAt) > new Date(input.startsAt), {
     message: 'Giờ kết thúc phải sau giờ bắt đầu',
     path: ['endsAt'],
+  })
+  .refine((input) => input.visibility !== 'club' || input.clubId !== undefined, {
+    message: 'Cần chọn club cho Kèo của club',
+    path: ['clubId'],
   })
   .refine((input) => new Date(input.startsAt).getTime() >= Date.now() - PAST_SKEW_MS, {
     message: 'Thời gian bắt đầu không được ở quá khứ',
@@ -103,6 +109,7 @@ export const meetupFilterSchema = z.object({
   provinceCode: z.string().min(1).optional(),
   wardCode: z.string().min(1).optional(),
   cafeId: z.uuid().optional(),
+  clubId: z.uuid().optional(),
   from: z.iso.datetime().optional(),
   /** Asia/Saigon calendar day (`YYYY-MM-DD`) — when set, overrides `from` with that day's VN
    * range instead of "now onward", so past days clicked from the calendar still list. */
@@ -178,6 +185,7 @@ export const meetupSummaryDtoSchema = z.object({
   capacity: z.number().int().nullable(),
   goingCount: z.number().int(),
   visibility: meetupVisibilityEnum,
+  club: clubRefSchema.nullable(),
   status: meetupStatusEnum,
   createdBy: meetupPublicUserSchema,
 });

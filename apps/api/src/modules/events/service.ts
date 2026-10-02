@@ -1,5 +1,6 @@
 import { createHash, randomBytes } from 'node:crypto';
 import type {
+  ClubRef,
   MeetupCalendarDay,
   MeetupCreateInput,
   MeetupCreateResponseDto,
@@ -23,6 +24,7 @@ import { env } from '../../lib/env.js';
 import { ApiError } from '../../lib/errors.js';
 import { areFriends, canView, isBlocked } from '../../lib/visibility.js';
 import { isPubliclyVisibleCafe } from '../cafes/visibility.js';
+import * as clubRepo from '../clubs/repo.js';
 import { slugify } from '../games/slug.js';
 import * as repo from './repo.js';
 import type { MeetupRow, RawPublicUser, Tx } from './repo.js';
@@ -80,12 +82,20 @@ function isUniqueViolation(err: unknown): boolean {
 
 /** The single per-meetup predicate: creator + any participant (incl. `invited`) always see it;
  * `public` is open; `friends` requires friendship with the creator; `private` requires the
- * detail-only `?code=` to match the stored hash. A block in either direction always hides it. */
+ * detail-only `?code=` to match the stored hash; `club` requires current club membership, even
+ * for the creator. A block in either direction always hides it. */
 export async function canViewMeetup(
-  meetup: Pick<MeetupRow, 'id' | 'createdBy' | 'visibility' | 'inviteCodeHash'>,
+  meetup: Pick<MeetupRow, 'id' | 'createdBy' | 'visibility' | 'inviteCodeHash' | 'clubId'>,
   viewerId: string | null,
   code?: string,
 ): Promise<boolean> {
+  if (meetup.visibility === 'club') {
+    if (!viewerId || !meetup.clubId) return false;
+    if (viewerId !== meetup.createdBy && (await isBlocked(viewerId, meetup.createdBy))) {
+      return false;
+    }
+    return clubRepo.isClubMember(meetup.clubId, viewerId);
+  }
   if (viewerId === meetup.createdBy) return true;
   if (viewerId && (await isBlocked(viewerId, meetup.createdBy))) return false;
   if (viewerId && (await repo.isParticipant(meetup.id, viewerId))) return true;
@@ -95,6 +105,14 @@ export async function canViewMeetup(
   }
   if (code) return hashToken(code) === meetup.inviteCodeHash;
   return false;
+}
+
+/** Write paths on a club meetup re-check current membership with the same predicate as reads. */
+async function requireClubAccess(
+  meetup: Pick<MeetupRow, 'id' | 'createdBy' | 'visibility' | 'inviteCodeHash' | 'clubId'>,
+  userId: string,
+): Promise<void> {
+  if (meetup.visibility === 'club' && !(await canViewMeetup(meetup, userId))) notFound();
 }
 
 // ---------------------------------------------------------------------------
@@ -158,6 +176,7 @@ function summaryFromParts(
   goingCount: number,
   location: CafeLocation,
   creator: MeetupPublicUser,
+  club: ClubRef | null,
 ): MeetupSummaryDto {
   return {
     id: row.id,
@@ -173,13 +192,14 @@ function summaryFromParts(
     capacity: row.capacity,
     goingCount,
     visibility: row.visibility,
+    club,
     status: row.status,
     createdBy: creator,
   };
 }
 
 async function toDetailDto(row: MeetupRow, viewerId: string | null): Promise<MeetupDetailDto> {
-  const [goingCount, location, tables, seatedByTable, viewerParticipant, creatorRow] =
+  const [goingCount, location, tables, seatedByTable, viewerParticipant, creatorRow, clubRefs] =
     await Promise.all([
       repo.countGoing(row.id),
       resolveCafeLocation(row),
@@ -187,6 +207,7 @@ async function toDetailDto(row: MeetupRow, viewerId: string | null): Promise<Mee
       repo.listSeatedUsersByTable(row.id),
       viewerId ? repo.findParticipant(row.id, viewerId) : Promise.resolve(undefined),
       repo.findPublicUser(row.createdBy),
+      clubRepo.findClubRefsByIds(row.clubId ? [row.clubId] : []),
     ]);
 
   const allUsers = [
@@ -215,7 +236,13 @@ async function toDetailDto(row: MeetupRow, viewerId: string | null): Promise<Mee
       : null;
 
   return {
-    ...summaryFromParts(row, goingCount, location, mask(creatorRow)),
+    ...summaryFromParts(
+      row,
+      goingCount,
+      location,
+      mask(creatorRow),
+      row.clubId ? (clubRefs.get(row.clubId) ?? null) : null,
+    ),
     description: row.description,
     tables: tableDtos,
     viewerStatus: viewerParticipant?.status ?? null,
@@ -276,6 +303,9 @@ export async function createMeetupService(
   input: MeetupCreateInput,
 ): Promise<MeetupCreateResponseDto> {
   const location = await resolveLocation(input);
+  if (input.clubId && !(await clubRepo.isClubMember(input.clubId, userId))) {
+    validationFailed('Bạn không phải thành viên của club này');
+  }
   const token = generateInviteToken();
   const inviteCodeHash = hashToken(token);
 
@@ -297,6 +327,7 @@ export async function createMeetupService(
             wardCode: location.wardCode,
             capacity: input.capacity ?? null,
             visibility: input.visibility,
+            clubId: input.clubId ?? null,
             inviteCodeHash,
             createdBy: userId,
           },
@@ -330,6 +361,7 @@ export async function getMeetupBySlugService(
 async function requireOwnedMeetup(meetupId: string, userId: string): Promise<MeetupRow> {
   const row = await repo.findMeetupById(meetupId);
   if (!row) notFound();
+  await requireClubAccess(row, userId);
   if (row.createdBy !== userId) forbidden();
   return row;
 }
@@ -347,6 +379,10 @@ export async function updateMeetupService(
     input.wardCode !== undefined
       ? await resolveLocation(input, current)
       : undefined;
+
+  if (input.visibility === 'club' && !current.clubId) {
+    validationFailed('Kèo này không thuộc club nào');
+  }
 
   if (input.capacity !== undefined && input.capacity !== null) {
     const going = await repo.countGoing(meetupId);
@@ -446,11 +482,14 @@ export async function inviteFriendsService(
   userId: string,
   input: MeetupInviteFriendsInput,
 ): Promise<void> {
-  await requireOwnedMeetup(meetupId, userId);
+  const meetup = await requireOwnedMeetup(meetupId, userId);
   for (const targetId of input.userIds) {
     if (targetId === userId) continue;
     if (!(await areFriends(userId, targetId))) {
       validationFailed('Chỉ có thể mời bạn bè');
+    }
+    if (meetup.visibility === 'club' && !(await clubRepo.isClubMember(meetup.clubId!, targetId))) {
+      validationFailed('Chỉ có thể mời thành viên của club');
     }
   }
   for (const targetId of input.userIds) {
@@ -468,10 +507,11 @@ async function toSummaryDtos(
   viewerId: string | null,
 ): Promise<MeetupSummaryDto[]> {
   const cafeIds = rows.flatMap((r) => (r.cafeId ? [r.cafeId] : []));
-  const [creatorsById, cafesById, goingCounts] = await Promise.all([
+  const [creatorsById, cafesById, goingCounts, clubsById] = await Promise.all([
     repo.findPublicUsersByIds(rows.map((r) => r.createdBy)),
     repo.findCafeRefsByIds(cafeIds),
     repo.countDistinctGoingByMeetupIds(rows.map((r) => r.id)),
+    clubRepo.findClubRefsByIds(rows.flatMap((r) => (r.clubId ? [r.clubId] : []))),
   ]);
   const relations = await batchRelationsFor(viewerId, [...creatorsById.values()]);
   return rows.map((row) => {
@@ -485,6 +525,7 @@ async function toSummaryDtos(
       goingCounts.get(row.id) ?? 0,
       location,
       maskUser(creatorsById.get(row.createdBy), viewerId, relations),
+      row.clubId ? (clubsById.get(row.clubId) ?? null) : null,
     );
   });
 }
@@ -497,6 +538,7 @@ export async function listMeetupsService(
   if (filter.provinceCode) clauses.push(eq(meetups.provinceCode, filter.provinceCode));
   if (filter.wardCode) clauses.push(eq(meetups.wardCode, filter.wardCode));
   if (filter.cafeId) clauses.push(eq(meetups.cafeId, filter.cafeId));
+  if (filter.clubId) clauses.push(eq(meetups.clubId, filter.clubId));
   if (filter.date) {
     // Asia/Saigon calendar day → UTC range, so a calendar day click lists exactly that day's
     // meetups (incl. past days), instead of "from now onward".
@@ -722,6 +764,7 @@ export async function createTableService(
   const table = await db.transaction(async (tx) => {
     const meetup = await repo.findMeetupByIdForUpdate(tx, meetupId);
     if (!meetup) notFound();
+    await requireClubAccess(meetup, userId);
     if (meetup.status === 'cancelled') conflict('Kèo đã bị hủy, không thể tạo bàn');
     const isCreator = meetup.createdBy === userId;
     const participant = await repo.findParticipant(meetupId, userId, tx);
@@ -746,6 +789,7 @@ async function requireTableAccess(
   if (!meetup) notFound();
   const table = await repo.findTableById(tableId);
   if (!table || table.meetupId !== meetupId) notFound();
+  await requireClubAccess(meetup, userId);
   if (meetup.createdBy !== userId && table.hostUserId !== userId) forbidden();
   return { meetup, table };
 }
@@ -822,6 +866,7 @@ export async function seatAtTableService(
   await db.transaction(async (tx) => {
     const meetup = await repo.findMeetupById(meetupId);
     if (!meetup) notFound();
+    await requireClubAccess(meetup, userId);
     if (meetup.status === 'cancelled') conflict('Kèo đã bị hủy');
     if (await repo.isHost(meetupId, userId, tx)) {
       conflict('Host không thể ngồi bàn khác — hãy xóa bàn trước');
@@ -843,6 +888,9 @@ export async function leaveTableService(
   tableId: string,
   userId: string,
 ): Promise<void> {
+  const meetup = await repo.findMeetupById(meetupId);
+  if (!meetup) notFound();
+  await requireClubAccess(meetup, userId);
   await db.transaction(async (tx) => {
     const participant = await repo.findParticipantForUpdate(tx, meetupId, userId);
     if (!participant || participant.tableId !== tableId) notFound();

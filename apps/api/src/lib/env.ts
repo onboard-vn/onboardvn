@@ -16,6 +16,8 @@ const envSchema = z
     UPLOADS_DIR: z.string().optional().default('./uploads'),
     GAMEUPC_BASE_URL: z.url().optional(),
     GAMEUPC_API_KEY: z.string().optional(),
+    EXTERNAL_CLUB_PLUGIN: z.preprocess((v) => v || undefined, z.string().optional()),
+    EXTERNAL_CLUB_BASE_URL: z.preprocess((v) => v || undefined, z.url().optional()),
     /** Set to true only behind a reverse proxy (Caddy) that itself sets X-Forwarded-For to the real client IP. */
     TRUST_PROXY: z.preprocess((v) => v === 'true' || v === '1', z.boolean()),
     SMTP_URL: z.preprocess((v) => v || undefined, z.url().optional()),

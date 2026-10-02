@@ -18,6 +18,7 @@ import {
 import { cafeOwnerRoutes } from './modules/cafe-owners/routes.js';
 import { adminCafeRoutes, cafeRoutes } from './modules/cafes/routes.js';
 import { categoryRoutes } from './modules/categories/routes.js';
+import { adminClubRoutes, clubRoutes } from './modules/clubs/routes.js';
 import { adminEventRoutes, eventRoutes, meEventsRoutes } from './modules/events/routes.js';
 import { blockRoutes, friendRoutes } from './modules/friends/routes.js';
 import { gameRoutes } from './modules/games/routes.js';
@@ -47,6 +48,8 @@ export function createApp({
     .route('/me/events', meEventsRoutes)
     .route('/events', eventRoutes({ rateLimit }))
     .route('/events-admin', adminEventRoutes)
+    .route('/clubs', clubRoutes({ rateLimit }))
+    .route('/clubs-admin', adminClubRoutes)
     .route('/users', userRoutes)
     .route('/friends', friendRoutes({ rateLimit }))
     .route('/blocks', blockRoutes)

@@ -1,6 +1,7 @@
 export * from './barcodes.js';
 export * from './cafe-owners.js';
 export * from './cafes.js';
+export * from './clubs.js';
 export * from './common.js';
 export * from './errors.js';
 export * from './events.js';
@@ -11,3 +12,4 @@ export * from './roles.js';
 export * from './shelf.js';
 export * from './social.js';
 export * from './users.js';
+export * from './scoring/index.js';
