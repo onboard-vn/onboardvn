@@ -59,7 +59,8 @@
   ],
   "tiebreakers": [
     {
-      "description": "If tied for most money, victory is shared."
+      "description": "If tied for most money, victory is shared.",
+      "descriptionVi": "Hòa tiền thì cùng thắng."
     }
   ],
   "sharedVictoryOnTie": true,
@@ -79,5 +80,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "custom:acquire",
+  "uiHintReason": "Stock prices and holdings per chain derive bonuses and stock sales; typing them by hand is error-prone.",
+  "winConditionVi": "Người có nhiều tiền nhất sau khi bán cổ phiếu và nhận thưởng cổ đông lớn/nhỏ thắng."
 }

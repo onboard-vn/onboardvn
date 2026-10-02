@@ -7,8 +7,8 @@
     "aggregate": "sum",
     "endCondition": "7 rounds; Emperor scoring after rounds 3, 5, 7"
   },
-  "confidence": "medium",
-  "needsReview": true,
+  "confidence": "high",
+  "needsReview": false,
   "name": "Grand Austria Hotel Deluxe",
   "year": 2015,
   "bggId": 182874,
@@ -22,7 +22,7 @@
       "key": "trackVp",
       "label": "VP on score track before final scoring",
       "labelVi": "Điểm trên track (trước tính điểm cuối)",
-      "hint": "VP from guests, politics, rooms, Emperor scoring and Emperor tiles gained during play.",
+      "hint": "VP marker after the 7th round Emperor scoring (guests, politics, room groups, Emperor scoring).",
       "scope": "player",
       "input": "number",
       "min": null,
@@ -36,7 +36,7 @@
       "key": "staffVp",
       "label": "Staff cards VP (game end)",
       "labelVi": "VP từ thẻ nhân viên",
-      "hint": "Sum VP from game-end Staff cards (e.g. per occupied room/colour, per Staff played).",
+      "hint": "Total VP from Staff cards with a game-end effect.",
       "scope": "player",
       "input": "number",
       "min": 0,
@@ -54,7 +54,7 @@
       "scope": "player",
       "input": "count",
       "min": 0,
-      "max": null,
+      "max": 5,
       "formula": {
         "type": "multiply",
         "points": 1
@@ -69,7 +69,7 @@
       "scope": "player",
       "input": "count",
       "min": 0,
-      "max": null,
+      "max": 5,
       "formula": {
         "type": "multiply",
         "points": 2
@@ -84,7 +84,7 @@
       "scope": "player",
       "input": "count",
       "min": 0,
-      "max": null,
+      "max": 5,
       "formula": {
         "type": "multiply",
         "points": 3
@@ -99,7 +99,7 @@
       "scope": "player",
       "input": "count",
       "min": 0,
-      "max": null,
+      "max": 5,
       "formula": {
         "type": "multiply",
         "points": 4
@@ -107,25 +107,10 @@
       "countsToTotal": true
     },
     {
-      "key": "krones",
-      "label": "Krones left",
-      "labelVi": "Tiền krone còn lại",
-      "hint": "1 VP per krone.",
-      "scope": "player",
-      "input": "count",
-      "min": 0,
-      "max": null,
-      "formula": {
-        "type": "multiply",
-        "points": 1
-      },
-      "countsToTotal": true
-    },
-    {
-      "key": "kitchen",
-      "label": "Dishes/drinks left in Kitchen",
-      "labelVi": "Món ăn/đồ uống còn trong bếp",
-      "hint": "1 VP each.",
+      "key": "leftovers",
+      "label": "Krones + dishes + drinks left",
+      "labelVi": "Krone + món ăn + đồ uống còn lại",
+      "hint": "1 VP per krone and per leftover dish/drink in your Kitchen.",
       "scope": "player",
       "input": "count",
       "min": 0,
@@ -154,19 +139,25 @@
   ],
   "tiebreakers": [
     {
-      "description": "Most dishes, drinks and krones left (per RulesPal summary; verify in official rulebook)."
+      "categoryKey": "leftovers",
+      "dir": "highest",
+      "description": "More dishes, drinks and krones left wins.",
+      "descriptionVi": "Người còn nhiều món ăn, đồ uống và krone hơn thắng."
     }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "family: point-salad-euro. Deluxe edition assumed to use base-game scoring; Deluxe-only components (extra modules) not verified. Official rulebook PDF (BGG file 200467) was not downloadable (403); based on RulesPal summary only, so tiebreak and exact penalty values need confirmation. Row VP values assume rooms rows 1-4 as summarised.",
+  "notes": "Final scoring per official rulebook p.12: Staff VP, occupied rooms by row (1/2/3/4 VP each), 1 VP per krone and leftover dish/drink, -5 VP per guest in the Cafe. Room colours, groups, Politics and Emperor tiles score during play and are in the VP track. Deluxe edition assumed identical scoring (not separately verified).",
   "sources": [
     {
-      "url": "https://www.rulespal.com/grand-austria-hotel/rulebook",
-      "title": "RulesPal rulebook summary",
-      "type": "other",
-      "section": "Game End and Final Scoring"
+      "url": "https://www.lookout-spiele.de/wp-content/uploads/GAH_rules_EN_web.pdf",
+      "title": "Grand Austria Hotel rulebook (Lookout Games)",
+      "type": "official-rulebook",
+      "section": "p.12 Game End and Final Scoring"
     }
   ],
   "slug": "grand-austria-hotel-deluxe",
-  "templateVersion": 1
+  "templateVersion": 2,
+  "uiHint": "generic",
+  "uiHintReason": "Final scoring is five direct reads; room colours and cards score during play.",
+  "winConditionVi": "Điểm cao nhất thắng. Hòa thì người còn nhiều món ăn, đồ uống, krone hơn thắng."
 }

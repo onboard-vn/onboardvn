@@ -3,7 +3,7 @@
   "name": "Luthier",
   "year": 2024,
   "bggId": 371330,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base",
   "playerCount": {
     "min": 2,
@@ -29,9 +29,9 @@
     },
     {
       "key": "firstChairs",
-      "label": "First chairs held (1-3 players)",
-      "labelVi": "Ghế nhất dàn nhạc (1-3 người)",
-      "hint": "Count orchestra first chairs you occupy. Use this row for 1-3 players only",
+      "label": "First chairs held",
+      "labelVi": "Ghế nhất dàn nhạc",
+      "hint": "Count orchestra first chairs you occupy; the points table switches automatically at 4 players.",
       "scope": "player",
       "input": "count",
       "min": 0,
@@ -47,29 +47,20 @@
           "6": 6,
           "7": 10,
           "8+": 15
-        }
-      },
-      "countsToTotal": true
-    },
-    {
-      "key": "firstChairs4p",
-      "label": "First chairs held (4 players)",
-      "labelVi": "Ghế nhất dàn nhạc (4 người)",
-      "hint": "Use this row for 4 players only",
-      "scope": "player",
-      "input": "count",
-      "min": 0,
-      "formula": {
-        "type": "table",
-        "table": {
-          "0": 0,
-          "1": 0,
-          "2": 0,
-          "3": 1,
-          "4": 3,
-          "5": 6,
-          "6": 10,
-          "7+": 15
+        },
+        "byPlayerCount": {
+          "4+": {
+            "table": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1,
+              "4": 3,
+              "5": 6,
+              "6": 10,
+              "7+": 15
+            }
+          }
         }
       },
       "countsToTotal": true
@@ -174,7 +165,8 @@
     {
       "categoryKey": "leftoverMoney",
       "dir": "highest",
-      "description": "Most leftover money wins"
+      "description": "Most leftover money wins",
+      "descriptionVi": "Nhiều tiền còn dư nhất thắng."
     }
   ],
   "sharedVictoryOnTie": false,
@@ -206,5 +198,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Prestige track plus a few direct end counts; first-chair table follows player count.",
+  "winConditionVi": "Điểm cao nhất thắng. Ván có 6 vòng."
 }

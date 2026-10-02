@@ -171,7 +171,8 @@
   ],
   "tiebreakers": [
     {
-      "description": "No tiebreaker: tied players share the win."
+      "description": "No tiebreaker: tied players share the win.",
+      "descriptionVi": "Không có luật phân định: người hòa điểm cùng thắng."
     }
   ],
   "sharedVictoryOnTie": true,
@@ -185,5 +186,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Rankings compare track levels and building counts across players; engine derives the awards.",
+  "winConditionVi": "Điểm cao nhất thắng. Hòa thì cùng thắng. Ván kết thúc sau vòng 6."
 }

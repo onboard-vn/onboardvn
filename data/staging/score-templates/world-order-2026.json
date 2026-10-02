@@ -3,7 +3,7 @@
   "name": "World Order",
   "year": 2026,
   "bggId": 403150,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base",
   "playerCount": {
     "min": 2,
@@ -19,10 +19,10 @@
   },
   "categories": [
     {
-      "key": "regionScoring",
-      "label": "Region scoring (rounds 3 and 6)",
-      "labelVi": "Điểm vùng (vòng 3 và 6)",
-      "hint": "1 VP per own influence cube in a scoring region plus rank bonus printed on that region. Total of both scorings.",
+      "key": "vpTrack",
+      "label": "VP on track (incl. region scoring)",
+      "labelVi": "VP trên track (gồm điểm vùng vòng 3 và 6)",
+      "hint": "Marker position: includes both region scorings and any other VP gained during play.",
       "scope": "player",
       "input": "number",
       "min": 0,
@@ -37,20 +37,6 @@
       "label": "Global majority tokens",
       "labelVi": "Token đa số toàn cầu",
       "hint": "VP from money, armies, allied countries majority tokens.",
-      "scope": "player",
-      "input": "number",
-      "min": 0,
-      "max": null,
-      "formula": {
-        "type": "sum"
-      },
-      "countsToTotal": true
-    },
-    {
-      "key": "otherVp",
-      "label": "Other VP during game",
-      "labelVi": "VP khác trong game",
-      "hint": "Any other VP gained on the track.",
       "scope": "player",
       "input": "number",
       "min": 0,
@@ -78,7 +64,8 @@
   ],
   "tiebreakers": [
     {
-      "description": "Regional majorities, then Influence cubes on the board (per secondary sources; verify in rulebook)"
+      "description": "Regional majorities, then Influence cubes on the board (per secondary sources; verify in rulebook)",
+      "descriptionVi": "Đa số vùng, rồi số khối Influence trên bàn (theo nguồn thứ cấp, cần xác minh)."
     }
   ],
   "sharedVictoryOnTie": false,
@@ -98,5 +85,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Region scoring and other VP both land on the track; one number covers both.",
+  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc sau khi tính điểm vòng 6."
 }

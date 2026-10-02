@@ -25,6 +25,10 @@ function categoryExprSources(cat: ScoreCategory): { path: string; src: string }[
 
 function checkFormulaShape(cat: ScoreCategory): string | null {
   const f = cat.formula;
+  if (cat.input === 'derived' && (f.type !== 'expr' || f.expr === undefined)) {
+    return "input 'derived' requires an expr formula";
+  }
+  if (cat.roundInput !== undefined && cat.input !== 'perRound') return "roundInput requires input 'perRound'";
   const hasOverrides = Object.keys(f.byPlayerCount ?? {}).length > 0;
   if (hasOverrides) return null;
   switch (f.type) {
@@ -101,6 +105,22 @@ export function compileTemplate(template: ScoreTemplate): Result<CompiledTemplat
       }
       deps.get(target)?.add(cat.key);
     }
+  }
+
+  const topLevel: { path: string; src: string | null | undefined }[] = [
+    { path: 'outcome.winWhen', src: template.outcome?.winWhen },
+    { path: 'outcome.loseWhen', src: template.outcome?.loseWhen },
+    { path: 'endCondition.when', src: template.endCondition?.when },
+  ];
+  for (const { path, src } of topLevel) {
+    if (!src) continue;
+    const c = compileExpr(src);
+    if (!c.ok) return err('TEMPLATE_INVALID', `${c.error.code}: ${c.error.message}`, path);
+    for (const id of c.value.identifiers) {
+      if (id === 'players' || (id.startsWith(CAT_PREFIX) && byKey.has(id.slice(CAT_PREFIX.length)))) continue;
+      return err('TEMPLATE_INVALID', `unknown identifier '${id}'`, path);
+    }
+    exprs.set(src, c.value);
   }
 
   for (const [i, tb] of (template.tiebreakers ?? []).entries()) {

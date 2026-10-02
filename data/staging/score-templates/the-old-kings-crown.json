@@ -70,12 +70,14 @@
     {
       "categoryKey": "favour",
       "dir": "highest",
-      "description": "Tied player who controls the Kingdom's Favour"
+      "description": "Tied player who controls the Kingdom's Favour",
+      "descriptionVi": "Người giữ Kingdom's Favour thắng."
     },
     {
       "categoryKey": "orderPos",
       "dir": "lowest",
-      "description": "Otherwise the tied player highest on the Order Track"
+      "description": "Otherwise the tied player highest on the Order Track",
+      "descriptionVi": "Nếu không, người đứng cao nhất trên Order Track thắng."
     }
   ],
   "sharedVictoryOnTie": false,
@@ -95,5 +97,8 @@
   "scoringStyle": "end-game-categories",
   "rounds": null,
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Single Influence total plus lore; tiebreak inputs are collapsed.",
+  "winConditionVi": "Nhiều Influence trong kho nhất sau vòng cuối thắng (không có bảng điểm riêng)."
 }

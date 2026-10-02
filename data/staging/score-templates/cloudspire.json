@@ -93,17 +93,20 @@
     {
       "categoryKey": "gateHealth",
       "dir": "highest",
-      "description": "Most fortress gate health"
+      "description": "Most fortress gate health",
+      "descriptionVi": "Nhiều máu cổng nhất"
     },
     {
       "categoryKey": "sourceRemaining",
       "dir": "highest",
-      "description": "Most remaining Source"
+      "description": "Most remaining Source",
+      "descriptionVi": "Nhiều Source còn lại nhất"
     },
     {
       "categoryKey": "spiresInPlay",
       "dir": "highest",
-      "description": "Most spires in play"
+      "description": "Most spires in play",
+      "descriptionVi": "Nhiều tháp (spire) trên bàn nhất"
     }
   ],
   "sharedVictoryOnTie": true,
@@ -129,5 +132,8 @@
     }
   ],
   "confidence": "high",
-  "needsReview": false
+  "needsReview": false,
+  "uiHint": "generic",
+  "uiHintReason": "Fortress power = gate health + advancements; tiebreak numbers are collapsed.",
+  "winConditionVi": "Phá cổng pháo đài đối thủ. Nếu sau đợt 4 vẫn còn nhiều pháo đài: so sức mạnh = máu cổng + số nâng cấp. 2 người: ván kết thúc ngay khi một cổng bị phá."
 }

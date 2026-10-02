@@ -3,7 +3,7 @@
   "name": "SETI: Search for Extraterrestrial Intelligence",
   "year": 2024,
   "bggId": null,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base",
   "playerCount": {
     "min": 1,
@@ -34,11 +34,11 @@
     },
     {
       "key": "endGameCards",
-      "label": "End-of-game scoring cards",
-      "labelVi": "Điểm thẻ chấm cuối game",
-      "hint": "Sum of points from played cards with a gold box.",
+      "label": "End-of-game cards VP total",
+      "labelVi": "Tổng điểm thẻ tính điểm cuối",
+      "hint": "Total points from played cards with a gold box.",
       "scope": "player",
-      "input": "repeating",
+      "input": "number",
       "min": 0,
       "max": null,
       "formula": {
@@ -47,59 +47,14 @@
       "countsToTotal": true
     },
     {
-      "key": "goldTile25",
-      "label": "Gold scoring tile chosen at 25 VP",
-      "labelVi": "Thẻ vàng chọn ở mốc 25 điểm",
-      "hint": "Sets of the tile's condition x value of your marker on that tile.",
+      "key": "goldTiles",
+      "label": "Gold scoring tiles VP total",
+      "labelVi": "Tổng điểm ô vàng (25/50/70)",
+      "hint": "Sum over the gold tiles you marked at 25/50/70 VP: sets of the tile's condition x your marker value on that tile. Skip tiles you never reached.",
       "scope": "player",
-      "input": "counts",
-      "inputs": [
-        "sets",
-        "valuePerSet"
-      ],
-      "min": 0,
-      "max": null,
+      "input": "number",
       "formula": {
-        "type": "expr",
-        "expr": "sets * valuePerSet"
-      },
-      "countsToTotal": true
-    },
-    {
-      "key": "goldTile50",
-      "label": "Gold scoring tile chosen at 50 VP",
-      "labelVi": "Thẻ vàng chọn ở mốc 50 điểm",
-      "hint": "Skip if you never reached 50 VP.",
-      "scope": "player",
-      "input": "counts",
-      "inputs": [
-        "sets",
-        "valuePerSet"
-      ],
-      "min": 0,
-      "max": null,
-      "formula": {
-        "type": "expr",
-        "expr": "sets * valuePerSet"
-      },
-      "countsToTotal": true
-    },
-    {
-      "key": "goldTile70",
-      "label": "Gold scoring tile chosen at 70 VP",
-      "labelVi": "Thẻ vàng chọn ở mốc 70 điểm",
-      "hint": "Skip if you never reached 70 VP.",
-      "scope": "player",
-      "input": "counts",
-      "inputs": [
-        "sets",
-        "valuePerSet"
-      ],
-      "min": 0,
-      "max": null,
-      "formula": {
-        "type": "expr",
-        "expr": "sets * valuePerSet"
+        "type": "sum"
       },
       "countsToTotal": true
     },
@@ -120,11 +75,12 @@
   ],
   "tiebreakers": [
     {
-      "description": "No tiebreaker: players with equal points share the tie."
+      "description": "No tiebreaker: players with equal points share the tie.",
+      "descriptionVi": "Không có luật phân định: người hòa điểm cùng thắng."
     }
   ],
   "sharedVictoryOnTie": true,
-  "notes": "Gold tiles (3 of 4 in play): Tech (sets of 3 types / pairs of techs), Mission (completed missions / pairs of missions+end-game cards), Income (sets of 3 income types / most-tucked type), Other (sets of 3 life-trace colours / sector wins paired with orbiter or lander). Marker values on each tile depend on selection order (first picker gets highest). Each gold milestone can only pick a tile not already marked by that player. Solo: rival scores 5 per uncompleted objective instead of gold tiles. Expansion 'Space Agencies' not modelled. Which gold-tile side is in play is not recorded.",
+  "notes": "Gold tiles are entered as one total (3 of 4 in play): Tech (sets of 3 types / pairs of techs), Mission (completed missions / pairs of missions+end-game cards), Income (sets of 3 income types / most-tucked type), Other (sets of 3 life-trace colours / sector wins paired with orbiter or lander). Marker values on each tile depend on selection order (first picker gets highest). Each gold milestone can only pick a tile not already marked by that player. Solo: rival scores 5 per uncompleted objective instead of gold tiles. Expansion 'Space Agencies' not modelled. Which gold-tile side is in play is not recorded.",
   "sources": [
     {
       "url": "https://bghub.org/r/setisearchforextraterrestrialintelligence.pdf",
@@ -140,5 +96,8 @@
     }
   ],
   "confidence": "high",
-  "needsReview": false
+  "needsReview": false,
+  "uiHint": "generic",
+  "uiHintReason": "Score track plus three simple end totals (cards, gold tiles, alien bonus).",
+  "winConditionVi": "Điểm cao nhất thắng. Hòa điểm thì cùng thắng. Ván kết thúc sau vòng 5 khi người cuối cùng bỏ lượt."
 }

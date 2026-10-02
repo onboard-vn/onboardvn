@@ -26,7 +26,9 @@ export const categoryInputEnum = z.enum([
   'counts',
   'track',
   'perRound',
+  'derived',
 ]);
+export const roundInputEnum = z.enum(['number', 'bool', 'exclusive']);
 export const formulaTypeEnum = z.enum([
   'sum',
   'multiply',
@@ -76,6 +78,7 @@ const categorySchema = z.strictObject({
   scope: categoryScopeEnum,
   input: categoryInputEnum,
   inputs: z.array(z.string()).optional(),
+  roundInput: roundInputEnum.optional(),
   min: z.number().nullish(),
   max: z.number().nullish(),
   formula: formulaSchema,
@@ -92,6 +95,7 @@ const tiebreakerSchema = z.object({
   categoryKey: z.string().nullish(),
   dir: z.enum(['highest', 'lowest']).nullish(),
   description: z.string(),
+  descriptionVi: z.string().nullish(),
 });
 
 const sourceSchema = z.object({
@@ -143,6 +147,9 @@ export const scoreTemplateSchema = z.strictObject({
   confidence: z.enum(['high', 'medium', 'low']),
   needsReview: z.boolean().optional(),
   winCondition: z.string().nullish(),
+  winConditionVi: z.string().nullish(),
+  uiHint: z.string().regex(/^(generic|custom:[a-z][a-z0-9-]*)$/).optional(),
+  uiHintReason: z.string().optional(),
   roles: z.array(roleSchema).optional(),
   endCondition: z
     .object({
@@ -159,6 +166,7 @@ export const scoreTemplateSchema = z.strictObject({
         .optional(),
       target: z.number().nullish(),
       description: z.string().nullish(),
+      when: z.string().nullish(),
     })
     .nullish(),
   outcome: z
@@ -166,6 +174,8 @@ export const scoreTemplateSchema = z.strictObject({
       winLose: z.boolean().optional(),
       scoreOnlyIfWin: z.boolean().optional(),
       scoreOnlyIfLose: z.boolean().optional(),
+      winWhen: z.string().nullish(),
+      loseWhen: z.string().nullish(),
     })
     .nullish(),
   eliminationTracking: z

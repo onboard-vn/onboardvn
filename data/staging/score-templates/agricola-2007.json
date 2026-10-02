@@ -286,7 +286,8 @@
   ],
   "tiebreakers": [
     {
-      "description": "Highest total of leftover building resources breaks ties (per rulebook; unverified)"
+      "description": "Highest total of leftover building resources breaks ties (per rulebook; unverified)",
+      "descriptionVi": "Nhiều nguyên liệu xây dựng còn lại nhất thắng (chưa xác minh)."
     }
   ],
   "sharedVictoryOnTie": true,
@@ -306,5 +307,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Scorecard rows map one-to-one to counts read off the farm.",
+  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc sau thu hoạch vòng 14."
 }

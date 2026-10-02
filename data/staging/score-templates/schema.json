@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "onboard-vn/score-template/v3",
+  "$id": "onboard-vn/score-template/v4",
   "title": "Board game score template",
   "type": "object",
   "required": [
@@ -161,8 +161,10 @@
               "bool",
               "counts",
               "track",
-              "perRound"
-            ]
+              "perRound",
+              "derived"
+            ],
+            "description": "derived = never entered; value computed by formula.expr (type expr) from other categories"
           },
           "inputs": {
             "type": "array",
@@ -213,7 +215,7 @@
               },
               "expr": {
                 "type": "string",
-                "description": "Safe expression. Identifiers: `value` (this category's raw input), names listed in `inputs` (input=counts), `players` (player count), `cat_<key>` (computed points of another category). Ops: + - * / % ** < <= > >= == != && || ! ?: ; functions: min max floor ceil round abs sum count if(cond,a,b). Nothing else."
+                "description": "Safe expression. Identifiers: `value` (this category's raw input), names listed in `inputs` (input=counts), `players` (player count), `cat_<key>` (computed points of another category). Ops: + - * / % ** < <= > >= == != && || ! ?: ; functions: min max floor ceil round abs sum count countTrue sumRounds if(cond,a,b). Nothing else."
               },
               "rankAward": {
                 "type": "object",
@@ -320,6 +322,14 @@
               "string",
               "null"
             ]
+          },
+          "roundInput": {
+            "enum": [
+              "number",
+              "bool",
+              "exclusive"
+            ],
+            "description": "input=perRound only. bool = tick per round (e.g. heist success), exclusive = at most one entity per round. In expr, cat_<key> of such a category is the per-round list (use countTrue/count/sumRounds)."
           }
         }
       }
@@ -347,6 +357,12 @@
           },
           "description": {
             "type": "string"
+          },
+          "descriptionVi": {
+            "type": [
+              "string",
+              "null"
+            ]
           }
         }
       }
@@ -484,6 +500,13 @@
             "string",
             "null"
           ]
+        },
+        "when": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Safe expr over cat_<key>; true when the game has ended (UI auto-detects end)"
         }
       }
     },
@@ -502,6 +525,20 @@
         },
         "scoreOnlyIfLose": {
           "type": "boolean"
+        },
+        "winWhen": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Safe expr over cat_<key>; true = win (coop/objective)"
+        },
+        "loseWhen": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Safe expr over cat_<key>; true = loss"
         }
       }
     },
@@ -525,6 +562,22 @@
           "type": "boolean"
         }
       }
+    },
+    "winConditionVi": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Vietnamese win condition text"
+    },
+    "uiHint": {
+      "type": "string",
+      "pattern": "^(generic|custom:[a-z][a-z0-9-]*)$",
+      "description": "Mobile renderer: generic or custom:<name>"
+    },
+    "uiHintReason": {
+      "type": "string",
+      "description": "One-line reason for the uiHint choice"
     }
   }
 }

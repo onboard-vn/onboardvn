@@ -197,7 +197,8 @@
   ],
   "tiebreakers": [
     {
-      "description": "Player furthest ahead in turn order in the final round wins."
+      "description": "Player furthest ahead in turn order in the final round wins.",
+      "descriptionVi": "Người đi trước trong thứ tự lượt ở vòng cuối thắng."
     }
   ],
   "sharedVictoryOnTie": false,
@@ -211,5 +212,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Scoring pad rows are direct counts; no per-tile modelling.",
+  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc sau vòng 4 (hoàn thành Caravan còn giữ trước)."
 }

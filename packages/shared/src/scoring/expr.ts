@@ -48,6 +48,8 @@ const FUNCTIONS: Readonly<Record<string, { min: number; max: number }>> = {
   abs: { min: 1, max: 1 },
   sum: { min: 1, max: Infinity },
   count: { min: 1, max: Infinity },
+  countTrue: { min: 1, max: Infinity },
+  sumRounds: { min: 1, max: 1 },
 };
 
 type Token = { t: 'num'; v: number } | { t: 'id'; v: string } | { t: 'op'; v: string } | { t: 'end' };
@@ -271,7 +273,8 @@ function evalNode(node: ExprNode, ctx: EvalContext): ExprValue {
     case 'call': {
       const args = node.args.map((a) => evalNode(a, ctx));
       if (node.fn === 'count') return flatten(args).length;
-      if (node.fn === 'sum') return finite(flatten(args).reduce((a, b) => a + b, 0));
+      if (node.fn === 'countTrue') return flatten(args).filter((n) => n !== 0).length;
+      if (node.fn === 'sum' || node.fn === 'sumRounds') return finite(flatten(args).reduce((a, b) => a + b, 0));
       if (node.fn === 'min' || node.fn === 'max') {
         const list = flatten(args);
         if (list.length === 0) return 0;

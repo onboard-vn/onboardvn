@@ -3,7 +3,7 @@
   "name": "Great Western Trail",
   "year": 2021,
   "bggId": 341169,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "second-edition",
   "playerCount": {
     "min": 2,
@@ -31,11 +31,11 @@
     },
     {
       "key": "buildings",
-      "label": "Private buildings on board",
-      "labelVi": "Công trình tư nhân trên bản đồ",
-      "hint": "Sum of VP printed on your private buildings placed on the board.",
+      "label": "Private buildings VP total",
+      "labelVi": "Tổng điểm công trình tư nhân",
+      "hint": "Sum of VP printed on your private buildings on the board.",
       "scope": "player",
-      "input": "repeating",
+      "input": "number",
       "min": 0,
       "max": null,
       "formula": {
@@ -59,11 +59,11 @@
     },
     {
       "key": "stations",
-      "label": "Train station VP",
-      "labelVi": "Điểm ga tàu",
+      "label": "Train stations VP total",
+      "labelVi": "Tổng điểm ga tàu",
       "hint": "Sum of VP printed next to stations with your disc.",
       "scope": "player",
-      "input": "repeating",
+      "input": "number",
       "min": 0,
       "max": null,
       "formula": {
@@ -73,11 +73,11 @@
     },
     {
       "key": "hazards",
-      "label": "Hazard tiles VP",
-      "labelVi": "Điểm thẻ hiểm họa",
+      "label": "Hazard tiles VP total",
+      "labelVi": "Tổng điểm thẻ hiểm họa",
       "hint": "Sum of VP on your collected hazard tiles.",
       "scope": "player",
-      "input": "repeating",
+      "input": "number",
       "min": 0,
       "max": null,
       "formula": {
@@ -87,11 +87,11 @@
     },
     {
       "key": "cattle",
-      "label": "Cattle cards VP",
-      "labelVi": "Điểm thẻ bò",
+      "label": "Cattle cards VP total",
+      "labelVi": "Tổng điểm thẻ bò",
       "hint": "Sum of VP on cattle cards in your whole deck.",
       "scope": "player",
-      "input": "repeating",
+      "input": "number",
       "min": 0,
       "max": null,
       "formula": {
@@ -175,7 +175,8 @@
   ],
   "tiebreakers": [
     {
-      "description": "No tiebreaker: victory is shared."
+      "description": "No tiebreaker: victory is shared.",
+      "descriptionVi": "Không có luật phân định: cùng thắng."
     }
   ],
   "sharedVictoryOnTie": true,
@@ -194,5 +195,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Scoring pad rows are single totals; no per-tile modelling.",
+  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc khi công nhân lấp ô cuối của chợ việc làm ở Kansas City; người khác chơi thêm 1 lượt."
 }

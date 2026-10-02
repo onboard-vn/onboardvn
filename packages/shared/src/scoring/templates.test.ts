@@ -18,8 +18,11 @@ function sampleValue(c: ScoreCategory, n: number): RawValue {
   switch (c.input) {
     case 'bool':
       return n > 0;
-    case 'repeating':
     case 'perRound':
+      if (c.roundInput === 'exclusive') return [];
+      if (c.roundInput === 'bool') return n > 0 ? [1, 0] : [];
+      return n > 0 ? [n, n + 1] : [];
+    case 'repeating':
       return n > 0 ? [n, n + 1] : [];
     case 'counts':
       return Object.fromEntries((c.inputs ?? []).map((i) => [i, n]));
@@ -154,14 +157,23 @@ describe('golden vectors', () => {
     expect(r.players.map((x) => x.rank)).toEqual([1, 3, 1]);
   });
 
-  it('the-gang-2024: coop outcome decides winners', () => {
-    const values: V = { won: true, heistsSucceeded: 3, heistsFailed: 1 };
-    const players = ['a', 'b', 'c', 'd'].map((id) => ({ id, values }));
-    const win = solve('the-gang-2024', players, { outcome: 'win' });
+  it('the-gang-2024: outcome and end derived from per-heist results', () => {
+    const play = (heists: number[], extra: Partial<ScoreInput> = {}) => {
+      const players = ['a', 'b', 'c', 'd'].map((id) => ({ id, values: { heists } }));
+      return solve('the-gang-2024', players, extra);
+    };
+    const win = play([1, 0, 1, 1]);
+    expect(win.outcome).toBe('win');
+    expect(win.ended).toBe(true);
     expect(win.winners).toEqual(['a', 'b', 'c', 'd']);
-    expect(win.teams[0]?.categories).toMatchObject({ won: 1, heistsSucceeded: 3, heistsFailed: 1 });
+    expect(win.teams[0]?.categories).toMatchObject({ heistWins: 3, heistLosses: 1 });
     expect(win.players.every((x) => x.rank === null)).toBe(true);
-    expect(solve('the-gang-2024', players, { outcome: 'loss' }).winners).toEqual([]);
+    const loss = play([0, 1, 0, 1, 0]);
+    expect(loss).toMatchObject({ outcome: 'loss', ended: true, winners: [] });
+    expect(loss.teams[0]?.categories).toMatchObject({ heistWins: 2, heistLosses: 3 });
+    const open = play([1, 0]);
+    expect(open).toMatchObject({ outcome: null, ended: false, winners: [] });
+    expect(play([1, 1, 1], { outcome: 'loss' }).winners).toEqual([]);
   });
 
   it('flip-7: doubling, modifiers and flip-7 bonus', () => {

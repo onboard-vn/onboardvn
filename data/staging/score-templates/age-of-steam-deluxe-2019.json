@@ -62,7 +62,8 @@
   ],
   "tiebreakers": [
     {
-      "description": "Tie rule not verified; victory treated as shared."
+      "description": "Tie rule not verified; victory treated as shared.",
+      "descriptionVi": "Luật hòa chưa xác minh; coi như cùng thắng."
     }
   ],
   "sharedVictoryOnTie": true,
@@ -76,5 +77,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Three direct reads: income level, completed track sections, shares issued.",
+  "winConditionVi": "Điểm cao nhất thắng; người chơi bị loại (thu nhập âm) không thể thắng. Điểm = 3 x thu nhập + đoạn đường hoàn chỉnh - 3 x cổ phiếu phát hành."
 }

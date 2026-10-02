@@ -3,7 +3,7 @@
   "name": "Nucleum",
   "year": 2023,
   "bggId": 396790,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base",
   "playerCount": {
     "min": 2,
@@ -30,11 +30,11 @@
     },
     {
       "key": "milestones",
-      "label": "Milestone markers (condition x tier multiplier)",
-      "labelVi": "Cột mốc (điều kiện x hệ số tầng)",
-      "hint": "One entry per marker on the milestone track: times its segment tile's condition is met x tier multiplier. Include markers placed in final scoring with leftover Achievement tokens.",
+      "label": "Milestone VP total",
+      "labelVi": "Tổng điểm Milestone",
+      "hint": "Total VP from the milestone track (sum of all markers: conditions met x tier multiplier). Include markers placed in final scoring with leftover Achievement tokens.",
       "scope": "player",
-      "input": "repeating",
+      "input": "number",
       "min": 0,
       "max": null,
       "formula": {
@@ -59,11 +59,11 @@
     },
     {
       "key": "energizedBuildings",
-      "label": "Energized buildings",
-      "labelVi": "Công trình đã cấp điện",
-      "hint": "VP on flipped side; Praha buildings double. Include Government buildings (count matching type tiles in same network, energized or not, any owner).",
+      "label": "Energized buildings VP total",
+      "labelVi": "Tổng điểm công trình được cấp điện",
+      "hint": "Total VP on flipped sides; Praha buildings double. Include Government buildings (count matching type tiles in same network, energized or not, any owner).",
       "scope": "player",
-      "input": "repeating",
+      "input": "number",
       "min": 0,
       "max": null,
       "formula": {
@@ -193,7 +193,8 @@
   ],
   "tiebreakers": [
     {
-      "description": "No tiebreaker: tied players share the victory."
+      "description": "No tiebreaker: tied players share the victory.",
+      "descriptionVi": "Không có luật phân định: người hòa điểm cùng thắng."
     }
   ],
   "sharedVictoryOnTie": true,
@@ -219,5 +220,8 @@
     }
   ],
   "confidence": "high",
-  "needsReview": false
+  "needsReview": false,
+  "uiHint": "generic",
+  "uiHintReason": "Final VP track plus the printed end-game steps, each a single number or count.",
+  "winConditionVi": "Điểm cao nhất thắng. Hòa thì cùng thắng. Ván kết thúc khi đủ 2/5 điều kiện (3 với 2 người), chơi hết vòng rồi mỗi người thêm 1 lượt."
 }

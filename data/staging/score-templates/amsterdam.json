@@ -93,7 +93,8 @@
   ],
   "tiebreakers": [
     {
-      "description": "Tied player who is further ahead on the Amstel canal wins."
+      "description": "Tied player who is further ahead on the Amstel canal wins.",
+      "descriptionVi": "Người đi xa hơn trên kênh Amstel thắng."
     }
   ],
   "sharedVictoryOnTie": false,
@@ -107,5 +108,8 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true
+  "needsReview": true,
+  "uiHint": "generic",
+  "uiHintReason": "Track VP plus four direct end-game reads.",
+  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc sau vòng 12."
 }
