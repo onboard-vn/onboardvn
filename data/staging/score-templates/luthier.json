@@ -1,0 +1,210 @@
+{
+  "slug": "luthier",
+  "name": "Luthier",
+  "year": 2024,
+  "bggId": 371330,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Prestige track (before end-game scoring)",
+      "labelVi": "Điểm uy tín trên track (trước tính điểm cuối)",
+      "hint": "Prestige gained during play: instruments, repairs, patrons, performances, awards",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "firstChairs",
+      "label": "First chairs held (1-3 players)",
+      "labelVi": "Ghế nhất dàn nhạc (1-3 người)",
+      "hint": "Count orchestra first chairs you occupy. Use this row for 1-3 players only",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 1,
+          "5": 3,
+          "6": 6,
+          "7": 10,
+          "8+": 15
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "firstChairs4p",
+      "label": "First chairs held (4 players)",
+      "labelVi": "Ghế nhất dàn nhạc (4 người)",
+      "hint": "Use this row for 4 players only",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 1,
+          "4": 3,
+          "5": 6,
+          "6": 10,
+          "7+": 15
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "patronEndBonus",
+      "label": "Completed patron end-game bonuses",
+      "labelVi": "Điểm cuối từ patron đã hoàn thành",
+      "hint": "Sum of end-game points printed on your completed patrons",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "patronPenalty",
+      "label": "Unmet requirements on abandoned patrons",
+      "labelVi": "Yêu cầu patron không đạt",
+      "hint": "-3 prestige per requirement not met on an abandoned patron",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unfinishedPrestige",
+      "label": "Unfinished instruments: printed prestige",
+      "labelVi": "Nhạc cụ chưa hoàn thiện: điểm in trên thẻ",
+      "hint": "Total printed prestige of unfinished instruments; you score half, rounded up",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "ceil(value/2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "personalGoals",
+      "label": "Personal goal cards",
+      "labelVi": "Thẻ mục tiêu cá nhân",
+      "hint": "Points from your 2 kept goal cards, by level reached",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "specialWorkers",
+      "label": "Special workers",
+      "labelVi": "Thợ đặc biệt",
+      "hint": "1 prestige per special worker",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverResources",
+      "label": "Leftover money + materials + inspiration + apprentices",
+      "labelVi": "Tài nguyên còn dư (tiền + vật liệu + cảm hứng + học việc)",
+      "hint": "1 prestige per 10 combined",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/10)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverMoney",
+      "label": "Leftover money (tiebreaker)",
+      "labelVi": "Tiền còn dư (phân định hòa)",
+      "hint": "Only used to break ties",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "leftoverMoney",
+      "dir": "highest",
+      "description": "Most leftover money wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "Game lasts 6 rounds. Official rulebook (BGG files 301687, Scribd mirror, publisher pages) re-attempted and still not readable (403 / no text); values come from a single detailed how-to-play article, so verify against the rulebook. Unclear whether roughed-out (unfinished) instruments on the workbench count for the half-points rule or only those on the finishing board. 4-player first-chair table: sources disagree on whether 3 chairs scores 1 (<=3 vs exactly 3); modelled as 3 -> 1. Built instruments always hold first chair; otherwise majority of repair/performance tokens decides (done before counting chairs). Awards/real-time points belong in the prestige track. Possible second-edition / Deluxe differences not checked. family: auction-money.",
+  "sources": [
+    {
+      "url": "https://nightsaroundatable.com/2024/07/15/how-to-play-luthier/",
+      "title": "How to play Luthier - Nights Around a Table",
+      "type": "other",
+      "section": "Final scoring (first chair table, goals, leftover resources, tiebreaker)"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/luthier/",
+      "title": "Luthier Game Review - Meeple Mountain",
+      "type": "other",
+      "section": "End-game scoring overview"
+    },
+    {
+      "url": "https://boardgameviews.wordpress.com/2024/09/17/luthier/",
+      "title": "Luthier - Board Game Views",
+      "type": "other",
+      "section": "Patrons, awards, end-game scoring"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/301687/luthier-rules-english",
+      "title": "Luthier rules (English) - BGG files",
+      "type": "bgg-file",
+      "section": "Not accessible (403); listed for reviewer"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,126 @@
+{
+  "slug": "carson-city-big-box-2015",
+  "name": "Carson City: Big Box",
+  "year": 2015,
+  "bggId": 177352,
+  "templateVersion": 1,
+  "variant": "base game rules (Big Box)",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after round 4, once everyone has spent money above their character's cash limit"
+  },
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "Victory points gained during the game",
+      "labelVi": "Điểm VP trong ván",
+      "hint": "Marker position on the VP track; includes VP bought for money and VP for money spent over the cash limit.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "structures",
+      "label": "Buildings, houses and mountains",
+      "labelVi": "Công trình, nhà và núi",
+      "hint": "2 VP each; bought-but-unbuilt buildings and empty plots score nothing.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "remainingMoney",
+      "label": "Remaining money",
+      "labelVi": "Tiền còn lại",
+      "hint": "$6 per VP at game end (rounding assumed down).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/6)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "stationVp",
+      "label": "Station (if in play)",
+      "labelVi": "Nhà ga (nếu dùng)",
+      "hint": "1 VP per 2 house symbols in the city (station counts as 2 houses); enter house symbols.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "horses",
+      "label": "Horses expansion (optional)",
+      "labelVi": "Mở rộng Ngựa (tùy chọn)",
+      "hint": "1 VP per horse, plus 1 more per horse for each rodeo won.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "horses",
+        "rodeosWon"
+      ],
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "horses*(1+rodeosWon)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "The tied player who passed first in the final round wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "VP are gained during play (building, plot, pistol, duel and purchase actions) and tracked on the VP track; spending $10 over the cash limit gives 1 VP each round end. Station rule only applies if the Station building is used; set stationVp to 0 otherwise. Horses VP applies only with the Horses expansion; unclear if Big Box contents include it, so keep optional. Rounding of leftover money not stated explicitly in the rulebook; floor assumed. Gold & Guns / other expansions and character power variants not modelled.",
+  "sources": [
+    {
+      "url": "https://quined.nl/wp-content/uploads/2017/02/CC_BB_RULES_ENG.pdf",
+      "title": "Carson City: Big Box rulebook (Quined / Quined Games)",
+      "type": "official-rulebook",
+      "section": "Round end and End of the game (pdf p.6, printed pp.9-10); Station (pdf p.7)"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/carson-city/game-rules.php",
+      "title": "Ultra Board Games - How to play Carson City",
+      "type": "other",
+      "section": "End of game scoring"
+    },
+    {
+      "url": "https://tesera.ru/images/items/321332/Carson_City_Rules_English.pdf",
+      "title": "Carson City rules (English)",
+      "type": "other",
+      "section": "Cross-check of base game scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

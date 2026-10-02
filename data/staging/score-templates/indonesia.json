@@ -1,0 +1,79 @@
+{
+  "slug": "indonesia",
+  "name": "Indonesia",
+  "year": 2005,
+  "bggId": 19777,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "cash",
+      "label": "Cash",
+      "labelVi": "Tiền mặt",
+      "hint": "Money in hand at game end.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "shareValue",
+      "label": "Value of shares/assets",
+      "labelVi": "Giá trị cổ phần/tài sản",
+      "hint": "Final value of owned company shares/assets as the rulebook defines; enter total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "debt",
+      "label": "Loans / penalties",
+      "labelVi": "Nợ / phạt",
+      "hint": "Money owed or penalties, if any.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true,
+      "optional": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Per rulebook (not verified)."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-money. UNVERIFIED: official rulebook could not be retrieved (no search access); categories are generic scorer inputs, check against the rulebook. Winner is the player with most money/net worth at the end of the third era (recollection, not verified).",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/19777",
+      "title": "BoardGameGeek game page (identification only)",
+      "type": "other",
+      "section": "Game identification"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

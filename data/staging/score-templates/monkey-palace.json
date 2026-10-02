@@ -1,0 +1,122 @@
+{
+  "slug": "monkey-palace",
+  "name": "Monkey Palace",
+  "year": 2024,
+  "bggId": 412911,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "monkeyCards",
+      "label": "Banana Points on Monkey Cards",
+      "labelVi": "Điểm chuối trên thẻ Khỉ",
+      "hint": "Lật mọi thẻ Khỉ trên bảng người chơi, cộng điểm chuối in trên thẻ.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusCards",
+      "label": "Bonus Cards",
+      "labelVi": "Thẻ Bonus",
+      "hint": "4 Banana Points mỗi thẻ Bonus.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "monkeyTrophy",
+      "label": "Monkey Trophy Card",
+      "labelVi": "Thẻ Trophy Khỉ",
+      "hint": "+2 nếu đang giữ thẻ khi hết game.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "butterflyTrophy",
+      "label": "Butterfly Trophy Card (optional)",
+      "labelVi": "Thẻ Trophy Bướm (tùy chọn)",
+      "hint": "+2 nếu đang giữ thẻ khi hết game.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true,
+      "optional": true
+    },
+    {
+      "key": "frogTrophy",
+      "label": "Frog Trophy Card (optional)",
+      "labelVi": "Thẻ Trophy Ếch (tùy chọn)",
+      "hint": "-3 nếu đang giữ thẻ khi hết game.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true,
+      "optional": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "monkeyTrophy",
+      "dir": "highest",
+      "description": "Tied player holding the Monkey Trophy Card wins"
+    },
+    {
+      "description": "If no tied player holds the Monkey Trophy Card, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: abstract-objective. Banana Points per Monkey Card are printed on the cards (entered as one sum). Game end triggered when the brick tray lacks enough bricks of one kind for a player at end of their turn; the round is finished so all have equal turns. Butterfly and Frog trophies are optional rules.",
+  "sources": [
+    {
+      "url": "https://cdn.svc.asmodee.net/production-asmodeeca/uploads/2024/09/Monkey-Palace-Rules-US.pdf",
+      "title": "Monkey Palace Rules (Asmodee)",
+      "type": "official-rulebook",
+      "section": "How the game ends; 7 Take bonus cards; 8 Take trophy cards; tie rule (p.8)"
+    },
+    {
+      "url": "https://www.geekyhobbies.com/monkey-palace-rules/",
+      "title": "Monkey Palace rules (Geeky Hobbies)",
+      "type": "other",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,119 @@
+{
+  "slug": "undergrove-2024",
+  "name": "Undergrove",
+  "year": 2024,
+  "bggId": 376740,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 1, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "seedlingsAndTrees",
+      "label": "Seedlings & Trees (Roots)",
+      "labelVi": "Cây con & Cây lớn (Rễ)",
+      "hint": "Enter points per Seedling/Tree: 1 C scores 1 Root, 2 C scores 2 Roots, a Tree scores all its Roots; each Root = value on its Mushroom tile.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "goalCards",
+      "label": "Goal cards (3 cards)",
+      "labelVi": "Thẻ mục tiêu (3 thẻ)",
+      "hint": "Score each of the 3 Goal cards per its Score table (tracks, multiplier or rank award); enter one value per card.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusTiles",
+      "label": "Bonus tiles",
+      "labelVi": "Thẻ thưởng (Bonus tile)",
+      "hint": "Total points on Bonus tiles collected from the Carbon Track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverResources",
+      "label": "Unused resources on player board",
+      "labelVi": "Tài nguyên chưa dùng",
+      "hint": "Count all unused resources; 1 point per 2 (rounded down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "floor(value / 2)" },
+      "countsToTotal": true
+    },
+    {
+      "key": "carbonTrackToken",
+      "label": "Carbon Track 2-point token",
+      "labelVi": "Token 2 điểm cuối Carbon Track",
+      "hint": "Tick if you claimed the token at the end of the Carbon Track.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": { "type": "expr", "expr": "value * 2" },
+      "countsToTotal": true
+    },
+    {
+      "key": "trees",
+      "label": "Trees (tiebreak)",
+      "labelVi": "Số Cây lớn (phân định hòa)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "carbonOnSeedlings",
+      "label": "C on Seedlings (tiebreak)",
+      "labelVi": "C trên Cây con (phân định hòa)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "trees", "dir": "highest", "description": "Most Trees" },
+    { "categoryKey": "carbonOnSeedlings", "dir": "highest", "description": "Most C on Seedlings" }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: tableau-goal-cards. Game end: when a player passes the last Carbon Track stone, finish the round then everyone gets one extra turn. Goal cards use one of three Score tables (track values, rank award by most/fewest with ties split rounded down, or multiplier); scorer enters each card's result. Some Mushroom Roots have variable values per tile text. Solo/AI mode uses different tallies and is not modelled. The 4 Trees limit: if all Trees are used, Seedlings with 3-4 C score 1 Root per C.",
+  "sources": [
+    {
+      "url": "https://www.alderac.com/wp-content/uploads/2023/12/Undergrove_BaseGame_En_1P_Rulebook.pdf",
+      "title": "Undergrove Base Game rulebook (AEG)",
+      "type": "official-rulebook",
+      "section": "p.14 Game End (scoring, winning, tiebreakers, scorepad); p.13 Goal cards score tables"
+    },
+    {
+      "url": "https://www.rulespal.com/undergrove/rulebook",
+      "title": "Undergrove rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Final scoring; Tiebreakers"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

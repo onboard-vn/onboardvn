@@ -1,0 +1,126 @@
+{
+  "slug": "tiny-towns",
+  "name": "Tiny Towns",
+  "year": 2019,
+  "bggId": 265736,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "fedCottages",
+      "label": "Fed Cottages",
+      "labelVi": "Nhà Cottage được nuôi",
+      "hint": "3 VP mỗi Cottage được nuôi bởi 1 Farm (mỗi Farm nuôi 1 Cottage; Cottage không được nuôi = 0).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildingPoints",
+      "label": "Other buildings (per card)",
+      "labelVi": "Điểm các công trình khác (theo thẻ)",
+      "hint": "Cộng điểm của từng công trình theo thẻ đang chơi (Chapel, Tavern, Well, Theater...). Farm không tự cho điểm.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "monumentPoints",
+      "label": "Monument",
+      "labelVi": "Công trình Monument",
+      "hint": "Điểm theo thẻ Monument đã xây (nếu có).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "emptySquares",
+      "label": "Empty squares",
+      "labelVi": "Ô trống",
+      "hint": "-1 VP mỗi ô trống sau khi bỏ hết cube (trừ Warehouse).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 16,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "penalties",
+      "label": "Other penalties (e.g. Warehouse)",
+      "labelVi": "Điểm phạt khác",
+      "hint": "Nhập số âm cho các phạt theo thẻ như Warehouse (-1 mỗi cube còn giữ).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Fewest turns as Master Builder"
+    },
+    {
+      "categoryKey": "emptySquares",
+      "dir": "lowest",
+      "description": "Fewest empty squares"
+    },
+    {
+      "categoryKey": "fedCottages",
+      "dir": "highest",
+      "description": "Most Cottages"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: abstract-objective. Building scoring depends on which building cards are in play, so scorers enter per-card totals; negative scores are possible. Fed Cottages are 3 VP each in the base game. Game ends when all towns are completed. Solo variant (resource-deck, no Master Builder) uses a skill-level chart (38+ Master Architect ... 9 or less Aspiring Architect), not modelled. Town Hall rules change only resource selection. Expansions not modelled. 'Most Cottages' tiebreaker wording taken from rulebook p.5 (Cottages counted as built).",
+  "sources": [
+    {
+      "url": "https://www.alderac.com/wp-content/uploads/2025/04/TinyTowns_BaseGame_Rulebook_Optimized.pdf",
+      "title": "Tiny Towns Base Game Rulebook (AEG)",
+      "type": "official-rulebook",
+      "section": "p.5 Feeding cottages, Game End, Scoring Example; p.6 Solo variant"
+    },
+    {
+      "url": "https://www.geekyhobbies.com/how-to-play-tiny-towns-board-game-rules-and-instructions/",
+      "title": "How to Play Tiny Towns (Geeky Hobbies)",
+      "type": "other",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

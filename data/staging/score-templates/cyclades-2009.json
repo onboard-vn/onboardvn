@@ -1,0 +1,71 @@
+{
+  "slug": "cyclades-2009",
+  "name": "Cyclades",
+  "year": 2009,
+  "bggId": 54998,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "metropolises",
+      "label": "Metropolises owned at end of cycle",
+      "labelVi": "Số Đại đô thị sở hữu",
+      "hint": "Built or conquered; 2 triggers the end and wins.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 4
+    },
+    {
+      "key": "goldPieces",
+      "label": "Gold pieces behind screen",
+      "labelVi": "Vàng còn lại sau màn chắn",
+      "hint": "Only the tiebreaker if several players reach 2 Metropolises in the same cycle.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "goldPieces",
+      "dir": "highest",
+      "description": "If several players own 2 Metropolises at the end of the same cycle, the one with most GP wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Own 2 Metropolises at the end of a cycle (built and/or conquered); if several players do, the richest in GP wins.",
+  "endCondition": {
+    "type": "objective",
+    "target": 2,
+    "description": "Game ends at the end of a cycle in which at least one player owns 2 Metropolises."
+  },
+  "notes": "family: objective (race to 2 Metropolises, GP tiebreak). Verified only against a secondary rules summary; official rulebook PDF not retrievable.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/cyclades/game-rules.php",
+      "title": "How to play Cyclades (Ultra BoardGames)",
+      "type": "other",
+      "section": "End of the game / Final scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,86 @@
+{
+  "slug": "air-land-sea-spies-lies-supplies-2022",
+  "name": "Air, Land, & Sea: Spies, Lies, & Supplies",
+  "year": 2022,
+  "bggId": 358981,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "First to 12 VP wins (18 for a longer game; 6 for Epic or team games)"
+  },
+  "categories": [
+    {
+      "key": "fullBattleWins",
+      "label": "Battles won by theater control (no withdrawal)",
+      "labelVi": "Trận thắng do kiểm soát chiến trường (không ai rút lui)",
+      "hint": "6 VP each: you controlled more Theaters after both players played all cards.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 6
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "withdrawalVp",
+      "label": "VP from opponent's withdrawals",
+      "labelVi": "Điểm do đối thủ rút lui",
+      "hint": "Sum of VP read off the withdrawing player's Supreme Commander card (by cards left in their hand); add per battle.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Within a Battle, tied Strength in a Theater goes to the 1st Player; with no cards on either side the 1st Player controls it. Only one player scores per Battle, so a tie on the 12 VP target cannot occur."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "The first player to reach 12 VP wins. Only one player scores per battle, so both cannot reach 12 together.",
+  "notes": "family: area-majority (two-player theater control card game, scored per Battle toward a VP target). Winner of each Battle scores 6 VP if neither player withdrew; if a player withdraws, the opponent scores the VP printed on the withdrawing player's Supreme Commander card for cards left in hand (values not legible in the image-only PDF, so entered by scorer). Variants not modelled: Epic mode (5 Theaters, winner controls 3+), 3-4 player team variant (teams total their hands when withdrawing), mixing with Air, Land & Sea. Rulebook v9 is an image-only PDF; read visually (pp. 9-11 of the booklet).",
+  "sources": [
+    {
+      "url": "https://www.arcanewonders.com/wp-content/uploads/2022/04/ALS_SLS_Rulebook_v9.pdf",
+      "title": "ALS: Spies, Lies & Supplies Rulebook v9",
+      "type": "official-rulebook",
+      "section": "Ending Battles / Scoring Victory Points (p.9); Winning the Game (p.10); Team Variant scoring & withdrawal (p.11)"
+    },
+    {
+      "url": "https://www.arcanewonders.com/product/als-spies-lies-supplies/",
+      "title": "ALS: Spies, Lies & Supplies (Arcane Wonders)",
+      "type": "publisher-page",
+      "section": "First to 12 VP"
+    },
+    {
+      "url": "https://www.rulespal.com/air-land-and-sea/rulebook",
+      "title": "Air, Land, & Sea rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Withdraw VP cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "endCondition": {
+    "type": "target-score",
+    "target": 12,
+    "description": "Checked after each Battle; first player to reach 12 VP wins. Optional: 18 VP longer game; 6 VP recommended for Epic mode and 3-4 player team variant."
+  }
+}

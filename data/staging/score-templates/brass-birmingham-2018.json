@@ -1,0 +1,155 @@
+{
+  "slug": "brass-birmingham-2018",
+  "name": "Brass: Birmingham",
+  "year": 2018,
+  "bggId": 224517,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 2,
+    "aggregate": "sum",
+    "endCondition": "Canal Era and Rail Era each end after all players use their last cards"
+  },
+  "categories": [
+    {
+      "key": "canalLinks",
+      "label": "Canal Era: links",
+      "labelVi": "Kỳ Kênh: điểm đường nối",
+      "hint": "Per link tile: 1 VP per VP icon at each adjacent location.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "canalIndustries",
+      "label": "Canal Era: flipped industries",
+      "labelVi": "Kỳ Kênh: công nghiệp đã lật",
+      "hint": "Sum of VPs printed on your flipped industry tiles.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "railLinks",
+      "label": "Rail Era: links",
+      "labelVi": "Kỳ Ray: điểm đường nối",
+      "hint": "Same as canal era, using rail links.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "railIndustries",
+      "label": "Rail Era: flipped industries",
+      "labelVi": "Kỳ Ray: công nghiệp đã lật",
+      "hint": "All your flipped industry tiles on board (level 2+ also scored in canal era).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "shortfallPenalty",
+      "label": "Shortfall penalties",
+      "labelVi": "Điểm phạt thiếu tiền",
+      "hint": "1 VP lost per 1 pound unpaid when income is negative and cannot be covered.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incomeLevel",
+      "label": "Income level (tiebreak)",
+      "labelVi": "Mức thu nhập (phân định hòa)",
+      "hint": "Income level number, not income track space.",
+      "scope": "player",
+      "input": "number",
+      "min": -10,
+      "max": 30,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "moneyRemaining",
+      "label": "Money remaining (tiebreak)",
+      "labelVi": "Tiền còn lại (phân định hòa)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "incomeLevel",
+      "dir": "highest",
+      "description": "Highest income level"
+    },
+    {
+      "categoryKey": "moneyRemaining",
+      "dir": "highest",
+      "description": "Most money remaining"
+    },
+    {
+      "description": "If still tied, those players draw."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "VPs are only awarded at the end of each era (links first, then flipped industries; unflipped industries score nothing). Link tiles are removed as scored; level-1 industries are removed after canal era. If you enter the final VP marker position instead, use one number per era. Beyond 100 VP the track loops. Per-player scorers can record era subtotals via the four categories.",
+  "sources": [
+    {
+      "url": "https://www.orderofgamers.com/downloads/BrassBirmingham_v1.2.pdf",
+      "title": "Brass: Birmingham Rules Summary and Reference v1.2",
+      "type": "official-rulebook",
+      "section": "p.4 End of Canal & Rail Eras; p.5 Winning the Game (tiebreakers), Flipping industry tiles"
+    },
+    {
+      "url": "https://www.rulespal.com/brass-birmingham/rulebook",
+      "title": "Brass: Birmingham rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End of Canal/Rail Era scoring; Tiebreakers"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

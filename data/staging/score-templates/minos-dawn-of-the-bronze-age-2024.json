@@ -1,0 +1,113 @@
+{
+  "slug": "minos-dawn-of-the-bronze-age-2024",
+  "name": "Minos: Dawn of the Bronze Age",
+  "year": 2024,
+  "bggId": 423401,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": { "count": 4, "aggregate": "sum", "endCondition": "Game ends after scoring round 4" },
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "VP on track before final scoring",
+      "labelVi": "Điểm trên track trước khi tính điểm cuối",
+      "hint": "All VP gained during play incl. Vases, Royal Traits and the round-2 Farm/Region scoring; include +100/+200 tiles.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "farms",
+      "label": "Farm scoring (round 4)",
+      "labelVi": "Điểm Farm (cuối ván 4)",
+      "hint": "1/2/3/4 Farms on the map = 2/4/8/14 VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": { "type": "table", "table": { "0": 0, "1": 2, "2": 4, "3": 8, "4": 14 } },
+      "countsToTotal": true
+    },
+    {
+      "key": "regions",
+      "label": "Region scoring (round 4)",
+      "labelVi": "Điểm Region (cuối ván 4)",
+      "hint": "Dominance and presence VP depend on Population track (rightmost/leftmost value); add 1/2 VP per dominated region with 2/3 Towers.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "seaPeoples",
+      "label": "Sea Peoples battles (VP gained)",
+      "labelVi": "VP từ trận đánh Sea Peoples",
+      "hint": "VP rewards printed on defeated Sea Peoples tiles (component values, entered by scorer).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "resources",
+      "label": "Leftover coins, weaponry, cards in hand",
+      "labelVi": "Xu, vũ khí, bài trên tay còn lại",
+      "hint": "Add up coins + weaponry + cards in hand, divide by 5 (round down).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["coins", "weaponry", "cardsInHand"],
+      "formula": { "type": "expr", "expr": "floor((coins + weaponry + cardsInHand) / 5)" },
+      "countsToTotal": true
+    },
+    {
+      "key": "playedNotPalace",
+      "label": "Cards played but not added to Palace",
+      "labelVi": "Bài đã chơi nhưng không vào Palace",
+      "hint": "1 VP per such card.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": { "type": "multiply", "points": 1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "palace",
+      "label": "VP on Palace cards",
+      "labelVi": "VP trên các lá bài trong Palace",
+      "hint": "Sum the VP printed on all cards in your Palace.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "playerBoard",
+      "label": "VP under built Cities and Ships",
+      "labelVi": "VP dưới các City và Ship đã xây",
+      "hint": "Sum the VP shown below each City and Ship you built on the player board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "notes": "family: sum-of-categories (end-game phases on top of running VP track). Region and Sea Peoples VP depend on printed components/Population track, so they are scorer inputs. Solo rulebook not modelled.",
+  "sources": [
+    { "url": "https://www.dropbox.com/scl/fi/blhbzz6btq1g0ykbe8g6x/minos_rulebook_web.pdf", "title": "Minos rulebook (Board&Dice)", "type": "official-rulebook", "section": "pp.17-18 Scoring; End of the Game" },
+    { "url": "https://boardanddice.com/minos-dawn-of-the-bronze-age/", "title": "Board&Dice product page", "type": "publisher-page", "section": "Downloads" }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

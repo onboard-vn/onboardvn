@@ -1,0 +1,81 @@
+{
+  "slug": "the-gang-2024",
+  "name": "The Gang",
+  "year": 2024,
+  "bggId": 411567,
+  "templateVersion": 1,
+  "variant": "basic game",
+  "playerCount": {
+    "min": 3,
+    "max": 6
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": {
+    "count": null,
+    "aggregate": "rounds-won",
+    "endCondition": "Game ends when the team has 3 successful heists or 3 failed heists (3 to 5 heists)"
+  },
+  "categories": [
+    {
+      "key": "won",
+      "label": "Team won (3 successful heists)",
+      "labelVi": "Cả đội thắng (3 phi vụ thành công)",
+      "hint": "Win by cracking 3 vaults before tripping 3 alarms",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "heistsSucceeded",
+      "label": "Successful heists (vault cards)",
+      "labelVi": "Phi vụ thành công (thẻ Vault)",
+      "hint": "Heist succeeds when chip order matches the hand ranking order at showdown",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "heistsFailed",
+      "label": "Failed heists (alarm cards)",
+      "labelVi": "Phi vụ thất bại (thẻ Alarm)",
+      "hint": "At least one mistake in the order trips an alarm",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Each game has 3 to 5 heists of 4 rounds each. A heist succeeds if the final (red) chips are in the correct order of hand strength at the showdown; the team wins on 3 successful heists and loses on 3 failures. Advanced/Professional/Master Thief modes add challenge and specialist cards (not modelled).",
+  "notes": "family: coop. No points. Difficulty rises with player count. Advanced/Professional modes add an extra showdown requirement (guessing hand rank).",
+  "sources": [
+    {
+      "url": "https://www.thamesandkosmos.com/manuals/full/683887_TheGang_Manual-Web_051624.pdf",
+      "title": "The Gang rulebook (Thames & Kosmos)",
+      "type": "official-rulebook",
+      "section": "p.1 intro; p.4 Game Overview"
+    },
+    {
+      "url": "https://whatsericplaying.com/2025/01/27/the-gang/",
+      "title": "The Gang Review: High-Stakes Cooperative Poker",
+      "type": "other",
+      "section": "Rules overview"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

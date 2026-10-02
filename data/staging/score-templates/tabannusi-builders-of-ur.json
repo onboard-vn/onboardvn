@@ -1,0 +1,108 @@
+{
+  "slug": "tabannusi-builders-of-ur",
+  "name": "Tabannusi: Builders of Ur",
+  "year": 2021,
+  "bggId": 316786,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "scoreTrack",
+      "label": "Victory points on score track (incl. final District scoring)",
+      "labelVi": "Điểm trên track (đã gồm chấm điểm Quận cuối game)",
+      "hint": "VP accumulate on the track during play and from the 5 District scorings; after the final round every District is scored once more, then add that to your marker.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "urbanCards",
+      "label": "Fulfilled Urban cards",
+      "labelVi": "Thẻ Urban hoàn thành",
+      "hint": "Reveal your Urban cards; add printed VP of each one whose condition you meet. Each House can count for only one Urban card.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unusedHarbormaster",
+      "label": "Unused Harbormaster tiles",
+      "labelVi": "Ô Harbormaster chưa dùng",
+      "hint": "3 VP for each Harbormaster tile you never used.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gold",
+      "label": "Gold remaining (tiebreak)",
+      "labelVi": "Vàng còn lại (phân định hòa)",
+      "hint": "Tiebreak only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "gold",
+      "dir": "highest",
+      "description": "Most Gold"
+    },
+    {
+      "description": "If still tied, players share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": null,
+    "description": "Triggered when the last Gold leaves the Time track; finish the round so turns are equal, play one more full round, then score all 5 Districts and Urban cards."
+  },
+  "notes": "family: area-majority. Most points are gained during play (District scoring: building size x Mastery track level, Port and Ziggurat scoring, ships, bonus spaces) and recorded on the VP track, so scoreTrack is one input. Final steps: score all 5 Districts once more, then reveal Urban cards. Ziggurat tile and Urban card values are printed on components (see rulebook appendix). Solo/Automa mode not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/21/bb/6f-tabannusi-builders-of-ur-rulebook.pdf",
+      "title": "Tabannusi: Builders of Ur rulebook (Board&Dice, EN)",
+      "type": "official-rulebook",
+      "section": "pp.20-21 Scoring and Game End (Triggering Game End, final scoring, tiebreaker); p.17 Harbormaster tile; Appendix Urban cards"
+    },
+    {
+      "url": "https://boardanddice.com/product/tabannusi-builders-of-ur/",
+      "title": "Board&Dice product page (rulebook download)",
+      "type": "publisher-page",
+      "section": "Rulebook link"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

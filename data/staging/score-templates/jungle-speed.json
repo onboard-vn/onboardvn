@@ -1,0 +1,57 @@
+{
+  "slug": "jungle-speed",
+  "name": "Jungle Speed",
+  "year": 1991,
+  "bggId": 8098,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 10
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Emptied all cards first (winner)",
+      "labelVi": "Hết bài đầu tiên (thắng)",
+      "hint": "First player with no cards in both draw and face-up piles wins.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: race (first to get rid of all cards). No points. Official rules: object is to get rid of all your cards; a player who plays their last draw-pile card has not won until the face-up pile in front of them is also gone. A player whose last card is an All Play card wins immediately and leaves the pot; play continues until two remain. Rulebook also lists optional 2-player and other variants (not modelled).",
+  "winCondition": "First player to be rid of all cards (draw pile and face-up pile) wins; a player whose last card is an All Play card wins immediately.",
+  "sources": [
+    {
+      "url": "https://www.ihrysko.sk/files/product_pdf/jungle-speed-rules.pdf",
+      "title": "Jungle Speed rules (Asmodee, English, 2003)",
+      "type": "official-rulebook",
+      "section": "Aim of the Game; End of the Game; Special Cases (All Play last card)"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Jungle_Speed",
+      "title": "Jungle Speed (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "endCondition": {
+    "type": "last-standing",
+    "description": "Game ends when only two players remain after others have emptied their cards, or when a first player empties; the first to empty wins."
+  }
+}

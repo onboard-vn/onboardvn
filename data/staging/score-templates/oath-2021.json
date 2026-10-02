@@ -1,0 +1,162 @@
+{
+  "slug": "oath-2021",
+  "name": "Oath: Chronicles of Empire and Exile",
+  "year": 2021,
+  "bggId": 291572,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 6
+  },
+  "mode": "asymmetric",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": {
+    "count": 8,
+    "aggregate": "rounds-won",
+    "endCondition": "Up to 8 rounds; from round 5 a die roll at round end may end the game; round 8 ends it automatically"
+  },
+  "categories": [
+    {
+      "key": "empireWon",
+      "label": "Empire wins (Chancellor / Citizen Oathkeeper)",
+      "labelVi": "Đế chế thắng (Chancellor / Citizen giữ Oathkeeper)",
+      "hint": "Stable-regime die roll succeeded, or war exhaustion with an Empire Oathkeeper.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "roleKey": "chancellor"
+    },
+    {
+      "key": "usurperWon",
+      "label": "Exile wins as Usurper",
+      "labelVi": "Exile thắng (Usurper)",
+      "hint": "An Exile holding the Oathkeeper title on its Usurper side wins in their Wake Phase.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "roleKey": "usurper"
+    },
+    {
+      "key": "visionaryWon",
+      "label": "Exile wins as Visionary",
+      "labelVi": "Exile thắng (Visionary)",
+      "hint": "An Exile completes the goal of their revealed Vision.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "roleKey": "visionary"
+    },
+    {
+      "key": "successorWon",
+      "label": "Citizen wins as Successor",
+      "labelVi": "Citizen thắng (Successor)",
+      "hint": "A Citizen meets their Successor goal when the Chancellor would otherwise win.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "roleKey": "successor"
+    },
+    {
+      "key": "endRound",
+      "label": "Round the game ended",
+      "labelVi": "Vòng kết thúc",
+      "hint": "1 to 8.",
+      "scope": "team",
+      "input": "count",
+      "min": 1,
+      "max": 8,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "roles": [
+    {
+      "key": "chancellor",
+      "label": "Chancellor / Citizen Oathkeeper (Empire)",
+      "labelVi": "Chancellor / Citizen (Đế chế)",
+      "winCondition": "Fulfil the current oath (Supremacy, The People, Protection or Devotion) and win the end-of-round die roll in rounds 5-7 (6, 5-6, 3-6), or hold the Oathkeeper at the end of round 8.",
+      "categoryKeys": [
+        "empireWon"
+      ]
+    },
+    {
+      "key": "usurper",
+      "label": "Exile Usurper",
+      "labelVi": "Exile (Usurper)",
+      "winCondition": "Hold the Oathkeeper title on its Usurper side at the start of own Wake Phase.",
+      "categoryKeys": [
+        "usurperWon"
+      ]
+    },
+    {
+      "key": "visionary",
+      "label": "Exile Visionary",
+      "labelVi": "Exile (Visionary)",
+      "winCondition": "Fulfil a revealed Vision's goal (Conquest, Rebellion, Sanctuary or Faith).",
+      "categoryKeys": [
+        "visionaryWon"
+      ]
+    },
+    {
+      "key": "successor",
+      "label": "Citizen Successor",
+      "labelVi": "Citizen (Successor)",
+      "winCondition": "Satisfy the Successor goal instead of the Chancellor when the Chancellor would win.",
+      "categoryKeys": [
+        "successorWon"
+      ]
+    }
+  ],
+  "winCondition": "No points. Four ways to end: Usurper Exile wins in Wake Phase; Visionary Exile completes a Vision goal; Stable Regime die roll in rounds 5-7 (Chancellor/Citizen Oathkeeper, a Citizen Successor may win instead); war exhaustion after round 8 resolves by priority Empire, then Usurper, then Visionary (Conquest > Rebellion > Sanctuary > Faith), else Empire default.",
+  "endCondition": {
+    "type": "rounds",
+    "target": 8,
+    "description": "Die roll from round 5; automatic end after round 8"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: asymmetric-roles. Campaign game: the winner performs Chronicle actions that change the next game (not modelled). Official Leder Games rulebook (Law of Oath) could not be retrieved; details come from RulesPal and Wikipedia summaries and need checking against the official Law of Oath (die thresholds, priority order, Citizen rules). Solo and 1-player Vision modes not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/oath/rulebook",
+      "title": "Oath rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Victory conditions; Oathkeeper titles"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Oath:_Chronicles_of_Empire_and_Exile",
+      "title": "Oath: Chronicles of Empire and Exile (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay: rounds and win conditions"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

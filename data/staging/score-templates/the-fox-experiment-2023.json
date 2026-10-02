@@ -1,0 +1,160 @@
+{
+  "slug": "the-fox-experiment-2023",
+  "name": "The Fox Experiment",
+  "bggId": 368432,
+  "year": 2023,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "studies",
+      "label": "Studies",
+      "labelVi": "Nghiên cứu",
+      "hint": "Per study card, points printed under the highest completed level (2/5/10 typical). Enter one value per study.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "patrons",
+      "label": "Patrons",
+      "labelVi": "Nhà bảo trợ",
+      "hint": "Enter awarded points from cards, unlocked spaces or claimed track spaces.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "upgrades",
+      "label": "Upgrades",
+      "labelVi": "Nâng cấp",
+      "hint": "Enter awarded points from cards, unlocked spaces or claimed track spaces.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "friendliness",
+      "label": "Friendliness awards",
+      "labelVi": "Thưởng thân thiện",
+      "hint": "Enter awarded points from cards, unlocked spaces or claimed track spaces.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "pointTokens",
+      "label": "Point tokens",
+      "labelVi": "Token điểm",
+      "hint": "One point each.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "scienceCards",
+      "label": "Unused science cards",
+      "labelVi": "Thẻ khoa học chưa dùng",
+      "hint": "One point each.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "leftoverTokens",
+      "label": "Unused trait and friendly tokens",
+      "labelVi": "Token đặc điểm và thân thiện còn lại",
+      "hint": "Combine both types before dividing.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "supplyPosition",
+      "label": "Final supply-track position",
+      "labelVi": "Vị trí cuối trên đường tiếp tế",
+      "hint": "Lower = nearer the beginning.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 1
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/scl/fi/tdxtn6bphrblw8ou70l1z/PANFOXCORE-The_Fox_Experiment-Rulebook-v2-UPDATED-sm.pdf?rlkey=9pbei353jt3bqf1gjmrot28mb&dl=1",
+      "title": "The Fox Experiment Rulebook v2 (Pandasaurus, 36 pages)",
+      "type": "official-rulebook",
+      "section": "p.22 Game End & Scoring and Winning; p.23 scoring example; p.13 Studies"
+    },
+    {
+      "url": "https://pandasaurusgames.com/products/the-fox-experiment",
+      "title": "Pandasaurus The Fox Experiment",
+      "type": "publisher-page",
+      "section": "Rulebook link"
+    },
+    {
+      "url": "https://www.rulespal.com/the-fox-experiment/rulebook",
+      "title": "The Fox Experiment rules transcription",
+      "type": "other",
+      "section": "Game End & Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "tiebreakers": [
+    {
+      "categoryKey": "supplyPosition",
+      "dir": "lowest",
+      "description": "Nearest the beginning of the supply track wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: dice-drafting-engine-scoring. Verified against the official rulebook v2 p.22: Studies (highest completed level per study), Patrons (per patron where you have a fox meeple), Upgrades (printed on unlocked upgrades), Friendliness track, plus 1 per point token, 1 per science card, 1 per 2 trait/friendly tokens combined. Tie: closest to the beginning of the supply track. Component-specific study, patron, upgrade and award values are scorer inputs. Base 2-4 players; solo AI, 2-player mode details and 5-6 expansion not modelled.",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Game ends after friendliness rewards of the 5th round are placed"
+  }
+}

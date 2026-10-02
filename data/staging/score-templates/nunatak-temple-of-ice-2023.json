@@ -1,0 +1,169 @@
+{
+  "slug": "nunatak-temple-of-ice-2023",
+  "name": "Nunatak: Temple of Ice",
+  "year": 2023,
+  "bggId": 383158,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Points scored during play",
+      "labelVi": "Điểm trong ván",
+      "hint": "2x2 square majority (most blocks 5, second 2), 1 point per own supporting block, outer-edge bonus (7 to the player with most blocks on the outer tiles per one source).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "builders",
+      "label": "Builders (purple)",
+      "labelVi": "Thợ xây",
+      "hint": "Majority scoring: most Builders gets a large bonus (20 per sources), others a smaller per-card score; enter the points from the rulebook table.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "sculptors",
+      "label": "Sculptors (blue)",
+      "labelVi": "Nhà điêu khắc",
+      "hint": "Value rises with number collected; enter points from the scoring table.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "artisans",
+      "label": "Artisans (teal)",
+      "labelVi": "Thợ thủ công",
+      "hint": "Set scoring on matching/complete tool icons; enter points.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "beasts",
+      "label": "Beasts of Burden (brown)",
+      "labelVi": "Thú vận chuyển",
+      "hint": "Cards x beast symbols on them.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "cards * symbols"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "cards",
+        "symbols"
+      ]
+    },
+    {
+      "key": "architects",
+      "label": "Architects (yellow)",
+      "labelVi": "Kiến trúc sư",
+      "hint": "Number of Architect cards x your level on the Architect track.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "cards * trackLevel"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "cards",
+        "trackLevel"
+      ]
+    },
+    {
+      "key": "elders",
+      "label": "Elders (orange)",
+      "labelVi": "Trưởng lão",
+      "hint": "Points from symbols/other card types per each Elder card; enter total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "setBonus",
+      "label": "Full-set and Blessing bonus",
+      "labelVi": "Thưởng bộ đủ và thẻ Blessing",
+      "hint": "Bonus for completing sets of all six card types plus unused Blessing cards; enter points.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not verified; no overall tiebreaker found."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. NOT verified against the official rulebook (T&K PDF and BGG files not retrievable). Only the square majority (5/2), support point (1 each), Beasts and Architects formulas are consistent across reviews; Builders (20 for most, tie value unclear), Sculptors, Artisans, Elders values, edge bonus, set bonus and game-end trigger remain unconfirmed and are scorer inputs. Solo (1 player) mode not modelled.",
+  "sources": [
+    {
+      "url": "https://littleboardgamers.com/nunatak-temple-of-ice/",
+      "title": "Nunatak: Temple of Ice review",
+      "type": "other",
+      "section": "Scoring overview"
+    },
+    {
+      "url": "https://www.geeksundergrace.com/tabletop/review-nunatak-temple-of-ice/",
+      "title": "Nunatak: Temple of Ice review (Geeks Under Grace)",
+      "type": "other",
+      "section": "Scoring overview"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/383158/nunatak-temple-of-ice",
+      "title": "BGG game page",
+      "type": "other",
+      "section": null
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

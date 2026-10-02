@@ -1,0 +1,150 @@
+{
+  "slug": "vinhos",
+  "name": "Vinhos: Deluxe Edition",
+  "year": 2016,
+  "bggId": 175640,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 6,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the 3rd Fair (end of Year 6) plus one final action per player"
+  },
+  "categories": [
+    {
+      "key": "scoreTrack",
+      "label": "Victory points on score track",
+      "labelVi": "Điểm VP trên track",
+      "hint": "VP gained during play (exports, Fairs, wine tiles, etc.) shown on the VP track before final scoring.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "moneyVP",
+      "label": "VP from money",
+      "labelVi": "VP từ tiền (Bagos)",
+      "hint": "Look up your Bagos total on the money table beside the player board (0-18 VP, in the rulebook final-scoring table)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 18,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wineQuality",
+      "label": "Half of wine quality (rounded down)",
+      "labelVi": "Một nửa chất lượng rượu (làm tròn xuống)",
+      "hint": "For each wine you still hold (Cellar/Warehouse) take quality/2 rounded down, sum them.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "exportMajorities",
+      "label": "Export Area column majorities",
+      "labelVi": "Đa số cột khu Xuất khẩu",
+      "hint": "Sum VP shown atop each column where you export the most; ties split points, rounded down.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "multiplierTiles",
+      "label": "End-game Multiplier tiles (with barrel)",
+      "labelVi": "Thẻ nhân cuối game (có thùng)",
+      "hint": "VP of each Multiplier tile that still has a barrel on it; tiles without a barrel score 0. See Reference Book p.5.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "exportBarrels",
+      "label": "Barrels in Export Area (tiebreak)",
+      "labelVi": "Thùng ở khu Xuất khẩu (phân định hòa)",
+      "hint": "Tiebreak 1.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "moneyBagos",
+      "label": "Money in Bagos (tiebreak)",
+      "labelVi": "Tiền Bagos (phân định hòa)",
+      "hint": "Tiebreak 2.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "exportBarrels",
+      "dir": "highest",
+      "description": "Most barrels in the Export Area"
+    },
+    {
+      "categoryKey": "moneyBagos",
+      "dir": "highest",
+      "description": "Most money"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority (export columns) + engine/economy. Final scoring is identical in the 2010 Reserve and 2016 Special Vintage rulebooks. The money-to-VP table is a printed graphic, so VP from money is entered directly (example: 6 Bagos = 3 VP, 14 = 7, 20/25 = 18). Column VP values are printed above the Export Area columns. Expansions and solo not modelled.",
+  "sources": [
+    {
+      "url": "https://drive.google.com/drive/folders/10IA1vbjh0aVT4E1FXglmUbHj0i_EeMvQ",
+      "title": "Vinhos Deluxe Special Vintage 2016 EN rulebook (Eagle-Gryphon Games)",
+      "type": "official-rulebook",
+      "section": "p.16 End of Game and Final Scoring; p.10 Export majorities; p.15 Magnate Multiplier tiles"
+    },
+    {
+      "url": "https://drive.google.com/drive/folders/10IA1vbjh0aVT4E1FXglmUbHj0i_EeMvQ",
+      "title": "Vinhos Deluxe Reserve 2010 EN rulebook and 2023 player aid",
+      "type": "official-rulebook",
+      "section": "Bank Account VP; End of Game and Final Scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

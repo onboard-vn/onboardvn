@@ -1,0 +1,103 @@
+{
+  "slug": "feed-the-kraken",
+  "name": "Feed the Kraken",
+  "bggId": 271601,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 5,
+    "max": 11
+  },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won",
+      "labelVi": "Chiến thắng",
+      "hint": "Mark only after resolving the stated victory conditions.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://boardgame.bg/feed%20the%20kraken%20rules.pdf",
+      "title": "Feed the Kraken official rulebook EN (Funtails; readable copy)",
+      "type": "official-rulebook",
+      "section": "Victory Conditions; Going overboard / Flogging; Feed the Kraken action"
+    },
+    {
+      "url": "https://funtails.de/wp-content/uploads/2021/12/Rules_FtK_21-06-01_V01_EN_Compressed.pdf",
+      "title": "Funtails rulebook (original host; file corrupt on download)",
+      "type": "official-rulebook",
+      "section": "Victory Conditions"
+    },
+    {
+      "url": "https://www.rulespal.com/feed-the-kraken/rulebook",
+      "title": "Feed the Kraken rules transcription",
+      "type": "other",
+      "section": "cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "notes": "family: hidden-role-social. No points; each player ticks 'won' for their final faction (after conversions). Eliminated players still win with their team. Ship position, conversions and sacrifices are not tracked. Player count 5-11 (3 Sailors+1 Pirate+1 Cult Leader or 2+2+1 at 5 players). Verified against the official rulebook (Victory Conditions, p.8; Feed the Kraken action p.13 of the PDF text).",
+  "winCondition": "Sailors win at Bluewater Bay; Pirates win at Crimson Cove; the Cult (Cult Leader and Cultists) wins if the ship reaches the Kraken or when the Cult Leader is sacrificed on a Feed the Kraken space (immediate win). Players win with their team even if eliminated/overboard earlier. The Cult Leader cannot win by jumping overboard as navigator.",
+  "roles": [
+    {
+      "key": "sailor",
+      "label": "Sailor",
+      "labelVi": "Thủy thủ",
+      "winCondition": "Ship reaches Bluewater Bay (blue area, east).",
+      "categoryKeys": [
+        "won"
+      ]
+    },
+    {
+      "key": "pirate",
+      "label": "Pirate",
+      "labelVi": "Hải tặc",
+      "winCondition": "Ship reaches Crimson Cove (red area, west).",
+      "categoryKeys": [
+        "won"
+      ]
+    },
+    {
+      "key": "cultLeader",
+      "label": "Cult Leader",
+      "labelVi": "Giáo chủ",
+      "winCondition": "Ship reaches the Kraken (north), or the Cult Leader is sacrificed on a Feed the Kraken space.",
+      "categoryKeys": [
+        "won"
+      ]
+    },
+    {
+      "key": "cultist",
+      "label": "Cultist (converted)",
+      "labelVi": "Tín đồ",
+      "winCondition": "Wins or loses with the Cult Leader; no longer a Sailor or Pirate.",
+      "categoryKeys": [
+        "won"
+      ]
+    }
+  ],
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Navigation rounds repeat until the ship reaches a destination or the Cult Leader is fed to the Kraken."
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "eliminationTracking": {
+    "resource": "overboard/eliminated",
+    "start": null,
+    "eliminatedCannotWin": false
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "slug": "arkham-horror-revised-core-set",
+  "name": "Arkham Horror: The Card Game (Revised Core Set)",
+  "year": 2021,
+  "bggId": 359609,
+  "templateVersion": 1,
+  "variant": "campaign scenario",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "scenarioWon",
+      "label": "Scenario won (favourable resolution)",
+      "labelVi": "Thắng kịch bản",
+      "hint": "Record whether the group reached a favourable resolution",
+      "scope": "team",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "victoryXp",
+      "label": "Victory points (experience earned)",
+      "labelVi": "Điểm Victory (XP)",
+      "hint": "Sum of Victory X on cards in the victory display, plus resolution bonus XP",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "physicalTrauma",
+      "label": "Physical trauma gained",
+      "labelVi": "Chấn thương thể chất",
+      "hint": "Track per investigator for the campaign log",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "mentalTrauma",
+      "label": "Mental trauma gained",
+      "labelVi": "Chấn thương tinh thần",
+      "hint": "Track per investigator for the campaign log",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Cooperative scenario: investigators advance the Act deck before the Agenda deck's doom runs out; the scenario ends with a resolution (outcome varies by scenario and campaign choices). No points; XP and trauma carry into the campaign log.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "A scenario resolution is reached (act advances to completion, agenda completes, or all investigators eliminated)"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: coop. Not verified against the official rulebook (could not download). Resolutions are scenario-specific and not modelled; losing still grants experience.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Arkham_Horror:_The_Card_Game",
+      "title": "Arkham Horror: The Card Game (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay / campaign"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/359609",
+      "title": "Arkham Horror Revised Core Set on BGG",
+      "type": "other",
+      "section": "Identification only"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

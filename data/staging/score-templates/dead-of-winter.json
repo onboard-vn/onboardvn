@@ -1,0 +1,109 @@
+{
+  "slug": "dead-of-winter",
+  "name": "Dead of Winter: A Crossroads Game",
+  "year": 2014,
+  "bggId": 150376,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "mainObjectiveDone",
+      "label": "Colony main objective completed",
+      "labelVi": "Hoàn thành mục tiêu chung",
+      "hint": "Shared scenario objective completed before morale hits 0 or rounds run out",
+      "scope": "team",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "secretObjectiveDone",
+      "label": "Own secret objective completed",
+      "labelVi": "Hoàn thành mục tiêu bí mật",
+      "hint": "Each player checks their own secret objective",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "playerWon",
+      "label": "Player wins",
+      "labelVi": "Người chơi thắng",
+      "hint": "Needs main objective AND own secret objective (a Betrayer instead needs their traitor goal)",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Game ends when the main objective is completed, morale reaches 0, or the round track runs out. Players win only if the colony met the main objective and they also satisfied their own secret objective; a hidden Betrayer (if any) wins by their own separate condition. Exact end-check timing not verified against the rulebook.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Main objective complete, morale 0, or rounds exhausted"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "roles": [
+    {
+      "key": "survivor",
+      "label": "Survivor",
+      "labelVi": "Người sống sót",
+      "winCondition": "Main objective done and own secret objective done",
+      "categoryKeys": [
+        "mainObjectiveDone",
+        "secretObjectiveDone",
+        "playerWon"
+      ]
+    },
+    {
+      "key": "betrayer",
+      "label": "Betrayer (exiled/secret)",
+      "labelVi": "Kẻ phản bội",
+      "winCondition": "Own betrayer secret objective (not verified)",
+      "categoryKeys": [
+        "playerWon"
+      ]
+    }
+  ],
+  "notes": "family: semi-coop-objective. No points. Not verified against the official rulebook (could not download it); betrayer rules and exact end timing need a rulebook check.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Dead_of_Winter:_A_Crossroads_Game",
+      "title": "Dead of Winter: A Crossroads Game (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay / victory"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/150376",
+      "title": "Dead of Winter on BGG",
+      "type": "other",
+      "section": "Identification only"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

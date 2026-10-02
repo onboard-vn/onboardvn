@@ -1,0 +1,76 @@
+{
+  "slug": "ankh-gods-of-egypt-2021",
+  "name": "Ankh: Gods of Egypt",
+  "year": 2021,
+  "bggId": 285967,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 5 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "devotion",
+      "label": "Devotion track level at game end",
+      "labelVi": "Mức Devotion trên track khi kết thúc",
+      "hint": "Read the Ankh token position on the Devotion track after the last Event resolves.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "stackOrder",
+      "label": "Order in shared Devotion space (1 = top of stack)",
+      "labelVi": "Thứ tự trong ô Devotion chung (1 = trên cùng)",
+      "hint": "If Ankh tokens share a space, the token higher in the stack has more Devotion.",
+      "scope": "player",
+      "input": "number",
+      "min": 1,
+      "max": 5,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "reachedTop",
+      "label": "Reached top of Devotion track (instant win)",
+      "labelVi": "Chạm đỉnh track Devotion (thắng ngay)",
+      "hint": "Instant win the moment the Ankh token reaches the top space.",
+      "scope": "player",
+      "input": "bool",
+      "formula": { "type": "multiply", "points": 0 },
+      "countsToTotal": false
+    },
+    {
+      "key": "eliminated",
+      "label": "Forgotten (eliminated after 4th Conflict)",
+      "labelVi": "Bị lãng quên (bị loại sau Conflict thứ 4)",
+      "hint": "Gods still in the red section after the 4th Conflict event are eliminated.",
+      "scope": "player",
+      "input": "bool",
+      "formula": { "type": "multiply", "points": 0 },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "stackOrder", "dir": "lowest", "description": "Within a shared Devotion space, the Ankh token higher in the stack has more Devotion" }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Win immediately by reaching the top of the Devotion track, or as the only god left after the 4th Conflict event; otherwise the god with the most Devotion after the last Event wins.",
+  "endCondition": { "type": "objective", "target": null, "description": "Ends when a god reaches the top Devotion space, or only one god remains after the 4th Conflict, or after the last Event on the Events track." },
+  "notes": "family: area-control-majority. Devotion is gained during play (monument majorities, battles, ankh/event effects); the scorer only records the final Devotion level. If all gods are forgotten, Egypt becomes atheistic and everyone loses. Merged gods share one Devotion token; handling of merged-pair victory not verified. Scenario-specific rules and expansions (Pantheon, Pharaoh, Guardians) not modelled. If a Devotion track value is not known, use the stack order only.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/b5/14/70-ankh-gods-of-egypt-rulebook.pdf",
+      "title": "Ankh: Gods of Egypt rulebook (English, via 1jour-1jeu)",
+      "type": "official-rulebook",
+      "section": "Devotion section (p.10); Setup step 7 and ways to win; Conflict event - forgotten gods"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

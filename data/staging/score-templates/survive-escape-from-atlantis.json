@@ -1,0 +1,51 @@
+{
+  "slug": "survive-escape-from-atlantis",
+  "name": "Survive: Escape from Atlantis!",
+  "year": 1982,
+  "bggId": 2653,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "rescuedExplorers",
+      "label": "Explorer values on safe isles",
+      "labelVi": "Giá trị Explorer đã tới đảo an toàn",
+      "hint": "Flip your saved Explorer tokens and enter each printed value (1-6).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 1,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection-hidden-value. Game ends when the volcano tile is revealed (destroys remaining island and Explorers). Each player has 10 Explorers. Highest total wins, not most Explorers. With 2 players using two colours each, add both colours' values. Rulebook states no tiebreaker. Challenge #3 (All equal) ignores values and counts tokens: not modelled. Dolphins/Squids expansion not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/5f/a3/bd-survive-escape-from-atlantis-rulebook.pdf",
+      "title": "Survive: Escape from Atlantis! Rulebook (Stronghold/Asmodee edition)",
+      "type": "official-rulebook",
+      "section": "Goal; End of Game (p.6); Two Player Games; Challenges"
+    },
+    {
+      "url": "https://www.wikiboardgames.com/survive-escape-from-atlantis-rules/",
+      "title": "Survive: Escape From Atlantis Rules",
+      "type": "wiki",
+      "section": "Winning the Game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

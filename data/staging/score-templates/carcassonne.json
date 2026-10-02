@@ -1,0 +1,130 @@
+{
+  "slug": "carcassonne",
+  "name": "Carcassonne",
+  "year": 2000,
+  "bggId": 822,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track total before final scoring",
+      "labelVi": "Điểm trên track trước khi tính cuối game",
+      "hint": "Points from completed roads (1/tile), cities (2/tile + 2/coat of arms) and monasteries (9) scored during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incompleteRoadTiles",
+      "label": "Incomplete roads: tiles",
+      "labelVi": "Đường chưa hoàn chỉnh: số ô",
+      "hint": "1 point per tile of each incomplete road you win (most meeples). Sum over all such roads.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incompleteCityTiles",
+      "label": "Incomplete cities: tiles",
+      "labelVi": "Thành chưa hoàn chỉnh: số ô",
+      "hint": "1 point per tile of each incomplete city you win. Sum over all such cities.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incompleteCityPennants",
+      "label": "Incomplete cities: coats of arms",
+      "labelVi": "Thành chưa hoàn chỉnh: huy hiệu",
+      "hint": "1 point per coat of arms in each incomplete city you win.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incompleteMonasteryTiles",
+      "label": "Incomplete monasteries: tiles",
+      "labelVi": "Tu viện chưa hoàn chỉnh: số ô",
+      "hint": "1 point for the monastery plus 1 per adjacent tile (max 9).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 9,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "farmerCities",
+      "label": "Farms: completed cities touched",
+      "labelVi": "Nông dân: số thành hoàn chỉnh kề cánh đồng",
+      "hint": "3 points per completed city adjacent to each field you win. Count each (field, city) pair once; sum over fields. Farmers are in the supplementary rules but their final scoring is stated in the base rulebook.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "The rulebook states no tiebreaker; tied players are co-winners."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. Majority per feature: most meeples take all the points; tied players each score full points. In-play scoring is tracked on the score track (enter its value in trackScore). Final scoring uses half value for incomplete cities and counts incomplete roads/monasteries as during play. Expansions (Inns & Cathedrals, Traders & Builders, Abbot, River, etc.) not modelled.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/carcassonne.pdf",
+      "title": "Carcassonne rulebook (Z-Man Games, 2016 edition)",
+      "type": "official-rulebook",
+      "section": "Scoring a road/city/monastery pp.3-5; Game end and final scoring p.6"
+    },
+    {
+      "url": "https://www.rulespal.com/carcassonne/rulebook",
+      "title": "Carcassonne rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Completed features, end-of-game scoring, multiple meeples"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

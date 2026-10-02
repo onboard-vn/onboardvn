@@ -1,0 +1,171 @@
+{
+  "slug": "a-war-of-whispers-2019",
+  "name": "A War of Whispers",
+  "year": 2019,
+  "bggId": 253499,
+  "templateVersion": 1,
+  "variant": "competitive",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "bear",
+      "label": "Bear empire loyalty score",
+      "labelVi": "Điểm trung thành với Bear",
+      "hint": "cities = cities (and your own agents on regions) controlled by this empire at game end; loyalty = slot multiplier of your token (Devout 4, Dutiful 3, Affiliated 2, Unallied 0, Opposed -1).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cities",
+        "loyalty"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "cities * loyalty"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "lion",
+      "label": "Lion empire loyalty score",
+      "labelVi": "Điểm trung thành với Lion",
+      "hint": "cities = cities (and your own agents on regions) controlled by this empire at game end; loyalty = slot multiplier of your token (Devout 4, Dutiful 3, Affiliated 2, Unallied 0, Opposed -1).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cities",
+        "loyalty"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "cities * loyalty"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "horse",
+      "label": "Horse empire loyalty score",
+      "labelVi": "Điểm trung thành với Horse",
+      "hint": "cities = cities (and your own agents on regions) controlled by this empire at game end; loyalty = slot multiplier of your token (Devout 4, Dutiful 3, Affiliated 2, Unallied 0, Opposed -1).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cities",
+        "loyalty"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "cities * loyalty"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "elephant",
+      "label": "Elephant empire loyalty score",
+      "labelVi": "Điểm trung thành với Elephant",
+      "hint": "cities = cities (and your own agents on regions) controlled by this empire at game end; loyalty = slot multiplier of your token (Devout 4, Dutiful 3, Affiliated 2, Unallied 0, Opposed -1).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cities",
+        "loyalty"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "cities * loyalty"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "eagle",
+      "label": "Eagle empire loyalty score",
+      "labelVi": "Điểm trung thành với Eagle",
+      "hint": "cities = cities (and your own agents on regions) controlled by this empire at game end; loyalty = slot multiplier of your token (Devout 4, Dutiful 3, Affiliated 2, Unallied 0, Opposed -1).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "cities",
+        "loyalty"
+      ],
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "cities * loyalty"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "loyaltySwaps",
+      "label": "Times you swapped loyalty tokens (tiebreaker only)",
+      "labelVi": "Số lần hoán đổi lòng trung thành (hòa)",
+      "hint": "Fewer swaps wins ties. Does not add to score.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "cardsInHand",
+      "label": "Empire cards in hand at end (tiebreaker only)",
+      "labelVi": "Số lá bài đế chế trên tay (hòa)",
+      "hint": "More cards wins ties. Does not add to score.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "loyaltySwaps",
+      "dir": "lowest",
+      "description": "Fewest loyalty swaps during the game."
+    },
+    {
+      "categoryKey": "cardsInHand",
+      "dir": "highest",
+      "description": "Most empire cards in hand."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. Game ends after the Reveal Loyalty phase of round 4. Each empire scores cities controlled x your loyalty multiplier (Opposed is -1, so enter -1). Advanced rule: an agent a player placed on a region counts as a city for that player for the empire controlling that region, so add it to that empire's cities count for that player. Solo/other modes not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/4b/67/d8-a-war-of-whispers-rulebook.pdf",
+      "title": "A War of Whispers rulebook (1j1ju mirror of official rules)",
+      "type": "official-rulebook",
+      "section": "p.8 Loyalty Tokens and Scoring; p.15 Final Scoring and Advanced Rules"
+    },
+    {
+      "url": "https://www.orderofgamers.com/downloads/AWarofWhispers_v1.1.pdf",
+      "title": "A War of Whispers rules summary (Order of Gamers)",
+      "type": "other",
+      "section": "Final Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

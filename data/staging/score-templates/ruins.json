@@ -1,0 +1,86 @@
+{
+  "slug": "ruins",
+  "name": "Ruins",
+  "year": 2025,
+  "bggId": 428635,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Win instantly by going out first when starting a round with 9 or 10 VP; otherwise showdown round 5"
+  },
+  "categories": [
+    {
+      "key": "roundVp",
+      "label": "VP per round (finish position)",
+      "labelVi": "VP mỗi ván (theo thứ tự về đích)",
+      "hint": "Enter VP gained or lost for this round from the scoreboard chart (printed on the board by player count; last place loses VP). Track floors at 0 and caps at 10.",
+      "scope": "player",
+      "input": "repeating",
+      "min": -10,
+      "max": 10,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wonShowdown",
+      "label": "Won by going out first (instant or showdown)",
+      "labelVi": "Thắng nhờ hết bài đầu tiên",
+      "hint": "Check for the winner: first out when starting with 9-10 VP, or first out in round 5.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 0
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "No score tiebreak: the winner is whoever goes out first under the instant-win or round-5 showdown rule."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: climbing-shedding. Per-finishing-position VP values are printed on the scoreboard graphic, not in the rulebook text, so they are entered by the scorer each round. VP track floors at 0 (ignore negative VP at 0) and caps at 10 (you cannot gain more; you must go out first to win). Round ends when only one player has cards left; that player scores the last-place VP. Next first player is whoever has fewest VP (ties: furthest clockwise from previous first player). 2-3 player games cover the top scoring chart with the scoring tile. Rulebook verified against the Allplay PDF.",
+  "sources": [
+    {
+      "url": "https://assets.allplay.com/board-games-ruins-rulebook-link.pdf",
+      "title": "Ruins rulebook (Allplay)",
+      "type": "official-rulebook",
+      "section": "Going out, Round end, The score track, Game end (p.2)"
+    },
+    {
+      "url": "https://opinionatedgamers.com/2025/07/15/dale-yu-review-of-ruins/",
+      "title": "Dale Yu: Review of Ruins",
+      "type": "other",
+      "section": "Winning conditions cross-check"
+    },
+    {
+      "url": "https://www.allplay.com/board-games/ruins",
+      "title": "Ruins - Allplay product page",
+      "type": "publisher-page",
+      "section": "Players/components/rulebook link"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Instant win: start any round with 9-10 VP and go out first. Otherwise showdown in round 5 after round 4, first out wins."
+  },
+  "winCondition": "Go out first while starting the round with 9 or 10 VP (instant win), or win the round-5 showdown by going out first (played by the player(s) with most VP after round 4 and the player who went out first in round 4). Score totals alone do not decide the winner."
+}

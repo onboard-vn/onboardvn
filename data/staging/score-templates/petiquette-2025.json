@@ -1,0 +1,89 @@
+{
+  "slug": "petiquette-2025",
+  "name": "Petiquette",
+  "year": 2025,
+  "bggId": 443982,
+  "templateVersion": 1,
+  "variant": "competitive",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "After 5 rounds"
+  },
+  "categories": [
+    {
+      "key": "matchesRounds123",
+      "label": "Rounds 1-3 matches",
+      "labelVi": "Số ván khớp (ván 1-3)",
+      "hint": "1 pt per round where your pick matches another player (or the sequence-layer's pick)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "matchesRounds45",
+      "label": "Rounds 4-5 matches",
+      "labelVi": "Số ván khớp (ván 4-5)",
+      "hint": "2 pts per round where your pick matches another player (or the sequence-layer's pick)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "notes": "family: pattern-matching-party (listed family 'coop' covers the optional cooperative mode). Each round one player lays out the sequence and the others pick the card that best fits the question mark; players score if they match the sequence-layer, and the sequence-layer scores if at least one player matched. No bonus for more matches. Cooperative mode: the team shares one guess of the lead's secret pick; per one review the default rule needs 5 consecutive matched rounds to win. Tiebreak not found in sources; shared victory assumed. Official rulebook not found online (Oink page has no rules link); scoring 1 pt in rounds 1-3 and 2 pts in rounds 4-5 corroborated by multiple independent sources; tiebreak and coop win threshold unverified.",
+  "sources": [
+    {
+      "url": "https://whatsericplaying.com/2026/05/04/petiquette/",
+      "title": "Petiquette Review (What's Eric Playing)",
+      "type": "other",
+      "section": "Competitive scoring; cooperative mode"
+    },
+    {
+      "url": "https://www.boardseyeview.net/post/petiquette",
+      "title": "Petiquette (Boards Eye View)",
+      "type": "other",
+      "section": "Rounds and scoring"
+    },
+    {
+      "url": "https://zatu.com/en-us/blogs/reviews/petiquette-review",
+      "title": "Petiquette review (Zatu)",
+      "type": "other",
+      "section": "Competitive and cooperative modes"
+    },
+    {
+      "url": "https://oinkgames.com/en/games/analog/petiquette/",
+      "title": "Petiquette - Oink Games",
+      "type": "publisher-page",
+      "section": "Game page"
+    },
+    {
+      "url": "https://icv2.com/articles/news/view/59329/oink-offers-course-petiquette",
+      "title": "ICv2: Oink Offers a Course in 'Petiquette'",
+      "type": "other",
+      "section": "Overview"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

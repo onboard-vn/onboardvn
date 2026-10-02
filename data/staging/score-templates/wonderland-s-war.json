@@ -1,0 +1,103 @@
+{
+  "slug": "wonderland-s-war",
+  "name": "Wonderland's War",
+  "year": 2020,
+  "bggId": 227935,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the 3rd round War phase"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Victory point track score (incl. 50+ tokens)",
+      "labelVi": "Điểm trên track VP (kể cả thẻ 50+)",
+      "hint": "Region victory awards (full for 1st, half for 2nd) and other VP gained during play.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "castles",
+      "label": "Castles on board",
+      "labelVi": "Lâu đài trên bản đồ",
+      "hint": "castles = castles on board; pointsPerCastle = 3-6 from the bottom row of your Forge tracks.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "castles * pointsPerCastle"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "castles",
+        "pointsPerCastle"
+      ],
+      "min": 0
+    },
+    {
+      "key": "quests",
+      "label": "Quest cards",
+      "labelVi": "Thẻ Quest",
+      "hint": "questsOne = cards with exactly one half (Feat or Objective) met = 3 VP each; questsBoth = both halves met = 9 VP each.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "questsOne * 3 + questsBoth * 9"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "questsOne",
+        "questsBoth"
+      ],
+      "min": 0
+    },
+    {
+      "key": "shards",
+      "label": "Madness Shard tokens",
+      "labelVi": "Mảnh điên (Shard)",
+      "hint": "-1 VP per Shard token you hold at the end.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [],
+  "notes": "family: area-majority. Final score = VP track + 3-6 per castle + quests - shards; highest total wins. The rulebook states no tiebreaker. Two-player rules (p.21) and Automa/solo, Duel and expansions not modelled. Castle value rises via the Castle spaces on Forge tracks (max 6 VP).",
+  "sources": [
+    {
+      "url": "https://tesera.ru/images/items/1786613/Wonderland's%20War%20-%20Rulebook_08.10.2020.pdf",
+      "title": "Wonderland's War Rulebook (Awaken Realms / Alliance, 08.10.2020)",
+      "type": "official-rulebook",
+      "section": "p.14 Quests/Forge; p.15 Final Scoring"
+    },
+    {
+      "url": "https://geekdad.com/2022/10/reaping-the-rewards-a-second-chance-for-wonderlands-war/",
+      "title": "Reaping the Rewards: A Second Chance for Wonderland's War",
+      "type": "other",
+      "section": "Scoring summary cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

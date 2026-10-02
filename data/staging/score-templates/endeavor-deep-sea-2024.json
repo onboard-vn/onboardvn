@@ -1,0 +1,134 @@
+{
+  "slug": "endeavor-deep-sea-2024",
+  "name": "Endeavor: Deep Sea",
+  "year": 2024,
+  "bggId": 367966,
+  "templateVersion": 1,
+  "variant": "competitive mode (scenario-driven)",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 6,
+    "aggregate": "sum",
+    "endCondition": "Game ends after all players pass in round 6 (round 7 in solo)"
+  },
+  "categories": [
+    {
+      "key": "attributeTracks",
+      "label": "Attribute tracks (4 tracks combined)",
+      "labelVi": "Điểm 4 track thuộc tính",
+      "hint": "Sum the scoring bracket reached by each of the 4 track markers (brackets are printed on the player mat).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "impactBoard",
+      "label": "Impact board hexes",
+      "labelVi": "Điểm bảng Impact",
+      "hint": "Points for your markers in scoring hexes per the Scoring Legend of the scenario sheet.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "journals",
+      "label": "Published Journals",
+      "labelVi": "Điểm Journal",
+      "hint": "Sum of points shown on your published Journals.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tier5Specialists",
+      "label": "Tier-5 senior specialist",
+      "labelVi": "Điểm chuyên gia cấp 5",
+      "hint": "Scoring is unique to each tier-5 specialist; ignore remainders.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "scenarioGoals",
+      "label": "Scenario goals",
+      "labelVi": "Điểm mục tiêu kịch bản",
+      "hint": "Sum of scenario sheet goal scores, incl. 1st/2nd place bonuses where the scenario has them (values vary per scenario).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftovers",
+      "label": "Leftover Research and discs",
+      "labelVi": "Research và đĩa còn lại",
+      "hint": "Research (incl. on a stored Dive token) plus discs in Staging Area, divided by 3, round down.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "research",
+        "discs"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor((research+discs)/3)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: tracks-plus-scenario. Rulebook is scenario-driven: track brackets, impact legend and scenario goals differ per scenario sheet, so those are scorer inputs. Cooperative and solo modes use goal counts instead of points (not modelled): solo plays 7 rounds. Based on the Burnt Island Games rulebook PDF final scoring pages (read via text extraction, page numbers approximate).",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/endeavordeepsea.pdf",
+      "title": "Endeavor: Deep Sea Rulebook (Burnt Island Games / Grand Gamers Guild)",
+      "type": "official-rulebook",
+      "section": "Final Scoring; Co-op and Solo modes (last pages)"
+    },
+    {
+      "url": "https://zatu.com/en-us/blogs/how-to-play/how-to-play-endeavor-deep-sea",
+      "title": "How To Play Endeavor Deep Sea (Zatu)",
+      "type": "other",
+      "section": "End of game scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

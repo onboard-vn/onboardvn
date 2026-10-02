@@ -1,0 +1,94 @@
+{
+  "slug": "lure",
+  "name": "Lure",
+  "year": 2024,
+  "bggId": 415780,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "fishVp",
+      "label": "VP on caught fish",
+      "labelVi": "Điểm trên cá đã bắt",
+      "hint": "Add the VP shown on every fish card in your score pile.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "boasts",
+      "label": "Boast lures in score pile",
+      "labelVi": "Thẻ Boast trong kho điểm",
+      "hint": "2 VP per boast lure kept near your score pile.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "fishCount",
+      "label": "Number of fish caught (tiebreaker)",
+      "labelVi": "Số cá bắt được (hòa)",
+      "hint": "Count of fish cards; fewer wins a tie. Not added to the total.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "fishCount",
+      "dir": "lowest",
+      "description": "Tied player with the fewest fish wins"
+    },
+    {
+      "description": "If still tied, the win is shared"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "When the last fish is drawn, finish the current round, then the game ends."
+  },
+  "notes": "family: dice-race. Score is VP on fish plus boasts in the score pile. Solo variant exists (separate file on BGG), not modelled.",
+  "sources": [
+    {
+      "url": "https://assets.allplay.com/board-games-lure-rulebook-link.pdf",
+      "title": "Lure rulebook (Allplay)",
+      "type": "official-rulebook",
+      "section": "Game End (p.4)"
+    },
+    {
+      "url": "https://www.allplay.com/board-games/lure/",
+      "title": "Lure - Allplay product page",
+      "type": "publisher-page",
+      "section": "Rulebook link"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

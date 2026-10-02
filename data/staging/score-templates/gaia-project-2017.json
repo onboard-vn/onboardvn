@@ -1,0 +1,117 @@
+{
+  "slug": "gaia-project-2017",
+  "name": "Gaia Project",
+  "year": 2017,
+  "bggId": 220308,
+  "templateVersion": 1,
+  "variant": "base (expansion The Lost Fleet not modelled)",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "Victory points before final scoring",
+      "labelVi": "Điểm VP trước khi tính điểm cuối",
+      "hint": "Marker on the VP track (starts at 10) after round 6.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalTile1",
+      "label": "Final scoring tile 1",
+      "labelVi": "Ô tính điểm cuối 1",
+      "hint": "Rank on the tile's track: 1st/2nd/3rd/4th = 18/12/6/0; ties split the VP of the shared ranks evenly. Enter VP gained.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 18,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalTile2",
+      "label": "Final scoring tile 2",
+      "labelVi": "Ô tính điểm cuối 2",
+      "hint": "Same as tile 1.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 18,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "researchLevels",
+      "label": "Research levels 3, 4, 5",
+      "labelVi": "Cấp nghiên cứu 3, 4, 5",
+      "hint": "Count each level 3, 4 and 5 reached or passed across all six tracks.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 18,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverResources",
+      "label": "Leftover credits, knowledge, ore",
+      "labelVi": "Credit, knowledge, ore còn lại",
+      "hint": "1 VP per 3 resources in any combination.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "credits",
+        "knowledge",
+        "ore"
+      ],
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "floor((credits+knowledge+ore)/3)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "notes": "Game ends after round 6. Final tiles come from: most structures in federations, most structures, most planet types, most Gaia planets, most sectors, most satellites. In 1-2 player games a neutral player's satellites occupy a rank, which can push the human players down a rank. Power/Q.I.C. and other resources do not convert to VP. Rank-based tile awards (with tie splitting) are entered as final VP rather than computed. The rulebook has no extra tiebreaker: tied players share victory. Lost Fleet extras (Lost Planet, Ivits) only affect what counts in final tiles.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/98/91/61-gaia-project-rulebook.pdf",
+      "title": "Gaia Project rulebook (Z-Man Games / Feuerland)",
+      "type": "official-rulebook",
+      "section": "Game End and Scoring p.18; neutral player p.7; research board p.12"
+    },
+    {
+      "url": "https://boardgamewikia.com/gaia-project",
+      "title": "Gaia Project (2017) - Board Game Wikia",
+      "type": "wiki",
+      "section": "Final scoring summary"
+    },
+    {
+      "url": "https://meeplygames.com/games/gaia-project",
+      "title": "Gaia Project score calculator and scoring guide",
+      "type": "other",
+      "section": "Cross-check of final scoring categories"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

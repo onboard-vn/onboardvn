@@ -1,0 +1,56 @@
+{
+  "slug": "that-time-you-killed-me",
+  "name": "That Time You Killed Me",
+  "year": 2022,
+  "bggId": 344258,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (rival erased from 2 of 3 eras)",
+      "labelVi": "Thắng (xóa đối thủ khỏi 2 trong 3 thời đại)",
+      "hint": "Win when your opponent has copies in only one (or no) era; checked on your own turn.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Two players, three era boards (past, present, future). A player wins by leaving the opponent with copies in at most one era, checked on the winning player's own turn. No points. Campaign scenarios unlock new rules as you play and are not modelled.",
+  "notes": "family: abstract-objective. Not verified against the official rulebook (BGG file requires login; only the Board Game Arena adaptation help and reviews were readable). Sources disagree on timing: BGA help says end of your turn, a rules summary says start of your turn; both amount to the same 'opponent on one era or fewer' check. Stalemate/draw is not defined in the sources found.",
+  "sources": [
+    {
+      "url": "https://en.doc.boardgamearena.com/Gamehelpthattimeyoukilledme",
+      "title": "BGA game help: That Time You Killed Me",
+      "type": "other",
+      "section": "Win condition; no legal moves"
+    },
+    {
+      "url": "https://board-game-rules.com/boardgames/that-time-you-killed-me/",
+      "title": "That Time You Killed Me rules summary",
+      "type": "other",
+      "section": "Win condition"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/231542/full-rulebook-spoilers",
+      "title": "Full rulebook (BGG file, not readable)",
+      "type": "bgg-file",
+      "section": null
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

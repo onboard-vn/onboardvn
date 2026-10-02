@@ -1,0 +1,97 @@
+{
+  "slug": "triqueta-2023",
+  "name": "Triqueta",
+  "year": 2023,
+  "bggId": 378200,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "animals",
+      "label": "Animal tokens by type",
+      "labelVi": "Số thẻ thú theo loại",
+      "hint": "Mỗi loại: 0=0đ, 1=1đ, 2=2đ, đúng 3 (triqueta)=giá trị in (thỏ5 cú6 nai7 lợn8 cừu9 gấu10), >3 = -1 mỗi thẻ vượt quá 3.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "(rabbit==0?0:rabbit<=2?rabbit:rabbit==3?5:-(rabbit-3)) + (owl==0?0:owl<=2?owl:owl==3?6:-(owl-3)) + (deer==0?0:deer<=2?deer:deer==3?7:-(deer-3)) + (boar==0?0:boar<=2?boar:boar==3?8:-(boar-3)) + (ram==0?0:ram<=2?ram:ram==3?9:-(ram-3)) + (bear==0?0:bear<=2?bear:bear==3?10:-(bear-3))"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "rabbit",
+        "owl",
+        "deer",
+        "boar",
+        "ram",
+        "bear"
+      ]
+    },
+    {
+      "key": "startingRock",
+      "label": "Starting rock",
+      "labelVi": "Đá khởi đầu",
+      "hint": "+1 nếu giữ đá khởi đầu cuối game.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "treeTiles",
+      "label": "Tree tiles",
+      "labelVi": "Thẻ cây",
+      "hint": "+1 mỗi thẻ cây.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most animal tokens among tied players"
+    },
+    {
+      "description": "If still tied, all tied players win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: set-collection. Each player may hold up to 2 face-down tokens until the end and then either adds them face up or discards them; enter the final counts after that choice. Hidden Wolves expansion (in newer printings) not modelled.",
+  "sources": [
+    {
+      "url": "https://www.deep-print-games.com/wp-content/uploads/2024/11/Triqueta_Rulebook_EN.pdf",
+      "title": "Triqueta Rulebook EN (Deep Print Games)",
+      "type": "official-rulebook",
+      "section": "End of the game (p.4)"
+    },
+    {
+      "url": "https://www.deep-print-games.com/en/spiele/triqueta/",
+      "title": "Triqueta (Deep Print Games)",
+      "type": "publisher-page",
+      "section": "Rulebook links; scoring summary"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

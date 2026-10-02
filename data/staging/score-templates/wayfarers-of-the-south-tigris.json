@@ -1,0 +1,311 @@
+{
+  "slug": "wayfarers-of-the-south-tigris",
+  "name": "Wayfarers of the South Tigris",
+  "year": 2021,
+  "bggId": 350316,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "cityTags",
+      "label": "City tags",
+      "labelVi": "Số thẻ City",
+      "hint": "Count this Tag everywhere incl. the Caravan. 0-1 = 0 VP; 2:2, 3:3, 4:5, 5:8, 6:12, 7+:16 (more than 7 give no extra).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 2,
+          "3": 3,
+          "4": 5,
+          "5": 8,
+          "6": 12,
+          "7+": 16
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "vistaTags",
+      "label": "Vista tags",
+      "labelVi": "Số thẻ Vista",
+      "hint": "Count this Tag everywhere incl. the Caravan. 0-1 = 0 VP; 2:2, 3:3, 4:5, 5:8, 6:12, 7+:16 (more than 7 give no extra).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 2,
+          "3": 3,
+          "4": 5,
+          "5": 8,
+          "6": 12,
+          "7+": 16
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "harbourTags",
+      "label": "Harbour tags",
+      "labelVi": "Số thẻ Harbour",
+      "hint": "Count this Tag everywhere incl. the Caravan. 0-1 = 0 VP; 2:2, 3:3, 4:5, 5:8, 6:12, 7+:16 (more than 7 give no extra).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 2,
+          "3": 3,
+          "4": 5,
+          "5": 8,
+          "6": 12,
+          "7+": 16
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "openWaterTags",
+      "label": "Open Water tags",
+      "labelVi": "Số thẻ Open Water",
+      "hint": "Count this Tag everywhere incl. the Caravan. 0-1 = 0 VP; 2:2, 3:3, 4:5, 5:8, 6:12, 7+:16 (more than 7 give no extra).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 2,
+          "3": 3,
+          "4": 5,
+          "5": 8,
+          "6": 12,
+          "7+": 16
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "uniqueTagSets",
+      "label": "Sets of 4 unique primary Tags",
+      "labelVi": "Bộ 4 Tag khác nhau",
+      "hint": "5 VP per set of 1 City + 1 Vista + 1 Harbour + 1 Open Water.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "spaceCards",
+      "label": "Space Cards (incl. achieved Inspiration)",
+      "labelVi": "Thẻ Space (gồm Inspiration đạt được)",
+      "hint": "Sum VP of each Space Card; Inspiration achieved doubles that card; Comet Cards score 4 VP each if you have most Comet Tags.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "upgradeTiles",
+      "label": "Printed VP on Upgrade Tiles (Caravan)",
+      "labelVi": "VP in trên ô Upgrade (Caravan)",
+      "hint": "Sum printed VP on your Upgrade Tiles.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "guildBlack",
+      "label": "Black (Science) Guild Influence",
+      "labelVi": "Ảnh hưởng Guild Đen",
+      "hint": "Enter your Influence in this Guild; most Influence gets 3 VP; a tie means nobody scores.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            3
+          ],
+          "tieMode": "none",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "guildYellow",
+      "label": "Yellow (Trade) Guild Influence",
+      "labelVi": "Ảnh hưởng Guild Vàng",
+      "hint": "Enter your Influence in this Guild; most Influence gets 3 VP; a tie means nobody scores.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            3
+          ],
+          "tieMode": "none",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "guildBlue",
+      "label": "Blue (Exploration) Guild Influence",
+      "labelVi": "Ảnh hưởng Guild Xanh",
+      "hint": "Enter your Influence in this Guild; most Influence gets 3 VP; a tie means nobody scores.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            3
+          ],
+          "tieMode": "none",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tbBlack",
+      "label": "Black Influence (tiebreak 1)",
+      "labelVi": "Ảnh hưởng Đen (hòa 1)",
+      "hint": "Tiebreak only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "tbYellow",
+      "label": "Yellow Influence (tiebreak 2)",
+      "labelVi": "Ảnh hưởng Vàng (hòa 2)",
+      "hint": "Tiebreak only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "tbBlue",
+      "label": "Blue Influence (tiebreak 3)",
+      "labelVi": "Ảnh hưởng Xanh (hòa 3)",
+      "hint": "Tiebreak only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "tbBlack",
+      "dir": "highest",
+      "description": "Most Black Influence"
+    },
+    {
+      "categoryKey": "tbYellow",
+      "dir": "highest",
+      "description": "Most Yellow Influence"
+    },
+    {
+      "categoryKey": "tbBlue",
+      "dir": "highest",
+      "description": "Most Blue Influence"
+    },
+    {
+      "description": "If still tied, share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "A player reaches one of the 5 final Journal Track spaces; every player (including that player) takes one last turn."
+  },
+  "notes": "family: set-collection + area-majority. Guild majority counts Influence placed on each Minaret; enter the same influence counts again in the tiebreak fields only if needed. Solo mode vs AI (Space/Upgrade/Townsfolk/Journal) not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/10/ff/85-wayfarers-of-the-south-tigris-rulebook.pdf",
+      "title": "Wayfarers of the South Tigris rulebook (Renegade Game Studios)",
+      "type": "official-rulebook",
+      "section": "p.6 Tags (table, unique sets); p.18 End of the Game and Scoring; p.19 scoring example"
+    },
+    {
+      "url": "https://merchantsofplay.com/howtoplay/wayfarers-of-the-south-tigris/",
+      "title": "How to Play Wayfarers of the South Tigris",
+      "type": "other",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

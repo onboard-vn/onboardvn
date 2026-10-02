@@ -1,0 +1,50 @@
+{
+  "slug": "modern-art-1992",
+  "name": "Modern Art",
+  "year": 1992,
+  "bggId": 118,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "finalMoney",
+      "label": "Money at end of game",
+      "labelVi": "Tổng tiền cuối game",
+      "hint": "Count all coins behind your screen after round 4 scoring (includes starting 100 and all bids paid/received)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "notes": "Score = money. 4 rounds. Round ends when the 5th card of one artist is played (that card is not auctioned). Top 3 artists that round get 30/20/10 market tokens; ties go to the artist further left on the board. Each painting you own sells for the sum of ALL tokens in its artist's column, but only for artists in the top 3 that round; unplaced artists pay 0. Cards from the round are discarded after sale; cards in hand carry over. Cards dealt for next round: 3p 6, 4p 4, 5p 3 (rounds 2-3). Rulebook gives no tiebreaker; tie shared by default. Rulebook is the Boardpia/DiceTree 2017 edition (Yaofish deluxe); classic 1992 edition rules are equivalent in scoring.",
+  "sources": [
+    {
+      "url": "https://www.base23.com/rulebooks/ma_rulebook_3rd_EN.pdf",
+      "title": "Modern Art rulebook (3rd edition, Boardpia/DiceTree)",
+      "type": "official-rulebook",
+      "section": "p.4 Scoring for Market Value; p.5 End of the Game"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Modern_Art_(game)",
+      "title": "Modern Art (game) - Wikipedia",
+      "type": "wiki",
+      "section": "Gameplay: round end and valuation"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

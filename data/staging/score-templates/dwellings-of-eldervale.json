@@ -1,0 +1,132 @@
+{
+  "slug": "dwellings-of-eldervale",
+  "name": "Dwellings of Eldervale",
+  "year": 2020,
+  "bggId": 271055,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "runningVp",
+      "label": "VP on score track",
+      "labelVi": "Điểm trên track",
+      "hint": "VP gained during play (dwellings built, combat, etc.).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "orbs",
+      "label": "Unspent Orbs",
+      "labelVi": "Orb chưa dùng",
+      "hint": "1 VP per unspent Orb.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "elementalTrack",
+      "label": "Elemental Power track markers",
+      "labelVi": "Các marker Elemental Power",
+      "hint": "One entry per element marker: VP equals the number beside the marker.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "dwellings",
+      "label": "Dwellings",
+      "labelVi": "Dwelling đã xây",
+      "hint": "One entry per Dwelling: VP equals your track level for the element of its Realm.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "adventureCards",
+      "label": "Adventure cards scored",
+      "labelVi": "Thẻ Adventure được tính",
+      "hint": "One entry per scored Adventure card: VP equals your track level for its element (cap per Dwelling: see notes).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "vaultProphecy",
+      "label": "Vault / Prophecy / other card text",
+      "labelVi": "Thẻ Vault / Prophecy / khác",
+      "hint": "VP awarded by Vault cards and fulfilled Prophecy cards per card text.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Ties are broken by number of resources (per secondary source; verify in rulebook)."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-control-engine-elemental-track. Game ends when the last Realm is drawn or a player builds a 6th Dwelling; every player (including the trigger) then takes one more turn. Official rulebook PDF could not be downloaded (BGG login wall, Scribd/boardgamesbot are viewers), so scoring comes from reviews/summaries. Unresolved: whether the Adventure card cap is 3 per player or 3 per Dwelling; faction-specific, Castle and Monster end-game scoring in the Appendix are not modelled; exact tiebreaker.",
+  "sources": [
+    {
+      "url": "https://geekdad.com/2021/04/harness-the-power-of-the-elements-and-build-your-dwellings-of-eldervale/",
+      "title": "GeekDad: Harness the Power of the Elements (Dwellings of Eldervale)",
+      "type": "other",
+      "section": "End game and scoring summary"
+    },
+    {
+      "url": "https://www.ludoya.com/games/dwellings-of-eldervale",
+      "title": "Ludoya: Dwellings of Eldervale",
+      "type": "other",
+      "section": "End trigger (p.19 reference)"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/289790/dwellings-of-eldervale-main-rulebook-2025",
+      "title": "Dwellings of Eldervale Main Rulebook 2025 (BGG file, not retrievable)",
+      "type": "bgg-file",
+      "section": "Scoring pp.17-24"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

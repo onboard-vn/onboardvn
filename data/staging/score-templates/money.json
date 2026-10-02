@@ -1,0 +1,176 @@
+{
+  "slug": "money",
+  "name": "Money!",
+  "year": 1999,
+  "bggId": 125,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "currency1",
+      "label": "Currency 1 - total value in hand",
+      "labelVi": "Tiền tệ 1 - tổng giá trị trên tay",
+      "hint": "Total value of that currency's cards in hand: 200+ scores full value; 110-190 scores value minus 100; 100 or less scores 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value>=200, value, max(0, value-100))"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 300
+    },
+    {
+      "key": "currency2",
+      "label": "Currency 2 - total value in hand",
+      "labelVi": "Tiền tệ 2 - tổng giá trị trên tay",
+      "hint": "Total value of that currency's cards in hand: 200+ scores full value; 110-190 scores value minus 100; 100 or less scores 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value>=200, value, max(0, value-100))"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 300
+    },
+    {
+      "key": "currency3",
+      "label": "Currency 3 - total value in hand",
+      "labelVi": "Tiền tệ 3 - tổng giá trị trên tay",
+      "hint": "Total value of that currency's cards in hand: 200+ scores full value; 110-190 scores value minus 100; 100 or less scores 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value>=200, value, max(0, value-100))"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 300
+    },
+    {
+      "key": "currency4",
+      "label": "Currency 4 - total value in hand",
+      "labelVi": "Tiền tệ 4 - tổng giá trị trên tay",
+      "hint": "Total value of that currency's cards in hand: 200+ scores full value; 110-190 scores value minus 100; 100 or less scores 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value>=200, value, max(0, value-100))"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 300
+    },
+    {
+      "key": "currency5",
+      "label": "Currency 5 - total value in hand",
+      "labelVi": "Tiền tệ 5 - tổng giá trị trên tay",
+      "hint": "Total value of that currency's cards in hand: 200+ scores full value; 110-190 scores value minus 100; 100 or less scores 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value>=200, value, max(0, value-100))"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 300
+    },
+    {
+      "key": "currency6",
+      "label": "Currency 6 - total value in hand",
+      "labelVi": "Tiền tệ 6 - tổng giá trị trên tay",
+      "hint": "Total value of that currency's cards in hand: 200+ scores full value; 110-190 scores value minus 100; 100 or less scores 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value>=200, value, max(0, value-100))"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 300
+    },
+    {
+      "key": "currency7",
+      "label": "Currency 7 - total value in hand",
+      "labelVi": "Tiền tệ 7 - tổng giá trị trên tay",
+      "hint": "Total value of that currency's cards in hand: 200+ scores full value; 110-190 scores value minus 100; 100 or less scores 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value>=200, value, max(0, value-100))"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 300
+    },
+    {
+      "key": "goldSilver",
+      "label": "Gold and silver cards",
+      "labelVi": "Thẻ vàng và bạc",
+      "hint": "Add the values of all gold and silver cards; score points equal to the total.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "sets",
+      "label": "Sets of 3 exactly matching cards",
+      "labelVi": "Bộ 3 thẻ giống hệt",
+      "hint": "100 VP per set of 3x20s or 3x30s of one currency, 3x gold, or 3x silver (counts even in a weak currency position).",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 100
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 16
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "When the last deck card is dealt while refilling the market, play one more round, then final scoring."
+  },
+  "notes": "family: set-collection. Currencies are interchangeable in scoring; with fewer than 5 players some currencies are removed from the game, leave unused currency inputs at 0. Each currency has 3x20, 3x30, 1x40, 50, 60 (a full currency = 300 value + 200 in set bonuses). Gold and silver cards have their own printed values.",
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/scl/fi/ueu8dm8j1eca3hlicxq04/Money_rulebook_v18.pdf?rlkey=vdxl08anxrjp5ml7a24ic35wa&dl=0",
+      "title": "Money! rulebook (Allplay 2025), linked from publisher page",
+      "type": "official-rulebook",
+      "section": "p.4-6 Game End, Final Scoring (currencies, gold & silver, sets of 3)"
+    },
+    {
+      "url": "https://www.allplay.com/board-games/money/",
+      "title": "Money! - Allplay product page",
+      "type": "publisher-page",
+      "section": "Rulebook link"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

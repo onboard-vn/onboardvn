@@ -1,0 +1,242 @@
+{
+  "slug": "orleans-big-box-2024",
+  "name": "Orléans: Big Box",
+  "year": 2024,
+  "bggId": 420068,
+  "templateVersion": 1,
+  "variant": "base game (+ optional expansion scoring)",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 18,
+    "aggregate": "sum",
+    "endCondition": "Game ends after 18 rounds (16 in Prosperity)"
+  },
+  "categories": [
+    {
+      "key": "coins",
+      "label": "Coins",
+      "labelVi": "Đồng xu",
+      "hint": "1 VP per coin",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "brocade",
+      "label": "Brocade",
+      "labelVi": "Gấm",
+      "hint": "5 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wool",
+      "label": "Wool",
+      "labelVi": "Len",
+      "hint": "4 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wine",
+      "label": "Wine",
+      "labelVi": "Rượu vang",
+      "hint": "3 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cheese",
+      "label": "Cheese",
+      "labelVi": "Phô mai",
+      "hint": "2 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "grain",
+      "label": "Grain",
+      "labelVi": "Lúa mì",
+      "hint": "1 VP each",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "developmentStatus",
+      "label": "Development status (info)",
+      "labelVi": "Mức phát triển (tham khảo)",
+      "hint": "Value of the Development track space; used as multiplier and tiebreak",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "tradingStationsCitizens",
+      "label": "Trading stations and citizens",
+      "labelVi": "Trạm giao thương và công dân",
+      "hint": "(Trading stations + citizens) x development status. Citizens include the bonus one for most stations (not if tied)",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "inputs": [
+        "tradingStations",
+        "citizens",
+        "developmentStatus"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "(tradingStations + citizens) * developmentStatus"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "orders",
+      "label": "Order cards (Trade & Intrigue)",
+      "labelVi": "Thẻ đơn hàng (Trade & Intrigue)",
+      "hint": "Sum of VP on fulfilled Order cards",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "optional": true,
+      "expansion": "Trade & Intrigue",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "indulgences",
+      "label": "Indulgence cards (Plague)",
+      "labelVi": "Thẻ xá tội (Plague)",
+      "hint": "Points on played Indulgence cards whose condition was met",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "optional": true,
+      "expansion": "The Plague",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "corpses",
+      "label": "Corpses (Plague)",
+      "labelVi": "Xác chết (Plague)",
+      "hint": "-1 VP per corpse on Market and in bag",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "optional": true,
+      "expansion": "The Plague",
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "structures",
+      "label": "Completed structures (Prosperity)",
+      "labelVi": "Công trình hoàn thành (Prosperity)",
+      "hint": "Sum of VP on completed Structure cards under your neutral marker",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "optional": true,
+      "expansion": "Prosperity scenario",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "developmentStatus",
+      "dir": "highest",
+      "description": "Player further ahead on the Development track wins; if still tied, multiple winners"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: bag-building-economy. Big Box includes Invasion, Trade & Intrigue, The Plague, solo/2-player scenarios. Not modelled: Invasion scenario (coop: win if all common + personal objectives done), Duel and solo scenarios (win by objectives). The Prosperity scenario ends after 16 rounds; only actual Trading Stations count for the development multiplier there, not Structures.",
+  "sources": [
+    {
+      "url": "https://cdn02.plentyone.com/9gjbo7zbn9p8/frontend/Spiele/Orleans_Jubilaeum/Regeln/OrleansBB_Regeln_EN_WEB_klein.pdf",
+      "title": "Orléans Big Box rulebook (EN)",
+      "type": "official-rulebook",
+      "section": "p.11 End of the Game and Scoring; p.15 Orders; p.23 Plague scoring; p.39 Prosperity scoring; p.35 Invasion game end"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/orleans/game-rules.php",
+      "title": "Orléans Game Rules (UltraBoardGames)",
+      "type": "other",
+      "section": "End game scoring"
+    },
+    {
+      "url": "https://capstone-games.com/products/orleans-big-box",
+      "title": "Orléans: Big Box - Capstone Games",
+      "type": "publisher-page",
+      "section": "Contents"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,69 @@
+{
+  "slug": "oriflamme-ablaze",
+  "name": "Oriflamme: Ablaze",
+  "bggId": 313261,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "categories": [
+    {
+      "key": "influence",
+      "label": "Collected influence",
+      "labelVi": "Ảnh hưởng đã thu",
+      "hint": "Exclude influence still on cards.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "queueCards",
+      "label": "Family cards in queue",
+      "labelVi": "Lá gia tộc trong hàng",
+      "hint": "Count your remaining cards in queue.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://gamers-hq.de/media/pdf/db/26/02/OriflammeAblaze-_Rules_EN.pdf",
+      "title": "Studio H Ablaze rulebook (EN)",
+      "type": "official-rulebook",
+      "section": "END OF GAME (p.3): 6 rounds, most Influence wins, Influence on cards does not count, tie -> most cards still in Queue"
+    },
+    {
+      "url": "https://www.rulespal.com/oriflamme-ablaze/rulebook",
+      "title": "Ablaze rules transcription",
+      "type": "other",
+      "section": "End of the Game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "notes": "family: running-score. Verified against official rulebook PDF: players hold 7 cards, play 6 rounds, last card unplayed. Influence still on Queue cards is not counted. Tie -> most cards still in the Influence Queue; rulebook gives no further tiebreak.",
+  "rounds": {
+    "count": 6,
+    "aggregate": "sum",
+    "endCondition": "After sixth resolution phase."
+  },
+  "tiebreakers": [
+    {
+      "categoryKey": "queueCards",
+      "dir": "highest",
+      "description": "Most family cards remaining in the Influence Queue."
+    }
+  ]
+}

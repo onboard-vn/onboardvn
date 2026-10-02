@@ -1,0 +1,79 @@
+{
+  "slug": "1830-railways-robber-barons-1986",
+  "name": "1830: Railways & Robber Barons",
+  "year": 1986,
+  "bggId": 421,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "cash",
+      "label": "Cash",
+      "labelVi": "Tiền mặt",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "stockValue",
+      "label": "Stock portfolio value",
+      "labelVi": "Giá trị cổ phiếu",
+      "hint": "Sum of shares held x current share price for each corporation.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "privates",
+      "label": "Private companies (face value)",
+      "labelVi": "Công ty tư nhân (mệnh giá)",
+      "hint": "Only privates still owned by the player; closed ones are worth 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker specified in the rules summary."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: auction-money. Net worth = cash + stock value + owned privates. Game ends when the bank runs out of money (finish current round set). Official rulebook not retrieved; bankruptcy end not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/1830/rulebook",
+      "title": "1830 rulebook summary (RulesPal)",
+      "type": "other"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "endCondition": {
+    "type": "objective",
+    "description": "Bank runs out of money"
+  }
+}

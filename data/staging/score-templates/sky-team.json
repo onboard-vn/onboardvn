@@ -1,0 +1,66 @@
+{
+  "slug": "sky-team",
+  "name": "Sky Team",
+  "year": 2023,
+  "bggId": 373106,
+  "templateVersion": 1,
+  "variant": "base (Montreal and standard landing)",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": {
+    "count": 7,
+    "endCondition": "Altitude Track has 7 spaces; the final landing round starts when the Airport and Airplane images align"
+  },
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won",
+      "labelVi": "Chiến thắng",
+      "hint": "Tick only if the plane landed: no planes left on Approach Track, all flaps and landing gear green, axis horizontal, speed below brakes.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Win only at the end of the final round if: no Airplane tokens remain on the Approach Track, all Flaps and Landing Gear switches are green, the Axis is completely horizontal, and Speed (Engines sum) is lower than the Brakes. Immediate loss on: Axis reaching/passing the X (spin), Collision or Overshoot on the Approach Track, no die of each colour on both Axis and Engines at end of a round, crash landing before the airport, Brakes below 2 / speed not under brakes. Kerosene module: running out also loses.",
+  "notes": "family: coop. Pass/fail only, no points; both players win or lose together. Verified against the official Landing Procedure booklet (Montreal). Flight Log scenarios (21 airports) add modules (e.g. Kerosene) and different Approach Tracks, not modelled. Countdown of rounds: 7 Altitude spaces.",
+  "sources": [
+    {
+      "url": "https://www.scorpionmasque.com/sites/scorpionmasque.com/files/st_rules01_en_06jun2023.pdf",
+      "title": "Sky Team Landing Procedure rulebook (Scorpion Masque)",
+      "type": "official-rulebook",
+      "section": "Axis spin / mandatory actions (pp.4-6); End of Round, Special Cases (p.9); Final Turn - Landing victory conditions A-D (pp.10-11)"
+    },
+    {
+      "url": "https://www.scorpionmasque.com/sites/scorpionmasque.com/files/st_rules02_en_06jun2023.pdf",
+      "title": "Sky Team Flight Log booklet (Scorpion Masque)",
+      "type": "official-rulebook",
+      "section": "Modules (Kerosene loss)"
+    },
+    {
+      "url": "https://rules.dized.com/game/HPLDQm89RB-4e9yi2MQQGw/0TK4tyQOSviucGQdCF9qxw/final-round-and-end-of-game",
+      "title": "Dized Rules - Sky Team: Final Round and End of Game",
+      "type": "other",
+      "section": "cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends after the final round (Airport shown in Current Position and Airplane in Current Altitude). Holding pattern if Airport appears too early; crash landing (loss) if altitude runs out before reaching the airport."
+  },
+  "outcome": {
+    "winLose": true
+  }
+}

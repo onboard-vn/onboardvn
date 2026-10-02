@@ -1,0 +1,75 @@
+{
+  "slug": "madcala",
+  "name": "Madcala",
+  "year": null,
+  "bggId": 414764,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Reduced opponent's HP to 0",
+      "labelVi": "Hạ máu đối thủ về 0",
+      "hint": "Yes if your opponent's hit points reached 0.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "The game ends when a player's hit points reach 0; the other player wins. No point scoring.",
+  "notes": "family: abstract-objective (HP elimination duel, Mancala-style shard movement). Most characters start at 25 Health (some expansion characters lower, e.g. 15); the first player to bring the opponent to 0 wins. Draw/stalemate handling not stated in any source. Official rulebook PDF only on BGG Files (403 from this environment), so confidence stays medium.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/414764/madcala",
+      "title": "Madcala (BoardGameGeek, rulebook in Files)",
+      "type": "bgg-file",
+      "section": "Official rulebook not retrieved"
+    },
+    {
+      "url": "https://www.whatboardgame.com/post/madcala-board-game-review",
+      "title": "Madcala Board Game Review",
+      "type": "other",
+      "section": "Win condition: opponent has no hit points left"
+    },
+    {
+      "url": "https://www.boardgamequest.com/madcala-review/",
+      "title": "Madcala Review (Board Game Quest)",
+      "type": "other",
+      "section": "Two-player duel until one is defeated"
+    },
+    {
+      "url": "https://www.boardseyeview.net/post/madcala",
+      "title": "Madcala review (Boards Eye View)",
+      "type": "other",
+      "section": "Starting health 25; win by reducing opponent to 0"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "eliminationTracking": {
+    "resource": "Health",
+    "start": 25,
+    "eliminatedCannotWin": true
+  },
+  "endCondition": {
+    "type": "elimination",
+    "target": 25,
+    "description": "Game ends the moment a player's Health reaches 0; the other player wins"
+  }
+}

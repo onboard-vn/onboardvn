@@ -1,0 +1,63 @@
+{
+  "slug": "robinson-crusoe-adventures-on-the-cursed-island",
+  "name": "Robinson Crusoe: Adventures on the Cursed Island",
+  "year": 2012,
+  "bggId": 121921,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Scenario goal achieved",
+      "labelVi": "Hoàn thành mục tiêu kịch bản",
+      "hint": "Win together if the scenario goal is met within the round limit",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "victoryPoints",
+      "label": "Victory points (scenario table)",
+      "labelVi": "Điểm chiến thắng (bảng kịch bản)",
+      "hint": "Total from the Victory Points table on the scenario card; counted even on a loss",
+      "scope": "team",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Players win immediately by fulfilling the scenario goal within the available rounds. Players lose immediately if any character dies, or when the last round ends without the goal fulfilled.",
+  "notes": "family: coop. Victory points are optional, only for tracking progress and comparing across plays (recorded in the Results diary); the VP table differs per scenario and player count and is printed only on the scenario card, so it is a scorer input. Not comparable across player counts.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/83/5f/a2-robinson-crusoe-adventures-on-the-cursed-island-rulebook.pdf",
+      "title": "Robinson Crusoe: Adventures on the Cursed Island Rulebook",
+      "type": "official-rulebook",
+      "section": "p.14 Game End; p.18 Victory Points"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/105968/comprehensive-faq-and-errata",
+      "title": "Robinson Crusoe Comprehensive FAQ & Errata",
+      "type": "bgg-file",
+      "section": "Scoring questions"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

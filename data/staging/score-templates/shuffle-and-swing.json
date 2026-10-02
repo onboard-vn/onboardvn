@@ -1,0 +1,101 @@
+{
+  "slug": "shuffle-and-swing",
+  "name": "Shuffle and Swing",
+  "year": 2024,
+  "bggId": 414350,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track (in-game points)",
+      "labelVi": "Điểm trên track",
+      "hint": "Points from instrument sub-areas, inspector scoring and other in-game scoring.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "bragPoints",
+      "label": "Brag track end-game points",
+      "labelVi": "Điểm Brag track",
+      "hint": "Per instrument: lower of your built pieces and your brag value; sum over instruments (verify per rulebook).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "instrumentBonus",
+      "label": "Instrument end-game bonuses",
+      "labelVi": "Thưởng nhạc cụ",
+      "hint": "Majority / objective points of each instrument at game end.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "unbuiltPenalty",
+      "label": "Unbuilt instrument penalty",
+      "labelVi": "Phạt nhạc cụ chưa xong",
+      "hint": "Lowest on the unbuilt instrument's brag track loses 2 per unbuilt location (enter as positive count of locations).",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends when two of the three instruments are fully built."
+  },
+  "notes": "family: area-majority. LOW confidence: official rulebook not obtainable (BGG and publisher host blocked); built from reviews (Expand Your Game, Player Elimination, Punchboard). Exact brag-track formula, instrument-specific scoring values and tiebreaker unverified. Penalty applies only to the player lowest on the unbuilt instrument's brag track.",
+  "sources": [
+    {
+      "url": "https://expandyourgame.blogspot.com/2025/05/shuffle-and-swing-rapid-review.html",
+      "title": "Shuffle and Swing: Rapid Review",
+      "type": "other",
+      "section": "End of game; Final scoring"
+    },
+    {
+      "url": "https://playerelimination.com/2025/02/17/a-shuffle-and-swing-review/",
+      "title": "A Shuffle and Swing review",
+      "type": "other",
+      "section": "Game end"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/414350/shuffle-and-swing",
+      "title": "Shuffle and Swing (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

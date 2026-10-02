@@ -1,0 +1,181 @@
+{
+  "slug": "zhanguo-the-first-empire-2023",
+  "name": "Zhanguo: The First Empire",
+  "year": 2023,
+  "bggId": 381819,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the 5th round"
+  },
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "VP scored during the game",
+      "labelVi": "VP trên track",
+      "hint": "Report the score-track total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "governorMajorities",
+      "label": "Governor majorities in regions",
+      "labelVi": "Đa số Governor theo vùng",
+      "hint": "Per region: most Governors scores 10/15/20 VP in 2/3/4 players. Ties split, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            10
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "count"
+        },
+        "byPlayerCount": {
+          "2": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                10
+              ],
+              "tieMode": "split-floor",
+              "excludeZero": true,
+              "over": "count"
+            }
+          },
+          "3": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                15
+              ],
+              "tieMode": "split-floor",
+              "excludeZero": true,
+              "over": "count"
+            }
+          },
+          "4+": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                20
+              ],
+              "tieMode": "split-floor",
+              "excludeZero": true,
+              "over": "count"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "alchemistShip",
+      "label": "Alchemists x ship progression",
+      "labelVi": "Nhà giả kim x tàu",
+      "hint": "Alchemist cards on your board times highest VP value your ship reached.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "alchemistCards*shipVp"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "alchemistCards",
+        "shipVp"
+      ]
+    },
+    {
+      "key": "mausoleumLines",
+      "label": "Mausoleum rows/columns",
+      "labelVi": "Hàng/cột Mausoleum",
+      "hint": "10 VP per row or column formed by your Terracotta Soldiers.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "walls",
+      "label": "Walls",
+      "labelVi": "Tường",
+      "hint": "Per Wall tile: VP per matching symbol/region condition (Appendix 2). Enter total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "entranceSoldiers",
+      "label": "Soldiers at Mausoleum entrance",
+      "labelVi": "Binh sĩ ở cổng",
+      "hint": "1/2/3+ soldiers = 2/5/9 VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 2,
+          "2": 5,
+          "3+": 9
+        }
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. Governor majority is evaluated per region; scorer can enter the total VP won across regions in the governorMajorities row if the per-region rankAward is awkward. Wall scoring depends on tile conditions (Appendix 2, not modelled per tile).",
+  "sources": [
+    {
+      "url": "https://medias.sorryweare.fr/wp-content/uploads/2023/09/Zhanguo_RULES_EN.pdf",
+      "title": "Zhanguo: The First Empire rulebook (Sorry We Are French)",
+      "type": "official-rulebook",
+      "section": "End of the Game p.15"
+    },
+    {
+      "url": "https://opinionatedgamers.com/2023/10/21/ryan-post-review-of-zhanguo-the-first-empire/",
+      "title": "Review of Zhanguo (Opinionated Gamers)",
+      "type": "other",
+      "section": "End-game scoring summary"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

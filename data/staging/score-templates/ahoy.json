@@ -1,0 +1,83 @@
+{
+  "slug": "ahoy",
+  "name": "Ahoy",
+  "year": 2022,
+  "bggId": 359402,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "asymmetric",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "fame",
+      "label": "Fame on the Fame track",
+      "labelVi": "Danh vọng trên track Fame",
+      "hint": "Final marker position: region control each round (Squadron/Union), deliveries and rewards (Smugglers).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "pledgedCargo",
+      "label": "Pledged Cargo bonus Fame (Smugglers only)",
+      "labelVi": "Fame từ Cargo đã cam kết (chỉ Smuggler)",
+      "hint": "At game end, per delivered Cargo: 1 Fame per region controlled by the pledged faction whose Island suit matches the Cargo suit.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true,
+      "roleKey": "smuggler"
+    },
+    {
+      "key": "gold",
+      "label": "Gold remaining (tiebreaker)",
+      "labelVi": "Vàng còn lại (phá hòa)",
+      "hint": "Only used to break ties on Fame.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "gold", "dir": "highest", "description": "Tied players: most gold wins." }
+  ],
+  "sharedVictoryOnTie": false,
+  "roles": [
+    { "key": "squadron", "label": "Bluefin Squadron", "labelVi": "Bluefin Squadron", "winCondition": "Most Fame at game end", "categoryKeys": ["fame", "gold"] },
+    { "key": "union", "label": "Mollusk Union", "labelVi": "Mollusk Union", "winCondition": "Most Fame at game end", "categoryKeys": ["fame", "gold"] },
+    { "key": "smuggler", "label": "Smuggler", "labelVi": "Smuggler", "winCondition": "Most Fame at game end", "categoryKeys": ["fame", "pledgedCargo", "gold"] }
+  ],
+  "endCondition": {
+    "type": "target-score",
+    "target": 30,
+    "description": "At the end of a round, after region scoring, the game ends if any player has 30+ Fame; Smugglers then score pledged Cargo."
+  },
+  "notes": "family: area-majority. 2 players use Squadron + Union; 3 players add one Smuggler; 4 players use all four factions. Enter the Smuggler pledged Cargo Fame separately because it is added after the 30-Fame trigger. Expansions (Fish Folk, Rowdy Reefs) not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0106/0162/7706/files/Ahoy_Rulebook_2022.4.20.pdf",
+      "title": "Ahoy Rulebook (Leder Games, 2022)",
+      "type": "official-rulebook",
+      "section": "Overview p.1; Ending the Round, Clean Up step 1 p.9; Pledged Cargo p.21; Fame track summary"
+    },
+    {
+      "url": "https://ledergames.com/products/ahoy",
+      "title": "Ahoy (Leder Games product page)",
+      "type": "publisher-page",
+      "section": "Game summary and rulebook link"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

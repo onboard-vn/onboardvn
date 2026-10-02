@@ -1,0 +1,56 @@
+{
+  "slug": "tacta",
+  "name": "Tacta",
+  "year": null,
+  "bggId": 401636,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "visibleDots",
+      "label": "Visible dots of your color",
+      "labelVi": "Số chấm còn nhìn thấy của màu mình",
+      "hint": "Count only dots of your own color still visible when the last card is played; the player on your right double-checks.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied players share the victory; if a single winner is required, play again or the player who went out first wins."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. Single round by default; groups may agree on several rounds or a target (suggested first to 100) and total the dots. Limited Space variant uses 3 rounds with one suit each and tallies dots from all rounds. Illegally placed cards found at scoring are removed, but dots connected to them still count.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/tacta.pdf",
+      "title": "Tacta rules (The Op Games / USAopoly, 2025)",
+      "type": "official-rulebook",
+      "section": "p.6 End of game, Scoring; p.7 Other ways to play"
+    },
+    {
+      "url": "https://officialgamerules.org/game-rules/tacta-card-game-rules/",
+      "title": "TACTA rules summary",
+      "type": "other",
+      "section": "Scoring and winning"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

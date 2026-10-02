@@ -1,0 +1,106 @@
+{
+  "slug": "forbidden-star-2015",
+  "name": "Forbidden Stars",
+  "year": 2015,
+  "bggId": 175155,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 8,
+    "aggregate": "sum",
+    "endCondition": "Instant win when a player holds objective tokens equal to the number of players; otherwise game ends after round 8"
+  },
+  "categories": [
+    {
+      "key": "objectiveTokens",
+      "label": "Objective tokens collected",
+      "labelVi": "Thẻ mục tiêu đã thu thập",
+      "hint": "Collected in the Refresh phase from friendly worlds. Win immediately at tokens = number of players.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "friendlyWorlds",
+      "label": "Friendly worlds (tiebreaker)",
+      "labelVi": "Số thế giới đồng minh (phân định hòa)",
+      "hint": "Worlds containing only your units/structures.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    },
+    {
+      "key": "unitsOnBoard",
+      "label": "Units on the board (tiebreaker)",
+      "labelVi": "Số đơn vị trên bàn (phân định hòa)",
+      "hint": "Second tiebreaker.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "friendlyWorlds",
+      "dir": "highest",
+      "description": "Tied players: most friendly worlds"
+    },
+    {
+      "categoryKey": "unitsOnBoard",
+      "dir": "highest",
+      "description": "Still tied: most units on the game board"
+    },
+    {
+      "description": "Still tied: players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "winCondition": "First player to hold objective tokens equal to the number of players wins at once. If nobody has by the end of round 8, the player with the most objective tokens wins. A player with no friendly worlds is eliminated.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Win at objective tokens = number of players, or after round 8 most tokens wins"
+  },
+  "notes": "family: area-majority (objective-token race, no VP). Ties broken as in the Rules Reference 'Winning the Game'. Expansion factions not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/df/bc/0b-forbidden-stars-rulebook.pdf",
+      "title": "Forbidden Stars Learn to Play (FFG)",
+      "type": "official-rulebook",
+      "section": "p.7 Winning the Game"
+    },
+    {
+      "url": "https://tesera.ru/images/items/731504/Forbidden%20Stars%20-%20Rules%20Reference.pdf",
+      "title": "Forbidden Stars Rules Reference (FFG)",
+      "type": "official-rulebook",
+      "section": "Winning the Game (tiebreakers), Player Elimination"
+    },
+    {
+      "url": "https://www.orderofgamers.com/downloads/ForbiddenStars_v1.2.pdf",
+      "title": "Forbidden Stars rules summary v1.2",
+      "type": "other",
+      "section": "Winning the Game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,202 @@
+{
+  "slug": "yokohama-2016",
+  "name": "Yokohama",
+  "bggId": 196340,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "track",
+      "label": "VP track before bonuses",
+      "labelVi": "Điểm trước thưởng cuối",
+      "hint": "Include 100-point tokens.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "churchRank",
+      "label": "Church ranking value",
+      "labelVi": "Giá trị xếp hạng nhà thờ",
+      "hint": "Enter 0 if absent; otherwise 100 × assistant count + rightmost space number.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            6,
+            3
+          ],
+          "tieMode": "none",
+          "excludeZero": true,
+          "minValueToScore": 1
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "customsRank",
+      "label": "Customs ranking value",
+      "labelVi": "Giá trị xếp hạng hải quan",
+      "hint": "Enter 0 if absent; otherwise 100 × assistant count + rightmost space number.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4
+          ],
+          "tieMode": "none",
+          "excludeZero": true,
+          "minValueToScore": 1
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "technologyRank",
+      "label": "Industry ranking value",
+      "labelVi": "Giá trị xếp hạng công nghệ",
+      "hint": "Enter 0 with no technology; otherwise 100 × total Industry + (5 − clockwise seat). Starting player is seat 1.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            10,
+            5
+          ],
+          "tieMode": "none",
+          "excludeZero": true,
+          "minValueToScore": 1
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "countries",
+      "label": "Country sets",
+      "labelVi": "Bộ quốc gia",
+      "hint": "Partition icons from completed orders and technologies; no icon reused.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "2*sets2+4*sets3+8*sets4+12*sets5"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "sets2",
+        "sets3",
+        "sets4",
+        "sets5"
+      ]
+    },
+    {
+      "key": "mercenaries",
+      "label": "Unused foreign agents",
+      "labelVi": "Đại diện nước ngoài chưa dùng",
+      "hint": "",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "imports",
+      "label": "Imported goods",
+      "labelVi": "Hàng nhập",
+      "hint": "",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "yen",
+      "label": "Yen",
+      "labelVi": "Yên",
+      "hint": "",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goods",
+      "label": "Trade goods",
+      "labelVi": "Hàng thương mại",
+      "hint": "Combine all trade-good types.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/3)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "seat",
+      "label": "Clockwise seat",
+      "labelVi": "Thứ tự từ người bắt đầu",
+      "hint": "Starting player = 1.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/00/9a/00-yokohama-rulebook.pdf",
+      "title": "Tasty Minstrel / Hisashi Hayashi rulebook",
+      "type": "official-rulebook",
+      "section": "Printed pp.9–10: Final Score Calculation"
+    },
+    {
+      "url": "https://www.rulespal.com/yokohama/rulebook",
+      "title": "Yokohama rules transcription",
+      "type": "other",
+      "section": "Final Score Calculation"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "notes": "family: point-salad-euro. Rank inputs encode rule-specific secondary ordering because rankAward has no secondary comparison. Values must be unique; never enter raw assistant counts into ranking rows. Base 2016 edition.",
+  "tiebreakers": [
+    {
+      "categoryKey": "seat",
+      "dir": "lowest",
+      "description": "Closest clockwise to starting player, including starting player."
+    }
+  ],
+  "sharedVictoryOnTie": false
+}

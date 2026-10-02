@@ -1,0 +1,95 @@
+{
+  "slug": "a-game-of-thrones-the-board-game-second-edition-2011",
+  "name": "A Game of Thrones: The Board Game (Second Edition)",
+  "year": 2011,
+  "bggId": 103343,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 3, "max": 6 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": { "count": 10, "aggregate": "best", "endCondition": "Immediate win on controlling 7 areas with a Castle or Stronghold" },
+  "categories": [
+    {
+      "key": "castleAreas",
+      "label": "Areas with a Castle or Stronghold",
+      "labelVi": "Số vùng có Castle/Stronghold",
+      "hint": "Victory track position. 7 areas wins immediately at any time.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 7,
+      "formula": { "type": "multiply", "points": 1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "strongholds",
+      "label": "Strongholds controlled (tiebreak)",
+      "labelVi": "Số Stronghold (hòa thì xét)",
+      "hint": "1st tiebreaker: more Strongholds wins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 0 },
+      "countsToTotal": false
+    },
+    {
+      "key": "supplyPosition",
+      "label": "Supply track position (tiebreak)",
+      "labelVi": "Vị trí track Supply (hòa thì xét)",
+      "hint": "2nd tiebreaker: higher Supply track position wins.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 6,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "availablePower",
+      "label": "Available Power tokens (tiebreak)",
+      "labelVi": "Power token khả dụng (hòa thì xét)",
+      "hint": "3rd tiebreaker: most available power wins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 0 },
+      "countsToTotal": false
+    },
+    {
+      "key": "ironThronePlace",
+      "label": "Iron Throne track place (tiebreak)",
+      "labelVi": "Thứ hạng track Iron Throne (hòa thì xét)",
+      "hint": "Final tiebreaker: place 1 is best, so the lower number wins.",
+      "scope": "player",
+      "input": "number",
+      "min": 1,
+      "max": 6,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "strongholds", "dir": "highest", "description": "Greater number of Strongholds" },
+    { "categoryKey": "supplyPosition", "dir": "highest", "description": "Higher position on the Supply track" },
+    { "categoryKey": "availablePower", "dir": "highest", "description": "Most available Power tokens" },
+    { "categoryKey": "ironThronePlace", "dir": "lowest", "description": "Higher position on the Iron Throne track (place 1 is best)" }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "At the end of round 10 the House controlling the most areas with a Castle or Stronghold wins; a House controlling 7 such areas at any time wins immediately.",
+  "endCondition": { "type": "target-score", "target": 7, "description": "Game ends immediately when a House controls 7 Castle/Stronghold areas; otherwise at the end of the 10th game round." },
+  "notes": "family: area-control-majority. Not a point-summing game: scorer records the Victory track value (areas with a Castle or Stronghold) and the tiebreak values. Strongholds/power/supply/Iron Throne rows are tiebreak inputs only. Variant rules for 3-6 player maps not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/05/ff/1f-a-game-of-thrones-the-board-game-rulebook.pdf",
+      "title": "A Game of Thrones: The Board Game 2nd Edition rulebook (Fantasy Flight Games, via 1jour-1jeu)",
+      "type": "official-rulebook",
+      "section": "p.4 Object of the Game / game round; p.16 Winning the Game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

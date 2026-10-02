@@ -1,0 +1,204 @@
+{
+  "slug": "phuc-dung-restoration",
+  "name": "Phục Dựng - Restoration",
+  "year": null,
+  "bggId": 443445,
+  "templateVersion": 1,
+  "variant": "base (Kiến Trung Palace)",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "After the Audit phase of round 3"
+  },
+  "categories": [
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "constructionTiles",
+      "label": "Completed Construction tiles",
+      "labelVi": "Ô Công trình đã hoàn thành",
+      "hint": "Sum of AP printed on your Construction tiles.",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "technologyTrack",
+      "label": "Development board: Technology track",
+      "labelVi": "Bảng Phát triển: Công nghệ",
+      "hint": "AP value of the Technology track space your token reached.",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "reputation",
+      "label": "Development board: Reputation level",
+      "labelVi": "Bảng Phát triển: Uy tín",
+      "hint": "Reputation track level = AP at game end.",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "researchTrack",
+      "label": "Research department AP track",
+      "labelVi": "Phòng nghiên cứu: điểm cuối game",
+      "hint": "Value of the farthest AP slot unlocked with Upgrade tokens.",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "unusedUpgrades",
+      "label": "Unused Upgrade tokens",
+      "labelVi": "Thẻ nâng cấp chưa dùng",
+      "hint": "1 AP each.",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "managers",
+      "label": "Manager cards (hand and board)",
+      "labelVi": "Thẻ Quản lý (trên tay và trên bảng)",
+      "hint": "AP shown on Manager cards remaining in hand and on your player board.",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "artisans",
+      "label": "Artisans controlled",
+      "labelVi": "Nghệ nhân đang sở hữu",
+      "hint": "3 AP per Artisan you control at game end.",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": false,
+      "key": "constructionCount",
+      "label": "Completed Construction boards (tiebreak)",
+      "labelVi": "Số công trình hoàn thành (phân định hòa)",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": false,
+      "key": "developmentAp",
+      "label": "AP from Development board (tiebreak)",
+      "labelVi": "AP từ bảng Phát triển (phân định hòa)",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": false,
+      "key": "artisanCount",
+      "label": "Artisans (tiebreak)",
+      "labelVi": "Số nghệ nhân (phân định hòa)",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      }
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "constructionCount",
+      "dir": "highest",
+      "description": "More completed Construction boards"
+    },
+    {
+      "categoryKey": "developmentAp",
+      "dir": "highest",
+      "description": "More AP from the Development board"
+    },
+    {
+      "categoryKey": "artisanCount",
+      "dir": "highest",
+      "description": "More Artisans; still tied = shared victory"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: worker-placement-ap (tile and track sums, no end-game majorities). Verified against the official English rulebook: AP = Construction tiles + Development board (Technology and Reputation tracks) + Manager cards in hand and on player board + unused Upgrade tokens (1 each) + Artisans (3 each); Research department AP track final value = farthest unlocked slot. Game ends after Audit of round 3. Tiebreakers in order: more completed Construction boards, more AP from Development board, more Artisans, then shared. AP printed on tiles, cards and track slots are scorer inputs. Year not verified.",
+  "sources": [
+    {
+      "url": "https://drive.google.com/file/d/1c8LSua-qf_Zux9wmuKS2v6FJbqJ-t68l/view",
+      "title": "Restoration: Kiến Trung Palace rulebook (English, 12 pages, linked from Comicola campaign)",
+      "type": "official-rulebook",
+      "section": "p.3 Game Overview: End of the Game; Upgrade tokens; Audit phase; section 8 Game End and Tiebreakers"
+    },
+    {
+      "url": "https://crowdfunding.comicola.com/campaign/phuc-dung/",
+      "title": "Phục Dựng campaign page (Comicola / Ngũ Hành Games)",
+      "type": "publisher-page",
+      "section": "Rulebook links"
+    },
+    {
+      "url": "http://hiewandboardgames.blogspot.com/2026/08/restoration-phuc-dung.html",
+      "title": "Hiew's Boardgame Blog: Restoration (Phuc Dung)",
+      "type": "other",
+      "section": "End-game scoring columns"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

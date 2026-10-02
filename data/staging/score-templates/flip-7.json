@@ -1,0 +1,88 @@
+{
+  "slug": "flip-7",
+  "name": "Flip 7",
+  "year": 2024,
+  "bggId": 420087,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 3, "max": 18 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "Round in which at least one player reaches 200 points; highest total then wins"
+  },
+  "categories": [
+    {
+      "key": "numberSum",
+      "label": "Sum of Number cards",
+      "labelVi": "Tổng các lá số",
+      "hint": "Add the values of your Number cards in line (0 is worth nothing). Enter 0 if you busted.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 78,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "doubled",
+      "label": "x2 card in line",
+      "labelVi": "Có lá x2",
+      "hint": "Doubles the Number-card sum only (before adding +modifiers). Adds an extra copy of the sum.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": { "type": "expr", "expr": "if(value, cat_numberSum, 0)" },
+      "countsToTotal": true
+    },
+    {
+      "key": "modifierPoints",
+      "label": "+2 to +10 modifier cards",
+      "labelVi": "Tổng lá cộng điểm (+2..+10)",
+      "hint": "Sum of +2/+4/+6/+8/+10 cards in line; scored even without Number cards. Enter 0 if busted.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 30,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "flip7Bonus",
+      "label": "Flip 7 bonus (7 unique Number cards)",
+      "labelVi": "Thưởng Flip 7 (7 lá số khác nhau)",
+      "hint": "+15 if you flipped 7 different Number cards.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": { "type": "exclusiveBonus", "points": 15 },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    { "description": "Rulebook text read does not define a tie at 200+; play another round if tied for most points (common ruling, unverified)." }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: rounds (press-your-luck; round scores accumulate). Score a player's round: Number sum, x2 first, then add modifiers, then +15 for Flip 7; a busted player scores 0 that round. Enter one scoring per round. Game ends at end of round where anyone has >=200; most points wins. Tie handling not found in rulebook text.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/flip7.pdf",
+      "title": "Flip 7 Rulebook (The Op, ruleset ed. 3.1)",
+      "type": "official-rulebook",
+      "section": "Objective; Scoring pp.10-11; winning at 200"
+    },
+    {
+      "url": "https://flip7scoreboard.com/learn/flip-7-rules/",
+      "title": "Flip 7 Rules (flip7scoreboard)",
+      "type": "other",
+      "section": "Scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

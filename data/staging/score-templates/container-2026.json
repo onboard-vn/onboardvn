@@ -1,0 +1,121 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "medium",
+  "needsReview": true,
+  "slug": "container-2026",
+  "name": "Container",
+  "year": 2026,
+  "bggId": 453740,
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "categories": [
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "islandCash",
+      "label": "Container Island cash",
+      "labelVi": "Tiền Container Island",
+      "hint": "After discarding your most common colour, value containers per secret scoring card. Two-value colour: $10 if you own all 5 colours (incl. discarded), else $5",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "leftovers",
+      "label": "Leftover containers",
+      "labelVi": "Container còn lại",
+      "hint": "$3 per ship/bank container, $2 per harbor container, $0 factory",
+      "input": "counts",
+      "inputs": [
+        "shipBank",
+        "harbor"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "3*shipBank + 2*harbor"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "loans",
+      "label": "Outstanding loans",
+      "labelVi": "Khoản vay chưa trả",
+      "hint": "Each loan costs $11 ($10 plus $1 interest)",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -11
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "cash",
+      "label": "Cash in hand",
+      "labelVi": "Tiền mặt",
+      "hint": "Total cash before final scoring adjustments",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": false,
+      "min": 0,
+      "max": null,
+      "key": "factoryContainers",
+      "label": "Containers left in factory (tiebreak)",
+      "labelVi": "Container trong nhà máy (phân định hòa)",
+      "hint": "Count for tiebreak only",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      }
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "factoryContainers",
+      "dir": "highest",
+      "description": "Most containers remaining in factory district"
+    },
+    {
+      "description": "Still tied: victory shared"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends after the active player finishes their turn once supply runs out of any 2 container colours"
+  },
+  "notes": "family: auction-money. Score in cash ($). Modern Off-Shore Bank version (10th Anniversary onward); the classic variant without the bank is not modelled. Not verified against the official rulebook PDF; bggId 453740 edition not independently confirmed.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/container/rulebook",
+      "title": "Rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End of game / scoring"
+    }
+  ]
+}

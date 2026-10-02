@@ -1,0 +1,75 @@
+{
+  "slug": "la-granja-deluxe-master-set",
+  "name": "La Granja: Deluxe Master Set",
+  "year": null,
+  "bggId": 341945,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": { "count": 6, "aggregate": "sum", "endCondition": "Game ends after 6 rounds" },
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "Victory points on the score track",
+      "labelVi": "Điểm thắng trên track",
+      "hint": "VP earned during play (deliveries, crafts, market, siesta track, roofs). Take the VP total before converting silver.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "silver",
+      "label": "Silver after selling remaining goods",
+      "labelVi": "Bạc sau khi bán hết hàng còn lại",
+      "hint": "Sell goods in dens/stalls at sale price and trade commodities at 4 silver (not goods in fields, not upgraded goods), add coins held. 5 silver = 1 VP.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": { "type": "expr", "expr": "floor(value / 5)" },
+      "countsToTotal": true
+    },
+    {
+      "key": "colchonera",
+      "label": "Colchonera markers (module)",
+      "labelVi": "Marker trên Colchonera (module)",
+      "hint": "1/2/3 markers = 1/3/6 VP, then +3 VP per extra marker.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": { "type": "expr", "expr": "value <= 0 ? 0 : (value == 1 ? 1 : (value == 2 ? 3 : 6 + 3 * (value - 3)))" },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Colchonera module"
+    },
+    {
+      "key": "longDistanceTrade",
+      "label": "Long Distance Trade goods (module)",
+      "labelVi": "Hàng Long Distance Trade (module)",
+      "hint": "Discard 1 farm good per marker you placed of that type for the VP shown on the sideboard (done before converting silver).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Long Distance Trade module"
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "silver", "dir": "highest", "description": "Most silver remaining among tied players." }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: sum-of-categories (VP track + silver conversion). Silver tiebreaker: enter raw silver; remainder after 5:1 exchange is the 'silver remaining'. Solo mode not modelled. Other modules (dice, helpers) do not change final scoring per module book.",
+  "sources": [
+    { "url": "https://www.dropbox.com/scl/fi/b8jjpxmkel9h02tvrf16v/lagranja_rules_final_web.pdf", "title": "La Granja Deluxe Master Set rulebook (Board&Dice)", "type": "official-rulebook", "section": "p.25 Game End" },
+    { "url": "https://www.dropbox.com/scl/fi/fb04nqn4eb6a8dylkb4xo/lagranja_module-book_final_web.pdf", "title": "La Granja Deluxe Master Set module book", "type": "official-rulebook", "section": "Colchonera end game scoring; Long Distance Trade changes in scoring" },
+    { "url": "https://boardanddice.com/la-granja-deluxe-master-set/", "title": "Board&Dice product page", "type": "publisher-page", "section": "Downloads" }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

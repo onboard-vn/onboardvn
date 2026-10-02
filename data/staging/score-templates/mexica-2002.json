@@ -1,0 +1,151 @@
+{
+  "slug": "mexica-2002",
+  "name": "Mexica",
+  "year": 2002,
+  "bggId": 2955,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 2,
+    "aggregate": "sum",
+    "endCondition": "Period 1 and Period 2 each end with a scoring; the game ends after Period 2 scoring"
+  },
+  "categories": [
+    {
+      "key": "foundingPoints",
+      "label": "District founding points",
+      "labelVi": "Điểm lập khu",
+      "hint": "Blue value for the founder; white value for each other player present in the district when founded (printed on the token).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "period1Districts",
+      "label": "Period 1: founded districts (temples)",
+      "labelVi": "Kỳ 1: khu đã lập (đền)",
+      "hint": "Temple levels summed per district: 1st yellow, 2nd blue, 3rd white value; ties all score that rank and skip lower ranks.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "period1Palace",
+      "label": "Period 1: palace start bonus",
+      "labelVi": "Kỳ 1: thưởng ô xuất phát",
+      "hint": "5 points if your Pilli Mexica stands on a starting space at the end of Period 1.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "period2Districts",
+      "label": "Period 2: founded districts (temples)",
+      "labelVi": "Kỳ 2: khu đã lập (đền)",
+      "hint": "Same as Period 1 for founded districts.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "period2Unfounded",
+      "label": "Period 2: unfounded districts",
+      "labelVi": "Kỳ 2: khu chưa lập",
+      "hint": "Most temples scores the district's land size, 2nd about half, 3rd about a quarter.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "period2Palace",
+      "label": "Period 2: palace start bonus",
+      "labelVi": "Kỳ 2: thưởng ô xuất phát",
+      "hint": "5 points if your Pilli Mexica ends on a starting space.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "actionPointTokens",
+      "label": "Unused action point tokens (tiebreak)",
+      "labelVi": "Token điểm hành động còn lại (phân định hòa)",
+      "hint": "Count remaining tokens.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "actionPointTokens",
+      "dir": "highest",
+      "description": "Most unused action point tokens wins"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. NOT verified against the official rulebook (no official PDF reachable); based on Board Game Arena help and board-game-rules.com, which agree on structure. Open details: rounding for 2nd/3rd place on unfounded districts (BGA: half / quarter; other source: half rounded up, third half of second rounded up); exact timing of the palace bonus in Period 1 vs end of game; shared victory if still tied after action tokens is from one source only. District values are printed on tokens, so entered as totals.",
+  "sources": [
+    {
+      "url": "https://en.boardgamearena.com/gamepanel?game=mexica",
+      "title": "Mexica rules (Board Game Arena)",
+      "type": "other",
+      "section": "Scoring"
+    },
+    {
+      "url": "https://board-game-rules.com/boardgames/mexica/",
+      "title": "Mexica - Board Game Rules",
+      "type": "other",
+      "section": "Scoring, Winner"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/2955/mexica",
+      "title": "Mexica (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,46 @@
+{
+  "slug": "bang",
+  "name": "BANG!",
+  "bggId": 3955,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 4,
+    "max": 7
+  },
+  "mode": "team",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won",
+      "labelVi": "Chiến thắng",
+      "hint": "Mark only after resolving the stated victory conditions.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://bang.dvgiochi.com/content/1/docs/01_bang_rules_EN.pdf",
+      "title": "dV BANG! official rules",
+      "type": "official-rulebook",
+      "section": "Printed p.4: End of the Game"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Bang%21_%28card_game%29",
+      "title": "BANG! overview",
+      "type": "wiki",
+      "section": "Roles and objectives"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "notes": "family: hidden-role-social. Original card game, not Dice Game. No points. Dead faction members can win. Schema cannot evaluate roles and elimination; mark each winning player manually.",
+  "winCondition": "If Sheriff dies: Renegade wins only if sole survivor, otherwise all Outlaws win. If all Outlaws and Renegade die while Sheriff lives: Sheriff and Deputies win."
+}

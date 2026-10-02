@@ -1,0 +1,89 @@
+{
+  "slug": "blood-rage",
+  "name": "Blood Rage",
+  "year": 2015,
+  "bggId": 170216,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "After Age 3 Release Valhalla"
+  },
+  "categories": [
+    {
+      "key": "trackGlory",
+      "label": "Glory on track (battles, quests, Ragnarok, pillage)",
+      "labelVi": "Glory trên track",
+      "hint": "Glory token position after Age 3 (all Glory earned during the game).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "max": null
+    },
+    {
+      "key": "statsStep45",
+      "label": "Clan stats at 4th or 5th step",
+      "labelVi": "Chỉ số clan ở bậc 4-5",
+      "hint": "+10 Glory for each of Rage/Axes/Horns at step 4 or 5.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
+      "countsToTotal": true,
+      "max": 3
+    },
+    {
+      "key": "statsLast",
+      "label": "Clan stats at last step",
+      "labelVi": "Chỉ số clan ở bậc cuối",
+      "hint": "+20 Glory for each of Rage/Axes/Horns at the last step.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 20
+      },
+      "countsToTotal": true,
+      "max": 3
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Official rulebook gives no tiebreaker; most Glory wins."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority (Glory race + area STR quests/battles). Glory is earned during play via battles, quests, Ragnarok deaths (2/3/4 per figure by Age), pillage, cards; only the clan-stat bonus is added at the end. A stat at the last step earns +20 (not +10 + 20). Base game; expansions/gods not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/88/21/c2-blood-rage-rulebook.pdf",
+      "title": "Blood Rage Rulebook",
+      "type": "official-rulebook",
+      "section": "End of the Game; Ragnarok"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/blood-rage/game-rules.php",
+      "title": "How to play Blood Rage",
+      "type": "other",
+      "section": "End of game scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

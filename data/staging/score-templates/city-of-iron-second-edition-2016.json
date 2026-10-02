@@ -1,0 +1,63 @@
+{
+  "slug": "city-of-iron-second-edition-2016",
+  "name": "City of Iron: Second Edition",
+  "year": 2016,
+  "bggId": 195503,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "Victory points",
+      "labelVi": "Điểm chiến thắng",
+      "hint": "VP gained during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endGameVp",
+      "label": "End-game bonus VP",
+      "labelVi": "Điểm thưởng cuối game",
+      "hint": "Final scoring VP per the rulebook; enter total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Per rulebook (not verified)."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-money. UNVERIFIED: official rulebook could not be retrieved (no search access); categories are generic scorer inputs, check against the rulebook. Game end trigger (target-score) not confirmed.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/195503",
+      "title": "BoardGameGeek game page (identification only)",
+      "type": "other",
+      "section": "Game identification"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

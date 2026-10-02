@@ -1,0 +1,249 @@
+{
+  "slug": "xi-an",
+  "name": "Xi'an",
+  "year": 2017,
+  "bggId": 234828,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 6,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the 6th turn when all worker cards are used"
+  },
+  "categories": [
+    {
+      "key": "ppTrack",
+      "label": "Prestige track (before final scoring)",
+      "labelVi": "Điểm trên track (trước tính điểm cuối)",
+      "hint": "Position on the prestige points track after turn 6, before the end-game scoring below.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "majorityA",
+      "label": "Painting majority: section A",
+      "labelVi": "Đa số tượng sơn: khu A",
+      "hint": "Count your painted warriors in section A; ranks score 10/5/2 (ties split, rounded down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            10,
+            5,
+            2
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "majorityB",
+      "label": "Painting majority: section B",
+      "labelVi": "Đa số tượng sơn: khu B",
+      "hint": "Count your painted warriors in section B; ranks score 12/6/3 (ties split, rounded down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            12,
+            6,
+            3
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "majorityC",
+      "label": "Painting majority: section C",
+      "labelVi": "Đa số tượng sơn: khu C",
+      "hint": "Count your painted warriors in section C; ranks score 14/7/4 (ties split, rounded down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            14,
+            7,
+            4
+          ],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bronzeSet",
+      "label": "Bronze equipment: different cards in set",
+      "labelVi": "Trang bị đồng: số loại khác nhau",
+      "hint": "Count different bronze cards (arrowhead/halberd/sword): 1=2, 2=5, 3=10.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 2,
+          "2": 5,
+          "3": 10
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "woodSet",
+      "label": "Wood equipment: different cards in set",
+      "labelVi": "Trang bị gỗ: số loại khác nhau",
+      "hint": "Count different wooden cards: 1=2, 2=5, 3=10.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 2,
+          "2": 5,
+          "3": 10
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "matchedWarriors",
+      "label": "Warriors matching forged equipment",
+      "labelVi": "Tượng khớp trang bị",
+      "hint": "3 pp per own warrior whose pit section letter matches a different equipment card (each warrior matches only one card).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unusedTiles",
+      "label": "Unused tiles",
+      "labelVi": "Thẻ chưa dùng",
+      "hint": "1 pp per unused bonus tile (not flipped face down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gameEndBonus",
+      "label": "Game end tile bonus",
+      "labelVi": "Thưởng thẻ kết thúc",
+      "hint": "Points from the game end tile you picked (only if you reached the end of the supervisor track); compute per tile text.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resources",
+      "label": "Leftover resources",
+      "labelVi": "Tài nguyên còn lại",
+      "hint": "Count coins + clay + pigment blocks together; 1 pp per set of 3.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "supervisorPosition",
+      "label": "Supervisor track position (tiebreak)",
+      "labelVi": "Vị trí supervisor (phân định hòa)",
+      "hint": "Further along the supervisor track wins; on the same space the top of the stack wins (enter higher number).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "supervisorPosition",
+      "dir": "highest",
+      "description": "Player further ahead on the supervisor track"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. Most points (turn-end majorities, buildings, helpers, penalties of 2 pp per unpaid coin) are accumulated live on the prestige track; the scorer enters that track value then final categories. Game end tile options (resources back to stock +1 per resource max 15, +1 per 10pp, +3 per unused mausoleum tile, +2 per own painted warrior, +2 per helper, +6, +5 per area majority up to 15, +4 per identical equipment pair) are entered as one number in gameEndBonus. Rulebook's 'Mausoleum' step is ambiguous about whether only bonus tiles or all unflipped tiles with pp count; modelled as unflipped tiles x1. 2-player rules only change payment for sharing a building.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/12/ab/a5-xian-rulebook.pdf",
+      "title": "Xi'an rulebook EN (via 1j1ju)",
+      "type": "official-rulebook",
+      "section": "p.8 Game end and final scoring; p.9 Game end tiles summary"
+    },
+    {
+      "url": "https://www.rulespal.com/xian/rulebook",
+      "title": "Xi'an rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Final scoring; Tiebreaker"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

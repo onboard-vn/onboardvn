@@ -1,0 +1,247 @@
+{
+  "slug": "paladins-of-the-west-kingdom-2019",
+  "name": "Paladins of the West Kingdom",
+  "year": 2019,
+  "bggId": 266810,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "kingsOrders",
+      "label": "Completed King's Orders",
+      "labelVi": "King's Orders hoàn thành",
+      "hint": "First order 4 VP, second 6 VP, third 8 VP; every player meeting the condition scores",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 18,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "strengthTrack",
+      "label": "Strength track",
+      "labelVi": "Track Sức mạnh",
+      "hint": "VP printed where your marker ended",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "influenceTrack",
+      "label": "Influence track",
+      "labelVi": "Track Ảnh hưởng",
+      "hint": "VP printed where your marker ended",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "faithTrack",
+      "label": "Faith track",
+      "labelVi": "Track Đức tin",
+      "hint": "VP printed where your marker ended",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "develops",
+      "label": "Develops bonus",
+      "labelVi": "Điểm Develop",
+      "hint": "Only if 6+ Develops done: VP printed on your player board, else 0",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "commissions",
+      "label": "Commissions bonus",
+      "labelVi": "Điểm Commission",
+      "hint": "Only if 5+ Monks commissioned: VP printed on your player board, else 0",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fortifiesBonus",
+      "label": "Fortifies bonus",
+      "labelVi": "Điểm Fortify (ngưỡng)",
+      "hint": "Only if 5+ Walls built: VP printed on your player board, else 0",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wallVp",
+      "label": "VP printed on built Walls",
+      "labelVi": "VP in trên tường đã xây",
+      "hint": "Sum of VP printed on your Wall cards",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "garrisons",
+      "label": "Garrisons bonus",
+      "labelVi": "Điểm Garrison",
+      "hint": "Only if 5+ Outposts garrisoned: VP printed on your player board, else 0",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "absolves",
+      "label": "Absolves bonus",
+      "labelVi": "Điểm Absolve",
+      "hint": "Only if 5+ Absolves: VP printed on your player board, else 0",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "converts",
+      "label": "Converted Outsiders",
+      "labelVi": "Outsider đã Convert",
+      "hint": "Sum of end-game bonuses on your Converted Outsider cards (Attack count/attribute/type based)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "paidDebts",
+      "label": "Paid Debts",
+      "labelVi": "Nợ đã trả",
+      "hint": "1 VP per paid Debt",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unpaidDebts",
+      "label": "Unpaid Debts",
+      "labelVi": "Nợ chưa trả",
+      "hint": "-3 VP per unpaid Debt (Traitor Outsider: subtract 1 loss per Traitor from the count manually)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverResources",
+      "label": "Remaining Silver + Provisions",
+      "labelVi": "Bạc + lương thực còn lại",
+      "hint": "1 VP per set of 3",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/3)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "suspicion",
+      "label": "Suspicion cards held (tiebreaker)",
+      "labelVi": "Số Suspicion (phân định hòa)",
+      "hint": "Not scored; fewer wins second tiebreaker",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "kingsOrders",
+      "dir": "highest",
+      "description": "Most VP from King's Orders"
+    },
+    {
+      "categoryKey": "suspicion",
+      "dir": "lowest",
+      "description": "Least Suspicion"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "7 rounds. Bonuses for Develops/Commissions/Fortifies/Garrisons/Absolves depend on values printed on the player board (not in rulebook text), so they are number inputs; enter 0 below the threshold. Traitor Outsider reduces each unpaid Debt loss by 1: enter unpaid count and subtract manually or lower the count. Thief Outsider scores 1 VP per Suspicion you hold (include in Converts). Solo AI scoring has special rules (min 1 VP per Convert) not modelled. If still tied after both tiebreakers, victory is shared.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/e6/c8/91-paladins-of-the-west-kingdom-rulebook.pdf",
+      "title": "Paladins of the West Kingdom Rulebook (Garphill Games)",
+      "type": "official-rulebook",
+      "section": "p.9 King's Orders values; p.21 Convert; p.22 Inquisition/Debts; p.25 End-game and scoring + example"
+    },
+    {
+      "url": "https://meeplygames.com/games/paladins-of-the-west-kingdom",
+      "title": "Paladins of the West Kingdom Score Calculator - Meeply",
+      "type": "other",
+      "section": "Scoring categories cross-check (thresholds from player board)"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,80 @@
+{
+  "slug": "hero-realms",
+  "name": "Hero Realms",
+  "year": 2016,
+  "bggId": 198994,
+  "templateVersion": 1,
+  "variant": "base (free-for-all / duel)",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "healthRemaining",
+      "label": "Health remaining (reference)",
+      "labelVi": "Máu còn lại (tham khảo)",
+      "hint": "Players start at 50; track for reference only",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    },
+    {
+      "key": "won",
+      "label": "Last one standing",
+      "labelVi": "Người sống sót cuối cùng",
+      "hint": "Check for the winner",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 0
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: elimination (deckbuilding combat). Verified against the publisher's official base game rules page (Health start 50; out at zero or less; last one standing wins). Variants (Hunter, Hydra, Emperor etc.) change the end condition and are not modelled. Rules do not cover simultaneous elimination.",
+  "winCondition": "Last player with Health above 0 wins.",
+  "sources": [
+    {
+      "url": "https://www.herorealms.com/base-game-rules/",
+      "title": "Hero Realms Base Game Rules",
+      "type": "publisher-page",
+      "section": "Overview: Health is your score, start 50, last one standing wins; Health glossary: zero or less = defeated"
+    },
+    {
+      "url": "https://hero-realms.fandom.com/wiki/Hero_Realms_rules.",
+      "title": "Hero Realms rules (wiki)",
+      "type": "wiki",
+      "section": "Variants"
+    },
+    {
+      "url": "https://www.wikiboardgames.com/the-hero-realms-rule/",
+      "title": "Hero Realms rules",
+      "type": "other",
+      "section": "Win condition"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "endCondition": {
+    "type": "last-standing",
+    "target": 50,
+    "description": "Players start at 50 Health; at 0 or less they are out; last player standing wins."
+  },
+  "eliminationTracking": {
+    "resource": "Health",
+    "start": 50,
+    "eliminatedCannotWin": true
+  }
+}

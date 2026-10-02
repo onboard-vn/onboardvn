@@ -1,0 +1,60 @@
+{
+  "slug": "boooop",
+  "name": "BOOoop.",
+  "year": 2023,
+  "bggId": 383579,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won the game",
+      "labelVi": "Thắng ván",
+      "hint": "Tick the winner: 3 Cats in a row, or all 8 of your Cats on the bed.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "First player to line up 3 Cats in a row (orthogonal or diagonal), or to have all 8 of their Cats on the bed at once, wins.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends immediately when a player meets a win condition (checked after all booped pieces finish moving)."
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "notes": "family: objective-only. BOOoop. is the boop. edition with Ghost Cats (which can boop Cats across gaps); exact Ghost Cat win rules could not be read from the publisher rulebook, so only the base boop. win conditions are modelled. Verify Ghost Cat additions against the official rulebook.",
+  "sources": [
+    {
+      "url": "https://officialgamerules.org/game-rules/boop/",
+      "title": "boop. rules (OfficialGameRules)",
+      "type": "other",
+      "section": "Winning conditions"
+    },
+    {
+      "url": "https://rules.dized.com/game/g-24GS5DSmGa8MoKVcP6XA/boooop",
+      "title": "BOOoop. rules intro (Dized)",
+      "type": "other",
+      "section": "Objective"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

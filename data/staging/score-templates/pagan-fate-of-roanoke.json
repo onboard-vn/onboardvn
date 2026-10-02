@@ -1,0 +1,86 @@
+{
+  "slug": "pagan-fate-of-roanoke",
+  "name": "Pagan: Fate of Roanoke",
+  "year": 2024,
+  "bggId": 319910,
+  "templateVersion": 1,
+  "variant": "base 2-player (Witch vs Hunter)",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "asymmetric",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won",
+      "labelVi": "Chiến thắng",
+      "hint": "Tick for the side (Witch or Hunter) whose win condition was met; no points.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "roleKey": null
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Witch: Ritual on her true-identity villager with 3 Favor, or three villagers eliminated without hitting her identity. Hunter: eliminate the Witch's identity villager, or draw all 8 suspect cards with Exonerate (3 Evidence per card). Ends at once; no points.",
+  "notes": "family: deduction (asymmetric 1v1, no score). Verified against the official turn-flow reference sheet (2 pages) for ritual with 3 favors, elimination check, 'three villagers eliminated' and 'drawn all 8 suspect cards' branches. Eliminating a villager needs at least 3 Clue tokens (BGA help); not shown on the reference sheet. No tiebreak or draw exists. Full multi-page rulebook text not read, only the reference sheet.",
+  "sources": [
+    {
+      "url": "https://how-to-play.s3.us-east-2.amazonaws.com/319910/rules/319910_rules.pdf",
+      "title": "Pagan: Fate of Roanoke official rules reference (Merchants of Play)",
+      "type": "official-rulebook",
+      "section": "Witch turn / Hunter turn flowchart: Perform ritual, Eliminate villager, Exonerate"
+    },
+    {
+      "url": "https://merchantsofplay.com/howtoplay/pagan-fate-of-roanoke/",
+      "title": "How to Play Pagan: Fate of Roanoke (Merchants of Play)",
+      "type": "publisher-page",
+      "section": "Victory"
+    },
+    {
+      "url": "https://en.doc.boardgamearena.com/Gamehelppaganfateofroanoke",
+      "title": "Board Game Arena help - Pagan: Fate of Roanoke",
+      "type": "other",
+      "section": "Victory conditions"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "roles": [
+    {
+      "key": "witch",
+      "label": "Witch",
+      "labelVi": "Phù thủy",
+      "winCondition": "Perform the Ritual while the villager that is her true identity has 3 Favor tokens, or 3 villagers eliminated without the Witch's identity among them.",
+      "categoryKeys": [
+        "won"
+      ]
+    },
+    {
+      "key": "hunter",
+      "label": "Hunter",
+      "labelVi": "Thợ săn",
+      "winCondition": "Eliminate the villager that is the Witch's true identity, or draw all 8 suspect cards via Exonerate.",
+      "categoryKeys": [
+        "won"
+      ]
+    }
+  ],
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends immediately when either side meets a win condition."
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  }
+}

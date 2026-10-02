@@ -1,0 +1,128 @@
+{
+  "slug": "imperial-2030",
+  "name": "Imperial 2030",
+  "year": 2007,
+  "bggId": 54138,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 6 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "usa",
+      "label": "United States bonds",
+      "labelVi": "Trái phiếu Hoa Kỳ",
+      "hint": "Interest (millions) of all your US bonds x US Power Factor on the scoring track.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["interest", "powerFactor"],
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "interest * powerFactor" },
+      "countsToTotal": true
+    },
+    {
+      "key": "china",
+      "label": "China bonds",
+      "labelVi": "Trái phiếu Trung Quốc",
+      "hint": "Interest (millions) of all your Chinese bonds x China Power Factor.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["interest", "powerFactor"],
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "interest * powerFactor" },
+      "countsToTotal": true
+    },
+    {
+      "key": "russia",
+      "label": "Russia bonds",
+      "labelVi": "Trái phiếu Nga",
+      "hint": "Interest (millions) of all your Russian bonds x Russia Power Factor.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["interest", "powerFactor"],
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "interest * powerFactor" },
+      "countsToTotal": true
+    },
+    {
+      "key": "india",
+      "label": "India bonds",
+      "labelVi": "Trái phiếu Ấn Độ",
+      "hint": "Interest (millions) of all your Indian bonds x India Power Factor.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["interest", "powerFactor"],
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "interest * powerFactor" },
+      "countsToTotal": true
+    },
+    {
+      "key": "brazil",
+      "label": "Brazil bonds",
+      "labelVi": "Trái phiếu Brazil",
+      "hint": "Interest (millions) of all your Brazilian bonds x Brazil Power Factor.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["interest", "powerFactor"],
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "interest * powerFactor" },
+      "countsToTotal": true
+    },
+    {
+      "key": "europe",
+      "label": "Europe bonds",
+      "labelVi": "Trái phiếu Châu Âu",
+      "hint": "Interest (millions) of all your European bonds x Europe Power Factor.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["interest", "powerFactor"],
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "interest * powerFactor" },
+      "countsToTotal": true
+    },
+    {
+      "key": "cash",
+      "label": "Cash on hand (millions)",
+      "labelVi": "Tiền mặt (triệu)",
+      "hint": "Your personal cash; 1 million = 1 VP.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 1 },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Higher credit sum (total purchase price of bonds) in the nation with the most power points; then the nation with the second most power points, and so on"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority (investment). Game ends as soon as any nation reaches 25 power points. Power Factor is read from the scoring track above each nation's power points (5 power points per step, e.g. 17 points = factor 3). A bond's value = its interest x Power Factor; 1 million = 1 VP. Interest per bond is printed on the bond card (enter the sum of your bonds in that nation). Tiebreaker needs bond credit sums per nation (not modelled as inputs).",
+  "sources": [
+    {
+      "url": "https://www.riograndegames.com/wp-content/uploads/2013/02/Imperial-2030-Rules.pdf",
+      "title": "Imperial 2030 rules (Rio Grande Games)",
+      "type": "official-rulebook",
+      "section": "Object of the game / End of the game (p.6)"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/imperial-2030/game-rules.php",
+      "title": "How to play Imperial 2030 (UltraBoardGames)",
+      "type": "other",
+      "section": "Cross-check of end-game scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

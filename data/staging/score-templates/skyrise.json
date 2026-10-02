@@ -1,0 +1,184 @@
+{
+  "slug": "skyrise",
+  "name": "Skyrise",
+  "year": 2020,
+  "bggId": 298231,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 2,
+    "aggregate": "sum",
+    "endCondition": "Two eras; scoring at end of Era 1 and final scoring at end of Era 2"
+  },
+  "categories": [
+    {
+      "key": "islandEra1",
+      "label": "Era 1: island control",
+      "labelVi": "Kỷ 1: kiểm soát đảo",
+      "hint": "5 Prestige per island where you have the most tall buildings.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "panoramaEra1",
+      "label": "Era 1: panorama cards",
+      "labelVi": "Kỷ 1: thẻ Panorama",
+      "hint": "Prestige per instance of each displayed panorama objective.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "islandEra2",
+      "label": "Era 2: island control",
+      "labelVi": "Kỷ 2: kiểm soát đảo",
+      "hint": "Same as Era 1.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "panoramaEra2",
+      "label": "Era 2: panorama cards",
+      "labelVi": "Kỷ 2: thẻ Panorama",
+      "hint": "Same as Era 1.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "secretObjectives",
+      "label": "Secret objectives",
+      "labelVi": "Mục tiêu bí mật",
+      "hint": "Prestige on each completed secret objective card.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "patronDiscs",
+      "label": "Patron discs",
+      "labelVi": "Đĩa Patron",
+      "hint": "Sum of revealed patron tile values for collected patron discs.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "excessDiscs",
+      "label": "Excess neighborhood discs",
+      "labelVi": "Đĩa khu phố dư",
+      "hint": "10 Prestige each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "keys",
+      "label": "Keys to the City",
+      "labelVi": "Chìa khóa thành phố",
+      "hint": "Large key 10, small key 4.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "large",
+        "small"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "large*10+small*4"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "commissionDiscs",
+      "label": "Commission discs",
+      "labelVi": "Đĩa Commission",
+      "hint": "1 Prestige per patron disc, excess disc and key on your visionary, incl. itself.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "structures",
+      "label": "Structures",
+      "labelVi": "Công trình",
+      "hint": "Per structure: value in your rightmost disc column for that color, min 2.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied players: the one who finished Era 2 first wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-money. Reconstructed from a rules summary only; official rulebook not retrieved. Exact per-structure values come from player board columns (enter totals). Solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/skyrise/rulebook",
+      "title": "Skyrise rulebook summary (RulesPal)",
+      "type": "other"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

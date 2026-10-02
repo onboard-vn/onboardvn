@@ -1,0 +1,93 @@
+{
+  "slug": "atlas-lost-rise-of-the-new-sovereigns",
+  "name": "Atlas Lost: Rise of the New Sovereigns",
+  "year": null,
+  "bggId": 362598,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "techPoints",
+      "label": "Technology points",
+      "labelVi": "Điểm công nghệ",
+      "hint": "Win immediately at 30.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 30,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "initiativeTiles",
+      "label": "Initiative tiles held",
+      "labelVi": "Tile Initiative",
+      "hint": "Holding all four wins.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "influenceTrack",
+      "label": "Influence track position",
+      "labelVi": "Vị trí track ảnh hưởng",
+      "hint": "Reaching the end wins.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "won",
+      "label": "Won",
+      "labelVi": "Thắng",
+      "hint": "Whether this player triggered a win.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "First player to reach one of: 30 technology points, all four Initiative tiles, or the end of the influence track.",
+  "endCondition": {
+    "type": "target-score",
+    "target": 30,
+    "description": "First to 30 tech points, or 4 Initiative tiles, or end of influence track"
+  },
+  "notes": "family: area-majority. NOT verified against official rulebook (not found online). Tiebreaker and exact timing of win checks unknown.",
+  "sources": [
+    {
+      "url": "https://www.meeplemountain.com/reviews/atlas-lost-rise-of-the-new-sovereigns/",
+      "title": "Atlas Lost review (Meeple Mountain)",
+      "type": "other",
+      "section": "Victory conditions"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

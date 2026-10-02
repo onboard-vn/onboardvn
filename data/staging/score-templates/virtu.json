@@ -1,0 +1,256 @@
+{
+  "slug": "virtu",
+  "name": "Virtù",
+  "year": 2021,
+  "bggId": 345377,
+  "templateVersion": 1,
+  "variant": "3-5 players",
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "citiesTrackVP",
+      "label": "Cities track VP",
+      "labelVi": "VP theo đường Thành phố",
+      "hint": "VP at your marker position on the Cities track (0-6 VP).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "citiesTrackPos",
+      "label": "Cities track position (for leader bonus)",
+      "labelVi": "Vị trí đường Thành phố (thưởng dẫn đầu)",
+      "hint": "Enter your position on the Cities track; furthest player gets +1 VP (all tied get it). Enter 0 for no progress.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            1
+          ],
+          "tieMode": "all-full",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "patronageTrackVP",
+      "label": "Patronage track VP",
+      "labelVi": "VP theo đường Bảo trợ",
+      "hint": "VP at your marker position on the Patronage track (0-3 VP).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "patronagePos",
+      "label": "Patronage track position (for leader bonus)",
+      "labelVi": "Vị trí đường Bảo trợ (thưởng dẫn đầu)",
+      "hint": "Enter your Patronage position; furthest player gets +1 VP (all tied get it). Enter 0 for no progress.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            1
+          ],
+          "tieMode": "all-full",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardsTiles",
+      "label": "Prestige on cards/tiles",
+      "labelVi": "Prestige trên thẻ/ô",
+      "hint": "Sum Prestige Points printed on cards in your Palace and tiles in your Domain (including Cathedrals 1 each and Resources Exhausted ones).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "crosses",
+      "label": "Cross symbols (religious influence)",
+      "labelVi": "Số Cross (ảnh hưởng tôn giáo)",
+      "hint": "Count Crosses on Palace cards, Domain tiles, Holy Roman Empire alliance (if no enemy Agent), Duomo/Sistine Chapel bonuses. Awards 4/2/(1)/0 by rank; tied players get the next-lower rank's points.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            4,
+            2,
+            0
+          ],
+          "tieMode": "all-next-lower",
+          "excludeZero": false,
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "4": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                4,
+                2,
+                1,
+                0
+              ],
+              "tieMode": "all-next-lower",
+              "excludeZero": false,
+              "over": "value"
+            }
+          },
+          "5": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                4,
+                2,
+                1,
+                0,
+                0
+              ],
+              "tieMode": "all-next-lower",
+              "excludeZero": false,
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "trophies",
+      "label": "Trophies (military prestige)",
+      "labelVi": "Chiến tích quân sự",
+      "hint": "2 VP per Trophy; max 1 Trophy per opponent.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "alliances",
+      "label": "Alliances without enemy Agent",
+      "labelVi": "Liên minh không có Agent địch",
+      "hint": "1 VP per Alliance (Bonus used or not).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "indulgences",
+      "label": "Indulgence cards in Palace",
+      "labelVi": "Thẻ Indulgence còn trong Palace",
+      "hint": "-1 VP per Indulgence card still in your Palace.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "crowns",
+      "label": "Crowns in Palace and Domain (tiebreak)",
+      "labelVi": "Số Crown (phân định hòa)",
+      "hint": "Count Crowns on cards and tiles, available or exhausted.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "crowns",
+      "dir": "highest",
+      "description": "Most Crowns in Palace and Domain"
+    },
+    {
+      "description": "If still tied, players share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "At end of Spring, if all Cities are controlled, someone controls 8+ Cities, or someone reaches the end of the Patronage track: finish with a final Winter, then score."
+  },
+  "notes": "family: engine-building + area-majority. Track VP: the exact position-to-VP mapping is printed on the Prestige board, so VP is entered directly; positions are also entered only to award the +1 leader bonus. Crosses reward: 3p 4/2/0, 4p 4/2/1/0, 5p 4/2/1/0/0. The 2-player game (The Wars of Italy) has different scoring and is in virtu--2-player.json.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/c4/62/76-virtu-rulebook-3-to-5-players.pdf",
+      "title": "Virtù rulebook for 3-5 players (Super Meeple, EN)",
+      "type": "official-rulebook",
+      "section": "pp.23-24 End of the Game; Prestige & Victory; Cathedral p.22; Alliances p.22"
+    },
+    {
+      "url": "https://tabletopping.games/2022/09/19/virtu/",
+      "title": "Virtù review (scoring overview cross-check)",
+      "type": "other",
+      "section": "Scoring summary"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

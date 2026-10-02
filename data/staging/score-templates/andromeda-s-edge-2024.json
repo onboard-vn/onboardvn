@@ -1,0 +1,219 @@
+{
+  "slug": "andromeda-s-edge-2024",
+  "name": "Andromeda's Edge",
+  "year": 2024,
+  "bggId": 358661,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "VP track before final scoring",
+      "labelVi": "Điểm trên track trước tính điểm cuối",
+      "hint": "VP marker total (add 100 if marker flipped).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "progressTracks",
+      "label": "1. Progress tracks",
+      "labelVi": "1. Các track tiến trình",
+      "hint": "VP printed next to your marker on each of the 5 progress tracks, summed.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "developments",
+      "label": "2. Developments",
+      "labelVi": "2. Công trình phát triển",
+      "hint": "VP by highest level on matching track: L1 5, L2 7, L3 10.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "level1 * 5 + level2 * 7 + level3 * 10"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "level1",
+        "level2",
+        "level3"
+      ]
+    },
+    {
+      "key": "damagedModules",
+      "label": "3. Damaged modules",
+      "labelVi": "3. Module hư hại",
+      "hint": "-2 VP per damaged module (ships exempt).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "vaultBonus",
+      "label": "4. Vault bonus",
+      "labelVi": "4. Thưởng kho",
+      "hint": "Unspent resources (incl. tactics cards) x highest vault value reached on commerce track (0, 1 or 2).",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "unspentResources * vaultValue"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "unspentResources",
+        "vaultValue"
+      ]
+    },
+    {
+      "key": "civilizationModules",
+      "label": "5. Civilization modules",
+      "labelVi": "5. Module văn minh",
+      "hint": "Game-end VP from undamaged civilization modules; values depend on module.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leaders",
+      "label": "6. Leaders",
+      "labelVi": "6. Lãnh đạo",
+      "hint": "1 VP per leader left on station.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "factionAbilities",
+      "label": "7. Faction abilities / other",
+      "labelVi": "7. Năng lực phe / khác",
+      "hint": "Extra game-end VP from faction abilities.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "quasarVortex",
+      "label": "Quasar / Vortex adjacency",
+      "labelVi": "Kề Quasar / Vortex",
+      "hint": "Optional special regions: VP per development adjacent, as printed.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true
+    },
+    {
+      "key": "modulesCount",
+      "label": "Modules (tiebreak)",
+      "labelVi": "Số module (phân định hòa)",
+      "hint": "Total modules on station.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "resourcesCount",
+      "label": "Resources (tiebreak)",
+      "labelVi": "Số tài nguyên (phân định hòa)",
+      "hint": "Total unspent resources.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "modulesCount",
+      "dir": "highest",
+      "description": "Most modules"
+    },
+    {
+      "categoryKey": "resourcesCount",
+      "dir": "highest",
+      "description": "Most resources"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority (engine/development with dice combat). Game ends when a VP marker reaches the terminus; everyone then gets one more turn. In-play VP (event cards, development builds) is on the VP track. Faction abilities and civilization module values vary, so they are scorer inputs. Escalation expansion not modelled. Order in the rulebook: progress tracks, developments, damaged modules, vault, civilization modules, leaders, other; quasar/vortex adjacency applies to special regions.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/andromedasedge.pdf",
+      "title": "Andromeda's Edge Rules of Play",
+      "type": "official-rulebook",
+      "section": "Game End: Final Scoring 1-7, Resolving Ties"
+    },
+    {
+      "url": "https://www.rulespal.com/andromedas-edge/rulebook",
+      "title": "Andromeda's Edge rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Final scoring and tiebreakers cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

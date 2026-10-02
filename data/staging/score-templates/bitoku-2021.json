@@ -1,0 +1,232 @@
+{
+  "slug": "bitoku-2021",
+  "name": "Bitoku",
+  "year": 2021,
+  "bggId": 323612,
+  "templateVersion": 1,
+  "variant": "base (Ascension final scoring)",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "VP track before the Ascension",
+      "labelVi": "Điểm trên track trước Thăng thiên",
+      "hint": "VP track total (add 100 if flag flipped).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "dreamCrystals",
+      "label": "A. Dream Crystals rewards (VP gained)",
+      "labelVi": "A. Thưởng Dream Crystal (VP nhận được)",
+      "hint": "VP obtained from resolving purple Dream Crystals on your player board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "firstInTurnOrder",
+      "label": "B. First on turn order track",
+      "labelVi": "B. Đứng đầu thứ tự lượt",
+      "hint": "3 VP if first on the Turn Order Track.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bitokuTypes",
+      "label": "C. Different Bitoku card types on path",
+      "labelVi": "C. Số loại thẻ Bitoku khác nhau",
+      "hint": "Distinct types only; 1/2/4/7/11/16/22 VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 7,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 2,
+          "3": 4,
+          "4": 7,
+          "5": 11,
+          "6": 16,
+          "7": 22
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "treasuresOfLake",
+      "label": "D. Treasures of the Lake (region majorities)",
+      "labelVi": "D. Kho báu hồ (đa số vùng)",
+      "hint": "Sum of region awards by Kodama track rank; ties split rounded down. Values printed on the board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "iwakuraRocks",
+      "label": "E. Iwakura Rocks",
+      "labelVi": "E. Đá Iwakura",
+      "hint": "Per Pilgrim next to a Rock: 1 VP per matching Yokai/Mitama/Building (printed on tile).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "guardians",
+      "label": "F. Guardians pay homage",
+      "labelVi": "F. Xúc xắc và tài nguyên",
+      "hint": "(3 dice values + resources held) / 4, rounded down.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor((diceTotal + resources) / 4)"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "diceTotal",
+        "resources"
+      ]
+    },
+    {
+      "key": "visionsCompleted",
+      "label": "G. Visions completed: VP",
+      "labelVi": "G. Vision hoàn thành: VP",
+      "hint": "Sum of VP on Visions fully completed (each item serves only one Vision).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "visionsFailedPenalty",
+      "label": "G. Visions failed: penalty",
+      "labelVi": "G. Vision thất bại: phạt",
+      "hint": "1 or 2 VP lost per uncompleted Vision as printed; enter as a negative number.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fateAccomplished",
+      "label": "H. End-game Virtue Points",
+      "labelVi": "H. Điểm Virtue cuối game",
+      "hint": "Purple Virtue Points on player board, Buildings and Crystal areas.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "visionsCompletedCount",
+      "label": "Visions completed (tiebreak)",
+      "labelVi": "Số Vision hoàn thành (phân định hòa)",
+      "hint": "Count of completed Visions.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "turnOrderPosition",
+      "label": "Turn order position (tiebreak)",
+      "labelVi": "Vị trí thứ tự lượt (phân định hòa)",
+      "hint": "1 = first on the track.",
+      "scope": "player",
+      "input": "number",
+      "min": 1,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "visionsCompletedCount",
+      "dir": "highest",
+      "description": "Most Visions completed"
+    },
+    {
+      "categoryKey": "turnOrderPosition",
+      "dir": "lowest",
+      "description": "Furthest ahead on the Turn Order Track"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority (hybrid worker placement/engine). Treasures of the Lake awards per region are printed on the board, so entered as one number. In-round building bonus (2 VP per Building, max 12) is already on the VP track. Solo mode has its own target score (not modelled).",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/be/32/f0-bitoku-rulebook.pdf",
+      "title": "Bitoku Rulebook",
+      "type": "official-rulebook",
+      "section": "p.14-15 The Ascension final scoring steps A-H and tiebreakers; p.16 Vision cards"
+    },
+    {
+      "url": "https://www.scribd.com/document/904477182/Bitoku-rules-summary",
+      "title": "Bitoku rules summary",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,81 @@
+{
+  "slug": "seaside-2024",
+  "name": "Seaside",
+  "year": 2024,
+  "bggId": 406660,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "seasideDiscs",
+      "label": "Discs on your Seaside (stack height)",
+      "labelVi": "Số đĩa trong Seaside của bạn",
+      "hint": "Đếm toàn bộ đĩa của bạn: đĩa trên Seaside, isopod dưới sandpiper, sò, cua... (mỗi đĩa = 1).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "seaDiscsCollected",
+      "label": "Remaining Sea discs collected (most Waves)",
+      "labelVi": "Đĩa còn lại ở biển (nhiều Wave nhất)",
+      "hint": "Khi túi hết, người có nhiều Wave nhất lấy hết đĩa còn trong biển; hòa thì chia đều, dư để lại biển.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: abstract-objective. Score = tallest stack, every disc worth 1. Wave-majority sweep of Sea discs happens before stacking (split evenly on ties, remainder stays in the Sea, nothing if no Waves). Solo mode (ends when a 7th token appears in Sea or Seaside; score bands 0-19 poor ... 60+) not modelled. Official rulebook PDF could not be downloaded; rules from Board Game Arena help page and reviews, so exact tie wording unverified.",
+  "sources": [
+    {
+      "url": "https://en.doc.boardgamearena.com/Gamehelpseaside",
+      "title": "Seaside help (Board Game Arena)",
+      "type": "other",
+      "section": "End of Game; Solo Mode"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/seaside/",
+      "title": "Seaside Game Review (Meeple Mountain)",
+      "type": "other",
+      "section": "Scoring/wave bonus"
+    },
+    {
+      "url": "https://happypiranha.com/blogs/board-game-rules/how-to-play-seaside-board-game-rules-instructions",
+      "title": "How to Play Seaside (Happy Piranha)",
+      "type": "other",
+      "section": "Scoring"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/406660/seaside",
+      "title": "Seaside (BGG)",
+      "type": "bgg-file",
+      "section": "Game page, files list (rulebook)"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

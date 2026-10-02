@@ -1,0 +1,90 @@
+{
+  "slug": "rising-sun",
+  "name": "Rising Sun",
+  "year": 2018,
+  "bggId": 205896,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 3, "max": 5 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "VP track after Autumn (before winter bonuses)",
+      "labelVi": "Điểm trên track VP (trước thưởng cuối game)",
+      "hint": "Position of your marker on the VP track; add 50 if the marker has looped past 50.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "winterUpgrades",
+      "label": "Winter upgrade VP",
+      "labelVi": "Điểm từ thẻ nâng cấp Winter",
+      "hint": "Total VP granted by your Winter Season cards, per their own criteria.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "provinceTokens",
+      "label": "War Province tokens by Season won",
+      "labelVi": "Thẻ tỉnh chiến tranh theo mùa thắng",
+      "hint": "Spring token = 1 VP, Summer = 2 VP, Autumn = 3 VP.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["spring", "summer", "autumn"],
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "spring * 1 + summer * 2 + autumn * 3" },
+      "countsToTotal": true
+    },
+    {
+      "key": "provinceSetBonus",
+      "label": "Different War Provinces collected",
+      "labelVi": "Số tỉnh chiến tranh khác nhau",
+      "hint": "Count distinct Provinces only: 3-4 = 10 VP, 5-6 = 20 VP, 7-8 = 30 VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 8,
+      "formula": {
+        "type": "table",
+        "table": { "0": 0, "1": 0, "2": 0, "3": 10, "4": 10, "5": 20, "6": 20, "7": 30, "8": 30 }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "honorRank",
+      "label": "Honor track position (tiebreak, 1 = highest)",
+      "labelVi": "Thứ hạng Honor (phân định hòa, 1 = cao nhất)",
+      "hint": "Slot on the Honor track from the top; lower number wins ties.",
+      "scope": "player",
+      "input": "number",
+      "min": 1,
+      "max": 5,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "honorRank", "dir": "lowest", "description": "Tied player with the highest Honor (top-most on the Honor track) wins" },
+    { "description": "If two Allied players tie for first, they share the victory." }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: auction-money. Game ends at the start of Winter; scoring is VP track (gained during play) plus final bonuses. Enter VP track as it stands after Autumn, then winter cards and tokens are added here. Source is a close paraphrase of the CMON rulebook on UltraBoardGames; official PDF could not be retrieved (CMON site blocked), so confidence is medium. Alliance shared-victory only when allied players tie for first.",
+  "sources": [
+    { "url": "https://www.ultraboardgames.com/rising-sun/game-rules.php", "title": "Rising Sun rules (UltraBoardGames)", "type": "other", "section": "End of the Game: Winter Season" }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

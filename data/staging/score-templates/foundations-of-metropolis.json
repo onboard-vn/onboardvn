@@ -1,0 +1,112 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game lasts three years"
+  },
+  "confidence": "medium",
+  "needsReview": true,
+  "slug": "foundations-of-metropolis",
+  "name": "Foundations of Metropolis",
+  "year": 2023,
+  "bggId": 412865,
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "categories": [
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "residential",
+      "label": "Residential scoring (all years)",
+      "labelVi": "Điểm nhà ở",
+      "hint": "Each year: leader on Population Tracker scores position + bonus (Y1 4, Y2 7, Y3 10); others score as read from rules. Enter total across 3 years",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "civic",
+      "label": "Civic scoring (all years)",
+      "labelVi": "Điểm công trình dân sự",
+      "hint": "Prestige from icons on orthogonally adjacent buildings",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "commercial",
+      "label": "Commercial scoring (all years)",
+      "labelVi": "Điểm thương mại",
+      "hint": "2 Prestige per building; Y3 also +1 Prestige instead of Coin; enter total",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "emptyLots",
+      "label": "Empty Lot markers (Year 3)",
+      "labelVi": "Lô đất trống (năm 3)",
+      "hint": "1 Prestige per Lot Marker on an unbuilt lot",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": false,
+      "min": 0,
+      "max": null,
+      "key": "coins",
+      "label": "Leftover Coins (tiebreak)",
+      "labelVi": "Xu còn lại (phân định hòa)",
+      "hint": "Tiebreak only",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      }
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "coins",
+      "dir": "highest",
+      "description": "Most leftover Coins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-money (bid-based building market). Per-year breakdown simplified into three totals; residential rule for non-leaders and exact civic icon values not verified. Year/edition details unverified against official rulebook PDF.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/foundations-of-metropolis/rulebook",
+      "title": "Rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End of game / scoring"
+    }
+  ]
+}

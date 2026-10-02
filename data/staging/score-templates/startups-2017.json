@@ -1,0 +1,104 @@
+{
+  "slug": "startups-2017",
+  "name": "Startups",
+  "year": 2017,
+  "bggId": 223770,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 7
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "oneCoins",
+      "label": "Coins (1 side)",
+      "labelVi": "Xu mặt 1",
+      "hint": "Count coins still on the 1 side (include starting coins left).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "max": null
+    },
+    {
+      "key": "threeCoins",
+      "label": "Coins (3 side)",
+      "labelVi": "Xu mặt 3",
+      "hint": "Coins flipped to the 3 side by payouts.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "max": null
+    },
+    {
+      "key": "money",
+      "label": "Total money",
+      "labelVi": "Tổng tiền",
+      "hint": "1 per 1-coin + 3 per 3-coin; most money wins.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "oneCoins + 3*threeCoins"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "oneCoins",
+        "threeCoins"
+      ]
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "threeCoins",
+      "dir": "highest",
+      "description": "Most coins on the 3 side (per rules summary, unverified)"
+    },
+    {
+      "description": "Then the player who went last (per rules summary, unverified)"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. Payout is done physically at game end after each player adds their 3 hand cards to their tableau: per company, the player with strictly most cards is paid 1 coin per card by each other holder of that company; tie for most = nobody paid. Paid coins flip to the 3 side; unused starting coins stay worth 1; Anti-Monopoly chip stops taking market cards of a company you hold the lead in. Winner = most money. Model records final coin counts instead of recomputing payouts. Official Oink rulebook PDF not retrievable; tiebreaker (most 3-coins, then went last) comes only from RulesPal summary and is unverified, one other review says tie rule unspecified.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/startups/rulebook",
+      "title": "Startups rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End game, payouts, tiebreakers"
+    },
+    {
+      "url": "https://whatsericplaying.com/2018/01/01/startups/",
+      "title": "Startups review (rules summary)",
+      "type": "other",
+      "section": "Payouts, ties, winner"
+    },
+    {
+      "url": "https://opinionatedgamers.com/2017/07/06/startups-review-by-jeff-lingwall/",
+      "title": "Startups review by Jeff Lingwall",
+      "type": "other",
+      "section": "Majority paid 1 coin per share, flips to 3"
+    },
+    {
+      "url": "https://oinkgames.com/en/games/analog/startups/",
+      "title": "Startups - Oink Games",
+      "type": "publisher-page",
+      "section": "Overview, 3-7 players"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

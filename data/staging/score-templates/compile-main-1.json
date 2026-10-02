@@ -1,0 +1,61 @@
+{
+  "slug": "compile-main-1",
+  "name": "Compile: Main 1",
+  "year": 2024,
+  "bggId": 406652,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 2 },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Compiled all 3 protocols (winner)",
+      "labelVi": "Đã Compile đủ 3 protocol (thắng)",
+      "hint": "First player to flip all 3 of their Protocol cards to the Compiled side wins.",
+      "scope": "player",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "protocolsCompiled",
+      "label": "Protocols compiled",
+      "labelVi": "Số protocol đã compile",
+      "hint": "Count of your Protocol cards on the Compiled side (0-3).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "At the Check Compile step, a line with 10 or more value and more than the opponent's value in that line must be compiled; the first player to compile all 3 of their protocols wins. Recompiling a line does not count as a new protocol.",
+  "endCondition": {
+    "type": "objective",
+    "target": 3,
+    "description": "First player with all 3 Protocol cards on the Compiled side wins."
+  },
+  "notes": "family: race. No points; the value in a line only triggers Compile. Simultaneous victory is not described in the rulebook (compiling is the only action of a turn, so only one player can finish per turn). Aux/Main 2 expansions not modelled.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/compile-main-1.pdf",
+      "title": "Compile: Main 1 Rulebook (Greater Than Games)",
+      "type": "official-rulebook",
+      "section": "Objective and Turn Order (p.1); Compile rules"
+    },
+    {
+      "url": "https://shop.greaterthangames.com/products/compile-main-1",
+      "title": "Compile: Main 1 (Greater Than Games product page)",
+      "type": "publisher-page",
+      "section": "Game summary"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

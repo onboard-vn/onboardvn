@@ -1,0 +1,83 @@
+{
+  "slug": "arkwright",
+  "name": "Arkwright",
+  "bggId": 154825,
+  "templateVersion": 2,
+  "variant": "2014 base Water Frame",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "portfolio",
+      "label": "Final portfolio value",
+      "labelVi": "Giá trị cổ phần cuối",
+      "hint": "After all final share/price adjustments.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "shares*sharePrice"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "shares",
+        "sharePrice"
+      ]
+    },
+    {
+      "key": "loans",
+      "label": "Outstanding loans",
+      "labelVi": "Khoản vay chưa trả",
+      "hint": "Any outstanding loan disqualifies this player.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "cash",
+      "label": "Remaining cash",
+      "labelVi": "Tiền mặt còn lại",
+      "hint": "After final share purchases.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://bghub.org/r/arkwright.pdf",
+      "title": "Spielworxx / Capstone Water Frame rulebook",
+      "type": "official-rulebook",
+      "section": "p.35 §8.0 End of Game and Winner"
+    },
+    {
+      "url": "https://www.rulespal.com/arkwright/rulebook",
+      "title": "Arkwright transcription",
+      "type": "other",
+      "section": "§8.0"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "notes": "family: economic-portfolio. Apply final event first. Each temporary worker still on a factory marker costs four share-value spaces and two owned shares; each outstanding contract costs its track value in share-value spaces. Enter adjusted share count and price, not track index. Schema cannot exclude indebted players automatically.",
+  "winCondition": "Exclude players with outstanding loans. Highest final owned-share portfolio among remaining players wins.",
+  "tiebreakers": [
+    {
+      "categoryKey": "cash",
+      "dir": "highest",
+      "description": "Most cash among tied eligible players; then shared victory."
+    }
+  ],
+  "sharedVictoryOnTie": true
+}

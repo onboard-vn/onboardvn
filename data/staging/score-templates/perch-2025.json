@@ -1,0 +1,174 @@
+{
+  "slug": "perch-2025",
+  "name": "Perch",
+  "year": 2025,
+  "bggId": 387560,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Game ends after round 5; final scoring follows the last Upkeep"
+  },
+  "categories": [
+    {
+      "key": "roundScore",
+      "label": "Score track (location scoring over 5 rounds)",
+      "labelVi": "Điểm trên track (chấm địa điểm 5 vòng)",
+      "hint": "Each Upkeep: most birds at a location takes top value, 2nd middle, 3rd bottom; tied ranks score nothing. Enter final track score.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "largestFlock",
+      "label": "Largest single flock bonus",
+      "labelVi": "Đàn lớn nhất",
+      "hint": "10 points for the single largest flock on one location; none if tied. Enter your largest flock size.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            10
+          ],
+          "tieMode": "none",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "creatures",
+      "label": "Creatures controlled",
+      "labelVi": "Sinh vật kiểm soát",
+      "hint": "3 points per creature you control.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fountain",
+      "label": "Fountain birds",
+      "labelVi": "Chim trên đài phun nước",
+      "hint": "Each bird scores the value printed next to its fountain level; enter the summed value.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "plazaBirds",
+      "label": "Birds in the Plaza",
+      "labelVi": "Chim ở quảng trường",
+      "hint": "1 point per bird in the Plaza.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectives",
+      "label": "Objective cards",
+      "labelVi": "Thẻ mục tiêu",
+      "hint": "Points from completed objective cards (if used).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "optional": true
+    },
+    {
+      "key": "fountainBirdCount",
+      "label": "Birds in the Fountain (tiebreaker)",
+      "labelVi": "Số chim ở đài phun nước (hòa)",
+      "hint": "Count only; tiebreaker.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "largestFlock",
+      "dir": "highest",
+      "description": "Largest single flock"
+    },
+    {
+      "categoryKey": "fountainBirdCount",
+      "dir": "highest",
+      "description": "Most birds in the Fountain"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. Fountain per-level point values and the exact location tile values could not be read (official rulebook PDF blocked); taken as scorer inputs. Largest flock tie rule and tiebreak order come from secondary summaries (officialgamerules.org, BGA, reviews); verify against rulebook. Shared victory if still tied is an assumption.",
+  "sources": [
+    {
+      "url": "https://meepletron-storage.s3.us-east-2.amazonaws.com/resources/perch-rulebook.pdf",
+      "title": "Perch Rulebook (publisher, not retrievable)",
+      "type": "official-rulebook",
+      "section": "End game scoring (not verified)"
+    },
+    {
+      "url": "https://officialgamerules.org/game-rules/perch-rules/",
+      "title": "Perch rules summary",
+      "type": "other",
+      "section": "End game scoring, tiebreaker"
+    },
+    {
+      "url": "https://en.boardgamearena.com/gamepanel?game=perch",
+      "title": "Perch on Board Game Arena",
+      "type": "other",
+      "section": "Scoring summary"
+    },
+    {
+      "url": "https://tabletopping.games/2026/02/19/perch/",
+      "title": "Perch review",
+      "type": "other",
+      "section": "Final scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

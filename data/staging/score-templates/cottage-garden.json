@@ -1,0 +1,101 @@
+{
+  "slug": "cottage-garden",
+  "name": "Cottage Garden",
+  "year": 2016,
+  "bggId": 204027,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "orangeTrack",
+      "label": "Orange cubes (Flower Pots), not on Target",
+      "labelVi": "Hình lập phương cam (chậu hoa), chưa tới đích",
+      "hint": "Mỗi khối cam điểm bằng số ô trên track (1-15). Cộng 3 khối, không tính khối ở ô 20 hay ô Start.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 45,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "blueTrack",
+      "label": "Blue cubes (Garden Cloches), not on Target",
+      "labelVi": "Hình lập phương xanh (chụp vườn), chưa tới đích",
+      "hint": "Mỗi khối xanh 2-14 điểm (2 điểm mỗi ô). Cộng 3 khối, không tính khối ở ô 20 hay ô Start.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 42,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "targetCubes",
+      "label": "Cubes on the Target space (20)",
+      "labelVi": "Khối ở ô đích (20)",
+      "hint": "Mỗi khối ở ô đích 20 điểm.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "multiply",
+        "points": 20
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "beehives",
+      "label": "Beehives on bonus tile",
+      "labelVi": "Tổ ong trên thẻ thưởng",
+      "hint": "Mỗi tổ ong 1 điểm (thẻ 2 tổ = 2, thẻ 1 tổ = 1).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "beehives",
+      "dir": "highest",
+      "description": "Tied player with more Beehives wins"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: running-track. Cubes on the Start space and Cats in reserve score nothing. Final Round penalties (-2 orange / -1 blue step per turn) are already reflected in cube positions. Solo and children's rules not modelled. If still tied after Beehives the rulebook is silent; shared victory assumed.",
+  "sources": [
+    {
+      "url": "https://boardgame.bg/cottage%20garden%20rules.pdf",
+      "title": "Cottage Garden Rulebook (Edition Spielwiese / Great Designers Series #8)",
+      "type": "official-rulebook",
+      "section": "p.7 End of the game"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/cottage-garden/game-rules.php",
+      "title": "How to play Cottage Garden (UltraBoardGames)",
+      "type": "other",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

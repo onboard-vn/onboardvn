@@ -1,0 +1,75 @@
+{
+  "slug": "small-world-of-warcraft",
+  "name": "Small World of Warcraft",
+  "year": 2020,
+  "bggId": 309630,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "Game Turn marker reaches the last spot (10 rounds for 2-3 players, 9 for 4, 8 for 5); every player then plays a final turn"
+  },
+  "categories": [
+    {
+      "key": "victoryCoins",
+      "label": "Total Victory Coins at game end",
+      "labelVi": "Tổng Victory Coin cuối game",
+      "hint": "Coins are scored at the end of each turn (1 per occupied Region plus race/power/Legendary Place/Artifact/faction bonuses); count your whole stack at the end.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "raceTokensOnBoard",
+      "label": "Race tokens still on the boards (Active + In Decline)",
+      "labelVi": "Số token chủng tộc còn trên bản đồ (Active + Decline)",
+      "hint": "Only used to break ties; does not add points.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "raceTokensOnBoard",
+      "dir": "highest",
+      "description": "Most Race tokens (Active + In Decline) still on the boards"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: running-track. Coins are collected during play (no end-game categories): each turn 1 coin per Region occupied by Active and In Decline races plus bonuses, and 1 coin per defeated opposing-faction race (Alliance vs Horde faction bonus). Coin totals stay hidden until the final reveal. Map/boards, race banners and special powers vary per game; those bonuses are not itemised here. Revenge of the Murlocs mini-expansion not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/af/56/e3-small-world-of-warcraft-rulebook.pdf",
+      "title": "Small World of Warcraft rulebook (Days of Wonder, via 1jour-1jeu)",
+      "type": "official-rulebook",
+      "section": "p.3 Game Turn/end of game; p.7 Scoring Victory Coins; p.12-13 end of game and tiebreak"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/309630/small-world-of-warcraft",
+      "title": "Small World of Warcraft (BGG)",
+      "type": "other",
+      "section": "game identity/player count cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

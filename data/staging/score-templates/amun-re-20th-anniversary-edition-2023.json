@@ -1,0 +1,81 @@
+{
+  "slug": "amun-re-20th-anniversary-edition-2023",
+  "name": "Amun-Re: 20th Anniversary Edition",
+  "year": 2023,
+  "bggId": 354568,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "VP on score track after Intermediate Scoring of the 2nd age",
+      "labelVi": "VP trên track sau chấm điểm thời kỳ 2",
+      "hint": "Total of both ages' Intermediate Scoring (temples, pyramids, fewest-pyramids province, Nile majorities, yellow Favor cards); add before the Gold ranking.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "goldRanking",
+      "label": "Gold cards ranking bonus",
+      "labelVi": "Thưởng xếp hạng thẻ Vàng",
+      "hint": "Reveal Gold cards: highest combined value +6, 2nd +4, 3rd +2. Ties: all get the full points, next rank is pushed down.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            6,
+            4,
+            2
+          ],
+          "tieMode": "all-next-lower",
+          "over": "value",
+          "excludeZero": false
+        }
+      },
+      "countsToTotal": true,
+      "min": null,
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": "highest",
+      "description": "Most Pyramids among own Provinces"
+    },
+    {
+      "categoryKey": null,
+      "dir": "highest",
+      "description": "Most Stones among own Provinces"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: auction-money. Intermediate Scoring happens at the end of each of the 2 ages (VP tracked on the board track), so the scorer enters the final track VP. Verified only against a secondary rules summary; the 20th Anniversary rulebook may differ in details (not retrievable).",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/amun-re/game-rules.php",
+      "title": "How to play Amun-Re (Ultra BoardGames)",
+      "type": "other",
+      "section": "End of the game / Final scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

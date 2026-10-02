@@ -1,0 +1,110 @@
+{
+  "slug": "maestro-2026",
+  "name": "Maestro",
+  "year": 2026,
+  "bggId": 458970,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "asymmetric",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": { "count": 4, "aggregate": "sum", "endCondition": "Final Scoring after the 4th Exhibition phase" },
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "VP on track after round 4 Exhibition",
+      "labelVi": "Điểm trên track sau Exhibition vòng 4",
+      "hint": "Workshop's VP accumulated during play (Galleries, Publicity, Study etc.). One entry per Workshop (a team of 2 shares one Workshop).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "removedSistineTiles",
+      "label": "Removed Sistine Chapel tiles",
+      "labelVi": "Tile Sistine Chapel đã gỡ",
+      "hint": "Michelangelo only: 2 VP per removed tile.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": { "type": "multiply", "points": 2 },
+      "countsToTotal": true,
+      "roleKey": "michelangelo"
+    },
+    {
+      "key": "emptyRows",
+      "label": "Empty Workshop rows",
+      "labelVi": "Hàng Workshop trống",
+      "hint": "Michelangelo only: 2 VP per empty row.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": { "type": "multiply", "points": 2 },
+      "countsToTotal": true,
+      "roleKey": "michelangelo"
+    },
+    {
+      "key": "inventions",
+      "label": "VP of built Inventions",
+      "labelVi": "VP các Invention đã chế tạo",
+      "hint": "Da Vinci only: sum VP printed next to emptied spaces on Blueprint cards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": true,
+      "roleKey": "davinci"
+    },
+    {
+      "key": "patroness",
+      "label": "Patroness card VP",
+      "labelVi": "VP thẻ Patroness",
+      "hint": "Sum the scoring of all Patroness cards collected (per-card conditions in appendix; values are component-driven).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "popularGalleryTiles",
+      "label": "Popular Gallery tiles collected (tiebreaker)",
+      "labelVi": "Số tile Popular Gallery (phá hòa)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "studyPosition",
+      "label": "Study track progress (tiebreaker)",
+      "labelVi": "Tiến độ Study track (phá hòa)",
+      "hint": "Higher space is better; if on same space, the marker on the bottom wins.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "popularGalleryTiles", "dir": "highest", "description": "Most Popular Gallery tiles collected." },
+    { "categoryKey": "studyPosition", "dir": "highest", "description": "Further along the Study track; if same space, the marker at the bottom." }
+  ],
+  "sharedVictoryOnTie": false,
+  "roles": [
+    { "key": "michelangelo", "label": "Michelangelo's Workshop", "labelVi": "Xưởng Michelangelo", "categoryKeys": ["removedSistineTiles", "emptyRows"] },
+    { "key": "davinci", "label": "Da Vinci's Workshop", "labelVi": "Xưởng Da Vinci", "categoryKeys": ["inventions"] }
+  ],
+  "notes": "family: sum-of-categories (running VP track + workshop board + Patroness). Two Workshops compete; each is one player or a team of two. Event module, Benefactor and solo rules not modelled. Patroness values depend on card conditions, so scorer enters total.",
+  "sources": [
+    { "url": "https://www.dropbox.com/scl/fi/ynfs6etclqfj6aqgho92f/aor_rules_EN_web.pdf", "title": "Maestro rulebook (Board&Dice)", "type": "official-rulebook", "section": "p.17 Final Scoring and Tie Breaker; pp.20-21 Patroness appendix" },
+    { "url": "https://boardanddice.com/maestro/", "title": "Board&Dice product page", "type": "publisher-page", "section": "Downloads" }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

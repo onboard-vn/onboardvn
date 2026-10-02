@@ -1,0 +1,141 @@
+{
+  "slug": "rebel-princess-deluxe-edition-2024",
+  "name": "Rebel Princess: Deluxe Edition",
+  "bggId": 418556,
+  "year": 2024,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "lowest",
+  "scoringStyle": "rounds",
+  "categories": [
+    {
+      "key": "round1",
+      "label": "Round 1 proposals",
+      "labelVi": "Vòng 1: lời cầu hôn",
+      "hint": "Enter net proposals after Round and Princess effects; Rebel of the Ball = -10.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "round2",
+      "label": "Round 2 proposals",
+      "labelVi": "Vòng 2: lời cầu hôn",
+      "hint": "Enter net proposals after Round and Princess effects; Rebel of the Ball = -10.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "round3",
+      "label": "Round 3 proposals",
+      "labelVi": "Vòng 3: lời cầu hôn",
+      "hint": "Enter net proposals after Round and Princess effects; Rebel of the Ball = -10.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "round4",
+      "label": "Round 4 proposals",
+      "labelVi": "Vòng 4: lời cầu hôn",
+      "hint": "Enter net proposals after Round and Princess effects; Rebel of the Ball = -10.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "round5",
+      "label": "Round 5 proposals",
+      "labelVi": "Vòng 5: lời cầu hôn",
+      "hint": "Enter net proposals after Round and Princess effects; Rebel of the Ball = -10.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "extraRounds",
+      "label": "Additional tiebreak rounds",
+      "labelVi": "Vòng phụ phân định hòa",
+      "hint": "Net scores from additional rounds; leave empty unless required.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "nonPositiveRounds",
+      "label": "Rounds with zero or fewer proposals",
+      "labelVi": "Số vòng không nhận điểm dương",
+      "hint": "Count all played rounds with net proposals <= 0.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://beziergames.com/collections/all-games/products/rebel-princess-deluxe-edition",
+      "title": "Bezier Games Deluxe edition",
+      "type": "publisher-page",
+      "section": "Five rounds; shoot-the-moon; Deluxe rules link"
+    },
+    {
+      "url": "https://www.brdgmz.nl/wp-content/uploads/Spelregels-Rebel-Princess-English.pdf",
+      "title": "Bezier Games Rebel Princess Deluxe rules (mirror)",
+      "type": "official-rulebook",
+      "section": "pp.6-13: Sequence of Play, Rebel of the Ball (p.9), Scoring Marriage Proposals (p.11), End of the Game (p.12)"
+    },
+    {
+      "url": "https://www.rulespal.com/rebel-princess-deluxe-edition/rulebook",
+      "title": "Deluxe rules transcription",
+      "type": "other",
+      "section": "Rebel of the Ball; Scoring Marriage Proposals; End of the Game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "tiebreakers": [
+    {
+      "categoryKey": "nonPositiveRounds",
+      "dir": "highest",
+      "description": "Most rounds with zero or fewer proposals."
+    },
+    {
+      "description": "If still tied, everyone plays another random black-hourglass round; its winner need not be a previously tied player."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Five rounds, then additional black-hourglass round if tiebreak remains."
+  },
+  "notes": "family: trick-taking-penalty. Base Princes score 1 each and Frog (Pets 8) scores 5. Round cards change scoring, so enter resolved round totals. Taking all Princes and Frog replaces that player’s entire round score with -10. Extra-round continuation requires manual play; schema cannot trigger it. Short three-round option excluded. Official English rulebook PDF is image-only; scoring, Rebel of the Ball, end of game and tiebreak were read visually from its pages 9-12 and cross-checked against the publisher page."
+}

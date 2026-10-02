@@ -1,0 +1,69 @@
+{
+  "slug": "inkwell-2026",
+  "name": "Inkwell",
+  "bggId": 442307,
+  "year": 2026,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Final score track",
+      "labelVi": "Điểm cuối trên bảng",
+      "hint": "Include all three pages, workspace, techniques and post-finish bonuses; track wraps at 50.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "finishOrder",
+      "label": "Page III finish order",
+      "labelVi": "Thứ tự hoàn thành trang III",
+      "hint": "1 = first to turn Page III.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 1,
+      "max": 5
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0548/7253/9391/files/INKWELL_rulebook.pdf?v=1771511559",
+      "title": "DVC Games Inkwell rulebook",
+      "type": "official-rulebook",
+      "section": "PDF pp.8–10 placing/scoring/turning; p.12 End Game"
+    },
+    {
+      "url": "https://whatsericplaying.com/2026/08/31/inkwell/",
+      "title": "What’s Eric Playing: Inkwell",
+      "type": "other",
+      "section": "Gameplay: Turning and endgame"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "tiebreakers": [
+    {
+      "categoryKey": "finishOrder",
+      "dir": "lowest",
+      "description": "Earlier Page III completion wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: drafting-pattern-scoring. Pages and cubes are cleared during play: use the final running total. Completed illustration values, activated page multipliers, workspace and technique effects must be resolved when each page turns. Partial illustrations score zero. After finishing, each subsequent turn gains 3 points and advances the Abbot. Component-dependent values are inputs through the recorded track; solo rules are separate."
+}

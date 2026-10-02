@@ -1,0 +1,114 @@
+{
+  "slug": "dawn",
+  "name": "Dawn",
+  "year": 2023,
+  "bggId": 328500,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": {
+    "count": 6,
+    "aggregate": "sum",
+    "endCondition": "After round 6 (the Great Buildings round) affiliations are revealed and Great Buildings resolved"
+  },
+  "categories": [
+    {
+      "key": "storehouseTreasure",
+      "label": "Treasure in your Storehouse",
+      "labelVi": "Kho báu trong Storehouse của bạn",
+      "hint": "Sum of printed Treasure on your face-down Storehouse cards (can be negative). 7 or more = Scoundrel, under 7 = Ally.",
+      "scope": "player",
+      "input": "number",
+      "max": null,
+      "min": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "townProsperity",
+      "label": "Town Prosperity (all constructed buildings)",
+      "labelVi": "Điểm thịnh vượng của làng",
+      "hint": "Total Prosperity of constructed Town Buildings + Great Buildings (resolve Great Buildings first).",
+      "scope": "team",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "allyCount",
+      "label": "Number of Allies",
+      "labelVi": "Số Ally",
+      "hint": "Players with under 7 Treasure in their Storehouse. Allies need 30 Prosperity per Ally.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "won",
+      "label": "Won",
+      "labelVi": "Thắng",
+      "hint": "Allies win together if Prosperity >= 30 x Allies; otherwise the Scoundrel with the most Storehouse treasure wins.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 0
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "storehouseTreasure",
+      "dir": "highest",
+      "description": "If the town fails, the Scoundrel with the most Storehouse treasure wins. Ties among Scoundrels are not addressed in the rulebook."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: deduction (semi-coop hidden-role). Verified against the official rulebook (Green Meadow Games Google Doc): affiliation is decided at game end by Storehouse treasure (7 or more = Scoundrel), the 'discarded chests' wording in earlier reviews refers to the Storehouse card each player places every round. Great Buildings (resolved at end of round 6): #1 needs 10 successes -> 30 Prosperity; #2 needs 6 -> 10 per Ally with no Wounds in hand; #3 needs 8 -> 4 per constructed Town Building; #4 needs 18 -> 20. Not specified: ties among Scoundrels, case with zero Allies or zero Scoundrels.",
+  "winCondition": "After round 6, resolve Great Buildings and total Prosperity. If Prosperity >= 30 x number of Allies, all Allies win and Scoundrels lose. Otherwise the Scoundrel with the most Treasure in their Storehouse wins.",
+  "sources": [
+    {
+      "url": "https://docs.google.com/document/d/1baE2awzHsbpcSfTq4JMwVFpO3xDx6klk7lL2a8dPbRQ/edit",
+      "title": "Dawn rulebook (Green Meadow Games, linked from publisher page)",
+      "type": "official-rulebook",
+      "section": "End of Game: Revealing your Affiliation; Construct Great Buildings; Victory Conditions"
+    },
+    {
+      "url": "https://greenmeadowgames.com/dawn/",
+      "title": "Dawn - Green Meadow Games",
+      "type": "publisher-page",
+      "section": "Rulebook link"
+    },
+    {
+      "url": "https://oneboardfamily.com/dawn-review/",
+      "title": "Dawn Review - One Board Family",
+      "type": "other",
+      "section": "End game cross-check (7+ treasure, 30 per ally)"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "endCondition": {
+    "type": "rounds",
+    "target": 6,
+    "description": "Game ends after the 6th (Great Buildings) round"
+  }
+}

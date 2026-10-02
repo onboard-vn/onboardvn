@@ -1,0 +1,63 @@
+{
+  "slug": "the-great-zimbabwe",
+  "name": "The Great Zimbabwe",
+  "year": 2012,
+  "bggId": 111341,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vp",
+      "label": "Victory points collected",
+      "labelVi": "Điểm chiến thắng (VP) đã có",
+      "hint": "Your marker on the VP track at the end of the game.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "vr",
+      "label": "Victory requirement (VR)",
+      "labelVi": "Điểm yêu cầu (VR)",
+      "hint": "Your VR marker; rises with gods, specialists and technologies (max 40).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 40,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "overshoot",
+      "label": "VP minus VR",
+      "labelVi": "VP vượt VR",
+      "hint": "Positive means you reached your VR; most overshoot wins.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": { "type": "expr", "expr": "cat_vp - cat_vr" },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "overshoot", "dir": "highest", "description": "Among players who reached VR, most VP above own VR wins" },
+    { "categoryKey": "vp", "dir": "highest", "description": "Then most VP in total" },
+    { "description": "Then the player earlier in turn order wins." }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: race-to-threshold. Game ends immediately when at least one player has VP >= own VR; if exactly one has, they win. Only players with VP >= VR are eligible; the score here (VP - VR) is only meaningful if at least one player is >= 0. The 'overshoot' field is entered as a raw expression of the two inputs; enter VP and VR above. Source is a rules transcription (UltraBoardGames); official rulebook not retrieved, so confidence medium.",
+  "sources": [
+    { "url": "https://www.ultraboardgames.com/the-great-zimbabwe/game-rules.php", "title": "The Great Zimbabwe rules (UltraBoardGames)", "type": "other", "section": "Phase IV: Let us Compare Mythologies" }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

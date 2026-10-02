@@ -1,0 +1,90 @@
+{
+  "slug": "calimala",
+  "name": "Calimala",
+  "year": 2017,
+  "bggId": 199383,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 5 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Victory points on the scoring track (15 scoring phases)",
+      "labelVi": "Điểm thắng trên track (sau 15 lượt chấm điểm)",
+      "hint": "Include the 50 VP tile if you passed 50. Each phase: most cubes in the scored category gets 3 VP, second 2, third 1.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "secretCardPoints",
+      "label": "Final scoring: your secret scoring card",
+      "labelVi": "Chấm điểm cuối: thẻ chấm điểm bí mật của bạn",
+      "hint": "Rank everyone on the category shown on your card: most cubes 5 VP, second 3, third 1 (0 if no cubes). Tie order: seats + artworks in the city council, then seats, then first to gain them.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 5,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "faceUpCardPoints",
+      "label": "Final scoring: face-up scoring card (3-4 players)",
+      "labelVi": "Chấm điểm cuối: thẻ chấm điểm ngửa (3-4 người)",
+      "hint": "Same 5/3/1 ranking on the face-up card next to the board. Only used with 3 or 4 players.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 5,
+      "formula": { "type": "sum" },
+      "countsToTotal": true,
+      "appliesWhen": "players >= 3 && players <= 4"
+    },
+    {
+      "key": "councilSum",
+      "label": "Seats + contributed artworks in the city council (tiebreaker)",
+      "labelVi": "Ghế + tác phẩm ở hội đồng thành phố (phá hòa)",
+      "hint": "Only used to break ties on final points.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "councilSum", "dir": "highest", "description": "Tied players: most seats and contributed artworks in the city council wins." }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "rounds",
+    "target": null,
+    "description": "Ends when all action discs are placed on the city grid, or after all 15 scoring tiles have been triggered (finish the current player round); then final scoring cards are resolved."
+  },
+  "notes": "family: area-majority. Final scoring: each player scores their own secret card; with 3 or 4 players the face-up card is also scored for everyone. Each card ranks all players on the stated cube count (Palazzo Vecchio counts seats plus contributed artwork cubes). In-phase ties use seats and artworks tiebreak; if all tiebreaks are equal the points are split and rounded down. Enter the per-card VP after resolving ranks and ties. The 2nd edition and the 2-player variant rulebooks were not checked.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/calimala.pdf",
+      "title": "Calimala Rulebook (EN, 2017)",
+      "type": "official-rulebook",
+      "section": "Scoring Phases and Categories p.9-10; Game End and Final Scoring p.10-11"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/calimala/game-rules.php",
+      "title": "Calimala game rules (UltraBoardGames)",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,246 @@
+{
+  "slug": "nova-roma",
+  "name": "Nova Roma",
+  "year": 2023,
+  "bggId": 370789,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Game ends after 5 rounds"
+  },
+  "categories": [
+    {
+      "key": "sailingRoutes",
+      "label": "Sailing routes",
+      "labelVi": "Tuyến hải trình",
+      "hint": "VP of the furthest Port/Harbor each of your 2 ships reached; sum both ships.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildingContracts",
+      "label": "Building contracts",
+      "labelVi": "Hợp đồng xây dựng",
+      "hint": "Total VP printed on your Building Contracts.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "zoneEstate",
+      "label": "Building zone: first zone",
+      "labelVi": "Khu xây dựng 1",
+      "hint": "Read VP for your rank (most blocks = highest, 2nd = next, others with 1+ block = lowest) from below the zone on the map. Ties give full points.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "zoneSecond",
+      "label": "Building zone: second zone",
+      "labelVi": "Khu xây dựng 2",
+      "hint": "Same rule, VP chart printed under this zone.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "zoneThird",
+      "label": "Building zone: third zone",
+      "labelVi": "Khu xây dựng 3",
+      "hint": "Same rule, VP chart printed under this zone.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "chariotTokens",
+      "label": "Chariot tokens",
+      "labelVi": "Thẻ chiến xa",
+      "hint": "3 VP per Favored Chariot token won.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "hippodromeFinishes",
+      "label": "Hippodrome finishes",
+      "labelVi": "Về đích đường đua",
+      "hint": "5 VP per token that reached the final space of a Hippodrome track.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "followerCards",
+      "label": "End-game follower cards",
+      "labelVi": "Thẻ Follower cuối game",
+      "hint": "VP from End Game Follower cards above your estate board (card-specific).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "animalSets",
+      "label": "Animal estate tiles",
+      "labelVi": "Tile động vật",
+      "hint": "Sets: 1/2/3 tiles = 2/5/9 VP; split extras into multiple sets. Enter total VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/3)*9 + (value%3==1 ? 2 : (value%3==2 ? 5 : 0))"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mosaic",
+      "label": "Mosaic board",
+      "labelVi": "Bảng mosaic",
+      "hint": "Top row achievements 2 VP, middle 3, bottom 5, plus row/column/diagonal bonuses printed on board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goodsCoins",
+      "label": "Goods and coins (4:1)",
+      "labelVi": "Hàng hóa và xu (4:1)",
+      "hint": "Remaining goods + coins, divided by 4 rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/4)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "influenceArtisans",
+      "label": "Influence and artisans (2:1)",
+      "labelVi": "Ảnh hưởng và thợ (2:1)",
+      "hint": "Remaining influence + artisans, divided by 2 rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "firstPlayerToken",
+      "label": "First player token",
+      "labelVi": "Token người chơi đầu",
+      "hint": "2 VP if you hold the first player token.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "influenceRemaining",
+      "label": "Remaining influence (tiebreak)",
+      "labelVi": "Ảnh hưởng còn lại (phân định hòa)",
+      "hint": "First tiebreaker.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "influenceRemaining",
+      "dir": "highest",
+      "description": "Most remaining Influence"
+    },
+    {
+      "description": "If still tied, the youngest player wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. Score marked on track. Zone VP amounts are printed on the map (not in rulebook text), so zone rows are number inputs; tied players get full points for the position, 2-player game counts neutral blocks. Solo mode vs AI and 2-player neutral rules not modelled. Followers' end-game VP are card-specific (e.g. per Wood/Wine left, per Estate tile, 4 VP threshold cards) and entered as one number.",
+  "sources": [
+    {
+      "url": "http://boardgame.bg/novaroma-rules.pdf",
+      "title": "Nova Roma rulebook (Queen Games, English)",
+      "type": "official-rulebook",
+      "section": "End Game p.15-16; Follower card index"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

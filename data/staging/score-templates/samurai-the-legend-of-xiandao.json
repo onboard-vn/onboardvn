@@ -1,0 +1,116 @@
+{
+  "slug": "samurai-the-legend-of-xiandao",
+  "name": "Samurai (The Legend of Xiandao)",
+  "year": 1998,
+  "bggId": 3,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "buddha",
+      "label": "Buddha pieces captured (religion)",
+      "labelVi": "Số Phật (tôn giáo) bắt được",
+      "hint": "Most Buddhas alone = leader token (1). Ties for most: nobody gets it.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            1
+          ],
+          "tieMode": "none",
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "rice",
+      "label": "Rice pieces captured (commerce)",
+      "labelVi": "Số Lúa (thương mại) bắt được",
+      "hint": "Most rice alone = leader token (1). Ties for most: nobody gets it.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            1
+          ],
+          "tieMode": "none",
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "castle",
+      "label": "Castle pieces captured (military)",
+      "labelVi": "Số Lâu đài (quân sự) bắt được",
+      "hint": "Most castles alone = leader token (1). Ties for most: nobody gets it.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            1
+          ],
+          "tieMode": "none",
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "If tied on leader tokens and each tied player has exactly one token: ignore the caste you lead and compare captured pieces of the other two castes; most wins."
+    },
+    {
+      "description": "Still tied: most captured pieces of all castes (including the led caste)."
+    },
+    {
+      "description": "Still tied: tied players share the win."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. Score value = number of caste leader tokens (0-3). If nobody holds any leader token, the player with the most captured pieces overall wins (ties share). Game ends when a caste has no pieces left on the board or 4 pieces have been removed unclaimed (tied captures). Tiebreaks use piece counts that are not derivable from the leader-token score alone, so the scorer must apply them manually. Slug says 'The Legend of Xiandao' but bggId 3 identifies Knizia's Samurai (1998); rules checked against the 2015 Fantasy Flight edition.",
+  "sources": [
+    {
+      "url": "https://images-cdn.fantasyflightgames.com/filer_public/58/58/5858c0b8-3ceb-49ab-880e-565e9c4eaadc/kn26_rulebook.pdf",
+      "title": "Samurai rulebook (Fantasy Flight Games, 2015)",
+      "type": "official-rulebook",
+      "section": "p.6 Winning the Game; Scoring; Scoring Example"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Samurai_(board_game)",
+      "title": "Samurai (board game) - Wikipedia",
+      "type": "wiki",
+      "section": "Overview cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

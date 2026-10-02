@@ -1,0 +1,110 @@
+{
+  "slug": "bamboo",
+  "name": "Bamboo",
+  "year": 2023,
+  "bggId": 351538,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after round 4"
+  },
+  "categories": [
+    {
+      "key": "hpTrack",
+      "label": "Happiness Points on track (before final scoring)",
+      "labelVi": "HP trên track (trước chấm điểm cuối)",
+      "hint": "Số HP hiện tại trên track sau 4 vòng, trước khi cộng/trừ cuối game.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "uniqueSpirits",
+      "label": "Unique Spirit of the Forest tiles",
+      "labelVi": "Tấm Thần Rừng khác loại",
+      "hint": "+2 HP mỗi loại Spirit khác nhau đã thu thập.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 7,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "comfortDifference",
+      "label": "Left/right comfort difference",
+      "labelVi": "Chênh lệch comfort trái/phải",
+      "hint": "-2 HP mỗi điểm chênh giữa tổng comfort bên trái và bên phải của Home board.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unscoredBalance",
+      "label": "Completed but unscored Balance tiles: total HP",
+      "labelVi": "HP các thẻ Balance đã hoàn thành chưa chấm",
+      "hint": "Nhập HP đầy đủ của các thẻ này; chỉ tính một nửa (làm tròn lên).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "ceil(value / 2)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Reported by a secondary source only: highest Comfort Points among tied players, otherwise victory is shared. Unverified against rulebook."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: abstract-objective. In-play HP (home board placement, balance tiles, winter food shortfalls) are tracked on the HP track during play and entered as one value. Advanced mode (Night board, -1 HP per unmet requirement space) not modelled. Official rulebook PDF could not be obtained; figures come from secondary summaries (officialgamerules.org, whatboardgame review), which agree on spirit +2, comfort -2 and half-HP balance tiles. Check rulebook for the exact balance-tile half-HP wording and tiebreaker.",
+  "sources": [
+    {
+      "url": "https://officialgamerules.org/game-rules/bamboo-rules/",
+      "title": "How to Play Bamboo (Official Game Rules)",
+      "type": "other",
+      "section": "Final scoring; Winner"
+    },
+    {
+      "url": "https://www.whatboardgame.com/post/bamboo-board-game-review",
+      "title": "Bamboo Board Game Review (WhatBoardGame)",
+      "type": "other",
+      "section": "End game scoring"
+    },
+    {
+      "url": "https://devirgames.com/bamboo",
+      "title": "Bamboo (Devir)",
+      "type": "publisher-page",
+      "section": "Product page"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

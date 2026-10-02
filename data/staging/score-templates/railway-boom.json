@@ -1,0 +1,135 @@
+{
+  "slug": "railway-boom",
+  "name": "Railway Boom",
+  "year": 2024,
+  "bggId": 448159,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after 4th round's Objective Phase"
+  },
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "VP track total during play",
+      "labelVi": "VP trên track (trong ván)",
+      "hint": "Total on VP track incl. +50 markers on Home Platform.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "objectiveCards",
+      "label": "Objective Card VP (all 4 rounds)",
+      "labelVi": "VP từ thẻ Mục tiêu",
+      "hint": "For each round's Objective: conditions achieved x its multiplier; enter the summed result.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resources",
+      "label": "Resources possessed (not VP)",
+      "labelVi": "Tài nguyên còn lại",
+      "hint": "1 VP per 2 resources (rounded down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bestRailwayTokens",
+      "label": "Railway tokens on your chosen Railway",
+      "labelVi": "Số token trên tuyến đường chọn",
+      "hint": "Choose one of your railways: 2 VP per token on it.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "railwayTokensOnBoard",
+      "label": "Railway tokens on board (tiebreak 1)",
+      "labelVi": "Token đường ray trên bản đồ (hòa 1)",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "resourceTiles",
+      "label": "Total Resource Tiles incl. on trains (tiebreak 2)",
+      "labelVi": "Tổng Resource Tile (hòa 2)",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "railwayTokensOnBoard",
+      "dir": "highest",
+      "description": "Most Railway Tokens on the board"
+    },
+    {
+      "categoryKey": "resourceTiles",
+      "dir": "highest",
+      "description": "Most Resource Tiles (including on Locomotives and Carriages)"
+    },
+    {
+      "description": "Then player furthest right on the Auction Track"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-money. VP also earned during play (routes, carriages, income-track icons) and tracked on the VP track. Final scoring order: objectives, resources/2, 2 VP per token on one chosen railway. Rulebook text via RulesPal, not original PDF (needsReview); resource-VP rounding for odd counts assumed floor.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/railway-boom/rulebook",
+      "title": "Railway Boom rulebook (RulesPal)",
+      "type": "other",
+      "section": "Final Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

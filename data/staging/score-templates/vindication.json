@@ -1,0 +1,171 @@
+{
+  "slug": "vindication",
+  "name": "Vindication",
+  "year": null,
+  "bggId": 224783,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "honorTrack",
+      "label": "Honor on score track",
+      "labelVi": "Honor trên track điểm",
+      "hint": "Honor gained during play (cards, regions, monsters, speed, vindication) as shown on the scoring track, before end-game bonuses.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "masteryTiles",
+      "label": "Mastery tile honor",
+      "labelVi": "Honor từ thẻ Mastery",
+      "hint": "Sum honor printed on each Mastery tile you won (one per attribute, only for the single player with the highest total; a tie gives nobody the tile). Total = cards of that colour + proficiency tiles (2 each) + card bonuses.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endGameCardBonus",
+      "label": "End-game bonuses on cards",
+      "labelVi": "Thưởng cuối game trên thẻ",
+      "hint": "Honor from conditional end-game bonuses printed on Monster/Trait/Relic/Companion cards.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "secretQuests",
+      "label": "Secret quest honor",
+      "labelVi": "Honor nhiệm vụ bí mật",
+      "hint": "Honor for each completed quest on your secret quest card (2 optional quests, no penalty for incomplete ones).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "regionsControlled",
+      "label": "Regions still controlled",
+      "labelVi": "Vùng còn kiểm soát",
+      "hint": "2 honor per region you control at game end.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "conviction",
+      "label": "Conviction (tiebreak)",
+      "labelVi": "Conviction (phân định hòa)",
+      "hint": "Tiebreak 1: most conviction.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "potentialRemaining",
+      "label": "Potential remaining (tiebreak)",
+      "labelVi": "Potential còn lại (phân định hòa)",
+      "hint": "Tiebreak 2: least potential remaining.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "triggerTokens",
+      "label": "End-game trigger tokens (tiebreak)",
+      "labelVi": "Token kết thúc game (phân định hòa)",
+      "hint": "Tiebreak 3: fewest trigger tokens.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "conviction",
+      "dir": "highest",
+      "description": "Most conviction"
+    },
+    {
+      "categoryKey": "potentialRemaining",
+      "dir": "lowest",
+      "description": "Least potential remaining"
+    },
+    {
+      "categoryKey": "triggerTokens",
+      "dir": "lowest",
+      "description": "Fewest end-game trigger tokens"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "When an active end-game trigger card is met, finish the current round; the next round is the final round."
+  },
+  "notes": "family: area-majority (attribute-majority mastery tiles + region control). Mastery tile honor values are printed on the tiles (7 for vision per rulebook example; other values not stated in text) so the sum is entered. Expansions (Guilds & Monuments, etc.) not modelled. Solo variant not modelled.",
+  "sources": [
+    {
+      "url": "https://boardgame.bg/vindication%20rules.pdf",
+      "title": "Vindication rulebook (Orange Nebula)",
+      "type": "official-rulebook",
+      "section": "p.21 Mastery Tiles, Ending the Game, End-Game Honor Bonuses, Tiebreakers; p.20 Secret Quests; p.10-11 Controlling Regions"
+    },
+    {
+      "url": "https://merchantsofplay.com/howtoplay/vindication/",
+      "title": "How to Play Vindication (Merchants of Play)",
+      "type": "other",
+      "section": "Scoring overview cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

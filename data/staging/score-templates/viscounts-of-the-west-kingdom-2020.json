@@ -1,0 +1,181 @@
+{
+  "slug": "viscounts-of-the-west-kingdom-2020",
+  "name": "Viscounts of the West Kingdom",
+  "year": 2020,
+  "bggId": null,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "buildings",
+      "label": "Constructed buildings",
+      "labelVi": "Công trình đã xây",
+      "hint": "VP printed across the top of your player board for the buildings you constructed.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "castleWorkers",
+      "label": "Workers in the castle",
+      "labelVi": "Thợ trong lâu đài",
+      "hint": "1/2/3 VP per worker on tier 1/2/3.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "tier1",
+        "tier2",
+        "tier3"
+      ],
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "tier1+tier2*2+tier3*3"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "manuscripts",
+      "label": "Transcribed manuscripts",
+      "labelVi": "Bản thảo đã chép",
+      "hint": "Sets of different ribbon colours (3 different = 9 VP) plus VP printed on specific manuscripts; enter the total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "castleLeader",
+      "label": "Castle Leader card",
+      "labelVi": "Thẻ Castle Leader",
+      "hint": "VP printed on the card (5 in the rulebook example) if you hold it.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "clericBonus",
+      "label": "Cleric Bonus card(s)",
+      "labelVi": "Thẻ thưởng Cleric",
+      "hint": "VP printed on each card you hold.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unpaidDebts",
+      "label": "Unpaid debts",
+      "labelVi": "Nợ chưa trả",
+      "hint": "-2 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "acquiredDeeds",
+      "label": "Acquired deeds (unflipped)",
+      "labelVi": "Giấy tờ đã nhận (chưa lật)",
+      "hint": "1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "approvedDeeds",
+      "label": "Approved deeds (flipped)",
+      "labelVi": "Giấy tờ đã duyệt (đã lật)",
+      "hint": "3 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "povertyCard",
+      "label": "Poverty card bonus",
+      "labelVi": "Thưởng thẻ Poverty",
+      "hint": "Only if revealed. Most/2nd/3rd flipped deeds (min 1) = 12/8/4 VP; ties split evenly.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "prosperityCard",
+      "label": "Prosperity card bonus",
+      "labelVi": "Thưởng thẻ Prosperity",
+      "hint": "Only if revealed. Same as Poverty but counting flipped debts.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": "highest",
+      "description": "Tied player with the most remaining silver and resources wins."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "Game ends when the Poverty or Prosperity card is revealed: finish the round, then play one more round (player right of the start player goes last). Both cards can be revealed (Divided Kingdom). In games with fewer than 3 players the 8 VP middle reward is ignored. Ongoing townsfolk effects do not apply in final scoring. Tied split for poverty/prosperity: e.g. two tied for first get (12+8)/2 each; not auto-calculated, enter the result. Manuscript set values beyond 3 different ribbons and building values vary per board/card and are entered as totals. Solo AI rules not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/1633/7907/files/viscounts-of-the-west-kingdom-rulebook.pdf?v=1609627580",
+      "title": "Viscounts of the West Kingdom rulebook (Shem Phillips / Garphill Games)",
+      "type": "official-rulebook",
+      "section": "End of the game p.23; End-game scoring and example pp.24-25; manuscripts p.21; castle p.20"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/viscounts-of-the-west-kingdom/game-rules.php",
+      "title": "Ultra Board Games - How to play Viscounts of the West Kingdom",
+      "type": "other",
+      "section": "End game scoring summary"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,111 @@
+{
+  "slug": "tinner-s-trail",
+  "name": "Tinners' Trail",
+  "year": null,
+  "bggId": 365770,
+  "templateVersion": 1,
+  "variant": "remastered",
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the round 4 Sell & Invest phase (no End of Round phase)"
+  },
+  "categories": [
+    {
+      "key": "investments",
+      "label": "Investment points (all 4 rounds)",
+      "labelVi": "Điểm từ đầu tư (4 vòng)",
+      "hint": "Sum of points scored from every £10 / £5 investment, as read from the investment board box for that round and your column position. Only source of points.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "moneyLeft",
+      "label": "Money remaining (tiebreak only)",
+      "labelVi": "Tiền còn lại (chỉ để phá hòa)",
+      "hint": "No points; used only if tied.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "cubesInMines",
+      "label": "Tin/copper cubes still in your mines (tiebreak only)",
+      "labelVi": "Quặng còn trong mỏ (chỉ để phá hòa)",
+      "hint": "No points; used only if tied.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "workTrackTop",
+      "label": "Disc uppermost in work track column 0 (tiebreak only)",
+      "labelVi": "Đĩa cao nhất cột 0 (chỉ để phá hòa)",
+      "hint": "Check for the player whose disc is uppermost in the '0' column.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "moneyLeft",
+      "dir": "highest",
+      "description": "Most money remaining"
+    },
+    {
+      "categoryKey": "cubesInMines",
+      "dir": "highest",
+      "description": "Most tin and copper cubes still in your mines"
+    },
+    {
+      "categoryKey": "workTrackTop",
+      "dir": "highest",
+      "description": "Disc uppermost in the '0' column of the work track"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-money (ore sold for money, money invested for points). Remastered Edition rules (Alley Cat Games rulebook v14). Each round's Sell & Invest phase: spend money in £10 and £5 increments; a £10 investment earns the left number and a £5 investment the right number in the investment-board box matching the round and your position in the column. Box values are printed on the board, so enter the points gained per investment as repeating inputs. Unbuilt mines, money and unmined cubes score nothing. Lord Wallace solo mode: beat his score (not modelled). bggId not confirmed to be the Remastered listing; the original 2011 edition used different fixed investment boxes.",
+  "sources": [
+    {
+      "url": "https://www.alleycatgames.com/_files/ugd/aa325b_557d5158ab1d4848bd8b863073230f76.pdf",
+      "title": "Tinners' Trail Remastered Edition rulebook (Alley Cat Games)",
+      "type": "official-rulebook",
+      "section": "Phase 3: Sell & invest; End of the game (pp.10-11)"
+    },
+    {
+      "url": "https://en.doc.boardgamearena.com/Gamehelptinnerstrail",
+      "title": "Tinners' Trail - BGA help",
+      "type": "wiki",
+      "section": "Phase 3; End of the Game (tiebreak order cross-check)"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  }
+}

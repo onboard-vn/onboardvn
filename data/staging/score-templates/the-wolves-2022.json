@@ -1,0 +1,174 @@
+{
+  "slug": "the-wolves-2022",
+  "name": "The Wolves",
+  "year": 2022,
+  "bggId": 368058,
+  "templateVersion": 1,
+  "variant": "3-5 players",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "regionTokens",
+      "label": "Region Scoring Tokens (VP earned in 3 Region Scoring phases)",
+      "labelVi": "VP từ token chấm điểm vùng",
+      "hint": "Sum VP tokens won at the three mid-game Region Scorings.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "packSpread",
+      "label": "Pack Spread track",
+      "labelVi": "Pack Spread",
+      "hint": "Highest VP number revealed on this track of your player board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wolfSpeed",
+      "label": "Wolf Speed track",
+      "labelVi": "Wolf Speed",
+      "hint": "Highest VP number revealed on this track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "howlRange",
+      "label": "Howl Range track",
+      "labelVi": "Howl Range",
+      "hint": "Highest VP number revealed on this track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "lairs",
+      "label": "Lairs track",
+      "labelVi": "Lairs",
+      "hint": "Highest VP number revealed (based on Lairs removed from board).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "uniquePrey",
+      "label": "Unique Prey track",
+      "labelVi": "Unique Prey",
+      "hint": "Highest VP number revealed (based on Prey Tokens added).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "packWolves",
+      "label": "Pack Wolves track",
+      "labelVi": "Pack Wolves",
+      "hint": "Highest VP number revealed (based on wolves removed from board).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "regionTokenCount",
+      "label": "Number of Region Scoring Tokens held (tiebreaker only)",
+      "labelVi": "Số token vùng đang có (hòa)",
+      "hint": "Count tokens, not VP. Does not add to score.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "wolvesOnBoard",
+      "label": "Wolves on the board at end (tiebreaker only)",
+      "labelVi": "Số sói trên bàn (hòa)",
+      "hint": "Does not add to score.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "regionTokenCount",
+      "dir": "highest",
+      "description": "Most Region Scoring Tokens."
+    },
+    {
+      "categoryKey": "wolvesOnBoard",
+      "dir": "highest",
+      "description": "Most wolves on the board."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. Game ends immediately at the end of the turn when a piece reaches the player-count-specific Full Moon space. Final score = Region Scoring Token VP + highest revealed number on each of the 6 player-board tracks. 2-player variant uses same categories with different track values and a neutral third pack (track values are printed on the board, so inputs are entered directly). Region scoring: Control = Den/Pack Wolf/Alpha 1 each, Lair 3; Alphas break ties; top 2 in Control take the region token's higher/lower value.",
+  "sources": [
+    {
+      "url": "https://www.dropbox.com/s/mi33ptklp475hny/The%20Wolves%20Rulebook.pdf?dl=0",
+      "title": "The Wolves Rulebook (Pandasaurus, linked from publisher page)",
+      "type": "official-rulebook",
+      "section": "p.16 Scoring Regions; p.17 Game End and Final Scoring, Tie-Breaker; p.20 2-player"
+    },
+    {
+      "url": "https://en.doc.boardgamearena.com/Gamehelpthewolves",
+      "title": "Board Game Arena help: The Wolves",
+      "type": "other",
+      "section": "Final scoring cross-check (tiebreaker wording differs: BGA says Alpha Wolves)"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

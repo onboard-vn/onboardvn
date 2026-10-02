@@ -1,0 +1,65 @@
+{
+  "slug": "rummikub-premium-2019",
+  "name": "Rummikub: Premium",
+  "year": 2019,
+  "bggId": 811,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "Agreed number of rounds or target score before play"
+  },
+  "categories": [
+    {
+      "key": "roundScore",
+      "label": "Round score (+ winner / - losers)",
+      "labelVi": "Điểm mỗi ván (+ người thắng / - người thua)",
+      "hint": "Người hết quân: + tổng điểm quân còn lại của mọi người khác. Người còn quân: - tổng số trên quân còn trên giá (Joker = 30).",
+      "scope": "player",
+      "input": "perRound",
+      "min": -500,
+      "max": 500,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Not specified in sources; players should agree before play."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: rounds. Round winner is first to empty rack; winner's gain equals the sum of losers' penalties so a round's scores sum to zero. Joker on rack = 30 penalty. If the pool empties and nobody can play, player with lowest rack total wins the round; each loser's penalty is the difference from the winner's total, and the winner receives the sum. Number of rounds / target is agreed by players (not defined in sources found). Official publisher rulebook text could not be downloaded; verified via secondary sources only. Premium 2019 edition treated as same rules as classic Rummikub.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/rummikub/game-rules.php",
+      "title": "How to play Rummikub (UltraBoardGames)",
+      "type": "other",
+      "section": "Scoring / end of game"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Rummikub",
+      "title": "Rummikub (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay: scoring"
+    },
+    {
+      "url": "https://www.rummikub.org/rules",
+      "title": "Rummikub rules (rummikub.org)",
+      "type": "other",
+      "section": "Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

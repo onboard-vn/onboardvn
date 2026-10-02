@@ -1,0 +1,180 @@
+{
+  "slug": "castle-combo-2024",
+  "name": "Castle Combo",
+  "bggId": 416851,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "card1",
+      "label": "Card 1",
+      "labelVi": "Lá 1",
+      "hint": "Total of this card's scoring scroll(s) incl. purse gold; face-down card = 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card2",
+      "label": "Card 2",
+      "labelVi": "Lá 2",
+      "hint": "Total of this card's scoring scroll(s) incl. purse gold; face-down card = 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card3",
+      "label": "Card 3",
+      "labelVi": "Lá 3",
+      "hint": "Total of this card's scoring scroll(s) incl. purse gold; face-down card = 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card4",
+      "label": "Card 4",
+      "labelVi": "Lá 4",
+      "hint": "Total of this card's scoring scroll(s) incl. purse gold; face-down card = 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card5",
+      "label": "Card 5",
+      "labelVi": "Lá 5",
+      "hint": "Total of this card's scoring scroll(s) incl. purse gold; face-down card = 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card6",
+      "label": "Card 6",
+      "labelVi": "Lá 6",
+      "hint": "Total of this card's scoring scroll(s) incl. purse gold; face-down card = 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card7",
+      "label": "Card 7",
+      "labelVi": "Lá 7",
+      "hint": "Total of this card's scoring scroll(s) incl. purse gold; face-down card = 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card8",
+      "label": "Card 8",
+      "labelVi": "Lá 8",
+      "hint": "Total of this card's scoring scroll(s) incl. purse gold; face-down card = 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "card9",
+      "label": "Card 9",
+      "labelVi": "Lá 9",
+      "hint": "Total of this card's scoring scroll(s) incl. purse gold; face-down card = 0.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "keys",
+      "label": "Remaining keys",
+      "labelVi": "Chìa khóa còn lại",
+      "hint": "Each leftover key = 1 point.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gold",
+      "label": "Leftover gold",
+      "labelVi": "Vàng còn lại",
+      "hint": "Gold NOT stored on purses (tiebreak only). Gold placed on purse cards is already in that card scroll.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://board-game-rules.com/wp-content/uploads/2025/01/castle-combo_Official-Rules.pdf",
+      "title": "Castle Combo official rulebook (Catch Up Games / Asmodee)",
+      "type": "official-rulebook",
+      "section": "p.10 End of the game / Final score"
+    },
+    {
+      "url": "https://en.doc.boardgamearena.com/Gamehelpcastlecombo",
+      "title": "Board Game Arena help: Castle Combo",
+      "type": "wiki",
+      "section": "Game End"
+    },
+    {
+      "url": "https://store.asmodee.com/collections/all/products/castle-combo",
+      "title": "Asmodee Castle Combo",
+      "type": "publisher-page",
+      "section": "Game end"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "notes": "family: point-salad-euro. Verified vs official rulebook p.10 and BGA help. Each card's scoring scroll (shields, grid position, purse gold, sets) is evaluated manually and entered per card; face-down cards score 0. Leftover keys = 1 pt each. Gold not stored on a purse scores nothing but breaks ties. Tie persists after gold: shared victory. 2-5 players; solo/other modes not modelled.",
+  "tiebreakers": [
+    {
+      "categoryKey": "gold",
+      "dir": "highest",
+      "description": "Most leftover gold not stored in purses; if still tied, tied players win together."
+    }
+  ],
+  "sharedVictoryOnTie": true
+}

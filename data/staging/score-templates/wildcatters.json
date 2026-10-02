@@ -1,0 +1,37 @@
+{
+  "slug": "wildcatters",
+  "name": "Wildcatters",
+  "year": 2013,
+  "bggId": 146910,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 5 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "finalWealth",
+      "label": "Final wealth",
+      "labelVi": "Tổng tài sản cuối game",
+      "hint": "Final money/net worth as the rulebook defines; richest wins.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    { "description": "Tiebreaker not verified; check the rulebook." }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-money. UNVERIFIED placeholder: no official rulebook or secondary rules source could be retrieved (BGG blocked, search unavailable). Single net-worth input assumed from the game family; exact wealth components, tiebreakers and end trigger must be confirmed against the rulebook.",
+  "sources": [
+    { "url": "https://boardgamegeek.com/boardgame/146910", "title": "Wildcatters on BoardGameGeek (not readable, identification only)", "type": "other", "section": null }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

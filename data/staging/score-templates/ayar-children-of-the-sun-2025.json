@@ -1,0 +1,119 @@
+{
+  "slug": "ayar-children-of-the-sun-2025",
+  "name": "Ayar: Children of the Sun",
+  "year": 2025,
+  "bggId": 429438,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 1, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the fourth night phase, once only one Ayar remains"
+  },
+  "categories": [
+    {
+      "key": "sunMarker",
+      "label": "Sun score marker (before Llamas)",
+      "labelVi": "Điểm Mặt Trời (trước Llama)",
+      "hint": "Position of your Sun marker on the scoring track after round 4.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "moonMarker",
+      "label": "Moon score marker (before Llamas)",
+      "labelVi": "Điểm Mặt Trăng (trước Llama)",
+      "hint": "Position of your Moon marker on the scoring track after round 4.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "sunLlamaPoints",
+      "label": "Points added to Sun from Llamas",
+      "labelVi": "Điểm Llama cộng vào Mặt Trời",
+      "hint": "Llamas assigned to Sun, converted with the chart on the Main board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "moonLlamaPoints",
+      "label": "Points added to Moon from Llamas",
+      "labelVi": "Điểm Llama cộng vào Mặt Trăng",
+      "hint": "Llamas assigned to Moon, converted with the chart on the Main board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "finalScore",
+      "label": "Final score (lower of Sun and Moon)",
+      "labelVi": "Điểm cuối (thấp hơn giữa Mặt Trời và Mặt Trăng)",
+      "hint": "Only the lower of your two totals counts, so keep Sun and Moon balanced.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "min(cat_sunMarker + cat_sunLlamaPoints, cat_moonMarker + cat_moonLlamaPoints)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "higherTotal",
+      "label": "Higher of Sun and Moon (tiebreak)",
+      "labelVi": "Điểm cao hơn (phân định hòa)",
+      "hint": "Tied players: the one whose other marker is closest to the lower one wins, i.e. the lowest higher total.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "max(cat_sunMarker + cat_sunLlamaPoints, cat_moonMarker + cat_moonLlamaPoints)"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "higherTotal",
+      "dir": "lowest",
+      "description": "Tied players: the player whose other (higher) Score marker is closest to the lower one wins"
+    },
+    { "description": "If still tied, victory is shared." }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: dual-track-minimum (Knizia-style). Sun and Moon points are tracked on the score track during play; at game end Llamas are split between Sun and Moon via the Main board conversion chart (chart values not read, so the scorer enters the converted points). Solo mode (vs the Ayllu) uses the same final-score rule and is not modelled separately.",
+  "sources": [
+    {
+      "url": "https://www.ospreypublishing.com/media/fcyh2h5j/ayar-rulebook.pdf",
+      "title": "Ayar: Children of the Sun rulebook (Osprey Publishing)",
+      "type": "official-rulebook",
+      "section": "p.3 Overview; p.5 Game round; Llamas; p.15 Game End"
+    },
+    {
+      "url": "https://www.boardgamequest.com/ayar-children-of-the-sun-review/",
+      "title": "Ayar: Children of the Sun Review (Board Game Quest)",
+      "type": "other",
+      "section": "Sun/Moon final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

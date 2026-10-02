@@ -1,0 +1,211 @@
+{
+  "slug": "natera-new-beginning",
+  "name": "Natera: New Beginning",
+  "year": 2025,
+  "bggId": 379761,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 1, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the fourth season"
+  },
+  "categories": [
+    {
+      "key": "claims",
+      "label": "Claim tokens placed",
+      "labelVi": "Token Claim đã đặt",
+      "hint": "7 VP per claim token you placed during the game.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 7 },
+      "countsToTotal": true
+    },
+    {
+      "key": "duplicateClaims",
+      "label": "Claim tokens duplicating another player's claim",
+      "labelVi": "Token Claim trùng với người chơi khác",
+      "hint": "3 VP per claim token that duplicates a claim another player already took.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 3 },
+      "countsToTotal": true
+    },
+    {
+      "key": "settlements",
+      "label": "Settlements",
+      "labelVi": "Khu định cư",
+      "hint": "3 VP per settlement built.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 3 },
+      "countsToTotal": true
+    },
+    {
+      "key": "science",
+      "label": "Science board",
+      "labelVi": "Bảng khoa học",
+      "hint": "VP shown on the science board spaces you covered (values printed on the board).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "specialists",
+      "label": "Specialist cards",
+      "labelVi": "Thẻ chuyên gia",
+      "hint": "Sum of VP indicated on your specialist cards.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "explorationCards",
+      "label": "Exploration cards",
+      "labelVi": "Thẻ khám phá",
+      "hint": "Sum of VP on your exploration cards played.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "authorityNorthwest",
+      "label": "Authority track: region 1 (leader)",
+      "labelVi": "Quyền lực vùng 1",
+      "hint": "7 / 3 / 1 VP for 1st / 2nd / 3rd on this region's authority track. Enter authority level.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [7, 3, 1],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "authorityNortheast",
+      "label": "Authority track: region 2 (leader)",
+      "labelVi": "Quyền lực vùng 2",
+      "hint": "7 / 3 / 1 VP for 1st / 2nd / 3rd on this region's authority track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [7, 3, 1],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "authoritySouthwest",
+      "label": "Authority track: region 3 (leader)",
+      "labelVi": "Quyền lực vùng 3",
+      "hint": "7 / 3 / 1 VP for 1st / 2nd / 3rd on this region's authority track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [7, 3, 1],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "authoritySoutheast",
+      "label": "Authority track: region 4 (leader)",
+      "labelVi": "Quyền lực vùng 4",
+      "hint": "7 / 3 / 1 VP for 1st / 2nd / 3rd on this region's authority track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [7, 3, 1],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "totalAuthority",
+      "label": "Total authority over the four regions (tiebreak)",
+      "labelVi": "Tổng quyền lực 4 vùng (phân định hòa)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "totalAuthority",
+      "dir": "highest",
+      "description": "Highest total authority over the four regions"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. Not verified against the official rulebook (BGG file pages blocked); built from a published review plus French and Vietnamese listings. Authority tie handling for the 7/3/1 awards, exact science-board values, and solo mode are unconfirmed. Region names are placeholders for the four corner regions.",
+  "sources": [
+    {
+      "url": "https://opinionatedgamers.com/2026/02/18/dale-yu-review-of-natera-new-beginning/",
+      "title": "Dale Yu: Review of Natera: New Beginning",
+      "type": "other",
+      "section": "End-game scoring list and tiebreaker"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/307676/natera-new-beginning-rulebook-en",
+      "title": "Natera New Beginning Rulebook - EN (BGG files)",
+      "type": "bgg-file",
+      "section": "Could not be downloaded; to verify end-game scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

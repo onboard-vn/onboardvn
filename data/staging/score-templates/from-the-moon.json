@@ -1,0 +1,164 @@
+{
+  "slug": "from-the-moon",
+  "name": "From the Moon",
+  "year": 2024,
+  "bggId": 353745,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track VP (before final count)",
+      "labelVi": "Điểm trên track (trước kiểm điểm cuối)",
+      "hint": "VP gained during play: mission liftoff bonuses, buildings, immediate effects. Add +50/+100/+150/+200 tokens when lapped.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "achievementMajority",
+      "label": "Achievements: majority bonus",
+      "labelVi": "Thành tựu: thưởng nhiều nhất",
+      "hint": "Enter achievement tokens held. 1st 24 VP, 2nd 12 VP; ties split sum rounded down; 2 players: only 1st place scores (24).",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            24,
+            12
+          ],
+          "tieMode": "split-floor",
+          "over": "count"
+        },
+        "byPlayerCount": {
+          "2": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                24
+              ],
+              "tieMode": "split-floor",
+              "over": "count"
+            }
+          }
+        }
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "upgradeMajority",
+      "label": "Ship-part upgrades: majority bonus",
+      "labelVi": "Nâng cấp vỏ tàu: thưởng nhiều nhất",
+      "hint": "Enter number of ship-part upgrades. 1st 8 VP, 2nd 4 VP; ties split; 2 players: only 1st scores (8).",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            8,
+            4
+          ],
+          "tieMode": "split-floor",
+          "over": "count"
+        },
+        "byPlayerCount": {
+          "2": {
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                8
+              ],
+              "tieMode": "split-floor",
+              "over": "count"
+            }
+          }
+        }
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "resourcePairs",
+      "label": "Pairs of leftover resources",
+      "labelVi": "Cặp tài nguyên còn lại",
+      "hint": "Enter total leftover resources; each pair of any 2 resources = 1 VP.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "achievementsEach",
+      "label": "Achievement tokens (1 VP each)",
+      "labelVi": "Thành tựu (1 điểm/thẻ)",
+      "hint": "Enter the same achievement count; 1 VP each, on top of the majority bonus.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "largeBuildings",
+      "label": "Large building tiles (hourglass icon)",
+      "labelVi": "Tòa nhà lớn (biểu tượng đồng hồ cát)",
+      "hint": "Sum end-game VP of your large buildings per their printed condition (e.g. 3 per specialist, 2 per lab, 4 per upgraded greenhouse).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [],
+  "notes": "family: area-majority. Game ends when someone launches the 3rd mission or moves a player marker past the last Progress track space; finish the round, then final count. Mission majority bonuses (main/secondary printed on launch tile) are scored in play at liftoff and are included in trackScore. Solo mode (needs all 3 ships launched, tiered achievement/upgrade bonuses, Bronze<150/Silver/Gold>200) not modelled. Rulebook states no tiebreaker. Reviewed from French rulebook and glossary.",
+  "sources": [
+    {
+      "url": "https://www.laboitedejeu.fr/wp-content/uploads/2024/01/FRO-FR-STD-rules-web.pdf",
+      "title": "From the Moon rulebook (La Boite de Jeu, FR)",
+      "type": "official-rulebook",
+      "section": "p.12 Décollage d'une mission; p.13 Fin de partie"
+    },
+    {
+      "url": "https://www.laboitedejeu.fr/wp-content/uploads/2024/02/Glossaire-FtM-Printer-Friendly.pdf",
+      "title": "From the Moon glossary / game aid (FR)",
+      "type": "publisher-page",
+      "section": "Glossaire des tuiles Bâtiment (large building scoring)"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/from-the-moon/",
+      "title": "From the Moon review (Meeple Mountain)",
+      "type": "other",
+      "section": "Mission majority overview"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

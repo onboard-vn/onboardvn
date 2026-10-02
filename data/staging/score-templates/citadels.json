@@ -1,0 +1,134 @@
+{
+  "slug": "citadels",
+  "name": "Citadels",
+  "bggId": 205398,
+  "year": 2016,
+  "templateVersion": 2,
+  "variant": "2016 edition",
+  "playerCount": {
+    "min": 2,
+    "max": 8
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "districtCosts",
+      "label": "District values",
+      "labelVi": "Giá trị khu phố",
+      "hint": "Printed building costs of districts in your city.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "allTypes",
+      "label": "All five district types",
+      "labelVi": "Đủ năm loại khu phố",
+      "hint": "Apply type-changing district effects before checking.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value, 3, 0)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "firstCompleted",
+      "label": "First completed city",
+      "labelVi": "Hoàn thành thành phố đầu tiên",
+      "hint": "Only the first completer: 7 districts (4–8 players), 8 (2–3).",
+      "scope": "player",
+      "input": "exclusive",
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "otherCompleted",
+      "label": "Other completed city",
+      "labelVi": "Thành phố hoàn thành sau",
+      "hint": "Yes only if completed and not the first completer.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value, 2, 0)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "uniqueBonuses",
+      "label": "Unique district bonuses",
+      "labelVi": "Thưởng khu phố đặc biệt",
+      "hint": "Extra district effects; include beautification once here, not in costs.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "characterPoints",
+      "label": "Character-awarded points",
+      "labelVi": "Điểm từ nhân vật",
+      "hint": "Include points awarded during play by selected characters.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "lastRank",
+      "label": "Highest revealed final-round rank",
+      "labelVi": "Hạng nhân vật đã lộ cuối vòng",
+      "hint": "Use the highest rank you actually revealed.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 9
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://boardgame.bg/citadels%202016%20rules.pdf",
+      "title": "Citadels 2016 rulebook",
+      "type": "official-rulebook",
+      "section": "p.6 Game End; p.7 two/three-player changes; pp.10–15 characters/districts"
+    },
+    {
+      "url": "https://www.64ouncegames.com/pages/citadels2016",
+      "title": "64 Ounce Games accessible Citadels 2016 rules",
+      "type": "other",
+      "section": "Game End; character and district clarifications"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "tiebreakers": [
+    {
+      "categoryKey": "lastRank",
+      "dir": "highest",
+      "description": "Highest-ranked character revealed in the last round wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: tableau-set-scoring. This is BGG 205398 (2016), not the earlier eight-district edition. Resolve unique districts and character exceptions from components; input their extra points. First-completer and other-completer bonuses are mutually exclusive. Monument counts as two districts for completion; Secret Vault may score from hand. Gold and hand cards do not otherwise score."
+}

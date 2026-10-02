@@ -1,0 +1,100 @@
+{
+  "slug": "nemesis",
+  "name": "Nemesis",
+  "year": 2018,
+  "bggId": 167355,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "objectiveDone",
+      "label": "Personal objective completed",
+      "labelVi": "Hoàn thành mục tiêu cá nhân",
+      "hint": "Check the objective cards (hidden) at the end",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "survived",
+      "label": "Survived and reached Earth",
+      "labelVi": "Sống sót về Trái Đất",
+      "hint": "Alive and returned to Earth (in hibernation counts only if rules allow; verify)",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "playerWon",
+      "label": "Player wins",
+      "labelVi": "Người chơi thắng",
+      "hint": "Wins individually; none, some or all may win",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "winCondition": "Players win individually: survive to the end of the ship's journey and arrive at Earth with their personal objective(s) fulfilled. None, some or all players may win. Exact conditions (hibernation, rescue, objective timing, coop and solo modes) not verified against the rulebook.",
+  "endCondition": {
+    "type": "rounds",
+    "target": 15,
+    "description": "Game ends after the final turn on the round track, when the ship reaches Earth"
+  },
+  "outcome": {
+    "winLose": true
+  },
+  "roles": [
+    {
+      "key": "crew",
+      "label": "Crew member (secret objectives)",
+      "labelVi": "Thuyền viên (mục tiêu bí mật)",
+      "winCondition": "Survive and complete personal objective",
+      "categoryKeys": [
+        "objectiveDone",
+        "survived",
+        "playerWon"
+      ]
+    }
+  ],
+  "notes": "family: semi-coop-objective. No points. Not verified against the official rulebook (could not download it). Cooperative and solo modes differ and are not modelled; the 15-turn figure is from Wikipedia and should be re-checked.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Nemesis_(board_game)",
+      "title": "Nemesis (board game) (Wikipedia)",
+      "type": "wiki",
+      "section": "Gameplay / victory"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/167355",
+      "title": "Nemesis on BGG",
+      "type": "other",
+      "section": "Identification only"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

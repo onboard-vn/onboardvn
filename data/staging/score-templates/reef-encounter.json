@@ -1,0 +1,136 @@
+{
+  "slug": "reef-encounter",
+  "name": "Reef Encounter",
+  "year": 2004,
+  "bggId": 12962,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "eatenPolyps",
+      "label": "Eaten polyps by value",
+      "labelVi": "Polyp đã ăn theo giá trị",
+      "hint": "Each eaten polyp = 1 + coral tiles showing its colour duplicated at top (worth 1-5). Count eaten polyps by current worth.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "worth1 + 2*worth2 + 3*worth3 + 4*worth4 + 5*worth5"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "worth1",
+        "worth2",
+        "worth3",
+        "worth4",
+        "worth5"
+      ]
+    },
+    {
+      "key": "tbEatenInFront",
+      "label": "Eaten polyps still in front of screen (tiebreak)",
+      "labelVi": "Polyp đã ăn còn trước màn (hòa)",
+      "hint": "Tiebreak 1.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    },
+    {
+      "key": "tbLarva",
+      "label": "Unplayed larva cubes (tiebreak)",
+      "labelVi": "Larva chưa dùng (hòa)",
+      "hint": "Tiebreak 2.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    },
+    {
+      "key": "tbPolypTiles",
+      "label": "Unplayed polyp tiles (tiebreak)",
+      "labelVi": "Polyp tile chưa dùng (hòa)",
+      "hint": "Tiebreak 3.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    },
+    {
+      "key": "tbProtected",
+      "label": "Polyp tiles on corals protected by your shrimp (tiebreak)",
+      "labelVi": "Polyp trên san hô có tôm bảo vệ (hòa)",
+      "hint": "Tiebreak 4.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "tbEatenInFront",
+      "dir": "highest",
+      "description": "Most consumed polyps still in front of screen"
+    },
+    {
+      "categoryKey": "tbLarva",
+      "dir": "highest",
+      "description": "Most unplayed larva cubes"
+    },
+    {
+      "categoryKey": "tbPolypTiles",
+      "dir": "highest",
+      "description": "Most unplayed polyp tiles"
+    },
+    {
+      "categoryKey": "tbProtected",
+      "dir": "highest",
+      "description": "Most polyp tiles on corals protected by own shrimp; otherwise players remain tied"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority/tile-value (dominance hierarchy). Only polyps eaten by parrotfish score. Game end per UltraBoardGames summary: all corals covered by algae, or a player's four shrimp eaten; then every other player gets one last coral-eating turn (must discard five polyps). Official Z-Man PDF could not be downloaded (host blocked), so end triggers and tie direction are from secondary summaries.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/reef-encounter/game-rules.php",
+      "title": "How to play Reef Encounter (UltraBoardGames)",
+      "type": "other",
+      "section": "Scoring; End of game; Tie-breaks"
+    },
+    {
+      "url": "https://tesera.ru/images/items/318967/ZMan_Reef_Encounter_Rules.pdf",
+      "title": "Z-Man Reef Encounter Rules (official, not retrievable)",
+      "type": "official-rulebook",
+      "section": "Scoring"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Reef_Encounter",
+      "title": "Reef Encounter (Wikipedia)",
+      "type": "wiki",
+      "section": "Scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

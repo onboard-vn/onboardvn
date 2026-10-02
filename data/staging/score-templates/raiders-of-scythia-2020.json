@@ -1,0 +1,170 @@
+{
+  "slug": "raiders-of-scythia-2020",
+  "name": "Raiders of Scythia",
+  "bggId": 301880,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "categories": [
+    {
+      "key": "track",
+      "label": "VP before final scoring",
+      "labelVi": "Điểm trước tính cuối",
+      "hint": "Include track laps.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "crew",
+      "label": "Crew points",
+      "labelVi": "Điểm thủy thủ",
+      "hint": "Sum applicable printed end-game abilities.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "animals",
+      "label": "Animal points",
+      "labelVi": "Điểm động vật",
+      "hint": "Sum applicable printed animal scoring.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "quests",
+      "label": "Quest points",
+      "labelVi": "Điểm nhiệm vụ",
+      "hint": "Sum completed quest values.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gold",
+      "label": "Gold",
+      "labelVi": "Vàng",
+      "hint": "",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "equipment",
+      "label": "Equipment",
+      "labelVi": "Trang bị",
+      "hint": "",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wagons",
+      "label": "Wagons",
+      "labelVi": "Xe ngựa",
+      "hint": "",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "livestock",
+      "label": "Livestock",
+      "labelVi": "Gia súc",
+      "hint": "",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardsTotal",
+      "label": "Quests + crew + animals",
+      "labelVi": "Tổng nhiệm vụ, thủy thủ và động vật",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "suppliesTotal",
+      "label": "Silver + provisions + kumis",
+      "labelVi": "Tổng bạc, lương thực và kumis",
+      "hint": "",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://media.play-in.com/pdf/rules_games/raiders_of_scythia_rules_en.pdf",
+      "title": "Garphill official rulebook",
+      "type": "official-rulebook",
+      "section": "p.10: End-game scoring"
+    },
+    {
+      "url": "https://www.orderofgamers.com/downloads/RaidersofScythia_v1.pdf",
+      "title": "Raiders of Scythia reference",
+      "type": "other",
+      "section": "End of game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "notes": "family: point-salad-euro. Printed variable crew, animal and quest values are scorer-entered subtotals. Do not add final bonuses to track input twice. Solo and Omens excluded.",
+  "tiebreakers": [
+    {
+      "categoryKey": "cardsTotal",
+      "dir": "highest",
+      "description": "Most total quests, crew and animals."
+    },
+    {
+      "categoryKey": "suppliesTotal",
+      "dir": "highest",
+      "description": "Then most total silver, provisions and kumis."
+    }
+  ],
+  "sharedVictoryOnTie": true
+}

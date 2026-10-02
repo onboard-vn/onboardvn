@@ -1,0 +1,77 @@
+{
+  "slug": "power-grid-deluxe-europe-north-america-2014",
+  "name": "Power Grid Deluxe: Europe/North America",
+  "year": 2014,
+  "bggId": 155873,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "citiesPowered",
+      "label": "Cities powered in final Bureaucracy",
+      "labelVi": "Số thành phố được cấp điện ở bước cuối",
+      "hint": "Cities you can actually supply with your plants and resources (max = cities in your network).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "money",
+      "label": "Elektro remaining (tiebreak)",
+      "labelVi": "Tiền Elektro còn lại (phân định hòa)",
+      "hint": "Used only if tied on cities powered.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "money",
+      "dir": "highest",
+      "description": "Most remaining Elektro"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: auction-money. Same end-game rule as Power Grid: most cities powered in the final Bureaucracy, tiebreak most Elektro. Europe/North America maps; rulebook text via RulesPal transcription, not the original PDF (needsReview). Full tie after money has no further tiebreak stated.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/power-grid-deluxe/rulebook",
+      "title": "Power Grid Deluxe: Europe/North America rulebook (RulesPal transcription)",
+      "type": "other",
+      "section": "End of the Game and Winning the Game"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Power_Grid_(board_game)",
+      "title": "Power Grid (Wikipedia)",
+      "type": "wiki",
+      "section": "Winning conditions cross-check"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends right after Build Houses when any player has connected the city count set by player count (2p vs Trust 18, 3-4p 17, 5p 15, 6p 14 per rulebook table)."
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "slug": "skymines-2019",
+  "name": "Skymines",
+  "year": 2022,
+  "bggId": 359438,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 7,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the Action phase of round 7"
+  },
+  "categories": [
+    {
+      "key": "cash",
+      "label": "CrypCoin in reserve",
+      "labelVi": "CrypCoin đang có",
+      "hint": "Cash coins in your reserve.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "astrogo",
+      "label": "Astrogo Enterprises shares value",
+      "labelVi": "Giá trị cổ phần Astrogo Enterprises",
+      "hint": "Uncovered coin icons on the company station x your total shares (track position + extra share cards).",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "coins * shares"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "coins",
+        "shares"
+      ]
+    },
+    {
+      "key": "tawac",
+      "label": "Tawac Industries shares value",
+      "labelVi": "Giá trị cổ phần Tawac Industries",
+      "hint": "Uncovered coin icons on the company station x your total shares (track position + extra share cards).",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "coins * shares"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "coins",
+        "shares"
+      ]
+    },
+    {
+      "key": "skymine",
+      "label": "Skymine Resources shares value",
+      "labelVi": "Giá trị cổ phần Skymine Resources",
+      "hint": "Uncovered coin icons on the company station x your total shares (track position + extra share cards).",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "coins * shares"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "coins",
+        "shares"
+      ]
+    },
+    {
+      "key": "minerva",
+      "label": "Minerva Corp. shares value",
+      "labelVi": "Giá trị cổ phần Minerva Corp.",
+      "hint": "Uncovered coin icons on the company station x your total shares (track position + extra share cards).",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "coins * shares"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "coins",
+        "shares"
+      ]
+    },
+    {
+      "key": "heliumTrack",
+      "label": "Helium-3 tank track",
+      "labelVi": "Đường helium-3",
+      "hint": "Last value your helium-3 marker has passed.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "uploadTrack",
+      "label": "Research track",
+      "labelVi": "Đường nghiên cứu",
+      "hint": "Last value your upload marker passed plus face-up special research tokens it reached or passed.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker; victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority (stock/share valuation; final scoring is a 7-category CrypCoin sum). Share total per company = last share icon reached on its track + additional share cards (resting decks returned to hand first; 8 single-share cards). Coin icons are counted per company station (uncovered only), same for all players. Solo/campaign chapter scoring (success points) not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/86/73/12-skymines-rulebook.pdf",
+      "title": "Skymines Rulebook (Deep Print Games)",
+      "type": "official-rulebook",
+      "section": "pp.19-20 End of the game / Final scoring"
+    },
+    {
+      "url": "https://www.yucata.de/en/Rules/Skymines",
+      "title": "Yucata Skymines rules",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

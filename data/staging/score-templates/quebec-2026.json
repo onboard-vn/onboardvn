@@ -1,0 +1,139 @@
+{
+  "slug": "quebec-2026",
+  "name": "Québec",
+  "year": 2011,
+  "bggId": 91984,
+  "templateVersion": 1,
+  "variant": "complete rules",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Four centuries (1608, 1708, 1808, 1908), each ending with a scoring round"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track after the final century scoring round",
+      "labelVi": "Điểm trên track sau vòng tính điểm thế kỷ cuối",
+      "hint": "Zones of power, events and leader/district points accumulated on the track (each worker in a scored zone 1 VP, plus majority bonuses per rules).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "incompleteWorkers",
+      "label": "Workers on incomplete buildings",
+      "labelVi": "Thợ trên công trình chưa xong",
+      "hint": "1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "handWorkers",
+      "label": "Active workers on Hand tile",
+      "labelVi": "Thợ active trên Hand tile",
+      "hint": "1 VP per full 2 workers.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/2)"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "mainGroupBuildings",
+      "label": "Main group buildings by stars",
+      "labelVi": "Công trình nhóm chính theo số sao",
+      "hint": "Main group = your adjacent group worth the most. 1 star = 1 VP, 2 stars = 3 VP, 3 stars = 6 VP.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "star1*1+star2*3+star3*6"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "inputs": [
+        "star1",
+        "star2",
+        "star3"
+      ]
+    },
+    {
+      "key": "otherBuildingStars",
+      "label": "Stars on buildings outside the main group",
+      "labelVi": "Tổng sao công trình ngoài nhóm chính",
+      "hint": "1 VP per star.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "eventsEndGame",
+      "label": "End-of-game event/leader points",
+      "labelVi": "Điểm sự kiện/leader cuối game",
+      "hint": "Event cards still in play (e.g. 1608 event if not yet scored) score at the end; enter any points not already on the track.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "optional": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. Complete rules (main group) modelled; Family rules use 1/3/6 VP per building by stars with no main group. No stars on buildings with an architect at game end. Century scoring uses cascading majorities and is tracked live on the score track, not itemised. BGG 91984 is the 2011 Le Scorpion masque edition (slug suffix 2026 follows catalogue). Event card bonuses not itemised.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/8b/e2/82-quebec-rulebook.pdf",
+      "title": "Québec rulebook (Le Scorpion masqué, via 1jour-1jeu)",
+      "type": "official-rulebook",
+      "section": "p.6 Scoring the zones of power; p.7 Final scoring and End of the game"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/91984/quebec",
+      "title": "Québec (BGG)",
+      "type": "other",
+      "section": "game identity"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

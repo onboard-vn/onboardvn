@@ -1,0 +1,147 @@
+{
+  "slug": "imperial-steam-2021",
+  "name": "Imperial Steam",
+  "year": 2021,
+  "bggId": 338760,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 8,
+    "aggregate": "sum",
+    "endCondition": "After round 8, or when any network connects Wien to Trieste"
+  },
+  "categories": [
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "cash",
+      "label": "Cash after final income",
+      "labelVi": "Tiền mặt sau thu nhập cuối",
+      "hint": "Cash plus final income (Phase 4; doubled with Semmering token).",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "goodsSold",
+      "label": "Goods on trains and warehouses",
+      "labelVi": "Hàng hóa trên tàu và kho",
+      "hint": "Sold for 10 guldens each.",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "cityKeys",
+      "label": "City Key tokens cashed out",
+      "labelVi": "Chìa khóa thành phố quy đổi",
+      "hint": "Sum of guldens shown on the Influence track for your gold and silver keys.",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": 4,
+      "countsToTotal": true,
+      "key": "hubInfluence",
+      "label": "Hub Cities with influence <= yours",
+      "labelVi": "Số Hub City có ảnh hưởng không cao hơn bạn",
+      "hint": "1 city = 10, 2 = 30, 3 = 60, 4 = 100 guldens.",
+      "input": "count",
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 10,
+          "2": 30,
+          "3": 60,
+          "4": 100
+        }
+      }
+    },
+    {
+      "scope": "player",
+      "min": null,
+      "max": null,
+      "countsToTotal": true,
+      "key": "contracts",
+      "label": "Contracts net value",
+      "labelVi": "Giá trị hợp đồng ròng",
+      "hint": "Only if Trieste is connected: + value of completed contracts, - value of unfinished ones; otherwise 0.",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": null,
+      "max": 0,
+      "countsToTotal": true,
+      "key": "trackTolls",
+      "label": "Track tolls paid",
+      "labelVi": "Phí đường ray đã trả",
+      "hint": "If you have contracts and are not connected to Trieste: 20 guldens per connection used (enter as negative).",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "shareholders",
+      "label": "Shareholders (investors)",
+      "labelVi": "Cổ đông",
+      "hint": "Each investor on your Share board removes 10% of your money.",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "-(cat_cash+cat_goodsSold+cat_cityKeys+cat_hubInfluence+cat_contracts+cat_trackTolls)*value/10"
+      }
+    }
+  ],
+  "tiebreakers": [],
+  "notes": "family: auction-money (final score = cash after investor deduction). Order: final income, sell goods (10 each), cash City Keys, hub-city bonus, contracts (only if Wien-Trieste connected), tolls, then 10% of money per shareholder (10 shareholders = 0; more than 10 goes negative). Rulebook gives no tiebreaker. The shareholders row computes a negative deduction from the other rows (cat_ identifiers); it is the last category. Gold/silver key values and hub influence come from the board state.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/ca/13/a4-imperial-steam-rulebook.pdf",
+      "title": "Imperial Steam Rulebook (Capstone Games)",
+      "type": "official-rulebook",
+      "section": "Final Scoring (p.28-29)"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/imperial-steam/",
+      "title": "Imperial Steam Game Review (Meeple Mountain)",
+      "type": "other",
+      "section": "Final score description"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

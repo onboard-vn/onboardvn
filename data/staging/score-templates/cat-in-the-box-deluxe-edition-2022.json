@@ -1,0 +1,166 @@
+{
+  "slug": "cat-in-the-box-deluxe-edition-2022",
+  "name": "Cat in the Box: Deluxe Edition",
+  "bggId": 345972,
+  "year": 2022,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "categories": [
+    {
+      "key": "round1",
+      "label": "Round 1 score",
+      "labelVi": "Vòng 1: điểm",
+      "hint": "tricks = won; predicted = bid; group = largest connected tokens; paradox = 0/1. Unplayed rounds: zero all inputs.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "tricks * if(paradox > 0, -1, 1) + if(paradox == 0 && if(players == 2, tricks <= 4, tricks == predicted), group, 0)"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "tricks",
+        "predicted",
+        "group",
+        "paradox"
+      ],
+      "min": 0
+    },
+    {
+      "key": "round2",
+      "label": "Round 2 score",
+      "labelVi": "Vòng 2: điểm",
+      "hint": "tricks = won; predicted = bid; group = largest connected tokens; paradox = 0/1. Unplayed rounds: zero all inputs.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "tricks * if(paradox > 0, -1, 1) + if(paradox == 0 && if(players == 2, tricks <= 4, tricks == predicted), group, 0)"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "tricks",
+        "predicted",
+        "group",
+        "paradox"
+      ],
+      "min": 0
+    },
+    {
+      "key": "round3",
+      "label": "Round 3 score",
+      "labelVi": "Vòng 3: điểm",
+      "hint": "tricks = won; predicted = bid; group = largest connected tokens; paradox = 0/1. Unplayed rounds: zero all inputs.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "tricks * if(paradox > 0, -1, 1) + if(paradox == 0 && if(players == 2, tricks <= 4, tricks == predicted), group, 0)"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "tricks",
+        "predicted",
+        "group",
+        "paradox"
+      ],
+      "min": 0
+    },
+    {
+      "key": "round4",
+      "label": "Round 4 score",
+      "labelVi": "Vòng 4: điểm",
+      "hint": "tricks = won; predicted = bid; group = largest connected tokens; paradox = 0/1. Unplayed rounds: zero all inputs.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "tricks * if(paradox > 0, -1, 1) + if(paradox == 0 && if(players == 2, tricks <= 4, tricks == predicted), group, 0)"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "tricks",
+        "predicted",
+        "group",
+        "paradox"
+      ],
+      "min": 0
+    },
+    {
+      "key": "round5",
+      "label": "Round 5 score",
+      "labelVi": "Vòng 5: điểm",
+      "hint": "tricks = won; predicted = bid; group = largest connected tokens; paradox = 0/1. Unplayed rounds: zero all inputs.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "tricks * if(paradox > 0, -1, 1) + if(paradox == 0 && if(players == 2, tricks <= 4, tricks == predicted), group, 0)"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "tricks",
+        "predicted",
+        "group",
+        "paradox"
+      ],
+      "min": 0
+    },
+    {
+      "key": "finalRound",
+      "label": "Final round score",
+      "labelVi": "Điểm vòng cuối",
+      "hint": "Calculated using player count.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "if(players == 2, cat_round2, if(players == 3, cat_round3, if(players == 4, cat_round4, cat_round5)))"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.hras.cz/user/related_files/4250231736483_en.pdf",
+      "title": "Cat in the Box Deluxe official English rulebook",
+      "type": "official-rulebook",
+      "section": "pp.9–10 scoring/end game; p.11 two-player rules"
+    },
+    {
+      "url": "https://www.64ouncegames.com/pages/cat-in-the-box-rules",
+      "title": "64 Ounce Games accessible rules",
+      "type": "other",
+      "section": "Scoring phase; End of game; Additional rules for 2 players"
+    },
+    {
+      "url": "https://beziergames.com/collections/frontpage/products/cat-in-the-box-deluxe-edition",
+      "title": "Bezier Games Cat in the Box Deluxe",
+      "type": "publisher-page",
+      "section": "Official rules download; edition identity"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "tiebreakers": [
+    {
+      "categoryKey": "finalRound",
+      "dir": "highest",
+      "description": "Highest final-round score; if still tied, share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "Play one round per player, each starting once."
+  },
+  "notes": "family: trick-taking-prediction-area-scoring. Each won trick scores +1; paradox causer scores -1 per won trick and no bonus. In 3–5 players an exact bid grants largest orthogonally connected token group. In two players there is no bid: at most four won tricks qualifies for that bonus, unless causing paradox. Enter zero for all unused round rows; predicted=0 is a placeholder only in two-player mode. Round count depends on players; schema has no dynamic rounds.count."
+}

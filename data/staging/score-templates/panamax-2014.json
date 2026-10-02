@@ -1,0 +1,122 @@
+{
+  "slug": "panamax-2014",
+  "name": "Panamax",
+  "year": 2014,
+  "bggId": 131287,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after Phase 3"
+  },
+  "categories": [
+    {
+      "key": "money",
+      "label": "Personal money",
+      "labelVi": "Tiền cá nhân",
+      "hint": "Personal cash after dividends, transit fees and Managing Director payments.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "shareValue",
+      "label": "Share value",
+      "labelVi": "Giá trị cổ phiếu",
+      "hint": "Sum of current Market track price (left side) for each share you own.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "advisorBonus",
+      "label": "Financial Advisor bonuses",
+      "labelVi": "Thưởng Financial Advisor",
+      "hint": "Bonus from your best two Financial Advisor cards.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "mdAwards",
+      "label": "Managing Director Award tokens",
+      "labelVi": "Token Managing Director",
+      "hint": "Count tokens won per round.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "3 * round1 + 5 * round2 + 7 * round3"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "round1",
+        "round2",
+        "round3"
+      ]
+    },
+    {
+      "key": "bailouts",
+      "label": "Bailout tokens",
+      "labelVi": "Token Bailout",
+      "hint": "Each Bailout token costs 15.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -15
+      },
+      "countsToTotal": true,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Ties broken by player turn order."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: economic-money (winner = largest personal fortune, not company funds). Managing Director Award: dividend-paying company with highest stock position each round; values $3/$5/$7 per round (from a secondary rules summary, not read in the official PDF); ties for the award go to the company with most money. Advisor bonus values are printed on cards and entered as a total. Exact turn-order tiebreak direction not verified.",
+  "sources": [
+    {
+      "url": "https://merchantsofplay.com/howtoplay/panamax/",
+      "title": "How to Play Panamax (Merchants of Play)",
+      "type": "other",
+      "section": "Final scoring"
+    },
+    {
+      "url": "https://opinionatedgamers.com/2014/10/12/dale-yu-first-impressions-of-panamax/",
+      "title": "Dale Yu: First Impressions of Panamax",
+      "type": "other",
+      "section": "End game bonuses"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/104803/panamax-rules-usa",
+      "title": "Panamax rules (BGG files; official rules, not downloadable without login)",
+      "type": "bgg-file",
+      "section": "Final scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,155 @@
+{
+  "slug": "lacrimosa-2022",
+  "name": "Lacrimosa",
+  "year": 2022,
+  "bggId": 348450,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the fifth round, then the final count"
+  },
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "VP on score track before final count",
+      "labelVi": "Điểm trên track trước khi kết toán",
+      "hint": "VP gained during the game (track plus any +50 marker).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "royalCourt",
+      "label": "Royal Court tiles fulfilled",
+      "labelVi": "Thẻ Hoàng cung đã hoàn thành",
+      "hint": "VP of each fulfilled Royal Court tile; each Opus / Requiem marker can satisfy only one tile. Enter the VP of each tile.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "requiem",
+      "label": "Requiem markers scored",
+      "labelVi": "Điểm Requiem",
+      "hint": "Per movement: your markers matching the majority composer score the higher value, the other composer the lower; both score lower on a tie; neutral markers score nothing. Enter the VP of each of your markers.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "storyPoints",
+      "label": "Story Points left",
+      "labelVi": "Điểm Câu chuyện còn lại",
+      "hint": "1 VP per 2 Story Points left (tracks on personal board plus counters).",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/2)"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "ducats",
+      "label": "Ducats left",
+      "labelVi": "Đồng ducat còn lại",
+      "hint": "1 VP per 3 ducats left.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/3)"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "requiemMarkers",
+      "label": "Requiem markers contributed (tiebreak)",
+      "labelVi": "Số marker Requiem đã đóng góp (phân định hòa)",
+      "hint": "Total of your markers on the Requiem.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "opusCards",
+      "label": "Opus cards in front of you (tiebreak)",
+      "labelVi": "Số thẻ Opus (phân định hòa)",
+      "hint": "Opus cards still in front of you.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "requiemMarkers",
+      "dir": "highest",
+      "description": "Most Requiem markers contributed"
+    },
+    {
+      "categoryKey": "opusCards",
+      "dir": "highest",
+      "description": "Most Opus cards"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: end-game-categories. Final count order: Royal Court tiles, Requiem, Story Points, money. Solo (Soloist automa) rules exist and are not modelled; solo also scores the Requiem normally.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/lacrimosa.pdf",
+      "title": "Lacrimosa Rulebook",
+      "type": "official-rulebook",
+      "section": "p.11-12 Royal Court tiles obtained, Score the Requiem, Conclusion of the story, Money, winner and tiebreakers"
+    },
+    {
+      "url": "https://board-game-rules.com/boardgames/lacrimosa/",
+      "title": "Lacrimosa rules summary",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

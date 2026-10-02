@@ -1,0 +1,162 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "medium",
+  "needsReview": true,
+  "slug": "qe-2019",
+  "name": "QE",
+  "year": 2019,
+  "bggId": 266830,
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "categories": [
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "companyVp",
+      "label": "Company tile VP",
+      "labelVi": "VP từ thẻ công ty",
+      "hint": "Sum of VP on Company tiles you won",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": 4,
+      "key": "zeroBids",
+      "label": "Zero bids (max 1 per round)",
+      "labelVi": "Lượt bid 0",
+      "hint": "2 VP per zero bid, at most 1 per round",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "nationalization",
+      "label": "Nationalization bonus",
+      "labelVi": "Thưởng quốc hữu hóa",
+      "hint": "VP for tiles matching your nation; varies by player count (read from rule table)",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "monopolization",
+      "label": "Monopolization bonus",
+      "labelVi": "Thưởng độc quyền ngành",
+      "hint": "VP for multiple companies of the same industry; read from rule table",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "diversification",
+      "label": "Diversification bonus",
+      "labelVi": "Thưởng đa dạng hóa",
+      "hint": "VP for sets of different industries; read from rule table",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": false,
+      "min": 0,
+      "max": null,
+      "key": "totalSpent",
+      "label": "Total spent (secret)",
+      "labelVi": "Tổng tiền đã chi",
+      "hint": "Reveal tracked spending; highest spender is eliminated",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "lowestSpender",
+      "label": "Lowest spender bonus",
+      "labelVi": "Thưởng chi ít nhất",
+      "hint": "Tick for the player with the lowest total spent (6 VP in 3-4p, 7 VP in 5p)",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "value * (players >= 5 ? 7 : 6)"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": false,
+      "min": 0,
+      "max": null,
+      "key": "eliminated",
+      "label": "Eliminated (highest spender)",
+      "labelVi": "Bị loại (chi nhiều nhất)",
+      "hint": "Tick for the highest spender (all tied are eliminated); cannot win",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      }
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "totalSpent",
+      "dir": "lowest",
+      "description": "Tied players: least total spent wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "eliminationTracking": {
+    "resource": "total spent",
+    "start": 0,
+    "eliminatedCannotWin": true
+  },
+  "winCondition": "Game ends when all Company tiles are awarded. Highest VP wins among players who are not eliminated (highest total spender is eliminated).",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "All Company tiles awarded (3-4 rounds, each player auctioneer once per round)"
+  },
+  "notes": "family: auction-money. Exact bonus VP values come from the rulebook tables (vary by player count) and are entered as numbers; not verified against the official rulebook PDF. Auction ties re-bid; 3-player final turn ties give no company.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/qe/rulebook",
+      "title": "Rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End of game / scoring"
+    }
+  ]
+}

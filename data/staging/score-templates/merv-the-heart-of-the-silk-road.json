@@ -1,0 +1,112 @@
+{
+  "slug": "merv-the-heart-of-the-silk-road",
+  "name": "Merv: The Heart of the Silk Road",
+  "year": 2020,
+  "bggId": 306040,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the scoring phase of year 3"
+  },
+  "categories": [
+    {
+      "key": "trackPoints",
+      "label": "Points on score track",
+      "labelVi": "Điểm trên track",
+      "hint": "All points scored during the 3 years (favour/influence track, palace, buildings, mosque, etc.).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "caravanSets",
+      "label": "Caravan card sets",
+      "labelVi": "Bộ thẻ caravan",
+      "hint": "Form sets of different spices: 1/3/6/10 per set of 1/2/3/4. Enter number of cards per spice.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "ginger",
+        "pepper",
+        "juniper",
+        "cinnamon"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "ginger+pepper+juniper+cinnamon+min(ginger,pepper)+min(ginger,juniper)+min(ginger,cinnamon)+min(pepper,juniper)+min(pepper,cinnamon)+min(juniper,cinnamon)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "favour",
+      "label": "Favour (tiebreak 1)",
+      "labelVi": "Favour (hòa 1)",
+      "hint": "Position on favour track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "influence",
+      "label": "Influence (tiebreak 2)",
+      "labelVi": "Influence (hòa 2)",
+      "hint": "Position on influence track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "favour",
+      "dir": "highest",
+      "description": "Most favour"
+    },
+    {
+      "categoryKey": "influence",
+      "dir": "highest",
+      "description": "Most influence"
+    },
+    {
+      "description": "Then the player whose turn is first in the order queue"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-money. Points scored immediately on tracks (favour/influence advances, palace courtiers, buildings, scoring tiles, mosque) and recorded on the score track; only caravan cards are scored at game end. Optimal set grouping is computed from spice counts (equals total cards plus the sum of pairwise minimums). Solo (corrupt magistrate) and 2-player (high courtier) variants not modelled. Rulebook text via RulesPal transcription, not original PDF (needsReview).",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/merv/rulebook",
+      "title": "Merv: The Heart of the Silk Road rulebook (RulesPal)",
+      "type": "other",
+      "section": "Game End; Tiebreakers; Scoring Phase"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

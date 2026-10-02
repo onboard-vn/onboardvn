@@ -1,0 +1,503 @@
+{
+  "slug": "federation-2022",
+  "name": "Federation",
+  "year": 2022,
+  "bggId": 345868,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "medalValue",
+      "label": "Medals of Honor (lowest uncovered value)",
+      "labelVi": "Huy chương (giá trị thấp nhất chưa bị che)",
+      "hint": "Lowest uncovered value on your medal roll; enter 30 if you hold all 7 medals.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "crystals",
+      "label": "Remaining crystals",
+      "labelVi": "Tinh thể còn lại",
+      "hint": "1 PP per 2 crystals, rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "diamonds",
+      "label": "Gold diamonds",
+      "labelVi": "Kim cương vàng",
+      "hint": "1 PP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "hangarShips",
+      "label": "Spaceships in hangar",
+      "labelVi": "Tàu trong hangar",
+      "hint": "1 PP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "alterationTokens",
+      "label": "Alteration tokens",
+      "labelVi": "Token Alteration",
+      "hint": "1 PP per remaining Alteration token.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "projectGreen",
+      "label": "Green planet Major Project (influence level)",
+      "labelVi": "Hành tinh xanh lá - Dự án lớn (mức ảnh hưởng)",
+      "hint": "Rank by influence level on the planet. Enter 0 if the project is not fully funded or you have no standing; 4p 16/8/4, 3p 14/6, 2p 10 (tie 7 each) and 4 for 2nd.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            16,
+            8,
+            4
+          ],
+          "tieMode": "split-exact",
+          "excludeZero": true,
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "3": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                14,
+                6
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          },
+          "2": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                10,
+                4
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "projectPurple",
+      "label": "Purple planet Major Project (influence level)",
+      "labelVi": "Hành tinh tím - Dự án lớn (mức ảnh hưởng)",
+      "hint": "Rank by influence level on the planet. Enter 0 if the project is not fully funded or you have no standing; 4p 16/8/4, 3p 14/6, 2p 10 (tie 7 each) and 4 for 2nd.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            16,
+            8,
+            4
+          ],
+          "tieMode": "split-exact",
+          "excludeZero": true,
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "3": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                14,
+                6
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          },
+          "2": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                10,
+                4
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "projectRed",
+      "label": "Red planet Major Project (influence level)",
+      "labelVi": "Hành tinh đỏ - Dự án lớn (mức ảnh hưởng)",
+      "hint": "Rank by influence level on the planet. Enter 0 if the project is not fully funded or you have no standing; 4p 16/8/4, 3p 14/6, 2p 10 (tie 7 each) and 4 for 2nd.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            16,
+            8,
+            4
+          ],
+          "tieMode": "split-exact",
+          "excludeZero": true,
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "3": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                14,
+                6
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          },
+          "2": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                10,
+                4
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "projectBlue",
+      "label": "Blue planet Major Project (influence level)",
+      "labelVi": "Hành tinh xanh dương - Dự án lớn (mức ảnh hưởng)",
+      "hint": "Rank by influence level on the planet. Enter 0 if the project is not fully funded or you have no standing; 4p 16/8/4, 3p 14/6, 2p 10 (tie 7 each) and 4 for 2nd.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            16,
+            8,
+            4
+          ],
+          "tieMode": "split-exact",
+          "excludeZero": true,
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "3": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                14,
+                6
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          },
+          "2": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                10,
+                4
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "projectYellow",
+      "label": "Yellow planet Major Project (influence level)",
+      "labelVi": "Hành tinh vàng - Dự án lớn (mức ảnh hưởng)",
+      "hint": "Rank by influence level on the planet. Enter 0 if the project is not fully funded or you have no standing; 4p 16/8/4, 3p 14/6, 2p 10 (tie 7 each) and 4 for 2nd.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            16,
+            8,
+            4
+          ],
+          "tieMode": "split-exact",
+          "excludeZero": true,
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "3": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                14,
+                6
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          },
+          "2": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                10,
+                4
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "projectSpecialMission",
+      "label": "Special Mission Major Project (accomplished missions)",
+      "labelVi": "Dự án nhiệm vụ đặc biệt (số nhiệm vụ)",
+      "hint": "Rank by accomplished special missions; starter and deep-space tiles count. Enter 0 if the project is not fully funded or you have no standing; 4p 16/8/4, 3p 14/6, 2p 10 (tie 7 each) and 4 for 2nd.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            16,
+            8,
+            4
+          ],
+          "tieMode": "split-exact",
+          "excludeZero": true,
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "3": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                14,
+                6
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          },
+          "2": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                10,
+                4
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "projectJoint",
+      "label": "Joint Major Project (contribution level)",
+      "labelVi": "Dự án chung (mức đóng góp)",
+      "hint": "Rank by contribution level; non-contributors do not score. Enter 0 if the project is not fully funded or you have no standing; 4p 16/8/4, 3p 14/6, 2p 10 (tie 7 each) and 4 for 2nd.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            16,
+            8,
+            4
+          ],
+          "tieMode": "split-exact",
+          "excludeZero": true,
+          "over": "value"
+        },
+        "byPlayerCount": {
+          "3": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                14,
+                6
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          },
+          "2": {
+            "type": "rankAward",
+            "rankAward": {
+              "compare": "highest",
+              "points": [
+                10,
+                4
+              ],
+              "tieMode": "split-exact",
+              "excludeZero": true,
+              "over": "value"
+            }
+          }
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "twoPlayerGapPenalty",
+      "label": "2-player: 2nd place gap of 3+ levels",
+      "labelVi": "2 người: hạng 2 cách 3+ bậc",
+      "hint": "2 players only: 2nd place scores 0 instead of 4 when the gap to 1st is 3+ levels; count each such project (-4 each).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 7,
+      "formula": {
+        "type": "multiply",
+        "points": -4
+      },
+      "countsToTotal": true,
+      "appliesWhen": "players == 2"
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "rounds",
+    "target": 5,
+    "description": "Game ends after the 5th round, then final scoring."
+  },
+  "notes": "family: area-majority-end-projects. Final scoring: (1) Medals of Honor, (2) remaining resources, (3) funded Major Projects (7 total incl. Joint). Tied ranks split the combined points of the affected places (4p example: two tied for 1st each get 12). A Major Project that is not fully funded does not score: enter 0 for everyone. In-play prestige points are not modelled as a separate field. Special missions, Erudite and deep-space tile effects are tracked during play. Solo/Automa not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/78/07/b3-federation-rulebook.pdf",
+      "title": "Federation English rulebook (Aeon / 1j1ju)",
+      "type": "official-rulebook",
+      "section": "pp.24-25 End of the game; p.26 3-player; p.27 2-player scoring"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/federation/",
+      "title": "Meeple Mountain: Federation review",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

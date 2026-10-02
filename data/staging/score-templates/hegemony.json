@@ -1,0 +1,166 @@
+{
+  "slug": "hegemony",
+  "name": "Hegemony",
+  "bggId": 321608,
+  "templateVersion": 2,
+  "variant": "base, rules v1.2",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "categories": [
+    {
+      "key": "role",
+      "label": "Role code",
+      "labelVi": "Mã vai trò",
+      "hint": "1 Working; 2 Middle; 3 Capitalist; 4 State.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 1,
+      "max": 4
+    },
+    {
+      "key": "track",
+      "label": "VP track",
+      "labelVi": "Điểm trên track",
+      "hint": "After round 5, before final adjustments.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "policies",
+      "label": "Preferred policies",
+      "labelVi": "Chính sách phù hợp",
+      "hint": "Policies 1–5: A Working, B Middle, C Capitalist; State uses final Agenda.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "cat_role==4?0:(value==0?0:(cat_role==2?(value==1?1:(value==2?3:(value==3?6:(value==4?10:15)))):(value==1?1:(value==2?4:(value==3?8:(value==4?12:18))))))"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 5
+    },
+    {
+      "key": "money",
+      "label": "Remaining money",
+      "labelVi": "Tiền còn lại",
+      "hint": "After loan settlement.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "cat_role==1?min(15,floor(value/10)):(cat_role==2?floor(value/15):(cat_role==4?floor(value/30):0))"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "storage",
+      "label": "Stored resources",
+      "labelVi": "Tài nguyên lưu kho",
+      "hint": "Capitalist includes Free Trade Zone; Middle excludes Goods & Services; State media only, not personal Influence.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "cat_role==1?0:floor(food/2)+floor(luxury/3)+floor(health/3)+floor(education/3)+(cat_role==4?floor(media/3):0)"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "food",
+        "luxury",
+        "health",
+        "education",
+        "media"
+      ]
+    },
+    {
+      "key": "debt",
+      "label": "Loan penalties",
+      "labelVi": "Phạt khoản vay",
+      "hint": "Capitalist: loans; others: unpaid units of 5 after mandatory settlement at 55 per loan.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "cat_role==3?-5*loans:-unpaidUnits"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "loans",
+        "unpaidUnits"
+      ]
+    },
+    {
+      "key": "isState",
+      "label": "State role",
+      "labelVi": "Vai Nhà nước",
+      "hint": "Only State marks true.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "votes",
+      "label": "Voting cubes",
+      "labelVi": "Khối biểu quyết",
+      "hint": "Your cubes remaining in the bag.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://hegemonicproject.com/wp-content/uploads/2023/04/Hegemony-English-Rulebook-v1.2.pdf",
+      "title": "Hegemonic Project v1.2",
+      "type": "official-rulebook",
+      "section": "v1.2 pp.13 (Game End, loans, tiebreak), 17 Working, 21 Capitalist, 25 Middle, 29 State"
+    },
+    {
+      "url": "https://www.rulespal.com/hegemony/rulebook",
+      "title": "Hegemony cross-check",
+      "type": "other",
+      "section": "Game End"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "notes": "family: point-salad-euro. Verified against official v1.2 rulebook PDF: end after round 5; Capitalist -5 VP per Loan; others pay 55 per Loan, -1 VP per 5 unpaid. Working: policy table 1/4/8/12/18, 1 VP per 10 money (max 15). Middle: 1/3/6/10/15, 1 VP per 15 money, storages food/2 and luxury/health/education per 3 (excl. Goods & Services). Capitalist: 1/4/8/12/18, storages incl. Free Trade Zone, no money VP. State: storages incl. media, 1 VP per 30 Treasury. Role-dependent scoring uses cat_role; enter each role once. Inapplicable counts must be zero. State tiebreak policies = matches with its Political Agenda card (normally discarded in the Scoring Phase, so count must be taken before discarding in final round).",
+  "tiebreakers": [
+    {
+      "categoryKey": "policies",
+      "dir": "highest",
+      "description": "Most preferred policies."
+    },
+    {
+      "categoryKey": "isState",
+      "dir": "highest",
+      "description": "State wins if still tied."
+    },
+    {
+      "categoryKey": "votes",
+      "dir": "highest",
+      "description": "Then most Voting cubes in bag."
+    }
+  ],
+  "sharedVictoryOnTie": true
+}

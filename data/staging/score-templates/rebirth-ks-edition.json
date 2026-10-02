@@ -1,0 +1,117 @@
+{
+  "slug": "rebirth-ks-edition",
+  "name": "Rebirth KS edition",
+  "year": 2024,
+  "bggId": 417197,
+  "templateVersion": 1,
+  "variant": "Scotland",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track total before final scoring",
+      "labelVi": "Điểm trên track trước khi tính cuối game",
+      "hint": "Farm clusters, completed settlements, ports and castles already scored during play (Scotland map).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incompleteSettlementInfluence",
+      "label": "Incomplete settlements: influence",
+      "labelVi": "Khu định cư chưa hoàn chỉnh: ảnh hưởng",
+      "hint": "Each Settlement Tile in an unfilled settlement scores its own Influence (settlement icons) as a small settlement.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "castlesControlled",
+      "label": "Castles controlled",
+      "labelVi": "Lâu đài đang kiểm soát",
+      "hint": "5 points per Castle you control at the end.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "missionCards",
+      "label": "Private Mission Cards completed",
+      "labelVi": "Điểm nhiệm vụ riêng hoàn thành",
+      "hint": "Reveal Mission Cards; enter the printed point value of each mission whose condition you meet (ties for the condition count as met).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cathedralBonusCards",
+      "label": "Cathedral Bonus Cards",
+      "labelVi": "Thẻ thưởng Nhà thờ",
+      "hint": "Each Cathedral Bonus Card gives 3 points without any condition.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Player controlling Edinburgh Castle wins."
+    },
+    {
+      "description": "If none of the tied players control Edinburgh, the player controlling Stirling Castle wins, even if not tied for first."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. Scotland side of the board (base game). Mission Card point values are printed on the cards (not given in the rulebook text), so they are entered per card. Ireland side (advanced) is in rebirth-ks-edition--ireland.json. During-play scoring (not itemised): farm cluster size per placement; Small settlement = tile influence; Medium 5/3; Large 8/5 (completer loses ties); Port +1; track passes 100/200 via achievement tiles.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/rebirth.pdf",
+      "title": "Rebirth rulebook v1.1 (Mighty Boards) - Scotland",
+      "type": "official-rulebook",
+      "section": "Scotland pp.3-4: Scoring Tiles, The Game Ends / Final Scoring, tiebreaks"
+    },
+    {
+      "url": "https://www.rulespal.com/rebirth/rulebook",
+      "title": "Rebirth rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End-game scoring and tiebreakers cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

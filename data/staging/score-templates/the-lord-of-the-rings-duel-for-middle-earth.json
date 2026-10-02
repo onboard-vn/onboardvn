@@ -1,0 +1,115 @@
+{
+  "slug": "the-lord-of-the-rings-duel-for-middle-earth",
+  "name": "The Lord of the Rings: Duel for Middle-earth",
+  "year": 2024,
+  "bggId": 421006,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "asymmetric",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": {
+    "count": 3,
+    "aggregate": "rounds-won",
+    "endCondition": "Game lasts up to 3 chapters"
+  },
+  "categories": [
+    {
+      "key": "questWon",
+      "label": "Quest of the Ring completed (Frodo at Mount Doom / Nazgul catch Frodo)",
+      "labelVi": "Hoàn thành Quest of the Ring (Frodo tới Mount Doom / Nazgul bắt Frodo)",
+      "hint": "Immediate win for Fellowship (Ring destroyed) or Sauron (Ring seized).",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "raceSymbols",
+      "label": "Different Race symbols on your Green cards",
+      "labelVi": "Số biểu tượng chủng tộc khác nhau trên thẻ Xanh lá",
+      "hint": "6 different symbols (Eagle on one Alliance token counts as a symbol) = immediate win.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 7
+    },
+    {
+      "key": "regionsPresent",
+      "label": "Regions of Middle-earth where you are present",
+      "labelVi": "Số vùng Trung Địa bạn hiện diện",
+      "hint": "Fortress and/or at least 1 Unit. All 7 = immediate win; otherwise most regions after chapter 3 wins.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 7
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "If the chapter-3 region count is tied, the victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "winCondition": "Immediate win by (1) completing the Quest of the Ring, (2) gathering 6 different Race symbols on Green cards, or (3) being present in all 7 regions. If none happens by the end of chapter 3, the player present in the most regions wins; a tie shares the victory.",
+  "roles": [
+    {
+      "key": "fellowship",
+      "label": "Fellowship of the Ring",
+      "labelVi": "Hội Nhẫn",
+      "winCondition": "Frodo and Sam reach Mount Doom (destroy the Ring), or Races or Conquest victory.",
+      "categoryKeys": [
+        "questWon",
+        "raceSymbols",
+        "regionsPresent"
+      ]
+    },
+    {
+      "key": "sauron",
+      "label": "Sauron",
+      "labelVi": "Sauron",
+      "winCondition": "Nazgul catch Frodo and Sam (seize the Ring), or Races or Conquest victory.",
+      "categoryKeys": [
+        "questWon",
+        "raceSymbols",
+        "regionsPresent"
+      ]
+    }
+  ],
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends immediately on a victory condition, or after chapter 3 with the regions comparison"
+  },
+  "notes": "family: objective-race. No points. Sauron player starts. Fan expansions and solo/automa variants not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.svc.asmodee.net/production-rprod/storage/games/7-wonders-LOTR/rules/7dume-en01-rules-1725540544zdnes.pdf",
+      "title": "Duel for Middle-earth rulebook (Repos Production)",
+      "type": "official-rulebook",
+      "section": "p.2 Overview and goal; p.7 End of the game"
+    },
+    {
+      "url": "https://www.rprod.com/en/games/duel-for-middle-earth",
+      "title": "Duel for Middle-earth (Repos Production)",
+      "type": "publisher-page",
+      "section": "rules download page"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

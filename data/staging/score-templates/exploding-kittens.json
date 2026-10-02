@@ -1,0 +1,50 @@
+{
+  "slug": "exploding-kittens",
+  "name": "Exploding Kittens",
+  "bggId": 172225,
+  "year": 2015,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Last survivor",
+      "labelVi": "Người sống sót cuối cùng",
+      "hint": "Mark the sole remaining player.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value, 1, 0)"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0345/9180/1483/files/ekoe-instructions-english.pdf?v=1743802429",
+      "title": "Exploding Kittens Original Edition rules",
+      "type": "official-rulebook",
+      "section": "p.1 How it works; Ending the game"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Exploding_Kittens",
+      "title": "Exploding Kittens",
+      "type": "wiki",
+      "section": "Gameplay: elimination and last survivor"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "The last player still alive wins; drawing an Exploding Kitten without defusing it eliminates you.",
+  "notes": "family: elimination. Original 56-card base edition; no points or ties. Card pairs are action combos, not scoring sets. Expansions with resurrection or different kitten effects are excluded."
+}

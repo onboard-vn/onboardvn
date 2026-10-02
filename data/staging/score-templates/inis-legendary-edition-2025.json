@@ -1,0 +1,118 @@
+{
+  "slug": "inis-legendary-edition-2025",
+  "name": "Inis: Legendary Edition",
+  "year": 2025,
+  "bggId": 447305,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "hasPretender",
+      "label": "Holds a pretender token at the check for victory",
+      "labelVi": "Có thẻ Pretender khi kiểm tra chiến thắng",
+      "hint": "Only pretender-token holders can win; checked at Assembly step 2.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "chieftainOpposing",
+      "label": "Chieftain over 6+ opposing clans",
+      "labelVi": "Chieftain trên 6+ clan đối thủ",
+      "hint": "Total opposing clans in territories where you are chieftain; deeds add +1 each (wild).",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_hasPretender == 1"
+    },
+    {
+      "key": "sanctuaries",
+      "label": "Present in territories with 6+ sanctuaries",
+      "labelVi": "Hiện diện ở vùng có tổng 6+ thánh địa",
+      "hint": "Sum sanctuaries in territories where you have 1+ clans (chieftain or not); deeds +1 each.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_hasPretender == 1"
+    },
+    {
+      "key": "territories",
+      "label": "Present in 6+ territories",
+      "labelVi": "Hiện diện ở 6+ vùng",
+      "hint": "Territories with 1+ of your clans; deeds +1 each.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_hasPretender == 1"
+    },
+    {
+      "key": "isBrenn",
+      "label": "Is the Brenn (tie-breaker)",
+      "labelVi": "Là Brenn (phá hòa)",
+      "hint": "Brenn wins ties for most conditions; if Brenn is not among the tied, nobody wins that round.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "isBrenn",
+      "dir": "highest",
+      "description": "If Brenn is among players tied for most victory conditions, Brenn wins; otherwise no winner and the game continues another round."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Only at Assembly step 2 (Check for Victory), among players holding a pretender token, the one meeting the most of the 3 victory conditions (at least 1) is High King and wins. If no pretender holder meets any, or a tie excludes the Brenn, there is no winner: return pretender tokens and play another round.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends when a pretender holder wins at the Check for Victory step; no fixed round limit."
+  },
+  "notes": "family: area-majority (victory-condition race). No points. Scorer ticks which of the 3 conditions the pretender holder meets (after adding deeds as wild +1). Rules read from the earlier Matagot edition PDF (v2.2 summary + base rulebook); the 2025 Legendary Edition rulebook could not be fetched, so unchanged victory conditions are assumed. Seasons of Inis expansion alternative victory modules not modelled.",
+  "sources": [
+    {
+      "url": "https://www.orderofgamers.com/downloads/Inis_v2.2.pdf",
+      "title": "Inis rules summary v2.2 (Esoteric Order of Gamers)",
+      "type": "other",
+      "section": "Victory Conditions; Check for victory; Deeds"
+    },
+    {
+      "url": "https://tesera.ru/images/items/863731/INIS_RULES_EN_basse_def.pdf",
+      "title": "Inis rulebook (Matagot) EN",
+      "type": "official-rulebook",
+      "section": "p.10 Victory conditions, tie for most conditions"
+    },
+    {
+      "url": "https://www.scribd.com/document/959760420/INIS-Base-Game-Rulebook-20may2025-Print-Ready",
+      "title": "Inis Base Game Rulebook 20 May 2025 (search snippet only)",
+      "type": "other",
+      "section": "Victory conditions summary"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

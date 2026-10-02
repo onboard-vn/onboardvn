@@ -1,0 +1,62 @@
+{
+  "slug": "nana-trio-2021",
+  "name": "Nana (Trio)",
+  "bggId": 352515,
+  "year": 2021,
+  "templateVersion": 2,
+  "variant": "Nana original (2021)",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won",
+      "labelVi": "Chiến thắng",
+      "hint": "Mark the player who first satisfied a victory condition.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value, 1, 0)"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://note.com/engames/n/n8daac1586af6?hl=en",
+      "title": "Engames: Trio compared with Nana",
+      "type": "publisher-page",
+      "section": "What is different from Nana? Victory conditions"
+    },
+    {
+      "url": "https://bodoge.hoobby.net/games/nana-card-game/instructions/31239",
+      "title": "Nana 2021 rules by TJ",
+      "type": "other",
+      "section": "Game end; player range"
+    },
+    {
+      "url": "https://opinionatedgamers.com/2024/02/21/dale-yu-review-of-trio/",
+      "title": "Dale Yu: Review of Trio",
+      "type": "other",
+      "section": "Nana vs Trio win conditions"
+    },
+    {
+      "url": "https://jellyjellycafe.com/games/nana",
+      "title": "Nana game introduction (Jelly Jelly Cafe)",
+      "type": "other",
+      "section": "Win conditions"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Immediately win by collecting three trios, two trios whose numbers sum to 7 or differ by 7, or the trio of 7s.",
+  "notes": "family: set-collection-objective. No point score or score tiebreak. Original Nana combines all three victory routes. Later Trio splits them into Simple (three trios or 7s) and Spicy (connected pair or 7s); team play is also later. Do not apply Simple mode to original Nana. Original Engames rulebook PDF still not obtained; three independent sources (publisher note, Hoobby rule page, Jelly Jelly Cafe) agree on the three victory routes and 2-5 players. Instant win, no ties."
+}

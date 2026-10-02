@@ -1,0 +1,186 @@
+{
+  "slug": "critter-kitchen",
+  "name": "Critter Kitchen",
+  "year": 2025,
+  "bggId": 393429,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 7,
+    "aggregate": "sum",
+    "endCondition": "After round 7 critic meal"
+  },
+  "categories": [
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "challengeStars",
+      "label": "Challenge meal stars (days 1 and 2)",
+      "labelVi": "Sao từ món thử thách (ngày 1 và 2)",
+      "hint": "Per challenge meal presented (3 per day, 6 total): quality 6-11 = 1 star, 12-20 = 2 stars, 21+ = 4 stars. Under 6 = no meal. Enter how many meals fell in each tier.",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "tier6to11 * 1 + tier12to20 * 2 + tier21plus * 4"
+      },
+      "inputs": [
+        "tier6to11",
+        "tier12to20",
+        "tier21plus"
+      ]
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "mostSoup",
+      "label": "Most soup and bisque value",
+      "labelVi": "Nhiều súp/bisque nhất",
+      "hint": "1 star for highest total value of soup and bisque; ties are friendly (all tied get it).",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value,1,0)"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "allSevenCourses",
+      "label": "All 7 courses on critic plate",
+      "labelVi": "Đủ 7 món",
+      "hint": "1 star if you have an ingredient for all 7 courses.",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value,1,0)"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": 7,
+      "countsToTotal": true,
+      "key": "bestOfCourse",
+      "label": "Best course quality",
+      "labelVi": "Món chất lượng cao nhất",
+      "hint": "1 star per course where your quality is highest; ties are friendly.",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "rumors",
+      "label": "Rumor stars",
+      "labelVi": "Sao từ tin đồn",
+      "hint": "Stars from the 3 rumors scored at the critic meal (Fanatic rumors modify course quality instead, count them in the track total).",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "bonus",
+      "label": "Bonus scoring stars (critic/restaurateur cards)",
+      "labelVi": "Sao thưởng (giám khảo/chủ nhà hàng)",
+      "hint": "Stars at the top of cards with the Bonus Scoring icon (critic card, restaurateur).",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "criticTrackLoops",
+      "label": "Critic track: times passing 70",
+      "labelVi": "Số lần vượt mốc 70 trên track",
+      "hint": "+10 stars each time your mouse passes the 70 space (continue from the top of the track).",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "criticTrackRow",
+      "label": "Critic meal track: final row stars",
+      "labelVi": "Sao theo hàng cuối trên track",
+      "hint": "Stars printed on the row of your score track (kitchen board, scoring side) where your mouse ends after totalling critic-plate quality. Read from board.",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": false,
+      "key": "trackPosition",
+      "label": "Score track progress (tiebreak)",
+      "labelVi": "Vị trí trên track điểm (phân định hòa)",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "hint": "Tiebreak: who progressed furthest on the score track."
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "trackPosition",
+      "dir": "highest",
+      "description": "Player who progressed furthest on their score track"
+    },
+    {
+      "description": "Still tied: whoever is ahead on the priority track wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-money (worker placement shopping + star scoring). Winner has most stars after the critic meal at the end of round 7; all scoring ties are friendly (every tied player gets full stars). Verified from rulebook pp.15-18: challenge stars 6-11=1, 12-20=2, 21+=4. The quality-to-stars table of the score track (final row stars) is printed on the kitchen board, so criticTrackRow is a scorer input; trackPosition is the same position used for the tiebreak. Fanatic rumors and critic cards change course quality and are not itemised. Solo vs McDogald's not modelled.",
+  "sources": [
+    {
+      "url": "https://cardboardalchemy.com/downloads/CritterKitchen_Rulebook.pdf",
+      "title": "Critter Kitchen Rulebook (Cardboard Alchemy)",
+      "type": "official-rulebook",
+      "section": "p.15 Star Tokens table; pp.16-18 Critic Meal (steps 1-7), Friendly Ties, Winning"
+    },
+    {
+      "url": "https://opinionatedgamers.com/2025/09/25/dale-yu-review-of-critter-kitchen/",
+      "title": "Dale Yu: Review of Critter Kitchen",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

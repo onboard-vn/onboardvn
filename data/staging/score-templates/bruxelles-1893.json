@@ -1,0 +1,131 @@
+{
+  "slug": "bruxelles-1893",
+  "name": "Bruxelles 1893",
+  "year": 2013,
+  "bggId": 144592,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": { "count": 5, "aggregate": "sum" },
+  "categories": [
+    {
+      "key": "scoringTrack",
+      "label": "VP on the scoring track",
+      "labelVi": "Điểm trên track điểm",
+      "hint": "VP gained during play, read after the Public Figure payment below is applied.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "unpaidFigures",
+      "label": "Public Figure cards not paid for",
+      "labelVi": "Thẻ Public Figure không trả được",
+      "hint": "Pay the BF printed on kept Public Figure cards; each one you cannot pay is discarded and costs 5 VP.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": -5 },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Construction VP (buildings x Architect level)",
+      "labelVi": "Điểm xây dựng (số công trình x cấp Architect)",
+      "hint": "Each Building tile built earns VP equal to your level on the Architect track.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["buildingsBuilt", "architectLevel"],
+      "formula": { "type": "expr", "expr": "buildingsBuilt * architectLevel" },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusFrancs",
+      "label": "Bonus row 1: money (per 4 BF)",
+      "labelVi": "Hàng thưởng 1: tiền (mỗi 4 BF)",
+      "hint": "Row value = 1 base + 1 per VP symbol on cards tucked in row 1; scored per full set of 4 BF.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["bf", "rowValue"],
+      "formula": { "type": "expr", "expr": "floor(bf / 4) * rowValue" },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusArt",
+      "label": "Bonus row 2: Works of Art",
+      "labelVi": "Hàng thưởng 2: tác phẩm nghệ thuật",
+      "hint": "Row value = 1 base + 1 per VP symbol in row 2, per Work of Art still in possession.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["artworks", "rowValue"],
+      "formula": { "type": "expr", "expr": "artworks * rowValue" },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusFigures",
+      "label": "Bonus row 3: Public Figure cards",
+      "labelVi": "Hàng thưởng 3: thẻ Public Figure",
+      "hint": "Row value = 1 base + 1 per VP symbol in row 3, per Public Figure card kept (after paying).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["figures", "rowValue"],
+      "formula": { "type": "expr", "expr": "figures * rowValue" },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusAssistants",
+      "label": "Bonus row 4: Assistants beyond the second",
+      "labelVi": "Hàng thưởng 4: Assistant từ con thứ 3",
+      "hint": "Row value = 1 base + 1 per VP symbol in row 4, per Assistant beyond the 2nd (Courthouse ones do not count).",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["assistants", "rowValue"],
+      "formula": { "type": "expr", "expr": "max(assistants - 2, 0) * rowValue" },
+      "countsToTotal": true
+    },
+    {
+      "key": "nobleMaterials",
+      "label": "Noble materials",
+      "labelVi": "Nguyên liệu quý",
+      "hint": "1 VP per Noble material cube; Joker cubes are worthless.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "mannekenPis",
+      "label": "Manneken Pis pawn",
+      "labelVi": "Quân Manneken Pis",
+      "hint": "5 VP to the player holding the pawn at the end.",
+      "scope": "player",
+      "input": "bool",
+      "formula": { "type": "multiply", "points": 5 },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    { "description": "The rulebook states no tiebreaker for the final score." }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: auction-money. Game ends after the 5th round once Brussels-board majorities resolve. Step 1 of final scoring: pay Public Figure card costs (BF); each unpaid card is lost and -5 VP on the track; enter the track total after this. Each bonus row has 1 VP symbol built in, plus symbols from tucked Bonus cards; enter that total as rowValue. Rulebook gives no tiebreaker, so shared victory is assumed. 2-player adjustments not modelled. Belle Epoque (2023) edition is a separate template.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/db/70/08-bruxelles-1893-rulebook.pdf",
+      "title": "Bruxelles 1893 rulebook (English, Z-Man/Pearl Games, via 1jour-1jeu)",
+      "type": "official-rulebook",
+      "section": "p.9 Tucking a Bonus card; p.10 End of the Game (final scoring steps a-e)"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

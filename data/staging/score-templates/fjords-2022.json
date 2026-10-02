@@ -1,0 +1,118 @@
+{
+  "slug": "fjords-2022",
+  "name": "Fjords",
+  "year": 2022,
+  "bggId": 322564,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vikings",
+      "label": "Vikings placed (incl. uncontested tiles)",
+      "labelVi": "Số Viking đã đặt (kể cả ô không ai tranh)",
+      "hint": "1 point per viking placed in the settlement phase; longhouses do not score. Uncontested tiles you could not fill because you ran out count as yours.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "strengthRune",
+      "label": "Rune: vikings next to Strength rune",
+      "labelVi": "Rune Sức mạnh: viking kề rune",
+      "hint": "+1 per viking on a tile adjacent to the Strength (Thor) rune.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Rune stones"
+    },
+    {
+      "key": "waterRune",
+      "label": "Rune: vikings on Water rune region",
+      "labelVi": "Rune Nước: viking trên vùng nước",
+      "hint": "+1 per viking on a tile showing the water region that holds the Water rune.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Rune stones"
+    },
+    {
+      "key": "homeRune",
+      "label": "Rune: vikings next to your Home rune",
+      "labelVi": "Rune Nhà: viking kề rune nhà",
+      "hint": "+1 per own viking adjacent to your Home rune (opponents get nothing).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Rune stones"
+    },
+    {
+      "key": "friendshipRunes",
+      "label": "Rune: Friendship runes where you lead",
+      "labelVi": "Rune Hữu nghị: số rune bạn dẫn đầu",
+      "hint": "2 points for each Friendship rune with you holding the most adjacent vikings (ties all score 2).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true,
+      "optional": true,
+      "expansion": "Rune stones"
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Rulebook: on a tie you may play another round and add scores together."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. Score = vikings placed. Epic 2-player variant (extra colour) counts both colours as yours. Classic variant: play three games and add scores (use one file per game total or sum manually). Journey, Horse, Wisdom runes only change movement, not scoring; Secret rune is not in this copy.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/27/b4/c1-fjords-rulebook.pdf",
+      "title": "Fjords rulebook (Grail Games, 2022)",
+      "type": "official-rulebook",
+      "section": "p.5 Winning the game; pp.6-7 rune stone scoring; Classic and Epic variants"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,70 @@
+{
+  "slug": "koinobori-2024",
+  "name": "Koinobori",
+  "year": 2024,
+  "bggId": 401784,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "festivalPostPoints",
+      "label": "Festival post scores",
+      "labelVi": "Điểm từ các cột lễ hội",
+      "hint": "For each festival post: scoring colour (most repeated; ties skipped to next; full tie -> colour on the base flag with value 1) x number of that colour in YOUR personal post. Enter one value per post.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unscoredCarps",
+      "label": "Carps of colours that scored on no post",
+      "labelVi": "Cá chép thuộc màu không ghi điểm",
+      "hint": "-3 points for each carp on your personal post whose colour scored on none of the festival posts.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "The rulebook gives no tiebreaker for equal final scores."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. Number of festival posts = players + 1; game ends when every post holds 5 koinobori cards. The scoring colour of a post uses the representation value (number of cards of that colour in the post); covered cards do not count. Your personal post holds at most 3 hidden cards. Unscoring-colour penalty counts colours not flipped on the scoring cards.",
+  "sources": [
+    {
+      "url": "https://perrolokogames.com/wp-content/uploads/2025/09/Rulebook_EN_Koinobori-1.pdf",
+      "title": "Koinobori rulebook EN (Perro Loko Games)",
+      "type": "official-rulebook",
+      "section": "Game End; Game End Scoring (worked example)"
+    },
+    {
+      "url": "https://boardgamecafe.net/2025/02/07/koinobori/",
+      "title": "Koinobori review (Board Game Cafe)",
+      "type": "other",
+      "section": "Scoring, tie handling, negative colour"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

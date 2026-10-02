@@ -1,0 +1,136 @@
+{
+  "slug": "march-of-the-ants-evolved-edition",
+  "name": "March of the Ants: Evolved Edition",
+  "year": 2025,
+  "bggId": 416079,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 5 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends after Slumber of the final round (4 rounds; 5 in the long game)"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Colony points on the score track",
+      "labelVi": "Điểm thuộc địa trên track",
+      "hint": "Position of your marker after the last Slumber: battles, collection sites, hexes next to the Great Tunnel, colony goals, full ant bodies, cards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "largestBrood",
+      "label": "Largest Brood (most larvae)",
+      "labelVi": "Nhiều ấu trùng nhất",
+      "hint": "Enter larvae count; top gets 3 VP, tied players get 1 each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [3, 0],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "greatestStores",
+      "label": "Greatest Stores (most food)",
+      "labelVi": "Nhiều thức ăn nhất",
+      "hint": "Enter food count; top gets 3 VP, tied players get 1 each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [3, 0],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "untoldPotential",
+      "label": "Untold Potential (most cards in hand)",
+      "labelVi": "Nhiều bài trên tay nhất",
+      "hint": "Enter cards in hand; top gets 3 VP, tied players get 1 each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [3, 0],
+          "tieMode": "split-floor",
+          "excludeZero": true,
+          "over": "count"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "antsInMeadow",
+      "label": "Ants in the Meadow (tiebreak)",
+      "labelVi": "Kiến ngoài đồng cỏ (phân định hòa)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "antsInMeadow",
+      "dir": "highest",
+      "description": "Most ants in the Meadow"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. Built from the original 2015 March of the Ants rulebook; the Evolved Edition rulebook could not be obtained. One secondary source suggests the Evolved Edition end bonuses may be 2 VP (not 3) and that players who did not feed all ants in the last round are ineligible for them, and another mentions a 1-point penalty per unfed ant; these are unconfirmed. If 4+ players tie for a bonus, split-floor gives 0 whereas the rulebook gives 1 each. Full ant body = 3 VP each, battle win = 1 VP, hexes adjacent to the Great Tunnel = 1 VP each Slumber (all already on the track).",
+  "sources": [
+    {
+      "url": "https://board-game-rules.com/wp-content/uploads/2025/01/march-of-the-ants_Official-Rules.pdf",
+      "title": "March of the Ants rulebook (original edition)",
+      "type": "official-rulebook",
+      "section": "p.14 Game End and Victory; Scoring Colony Points"
+    },
+    {
+      "url": "https://www.whatboardgame.com/post/march-of-the-ants-evolved-edition-board-game-review",
+      "title": "March of the Ants Evolved Edition review (WhatBoardGame)",
+      "type": "other",
+      "section": "End-game bonuses, 4 rounds"
+    },
+    {
+      "url": "https://www.scribd.com/document/947305193/March-of-the-Ants-Evolved-RULEBOOK",
+      "title": "March of the Ants Evolved RULEBOOK (Scribd)",
+      "type": "other",
+      "section": "Not readable; to verify bonus values"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

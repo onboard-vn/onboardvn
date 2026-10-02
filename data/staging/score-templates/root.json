@@ -1,0 +1,133 @@
+{
+  "slug": "root",
+  "name": "Root",
+  "year": 2018,
+  "bggId": 237182,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "asymmetric",
+  "winRule": "objective",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "score",
+      "label": "Victory points on score track",
+      "labelVi": "Điểm chiến thắng trên track",
+      "hint": "First to 30 VP wins immediately; each faction scores differently (+1 per enemy building/token removed, crafting VP).",
+      "scope": "player",
+      "input": "track",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 30,
+      "track": {
+        "min": 0,
+        "max": 30
+      }
+    },
+    {
+      "key": "dominance",
+      "label": "Won by dominance card",
+      "labelVi": "Thắng bằng thẻ Dominance",
+      "hint": "Activated dominance (needs 10+ VP): rule 3 clearings of its suit, or 2 opposite corners for Bird, at start of Birdsong. Score marker is removed once activated.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "coalitionWin",
+      "label": "Vagabond shared win via coalition",
+      "labelVi": "Vagabond thắng chung (liên minh)",
+      "hint": "4+ players: Vagabond activates a dominance card, partners with lowest-VP player; wins if that player wins.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "roleKey": "vagabond"
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "If several players reach 30 VP simultaneously, the player whose turn it is wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "roles": [
+    {
+      "key": "marquise",
+      "label": "Marquise de Cat",
+      "labelVi": "Marquise de Cat",
+      "winCondition": "30 VP or dominance",
+      "categoryKeys": [
+        "score",
+        "dominance"
+      ]
+    },
+    {
+      "key": "eyrie",
+      "label": "Eyrie Dynasties",
+      "labelVi": "Eyrie Dynasties",
+      "winCondition": "30 VP or dominance",
+      "categoryKeys": [
+        "score",
+        "dominance"
+      ]
+    },
+    {
+      "key": "alliance",
+      "label": "Woodland Alliance",
+      "labelVi": "Woodland Alliance",
+      "winCondition": "30 VP or dominance",
+      "categoryKeys": [
+        "score",
+        "dominance"
+      ]
+    },
+    {
+      "key": "vagabond",
+      "label": "Vagabond",
+      "labelVi": "Vagabond",
+      "winCondition": "30 VP, dominance, or coalition partner wins",
+      "categoryKeys": [
+        "score",
+        "dominance",
+        "coalitionWin"
+      ]
+    }
+  ],
+  "endCondition": {
+    "type": "target-score",
+    "target": 30,
+    "description": "Game ends immediately when a player reaches 30 VP or wins by dominance."
+  },
+  "winCondition": "Immediate win at 30 victory points, or via an activated dominance card (rule 3 clearings of its suit; Bird: 2 opposite-corner clearings) at the start of your Birdsong. Vagabond may instead win with a coalition partner in 4+ player games.",
+  "notes": "family: area-majority (race to a target score with asymmetric factions; +1 VP per enemy building/token removed, VP on crafted items). Base game only; Riverfolk, Underworld, Marauder expansions add factions and are not modelled. Dominance cards are removed in 2-player games.",
+  "sources": [
+    {
+      "url": "https://aadl.org/files/catalog_guides/Root_Base_Law_of_Root_web_Oct_15_2020.pdf",
+      "title": "The Law of Root (Leder Games)",
+      "type": "official-rulebook",
+      "section": "3 Victory (3.1-3.3); 9.2.8 Dominance Cards and Coalitions"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/root/game-rules.php",
+      "title": "How to play Root",
+      "type": "other",
+      "section": "Victory"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,209 @@
+{
+  "slug": "praga-caput-regni-2020",
+  "name": "Praga Caput Regni",
+  "year": 2020,
+  "bggId": 308765,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "categories": [
+    {
+      "key": "pointsDuringGame",
+      "label": "Points scored during the game",
+      "labelVi": "Điểm tích lũy trong ván",
+      "hint": "Current position on the score track before final scoring.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unresolvedPlazas",
+      "label": "Unresolved plaza rewards",
+      "labelVi": "Thưởng quảng trường chưa hoàn thành",
+      "hint": "Each plaza never enclosed pays its lower-half reward to every player with a claim; enter VP gained.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "academics",
+      "label": "Academics (technology x university)",
+      "labelVi": "Học thuật (công nghệ x đại học)",
+      "hint": "1 point per technology-track advance times 0-3 from Charles University height.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "techAdvances",
+        "universityMultiplier"
+      ],
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "techAdvances*universityMultiplier"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "hungerWallRow",
+      "label": "Hunger Wall row",
+      "labelVi": "Hàng Hunger Wall",
+      "hint": "Points in the black box at the end of your row.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cathedralRow",
+      "label": "St. Vitus Cathedral row",
+      "labelVi": "Hàng nhà thờ St. Vitus",
+      "hint": "Points in the black box at the end of your row.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "blueCornerTokens",
+      "label": "Blue corner bonus tokens",
+      "labelVi": "Token thưởng góc xanh",
+      "hint": "Blue tokens times the value at the head of your Hunger Wall column.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "blueTokens",
+        "blueColumnValue"
+      ],
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "blueTokens*blueColumnValue"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "redCornerTokens",
+      "label": "Red corner bonus tokens",
+      "labelVi": "Token thưởng góc đỏ",
+      "hint": "Red tokens times the value at the head of your Cathedral column.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "redTokens",
+        "redColumnValue"
+      ],
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "redTokens*redColumnValue"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "walls",
+      "label": "Walls built",
+      "labelVi": "Số tường đã xây",
+      "hint": "Total wall tiles on your action board; 3 = 4, 4-5 = 10, 6+ = 18.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 4,
+          "4": 10,
+          "5": 10,
+          "6+": 18
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalAbilities",
+      "label": "Final-scoring abilities",
+      "labelVi": "Khả năng tính điểm cuối game",
+      "hint": "Total from your V tiles (Charles Bridge/Cathedral) and seals; some require paying gold/stone.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverEggs",
+      "label": "Leftover eggs",
+      "labelVi": "Trứng còn lại",
+      "hint": "1/2/3/4+ eggs = 1/3/6/10 points.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 3,
+          "3": 6,
+          "4+": 10
+        }
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "Tie goes to the player who started later in turn order (the player to the starting player's right wins all ties)."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "Game ends after each player has taken 16 turns. Resolve scoring in rulebook order: plazas first, then academics, Hunger Wall/Cathedral rows, corner tokens, walls, final abilities, eggs. Seal abilities can convert gold/stone into points (2 per gold or stone, max 18; 3 per gold+stone pair); V tiles can score per upgrade tile, wall, gold mine, quarry, Charles University height etc. - enter their total in finalAbilities. Solo variant (beat 140 points) not modelled.",
+  "sources": [
+    {
+      "url": "https://assets.deliciousgames.org/rules/PRAGA-rules-v13-EU-web.pdf",
+      "title": "Praga Caput Regni rulebook v13 (Delicious Games)",
+      "type": "official-rulebook",
+      "section": "Final Scoring, pp. 15-16; glossary pp. 18-19 for seal/V-tile abilities"
+    },
+    {
+      "url": "https://www.yucata.de/en/Rules/PragaCaputRegni",
+      "title": "Yucata rules summary - Praga Caput Regni",
+      "type": "other",
+      "section": "Final scoring list incl. walls and eggs"
+    },
+    {
+      "url": "https://en.boardgamearena.com/gamepanel?game=praga",
+      "title": "Board Game Arena - Praga Caput Regni rules",
+      "type": "other",
+      "section": "Leftover eggs 1/3/6/10"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

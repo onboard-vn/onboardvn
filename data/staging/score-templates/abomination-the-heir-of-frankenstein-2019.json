@@ -1,0 +1,144 @@
+{
+  "slug": "abomination-the-heir-of-frankenstein-2019",
+  "name": "Abomination: The Heir of Frankenstein",
+  "year": 2019,
+  "bggId": 239472,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 1, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "Victory points earned during play",
+      "labelVi": "Điểm thắng tích lũy trong ván",
+      "hint": "Position of your VP marker (points from building monster parts, by decomposition stage, minus animal-material penalty).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "aliveParts",
+      "label": "Alive points (monster parts with alive marker)",
+      "labelVi": "Điểm Alive (bộ phận có thẻ sống)",
+      "hint": "One entry per alive part: the Alive points printed on that part.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusObjectives",
+      "label": "Bonus objectives achieved",
+      "labelVi": "Mục tiêu thưởng đạt được",
+      "hint": "10 points per bonus objective marker you hold.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 10 },
+      "countsToTotal": true
+    },
+    {
+      "key": "reputationPeak",
+      "label": "Reputation: highest VP value reached",
+      "labelVi": "Danh tiếng: mốc điểm cao nhất đã đạt",
+      "hint": "VP value of the highest space your reputation dial reached.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "expertisePeak",
+      "label": "Expertise: highest VP value reached",
+      "labelVi": "Chuyên môn: mốc điểm cao nhất đã đạt",
+      "hint": "VP value of the highest space your expertise dial reached.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "humanityExtreme",
+      "label": "Humanity: highest or lowest VP value reached",
+      "labelVi": "Nhân tính: mốc điểm cao nhất hoặc thấp nhất (có thể âm)",
+      "hint": "Gain or lose the VP value of the highest or lowest humanity space reached (enter negative if loss).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "humanityLeaderBonus",
+      "label": "Highest positive humanity (only if Captain reached the last space)",
+      "labelVi": "Nhân tính dương cao nhất (chỉ khi Captain tới ô cuối)",
+      "hint": "+5 if game ended by the Captain and you have the highest positive humanity; tied players each get 5.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": { "type": "exclusiveBonus", "points": 5 },
+      "countsToTotal": true
+    },
+    {
+      "key": "aliveCount",
+      "label": "Alive monster parts (tiebreak)",
+      "labelVi": "Số bộ phận sống (phân định hòa)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "francs",
+      "label": "Francs (tiebreak)",
+      "labelVi": "Số franc (phân định hòa)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "aliveCount", "dir": "highest", "description": "Most alive monster parts" },
+    { "categoryKey": "francs", "dir": "highest", "description": "Most francs" },
+    { "description": "Turn order relative to first player (first player wins, then clockwise)" }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: word-trivia-party (batch guess; actual scoring family is end-game-categories with a running VP track). Game ends when the Captain reaches the final story space or a player has all 6 parts alive at end of a lab phase (12 rounds max per search summary; not verified in rulebook text read). Per-part Alive points, dial VP values and bonus-objective availability are printed on components, so they are scorer inputs. Bonus objectives are 10 VP each. Solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://media.plaidhatgames.com/old_images/games/abomination/rules.pdf",
+      "title": "Abomination: The Heir of Frankenstein Rulebook (Plaid Hat Games)",
+      "type": "official-rulebook",
+      "section": "p.16 End of the Game / end game scoring; bonus objectives"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/abomination/game-rules.php",
+      "title": "How to play Abomination: The Heir of Frankenstein (UltraBoardGames)",
+      "type": "other",
+      "section": "End of game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

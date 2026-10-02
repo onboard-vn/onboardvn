@@ -1,0 +1,69 @@
+{
+  "slug": "the-estates",
+  "name": "The Estates",
+  "year": null,
+  "bggId": 249381,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "Agreed number of rounds, or a player winning 2 rounds"
+  },
+  "categories": [
+    {
+      "key": "buildings",
+      "label": "Building scores",
+      "labelVi": "Điểm tòa nhà",
+      "hint": "Completed rows positive, incomplete rows negative; Mayor row doubled; floor cube values go to the holder of that color certificate.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "checks",
+      "label": "Checks in cash box (incl. illegal earnings)",
+      "labelVi": "Séc trong két",
+      "hint": "1 point per check.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "checks",
+      "dir": "highest",
+      "description": "Most checks in hand, including personal cash box"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-money. Reconstructed from a rules summary only; official rulebook not retrieved. Game ends when 2 rows are complete or no more buildings can be completed. If all scores negative, least negative wins.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/the-estates/rulebook",
+      "title": "The Estates rulebook summary (RulesPal)",
+      "type": "other"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

@@ -1,0 +1,83 @@
+{
+  "slug": "lords-of-hellas-2018",
+  "name": "Lords of Hellas",
+  "year": 2018,
+  "bggId": 222509,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (met a victory condition)",
+      "labelVi": "Thắng (đạt điều kiện chiến thắng)",
+      "hint": "Game ends immediately when a player meets any victory condition.",
+      "scope": "player",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "landsControlled",
+      "label": "Lands controlled",
+      "labelVi": "Số Land kiểm soát",
+      "hint": "Warlord: control 2 Lands (a Land = all Regions of one color); 3 Lands in a 2-player game. In a 3-player game the blue Land does not count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "templeRegions",
+      "label": "Regions with Temples controlled",
+      "labelVi": "Số Region có Temple kiểm soát",
+      "hint": "Favored of the Gods: control 5 Regions with Temples.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "monstersSlain",
+      "label": "Monsters slain",
+      "labelVi": "Quái vật đã hạ",
+      "hint": "Monster Slayer: slay 3 Monsters.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "monumentHeld",
+      "label": "Held fully built Monument for 3 turns",
+      "labelVi": "Giữ Monument hoàn chỉnh sau 3 lượt",
+      "hint": "King of Kings: after any Monument is completed, control its Region when 3 turns have passed. Not used in a 2-player game.",
+      "scope": "player",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false,
+      "appliesWhen": "players >= 3"
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "First player to meet any one: Warlord (2 Lands, 3 in 2-player), Favored of the Gods (5 temple Regions), Monster Slayer (3 monsters), King of Kings (hold Region of a fully built Monument for 3 turns; 3-4 players only).",
+  "endCondition": { "type": "objective", "target": null, "description": "Ends immediately when a player meets a victory condition." },
+  "notes": "family: area-majority (objective win, no points). Based on the 16-page prototype manual (1j1ju) plus BGG/publisher summaries; the retail rulebook PDF could not be downloaded, so thresholds may differ in the final edition.",
+  "sources": [
+    { "url": "https://cdn.1j1ju.com/medias/c3/97/8d-lords-of-hellas-prototype-rulebook.pdf", "title": "Lords of Hellas prototype rulebook", "type": "official-rulebook", "section": "p.4 Victory Conditions" },
+    { "url": "https://boardgamegeek.com/filepage/197313/lords-of-hellas-rulebook", "title": "Lords of Hellas rulebook (BGG file, not downloadable)", "type": "bgg-file", "section": "Victory conditions" },
+    { "url": "https://awakenrealms.com/games/awaken-realms/lords-of-hellas", "title": "Awaken Realms product page", "type": "publisher-page", "section": "Victory overview" }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

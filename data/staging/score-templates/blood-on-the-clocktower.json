@@ -1,0 +1,89 @@
+{
+  "slug": "blood-on-the-clocktower",
+  "name": "Blood on the Clocktower",
+  "year": 2022,
+  "bggId": 240980,
+  "templateVersion": 1,
+  "variant": "base scripts",
+  "playerCount": {
+    "min": 5,
+    "max": 20
+  },
+  "mode": "team",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "goodWon",
+      "label": "Good team won",
+      "labelVi": "Phe thiện thắng",
+      "hint": "All Demons are dead. Wins even if both teams would win at once.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 0
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "evilWon",
+      "label": "Evil team won",
+      "labelVi": "Phe ác thắng",
+      "hint": "Only two non-Traveler players left alive, or a role's special win condition. Not valid if good also wins at the same time.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 0
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: hidden-role-social. No points. Dead players win or lose with their team. Execution needs votes equal to at least half of living players and more than any other nominee; ties mean no execution. Some roles (e.g. Scarlet Woman, Mayor, Saint) change or add win/lose conditions and are not modelled. Edition scripts differ per Storyteller choice.",
+  "winCondition": "Good wins when the Demon dies (all Demons, if several). Evil wins when only two players remain alive (Travelers do not count). If both would happen at once, good wins. All members of the winning team win, alive or dead; there are no neutral players.",
+  "sources": [
+    {
+      "url": "https://www.web3us.com/sites/default/files/Rulebook.pdf",
+      "title": "Blood on the Clocktower Rulebook (official Storyteller rulebook, mirrored copy)",
+      "type": "official-rulebook",
+      "section": "Day and Night / Ending the Game (win conditions, Travelers)"
+    },
+    {
+      "url": "https://wiki.bloodontheclocktower.com/Rules_Explanation",
+      "title": "Rules Explanation - BotC Wiki",
+      "type": "wiki",
+      "section": "Win conditions; execution thresholds"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends immediately when the Demon dies (good wins) or only two players are left alive (evil wins); good wins if both happen at once."
+  },
+  "roles": [
+    {
+      "key": "good",
+      "label": "Good (Townsfolk + Outsiders)",
+      "labelVi": "Phe thiện (Dân làng + Người ngoài)",
+      "winCondition": "All Demons are dead (not just the first Demon death if Scarlet Woman-type roles keep the game going)",
+      "categoryKeys": [
+        "goodWon"
+      ]
+    },
+    {
+      "key": "evil",
+      "label": "Evil (Demon + Minions)",
+      "labelVi": "Phe ác (Quỷ + Tay sai)",
+      "winCondition": "Only two players remain alive (Travelers do not count toward the two)",
+      "categoryKeys": [
+        "evilWon"
+      ]
+    }
+  ]
+}

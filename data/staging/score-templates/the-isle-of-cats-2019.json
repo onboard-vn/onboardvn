@@ -1,0 +1,145 @@
+{
+  "slug": "the-isle-of-cats-2019",
+  "name": "The Isle of Cats",
+  "bggId": 281259,
+  "year": 2019,
+  "templateVersion": 2,
+  "variant": "standard multiplayer base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "families",
+      "label": "Cat families",
+      "labelVi": "Gia đình mèo",
+      "hint": "Count families of each size; catsBeyond7 = extra cats across all families of 7+.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "8 * size3 + 11 * size4 + 15 * size5 + 20 * size6 + 25 * size7Plus + 5 * catsBeyond7"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "size3",
+        "size4",
+        "size5",
+        "size6",
+        "size7Plus",
+        "catsBeyond7"
+      ],
+      "min": 0
+    },
+    {
+      "key": "rareTreasures",
+      "label": "Rare treasures",
+      "labelVi": "Kho báu hiếm",
+      "hint": "Common treasures score nothing by themselves.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "lessons",
+      "label": "Private lessons",
+      "labelVi": "Bài học riêng",
+      "hint": "Points from fulfilled played lesson cards.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "publicLessons",
+      "label": "Public lessons",
+      "labelVi": "Bài học chung",
+      "hint": "Score each applicable public lesson.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "rats",
+      "label": "Visible rats",
+      "labelVi": "Chuột chưa che",
+      "hint": "One penalty per visible rat.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "rooms",
+      "label": "Unfilled rooms",
+      "labelVi": "Phòng chưa lấp kín",
+      "hint": "A room with any uncovered square is unfilled.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -5
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "fish",
+      "label": "Remaining fish",
+      "labelVi": "Cá còn lại",
+      "hint": "For tiebreak only.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.skellig-rules.de/rules/0048-0002/Rulebook%20TIoC%204.8%20MB.pdf",
+      "title": "The Isle of Cats official English rulebook",
+      "type": "official-rulebook",
+      "section": "pp.16–17 scoring and example"
+    },
+    {
+      "url": "https://cdn.ultraboardgames.com/the-isle-of-cats/game-rules.php",
+      "title": "UltraBoardGames Isle of Cats rules",
+      "type": "other",
+      "section": "Scoring; Tiebreaker; Cat families"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "tiebreakers": [
+    {
+      "categoryKey": "fish",
+      "dir": "highest",
+      "description": "Most remaining fish; if still tied, share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: polyomino-set-collection. Score after five days. Families require at least three orthogonally touching same-colour cat tiles; Oshax uses its assigned colour. Each separate family scores separately. Lesson values are component-dependent scorer inputs. Family mode, solo sister scoring and expansions are separate variants."
+}

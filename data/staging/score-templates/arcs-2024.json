@@ -1,0 +1,69 @@
+{
+  "slug": "arcs-2024",
+  "name": "Arcs",
+  "bggId": 359871,
+  "year": 2024,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "categories": [
+    {
+      "key": "power",
+      "label": "Final Power",
+      "labelVi": "Quyền lực cuối cùng",
+      "hint": "Record the track after final chapter scoring.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "turnOrder",
+      "label": "Final turn-order position",
+      "labelVi": "Vị trí lượt cuối",
+      "hint": "1 = initiative holder; continue clockwise.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 1,
+      "max": 4
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://officialgamerules.org/wp-content/uploads/2025/02/Arcs_Base_Rulebook-1.pdf",
+      "title": "Leder Games Arcs base rulebook",
+      "type": "official-rulebook",
+      "section": "pp.18–19 Score Ambitions; Two-Player Scoring; End Game"
+    },
+    {
+      "url": "https://cardboardappendix.com/games/arcs/rulebook/",
+      "title": "Cardboard Appendix Arcs rules",
+      "type": "other",
+      "section": "Ending a Chapter, steps 1–3"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "tiebreakers": [
+    {
+      "categoryKey": "turnOrder",
+      "dir": "lowest",
+      "description": "Earliest in final turn order wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: ambition-majority-running-track. Ends after chapter scoring at 33/30/27 Power for 2/3/4 players, or chapter 5. Final holdings cannot reconstruct earlier chapters. Schema gap: dynamic ambition-marker awards, first-place ties receiving second award, second-place ties receiving zero, and a two-player neutral comparator cannot all be represented by one rankAward; enter the correctly resolved track. Only declared ambitions score; zero holdings cannot place. City bonus applies once per untied ambition win. Base game only; campaign and Leaders/Lore modifiers excluded."
+}

@@ -1,0 +1,62 @@
+{
+  "slug": "love-letter",
+  "name": "Love Letter",
+  "year": 2019,
+  "bggId": 129622,
+  "templateVersion": 1,
+  "variant": "2019 Z-Man edition (21 cards, Spy and Chancellor)",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": null,
+    "aggregate": "rounds-won",
+    "endCondition": "First to favor tokens: 2p 6, 3p 5, 4p 4, 5-6p 3"
+  },
+  "categories": [
+    {
+      "key": "favorTokens",
+      "label": "Favor tokens",
+      "labelVi": "Số token yêu thích",
+      "hint": "1 per round win (ties: all tied players gain 1); +1 for sole Spy player still in round at round end.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "favorTokens",
+      "dir": "highest",
+      "description": "Game ends when someone reaches the target; several players can win together."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: round-tokens. Round winner: highest card when deck empties; all tied players win the round (2019 rulebook has no discard-total tiebreak; that rule belongs to the older edition). Target tokens by players: 2p=6, 3p=5, 4p=4, 5-6p=3. Classic 16-card version uses the same targets (2-4 players).",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/c0/d4/2b-love-letter-2019-rulebook.pdf",
+      "title": "Love Letter 2019 Rulebook (Z-Man Games)",
+      "type": "official-rulebook",
+      "section": "pp.6-7 End of a Round, Winning the Game; p.13 Spy"
+    },
+    {
+      "url": "https://www.rulespal.com/love-letter/rulebook",
+      "title": "Love Letter rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Round end and winning"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

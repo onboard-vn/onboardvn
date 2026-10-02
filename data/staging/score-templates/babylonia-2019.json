@@ -1,0 +1,66 @@
+{
+  "slug": "babylonia-2019",
+  "name": "Babylonia",
+  "year": 2019,
+  "bggId": 266164,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track total",
+      "labelVi": "Tổng điểm trên track",
+      "hint": "Points are scored during play: Ziggurat contacts, Crop Fields, surrounded Cities (2 per matching Noble, plus City tile count), Ziggurat card bonuses.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "cities",
+      "label": "City tiles in front of you (tiebreaker)",
+      "labelVi": "Số thẻ City đang có (phá hòa)",
+      "hint": "Only used to break ties on points.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "cities", "dir": "highest", "description": "Tied players: most City tiles in front of them wins." },
+    { "description": "If still tied, the tied players share the victory." }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends immediately at the end of a turn when the active player has no Clan Tokens left on their Stand, or only one or no City remains on the board."
+  },
+  "notes": "family: area-majority. No separate final scoring; all points are tracked on the scoring track during play. Ziggurat cards may give an immediate 10 points or +1 point per two Cities scored (already included in the track). Optional variant: choose 7 of the 9 Ziggurat cards at random.",
+  "sources": [
+    {
+      "url": "https://ludonova.com/wp-content/uploads/2023/10/Babylonia_Rulebook_EN.pdf",
+      "title": "Babylonia Rulebook (Ludonova, 2019)",
+      "type": "official-rulebook",
+      "section": "Playing p.4-7 (scoring); End of the Game p.7; Ziggurat Cards p.8"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/babylonia/game-rules.php",
+      "title": "Babylonia game rules (UltraBoardGames)",
+      "type": "other",
+      "section": "Scoring and end of game cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

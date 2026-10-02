@@ -1,0 +1,100 @@
+{
+  "slug": "power-plants-2022",
+  "name": "Power Plants",
+  "year": 2022,
+  "bggId": 341974,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "gems",
+      "label": "Gems gathered during the game",
+      "labelVi": "Gem thu được trong ván",
+      "hint": "Gems already in your supply; each Gem is 1 point.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "plantScoring",
+      "label": "Plant endgame scoring",
+      "labelVi": "Điểm cuối ván của cây",
+      "hint": "Sum of endgame scoring from plant cards in play (e.g. Snapjaw), per each card.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "patchGems",
+      "label": "Gems on patches with your Sprites",
+      "labelVi": "Gem trên ô có Sprite",
+      "hint": "Claim gems from every patch where you have a Sprite; gems on patches with no Sprites are discarded.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fields",
+      "label": "Field scoring",
+      "labelVi": "Điểm cánh đồng",
+      "hint": "One value per field: size 1/2/3/4/5/6/7/8 patches = 1st 1/3/5/7/9/11/13/15, 2nd -/1/2/3/4/5/6/7; any other presence 1 point.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most total Sprites in the garden."
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. Field control = most patches controlled (control = any Sprite on the patch); ties for field control go to the player holding the lowest-numbered patch in that field. Source rulebook is a Kickstarter previewer prototype (c.2022); retail rulebook not found, so values/tiebreaks may differ in the final edition and individual plant endgame effects are not itemised. Solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/a0/52/a6-power-plants-rulebook.pdf",
+      "title": "Power Plants Rulebook (previewer prototype)",
+      "type": "official-rulebook",
+      "section": "Endgame and Scoring, pp.5-6"
+    },
+    {
+      "url": "https://undecent.fr/2023/04/29/test-power-plants/",
+      "title": "Power Plants review (cross-check)",
+      "type": "other",
+      "section": "Final scoring summary"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

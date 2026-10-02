@@ -1,0 +1,285 @@
+{
+  "slug": "troyes-2010",
+  "name": "Troyes",
+  "year": 2010,
+  "bggId": 73439,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpTokens",
+      "label": "VP tokens gained during play",
+      "labelVi": "Điểm VP đã nhận trong game",
+      "hint": "Total of VP tokens collected (hidden during play).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "eventPresence",
+      "label": "Un-countered event cards with your presence",
+      "labelVi": "Thẻ sự kiện chưa bị đẩy lùi mà bạn có mặt",
+      "hint": "1 VP per un-countered event card where you have cubes (incl. Marauding).",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "tradesmenVp",
+      "label": "VP on tradesman spaces (Activity cards)",
+      "labelVi": "VP ở ô thợ trên thẻ Hoạt động",
+      "hint": "Sum of VPs printed on the spaces occupied by your tradesmen.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "cathedralMissing",
+      "label": "Cathedral levels with no cubes",
+      "labelVi": "Tầng nhà thờ chưa có khối của bạn",
+      "hint": "-2 VP for each of the 3 cathedral levels where you have no cubes.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": 3
+    },
+    {
+      "key": "charChretien",
+      "label": "Chretien de Troyes: citizens on 3 principal buildings",
+      "labelVi": "Chrétien de Troyes: công dân ở 3 tòa nhà chính",
+      "hint": "Total citizens on the 3 principal buildings (Palace, Bishopric, City Hall). 3-4: 1, 5-6: 3, 7+: 6 VP; 2 players needs 4/6/8.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 1,
+          "4": 1,
+          "5": 3,
+          "6": 3,
+          "7+": 6
+        },
+        "byPlayerCount": {
+          "2": {
+            "table": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 1,
+              "5": 1,
+              "6": 3,
+              "7": 3,
+              "8+": 6
+            }
+          }
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "charUrbain",
+      "label": "Urbain IV: cubes on the Cathedral",
+      "labelVi": "Urbain IV: khối trên nhà thờ",
+      "hint": "Your cubes on the Cathedral. 3-4: 1, 5-6: 3, 7+: 6 VP; 2 players needs 4/6/8.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 1,
+          "4": 1,
+          "5": 3,
+          "6": 3,
+          "7+": 6
+        },
+        "byPlayerCount": {
+          "2": {
+            "table": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 1,
+              "5": 1,
+              "6": 3,
+              "7": 3,
+              "8+": 6
+            }
+          }
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "charThibaut",
+      "label": "Thibaut II: deniers",
+      "labelVi": "Thibaut II: tiền (denier)",
+      "hint": "Deniers you hold. 6-11: 1, 12-17: 3, 18+: 6 VP.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1,
+          "10": 1,
+          "11": 1,
+          "12": 3,
+          "13": 3,
+          "14": 3,
+          "15": 3,
+          "16": 3,
+          "17": 3,
+          "18+": 6
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "charHugues",
+      "label": "Hugues de Payns: Influence points",
+      "labelVi": "Hugues de Payns: điểm Ảnh hưởng",
+      "hint": "Your Influence. 5-9: 1, 10-14: 3, 15+: 6 VP.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1,
+          "10": 3,
+          "11": 3,
+          "12": 3,
+          "13": 3,
+          "14": 3,
+          "15+": 6
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "charFlorentin",
+      "label": "Le Florentin: tradesmen on Activity cards",
+      "labelVi": "Le Florentin: thợ trên thẻ Hoạt động",
+      "hint": "Your tradesmen on Activity cards. 2-3: 1, 4-5: 3, 6+: 6 VP.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 1,
+          "3": 1,
+          "4": 3,
+          "5": 3,
+          "6+": 6
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "charHenry",
+      "label": "Henry I: Event cards gained",
+      "labelVi": "Henry I: thẻ sự kiện đã giành",
+      "hint": "Event cards you gained. 1-2: 1, 3-4: 3, 5+: 6 VP.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 1,
+          "3": 3,
+          "4": 3,
+          "5+": 6
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: end-game-categories. Game ends at the end of the round in which the final red event card enters play. Only characters that are actually in the game score: every player scores on EACH character card in play (one per player, chosen secretly), so enter 0 for characters not in play. Thresholds shown for 3-4 players; 2-player thresholds for Chretien and Urbain are 4/6/8 (already in byPlayerCount). The rulebook states no tiebreaker. Expansions (Ladies of Troyes) not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/cb/77/69-troyes-rulebook.pdf",
+      "title": "Troyes Rulebook (Pearl Games)",
+      "type": "official-rulebook",
+      "section": "End of the game; The characters"
+    },
+    {
+      "url": "https://en.doc.boardgamearena.com/Gamehelptroyes",
+      "title": "BGA game help: Troyes",
+      "type": "other",
+      "section": "Scoring and characters cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

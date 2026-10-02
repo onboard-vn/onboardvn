@@ -1,0 +1,123 @@
+{
+  "slug": "project-l",
+  "name": "Project L",
+  "year": 2020,
+  "bggId": 260180,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "completedPuzzlePoints",
+      "label": "Points on completed puzzles",
+      "labelVi": "Điểm các puzzle đã hoàn thành",
+      "hint": "Cộng điểm in trên mọi puzzle trong chồng điểm của bạn (trắng và đen).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incompletePuzzlePenalty",
+      "label": "Incomplete puzzles (penalty)",
+      "labelVi": "Puzzle chưa hoàn thành (trừ điểm)",
+      "hint": "Trừ đúng giá trị điểm in trên mỗi puzzle chưa xong còn trước mặt; nhập tổng dương.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "-value"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finishingTouches",
+      "label": "Pieces placed in Finishing Touches",
+      "labelVi": "Mảnh đặt ở Finishing Touches",
+      "hint": "Mỗi mảnh đặt sau vòng cuối trừ 1 điểm.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverPieces",
+      "label": "Leftover pieces in supply (tiebreak only)",
+      "labelVi": "Mảnh còn dư trong kho (chỉ để phân hòa)",
+      "hint": "Không tính điểm; dùng phân định khi hòa.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "completedPuzzleCount",
+      "label": "Completed puzzles (tiebreak only)",
+      "labelVi": "Số puzzle hoàn thành (chỉ để phân hòa)",
+      "hint": "Không tính điểm; dùng phân định khi hòa.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "completedPuzzleCount",
+      "dir": "highest",
+      "description": "Most completed puzzles"
+    },
+    {
+      "categoryKey": "leftoverPieces",
+      "dir": "highest",
+      "description": "Most pieces left in supply"
+    },
+    {
+      "description": "If still tied, all tied players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: end-game-categories. Game end: when the Black deck empties, finish the round plus one final round (max 1 Black puzzle per turn after trigger). Then Finishing Touches (all done before any puzzle counts as completed, no bonus pieces). Each puzzle's printed value is read from the card. Solo mode and Finesse/Ghost Piece/line-clear variants not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/82/ee/c6-project-l-rulebook.pdf",
+      "title": "Project L Rulebook (Boardcubator, via 1jour-1jeu)",
+      "type": "official-rulebook",
+      "section": "p.6-7 Game End, Finishing Touches, Final Scoring"
+    },
+    {
+      "url": "https://rules.dized.com/game/P0GVjWTIS4KBsqo0om0uPg/faq",
+      "title": "Project L rules (Dized)",
+      "type": "other",
+      "section": "Tiebreakers cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,76 @@
+{
+  "slug": "spirit-island",
+  "name": "Spirit Island",
+  "year": 2017,
+  "bggId": 162886,
+  "templateVersion": 1,
+  "variant": "base game, optional scoring (Spirit Island scoring formula)",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "coop",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "gameScore",
+      "label": "Performance score",
+      "labelVi": "Điểm hiệu suất",
+      "hint": "won=1 if victory, 0 if defeat. difficulty = total difficulty. invadersLeft = cards left in deck (victory). invadersUsed = cards not in deck (defeat). dahan/blight = living Dahan and Blight on island.",
+      "scope": "team",
+      "input": "counts",
+      "inputs": [
+        "won",
+        "difficulty",
+        "invadersLeft",
+        "invadersUsed",
+        "dahan",
+        "blight"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "if(won==1, 5*difficulty+10+2*invadersLeft, 2*difficulty+invadersUsed)+floor(dahan/players)-floor(blight/players)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Win immediately when the current Terror Level victory condition is met (Level 1 clear all Invaders, Level 2 no Towns/Cities, Level 3 no Cities, reaching Level 4 also wins). Lose if the last Blight leaves the Blight Card with a lose effect, any Spirit has no Presence left, or an Invader card must be drawn from an empty deck. An effect that both wins and loses is a Sacrifice Victory.",
+  "notes": "family: coop. Verified against the official Rules Reference v1.2 (p.23 optional scoring, p.12 victory and defeat): victory 5x Difficulty +10 +2 per Invader card left in deck; defeat 2x Difficulty +1 per Invader card not in deck (discard and face-up); both add 1 per X living Dahan and subtract 1 per X Blight on island, X = number of players. Rulebook does not state rounding for per-X; modelled as round down. Score is optional and only for comparing games. Difficulty comes from Adversary/Scenario cards (scorer input). Expansions add content but not scoring rules.",
+  "sources": [
+    {
+      "url": "https://desktopgames.com.ua/games/5683/SpiritIsland_RulesReference_v1.2.pdf",
+      "title": "Spirit Island Rules Reference v1.2",
+      "type": "official-rulebook",
+      "section": "Scoring (Optional), p.23; Victory and Defeat, p.12"
+    },
+    {
+      "url": "https://www.rulespal.com/spirit-island/rulebook",
+      "title": "Spirit Island rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Victory, defeat and scoring system"
+    },
+    {
+      "url": "https://rules.dized.com/game/zuxKPAGpQWaqnMZgld8YBg/_XnLui4qTYCbEeJrW58RBw/scoring",
+      "title": "Dized Rules - Spirit Island scoring",
+      "type": "other",
+      "section": "Scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Win immediately on meeting the current Terror Level victory condition; lose on last Blight, a Spirit destroyed, or empty Invader deck."
+  },
+  "outcome": {
+    "winLose": true,
+    "scoreOnlyIfWin": false,
+    "scoreOnlyIfLose": false
+  }
+}

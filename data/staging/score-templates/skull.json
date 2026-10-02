@@ -1,0 +1,74 @@
+{
+  "slug": "skull",
+  "name": "Skull",
+  "year": 2011,
+  "bggId": 92415,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "elimination",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "challengesWon",
+      "label": "Successful challenges",
+      "labelVi": "Số lần thách đấu thành công",
+      "hint": "Flip the mat (roses side) each time you win a challenge; 2 wins ends the game.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": 2
+    },
+    {
+      "key": "won",
+      "label": "Won the game",
+      "labelVi": "Thắng ván",
+      "hint": "Won by 2 successful challenges, or by being the last player with cards left.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "A player wins by succeeding at a challenge twice (flipping their mat twice), or by being the only player not eliminated. Failing a challenge costs one disc; a player with no discs is eliminated.",
+  "endCondition": {
+    "type": "elimination",
+    "target": 4,
+    "description": "Each player starts with 4 discs (3 roses, 1 skull); play ends at a 2nd successful challenge by one player or when one player remains."
+  },
+  "eliminationTracking": {
+    "resource": "discs",
+    "start": 4,
+    "eliminatedCannotWin": true
+  },
+  "notes": "family: elimination-bluff. No points. Not verified against the official rulebook PDF (could not retrieve it); based on Wikipedia and the UltraBoardGames rules text. Skull & Roses Red (two gangs per player) uses the same win rules.",
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Skull_(card_game)",
+      "title": "Skull (card game) - Wikipedia",
+      "type": "wiki",
+      "section": "Gameplay"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/skull-and-roses/game-rules.php",
+      "title": "How to play Skull (UltraBoardGames)",
+      "type": "other",
+      "section": "Object of the Game; End of the game"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

@@ -1,0 +1,66 @@
+{
+  "slug": "keyflower-2012",
+  "name": "Keyflower",
+  "year": 2012,
+  "bggId": 122515,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 6 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "tilePoints",
+      "label": "Points from village tiles (printed scoring)",
+      "labelVi": "Điểm từ ô làng (theo giá trị in trên ô)",
+      "hint": "Sum all tile bonuses in your village: barn, blacksmith, stone yard, timber yard (kept resources), plus other scoring tiles. Each resource, skill or worker scores once only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "boatPoints",
+      "label": "Points from boats and turn-order tiles",
+      "labelVi": "Điểm từ thuyền và ô thứ tự lượt",
+      "hint": "Boat tile points (e.g. Keyflower, Sea Bastion, Sea Breeze, Flipper, Invincible) and 1 point per connected tile for each owned turn-order tile.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "goldCounters",
+      "label": "Unallocated gold counters",
+      "labelVi": "Vàng chưa dùng cho ô tính điểm",
+      "hint": "1 point per gold counter not assigned to any scoring tile.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 1 },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    { "description": "Players with equal points are tied and should play again to decide the winner." }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: tile-sum. Game ends at the end of winter. Printed tile values vary per tile and are entered as totals; individual tile values not modelled. Gold used as a resource on barn/blacksmith/stone yard/timber yard does not also score 1 point. Every scoring tile except the Keythedral can score its bonus multiple times if enough resources, skills or workers exist. Purple start player marker may count as a resource, skill or worker of any colour. Expansions (Farmers, Merchants) not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/2d/11/80-keyflower-rulebook.pdf",
+      "title": "Keyflower rulebook (English, via 1jour-1jeu)",
+      "type": "official-rulebook",
+      "section": "p.9 Game end scoring; p.10 Village tiles - detail (turn order tiles, boats)"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

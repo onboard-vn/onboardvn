@@ -1,0 +1,263 @@
+{
+  "slug": "coffee-traders",
+  "name": "Coffee Traders",
+  "year": 2020,
+  "bggId": 325022,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the 3rd period"
+  },
+  "categories": [
+    {
+      "key": "barDeliveries",
+      "label": "Coffee Bars: deliveries",
+      "labelVi": "Quán cà phê: điểm giao hàng",
+      "hint": "VP printed below each of your Scoring markers on the Coffee Bars.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "barColumnBonus",
+      "label": "Coffee Bars: column bonuses",
+      "labelVi": "Quán cà phê: thưởng cột",
+      "hint": "Per column: 4 VP for most beans, 2 VP for second (tie: furthest down the banner).",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "4 * mostBeans + 2 * secondBeans"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "mostBeans",
+        "secondBeans"
+      ]
+    },
+    {
+      "key": "milestones",
+      "label": "Milestones",
+      "labelVi": "Cột mốc",
+      "hint": "VP on the milestone spaces where your markers sit.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cooperatives",
+      "label": "Cooperatives (QV ranking, 5 regions)",
+      "labelVi": "Hợp tác xã (xếp hạng QV, 5 vùng)",
+      "hint": "Per region rank by QV (plantation level; hospital 2, other buildings 1 only if you own a plantation there). 1st 16, 2nd 8, 3rd 4 (4-5 players only); ties: sum and divide, round up. Enter total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "arabica",
+      "label": "Arabica tracks",
+      "labelVi": "Đường Arabica",
+      "hint": "Count rows at/above each column; cumulative: 3 VP if all 6 rows >=2nd column, +7 if all 6 >=3rd, +6 per row >=6th, +4 per row at 7th.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "(rowsCol2 == 6 ? 3 : 0) + (rowsCol3 == 6 ? 7 : 0) + 6 * rowsCol6 + 4 * rowsCol7"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "rowsCol2",
+        "rowsCol3",
+        "rowsCol6",
+        "rowsCol7"
+      ]
+    },
+    {
+      "key": "donkeysCivets",
+      "label": "Work: donkeys/civets",
+      "labelVi": "Làm việc: lừa/cầy hương",
+      "hint": "1 VP per donkey/civet in the Work section (not coins).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "trucks",
+      "label": "Work: trucks",
+      "labelVi": "Làm việc: xe tải",
+      "hint": "3 VP per truck.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "penaltyTokens",
+      "label": "Penalty tokens",
+      "labelVi": "Thẻ phạt -3",
+      "hint": "-3 VP per penalty token.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "plantationRowB",
+      "label": "Level-3 plantation from Row B",
+      "labelVi": "Đồn điền cấp 3 hàng B",
+      "hint": "4 VP if you built your level-3 plantation in Row B.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "expr",
+        "expr": "value * 4"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "workerPool",
+      "label": "Workers left in Worker Pool",
+      "labelVi": "Công nhân còn lại",
+      "hint": "1 VP per worker in the Worker Pool.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Trade & Build: constructed buildings",
+      "labelVi": "Xây dựng",
+      "hint": "Sum of VP shown left of each (now empty) building space.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "contracts",
+      "label": "Sell: fulfilled contracts",
+      "labelVi": "Hợp đồng đã thực hiện",
+      "hint": "Sum of VP shown at the bottom of each fulfilled contract space.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "counterTrack",
+      "label": "Counter track",
+      "labelVi": "Đường counter",
+      "hint": "VP for how high you filled your Counter track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "money",
+      "label": "Money (tiebreak)",
+      "labelVi": "Tiền (phân định hòa)",
+      "hint": "Coins you own at the end.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "money",
+      "dir": "highest",
+      "description": "Most money"
+    },
+    {
+      "description": "If still tied, shared victory (best cup of coffee wins)."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. Cooperative regions: Brazil, Colombia, Ethiopia, Guatemala, Indonesia (Sumatra is not a cooperative). Cooperative VP entered as a single number because ties round up (rankAward has no round-up mode). 2-player game uses the Andre automa (separate rules PDF); Andre scoring not modelled. Arabica 7th column holds only one player per row.",
+  "sources": [
+    {
+      "url": "https://capstone-games.com/cdn/shop/files/Coffee_Traders_2022_rulebook_web_1.5.pdf",
+      "title": "Coffee Traders rulebook v1.5 (Capstone Games)",
+      "type": "official-rulebook",
+      "section": "pp.25-27 End of Game (VP list, cooperative QV, Arabica track, tiebreaker)"
+    },
+    {
+      "url": "https://www.rulespal.com/coffee-traders/rulebook",
+      "title": "Coffee Traders rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Final scoring; Tiebreaker"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

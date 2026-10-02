@@ -1,0 +1,98 @@
+{
+  "slug": "maskmen-2014",
+  "name": "Maskmen",
+  "year": 2014,
+  "bggId": 159581,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "4 seasons (3-6 players); 2 players: first to win 3 seasons"
+  },
+  "categories": [
+    {
+      "key": "seasonsFirstOut",
+      "label": "Seasons finished first (+2 token)",
+      "labelVi": "Số mùa ra hết bài đầu tiên (+2)",
+      "hint": "Each season: first player to empty their hand takes the +2 token",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "seasonsSecondOut",
+      "label": "Seasons finished second (+1 token)",
+      "labelVi": "Số mùa ra hết bài thứ hai (+1)",
+      "hint": "Second player to empty their hand takes the +1 token",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "seasonsLast",
+      "label": "Seasons finished last (-1 token)",
+      "labelVi": "Số mùa còn bài cuối cùng (-1)",
+      "hint": "Last player with cards left takes the -1 token",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "notes": "family: climbing-shedding. Season ends when only one player still holds cards. 12 score tokens in box (4 each of +2/+1/-1) = 4 seasons. 2-player: played until one player wins 3 seasons (per review; the tokens differ) - enter seasonsFirstOut only. No official tiebreak found; shared victory assumed. Fan-written rules PDF confirms token ranking; token values per player count verified via review text, not the official rulebook. Re-checked: official rulebook still not retrievable (oinkgames.com has no PDF link); fan rewrite lets players choose the number of seasons, reviews state 4 seasons for 3+ players.",
+  "sources": [
+    {
+      "url": "https://whatsericplaying.com/2017/09/25/maskmen/",
+      "title": "Maskmen Review (What's Eric Playing)",
+      "type": "other",
+      "section": "Scoring; 2-player variant"
+    },
+    {
+      "url": "http://questionablemechanics.weebly.com/uploads/2/6/4/2/26423626/maskmen__less_mathematical__rules_-_a5.pdf",
+      "title": "Maskmen rules (fan rewrite of Oink Games rules)",
+      "type": "other",
+      "section": "Ending the Season / Ending the Game"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/159581/maskmen",
+      "title": "Maskmen - BoardGameGeek",
+      "type": "other",
+      "section": "Game page"
+    },
+    {
+      "url": "https://www.boardseyeview.net/post/maskmen",
+      "title": "Maskmen review (Boards Eye View)",
+      "type": "other",
+      "section": "3+ players: 4 seasons; 2 players: first to win 3 seasons"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

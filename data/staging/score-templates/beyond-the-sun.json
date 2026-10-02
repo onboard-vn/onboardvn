@@ -1,0 +1,218 @@
+{
+  "slug": "beyond-the-sun",
+  "name": "Beyond the sun",
+  "year": 2020,
+  "bggId": 317985,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 2, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "tech1",
+      "label": "Level I technologies",
+      "labelVi": "Công nghệ cấp I",
+      "hint": "1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "tech2",
+      "label": "Level II technologies",
+      "labelVi": "Công nghệ cấp II",
+      "hint": "2 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 2 },
+      "countsToTotal": true
+    },
+    {
+      "key": "tech3",
+      "label": "Level III technologies",
+      "labelVi": "Công nghệ cấp III",
+      "hint": "3 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 3 },
+      "countsToTotal": true
+    },
+    {
+      "key": "privateTechs",
+      "label": "Private technologies (from card bonuses)",
+      "labelVi": "Công nghệ riêng (từ thẻ thưởng)",
+      "hint": "Level II = 2 VP, Level III = 3 VP.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["level2", "level3"],
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "level2 * 2 + level3 * 3" },
+      "countsToTotal": true
+    },
+    {
+      "key": "tech4",
+      "label": "Level IV technologies",
+      "labelVi": "Công nghệ cấp IV",
+      "hint": "Sum of the VP specified on your Level IV technology cards.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "automation",
+      "label": "Automation track",
+      "labelVi": "Đường Tự động hóa",
+      "hint": "Add all VP showing up to your level reached; each level beyond 7 gives 1 VP.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "colonizedSystems",
+      "label": "Colonized systems",
+      "labelVi": "Hệ sao đã thuộc địa hóa",
+      "hint": "VP printed at the bottom of each System card you colonized.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "outposts",
+      "label": "Uncolonized outpost discs",
+      "labelVi": "Đĩa tiền đồn chưa thuộc địa",
+      "hint": "1 VP per outpost disc on System cards or Shipyard Systems.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "multiply", "points": 1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "locations",
+      "label": "Non-controllable locations (Sol, Deep Space)",
+      "labelVi": "Vị trí không chiếm được (Sol, Deep Space)",
+      "hint": "1 VP each for the faction(s) with the highest military power there (ties all score).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": { "type": "multiply", "points": 1 },
+      "countsToTotal": true
+    },
+    {
+      "key": "events",
+      "label": "Event cards giving VP",
+      "labelVi": "Thẻ sự kiện cho điểm",
+      "hint": "VP from Event cards (near Achievement cards or attached to locations/factions).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "achievements",
+      "label": "Achievements",
+      "labelVi": "Thành tựu",
+      "hint": "VP of the slot each of your discs sits in.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "remainingProdDiscs",
+      "label": "Remaining Food and Ore production discs (tiebreak)",
+      "labelVi": "Đĩa sản xuất Food và Ore còn lại (phân định hòa)",
+      "hint": "Fewest remaining = highest combined production level.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "populationCubes",
+      "label": "Remaining Population cubes (tiebreak)",
+      "labelVi": "Khối dân số còn lại (phân định hòa)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "oreCrystals",
+      "label": "Remaining Ore crystals (tiebreak)",
+      "labelVi": "Tinh thể Ore còn lại (phân định hòa)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "remainingProdDiscs",
+      "dir": "lowest",
+      "description": "Fewest remaining Food and Ore production discs on the faction mat (highest combined production level)"
+    },
+    {
+      "categoryKey": "populationCubes",
+      "dir": "highest",
+      "description": "Most remaining Population cubes"
+    },
+    {
+      "categoryKey": "oreCrystals",
+      "dir": "highest",
+      "description": "Most remaining Ore crystals"
+    },
+    { "description": "If still tied, factions jointly rule the galaxy (shared victory)." }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. Game end is triggered when 4 Achievement discs (3 in 2-3 player games) are on Achievement cards; finish the round, then one full final round (Achievements can still be claimed). Solo/automa and expansions (Leaders of the New Dawn) not modelled. Tech and Event VP values vary per card, hence repeating inputs.",
+  "sources": [
+    {
+      "url": "https://www.riograndegames.com/wp-content/uploads/2020/08/Beyond-the-Sun-2nd-Print-Rules-Combined.pdf",
+      "title": "Beyond the Sun 2nd Print Rules (Rio Grande Games)",
+      "type": "official-rulebook",
+      "section": "Game End Triggers and Scoring (steps 1-11, tiebreakers); Automation track; Colonization; Outposts"
+    },
+    {
+      "url": "https://www.riograndegames.com/games/beyond-the-sun/",
+      "title": "Beyond the Sun - Rio Grande Games",
+      "type": "publisher-page",
+      "section": "Score sheet / product page"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

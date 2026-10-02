@@ -1,0 +1,166 @@
+{
+  "slug": "hansa-teutonica-big-box-2020",
+  "name": "Hansa Teutonica: Big Box",
+  "year": 2020,
+  "bggId": 286749,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackPoints",
+      "label": "Prestige points on track",
+      "labelVi": "Điểm uy tín trên track",
+      "hint": "Points gained during play: city control, certain trading posts, East-West Connection.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "abilitiesDeveloped",
+      "label": "Fully developed abilities",
+      "labelVi": "Kỹ năng phát triển tối đa",
+      "hint": "4 PP per ability with no tradesmen left. City Keys does not count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusMarkers",
+      "label": "Bonus markers collected",
+      "labelVi": "Số bonus marker đã thu thập",
+      "hint": "Count all collected markers (used or not).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 3,
+          "3": 3,
+          "4": 6,
+          "5": 6,
+          "6": 10,
+          "7": 10,
+          "8": 15,
+          "9": 15,
+          "10+": 21
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coellenSpecial",
+      "label": "Special prestige points in Coellen",
+      "labelVi": "Điểm đặc biệt ở Coellen",
+      "hint": "Sum of values (7/8/9/11) on spaces where your merchants sit.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "citiesControlled",
+      "label": "Cities controlled",
+      "labelVi": "Số thành phố kiểm soát",
+      "hint": "2 PP per city where you have the most trading posts; tie goes to the highest-valued post.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "network",
+      "label": "Largest network x City Keys",
+      "labelVi": "Mạng lưới lớn nhất x City Keys",
+      "hint": "Trading posts in your largest connected network times your highest uncovered City Keys number (1,2,2,3,4).",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "tradingPosts * cityKeysValue"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "tradingPosts",
+        "cityKeysValue"
+      ]
+    },
+    {
+      "key": "actionsLevel",
+      "label": "Actions ability developed (tiebreak)",
+      "labelVi": "Mức kỹ năng Actions (phân định hòa)",
+      "hint": "Number of Actions spaces uncovered; fewer wins the tie.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "actionsLevel",
+      "dir": "lowest",
+      "description": "Tied player who developed their Actions ability the least wins"
+    },
+    {
+      "categoryKey": "network",
+      "dir": "highest",
+      "description": "Then the player with most points from network"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: end-game-categories-network. Game end triggers: any player reaches 20 PP on track, bonus marker supply runs out when one must be drawn, or the 10th city is completed. Then 6 categories are added to the track points. 'actionsLevel' = how far the Actions ability has been developed (number of spaces uncovered), exact scale per writing desk. Coellen merchant spaces (7/8/9/11) are printed on the board. Big Box adds expansion boards/modes not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/df/af/68-hansa-teutonica-big-box-rulebook.pdf",
+      "title": "Hansa Teutonica: Big Box Rulebook (EN)",
+      "type": "official-rulebook",
+      "section": "p.7 End of Game; Tally your Prestige Points A-F; tie resolution"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/hansa-teutonica/game-rules.php",
+      "title": "How to play Hansa Teutonica (UltraBoardGames)",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,111 @@
+{
+  "slug": "big-top",
+  "name": "Big Top",
+  "year": 2023,
+  "bggId": 369899,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "attractionPoints",
+      "label": "Completed attraction cards",
+      "labelVi": "Điểm thẻ trò diễn đã hoàn thành",
+      "hint": "Sum of the points printed on your completed attractions only.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "clownPoints",
+      "label": "Completed clown cards",
+      "labelVi": "Điểm thẻ chú hề đã hoàn thành",
+      "hint": "Score each completed clown card as described on the player screen (printed on the screen, not in the rulebook).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "coinsBonus",
+      "label": "Coins ($) behind screen and on unfinished cards",
+      "labelVi": "Tiền ($) sau màn chắn và trên thẻ chưa xong",
+      "hint": "1 VP per $5 total.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "stars",
+      "label": "Stars on completed attractions",
+      "labelVi": "Số sao trên thẻ đã hoàn thành",
+      "hint": "Most stars 10 VP, 2nd 7, 3rd 3. Tied players all get the lower amount. No star on a completed attraction = eliminated, cannot win.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            10,
+            7,
+            3
+          ],
+          "tieMode": "all-next-lower",
+          "over": "count",
+          "excludeZero": true
+        }
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "winCondition": "Highest total points wins, but any player with no star on a completed attraction is eliminated and cannot win. Tied players share the victory.",
+  "endCondition": {
+    "type": "deck-out",
+    "target": null,
+    "description": "Game ends immediately when someone draws the Game End card from the attraction deck."
+  },
+  "notes": "family: auction-money. Only completed cards score. Clown card scoring is printed on player screens and is entered as a number. Star rank ties: rulebook says all tied players earn the lowest amount; with a 3-way tie for first the template gives the 2nd-place value (7) instead of 3 - adjust manually. Eliminated (no-star) players are not modelled automatically.",
+  "sources": [
+    {
+      "url": "https://assets.allplay.com/board-games-big-top-rulebook-link.pdf",
+      "title": "Big Top rulebook (Allplay)",
+      "type": "official-rulebook",
+      "section": "Final Scoring / Game End (p.3-4)"
+    },
+    {
+      "url": "https://www.allplay.com/board-games/big-top/",
+      "title": "Big Top - Allplay product page",
+      "type": "publisher-page",
+      "section": "Rulebook link"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

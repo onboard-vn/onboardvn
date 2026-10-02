@@ -1,0 +1,89 @@
+{
+  "slug": "notre-dame-10th-anniversary",
+  "name": "Notre Dame: 10th Anniversary",
+  "year": 2017,
+  "bggId": 213984,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 9,
+    "aggregate": "sum",
+    "endCondition": "After the 9th round the influence markers in Notre Dame are scored and the game ends"
+  },
+  "categories": [
+    {
+      "key": "prestige",
+      "label": "Prestige points",
+      "labelVi": "Điểm uy tín",
+      "hint": "Total prestige tokens held, after the final Notre Dame scoring (incl. park bonus).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "gold",
+      "label": "Gold coins in personal supply",
+      "labelVi": "Đồng vàng còn lại",
+      "hint": "Tiebreaker only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "influence",
+      "label": "Influence markers in personal supply",
+      "labelVi": "Marker ảnh hưởng còn lại",
+      "hint": "Tiebreaker only (add to gold).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "gold",
+      "dir": "highest",
+      "description": "Most total gold coins plus influence markers in personal supply (add both categories)."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: running-track. Prestige is gained during play (residence, actions, donations, Notre Dame at end of each period); score the 9th-round Notre Dame distribution before counting. Plague overflow costs 2 prestige each time (already reflected in tokens held). Tiebreak: gold + influence markers combined. Shared victory if still tied is an assumption (not stated).",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/e7/73/16-notre-dame-10th-anniversary-rulebook.pdf",
+      "title": "Notre Dame: 10th Anniversary Rulebook",
+      "type": "official-rulebook",
+      "section": "Game End (p.3)"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/notre-dame/game-rules.php",
+      "title": "How to play Notre Dame (Ultra Board Games)",
+      "type": "other",
+      "section": "Winner / tiebreak cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

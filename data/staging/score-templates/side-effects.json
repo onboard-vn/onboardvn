@@ -1,0 +1,58 @@
+{
+  "slug": "side-effects",
+  "name": "Side Effects",
+  "bggId": 230765,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 8
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won",
+      "labelVi": "Chiến thắng",
+      "hint": "First to treat every disorder in their psyche.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://pillboxgames.com/products/side-effects",
+      "title": "Pillbox Games - Side Effects product page",
+      "type": "publisher-page",
+      "section": "Description: race to treat all diseases in your psyche"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/230765/side-effects",
+      "title": "BGG Side Effects (publisher description)",
+      "type": "other",
+      "section": "Description: game is over when one player treats all diseases"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/300393/side-effects-player-aid-extended",
+      "title": "BGG file: Side Effects Player Aid (Extended)",
+      "type": "bgg-file",
+      "section": "Placebo rules (win with Placebo in Psyche)"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "notes": "family: race-to-goal. Pillbox Games card game (BGG 230765, 2-8 players); not Goliath 'May Cause Side Effects' (different game). No scoring: game ends when one player has treated every disorder in their psyche. Official rulebook not retrievable (Pillbox rules page removed, BGG files need login); objective confirmed by publisher page + BGG description only, so detailed edge cases (treatment via Therapy/Placebo, simultaneous finish) unverified. Booster Shot and Hex Effects excluded. Record only winner.",
+  "winCondition": "First player to treat every disorder in their psyche (with drugs or therapy) wins; the game ends immediately.",
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "A player treats all disorders in their psyche."
+  }
+}

@@ -1,0 +1,231 @@
+{
+  "slug": "finspan",
+  "name": "Finspan",
+  "bggId": 436126,
+  "templateVersion": 2,
+  "variant": "base; achievement board Side A or Side B",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "week1",
+      "label": "Week 1 achievement",
+      "labelVi": "Thành tựu tuần 1",
+      "hint": "Points awarded that week, excluding Side B leader bonus.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "week2",
+      "label": "Week 2 achievement",
+      "labelVi": "Thành tựu tuần 2",
+      "hint": "Points awarded that week, excluding Side B leader bonus.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "week3",
+      "label": "Week 3 achievement",
+      "labelVi": "Thành tựu tuần 3",
+      "hint": "Points awarded that week, excluding Side B leader bonus.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "yellow",
+      "label": "Game-end abilities",
+      "labelVi": "Năng lực cuối game",
+      "hint": "Sum visible fish yellow scoring.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fish",
+      "label": "Visible fish points",
+      "labelVi": "Điểm cá lộ diện",
+      "hint": "Sum printed values.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "consumed",
+      "label": "Consumed fish",
+      "labelVi": "Cá đã ăn",
+      "hint": "Include covered forage fish.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "eggs",
+      "label": "Eggs",
+      "labelVi": "Trứng",
+      "hint": "",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "young",
+      "label": "Young",
+      "labelVi": "Cá non",
+      "hint": "",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "schools",
+      "label": "Schools",
+      "labelVi": "Đàn cá",
+      "hint": "",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 6
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "hand",
+      "label": "Fish cards in hand",
+      "labelVi": "Lá cá trên tay",
+      "hint": "",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "week1Bonus",
+      "label": "Week 1 Side B bonus",
+      "labelVi": "Thưởng mặt B tuần 1",
+      "hint": "Side B only: enter achievement points without bonus; every joint leader gets 3.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            3
+          ],
+          "tieMode": "all-full",
+          "excludeZero": false,
+          "minValueToScore": 0
+        }
+      },
+      "countsToTotal": true,
+      "optional": true
+    },
+    {
+      "key": "week2Bonus",
+      "label": "Week 2 Side B bonus",
+      "labelVi": "Thưởng mặt B tuần 2",
+      "hint": "Side B only: enter achievement points without bonus; every joint leader gets 3.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            3
+          ],
+          "tieMode": "all-full",
+          "excludeZero": false,
+          "minValueToScore": 0
+        }
+      },
+      "countsToTotal": true,
+      "optional": true
+    },
+    {
+      "key": "week3Bonus",
+      "label": "Week 3 Side B bonus",
+      "labelVi": "Thưởng mặt B tuần 3",
+      "hint": "Side B only: enter achievement points without bonus; every joint leader gets 3.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            3
+          ],
+          "tieMode": "all-full",
+          "excludeZero": false,
+          "minValueToScore": 0
+        }
+      },
+      "countsToTotal": true,
+      "optional": true
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://bghub.org/r/finspan.pdf",
+      "title": "Stonemaier Finspan rulebook",
+      "type": "official-rulebook",
+      "section": "p.8 End of Week; End of Game"
+    },
+    {
+      "url": "https://misutmeeple.com/en/2025/04/review-finspan/",
+      "title": "Finspan review",
+      "type": "other",
+      "section": "Game End"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "notes": "family: point-salad-euro. Use scorepad entries from weeks 1–3. Side B bonus rows are optional, used only with Side B. First resolve non-point game-end abilities, then fill final rows. Solo excluded.",
+  "tiebreakers": [
+    {
+      "categoryKey": "hand",
+      "dir": "highest",
+      "description": "Most fish cards in hand; then share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true
+}

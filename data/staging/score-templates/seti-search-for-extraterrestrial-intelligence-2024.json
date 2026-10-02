@@ -1,0 +1,144 @@
+{
+  "slug": "seti-search-for-extraterrestrial-intelligence-2024",
+  "name": "SETI: Search for Extraterrestrial Intelligence",
+  "year": 2024,
+  "bggId": null,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 5,
+    "aggregate": "sum",
+    "endCondition": "Game ends after round 5 once the last player has passed"
+  },
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track (VP gained during play)",
+      "labelVi": "Điểm trên bảng điểm (tích lũy trong ván)",
+      "hint": "Marker position at end of round 5, before final scoring. Past 100 = add 100 per lap.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endGameCards",
+      "label": "End-of-game scoring cards",
+      "labelVi": "Điểm thẻ chấm cuối game",
+      "hint": "Sum of points from played cards with a gold box.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goldTile25",
+      "label": "Gold scoring tile chosen at 25 VP",
+      "labelVi": "Thẻ vàng chọn ở mốc 25 điểm",
+      "hint": "Sets of the tile's condition x value of your marker on that tile.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "sets",
+        "valuePerSet"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "sets * valuePerSet"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goldTile50",
+      "label": "Gold scoring tile chosen at 50 VP",
+      "labelVi": "Thẻ vàng chọn ở mốc 50 điểm",
+      "hint": "Skip if you never reached 50 VP.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "sets",
+        "valuePerSet"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "sets * valuePerSet"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goldTile70",
+      "label": "Gold scoring tile chosen at 70 VP",
+      "labelVi": "Thẻ vàng chọn ở mốc 70 điểm",
+      "hint": "Skip if you never reached 70 VP.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "sets",
+        "valuePerSet"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "sets * valuePerSet"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "alienBonus",
+      "label": "Alien species bonus scoring",
+      "labelVi": "Điểm bonus từ chủng alien",
+      "hint": "Only if a discovered alien species adds an extra end-game scoring step.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: players with equal points share the tie."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "Gold tiles (3 of 4 in play): Tech (sets of 3 types / pairs of techs), Mission (completed missions / pairs of missions+end-game cards), Income (sets of 3 income types / most-tucked type), Other (sets of 3 life-trace colours / sector wins paired with orbiter or lander). Marker values on each tile depend on selection order (first picker gets highest). Each gold milestone can only pick a tile not already marked by that player. Solo: rival scores 5 per uncompleted objective instead of gold tiles. Expansion 'Space Agencies' not modelled. Which gold-tile side is in play is not recorded.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/setisearchforextraterrestrialintelligence.pdf",
+      "title": "SETI rulebook EN (CGE, 2024-09-17)",
+      "type": "official-rulebook",
+      "section": "p.18 Milestones (gold milestones at 25/50/70); p.21 End of Game (final scoring, gold scoring tiles); p.22 solo end of game"
+    },
+    {
+      "url": "https://www.rulespal.com/seti/rulebook",
+      "title": "SETI rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End of game final scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

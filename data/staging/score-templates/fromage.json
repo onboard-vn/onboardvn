@@ -1,0 +1,151 @@
+{
+  "slug": "fromage",
+  "name": "Fromage",
+  "year": 2024,
+  "bggId": 384213,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 1, "max": 4 },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "bistro",
+      "label": "Bistro (plate scoring)",
+      "labelVi": "Bistro (điểm theo đĩa)",
+      "hint": "Read the scoring rubric on the quadrant: points per plate depend on how many pairings (2 of your cheeses on one table) you made.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "festival",
+      "label": "Festival (adjacent groups)",
+      "labelVi": "Festival (nhóm phô mai liền kề)",
+      "hint": "Orthogonally adjacent groups of your cheeses; Free Sample spaces count as wild. Score each group on the rubric.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "fromagerie",
+      "label": "Fromagerie (shelf variety + shelf bonuses)",
+      "labelVi": "Fromagerie (đa dạng kệ + bonus kệ)",
+      "hint": "Points for the number of different shelves with your cheese, plus the indicated bonus for each cheese on a point-bonus shelf.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "villes",
+      "label": "Villes (Customer Tokens)",
+      "labelVi": "Villes (token khách hàng)",
+      "hint": "Most influence in a region takes its Customer Token; ties flip to the tied side. Token values depend on player count (printed on the board); ties are worth 0 in 1-2 player games.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "structures",
+      "label": "Structures (Headquarters)",
+      "labelVi": "Công trình (Headquarters)",
+      "hint": "1 point per resource of the Headquarters' type that you used.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": true
+    },
+    {
+      "key": "fruit",
+      "label": "Fruit (fruited cheeses x jams)",
+      "labelVi": "Trái cây (phô mai trái cây x mứt)",
+      "hint": "Fruit used on Fruited Cheese multiplied by Fruit used on Jam.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": ["fruitedCheese", "jam"],
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "fruitedCheese * jam" },
+      "countsToTotal": true
+    },
+    {
+      "key": "orders",
+      "label": "Completed Orders",
+      "labelVi": "Đơn hàng đã hoàn thành",
+      "hint": "Orders completed: 1/2/3/4/5/6 = 1/2/3/5/7/10 points, +4 for each order beyond 6.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "if(value <= 3, value, if(value == 4, 5, if(value == 5, 7, 10 + 4 * (value - 6))))" },
+      "countsToTotal": true
+    },
+    {
+      "key": "unusedResources",
+      "label": "Unused Resources",
+      "labelVi": "Tài nguyên chưa dùng",
+      "hint": "1 point for every 2 unused Resources.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "expr", "expr": "floor(value / 2)" },
+      "countsToTotal": true
+    },
+    {
+      "key": "cheeseMade",
+      "label": "Cheese tokens placed (tiebreaker)",
+      "labelVi": "Số phô mai đã làm (phá hòa)",
+      "hint": "Only used to break ties on Prestige Points.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "cheeseMade", "dir": "highest", "description": "Tied players: the player who made more cheese wins." },
+    { "description": "If still tied, victory is shared." }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "When a player places their final Cheese Token, all players finish the current turn; then remove Workers and total the scores."
+  },
+  "notes": "family: engine-building. Per-venue scoring rubrics (Festival, Fromagerie, Bistro, Villes) are printed on the board, so those are entered as computed points. All Cheese Tokens on the board count even if not fully aged. Solo mode (play against the Corporation, which scores its highest visible cheese-track number + Customer Tokens + 3 per Order card) is not modelled. Fruit/jam multiplication per rulebook p.10; Orders rubric per p.11; end of game p.12.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/fromage.pdf",
+      "title": "Fromage Rulebook (R2i Games, 2024)",
+      "type": "official-rulebook",
+      "section": "Venues p.8-9; Resources: Fruit, Orders p.10-11; Game-End p.12; Structure Abilities p.16"
+    },
+    {
+      "url": "https://en.boardgamearena.com/gamepanel?game=fromage",
+      "title": "Fromage on Board Game Arena",
+      "type": "other",
+      "section": "Game description: scoring venues, fruit, orders, unused resources"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

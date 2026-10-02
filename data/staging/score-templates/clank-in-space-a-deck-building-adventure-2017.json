@@ -1,0 +1,177 @@
+{
+  "slug": "clank-in-space-a-deck-building-adventure-2017",
+  "name": "Clank! In! Space!: A Deck-Building Adventure",
+  "year": 2017,
+  "bggId": 233371,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "qualified",
+      "label": "Escaped by pod, or knocked out in Cargo Bay holding an Artifact",
+      "labelVi": "Thoát bằng pod, hoặc gục tại Cargo Bay khi có cổ vật",
+      "hint": "Tick only if you reached an escape pod, or were knocked out in the Cargo Bay carrying an Artifact. Others cannot score and cannot win.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "artifact",
+      "label": "Artifact value",
+      "labelVi": "Giá trị cổ vật",
+      "hint": "Value printed on your Artifact (5-30)",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_qualified == 1",
+      "min": 0
+    },
+    {
+      "key": "credits",
+      "label": "Credits",
+      "labelVi": "Credits",
+      "hint": "1 VP per Credit; include 5- and 2-Credit chips if kept",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_qualified == 1",
+      "min": 0
+    },
+    {
+      "key": "cardPoints",
+      "label": "Points on cards in deck",
+      "labelVi": "Điểm trên bài trong bộ",
+      "hint": "Sum of the number in each card's top-right corner",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_qualified == 1",
+      "min": 0
+    },
+    {
+      "key": "escapePod",
+      "label": "Escape pod token",
+      "labelVi": "Token pod thoát hiểm",
+      "hint": "+20 if you reached an escape pod with an Artifact",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value,20,0)"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_qualified == 1"
+    },
+    {
+      "key": "spaceshipPlans",
+      "label": "Spaceship Plans tokens",
+      "labelVi": "Spaceship Plans",
+      "hint": "7 VP each (not an Artifact)",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 7
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_qualified == 1",
+      "min": 0
+    },
+    {
+      "key": "archives",
+      "label": "Archive tokens",
+      "labelVi": "Archive",
+      "hint": "3 VP each",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_qualified == 1",
+      "min": 0
+    },
+    {
+      "key": "sixthCrystal",
+      "label": "Sixth Crystal: total Power Crystals owned",
+      "labelVi": "Sixth Crystal: tổng Power Crystal",
+      "hint": "If you hold the Sixth Crystal token, enter your total Power Crystals including the token (3 VP each); otherwise 0",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_qualified == 1",
+      "min": 0
+    },
+    {
+      "key": "marketItems",
+      "label": "Market items kept",
+      "labelVi": "Vật phẩm chợ",
+      "hint": "Master Key 5, TelePass 5, Med Kit 5, Contraband 10 VP each",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "5*masterKey + 5*telePass + 5*medKit + 10*contraband"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_qualified == 1",
+      "inputs": [
+        "masterKey",
+        "telePass",
+        "medKit",
+        "contraband"
+      ]
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "artifact",
+      "dir": "highest",
+      "description": "Tied player with the most valuable Artifact wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: engine-tableau (deckbuilder race). Game ends when every player has escaped or been knocked out. Only players who reached an escape pod or at least the Cargo Bay (with an Artifact) count their score. Token values (Spaceship Plans 7, Archive 3, Sixth Crystal 3 per crystal, Market items 5/5/5/10) read from the rulebook token reference (p.12). Expansion/scenario tokens and card values vary and are scorer inputs. Base-game rulebook; Renegade Games English edition.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/4e/e4/76-clank-in-space-rulebook.pdf",
+      "title": "Clank! In! Space! Rulebook (Renegade Game Studios)",
+      "type": "official-rulebook",
+      "section": "Step 4 knocked out / escape pod; Step 5 The End of the Line (p.9); Token Reference Guide (p.12)"
+    },
+    {
+      "url": "https://merchantsofplay.com/howtoplay/clank-in-space-a-deck-building-adventure/",
+      "title": "How to Play Clank! In! Space! (Merchants of Play)",
+      "type": "other",
+      "section": "Winning"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

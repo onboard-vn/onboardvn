@@ -1,0 +1,102 @@
+{
+  "slug": "world-order-2026",
+  "name": "World Order",
+  "year": 2026,
+  "bggId": 403150,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 6,
+    "aggregate": "sum",
+    "endCondition": "Game ends after round 6 scoring"
+  },
+  "categories": [
+    {
+      "key": "regionScoring",
+      "label": "Region scoring (rounds 3 and 6)",
+      "labelVi": "Điểm vùng (vòng 3 và 6)",
+      "hint": "1 VP per own influence cube in a scoring region plus rank bonus printed on that region. Total of both scorings.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "globalMajorities",
+      "label": "Global majority tokens",
+      "labelVi": "Token đa số toàn cầu",
+      "hint": "VP from money, armies, allied countries majority tokens.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "otherVp",
+      "label": "Other VP during game",
+      "labelVi": "VP khác trong game",
+      "hint": "Any other VP gained on the track.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "strategicAdvantage",
+      "label": "Unused Strategic Advantage cards",
+      "labelVi": "Thẻ Lợi thế chiến lược chưa dùng",
+      "hint": "2 VP per unused card after round 6.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Regional majorities, then Influence cubes on the board (per secondary sources; verify in rulebook)"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. NOT verified against official rulebook text (BGG file page blocked); based on reviews. Rank bonuses are printed on the board, tied players gain the lowest tied position's points. A race to 25 VP is mentioned by one source and is unconfirmed.",
+  "sources": [
+    {
+      "url": "https://mr-boardgames.com/en/reviews/world-order-our-review-of-this-geopolitical-strategy-game/",
+      "title": "World Order review and rules (MR Boardgames)",
+      "type": "other",
+      "section": "Scoring"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/290136/world-order-rulebook",
+      "title": "World Order rulebook (BGG files)",
+      "type": "bgg-file",
+      "section": "not accessed"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

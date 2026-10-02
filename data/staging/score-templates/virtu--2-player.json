@@ -1,0 +1,153 @@
+{
+  "slug": "virtu--2-player",
+  "name": "Virtù",
+  "year": 2021,
+  "bggId": 345377,
+  "templateVersion": 1,
+  "variant": "2-player (The Wars of Italy)",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "asymmetric",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 21,
+    "aggregate": "sum",
+    "endCondition": "21 rounds, or France controls Naples at end of a round"
+  },
+  "roles": [
+    {
+      "key": "naples",
+      "label": "Naples",
+      "winCondition": "Most Prestige Points after 21 rounds; wins ties."
+    },
+    {
+      "key": "france",
+      "label": "France",
+      "winCondition": "Immediate win if France controls Naples at the end of a round; otherwise most Prestige Points."
+    }
+  ],
+  "categories": [
+    {
+      "key": "cities",
+      "label": "Cities controlled",
+      "labelVi": "Thành phố kiểm soát",
+      "hint": "1 VP per City, including starting Cities and Cities controlled by an Allied Major City.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardsTiles",
+      "label": "Prestige on cards/tiles",
+      "labelVi": "Prestige trên thẻ/ô",
+      "hint": "Prestige Points printed on Palace cards and Domain tiles.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "crosses",
+      "label": "Cross symbols (religious influence)",
+      "labelVi": "Số Cross",
+      "hint": "Player with more Crosses gets 2 VP; tie gives nobody anything.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            2
+          ],
+          "tieMode": "none",
+          "excludeZero": false,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "trophies",
+      "label": "Trophies (incl. Major Cities)",
+      "labelVi": "Chiến tích",
+      "hint": "1 VP per Trophy; all count even from the same colour.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "indulgences",
+      "label": "Indulgence cards in Palace",
+      "labelVi": "Thẻ Indulgence",
+      "hint": "-1 VP per Indulgence card still in Palace.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "franceNaples",
+      "label": "France controls Naples (automatic win)",
+      "labelVi": "Pháp kiểm soát Naples",
+      "hint": "Check if France controls Naples at the end of a round: France wins immediately.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "On a tie in Prestige Points, Naples wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Most Prestige Points after 21 rounds (Naples wins ties). France wins immediately if it controls Naples at the end of any round.",
+  "endCondition": {
+    "type": "rounds",
+    "target": 21,
+    "description": "21 rounds or France controlling Naples at end of round."
+  },
+  "notes": "family: engine-building + area-majority. Two-player Wars of Italy rules: no Patronage or track VP; Major Cities are scored via Allied control. Players are asymmetric (Naples vs France); the tie goes to Naples.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/de/ae/2c-virtu-rulebook-2-players.pdf",
+      "title": "Virtù: The Wars of Italy - 2 player rulebook (Super Meeple, EN)",
+      "type": "official-rulebook",
+      "section": "p.12 End of the Game: Prestige and Victory; Automatic Victory"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

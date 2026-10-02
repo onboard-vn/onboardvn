@@ -1,0 +1,96 @@
+{
+  "slug": "taj-mahal",
+  "name": "Taj Mahal",
+  "year": 2000,
+  "bggId": 475,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Points from play (provinces, tokens, bonuses)",
+      "labelVi": "Điểm trong ván",
+      "hint": "Province, palace, commodity and bonus-token points tracked during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "colorlessCards",
+      "label": "End: colorless cards in hand",
+      "labelVi": "Cuối ván: bài không màu",
+      "hint": "1 point per colorless card left.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "chosenColorCards",
+      "label": "End: cards of one chosen color",
+      "labelVi": "Cuối ván: bài của một màu",
+      "hint": "Choose one color; 1 point per card of that color.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardsRemaining",
+      "label": "Cards remaining in hand (tiebreak)",
+      "labelVi": "Bài còn lại (phân định hòa)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "cardsRemaining",
+      "dir": "highest",
+      "description": "Most cards remaining in hand"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: auction-money. Reconstructed from a rules summary only; official rulebook not retrieved and end-game card scoring and visit count unverified. In-play scoring (palaces, connected provinces, commodity tokens) not itemised.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/taj-mahal/rulebook",
+      "title": "Taj Mahal rulebook summary (RulesPal)",
+      "type": "other"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

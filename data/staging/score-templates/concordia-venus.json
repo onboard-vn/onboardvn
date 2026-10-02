@@ -1,0 +1,186 @@
+{
+  "slug": "concordia-venus",
+  "name": "Concordia Venus",
+  "year": 2018,
+  "bggId": 256916,
+  "templateVersion": 1,
+  "variant": "Individual play (team variant in notes)",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "vesta",
+      "label": "Vesta cards",
+      "labelVi": "Thẻ Vesta",
+      "hint": "Goods in storehouse at printed price + cash; 1 VP per full 10 sestertii, per Vesta card.",
+      "input": "counts",
+      "inputs": [
+        "cards",
+        "sestertii"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "cards*floor(sestertii/10)"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "jupiter",
+      "label": "Jupiter cards",
+      "labelVi": "Thẻ Jupiter",
+      "hint": "1 VP per house in a non-brick city, max 15 per card. Legatus counts as Jupiter too.",
+      "input": "counts",
+      "inputs": [
+        "cards",
+        "houses"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "cards*min(houses,15)"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "saturnus",
+      "label": "Saturnus cards",
+      "labelVi": "Thẻ Saturnus",
+      "hint": "1 VP per province with at least one of your houses, per card. Legatus counts as Saturnus too.",
+      "input": "counts",
+      "inputs": [
+        "cards",
+        "provinces"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "cards*provinces"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "venus",
+      "label": "Venus cards",
+      "labelVi": "Thẻ Venus",
+      "hint": "Individual: 2 VP per province with 2+ of your houses, max 14 per card. Legatus counts as Venus too.",
+      "input": "counts",
+      "inputs": [
+        "cards",
+        "provinces"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "cards*min(2*provinces,14)"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "mercurius",
+      "label": "Mercurius cards",
+      "labelVi": "Thẻ Mercurius",
+      "hint": "2 VP per type of goods your houses produce, max 10 per card.",
+      "input": "counts",
+      "inputs": [
+        "cards",
+        "goodTypes"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "cards*min(2*goodTypes,10)"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "mars",
+      "label": "Mars cards",
+      "labelVi": "Thẻ Mars",
+      "hint": "2 VP per colonist of yours on the board, max 12 per card.",
+      "input": "counts",
+      "inputs": [
+        "cards",
+        "colonists"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "cards*min(2*colonists,12)"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "minerva",
+      "label": "Minerva specialist cards",
+      "labelVi": "Thẻ chuyên gia Minerva",
+      "hint": "Per specialist: houses in matching city type x VP printed on that card. Enter each card total.",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "min": 0,
+      "max": null,
+      "countsToTotal": true,
+      "key": "concordiaCard",
+      "label": "Concordia card",
+      "labelVi": "Thẻ Concordia",
+      "hint": "+7 VP for the player who triggered game end.",
+      "input": "bool",
+      "formula": {
+        "type": "expr",
+        "expr": "if(value,7,0)"
+      }
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "Player/team holding the Praefectus Magnus wins; otherwise the tied player who would receive it next"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-money (card-purchase end-game god scoring). Game ends when the last display card is bought or a player builds their 15th house; the trigger player takes the Concordia card, all others play one last turn. Each card scored per its god; Legatus counts once each for Jupiter, Saturnus and Venus. Team play variant: Venus = 1 VP per province where both partners each have a house (max = number of provinces); team VP = sum of both partners; not modelled. Optional intermediate scoring (first Tribune play) gives sestertii not VP; not modelled. Caps are enforced via min() in expr.",
+  "sources": [
+    {
+      "url": "https://www.pd-verlag.de/WebRoot/HostEurope/Shops/es719366/MediaGallery/Venus/Rules_Venus_Expansion_engl_A4_1_01.pdf",
+      "title": "Concordia Venus rules (PD-Verlag)",
+      "type": "official-rulebook",
+      "section": "Game End; Final Scoring (last page)"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/concordia-venus/game-rules.php",
+      "title": "How to play Concordia Venus (Ultra BoardGames)",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

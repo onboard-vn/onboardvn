@@ -1,0 +1,45 @@
+{
+  "slug": "chicago-express-2007",
+  "name": "Chicago Express",
+  "year": 2007,
+  "bggId": 31730,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "cash",
+      "label": "Cash in hand at game end",
+      "labelVi": "Tiền mặt cuối ván",
+      "hint": "Count only money after the final General Dividend; shares are worth nothing for the result.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": null,
+      "max": null
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": true,
+  "notes": "family: auction-money (richest player wins). Game ends after the next General Dividend once any end trigger is met (3+ companies out of locomotives or shares on Charter, 3 or fewer houses in supply, or Detroit income at 8). Shares do not count. Verified only against a secondary rules summary; official rulebook PDF not retrievable.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/chicago-express/game-rules.php",
+      "title": "How to play Chicago Express (Ultra BoardGames)",
+      "type": "other",
+      "section": "End of the game / Final scoring"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

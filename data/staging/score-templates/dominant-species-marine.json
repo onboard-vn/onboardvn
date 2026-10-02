@@ -1,0 +1,83 @@
+{
+  "slug": "dominant-species-marine",
+  "name": "Dominant Species: Marine",
+  "year": 2020,
+  "bggId": 262941,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpTrack",
+      "label": "VP track before final steps",
+      "labelVi": "Điểm trên track (trước tính điểm cuối)",
+      "hint": "VP marker position after the last Extinction and Survival events.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalTileScoring",
+      "label": "Final scoring of every tile",
+      "labelVi": "Điểm chấm lần cuối mọi tile",
+      "hint": "VP gained when each earth tile is scored one last time.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "specialPawns",
+      "label": "Special pawns (target marker spaces)",
+      "labelVi": "Pawn đặc biệt (ô marker mục tiêu)",
+      "hint": "Sum of the target marker spaces of the special pawns you control, e.g. algae 7 + sun 6 = 13.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied animal highest on the food chain wins: Reptiles, then Cephalopods, then Fishes, then Crustaceans."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority-running-track. Game ends when the Asteroid card is played: finish the round, then a last Extinction, a last Survival, special-pawn VP, and a final scoring of every tile. Tile scoring (1st/2nd/3rd place by species count, 4th on Land 1 VP) is tracked during play; enter the final VP-track value. Evolution cards that reverse the food chain (Monotypic Habitat) reverse the tiebreak. 2-player option with two animals each is in the variant file.",
+  "sources": [
+    {
+      "url": "https://gameland.com.ua/content/files/pravila-dominant-species-marine-angl.-14577929.pdf",
+      "title": "Dominant Species: Marine rulebook (GMT Games, 2020)",
+      "type": "official-rulebook",
+      "section": "Endgame p.9; Tile scoring p.16; 2-Player Option & Final Scoring p.22"
+    },
+    {
+      "url": "https://www.gmtgames.com/p-943-dominant-species-marine-2nd-printing.aspx",
+      "title": "GMT Games product page",
+      "type": "publisher-page",
+      "section": "Product overview"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

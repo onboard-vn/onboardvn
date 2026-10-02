@@ -1,0 +1,118 @@
+{
+  "slug": "scout-2019",
+  "name": "Scout",
+  "year": 2019,
+  "bggId": 291453,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "Rounds played = number of players (3-5 players); 2-player game lasts 2 rounds"
+  },
+  "categories": [
+    {
+      "key": "capturedCards",
+      "label": "Captured cards (face-down)",
+      "labelVi": "Bài đã thắng (úp)",
+      "hint": "1 VP per card you took with a Show (the cards you beat)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "scoutTokens",
+      "label": "Scout tokens received",
+      "labelVi": "Token Scout nhận được",
+      "hint": "1 VP per Scout token earned when others scouted from your set (3-5 players)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "appliesWhen": "players >= 3"
+    },
+    {
+      "key": "unspentScoutChips",
+      "label": "Unspent Scout chips (2-player only)",
+      "labelVi": "Chip Scout chưa dùng (2 người)",
+      "hint": "2-player game only: 1 VP per unused chip, max 3",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "appliesWhen": "players == 2"
+    },
+    {
+      "key": "handCards",
+      "label": "Cards left in hand",
+      "labelVi": "Bài còn trên tay",
+      "hint": "-1 VP per card. Enter 0 if you ended the round because everyone else scouted instead of beating your set",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": null,
+      "dir": null,
+      "description": "Share the victory on a tie (per secondary rules summary)."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: climbing-shedding. Fill one score row per round and sum; rounds played = number of players (3-5), 2 rounds for 2 players. Round ends when a player empties their hand or when all other players choose Scout instead of beating your set. Per round: +1 per face-down captured card, +1 per Scout token, -1 per card left in hand (no penalty for the player whose unbeaten Show ended the round). 2-player: no Scout tokens received, +1 per unspent Scout chip (max 3). Scout & Show chips are not points. Official English 3-5 player rulebook text could not be retrieved; the official Oink 2-player sheet states scoring is the same as the 3-5 player game, and 3-5 player details are cross-checked from two rules summaries. Tie rule from a secondary source only.",
+  "sources": [
+    {
+      "url": "https://rozum.com.ua/upload/iblock/7b3/ea8j3g3hpaqebyvb0wpewnxhlu0ui8bx.pdf",
+      "title": "SCOUT: 2 Player Rules (Oink Version)",
+      "type": "official-rulebook",
+      "section": "Scoring bullet: same as 3-5 players plus 1 VP per unspent Scout chip (max 3)"
+    },
+    {
+      "url": "https://happypiranha.com/blogs/board-game-rules/how-to-play-scout-board-game-rules-instructions",
+      "title": "How to Play Scout - Board Game Rules & Instructions",
+      "type": "other",
+      "section": "Round end, scoring, winner/tie"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/291453/scout",
+      "title": "SCOUT - BoardGameGeek",
+      "type": "other",
+      "section": "Game page / rules summaries"
+    },
+    {
+      "url": "https://www.boardgamesbot.com/scout/how-to-play",
+      "title": "SCOUT - How to Play (boardgamesbot)",
+      "type": "other",
+      "section": "Scoring; 2-player chips"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

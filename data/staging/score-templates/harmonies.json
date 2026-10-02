@@ -1,0 +1,209 @@
+{
+  "slug": "harmonies",
+  "name": "Harmonies",
+  "year": 2024,
+  "bggId": 414317,
+  "templateVersion": 1,
+  "variant": "base (Personal board side A or B)",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trees",
+      "label": "Trees",
+      "labelVi": "Cây",
+      "hint": "Count trees by height: green on 0 brown = 1, on 1 brown = 3, on 2 brown = 7. Brown-only stacks score 0.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "height1",
+        "height2",
+        "height3"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "height1 * 1 + height2 * 3 + height3 * 7"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "mountains",
+      "label": "Mountains (adjacent to another mountain)",
+      "labelVi": "Núi (kề núi khác)",
+      "hint": "Gray stacks adjacent to another mountain: height 1 = 1, height 2 = 3, height 3 = 7. Isolated mountain = 0.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "height1",
+        "height2",
+        "height3"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "height1 * 1 + height2 * 3 + height3 * 7"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "fields",
+      "label": "Fields",
+      "labelVi": "Ruộng",
+      "hint": "Each contiguous group of 2+ yellow tokens = 5 points (size doesn't matter).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Buildings",
+      "labelVi": "Nhà",
+      "hint": "5 points per building (red on top of brown/grey/red) with top tokens of at least 3 different colours around it, else 0.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "riverSideA",
+      "label": "Water - River (side A)",
+      "labelVi": "Nước - Sông (mặt A)",
+      "hint": "Length of best river by shortest path. 1:0, 2:2, 3:5, 4:8, 5:11, 6:15, +4 per token beyond 6. Skip if playing side B.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 14,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 2,
+          "3": 5,
+          "4": 8,
+          "5": 11,
+          "6": 15,
+          "7": 19,
+          "8": 23,
+          "9": 27,
+          "10": 31,
+          "11": 35,
+          "12": 39,
+          "13": 43,
+          "14": 47
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "islandsSideB",
+      "label": "Water - Islands (side B)",
+      "labelVi": "Nước - Đảo (mặt B)",
+      "hint": "5 points per island; you always have at least 1. Skip if playing side A.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "animalCards",
+      "label": "Animal cards",
+      "labelVi": "Thẻ động vật",
+      "hint": "Per card (completed or not): value of the topmost space not covered by a cube; a card with all cubes still on it = 0.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "natureSpirit",
+      "label": "Nature's Spirit card",
+      "labelVi": "Thẻ Linh hồn thiên nhiên",
+      "hint": "Only if used and its cube was placed; value per card text, in addition to normal landscape points.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "animalCubesPlaced",
+      "label": "Animal cubes placed on board (tiebreak)",
+      "labelVi": "Số khối động vật đã đặt (phân định hòa)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "animalCubesPlaced",
+      "dir": "highest",
+      "description": "Most Animal cubes placed on the Personal board"
+    },
+    {
+      "description": "If still tied, players share the victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: end-game-categories. Game ends when the pouch cannot refill the Central board or a player ends their turn with 2 or fewer empty spaces; finish the round so turns are equal. Tree, mountain and river point values verified visually in the official rulebook p.8 (Tallying Points); river: 1:0, 2:2, 3:5, 4:8, 5:11, 6:15, +4 per token beyond 6 (table capped at 14 tokens). Nature's Spirit cards (optional) vary per card; their points are scored like Animal cards, in addition to all others. Pokemon Harmonies and solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.svc.asmodee.net/production-libellud/uploads/2024/03/LIBELLUD_HARMONIES_RULES_EN-1.pdf",
+      "title": "Harmonies Game Rules (Libellud)",
+      "type": "official-rulebook",
+      "section": "p.7 End of Game and tiebreak; p.8 Tallying Points (trees, mountains, fields, buildings, river, islands, animal cards); Nature's Spirit cards"
+    },
+    {
+      "url": "https://www.geekyhobbies.com/harmonies-rules/",
+      "title": "Harmonies rules (Geeky Hobbies)",
+      "type": "other",
+      "section": "Scoring (rivers, mountains, fields, buildings)"
+    },
+    {
+      "url": "https://merchantsofplay.com/howtoplay/harmonies/",
+      "title": "How to Play Harmonies (Merchants of Play)",
+      "type": "other",
+      "section": "Scoring (trees, mountains, river table)"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

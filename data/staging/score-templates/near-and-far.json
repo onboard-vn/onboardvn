@@ -1,0 +1,250 @@
+{
+  "slug": "near-and-far",
+  "name": "Near and Far",
+  "year": 2017,
+  "bggId": 195421,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "camps",
+      "label": "Placed camps",
+      "labelVi": "Trại đã đặt",
+      "hint": "1 per camp on the map, mine or a threat card.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tradeRoutes",
+      "label": "Completed trade routes",
+      "labelVi": "Tuyến thương mại hoàn thành",
+      "hint": "Points printed atop the map: larger if you alone own it, smaller if shared. Incomplete route = 0.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "artifacts",
+      "label": "Purchased artifacts",
+      "labelVi": "Cổ vật đã mua",
+      "hint": "Journey points in the top-left corner of each purchased artifact.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "unpurchasedArtifacts",
+      "label": "Unpurchased artifacts in hand",
+      "labelVi": "Cổ vật chưa mua trong tay",
+      "hint": "-1 per artifact card still in hand.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "threats",
+      "label": "Defeated threats",
+      "labelVi": "Mối đe dọa đã hạ",
+      "hint": "Points on top of each threat card you defeated.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cardBonuses",
+      "label": "Other card bonuses",
+      "labelVi": "Điểm thưởng từ thẻ khác",
+      "hint": "Bonus conditions printed on artifact/treasure/world cards, plus talents (e.g. Storytelling +2 for highest reputation).",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "coinsGems",
+      "label": "Coins and gems owned",
+      "labelVi": "Tổng xu và đá quý",
+      "hint": "1 point per 2 coins/gems (round down).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "factionTokens",
+      "label": "Unused faction tokens",
+      "labelVi": "Thẻ phe chưa dùng",
+      "hint": "1 per unused faction token.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "chiefs",
+      "label": "Chiefs owned",
+      "labelVi": "Thủ lĩnh sở hữu",
+      "hint": "5 per chief card.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "reputationPoints",
+      "label": "Reputation track position",
+      "labelVi": "Danh tiếng (vị trí trên thang)",
+      "hint": "Reputation at game end: 4-5=2, 6-7=3, 8-9=4, continuing +1 per 2 (track max 12). Below 4 not stated = 0. Only one value counts.",
+      "scope": "player",
+      "input": "number",
+      "min": -6,
+      "max": 12,
+      "formula": {
+        "type": "expr",
+        "expr": "value>=4 ? floor(value/2) : 0"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "noCampsBonus",
+      "label": "All camps removed from player board",
+      "labelVi": "Dùng hết trại trên bảng người chơi",
+      "hint": "+2 if you removed all your camps from the player board.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "threeTreasures",
+      "label": "Own 3 treasure cards",
+      "labelVi": "Sở hữu 3 thẻ kho báu",
+      "hint": "+5 if you own 3 treasure cards at game end (a treasure kept aside without pack bird via Scrounging does not count).",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "reputationTiebreak",
+      "label": "Reputation (tiebreak)",
+      "labelVi": "Danh tiếng (phân định hòa)",
+      "scope": "player",
+      "input": "number",
+      "min": -6,
+      "max": 12,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "coinsGemsTiebreak",
+      "label": "Coins and gems (tiebreak)",
+      "labelVi": "Xu và đá quý (phân định hòa)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "reputationTiebreak",
+      "dir": "highest",
+      "description": "Highest reputation (unless a card power says otherwise)"
+    },
+    {
+      "categoryKey": "coinsGemsTiebreak",
+      "dir": "highest",
+      "description": "Most coins/gems"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: end-game-categories. Verified vs official rulebook printed p.28. Game end triggers when a player places their 14th camp; finish the round. Reputation track: only 4-5=2, 6-7=3, 8-9=4 'etc.' are printed; 10-12 follow the pattern and values below 4 are treated as 0 (not stated). Advanced Town (Day) board only: reputation -3/-4 = -1, -5/-6 = -2 (not modelled in base). Tie: highest reputation (a card power overrides), then most coins/gems. Campaign, Character and solo modes only sum per-game scores; not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/12/41/40-near-and-far-rulebook.pdf",
+      "title": "Near and Far Rulebook (Red Raven Games)",
+      "type": "official-rulebook",
+      "section": "printed p.28 Game End (journey points, tiebreakers); p.36 Advanced Town reputation penalty"
+    },
+    {
+      "url": "https://boardgamegeek.com/boardgame/195421/near-and-far",
+      "title": "Near and Far (BGG)",
+      "type": "other",
+      "section": "Game page"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

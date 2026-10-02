@@ -1,0 +1,80 @@
+{
+  "slug": "age-of-steam-deluxe-2019",
+  "name": "Age of Steam: Deluxe",
+  "year": 2019,
+  "bggId": 4098,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "income",
+      "label": "Income track level",
+      "labelVi": "Mức thu nhập",
+      "hint": "3 VP per income level at the end of the last turn.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 60,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "trackSections",
+      "label": "Track sections in completed links",
+      "labelVi": "Đoạn đường ray trong tuyến hoàn chỉnh",
+      "hint": "1 VP per section of completed link (between track tiles and between cities/towns).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "sharesIssued",
+      "label": "Shares issued",
+      "labelVi": "Cổ phiếu đã phát hành",
+      "hint": "-3 VP per share on the Issued Share Track (max 15).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 15,
+      "formula": {
+        "type": "multiply",
+        "points": -3
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tie rule not verified; victory treated as shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: auction-money. Game length depends on player count (Turn Track). Money has no value at the end. A player whose income would drop below 0 is eliminated and cannot win; score only surviving players. Tiebreaker not confirmed (rules reference Ill. 17). Official rulebook PDF not retrievable; verified against a rules transcription only.",
+  "sources": [
+    {
+      "url": "https://www.ultraboardgames.com/age-of-steam/game-rules.php",
+      "title": "Age of Steam rules (UltraBoardGames)",
+      "type": "other",
+      "section": "Victory Point Computations; Pay Expenses"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

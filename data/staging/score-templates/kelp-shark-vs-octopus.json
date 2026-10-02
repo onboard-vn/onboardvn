@@ -1,0 +1,102 @@
+{
+  "slug": "kelp-shark-vs-octopus",
+  "name": "Kelp: Shark vs Octopus",
+  "year": 2023,
+  "bggId": 374595,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "asymmetric",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "sharkWon",
+      "label": "Shark won (successful attack)",
+      "labelVi": "Cá mập thắng",
+      "hint": "Check if the shark's attack succeeds",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "octopusWon",
+      "label": "Octopus won (survived or ate all 4 seafoods)",
+      "labelVi": "Bạch tuộc thắng",
+      "hint": "Octopus survives until the shark is exhausted, or eats all four seafoods",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: asymmetric hidden-movement duel. No points. Per official FAQ (Wonderbow): a Shark attack succeeds when the Shark's chosen confrontation card matches the Octopus's (with one pair left, Shark wins automatically); the Shark loses immediately if the Hunger Track fills (e.g. no red die left and only one free slot). Octopus also wins by eating all four seafoods. Not verified against the rulebook itself (PDF not obtainable; Scribd copies blocked): exact Hunger Track size (reviews say 7 or 8 dice) and number of confrontation card pairs (reviews say three pairs, removed after each failed attack). One review states the attack succeeds if cards differ; the official FAQ wording says match, which is used here.",
+  "winCondition": "Shark: successfully attack the Octopus. Octopus: survive until the Shark is exhausted, or eat all four seafoods.",
+  "sources": [
+    {
+      "url": "https://wonderbowgames.com/blogs/rules/kelp",
+      "title": "Kelp Rules Clarifications & FAQ (Wonderbow, rulebook v1.3 FAQ)",
+      "type": "publisher-page",
+      "section": "Shark: Hostile / last confrontation pair; Hunger Track loss"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/kelp/",
+      "title": "Kelp Game Review (Meeple Mountain)",
+      "type": "other",
+      "section": "Win conditions and confrontation"
+    },
+    {
+      "url": "https://bigbossbattle.com/kelp-review/",
+      "title": "Kelp Board Game Review (Big Boss Battle)",
+      "type": "other",
+      "section": "Win conditions (Octopus four foods; shark fatigue)"
+    },
+    {
+      "url": "https://board-game-rules.com/boardgames/kelp-shark-vs-octopus/",
+      "title": "Kelp: Shark vs Octopus rules",
+      "type": "other",
+      "section": "Win conditions"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "roles": [
+    {
+      "key": "shark",
+      "label": "Shark",
+      "labelVi": "Cá mập",
+      "winCondition": "Win a confrontation: the Shark's chosen confrontation card matches the Octopus's.",
+      "categoryKeys": [
+        "sharkWon"
+      ]
+    },
+    {
+      "key": "octopus",
+      "label": "Octopus",
+      "labelVi": "Bạch tuộc",
+      "winCondition": "Shark's Hunger Track fills (exhausted), or all four seafood eaten.",
+      "categoryKeys": [
+        "octopusWon"
+      ]
+    }
+  ],
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Ends immediately on a successful Shark attack, Shark exhaustion (Hunger Track full), or Octopus eating all four seafoods."
+  },
+  "outcome": {
+    "winLose": true
+  }
+}

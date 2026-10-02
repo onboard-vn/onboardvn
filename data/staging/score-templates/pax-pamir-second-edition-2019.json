@@ -1,0 +1,90 @@
+{
+  "slug": "pax-pamir-second-edition-2019",
+  "name": "Pax Pamir: Second Edition",
+  "year": 2019,
+  "bggId": 256960,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "victoryPoints",
+      "label": "Victory points on VP track",
+      "labelVi": "Điểm chiến thắng trên track",
+      "hint": "Total from Dominance Checks; final Dominance Check points are doubled.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "militaryStars",
+      "label": "Military (red) stars in court (tiebreak)",
+      "labelVi": "Sao quân sự trong court (phân định hòa)",
+      "hint": "Count red stars on your court cards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "rupees",
+      "label": "Rupees (tiebreak)",
+      "labelVi": "Rupee còn lại (phân định hòa)",
+      "hint": "Second tiebreak.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "militaryStars",
+      "dir": "highest",
+      "description": "Most red (military) stars in court, among tied players"
+    },
+    {
+      "categoryKey": "rupees",
+      "dir": "highest",
+      "description": "Most rupees"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Game ends early if after any Dominance Check one player leads by 4+ VP; otherwise after the final Dominance Check the player with most VP wins.",
+  "notes": "family: auction-money (VP-track / dominance-check). VP are only gained at Dominance Checks: unsuccessful check = most cylinders in play 3 VP, second 1 VP; successful check = loyal players by influence 5/3/1 VP; ties split sum rounded down; final check doubled. Track is entered as final VP. Wakhan solo/automa not modelled. Rulebook text via RulesPal summary, not original PDF (needsReview).",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/pax-pamir-second-edition/rulebook",
+      "title": "Pax Pamir Second Edition rulebook (RulesPal)",
+      "type": "other",
+      "section": "Dominance Checks; Game End and Victory"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "endCondition": {
+    "type": "objective",
+    "target": 4,
+    "description": "Ends after a Dominance Check if leader has 4+ VP lead, or after the final Dominance Check."
+  }
+}

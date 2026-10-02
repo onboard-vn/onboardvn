@@ -1,0 +1,109 @@
+{
+  "slug": "magical-athlete-2025",
+  "name": "Magical Athlete",
+  "year": 2025,
+  "bggId": 454103,
+  "templateVersion": 1,
+  "variant": "base (4 races: Pepere, Galere, Pepere, Galere)",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Game ends when the 4th race is finished"
+  },
+  "categories": [
+    {
+      "key": "goldTrophies",
+      "label": "Gold trophies (1st place)",
+      "labelVi": "Cúp vàng (về nhất)",
+      "hint": "One entry per gold trophy won: the points printed on the chip (value rises with later races).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "silverMedals",
+      "label": "Silver medals (2nd place)",
+      "labelVi": "Huy chương bạc (về nhì)",
+      "hint": "One entry per silver medal won: the points printed on the chip.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bronze1",
+      "label": "Bronze 1-point stars",
+      "labelVi": "Sao đồng 1 điểm",
+      "hint": "Earned through athlete abilities / Star spaces.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bronze3",
+      "label": "Bronze 3-point stars",
+      "labelVi": "Sao đồng 3 điểm",
+      "hint": "A 3-point star can stand in for three 1-point stars.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker: tied players celebrate a shared victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: race-to-goal. Verified against the official IELLO rulebook: 4 races; the race ends the moment the 2nd athlete crosses the line (1st takes the top gold trophy of the stack, 2nd the top silver medal); bronze 1-point and 3-point star chips come from athlete powers and Star spaces (a 3-point chip substitutes for three 1-point chips); after race 4 the player with most points wins, ties are a shared win. Gold/silver chip values are printed on the chips and rise with each race, so the scorer enters each chip value. If athlete eliminations leave no 2nd place the silver medal is discarded. 2-player and 3-player variants (each player fields 2 athletes per race, 8-athlete teams) use the same scoring. A different track programme may be agreed before play. Not the 2002 Magical Athlete.",
+  "sources": [
+    {
+      "url": "https://iello.fr/wp-content/uploads/2026/02/Magical-Athlete_Rulebook_FR_Light.pdf",
+      "title": "Magical Athlete rulebook (FR, IELLO)",
+      "type": "official-rulebook",
+      "section": "p.14 (race ends when 2nd athlete finishes); p.18 After the race (gold/silver pickup); p.19 Decompte final (final scoring, tie = shared victory); p.26 two-player variant"
+    },
+    {
+      "url": "https://opinionatedgamers.com/2025/11/11/dale-yu-review-of-magical-athlete/",
+      "title": "Opinionated Gamers review of Magical Athlete",
+      "type": "other",
+      "section": "4 races; most points wins; no tiebreaker"
+    },
+    {
+      "url": "https://playerelimination.com/2025/09/16/going-the-distance-a-magical-athlete-review/",
+      "title": "Player Elimination review (chip values printed, escalate by race)",
+      "type": "other",
+      "section": "Points tokens"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

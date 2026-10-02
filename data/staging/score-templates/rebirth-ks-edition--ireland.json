@@ -1,0 +1,102 @@
+{
+  "slug": "rebirth-ks-edition--ireland",
+  "name": "Rebirth KS edition",
+  "year": 2024,
+  "bggId": 417197,
+  "templateVersion": 1,
+  "variant": "Ireland (advanced)",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track total before final scoring",
+      "labelVi": "Điểm trên track trước khi tính cuối game",
+      "hint": "Farms, settlements (incl. 4-space Sprawling 12/8/5), offshore farms, castles, public missions and tower bonuses scored during play.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incompleteSettlementInfluence",
+      "label": "Incomplete settlements: influence",
+      "labelVi": "Khu định cư chưa hoàn chỉnh: ảnh hưởng",
+      "hint": "Each Settlement Tile in an unfilled settlement scores its own Influence.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "castlesControlled",
+      "label": "Castles controlled",
+      "labelVi": "Lâu đài đang kiểm soát",
+      "hint": "5 points per Castle you control at the end.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "privateMissions",
+      "label": "Private Missions completed",
+      "labelVi": "Nhiệm vụ riêng hoàn thành",
+      "hint": "Cards from the Draw-a-Public-Mission tower: score the higher printed value for each one whose condition you meet.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Player controlling Blarney Castle wins."
+    },
+    {
+      "description": "Else the player(s) occupying the most spaces adjacent to the Hill of Tara Round Tower win, even if not tied for first; a tie there shares victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority. Ireland side; Public Mission points (first completer higher, later lower; Doubling Marker x2) are scored during play and included in trackScore. Mission Card values printed on cards.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/rebirth.pdf",
+      "title": "Rebirth rulebook v1.1 (Mighty Boards) - Ireland",
+      "type": "official-rulebook",
+      "section": "Ireland pp.5-8: Sprawling settlements, Public Missions, Final scoring, tiebreak"
+    },
+    {
+      "url": "https://www.rulespal.com/rebirth/rulebook",
+      "title": "Rebirth rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Ireland advanced mode"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,156 @@
+{
+  "slug": "mombasa-2015",
+  "name": "Mombasa",
+  "year": 2015,
+  "bggId": 172386,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 7,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the General action phase of round 7, then final scoring"
+  },
+  "categories": [
+    {
+      "key": "cash",
+      "label": "Cash on hand (pounds)",
+      "labelVi": "Tiền mặt (pound)",
+      "hint": "Total pounds of actual coins in front of you.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "mombasaShares",
+      "label": "Mombasa company shares",
+      "labelVi": "Cổ phần công ty Mombasa",
+      "hint": "shares = last share icon reached on its track + share icons on your cards; coinIcons = uncovered coin icons in that company's base (same for all players).",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "shares * coinIcons"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "shares",
+        "coinIcons"
+      ],
+      "min": 0
+    },
+    {
+      "key": "capeTownShares",
+      "label": "Cape Town company shares",
+      "labelVi": "Cổ phần công ty Cape Town",
+      "hint": "shares = last share icon reached on its track + share icons on your cards; coinIcons = uncovered coin icons in that company's base (same for all players).",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "shares * coinIcons"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "shares",
+        "coinIcons"
+      ],
+      "min": 0
+    },
+    {
+      "key": "saintLouisShares",
+      "label": "Saint-Louis company shares",
+      "labelVi": "Cổ phần công ty Saint-Louis",
+      "hint": "shares = last share icon reached on its track + share icons on your cards; coinIcons = uncovered coin icons in that company's base (same for all players).",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "shares * coinIcons"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "shares",
+        "coinIcons"
+      ],
+      "min": 0
+    },
+    {
+      "key": "cairoShares",
+      "label": "Cairo company shares",
+      "labelVi": "Cổ phần công ty Cairo",
+      "hint": "shares = last share icon reached on its track + share icons on your cards; coinIcons = uncovered coin icons in that company's base (same for all players).",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "shares * coinIcons"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "shares",
+        "coinIcons"
+      ],
+      "min": 0
+    },
+    {
+      "key": "diamondTrack",
+      "label": "Diamond track (last value passed)",
+      "labelVi": "Đường kim cương (giá trị đã qua)",
+      "hint": "Last printed value your diamond marker has passed; 0 if not advanced far enough.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "bookkeepingTrack",
+      "label": "Bookkeeping track (last value passed)",
+      "labelVi": "Đường sổ sách (giá trị đã qua)",
+      "hint": "Last printed value your ink jar marker has passed; book tiles themselves are worth nothing.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No tiebreaker; in case of a tie the victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: area-majority (stock/share valuation). Final score is all money: cash + 4 company share values + diamond value + bookkeeping value (7 categories). Before scoring, pick up resting decks and sort cards with a bottom-left share icon (including 8 single-share cards). Printed track values are on the player board, so entered as numbers. Unused markers score nothing. Bonus markers/tiles carry no points.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/45/00/09-mombasa-rulebook.pdf",
+      "title": "Mombasa rulebook (eggertspiele/Pegasus) EN",
+      "type": "official-rulebook",
+      "section": "p.3 Object of the game; p.10 End of the game"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/mombasa/game-rules.php",
+      "title": "Mombasa rules (Ultra Board Games)",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

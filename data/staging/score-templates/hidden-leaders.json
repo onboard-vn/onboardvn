@@ -1,0 +1,100 @@
+{
+  "slug": "hidden-leaders",
+  "name": "Hidden Leaders",
+  "bggId": 320718,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won",
+      "labelVi": "Chiến thắng",
+      "hint": "Mark only after resolving the stated victory conditions.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "winningHeroes",
+      "label": "Heroes of winning faction",
+      "labelVi": "Anh hùng thuộc phe thắng",
+      "hint": "Count face-up and hidden heroes; only aligned leaders are eligible.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "partySize",
+      "label": "Total heroes",
+      "labelVi": "Tổng anh hùng",
+      "hint": "Include hidden heroes.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "leaderNumber",
+      "label": "Leader number",
+      "labelVi": "Số trên lá thủ lĩnh",
+      "hint": "Bottom-right printed number.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/8e/d0/63-hidden-leaders-rulebook.pdf",
+      "title": "BFF Hidden Leaders rulebook",
+      "type": "official-rulebook",
+      "section": "Printed pp.10–13: Game End; Determining the Winner; Resolving ties"
+    },
+    {
+      "url": "https://www.bff-games.com/gameplay",
+      "title": "BFF gameplay",
+      "type": "publisher-page",
+      "section": "Faction victory and leaders"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "notes": "family: hidden-role-social. No VP score. Schema cannot filter candidates by faction; resolve eligibility manually before marking won. Base full game; expansions excluded.",
+  "winCondition": "Determine faction in priority order: Undead if both markers in war area; otherwise Water Folk if same or adjacent spaces; otherwise Empire if red leads by at least two, else Tribes. Only leaders aligned with that faction can win; no aligned leader means no winner.",
+  "tiebreakers": [
+    {
+      "categoryKey": "winningHeroes",
+      "dir": "highest",
+      "description": "Among eligible leaders: most heroes of winning faction."
+    },
+    {
+      "categoryKey": "partySize",
+      "dir": "lowest",
+      "description": "Then fewest total heroes."
+    },
+    {
+      "categoryKey": "leaderNumber",
+      "dir": "highest",
+      "description": "Then highest leader number."
+    }
+  ],
+  "sharedVictoryOnTie": false
+}

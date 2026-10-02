@@ -1,0 +1,167 @@
+{
+  "slug": "rococo-deluxe-edition",
+  "name": "Rococo: Deluxe Edition",
+  "year": 2020,
+  "bggId": 296100,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": 7,
+    "aggregate": "sum",
+    "endCondition": "Game ends after Collect Income of round 7"
+  },
+  "categories": [
+    {
+      "key": "trackPrestige",
+      "label": "Prestige gained during play",
+      "labelVi": "Điểm uy tín trên track",
+      "hint": "Prestige counter position on the track before final scoring.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "livreRaw",
+      "label": "Remaining Livre (also tiebreaker)",
+      "labelVi": "Livre còn lại",
+      "hint": "Raw Livre left; converted below, kept as tiebreaker.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0
+    },
+    {
+      "key": "livrePrestige",
+      "label": "Livre converted to prestige",
+      "labelVi": "Đổi Livre thành điểm",
+      "hint": "1 prestige per 10 Livre discarded.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(cat_livreRaw / 10)"
+      },
+      "countsToTotal": true,
+      "appliesWhen": null
+    },
+    {
+      "key": "employeeBonuses",
+      "label": "Employee end-game bonuses",
+      "labelVi": "Thưởng nhân viên cuối game",
+      "hint": "Sum of prestige from crown (blue velvet) Employee cards.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "queensFavor",
+      "label": "Queen's Favor token",
+      "labelVi": "Thẻ Queen's Favor",
+      "hint": "3 prestige if you hold it.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true,
+      "min": null
+    },
+    {
+      "key": "hallMajority",
+      "label": "Hall majorities",
+      "labelVi": "Đa số các sảnh",
+      "hint": "Sum of 1st/2nd-place points over the 5 Halls (2 players: 1st only).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "fireworksMajority",
+      "label": "Fireworks majority",
+      "labelVi": "Đa số pháo hoa",
+      "hint": "Most Fireworks Decorations: 7/6 pts, second 3/2 pts by board side (2 players: 1st only).",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "statues",
+      "label": "Statues",
+      "labelVi": "Tượng",
+      "hint": "2 pts per different Garment colour (max 4) per Statue token; Garments cannot be reused across Statues.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "trademarks",
+      "label": "Trademark tokens scoring",
+      "labelVi": "Điểm token thương hiệu",
+      "hint": "Points printed on spaces with your Trademark tokens (Garments, Decorations, All Halls bonus); Fireworks Garments x2/x3.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "livreRaw",
+      "dir": "highest",
+      "description": "Most remaining Livre"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. Step order: 1 Livre conversion, 2 Employee bonuses + Queen's Favor, 3 Hall majorities (ties: most Garments on Master Guest spaces, then musician Decoration; unresolved tie = all full), 4 Fireworks majority, 5 assign Garments to Fireworks, 6 Statues, 7 Trademark tokens. Hall/Fireworks/Trademark values are printed on the board so entered as totals. Jewelry Box expansion bonuses can be added to employeeBonuses. Rulebook uses 'Prestige Points'.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/9a/a7/c2-rococo-deluxe-rulebook.pdf",
+      "title": "Rococo: Deluxe Rulebook (Eagle-Gryphon)",
+      "type": "official-rulebook",
+      "section": "p.11 End of Game Scoring; p.12 Employee Bonuses"
+    },
+    {
+      "url": "https://officialgamerules.org/game-rules/rococo-rules/",
+      "title": "Rococo rules summary",
+      "type": "other",
+      "section": "Final scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

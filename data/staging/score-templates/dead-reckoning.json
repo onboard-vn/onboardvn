@@ -1,0 +1,201 @@
+{
+  "slug": "dead-reckoning",
+  "name": "Dead Reckoning",
+  "year": 2021,
+  "bggId": 276182,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "achievements",
+      "label": "Achievements (coin value on Harbor board)",
+      "labelVi": "Thành tựu (giá trị coin trên bảng Harbor)",
+      "hint": "Sum of the coin values printed on the Harbor spaces where your Achievement markers sit.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "treasureCoins",
+      "label": "Coins in Treasure chest",
+      "labelVi": "Coin trong rương kho báu",
+      "hint": "All coins in your Treasure chest.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "shipCoins",
+      "label": "Coins on Ship",
+      "labelVi": "Coin trên tàu",
+      "hint": "All coins on your Ship board.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "islandCoins",
+      "label": "Coins on controlled islands",
+      "labelVi": "Coin trên đảo đang kiểm soát",
+      "hint": "Coins on islands you control.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "buildings",
+      "label": "Buildings on controlled islands",
+      "labelVi": "Công trình trên đảo kiểm soát",
+      "hint": "1 coin per Building on islands you control.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "basicUpgrades",
+      "label": "Basic Ship Upgrades",
+      "labelVi": "Nâng cấp tàu cơ bản",
+      "hint": "1 coin each; covered upgrades still count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "advancedUpgrades",
+      "label": "Advanced Ship Upgrades",
+      "labelVi": "Nâng cấp tàu nâng cao",
+      "hint": "2 coins each; covered upgrades still count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endGameAdvancements",
+      "label": "End-of-game Advancement effects",
+      "labelVi": "Hiệu ứng Advancement cuối game",
+      "hint": "Total coins from purple-border end-of-game abilities on your Advancements.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "advancements",
+      "label": "Advancements owned",
+      "labelVi": "Số Advancement sở hữu",
+      "hint": "1 coin per 2 Advancements (on cards or set aside), rounded down.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "islands",
+      "label": "Island influence majorities",
+      "labelVi": "Ảnh hưởng trên các đảo",
+      "hint": "One entry per island: coins by rank of your cubes (1st=larger number on ocean board, 2nd=second, 3rd where shown). Empty cube spaces count as a rival; ties take next value down, tie for 3rd scores 0.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "bonusTokenAchievements",
+      "label": "Bonus Achievement token matches",
+      "labelVi": "Khớp token thành tựu thưởng",
+      "hint": "Optional rule: 2 coins per completed Achievement shown on your revealed bonus token.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true,
+      "optional": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied players count Cannons on Ship and all deck cards, drop that many cubes into the Battle Ship (no Battle abilities); most Battle strength wins, repeat if still tied."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: engine-building-end-bonuses. Game ends after a player holds 4+ Achievement markers; each other player takes one last turn. Achievement coin values and island rank values are printed on components (not readable from rulebook text), so they are scorer inputs. Pirate/Privateer/Merchant/Explorer strategies score identically. Solo rules and expansions not modelled.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/deadreckoning.pdf",
+      "title": "Dead Reckoning rulebook (AEG, 2023 revised)",
+      "type": "official-rulebook",
+      "section": "pp.22-23 Game End & Scoring; Bonus Achievement tokens"
+    },
+    {
+      "url": "https://www.alderac.com/2022/04/08/dead-reckoning-faq/",
+      "title": "Dead Reckoning FAQ (AEG)",
+      "type": "publisher-page",
+      "section": "Scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

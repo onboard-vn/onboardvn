@@ -1,0 +1,137 @@
+{
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "confidence": "medium",
+  "needsReview": true,
+  "slug": "abyss",
+  "name": "Abyss",
+  "year": 2014,
+  "bggId": 155987,
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "categories": [
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "locations",
+      "label": "Controlled Locations",
+      "labelVi": "Địa điểm kiểm soát",
+      "hint": "Sum of Location IP incl. bonuses (e.g. per Lord of a faction)",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "lords",
+      "label": "Recruited Lords",
+      "labelVi": "Lãnh chúa",
+      "hint": "Sum of IP on recruited Lords (Assassin-disabled Lords excluded)",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "allies",
+      "label": "Affiliated Allies (best per Race)",
+      "labelVi": "Đồng minh",
+      "hint": "After affiliating the lowest Ally of each Race in hand, count only the highest-value affiliated Ally of each Race",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": true,
+      "min": 0,
+      "max": null,
+      "key": "monsters",
+      "label": "Monster tokens",
+      "labelVi": "Thẻ quái vật",
+      "hint": "Sum of IP on Monster tokens (2-4 each)",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": false,
+      "min": 0,
+      "max": null,
+      "key": "pearls",
+      "label": "Pearls (tiebreak)",
+      "labelVi": "Ngọc trai (phân định hòa)",
+      "hint": "Count only for tiebreak",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      }
+    },
+    {
+      "scope": "player",
+      "countsToTotal": false,
+      "min": 0,
+      "max": null,
+      "key": "topLord",
+      "label": "Highest Lord value (tiebreak)",
+      "labelVi": "Lãnh chúa giá trị cao nhất",
+      "hint": "Second tiebreak",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      }
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "pearls",
+      "dir": "highest",
+      "description": "Most Pearls"
+    },
+    {
+      "categoryKey": "topLord",
+      "dir": "highest",
+      "description": "Highest-value Lord"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "objective",
+    "target": 7,
+    "description": "A player recruits their 7th Lord, or the Court cannot be refilled; other players take one last turn"
+  },
+  "notes": "family: auction-money. Not verified against the official rulebook PDF. Unaffiliated Allies, Council cards, Keys and Threat tokens do not score.",
+  "sources": [
+    {
+      "url": "https://www.rulespal.com/abyss/rulebook",
+      "title": "Rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End of game / scoring"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/abyss/game-rules.php",
+      "title": "Abyss rules (UltraBoardGames)",
+      "type": "other",
+      "section": "End game scoring"
+    }
+  ]
+}

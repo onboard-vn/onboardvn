@@ -1,0 +1,134 @@
+{
+  "slug": "nippon-zaibatsu",
+  "name": "Nippon: Zaibatsu",
+  "year": 2025,
+  "bggId": 434367,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpDuringGame",
+      "label": "VP earned during the game (score track)",
+      "labelVi": "Điểm đã có trên track (gồm chấm điểm Ảnh hưởng)",
+      "hint": "Everything on the score track after the 3 Influence Scorings; add the 100/200/300 disc if used.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "objTracks",
+      "label": "Personal objectives: Ships, Machines, Trains, R&D, Mining, Finance",
+      "labelVi": "Mục tiêu cá nhân: Tàu, Máy, Tàu hỏa, R&D, Khai khoáng, Tài chính",
+      "hint": "Per Favor token whose track threshold is reached: lower threshold 5/8/10 VP for level 1/2/3, higher threshold 10/16/20. Enter how many tokens by level and threshold, summed over all 6 tracks.",
+      "scope": "player",
+      "input": "counts",
+      "formula": {
+        "type": "expr",
+        "expr": "lvl1Lower*5+lvl2Lower*8+lvl3Lower*10+lvl1Higher*10+lvl2Higher*16+lvl3Higher*20"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "lvl1Lower",
+        "lvl2Lower",
+        "lvl3Lower",
+        "lvl1Higher",
+        "lvl2Higher",
+        "lvl3Higher"
+      ]
+    },
+    {
+      "key": "objFactories",
+      "label": "Personal objective: Factories",
+      "labelVi": "Mục tiêu cá nhân: Nhà máy",
+      "hint": "VP shown beside your rightmost built Factory, in the column of your Favor token's level (1st/2nd/3rd value). Read from the board.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "objContracts",
+      "label": "Personal objective: Contracts",
+      "labelVi": "Mục tiêu cá nhân: Hợp đồng",
+      "hint": "VP shown beside your rightmost fulfilled Contract, in the column of your Favor token's level. Read from the board.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "goodsResources",
+      "label": "Resources and goods in total",
+      "labelVi": "Tổng tài nguyên và hàng hóa",
+      "hint": "1 VP per 3 resource/goods tokens you have in total.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/3)"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "moneyLeft",
+      "label": "Money (in units of 1000)",
+      "labelVi": "Tiền (đơn vị 1000)",
+      "hint": "1 VP per 5 units of money (a 5000 coin counts 5, a 1000 coin counts 1).",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "The tied player who took their turn later (later in turn order) wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: end-game-categories (area-majority Influence scoring happens 3 times during play and lands on the score track). Final Scoring order: personal objectives, then resources/goods/money. Money unit (1 VP per 5 of the money symbol) read from the rulebook example (two 5000 coins and one 1000 coin = 2 VP); confirm in play. Objective thresholds/values depend on the printed player-board spaces, hence scorer inputs. Solo/2-player automa and Late-Game Factories module not modelled.",
+  "sources": [
+    {
+      "url": "https://bghub.org/r/nipponzaibatsu.pdf",
+      "title": "Nippon: Zaibatsu rulebook",
+      "type": "official-rulebook",
+      "section": "p.19 End of the Game: Final Consolidation, Final Scoring, tie; p.18 Influence Scoring"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/299924/nippon-zaibatsu-rulebook-emperors-edition-english",
+      "title": "Nippon: Zaibatsu rulebook, Emperor's Edition (BGG)",
+      "type": "bgg-file",
+      "section": "Final scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

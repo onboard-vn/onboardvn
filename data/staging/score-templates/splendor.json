@@ -1,0 +1,79 @@
+{
+  "slug": "splendor",
+  "name": "Splendor",
+  "bggId": 148228,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "categories": [
+    {
+      "key": "cards",
+      "label": "Development prestige",
+      "labelVi": "Điểm uy tín lá phát triển",
+      "hint": "Purchased cards only.",
+      "scope": "player",
+      "input": "repeating",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "nobles",
+      "label": "Nobles",
+      "labelVi": "Quý tộc",
+      "hint": "Acquired nobles.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "purchased",
+      "label": "Purchased card count",
+      "labelVi": "Số lá đã mua",
+      "hint": "Include zero-point cards; exclude reservations and nobles.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://cdn.svc.asmodee.net/production-asmodeeca/uploads/2022/01/SCSPL01EN_SPLENDOR_RULES_LIGHT.pdf",
+      "title": "Space Cowboys Splendor rules",
+      "type": "official-rulebook",
+      "section": "p.2 End of the Game"
+    },
+    {
+      "url": "https://rules.dized.com/game/vdDSzuu4RsC8F45PsW0TKw/NP72vppMSnqcOjhELHwIQQ/what-happens-in-a-tie",
+      "title": "Dized Splendor",
+      "type": "other",
+      "section": "Tie resolution"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "notes": "family: race-to-goal. Reaching 15 triggers completion of the round, not instant victory. Tokens and reservations have no prestige. Expansions and Duel excluded.",
+  "winCondition": "At least 15 prestige at end of a turn triggers finishing the round so everyone has equal turns; highest final prestige wins.",
+  "tiebreakers": [
+    {
+      "categoryKey": "purchased",
+      "dir": "lowest",
+      "description": "Fewest purchased development cards; then shared victory."
+    }
+  ],
+  "sharedVictoryOnTie": true
+}

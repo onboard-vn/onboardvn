@@ -1,0 +1,78 @@
+{
+  "slug": "zoo-vadis",
+  "name": "Zoo Vadis",
+  "bggId": 368061,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 3,
+    "max": 7
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "end-game-categories",
+  "categories": [
+    {
+      "key": "laurels",
+      "label": "Laurels",
+      "labelVi": "Vòng nguyệt quế",
+      "hint": "Sum token values, not token count.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "starExhibit",
+      "label": "Reached Star Exhibit",
+      "labelVi": "Đã vào khu ngôi sao",
+      "hint": "Eligibility flag; players without an animal there cannot win.",
+      "scope": "player",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "arrival",
+      "label": "First Star Exhibit space",
+      "labelVi": "Ô ngôi sao đầu tiên",
+      "hint": "Smallest numbered space occupied by your species; only eligible players.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://kapiteinspel.nl/wp-content/uploads/2025/02/Zoo-Vadis-rulebook-EN.pdf",
+      "title": "Bitewing official rulebook",
+      "type": "official-rulebook",
+      "section": "p.10 Ending and Winning the Game"
+    },
+    {
+      "url": "https://www.rulespal.com/zoo-vadis/rulebook",
+      "title": "Zoo Vadis transcription",
+      "type": "other",
+      "section": "Ending and Winning the Game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "notes": "family: negotiation-points. Schema has no eligibility filter. Compare laurels only among players with starExhibit=true; do not award victory from an unfiltered total. If none qualified, no winner. Game ends when Star Exhibit fills.",
+  "winCondition": "Among species with at least one animal in Star Exhibit, most laurels wins; tied species that entered first wins.",
+  "tiebreakers": [
+    {
+      "categoryKey": "arrival",
+      "dir": "lowest",
+      "description": "Earliest arrival among tied eligible species."
+    }
+  ],
+  "sharedVictoryOnTie": false
+}

@@ -1,0 +1,145 @@
+{
+  "slug": "the-red-cathedral",
+  "name": "The Red Cathedral",
+  "year": 2020,
+  "bggId": 227224,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "prestigeTrack",
+      "label": "Prestige Points on the track after final rounding down",
+      "labelVi": "Điểm Prestige trên track (sau khi lùi về ô Prestige gần nhất)",
+      "hint": "Move your counter back to the closest lower Prestige space (if not already on one); +40 side if past 40. Include the +3 for completing your 6th section.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "returnedResources",
+      "label": "Materials + Rubles returned to supply",
+      "labelVi": "Vật liệu + Rúp trả về kho",
+      "hint": "1 Prestige Point per 5 returned.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "towerPoints",
+      "label": "Total points from tower majorities (6 towers)",
+      "labelVi": "Tổng điểm đa số của 6 tháp",
+      "hint": "Tower value = 2 per completed section + 1 per ornamentation. Rank by banners+ornamentations on completed cards: 1st full value, 2nd half (round down), 3rd half of that... Ties split the pooled points. 2 players: leader all, other one third (round down); tied = 0 each.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "completedSections",
+      "label": "Completed Cathedral sections",
+      "labelVi": "Số phần Nhà thờ đã hoàn thành",
+      "hint": "Tiebreaker only.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "ornamentations",
+      "label": "Ornamentations placed",
+      "labelVi": "Số trang trí đã đặt",
+      "hint": "Tiebreaker only.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "completedSections",
+      "dir": "highest",
+      "description": "Most completed Cathedral sections"
+    },
+    {
+      "categoryKey": "ornamentations",
+      "dir": "highest",
+      "description": "Most ornamentations placed"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Game ends when a player completes their sixth Cathedral section (+3 prestige); others get one final turn"
+  },
+  "notes": "family: area-majority. Official rulebook PDF (BGG file by Devir Iberia) could not be downloaded; rules were cross-checked on Dized and Yucata rule summaries, so numbers are medium confidence. Tower points are entered as one total because each tower value depends on its completed sections/ornaments (floor halving per rank, e.g. 7 -> 3 -> 1). Recognition-points track and solo mode not modelled.",
+  "sources": [
+    {
+      "url": "https://rules.dized.com/game/QJ34sOPaQYyKeOWw2ZOMaQ/yaTo_AugSXCexQxo2pdjVQ/additional-scoring",
+      "title": "The Red Cathedral Additional Scoring (Dized)",
+      "type": "other",
+      "section": "Additional Scoring"
+    },
+    {
+      "url": "https://rules.dized.com/game/QJ34sOPaQYyKeOWw2ZOMaQ/voLcBsXPTeSktwTuGx0sCQ/final-scoring",
+      "title": "The Red Cathedral Final Scoring (Dized)",
+      "type": "other",
+      "section": "Final Scoring; End of the Game"
+    },
+    {
+      "url": "https://rules.dized.com/game/QJ34sOPaQYyKeOWw2ZOMaQ/hTCW0FSKRPycwNrkKu4i6w/special-rules-for-two-player-games",
+      "title": "Two-player special rules (Dized)",
+      "type": "other",
+      "section": "Tower scoring in 2 players"
+    },
+    {
+      "url": "https://www.yucata.de/en/Rules/RedCathedral",
+      "title": "The Red Cathedral rules (Yucata)",
+      "type": "other",
+      "section": "End game and tiebreakers"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/208839/the-red-cathedral-english-rulebook",
+      "title": "The Red Cathedral English rulebook (Devir, BGG file)",
+      "type": "bgg-file",
+      "section": "Final scoring (not read; 403)"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

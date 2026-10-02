@@ -1,0 +1,85 @@
+{
+  "slug": "torres-1999",
+  "name": "Torres",
+  "year": 1999,
+  "bggId": 88,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the third scoring phase"
+  },
+  "categories": [
+    {
+      "key": "yearScore",
+      "label": "Castle points + king bonus for each scoring phase",
+      "labelVi": "Điểm lâu đài + thưởng vua mỗi giai đoạn",
+      "hint": "Per castle with your knight: highest knight level x castle surface area (once per castle). King bonus: 5/10/15 for a knight on level 1/2/3 of the king's castle in phase 1/2/3.",
+      "scope": "player",
+      "input": "perRound",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    },
+    {
+      "key": "actionPoints",
+      "label": "Points bought with action points during play",
+      "labelVi": "Điểm mua bằng action point trong lúc chơi",
+      "hint": "Points spent from the action points; enter total gained outside scoring phases.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0,
+      "max": null
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No two score markers may share a space; a player who would tie moves forward one point (rule seen in the digital adaptation and BoardGameGeek summaries)."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: running-track. Three scoring phases: after phase 1 (4 rounds) and phases 2-3 (3 rounds each). Several players may score the same castle. After each scoring the lowest-scoring player may move the king. Official rulebook PDF could not be downloaded; verified via Yucata rule summary, GameRules.com and Wikipedia, so medium confidence.",
+  "sources": [
+    {
+      "url": "https://www.yucata.de/en/Rules/Torres",
+      "title": "Torres rules (Yucata)",
+      "type": "other",
+      "section": "Scoring; King's bonus; Tie handling"
+    },
+    {
+      "url": "https://gamerules.com/rules/torres/",
+      "title": "TORRES Game Rules (GameRules.com)",
+      "type": "other",
+      "section": "Scoring; end of game"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Torres_(board_game)",
+      "title": "Torres (Wikipedia)",
+      "type": "wiki",
+      "section": "Scoring; King's bonus"
+    },
+    {
+      "url": "https://fgbradleys.com/wp-content/uploads/rules/Torres%20-%20rules.pdf",
+      "title": "Torres rules (Rio Grande / FGBradleys, unreachable)",
+      "type": "official-rulebook",
+      "section": "not read; connection refused"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

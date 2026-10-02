@@ -1,0 +1,105 @@
+{
+  "slug": "azul",
+  "name": "Azul",
+  "year": 2017,
+  "bggId": 230802,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track after wall-tiling (incl. floor penalties)",
+      "labelVi": "Điểm trên track (đã trừ phạt sàn)",
+      "hint": "Tile adjacency points and floor-line penalties are tracked during play; score never drops below 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "completeRows",
+      "label": "Complete horizontal lines",
+      "labelVi": "Hàng ngang hoàn chỉnh",
+      "hint": "2 VP per full row of 5 on the wall.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "completeColumns",
+      "label": "Complete vertical lines",
+      "labelVi": "Cột dọc hoàn chỉnh",
+      "hint": "7 VP per full column of 5.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 7
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "completeColors",
+      "label": "Colors fully placed",
+      "labelVi": "Màu đủ 5 viên",
+      "hint": "10 VP per colour with all 5 tiles on the wall.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "completeRows",
+      "dir": "highest",
+      "description": "Most complete horizontal lines"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: abstract-objective. In-play scoring (not itemised): each placed tile scores 1 per tile in its linked row run plus its linked column run (a run of 1 counts 1 only when no neighbours); floor line penalties -1,-1,-2,-2,-2,-3,-3. Game ends after the round in which any player completes a horizontal row. Variants (Summer Pavilion style grey wall) not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.svc.asmodee.net/production-nextmove/uploads/sites/4/2024/06/EN-Azul-Mini-Rule-Book_LOW_RES.pdf",
+      "title": "Azul Mini Rule Book (Next Move)",
+      "type": "official-rulebook",
+      "section": "Wall-tiling scoring; End of the game / Final scoring; Winner"
+    },
+    {
+      "url": "https://www.rulespal.com/azul/rulebook",
+      "title": "Azul rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End-game bonuses cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

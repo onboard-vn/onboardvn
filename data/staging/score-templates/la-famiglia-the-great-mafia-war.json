@@ -1,0 +1,69 @@
+{
+  "slug": "la-famiglia-the-great-mafia-war",
+  "name": "La Famiglia: The Great Mafia War",
+  "year": null,
+  "bggId": 367517,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": { "min": 4, "max": 4 },
+  "mode": "team",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": {
+    "count": 4,
+    "aggregate": "rounds-won",
+    "endCondition": "Immediate win at end of any round on reaching the Mandamenti threshold; otherwise game ends after round 4"
+  },
+  "categories": [
+    {
+      "key": "teamMandamenti",
+      "label": "Mandamenti controlled by the team",
+      "labelVi": "Số Mandamenti cả đội kiểm soát",
+      "hint": "A Mandamento (3 areas) is controlled by holding at least 2 of its 3 areas. Team of 2 families wins at 6.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 12,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "bestFamilyMandamenti",
+      "label": "Most Mandamenti controlled by a single family",
+      "labelVi": "Số Mandamenti nhiều nhất của một gia đình",
+      "hint": "One family controlling 5 Mandamenti alone wins instantly.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 12,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "bronteControlled",
+      "label": "Team controls Bronte (tiebreaker)",
+      "labelVi": "Đội giữ Bronte (phá hòa)",
+      "hint": "Bronte is the area in the central Mandamento; decides a tie after round 4.",
+      "scope": "team",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    { "categoryKey": "teamMandamenti", "dir": "highest", "description": "After round 4 without an instant win, the team with more Mandamenti wins." },
+    { "categoryKey": "bronteControlled", "dir": "highest", "description": "If Mandamenti are tied, the team controlling Bronte wins." }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Instant win at the end of any round if a single family controls 5 Mandamenti or a team controls 6. Otherwise after round 4 the team with more Mandamenti wins; on a tie, the team holding Bronte wins.",
+  "endCondition": { "type": "objective", "target": 6, "description": "Team reaches 6 Mandamenti (or one family 5) at end of a round; otherwise after round 4." },
+  "notes": "family: area-majority. No victory points. 4 players only (2 vs 2). If tied and nobody holds Bronte, secondary sources imply a draw. Official English rulebook (BGG file 250311, login-walled) could not be downloaded; rules taken from agreeing reviews, so exact wording unverified.",
+  "sources": [
+    { "url": "https://www.meeplemountain.com/reviews/la-famiglia-the-great-mafia-war/", "title": "Meeple Mountain review", "type": "other", "section": "Win conditions and tiebreaker" },
+    { "url": "https://hiewandboardgames.blogspot.com/2026/06/la-famiglia-great-mafia-war.html", "title": "Hiew's Boardgame Blog review", "type": "other", "section": "Victory conditions" },
+    { "url": "https://www.boardseyeview.net/post/la-famiglia-the-great-mafia-war", "title": "Board's Eye View review", "type": "other", "section": "Victory conditions" },
+    { "url": "https://boardgamegeek.com/filepage/250311/la-famiglia-rules-english-v10", "title": "La Famiglia English rules v1.0 (not downloadable)", "type": "bgg-file", "section": "End of game" }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

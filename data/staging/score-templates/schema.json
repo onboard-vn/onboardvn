@@ -1,0 +1,530 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "onboard-vn/score-template/v3",
+  "title": "Board game score template",
+  "type": "object",
+  "required": [
+    "slug",
+    "name",
+    "templateVersion",
+    "mode",
+    "winRule",
+    "categories",
+    "sources",
+    "confidence"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "slug": {
+      "type": "string",
+      "description": "Matches clubs/*/games.json slug"
+    },
+    "name": {
+      "type": "string"
+    },
+    "year": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "bggId": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "templateVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "variant": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "e.g. base, 2-player, expansion name"
+    },
+    "playerCount": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "integer"
+        },
+        "max": {
+          "type": "integer"
+        }
+      }
+    },
+    "mode": {
+      "enum": [
+        "competitive",
+        "coop",
+        "team",
+        "solo",
+        "hidden-traitor",
+        "asymmetric"
+      ]
+    },
+    "winRule": {
+      "enum": [
+        "highest",
+        "lowest",
+        "none",
+        "objective"
+      ],
+      "description": "objective = win by condition, not points"
+    },
+    "scoringStyle": {
+      "enum": [
+        "end-game-categories",
+        "running-track",
+        "rounds",
+        "elimination",
+        "objective-only"
+      ]
+    },
+    "rounds": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "count": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "aggregate": {
+          "enum": [
+            "sum",
+            "best",
+            "rounds-won"
+          ]
+        },
+        "endCondition": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "e.g. first to 500 points"
+        }
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "key",
+          "label",
+          "scope",
+          "input",
+          "formula",
+          "countsToTotal"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^[a-z][a-zA-Z0-9]*$"
+          },
+          "label": {
+            "type": "string"
+          },
+          "labelVi": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "hint": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Short rule reminder shown to scorer"
+          },
+          "scope": {
+            "enum": [
+              "player",
+              "team"
+            ]
+          },
+          "input": {
+            "enum": [
+              "number",
+              "count",
+              "repeating",
+              "exclusive",
+              "bool",
+              "counts",
+              "track",
+              "perRound"
+            ]
+          },
+          "inputs": {
+            "type": "array",
+            "description": "For input=counts: named sub-counts, e.g. 7 Wonders science gear/compass/tablet",
+            "items": {
+              "type": "string"
+            }
+          },
+          "min": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "max": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "formula": {
+            "type": "object",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "sum",
+                  "multiply",
+                  "table",
+                  "setCollection",
+                  "expr",
+                  "exclusiveBonus",
+                  "rankAward"
+                ]
+              },
+              "points": {
+                "type": "number",
+                "description": "multiply: points per unit; exclusiveBonus: points awarded"
+              },
+              "table": {
+                "type": "object",
+                "description": "table: count -> points, key '7+' allowed",
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              "expr": {
+                "type": "string",
+                "description": "Safe expression. Identifiers: `value` (this category's raw input), names listed in `inputs` (input=counts), `players` (player count), `cat_<key>` (computed points of another category). Ops: + - * / % ** < <= > >= == != && || ! ?: ; functions: min max floor ceil round abs sum count if(cond,a,b). Nothing else."
+              },
+              "rankAward": {
+                "type": "object",
+                "description": "Points by rank on a compared value (e.g. majorities, end-game tile rankings)",
+                "properties": {
+                  "compare": {
+                    "enum": [
+                      "highest",
+                      "lowest"
+                    ]
+                  },
+                  "points": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "description": "Points for rank 1,2,3..."
+                  },
+                  "tieMode": {
+                    "enum": [
+                      "split-floor",
+                      "split-exact",
+                      "all-full",
+                      "all-next-lower",
+                      "none"
+                    ],
+                    "description": "split-floor = sum of tied ranks' points divided, rounded down"
+                  },
+                  "minValueToScore": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "excludeZero": {
+                    "type": "boolean"
+                  },
+                  "over": {
+                    "enum": [
+                      "value",
+                      "count",
+                      "bool"
+                    ],
+                    "description": "What is compared across players"
+                  }
+                }
+              },
+              "byPlayerCount": {
+                "type": "object",
+                "description": "Override points/table/rankAward per player count, key = '2','3','4+'",
+                "additionalProperties": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "countsToTotal": {
+            "type": "boolean"
+          },
+          "optional": {
+            "type": "boolean",
+            "description": "Category only used with an expansion/variant"
+          },
+          "expansion": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "track": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "input=track: position -> points via formula.table",
+            "properties": {
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              }
+            }
+          },
+          "appliesWhen": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Safe expr; category scores only when true (e.g. `cat_won == 1`, `players >= 4`)"
+          },
+          "multiplierOf": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "description": "bool/number that multiplies listed category keys (e.g. Flip 7 x2 on number cards)"
+          },
+          "roleKey": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "tiebreakers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "description"
+        ],
+        "properties": {
+          "categoryKey": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dir": {
+            "enum": [
+              "highest",
+              "lowest",
+              null
+            ]
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "sharedVictoryOnTie": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Edge cases, variant/expansion differences, things not modelled"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "url",
+          "title",
+          "type"
+        ],
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "official-rulebook",
+              "publisher-page",
+              "bgg-file",
+              "bgg-forum",
+              "wiki",
+              "video",
+              "other"
+            ]
+          },
+          "section": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Page / section where scoring is defined"
+          }
+        }
+      }
+    },
+    "confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ],
+      "description": "high = verified against official rulebook"
+    },
+    "needsReview": {
+      "type": "boolean"
+    },
+    "winCondition": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "For winRule=objective or games with instant-win conditions: how the winner is decided"
+    },
+    "roles": {
+      "type": "array",
+      "description": "Asymmetric/hidden-role games: named roles or teams with own win conditions",
+      "items": {
+        "type": "object",
+        "required": [
+          "key",
+          "label"
+        ],
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "labelVi": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "winCondition": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "categoryKeys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "endCondition": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Structured game end",
+      "properties": {
+        "type": {
+          "enum": [
+            "rounds",
+            "target-score",
+            "elimination",
+            "last-standing",
+            "objective",
+            "deck-out",
+            "time"
+          ]
+        },
+        "target": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "target-score: first to N; elimination: starting HP"
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "outcome": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Coop/objective result fields",
+      "properties": {
+        "winLose": {
+          "type": "boolean"
+        },
+        "scoreOnlyIfWin": {
+          "type": "boolean"
+        },
+        "scoreOnlyIfLose": {
+          "type": "boolean"
+        }
+      }
+    },
+    "eliminationTracking": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "resource": {
+          "type": "string",
+          "description": "e.g. HP, health, lives"
+        },
+        "start": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "eliminatedCannotWin": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

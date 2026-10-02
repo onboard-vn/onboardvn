@@ -1,0 +1,105 @@
+{
+  "slug": "toy-battle",
+  "name": "Toy Battle",
+  "year": 2025,
+  "bggId": 434654,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "hqCaptured",
+      "label": "Captured enemy H.Q.",
+      "labelVi": "Chiếm được H.Q. đối phương",
+      "hint": "Placing a Troop on the enemy H.Q. wins immediately.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "medals",
+      "label": "Medals collected",
+      "labelVi": "Huy chương đã giành",
+      "hint": "Medals taken by controlling regions; kept even if control is lost. Objective number depends on the Terrain.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 16,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "medalsObjectiveReached",
+      "label": "Medals objective reached",
+      "labelVi": "Đạt mục tiêu huy chương",
+      "hint": "Reaching the number of Medals shown on the Terrain's objective wins immediately.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "won",
+      "label": "Won the game",
+      "labelVi": "Thắng ván",
+      "hint": "Tick for the winner.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "medals",
+      "dir": "highest",
+      "description": "If a player cannot draw or place a Troop, most Medals wins; on a tie, the player who ended the game loses"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Win immediately by placing a Troop on the enemy H.Q. or by reaching the Medals objective shown on the chosen Terrain. If a player cannot draw or place a Troop, the game ends and the player with more Medals wins; on equal Medals the player who ended the game loses.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "Enemy H.Q. captured, Medals objective reached, or a player cannot draw/place a Troop"
+  },
+  "notes": "family: objective-area-control. Medals objective varies by the 8 Terrains (see board). Some Terrains have multiple H.Q.; capturing one suffices.",
+  "sources": [
+    {
+      "url": "https://cdn.svc.asmodee.net/production-rprod/storage/games/toy_battle/rules/toy-en01-rules-1744030094a4kQo.pdf",
+      "title": "Toy Battle Rulebook EN (Repos Production)",
+      "type": "official-rulebook",
+      "section": "p.5-6 Controlling a region; End of the game"
+    },
+    {
+      "url": "https://www.rulespal.com/toy-battle/rulebook",
+      "title": "Toy Battle rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "End of game"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

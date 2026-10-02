@@ -1,0 +1,131 @@
+{
+  "slug": "brew",
+  "name": "Brew",
+  "year": 2021,
+  "bggId": 332386,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "potions",
+      "label": "Brewed potions (in hand + drunk)",
+      "labelVi": "Thuốc đã pha (cầm tay + đã uống)",
+      "hint": "Sum the VP printed on every potion you brewed, drunk or not. Reserved potions you did not brew score 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "forests",
+      "label": "Claimed Forests",
+      "labelVi": "Rừng đã chiếm",
+      "hint": "Sum the VP printed on all Forest cards you claimed.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "creaturesInForest",
+      "label": "Creatures released into a matching Forest",
+      "labelVi": "Sinh vật đặt vào Rừng khớp mùa",
+      "hint": "3 VP each. Each claimed Forest takes one creature matching any of its seasons.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "creaturesOutsideForest",
+      "label": "Creatures released without a Forest",
+      "labelVi": "Sinh vật không có Rừng",
+      "hint": "1 VP each.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "vpTokens",
+      "label": "VP tokens collected",
+      "labelVi": "Điểm VP token",
+      "hint": "Total value of VP tokens gained during the game (from creature powers etc.).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "leftoverIngredients",
+      "label": "Leftover ingredient tokens (incl. Energy Berries)",
+      "labelVi": "Nguyên liệu còn dư (gồm cả Berry)",
+      "hint": "Enter the number of tokens; 1 VP per full 3 tokens.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 3)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Most leftover ingredient tokens (including Energy Berries)."
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: end-game-categories. Game ends after the 4th round (when no new row of Forests can be dealt). Character powers/creature powers that grant VP tokens are captured via the VP tokens field. Unlimited token supply per rulebook note.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/9c/35/42-brew-rulebook.pdf",
+      "title": "Brew rulebook (1j1ju mirror of official rules)",
+      "type": "official-rulebook",
+      "section": "p.15 Final Scoring, Winning the Game, Tiebreaker; p.6 Check for Game End"
+    },
+    {
+      "url": "https://www.boardgamequest.com/brew-review/",
+      "title": "Brew Review (Board Game Quest)",
+      "type": "other",
+      "section": "End-game scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

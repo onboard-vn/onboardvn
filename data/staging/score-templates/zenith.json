@@ -1,0 +1,71 @@
+{
+  "slug": "zenith",
+  "name": "Zenith",
+  "year": 2025,
+  "bggId": 424219,
+  "templateVersion": 1,
+  "variant": "2-player",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (met a victory condition first)",
+      "labelVi": "Thắng (đạt điều kiện thắng trước)",
+      "hint": "Check the winner: first to reach 3 same-planet, 4 different-planet, or 5 Influence discs.",
+      "scope": "player",
+      "input": "bool",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "influenceDiscs",
+      "label": "Influence discs gained (informational)",
+      "labelVi": "Số đĩa ảnh hưởng (tham khảo)",
+      "hint": "Total Influence discs gained.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "Game ends immediately when one player gains 3 Influence discs from the same planet (Absolute), 4 discs from strictly different planets (Democratic), or 5 discs from any planets (Popular). Checked whenever a player takes a Planet token, so there is a single winner.",
+  "endCondition": {
+    "type": "objective",
+    "target": null,
+    "description": "First player to meet any of the three Influence victory conditions."
+  },
+  "notes": "family: race-to-goal. No points. 4-player play is in teams of 2 (teammates alternate turns) with the same victory conditions; winner is the team. Rulebook gives no tie-breaker because the game ends the instant a condition is met.",
+  "sources": [
+    {
+      "url": "https://tesera.ru/images/items/2439223/ZE_Rules_EN.pdf",
+      "title": "Zenith English rules (PlayPunk, official PDF mirror of BGG file)",
+      "type": "official-rulebook",
+      "section": "Goal of the Game; End of the Game; team rules"
+    },
+    {
+      "url": "https://en.doc.boardgamearena.com/Gamehelpzenith",
+      "title": "Board Game Arena help: Zenith",
+      "type": "other",
+      "section": "Victory conditions cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,117 @@
+{
+  "slug": "kemet-blood-and-sand-2021",
+  "name": "Kemet: Blood and Sand",
+  "year": 2021,
+  "bggId": 297562,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "battleFp",
+      "label": "Battle FP (permanent)",
+      "labelVi": "FP chiến đấu (vĩnh viễn)",
+      "hint": "1 per won attack where the attacker keeps a Troop in the zone.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "divineFp",
+      "label": "Divine FP (permanent)",
+      "labelVi": "FP thần thánh (vĩnh viễn)",
+      "hint": "Night phase: controlling 2+ Temples or the Sanctuary of All Gods, plus Divine FP from tiles and DI effects.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "tileFp",
+      "label": "Power tile FP (permanent)",
+      "labelVi": "FP từ Power tile (vĩnh viễn)",
+      "hint": "Permanent FP gained by buying specific Power tiles.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "templeFp",
+      "label": "Temple FP (temporary)",
+      "labelVi": "FP đền (tạm thời)",
+      "hint": "1 per Temple you currently control; lost when you leave it empty.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pyramidFp",
+      "label": "Pyramid FP (temporary)",
+      "labelVi": "FP kim tự tháp (tạm thời)",
+      "hint": "1 per level 4 Pyramid you control in an opponent's District; lost if you leave.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "endCondition": {
+    "type": "target-score",
+    "target": 9,
+    "description": "At the start of your turn (before playing an Action token), if you have 9+ FP total and no other player has more, you win immediately."
+  },
+  "notes": "family: area-control-fame-race. No end-of-game scoring: the game is won by reaching 9 FP (temporary + permanent) on your own turn with nobody ahead, so opponents get a chance to respond. Rulebook states no explicit tiebreak beyond 'no other player has more FP'; if several players sit at 9+ tied, play continues. Temporary FP count toward the 9. Expansions (Book of the Dead, Rise of the Gods) not modelled.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/af/f0/59-kemet-blood-and-sand-rulebook.pdf",
+      "title": "Kemet: Blood and Sand rulebook (Matagot)",
+      "type": "official-rulebook",
+      "section": "p.6 Fame Points; 3.3 End of game; 3.5 Battle; 3.6 Night Phase"
+    },
+    {
+      "url": "https://board-game-rules.com/boardgames/kemet-blood-and-sand/",
+      "title": "Kemet: Blood and Sand rules summary",
+      "type": "other",
+      "section": "Victory condition and FP sources"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

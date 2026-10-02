@@ -1,0 +1,103 @@
+{
+  "slug": "small-city",
+  "name": "Small City",
+  "year": null,
+  "bggId": 130486,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 8,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the 8th round"
+  },
+  "categories": [
+    {
+      "key": "votes",
+      "label": "Votes on score track (incl. +50 tiles)",
+      "labelVi": "Phiếu bầu trên track",
+      "hint": "Votes gathered over 8 rounds; add 50 for each +50 tile held.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "promiseVotes",
+      "label": "Promise card result",
+      "labelVi": "Kết quả lời hứa",
+      "hint": "Fulfilled: +6/+12/+18 (easy/medium/hard). Failed: -3/-6/-12. Enter signed value.",
+      "scope": "player",
+      "input": "number",
+      "min": -12,
+      "max": 18,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pollution",
+      "label": "Pollution level (%)",
+      "labelVi": "Mức ô nhiễm (%)",
+      "hint": "Subtracted from total votes. At 100% you lose immediately.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": 100,
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "money",
+      "label": "Money (tiebreak)",
+      "labelVi": "Tiền (phân định hòa)",
+      "hint": "Tiebreak only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "pollution",
+      "dir": "lowest",
+      "description": "Lowest pollution"
+    },
+    {
+      "categoryKey": "money",
+      "dir": "highest",
+      "description": "Most money"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: tile-placement-points. Basic (Votes) game modelled. Advanced game alternate victory conditions (Economic: cash + net Revenue; Citizens: most Citizens in play; Cultural: most Cultural building tiles) and pink Special Promise cards (fail = -5 under Economic) not modelled. A player reaching 100% pollution loses immediately.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/ea/b4/59-small-city-rulebook.pdf",
+      "title": "Small City rulebook (1jour-1jeu mirror)",
+      "type": "official-rulebook",
+      "section": "End of game and final scoring; Phase V Vote"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

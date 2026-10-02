@@ -1,0 +1,98 @@
+{
+  "slug": "ginkgopolis",
+  "name": "Ginkgopolis",
+  "year": 2012,
+  "bggId": 128271,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 5
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "tokens",
+      "label": "Success points earned during the game",
+      "labelVi": "Điểm thành công đã nhận trong ván",
+      "hint": "Total value of success-point tokens (incl. 1 point per tile revealed at the first supply exhaustion).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "endgameCards",
+      "label": "Endgame bonus cards",
+      "labelVi": "Thẻ thưởng cuối ván",
+      "hint": "Sum of success points from your cards with the '=' icon, per each card's text.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "newHandTokens",
+      "label": "Unused New Hand tokens",
+      "labelVi": "Token Đổi bài chưa dùng",
+      "hint": "2 points per unused New Hand token.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "districts",
+      "label": "District points",
+      "labelVi": "Điểm khu vực",
+      "hint": "Enter one value per district (2+ adjacent same-colour buildings): 1st = all resources in district, 2nd = your own resources there.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "No overall tiebreaker stated in the rulebook (only for ranking within a district: tallest building, then highest number on it)."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. District ranking tiebreak: tallest building of the tied players in the district, then highest tile number. Lone owner of all resources in a district scores both 1st and 2nd (2 per resource). Game ends when tile supply is exhausted the second time or a player places all resources (25/20/18/16 for 2/3/4/5); finish the round. Solitaire vs 'Hal' not modelled. No overall tie rule found, so sharedVictoryOnTie=false is an assumption.",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/69/7f/98-ginkgopolis-rulebook.pdf",
+      "title": "Ginkgopolis Rulebook",
+      "type": "official-rulebook",
+      "section": "End of the Game, p.5 (district scoring)"
+    },
+    {
+      "url": "https://www.ultraboardgames.com/ginkgopolis/game-rules.php",
+      "title": "How to play Ginkgopolis (Ultra Board Games)",
+      "type": "other",
+      "section": "End game scoring cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

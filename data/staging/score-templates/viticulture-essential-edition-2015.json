@@ -1,0 +1,113 @@
+{
+  "slug": "viticulture-essential-edition-2015",
+  "name": "Viticulture Essential Edition",
+  "year": 2015,
+  "bggId": 183394,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 6
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "Game ends after the year in which a player reaches 20 VP"
+  },
+  "categories": [
+    {
+      "key": "vp",
+      "label": "Victory points (track)",
+      "labelVi": "Điểm chiến thắng (track)",
+      "hint": "Final VP marker position; may exceed 20.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "lira",
+      "label": "Lira (tiebreak)",
+      "labelVi": "Lira (phân định hòa)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "wineValue",
+      "label": "Wine in cellar value (tiebreak)",
+      "labelVi": "Giá trị rượu trong hầm (phân định hòa)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "grapeValue",
+      "label": "Grapes on crush pad value (tiebreak)",
+      "labelVi": "Giá trị nho trên crush pad (phân định hòa)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "lira",
+      "dir": "highest",
+      "description": "Most lira"
+    },
+    {
+      "categoryKey": "wineValue",
+      "dir": "highest",
+      "description": "Highest total value of wine in cellar"
+    },
+    {
+      "categoryKey": "grapeValue",
+      "dir": "highest",
+      "description": "Highest total value of grapes on crush pad"
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: auction-money. Verified only against a rules summary; official rulebook (Dropbox) not retrievable. Solo Automa not modelled; ends after the year in which someone reaches 20 VP.",
+  "sources": [
+    {
+      "url": "https://stonemaiergames.com/games/viticulture/rules/",
+      "title": "Viticulture rules page (Stonemaier)",
+      "type": "publisher-page"
+    },
+    {
+      "url": "https://www.rulespal.com/viticulture-essential-edition/rulebook",
+      "title": "Viticulture Essential Edition rulebook summary (RulesPal)",
+      "type": "other"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true,
+  "endCondition": {
+    "type": "target-score",
+    "target": 20,
+    "description": "Finish the current year after a player reaches 20 VP"
+  }
+}

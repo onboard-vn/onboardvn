@@ -1,0 +1,63 @@
+{
+  "slug": "crescent-moon-2022",
+  "name": "Crescent Moon",
+  "year": 2022,
+  "bggId": 348073,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 4,
+    "max": 5
+  },
+  "mode": "asymmetric",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": null,
+    "aggregate": "sum",
+    "endCondition": "Set number of years; scoring phase at end of each year"
+  },
+  "categories": [
+    {
+      "key": "vpTotal",
+      "label": "Victory points (all VP chits)",
+      "labelVi": "Tổng VP",
+      "hint": "Sum of face-down VP chits revealed at game end.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "year1Objective",
+      "label": "Year 1 objective VP",
+      "labelVi": "VP mục tiêu năm 1",
+      "hint": "Faction-specific one-chance objective, included in total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. NOT verified against official rulebook (BGG file blocked). Faction scoring (Warlord sacking, Nomad coins to VP up to 10, Sultan forts) not modelled; number of years (3 or 4) unconfirmed; tiebreaker unknown.",
+  "sources": [
+    {
+      "url": "https://rulesofplay.co.uk/products/crescent-moon",
+      "title": "Crescent Moon rules of play",
+      "type": "other",
+      "section": "overview"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

@@ -1,0 +1,191 @@
+{
+  "slug": "revenant",
+  "name": "Revenant",
+  "year": 2025,
+  "bggId": 428099,
+  "templateVersion": 1,
+  "variant": "base",
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Scoring happens after the Skirmish phase of Cycle 4"
+  },
+  "categories": [
+    {
+      "key": "colony",
+      "label": "Colony card",
+      "labelVi": "Thẻ Colony",
+      "hint": "Prestige printed on the chosen Colony card (0 if none selected). Shared, but each player scores it.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "houseInfluence",
+      "label": "House Power x Influence (7 Houses)",
+      "labelVi": "Power x Influence của 7 Nhà",
+      "hint": "For each House: Power (that House's ships on the main board, +1 if on the Colony) x your Influence (track steps + your Hidden Influence cards of that House). Enter each product.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "secretAgendas",
+      "label": "Secret Agendas completed",
+      "labelVi": "Agenda bí mật hoàn thành",
+      "hint": "6 Prestige each for Personal Agenda and Fleet Agenda met (0-2 agendas).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "multiply",
+        "points": 6
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cadetCards",
+      "label": "Cadet cards played",
+      "labelVi": "Thẻ Cadet đã chơi",
+      "hint": "2 Prestige per played Cadet Operation card (unplayed cards in hand score nothing).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "frigateCards",
+      "label": "Frigate cards played",
+      "labelVi": "Thẻ Frigate đã chơi",
+      "hint": "2 Prestige per played Frigate Operation card.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "captainRank",
+      "label": "Captain Rank (0-3)",
+      "labelVi": "Cấp bậc Captain",
+      "hint": "Rank 0/1/2/3 = 0/2/4/6 Prestige.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 2,
+          "2": 4,
+          "3": 6
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "commandCards",
+      "label": "Command cards played",
+      "labelVi": "Thẻ Command đã chơi",
+      "hint": "1 Prestige per played Command card.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resources",
+      "label": "Resources (total)",
+      "labelVi": "Tài nguyên (tổng)",
+      "hint": "1 Prestige per 4 resources, rounded down; resources in corrupted Compartments count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value / 4)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "corruption",
+      "label": "Corruption on Frigate board",
+      "labelVi": "Corruption trên bảng Frigate",
+      "hint": "-2 Prestige per Corruption on your corrupted Compartments (not Void Residue spaces). Enter the count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -2
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied players: the one earlier in turn order wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority (influence x power) + prestige sources. Verified against the official Dized digital rulebook (Final Scoring page), not the PDF (BGG file returned 403). Hidden Influence cards do not give flat points: each adds 1 Influence to its House, folded into houseInfluence. Final Scoring text is identical in structure for the 4 Cycles; a separate Solo Final Scoring page exists and is not modelled. Dized has two Final Scoring pages (standard vs another edition/mode); the fetched one lists the categories above; cross-check Colony/Admiral edition differences if needed.",
+  "sources": [
+    {
+      "url": "https://rules.dized.com/game/MElll5C1S3Sj_RY1TfEcdg/82bpJoP1SAOhfB4-0SkreQ/final-scoring",
+      "title": "Revenant rules - Final Scoring (Dized, publisher-licensed)",
+      "type": "official-rulebook",
+      "section": "Final Scoring: 6 categories, winner, tie by turn order"
+    },
+    {
+      "url": "https://rules.dized.com/game/MElll5C1S3Sj_RY1TfEcdg/faq",
+      "title": "Revenant rules FAQ (Dized)",
+      "type": "official-rulebook",
+      "section": "FAQ: unplayed Operation cards score 0; corruption only in Compartments"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/revenant/",
+      "title": "Revenant Game Review (Meeple Mountain)",
+      "type": "other",
+      "section": "Influence board scoring"
+    },
+    {
+      "url": "https://boardgamegeek.com/filepage/324340/revenant-rulebook-final",
+      "title": "Revenant rulebook final (BGG file, not accessed)",
+      "type": "bgg-file",
+      "section": null
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

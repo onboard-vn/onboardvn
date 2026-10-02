@@ -1,0 +1,184 @@
+{
+  "slug": "inventors-of-the-south-tigris",
+  "name": "Inventors of the South Tigris",
+  "year": null,
+  "bggId": 378387,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "guildMajorities",
+      "label": "Guild majorities",
+      "labelVi": "Đa số Guild",
+      "hint": "Most Influence in each Guild scores the higher printed VP, second most the lower; each Tent in the 3 left Tenting areas counts as 2 Influence.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "royalties",
+      "label": "Royalties track",
+      "labelVi": "Đường Royalties",
+      "hint": "VP printed next to spaces 4 and higher.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "researchTiles",
+      "label": "Research tiles",
+      "labelVi": "Ô Research",
+      "hint": "Each Influence along the River scores its printed amount.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "craftspeople",
+      "label": "Craftspeople",
+      "labelVi": "Craftspeople",
+      "hint": "VP on the right edge of each Tower Tile, active or inactive.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "workshopTiles",
+      "label": "Workshop tiles",
+      "labelVi": "Workshop",
+      "hint": "All VP printed on collected Workshop Tiles.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "inventionTiles",
+      "label": "Invention tiles",
+      "labelVi": "Invention tile",
+      "hint": "Uncovered VP on player boards where invention tiles were removed.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "builderPublisher",
+      "label": "Builder & publisher influence",
+      "labelVi": "Điểm Builder/Publisher",
+      "hint": "Built: 1 VP per Testing Die. Published with 2 different Influence: Builder 3 VP, Publisher 1 VP per die. Same player both: 1 VP + 1 per die.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "devices",
+      "label": "Built & published devices",
+      "labelVi": "Thiết bị đã Build/Publish",
+      "hint": "0, 2 or 4 VP per device by its scoring condition; counted twice if one player is Builder and Publisher.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "silverCards",
+      "label": "Silver + Device cards left",
+      "labelVi": "Bạc + bài thiết bị còn lại",
+      "hint": "Every 4 in any combination = 1 VP. Enter the combined count.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/4)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "shipPosition",
+      "label": "Ship position (tiebreak)",
+      "labelVi": "Vị trí tàu (phân định hòa)",
+      "hint": "Ships further right win ties; same space: lower ship is ahead. Enter rank order, higher = better.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "shipPosition",
+      "dir": "highest",
+      "description": "Ship further right on the River wins; if sharing a space, the lower ship is ahead"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority. Game ends after all players raise their last Tent in the final Round (3 or 4 Rounds). Dummy Player in 2p competes for guild majorities. Solo mode (win by outscoring the automa opponent) not modelled. Device scoring condition thresholds are printed on device boards.",
+  "sources": [
+    {
+      "url": "https://portalgames.blob.core.windows.net/inventors-south-tigris/Rulebook-compressed.pdf",
+      "title": "Inventors of the South Tigris rulebook (Garphill/Portal)",
+      "type": "official-rulebook",
+      "section": "End of game & scoring p.24-25; Golden Rule of Tie-Breaks"
+    },
+    {
+      "url": "https://www.boardgamequest.com/inventors-of-the-south-tigris-review/",
+      "title": "Inventors of the South Tigris Review",
+      "type": "other",
+      "section": "cross-check"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

@@ -1,0 +1,157 @@
+{
+  "slug": "scholars-of-the-south-tigris",
+  "name": "Scholars of the South Tigris",
+  "year": null,
+  "bggId": 367041,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 1,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "diceSumVp",
+      "label": "Dice sum VP (black banner)",
+      "labelVi": "VP từ tổng xúc xắc",
+      "hint": "Dice sum = coloured dice minus white dice (all dice owned). Lowest sum takes lowest banner space, etc.; tied players share the VP of their spaces (rounded down). Enter VP read from the banner.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "retiredTranslators",
+      "label": "Retired translators",
+      "labelVi": "Dịch giả đã nghỉ hưu",
+      "hint": "VP printed on Retired Translators under your Player Board.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "guildCaliph",
+      "label": "Guilds controlled + Caliph card Influence",
+      "labelVi": "Guild kiểm soát + Influence trên thẻ Caliph",
+      "hint": "VP from controlled Guilds plus Influence on top (3 VP) and middle (1 VP) spaces of Caliph Cards.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "research",
+      "label": "Research tracks",
+      "labelVi": "Đường nghiên cứu",
+      "hint": "Per marker: level 7 = 5 VP, 6 = 4, 5 = 3, levels 3-4 = 2, levels 1-2 = 1. Enter number of markers at each level group.",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "5*l7+4*l6+3*l5+2*l34+1*l12"
+      },
+      "countsToTotal": true,
+      "inputs": [
+        "l7",
+        "l6",
+        "l5",
+        "l34",
+        "l12"
+      ]
+    },
+    {
+      "key": "scrollCards",
+      "label": "Scroll cards",
+      "labelVi": "Thẻ Scroll",
+      "hint": "VP of each Scroll Card above your Player Board; cards sharing a condition each score in full.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "employedTranslators",
+      "label": "Employed translators on Main Board (tiebreak)",
+      "labelVi": "Dịch giả đang làm việc (phân định hòa)",
+      "hint": "Tiebreak only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "workersLeft",
+      "label": "Workers in supply (tiebreak)",
+      "labelVi": "Worker còn lại (phân định hòa)",
+      "hint": "Tiebreak only.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "employedTranslators",
+      "dir": "highest",
+      "description": "Most Employed Translators still on the Main Board"
+    },
+    {
+      "categoryKey": "workersLeft",
+      "dir": "highest",
+      "description": "Most Workers remaining in supply"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: engine-building-points. Game end triggered when all 4 Caliph Cards are revealed; finish the round plus one final round. Gold left on Employed Translators goes to supplies (no VP). Dice-sum banner VP per player count not verified (2p example: two tied players gain 1 VP each; 4p example: 6+4+2 across top three, 0 for last), so entered as VP. Solo vs automa not modelled.",
+  "sources": [
+    {
+      "url": "https://www.garphill.com/cdn/shop/files/ScholarsRulebook.pdf",
+      "title": "Scholars of the South Tigris rulebook (Garphill Games)",
+      "type": "official-rulebook",
+      "section": "End of game scoring (Dice Sum, items 1-5, tiebreaks)"
+    },
+    {
+      "url": "https://www.meeplemountain.com/reviews/scholars-of-the-south-tigris/",
+      "title": "Scholars of the South Tigris review",
+      "type": "other",
+      "section": "cross-check of scoring categories"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

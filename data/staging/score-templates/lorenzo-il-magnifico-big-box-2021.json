@@ -1,0 +1,150 @@
+{
+  "slug": "lorenzo-il-magnifico-big-box-2021",
+  "name": "Lorenzo il Magnifico: Big Box",
+  "year": 2021,
+  "bggId": 338476,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "end-game-categories",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackVp",
+      "label": "Victory points from play",
+      "labelVi": "Điểm trong ván",
+      "hint": "VP track position before final scoring (includes Faith bonus and printed card effects).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "territoryCards",
+      "label": "Territory cards (green)",
+      "labelVi": "Thẻ Lãnh thổ (xanh lá)",
+      "hint": "Number of Territory cards owned.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 1,
+          "4": 4,
+          "5": 10,
+          "6": 20
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "characterCards",
+      "label": "Character cards (blue)",
+      "labelVi": "Thẻ Nhân vật (xanh dương)",
+      "hint": "Number of Character cards owned.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 1,
+          "2": 3,
+          "3": 6,
+          "4": 10,
+          "5": 15,
+          "6": 21
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "ventureVp",
+      "label": "Venture cards VP (purple)",
+      "labelVi": "VP thẻ Mạo hiểm",
+      "hint": "Sum of final VP printed on Venture cards.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "military",
+      "label": "Military strength",
+      "labelVi": "Sức mạnh quân sự",
+      "hint": "Rank bonus: 1st 5 VP, 2nd 2 VP.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "rankAward",
+        "rankAward": {
+          "compare": "highest",
+          "points": [
+            5,
+            2
+          ],
+          "tieMode": "all-full",
+          "excludeZero": true,
+          "over": "value"
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "resources",
+      "label": "Resources (wood+stone+coin+servants)",
+      "labelVi": "Tài nguyên (gỗ+đá+xu+người hầu)",
+      "hint": "1 VP per 5 resources in total.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "floor(value/5)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "resources",
+      "dir": "highest",
+      "description": "Most resources (unverified)"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: auction-money. UNVERIFIED: official rulebook could not be retrieved (no search access); categories are generic scorer inputs, check against the rulebook. Numbers from recollection of the base game: territory 3/4/5/6 cards = 1/4/10/20 VP; character 1..6 = 1/3/6/10/15/21; 6 rounds (3 periods x 2); military tie handling and tiebreaker unverified. Personal bonus tiles / leaders / Ambitions & Glory expansion not modelled.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/boardgame/338476",
+      "title": "BoardGameGeek game page (identification only)",
+      "type": "other",
+      "section": "Game identification"
+    }
+  ],
+  "confidence": "low",
+  "needsReview": true
+}

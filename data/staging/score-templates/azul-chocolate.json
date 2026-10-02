@@ -1,0 +1,105 @@
+{
+  "slug": "azul-chocolate",
+  "name": "Azul : Chocolate",
+  "year": 2022,
+  "bggId": 363247,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "trackScore",
+      "label": "Score track after Box confection (incl. foundry penalties)",
+      "labelVi": "Điểm trên track (đã trừ phạt foundry)",
+      "hint": "Điểm khi chuyển viên vào hộp và phạt foundry đã được ghi trên track; không xuống dưới 0.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "completeRows",
+      "label": "Complete horizontal lines",
+      "labelVi": "Hàng ngang hoàn chỉnh",
+      "hint": "2 điểm mỗi hàng ngang đủ 5 viên trong hộp chocolate.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "completeColumns",
+      "label": "Complete vertical lines",
+      "labelVi": "Cột dọc hoàn chỉnh",
+      "hint": "7 điểm mỗi cột dọc đủ 5 viên.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 7
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "completeColors",
+      "label": "Colors fully placed",
+      "labelVi": "Màu đủ 5 viên",
+      "hint": "10 điểm cho mỗi màu có đủ 5 viên trong hộp.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 5,
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "completeRows",
+      "dir": "highest",
+      "description": "Most complete horizontal lines"
+    },
+    {
+      "description": "If still tied, victory is shared."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "notes": "family: abstract-objective. Azul: Master Chocolatier (limited edition), same end-game bonuses as base Azul. In-play scoring: each tile moved to the box scores 1, or the horizontally linked run plus the vertically linked run (newly placed tile included in each); foundry line penalties are applied at end of Box confection. Game ends right after the Box confection phase in which a player completes a horizontal line of 5. Brown-side variant and Special Factories not modelled (they do not change final scoring).",
+  "sources": [
+    {
+      "url": "https://cdn.1j1ju.com/medias/aa/e6/a6-azul-master-chocolatier-rulebook.pdf",
+      "title": "Azul: Master Chocolatier Rulebook (Plan B Games, via 1jour-1jeu)",
+      "type": "official-rulebook",
+      "section": "p.5-6 Scoring; End of the game"
+    },
+    {
+      "url": "https://cdn.svc.asmodee.net/production-nextmove/uploads/sites/4/2024/06/EN-Azul-Mini-Rule-Book_LOW_RES.pdf",
+      "title": "Azul Mini Rule Book (base game cross-check)",
+      "type": "official-rulebook",
+      "section": "Final scoring"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

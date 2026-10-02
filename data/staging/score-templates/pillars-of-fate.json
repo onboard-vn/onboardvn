@@ -1,0 +1,103 @@
+{
+  "slug": "pillars-of-fate",
+  "name": "Pillars of Fate",
+  "year": 2025,
+  "bggId": 440941,
+  "templateVersion": 1,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "rounds": {
+    "count": 3,
+    "aggregate": "sum",
+    "endCondition": "Game ends after 3 Ages; an Age ends when all 3 lanes are full"
+  },
+  "categories": [
+    {
+      "key": "age1Renown",
+      "label": "Age 1: renown from quests",
+      "labelVi": "Kỷ 1: điểm danh vọng từ nhiệm vụ",
+      "hint": "Net renown (score tokens) from the 3 quests this Age; some quest rewards are negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "age2Renown",
+      "label": "Age 2: renown from quests",
+      "labelVi": "Kỷ 2: điểm danh vọng từ nhiệm vụ",
+      "hint": "Net renown (score tokens) from the 3 quests this Age; some quest rewards are negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "age3Renown",
+      "label": "Age 3: renown from quests",
+      "labelVi": "Kỷ 3: điểm danh vọng từ nhiệm vụ",
+      "hint": "Net renown (score tokens) from the 3 quests this Age; some quest rewards are negative.",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "pillarsLastAge",
+      "label": "Pillars held in the last Age (tiebreak)",
+      "labelVi": "Số cột trụ ở Kỷ cuối (phân định hòa)",
+      "hint": "Pillar markers you hold in the final Age.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "pillarsLastAge",
+      "dir": "highest",
+      "description": "Whoever has more pillars in the last round (Age) wins"
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: rounds-quest-lanes. Per quest: compare dominant suit to pick the conditional reward, highest power wins the lane (lowest if the 'least power' modifier), pillar holder breaks ties. Renown can be negative. Quest rewards vary by Quest card, so enter net renown per Age. Rulebook v1.00 states no explicit outcome if still tied after the pillar tiebreak.",
+  "sources": [
+    {
+      "url": "https://gamers-hq.de/media/pdf/5d/d7/64/PoF_Rulebook.pdf",
+      "title": "Pillars of Fate Rulebook v1.00 (IV Studio)",
+      "type": "official-rulebook",
+      "section": "p.11 Resolving an Age; p.12 Game End and tie breaker"
+    },
+    {
+      "url": "https://shop.iv.studio/products/pillars-of-fate-board-game",
+      "title": "Pillars of Fate (IV Studio shop)",
+      "type": "publisher-page",
+      "section": "Product description"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

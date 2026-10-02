@@ -1,0 +1,84 @@
+{
+  "slug": "dominant-species-marine--2-player",
+  "name": "Dominant Species: Marine",
+  "year": 2020,
+  "bggId": 262941,
+  "templateVersion": 1,
+  "variant": "2-player option",
+  "playerCount": {
+    "min": 2,
+    "max": 2
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "animalAScore",
+      "label": "Animal A final VP",
+      "labelVi": "Điểm cuối của thú A",
+      "hint": "Complete VP total of your first animal (track + final tile scoring + special pawns).",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "animalBScore",
+      "label": "Animal B final VP",
+      "labelVi": "Điểm cuối của thú B",
+      "hint": "Complete VP total of your second animal.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "finalScore",
+      "label": "Final score (lower animal)",
+      "labelVi": "Điểm cuối (thú thấp hơn)",
+      "hint": "Only the lower-scoring of your two animals counts.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "min(cat_animalAScore, cat_animalBScore)"
+      },
+      "countsToTotal": true
+    }
+  ],
+  "tiebreakers": [
+    {
+      "description": "Tied animal highest on the food chain wins: Reptiles, then Cephalopods, then Fishes, then Crustaceans."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "family: area-majority-running-track. 2-Player Option: each player controls two animals; only the animal with the lowest individual score counts as the player's final score (e.g. 70 and 145 gives 70). Enter each animal's complete VP total. Winner is the higher final score; tie goes to the tied animal highest on the food chain.",
+  "sources": [
+    {
+      "url": "https://gameland.com.ua/content/files/pravila-dominant-species-marine-angl.-14577929.pdf",
+      "title": "Dominant Species: Marine rulebook (GMT Games, 2020)",
+      "type": "official-rulebook",
+      "section": "Endgame p.9; Tile scoring p.16; 2-Player Option & Final Scoring p.22"
+    },
+    {
+      "url": "https://www.gmtgames.com/p-943-dominant-species-marine-2nd-printing.aspx",
+      "title": "GMT Games product page",
+      "type": "publisher-page",
+      "section": "Product overview"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

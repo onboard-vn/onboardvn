@@ -1,0 +1,71 @@
+{
+  "slug": "war-chest",
+  "name": "War Chest",
+  "year": 2018,
+  "bggId": 249259,
+  "templateVersion": 1,
+  "variant": "2-player",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "won",
+      "label": "Won (placed all Control Markers)",
+      "labelVi": "Thắng (đặt hết Control Marker)",
+      "hint": "Win immediately by being the first to place all your Control Markers on locations.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "markersPlaced",
+      "label": "Control Markers on board",
+      "labelVi": "Control Marker đã đặt",
+      "hint": "Markers you have on locations when the game ended (6 per player in 2-player game).",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 8,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [],
+  "sharedVictoryOnTie": false,
+  "winCondition": "The game ends immediately when one player (or team in the 4-player game) has placed all of its Control Markers on locations (green knotwork hexes); that side wins. In the extremely rare case both players hold only Royal Coins with empty supplies, the game is a draw.",
+  "endCondition": {
+    "type": "objective",
+    "target": 6,
+    "description": "First to place all Control Markers (6 per player in 2-player; each player starts with 2 on starting locations)"
+  },
+  "notes": "family: area-majority (control of hex locations; no points). No point scoring. 4-player team game reportedly uses shared team markers (one summary says 8 per team) and was not verified against the official rulebook; scorers should tick the winner only. Official publisher rulebook PDF could not be retrieved; rules taken from Yucata's and RulesPal's rule text.",
+  "sources": [
+    {
+      "url": "https://www.yucata.de/en/Rules/WarChest",
+      "title": "War Chest rules (Yucata)",
+      "type": "other",
+      "section": "Game end / winning; draw"
+    },
+    {
+      "url": "https://www.rulespal.com/war-chest/rulebook",
+      "title": "War Chest rulebook summary (RulesPal)",
+      "type": "other",
+      "section": "Victory condition; 4-player teams"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

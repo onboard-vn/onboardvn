@@ -1,0 +1,276 @@
+{
+  "slug": "cartographers",
+  "name": "Cartographers",
+  "bggId": 263918,
+  "year": 2019,
+  "templateVersion": 2,
+  "variant": "base",
+  "playerCount": {
+    "min": 2,
+    "max": 100
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "rounds",
+  "categories": [
+    {
+      "key": "springEdictA",
+      "label": "Spring edict A",
+      "labelVi": "Xuân: sắc lệnh A",
+      "hint": "Enter this season’s points for the assigned scoring card.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "springEdictB",
+      "label": "Spring edict B",
+      "labelVi": "Xuân: sắc lệnh B",
+      "hint": "Enter this season’s points for the assigned scoring card.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "springCoins",
+      "label": "Spring coins",
+      "labelVi": "Xuân: xu",
+      "hint": "All filled coin symbols at this season end.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "springMonsters",
+      "label": "Spring monster-adjacent empty spaces",
+      "labelVi": "Xuân: ô trống cạnh quái vật",
+      "hint": "Count each empty orthogonally adjacent space once.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "summerEdictB",
+      "label": "Summer edict B",
+      "labelVi": "Hạ: sắc lệnh B",
+      "hint": "Enter this season’s points for the assigned scoring card.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "summerEdictC",
+      "label": "Summer edict C",
+      "labelVi": "Hạ: sắc lệnh C",
+      "hint": "Enter this season’s points for the assigned scoring card.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "summerCoins",
+      "label": "Summer coins",
+      "labelVi": "Hạ: xu",
+      "hint": "All filled coin symbols at this season end.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "summerMonsters",
+      "label": "Summer monster-adjacent empty spaces",
+      "labelVi": "Hạ: ô trống cạnh quái vật",
+      "hint": "Count each empty orthogonally adjacent space once.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "fallEdictC",
+      "label": "Fall edict C",
+      "labelVi": "Thu: sắc lệnh C",
+      "hint": "Enter this season’s points for the assigned scoring card.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "fallEdictD",
+      "label": "Fall edict D",
+      "labelVi": "Thu: sắc lệnh D",
+      "hint": "Enter this season’s points for the assigned scoring card.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "fallCoins",
+      "label": "Fall coins",
+      "labelVi": "Thu: xu",
+      "hint": "All filled coin symbols at this season end.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "fallMonsters",
+      "label": "Fall monster-adjacent empty spaces",
+      "labelVi": "Thu: ô trống cạnh quái vật",
+      "hint": "Count each empty orthogonally adjacent space once.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "winterEdictD",
+      "label": "Winter edict D",
+      "labelVi": "Đông: sắc lệnh D",
+      "hint": "Enter this season’s points for the assigned scoring card.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "winterEdictA",
+      "label": "Winter edict A",
+      "labelVi": "Đông: sắc lệnh A",
+      "hint": "Enter this season’s points for the assigned scoring card.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "winterCoins",
+      "label": "Winter coins",
+      "labelVi": "Đông: xu",
+      "hint": "All filled coin symbols at this season end.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "winterMonsters",
+      "label": "Winter monster-adjacent empty spaces",
+      "labelVi": "Đông: ô trống cạnh quái vật",
+      "hint": "Count each empty orthogonally adjacent space once.",
+      "scope": "player",
+      "input": "count",
+      "formula": {
+        "type": "multiply",
+        "points": -1
+      },
+      "countsToTotal": true,
+      "min": 0
+    },
+    {
+      "key": "monsterLoss",
+      "label": "Total monster penalties",
+      "labelVi": "Tổng điểm phạt quái vật",
+      "hint": "Calculated across all seasons.",
+      "scope": "player",
+      "input": "number",
+      "formula": {
+        "type": "expr",
+        "expr": "0 - cat_springMonsters - cat_summerMonsters - cat_fallMonsters - cat_winterMonsters"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://wobgames.net/download/cartographers-rollplayertale-rulebook-english.pdf",
+      "title": "Thunderworks Cartographers rulebook",
+      "type": "official-rulebook",
+      "section": "Printed pp.8–9 end of season/game; pp.10–11 scoring cards"
+    },
+    {
+      "url": "https://rules.dized.com/game/wZDAsR8KQNKOu2HOO0wn2A/faq",
+      "title": "Publisher-verified Dized Cartographers FAQ",
+      "type": "other",
+      "section": "Coins; monster terrain; final score; ties"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false,
+  "tiebreakers": [
+    {
+      "categoryKey": "monsterLoss",
+      "dir": "lowest",
+      "description": "Fewest reputation stars lost to monsters across all seasons; remaining ties share victory."
+    }
+  ],
+  "sharedVictoryOnTie": true,
+  "rounds": {
+    "count": 4,
+    "aggregate": "sum",
+    "endCondition": "Spring, summer, fall, winter."
+  },
+  "notes": "family: flip-write. Transcribe the eight edict scores from the map sheet; evaluate assigned scoring cards separately each season. Coin totals and monster penalties recur each season. Multiplayer base only; no fixed player ceiling in rules (100 is included map-sheet supply, not a hard limit). Solo subtracts the four scoring-card difficulty values and awards a title; not modelled."
+}
