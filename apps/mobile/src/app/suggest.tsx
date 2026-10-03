@@ -28,7 +28,7 @@ import {
   type Source,
   type SuggestChoice,
 } from '../features/suggest/sources';
-import { locateProvinceCode } from '../features/location/nearest-province';
+import { DEFAULT_PROVINCE_CODE, locateProvinceCode } from '../features/location/nearest-province';
 import { TypeAhead } from '../features/type-ahead';
 import { useFetch } from '../features/use-fetch';
 import { Card, Chip, Hint } from '../ui/primitives';
@@ -156,7 +156,9 @@ export default function SuggestScreen() {
     setLocating(true);
     void (user?.provinceCode ? Promise.resolve(user.provinceCode) : locateProvinceCode())
       .then((code) => {
-        const home = provinceList.find((p) => p.code === code);
+        const home =
+          provinceList.find((p) => p.code === code) ??
+          provinceList.find((p) => p.code === DEFAULT_PROVINCE_CODE);
         if (!home) return;
         setProvinceText(home.name);
         setChoice((c) =>

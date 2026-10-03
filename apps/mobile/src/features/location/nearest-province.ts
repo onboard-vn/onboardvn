@@ -1,4 +1,4 @@
-/** Pre-2025 provincial capitals mapped to the post-merger province code, as [code, lat, lng]. */
+/** Pre-2025 provincial capitals mapped to the post-merger province code, as [code, lat, lng]; the first entry per code is the current capital. */
 const CAPITALS: [string, number, number][] = [
   ['01', 21.03, 105.85],
   ['04', 22.67, 106.26],
@@ -7,8 +7,8 @@ const CAPITALS: [string, number, number][] = [
   ['11', 21.39, 103.02],
   ['12', 22.4, 103.46],
   ['14', 21.33, 103.91],
-  ['15', 22.49, 103.97],
   ['15', 21.72, 104.91],
+  ['15', 22.49, 103.97],
   ['19', 21.59, 105.85],
   ['19', 22.15, 105.83],
   ['20', 21.85, 106.76],
@@ -20,8 +20,8 @@ const CAPITALS: [string, number, number][] = [
   ['25', 20.81, 105.34],
   ['31', 20.86, 106.68],
   ['31', 20.94, 106.33],
-  ['33', 20.65, 106.05],
   ['33', 20.45, 106.34],
+  ['33', 20.65, 106.05],
   ['37', 20.25, 105.97],
   ['37', 20.54, 105.91],
   ['37', 20.42, 106.17],
@@ -35,8 +35,8 @@ const CAPITALS: [string, number, number][] = [
   ['48', 15.57, 108.47],
   ['51', 15.12, 108.8],
   ['51', 14.35, 108.0],
-  ['52', 13.98, 108.0],
   ['52', 13.78, 109.22],
+  ['52', 13.98, 108.0],
   ['56', 12.24, 109.19],
   ['56', 11.56, 108.99],
   ['66', 12.67, 108.04],
@@ -98,4 +98,12 @@ export function locateProvinceCode(): Promise<string | null> {
       { maximumAge: 24 * 60 * 60 * 1000, timeout: 10000 },
     ),
   );
+}
+
+export const DEFAULT_PROVINCE_CODE = '01';
+
+/** Current provincial capital as [lng, lat], for centring a map on a province. */
+export function provinceCenter(code: string | undefined): [number, number] | null {
+  const capital = CAPITALS.find((c) => c[0] === code);
+  return capital ? [capital[2], capital[1]] : null;
 }

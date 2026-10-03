@@ -7,7 +7,13 @@ import { VENUE_TYPE_LABELS } from '../cafes/labels';
 const pinUrl = (pin: CafeMapPinDto) =>
   `https://www.google.com/maps/search/?api=1&query=${pin.lat},${pin.lng}`;
 
-export function CafeMap({ pins }: { pins: CafeMapPinDto[]; fitToPins?: boolean }) {
+export function CafeMap({
+  pins,
+}: {
+  pins: CafeMapPinDto[];
+  fitToPins?: boolean;
+  center?: [number, number];
+}) {
   return (
     <View style={styles.list}>
       {pins.map((pin) => (

@@ -8,7 +8,7 @@ import type {
   VenueType,
 } from '@onboard/shared';
 import { Link, Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { api } from '../../api/client';
 import { Button, Chip, Heading, Hint } from '../../ui/primitives';
@@ -19,13 +19,23 @@ import { VENUE_TYPE_LABELS } from '../cafes/labels';
 import { errorMessage } from '../errors';
 import { inputStyle } from '../search-input';
 import { TypeAhead } from '../type-ahead';
+import { useSession } from '../../auth/session';
+import {
+  DEFAULT_PROVINCE_CODE,
+  locateProvinceCode,
+  provinceCenter,
+} from '../location/nearest-province';
+import { readStored, writeStored } from '../shelf/local-storage';
 import { CafeMap } from './cafe-map';
+
 import {
   mapFiltersToParams,
   mapFiltersToQuery,
   parseMapSearchParams,
   type MapFilterValues,
 } from './filters';
+
+const PROVINCE_KEY = 'onboard.map.province';
 
 type Criterion = 'byog' | 'food' | 'free' | 'openNow';
 
@@ -70,6 +80,8 @@ export function MapScreen() {
   const [showList, setShowList] = useState(false);
   const [provinceText, setProvinceText] = useState('');
   const [seeded, setSeeded] = useState(false);
+  const locatedRef = useRef(false);
+  const { user, loading: sessionLoading } = useSession();
   const [gameQuery, setGameQuery] = useState('');
   const [gameResults, setGameResults] = useState<GameSummaryDto[]>([]);
   const [gameError, setGameError] = useState<string | null>(null);
@@ -77,10 +89,13 @@ export function MapScreen() {
 
   const provinces = useLoad(() => api<ProvinceListResponse>('/locations/provinces'), []);
   const query = useMemo(() => mapFiltersToQuery(filters), [filters]);
-  const pins = useLoad(() => api<CafeMapPinDto[]>('/cafes/map', { query }), [query]);
+  const pins = useLoad(
+    filters.province ? () => api<CafeMapPinDto[]>('/cafes/map', { query }) : null,
+    [query],
+  );
   const listQuery = useMemo(() => {
     const { gameSlug, ...rest } = query;
-    return gameSlug ? null : { ...rest, pageSize: '50' };
+    return gameSlug || !rest.province ? null : { ...rest, pageSize: '50' };
   }, [query]);
   const cafes = useLoad(
     listQuery ? () => api<CafeListResponse>('/cafes', { query: listQuery }) : null,
@@ -113,6 +128,29 @@ export function MapScreen() {
     );
   };
 
+  const provinceList = provinces.data?.items;
+  const needsProvince = !filters.province && !!provinceList && !sessionLoading;
+  useEffect(() => {
+    if (!needsProvince || !provinceList || locatedRef.current) return;
+    locatedRef.current = true;
+    const saved = provinceList.find((p) => p.slug === readStored(PROVINCE_KEY));
+    void (
+      saved
+        ? Promise.resolve(saved.code)
+        : user?.provinceCode
+          ? Promise.resolve(user.provinceCode)
+          : locateProvinceCode()
+    ).then((code) => {
+      const home =
+        provinceList.find((p) => p.code === code) ??
+        provinceList.find((p) => p.code === DEFAULT_PROVINCE_CODE);
+      if (!home) return;
+      setProvinceText(home.name);
+      apply({ ...filters, province: home.slug });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [needsProvince]);
+
   const searchGames = async () => {
     const q = gameQuery.trim();
     if (!q) {
@@ -129,7 +167,9 @@ export function MapScreen() {
   };
 
   const pinItems = pins.data ?? [];
-  const fitToPins = Boolean(filters.province);
+  const fitToPins = pinItems.length > 0;
+  const center =
+    provinceCenter(provinceList?.find((p) => p.slug === filters.province)?.code) ?? undefined;
 
   const panel = (
     <View style={styles.panel}>
@@ -138,11 +178,15 @@ export function MapScreen() {
       {provinceOptions.length > 0 ? (
         <TypeAhead
           label="Tỉnh/thành"
-          placeholder="Tất cả"
+          placeholder="Gõ để tìm tỉnh/thành..."
           options={provinceOptions}
           text={provinceText}
           onTextChange={setProvinceText}
-          onSelect={(province) => apply({ ...filters, province })}
+          onSelect={(province) => {
+            if (!province) return;
+            writeStored(PROVINCE_KEY, province);
+            apply({ ...filters, province });
+          }}
         />
       ) : null}
 
@@ -275,7 +319,7 @@ export function MapScreen() {
             {panel}
           </ScrollView>
           <View style={styles.mapBox}>
-            <CafeMap pins={pinItems} fitToPins={fitToPins} />
+            <CafeMap pins={pinItems} fitToPins={fitToPins} center={center} />
           </View>
         </View>
       ) : (
@@ -283,7 +327,7 @@ export function MapScreen() {
           {panel}
           {showList ? null : (
             <View style={styles.mapBoxNarrow}>
-              <CafeMap pins={pinItems} fitToPins={fitToPins} />
+              <CafeMap pins={pinItems} fitToPins={fitToPins} center={center} />
             </View>
           )}
         </ScrollView>
