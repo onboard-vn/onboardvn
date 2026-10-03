@@ -105,6 +105,12 @@ importers:
       '@expo/metro-runtime':
         specifier: ^57.0.16
         version: 57.0.16(@expo/log-box@57.0.4)(expo@57.0.26)(react-dom@19.2.3(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.87.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.18)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)
+      '@googlemaps/js-api-loader':
+        specifier: ^2.1.3
+        version: 2.1.3
+      '@googlemaps/markerclusterer':
+        specifier: ^2.6.2
+        version: 2.6.2
       '@onboard/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -163,6 +169,9 @@ importers:
       '@onboard/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@types/google.maps':
+        specifier: ^3.66.5
+        version: 3.66.5
       '@types/qrcode':
         specifier: ^1.5.6
         version: 1.5.6
@@ -1540,6 +1549,12 @@ packages:
   '@floating-ui/utils@0.2.12':
     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
 
+  '@googlemaps/js-api-loader@2.1.3':
+    resolution: {integrity: sha512-1t6umwRufEGzIPjHPjPeuuY1dCal0zU2bZeomkf4OA0MprFdlKCnXY3zeFkzDaCvKjwbFubeapm61P5+EbrAoA==}
+
+  '@googlemaps/markerclusterer@2.6.2':
+    resolution: {integrity: sha512-U6uVhq8iWhiIckA89sgRu8OK35mjd6/3CuoZKWakKEf0QmRRWpatlsPb3kqXkoWSmbcZkopRiI4dnW6DQSd7bQ==}
+
   '@hono/node-server@2.1.1':
     resolution: {integrity: sha512-ELuehkj5VCBdgEw9zs+ivkKwyzzUCSQuE96YmiPvn1ECBoZCczbFXJLeEGMTYjphP6gydh4pHMqEYPVMYUVgQg==}
     engines: {node: '>=20'}
@@ -2512,6 +2527,12 @@ packages:
   '@types/geojson@7946.0.16':
     resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
 
+  '@types/google.maps@3.66.4':
+    resolution: {integrity: sha512-t01LM0VeIsUOZWno7ABUv4XL82RalnhRGaTzWykPUtQ+hHT39vsIekeU+roqEaibwebpYIjS7dslx51HwG95nw==}
+
+  '@types/google.maps@3.66.5':
+    resolution: {integrity: sha512-z7wMLjozUDNC6SYoxvnsh4RvbFQoiqgjHmfcOWKCjKiLklAKV32jvywuBvJRfpThJZn4TonyoeJc/3t9RlVnWQ==}
+
   '@types/istanbul-lib-coverage@2.0.6':
     resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}
 
@@ -2552,6 +2573,9 @@ packages:
 
   '@types/react@19.3.0':
     resolution: {integrity: sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==}
+
+  '@types/supercluster@7.1.3':
+    resolution: {integrity: sha512-Z0pOY34GDFl3Q6hUFYf3HkTwKEE02e7QgtJppBt+beEAxnyOpJua+voGFvxINBHa06GwLFFym7gRPY2SiKIfIA==}
 
   '@types/validate-npm-package-name@4.0.2':
     resolution: {integrity: sha512-lrpDziQipxCEeK5kWxvljWYhUvOiB2A9izZd9B2AFarYAkqZshb4lPbRs7zKEic6eGtH8V/2qJW+dPp9OtF6bw==}
@@ -4042,6 +4066,10 @@ packages:
 
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
+
+  fast-equals@5.4.3:
+    resolution: {integrity: sha512-8unmvA0qrfpFWBYUate9BTGtQdKHWBYt+KdAIkag7Vvxe7wz8Q2nJg7fLMC0bJqe0bjP31kca7Ckaawrs4Istg==}
+    engines: {node: '>=6.0.0'}
 
   fast-glob@3.3.1:
     resolution: {integrity: sha512-kNFPyjhh5cKjrUltxs+wFx+ZkbRaxxmZ+X0ZU31SOsxCEtP9VPgtq2teZw1DebupL5GmDaNQ6yKMMVcM41iqDg==}
@@ -6331,6 +6359,9 @@ packages:
   styleq@0.1.3:
     resolution: {integrity: sha512-3ZUifmCDCQanjeej1f6kyl/BeP/Vae5EYkQ9iJfUm/QwZvlgnZzyflqAsAWYURdtea8Vkvswu2GrC57h3qffcA==}
 
+  supercluster@8.0.1:
+    resolution: {integrity: sha512-IiOea5kJ9iqzD2t7QJq/cREyLHTtSmUT6gQsweojg9WH2sYJqZK9SswTu6jrscO6D1G5v5vYZ9ru/eq85lXeZQ==}
+
   supports-color@5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
     engines: {node: '>=4'}
@@ -8187,6 +8218,16 @@ snapshots:
 
   '@floating-ui/utils@0.2.12': {}
 
+  '@googlemaps/js-api-loader@2.1.3':
+    dependencies:
+      '@types/google.maps': 3.66.4
+
+  '@googlemaps/markerclusterer@2.6.2':
+    dependencies:
+      '@types/supercluster': 7.1.3
+      fast-equals: 5.4.3
+      supercluster: 8.0.1
+
   '@hono/node-server@2.1.1(hono@4.13.9)':
     dependencies:
       hono: 4.13.9
@@ -9049,6 +9090,10 @@ snapshots:
 
   '@types/geojson@7946.0.16': {}
 
+  '@types/google.maps@3.66.4': {}
+
+  '@types/google.maps@3.66.5': {}
+
   '@types/istanbul-lib-coverage@2.0.6': {}
 
   '@types/istanbul-lib-report@3.0.3':
@@ -9101,6 +9146,10 @@ snapshots:
   '@types/react@19.3.0':
     dependencies:
       csstype: 3.2.3
+
+  '@types/supercluster@7.1.3':
+    dependencies:
+      '@types/geojson': 7946.0.16
 
   '@types/validate-npm-package-name@4.0.2': {}
 
@@ -10792,6 +10841,8 @@ snapshots:
   fast-copy@4.1.1: {}
 
   fast-deep-equal@3.1.3: {}
+
+  fast-equals@5.4.3: {}
 
   fast-glob@3.3.1:
     dependencies:
@@ -13484,6 +13535,10 @@ snapshots:
       '@babel/core': 7.29.7(supports-color@8.1.1)
 
   styleq@0.1.3: {}
+
+  supercluster@8.0.1:
+    dependencies:
+      kdbush: 4.1.0
 
   supports-color@5.5.0:
     dependencies:
