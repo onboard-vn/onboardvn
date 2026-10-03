@@ -1,5 +1,5 @@
 import type { CafeMapPinDto } from '@onboard/shared';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import {
   GeoJSONSource,
   LngLatBounds,
@@ -189,11 +189,8 @@ export function CafeMap({
     return (
       <View style={styles.unsupported}>
         <Text style={styles.unsupportedText}>
-          Trình duyệt của bạn không hỗ trợ WebGL nên không hiển thị được bản đồ. Hãy dùng{' '}
-          <Link href="/cafes" style={styles.link}>
-            danh sách địa điểm chơi
-          </Link>{' '}
-          thay thế.
+          Trình duyệt của bạn không hỗ trợ WebGL nên không hiển thị được bản đồ. Hãy dùng danh sách
+          quán (nút &quot;Xem danh sách&quot;) thay thế.
         </Text>
       </View>
     );
@@ -212,5 +209,4 @@ export function CafeMap({
 const styles = StyleSheet.create({
   unsupported: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
   unsupportedText: { color: colors.muted, textAlign: 'center', fontSize: 14 },
-  link: { color: colors.primary, textDecorationLine: 'underline' },
 });

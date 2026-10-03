@@ -99,4 +99,4 @@ UI decisions: single "TRÁO BÀI" button that becomes "TRÁO LẠI"; result show
 ### Owner changes (2026-10-03 11:10)
 
 - `/suggest`: no "Toàn quốc" chip; default source "Cùng thành phố" with province from saved choice → profile → browser location (nearest capital, owner kept this over polygon lookup); choice remembered in localStorage.
-- Header: "Địa điểm chơi" removed, "Bản đồ" kept; `/cafes` redirects to `/map` (legacy `tinh` → `province`), `/cafes/:slug` unchanged; home shortcut points to `/map`.
+- Header: "Địa điểm chơi" removed, "Bản đồ" kept; `/cafes` redirects to `/map` (legacy `tinh` → `province`), `/cafes/:slug` unchanged; home shortcut points to `/map`. Map list view (sidebar on desktop, "Xem danh sách" on phone) now uses `GET /api/cafes` so cafés without a pin still show; with a game filter it falls back to the pin list (café list API has no game filter).

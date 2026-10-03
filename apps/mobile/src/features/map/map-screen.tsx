@@ -1,4 +1,5 @@
 import type {
+  CafeListResponse,
   CafeMapPinDto,
   GameDetailDto,
   GameListResponse,
@@ -13,6 +14,7 @@ import { api } from '../../api/client';
 import { Button, Chip, Heading, Hint } from '../../ui/primitives';
 import { useLoad } from '../../ui/use-load';
 import { colors, radius, space } from '../../ui/theme';
+import { CafeCard } from '../cafe-card';
 import { VENUE_TYPE_LABELS } from '../cafes/labels';
 import { errorMessage } from '../errors';
 import { inputStyle } from '../search-input';
@@ -76,6 +78,14 @@ export function MapScreen() {
   const provinces = useLoad(() => api<ProvinceListResponse>('/locations/provinces'), []);
   const query = useMemo(() => mapFiltersToQuery(filters), [filters]);
   const pins = useLoad(() => api<CafeMapPinDto[]>('/cafes/map', { query }), [query]);
+  const listQuery = useMemo(() => {
+    const { gameSlug, ...rest } = query;
+    return gameSlug ? null : { ...rest, pageSize: '50' };
+  }, [query]);
+  const cafes = useLoad(
+    listQuery ? () => api<CafeListResponse>('/cafes', { query: listQuery }) : null,
+    [listQuery],
+  );
   const initialGame = useLoad(
     filters.gameSlug && !pickedGame
       ? () => api<GameDetailDto>(`/games/${encodeURIComponent(filters.gameSlug!)}`)
@@ -230,18 +240,28 @@ export function MapScreen() {
       {pinItems.length === 0 && !pins.loading && !pins.error ? (
         <Hint>
           Chưa có quán nào được ghim trên bản đồ với bộ lọc này. Đội ngũ và chủ quán đang ghim dần
-          vị trí — thử bỏ bớt bộ lọc hoặc xem{' '}
-          <Link href="/cafes" style={styles.inlineLink}>
-            danh sách địa điểm chơi
-          </Link>
-          .
+          vị trí — danh sách quán vẫn có cả quán chưa ghim.
         </Hint>
       ) : null}
-      {pinItems.length > 0 && (wide || showList) ? (
-        <View style={styles.field}>
-          <Text style={styles.label}>Danh sách quán ({pinItems.length})</Text>
-          <PinList pins={pinItems} />
-        </View>
+      {wide || showList ? (
+        listQuery ? (
+          <View style={styles.field}>
+            <Text style={styles.label}>
+              Danh sách quán{cafes.data ? ` (${cafes.data.total})` : ''}
+            </Text>
+            {cafes.loading ? <Hint>Đang tải…</Hint> : null}
+            {cafes.error ? <Text style={styles.error}>Không tải được danh sách quán.</Text> : null}
+            {cafes.data?.items.length === 0 ? <Hint>Không có quán nào khớp bộ lọc.</Hint> : null}
+            {cafes.data?.items.map((c) => (
+              <CafeCard key={c.id} cafe={c} />
+            ))}
+          </View>
+        ) : pinItems.length > 0 ? (
+          <View style={styles.field}>
+            <Text style={styles.label}>Quán có game này ({pinItems.length})</Text>
+            <PinList pins={pinItems} />
+          </View>
+        ) : null
       ) : null}
     </View>
   );
@@ -299,7 +319,6 @@ const styles = StyleSheet.create({
   clear: { color: colors.muted, fontSize: 12 },
   result: { color: colors.primary, paddingVertical: 4 },
   error: { color: colors.danger, fontSize: 13 },
-  inlineLink: { color: colors.primary, textDecorationLine: 'underline' },
   pinList: { gap: space.sm },
   pin: {
     borderWidth: 1,
