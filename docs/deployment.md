@@ -114,7 +114,7 @@ rsync -a --delete apps/mobile/dist/ vps:Code/onboardvn/deploy/mobile-web/
 ssh vps 'cd ~/Code/onboardvn && docker compose -p onboard --env-file .env.prod -f compose.prod.yml -f compose.vps.yml restart caddy'
 ```
 
-**Bản đồ:** `/map` dùng MapLibre + OpenFreeMap (miễn phí, không cần key). Google Maps Platform không dùng được với tài khoản thanh toán Việt Nam (Việt Nam nằm trong danh sách vùng bị cấm của Google từ 03/2022); nút "Chỉ đường" mở Google Maps bằng link thường nên không bị ảnh hưởng.
+**Bản đồ:** `/map` dùng MapLibre + OpenFreeMap (miễn phí, không cần key). Google Maps Platform không dùng được với tài khoản thanh toán Việt Nam (Việt Nam nằm trong danh sách vùng bị cấm của Google từ 03/2022); nút "Chỉ đường" mở Google Maps bằng link thường nên không bị ảnh hưởng. Chi tiết: [location-and-map/decisions.md](location-and-map/decisions.md).
 
 `deploy/mobile-web/` bị gitignore. Restart caddy là bắt buộc khi đổi `deploy/Caddyfile` bằng `scp` (bind mount giữ inode cũ). Rollback về Next.js: khôi phục khối `handle { reverse_proxy web:3000 }` trong `deploy/Caddyfile` từ git history và `docker compose … up -d web caddy`.
 

@@ -21,7 +21,7 @@ Từ 2026-10-02 website là bản web của `apps/mobile` (Caddy phục vụ fil
 - `GET /api/suggest` trả "chồng bài" tối đa 150 game đã xáo, mỗi game kèm độ hiếm (5 bậc theo số quán có game, game nặng tăng 1 bậc) và `cafeCount`.
 - Nguồn: `shelf`, `wishlist` (cần đăng nhập), `cafe` (`cafeId`), `province`/`city` (`provinceCode`), `club` (`clubId`, phải là thành viên), `friends`, `all` (API còn giữ, UI không hiện).
 - Quyền riêng tư: `club` chỉ tính tủ của thành viên bật `users.club_shelf_suggest` (mặc định bật); `friends` chỉ tính bạn có hồ sơ `public`/`friends`; `city` tính quán trong tỉnh + người dùng đặt `users.province_code` và hồ sơ `public`. Người chặn nhau (hai chiều) bị loại. Ba nguồn này trả `owners` (≤5, không gồm người gọi) + `ownerCount`.
-- UI mặc định nguồn `city`; tỉnh lấy theo thứ tự: lựa chọn đã lưu (localStorage `onboard.suggest.choice`) → `users.province_code` → geolocation trình duyệt, đổi ra tỉnh gần nhất theo bảng thủ phủ trước/sau sáp nhập (`features/location/nearest-province.ts`).
+- UI mặc định nguồn `city` và luôn có một tỉnh cụ thể (thứ tự chọn và lý do: [location-and-map](location-and-map/README.md)).
 - Client tự rút 5 lá từ chồng, tráo/chia kiểu poker và lật bằng `Animated`; âm thanh qua Web Audio (chỉ web).
 
 ## Club, danh tính, ván chơi, đồng bộ club ngoài
