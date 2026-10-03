@@ -7,4 +7,3 @@ allowBuilds:
   unrs-resolver: true
 minimumReleaseAgeExclude:
   - hono@4.13.9
-  - '@types/google.maps@3.66.5'
