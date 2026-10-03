@@ -10,7 +10,9 @@ import {
   SmallButton,
 } from '../../../features/admin/ui';
 import { useLoad } from '../../../ui/use-load';
+import { Text } from 'react-native';
 import { Button } from '../../../ui/primitives';
+import { colors } from '../../../ui/theme';
 
 const load = () => api<CafeMaintainerListResponse>('/cafes/manage', { query: { pageSize: 50 } });
 
@@ -18,6 +20,7 @@ export default function AdminCafesPage() {
   const router = useRouter();
   const list = useLoad(load, []);
   const { data } = list;
+  const unpinned = data?.items.filter((c) => c.lat === null || c.lng === null).length ?? 0;
 
   return (
     <AdminPage
@@ -25,13 +28,25 @@ export default function AdminCafesPage() {
       action={<Button label="Thêm quán" onPress={() => router.push('/admin/cafes/new')} />}
     >
       <LoadState loading={list.loading && !data} error={list.error} onRetry={list.reload} />
+      {unpinned > 0 ? (
+        <Text
+          style={{
+            color: colors.warn,
+            backgroundColor: colors.warnSoft,
+            padding: 12,
+            borderRadius: 10,
+          }}
+        >
+          ⚠ {unpinned} quán chưa ghim vị trí nên không hiện trên bản đồ (chỉ có trong danh sách).
+        </Text>
+      ) : null}
       {data ? (
         <ListCard>
           {data.items.map((cafe) => (
             <Row
               key={cafe.id}
               title={cafe.name}
-              subtitle={`${cafe.wardName}, ${cafe.provinceName} · ${cafe.gameCount} game`}
+              subtitle={`${cafe.wardName}, ${cafe.provinceName} · ${cafe.gameCount} game${cafe.lat === null || cafe.lng === null ? ' · ⚠ Chưa ghim vị trí' : ''}`}
               right={
                 <>
                   <SmallButton

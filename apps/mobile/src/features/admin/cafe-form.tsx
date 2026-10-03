@@ -10,10 +10,10 @@ import type {
 } from '@onboard/shared';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { api } from '../../api/client';
 import { Button } from '../../ui/primitives';
-import { space } from '../../ui/theme';
+import { colors, space } from '../../ui/theme';
 import { FEE_MODEL_LABELS, VENUE_TYPE_LABELS } from '../cafes/labels';
 import { errorMessage } from '../errors';
 import { AmenitiesFields } from './amenities-fields';
@@ -154,6 +154,18 @@ export function CafeForm({
         onChangeText={(legacyDistrict) => patch({ legacyDistrict })}
       />
 
+      {v.lat === null || v.lng === null ? (
+        <Text
+          style={{
+            color: colors.warn,
+            backgroundColor: colors.warnSoft,
+            padding: 12,
+            borderRadius: 10,
+          }}
+        >
+          ⚠ Quán chưa ghim vị trí nên không hiện trên bản đồ. Ghim vị trí bên dưới.
+        </Text>
+      ) : null}
       <PinEditor lat={v.lat} lng={v.lng} onChange={(lat, lng) => patch({ lat, lng })} />
 
       <PickerField
