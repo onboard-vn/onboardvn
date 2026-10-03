@@ -25,3 +25,10 @@ Supersedes [onboardvn-main-20261002-1815.md](onboardvn-main-20261002-1815.md) fo
 - Run Expo web: `cd apps/mobile && EXPO_PUBLIC_API_URL=http://localhost:8787 pnpm exec expo start --web --port 8081` (dev routes have no `/app` prefix; do not set `CI=1`, it disables reload).
 - Production-like check: `pnpm --filter @onboard/mobile export:web`, then run `caddy:2-alpine` with `deploy/Caddyfile` (replace `api:8787` with `host.docker.internal:8787`) mounting `apps/mobile/dist` at `/srv/mobile-web`, port 8081 (auth trusted origin is `http://localhost:8081`).
 - Codex image generation quota resets 2026-10-04; ChatGPT in the owner's Chrome works for image edits (downloads land in `~/Downloads/.com.google.Chrome.*` temp files pending confirmation).
+
+## Google Maps (2026-10-03 12:35)
+
+- Google Cloud project **OnBoardVN Maps** (`local-cedar-510505-p0`), billing account **OnBoardVN Maps** (`01688E-371C2C-1526D7`). Console's "Set up account to enable Maps API" dialog loops (account treated as India); the API was enabled from Cloud Shell instead (`gcloud services enable maps-backend.googleapis.com`).
+- API key **onboardvn web map**: restricted to Maps JavaScript API and referrers `https://onboard.j2teamnnl.com/*`, `http://localhost:8081/*`. Daily cap `maps-backend.googleapis.com/billable_default` = 330/day (≈10k free/month).
+- Cleanup: closed billing accounts "Onboard" (unlinked from Nam Long) and "My Billing Account 2"; deleted extra project `optimum-phalanx-510505-a1` (undeletable for 30 days). Kept "My Billing Account 1" (Gemini project).
+- Pending: key must be put in `apps/mobile/.env.local` as `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` (agent is blocked from writing `.env*`), then `export:web` + rsync to deploy.
