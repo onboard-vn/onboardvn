@@ -18,7 +18,6 @@ interface NavItem {
 export function navItems(user: MeUser | null): NavItem[] {
   const items: NavItem[] = [
     { href: '/games', label: 'Game' },
-    { href: '/cafes', label: 'Địa điểm chơi' },
     { href: '/map', label: 'Bản đồ' },
     { href: '/events', label: 'Kèo' },
     { href: '/suggest', label: 'Hôm nay chơi gì?' },

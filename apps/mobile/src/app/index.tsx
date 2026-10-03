@@ -21,9 +21,9 @@ import { useLoad } from '../ui/use-load';
 
 const SHORTCUTS: { href: Href; title: string; body: string; tint: string; mark: string }[] = [
   {
-    href: '/cafes',
+    href: '/map',
     title: 'Địa điểm chơi',
-    body: 'Quán, tủ game và giờ mở cửa.',
+    body: 'Bản đồ quán, tủ game và giờ mở cửa.',
     tint: colors.primarySoft,
     mark: 'Q',
   },

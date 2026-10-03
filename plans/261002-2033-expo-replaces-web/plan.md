@@ -95,3 +95,8 @@ UI decisions: single "TRÁO BÀI" button that becomes "TRÁO LẠI"; result show
 - Admin café edit keeps stored links it does not edit (zalo, instagram, tiktok, website).
 - Docs: architecture (Expo is the site, `/suggest` rules), deployment diagram, references (sound credits, also on `/credits`).
 - Repo-wide lint/typecheck/test green (shared 676, api 406, web 82, mobile 130), prettier clean, `export:web` 4.7 MB.
+
+### Owner changes (2026-10-03 11:10)
+
+- `/suggest`: no "Toàn quốc" chip; default source "Cùng thành phố" with province from saved choice → profile → browser location (nearest capital, owner kept this over polygon lookup); choice remembered in localStorage.
+- Header: "Địa điểm chơi" removed, "Bản đồ" kept; `/cafes` redirects to `/map` (legacy `tinh` → `province`), `/cafes/:slug` unchanged; home shortcut points to `/map`.

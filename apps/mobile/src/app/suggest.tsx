@@ -23,16 +23,19 @@ import {
   SOURCES,
   buildSuggestQuery,
   initialChoice,
+  parseSavedChoice,
   poolLabel,
   type Source,
   type SuggestChoice,
 } from '../features/suggest/sources';
+import { locateProvinceCode } from '../features/location/nearest-province';
 import { TypeAhead } from '../features/type-ahead';
 import { useFetch } from '../features/use-fetch';
 import { Card, Chip, Hint } from '../ui/primitives';
 import { colors, radius, space } from '../ui/theme';
 
 const MUTED_KEY = 'onboard.suggest.muted';
+const CHOICE_KEY = 'onboard.suggest.choice';
 
 type Pool =
   | { kind: 'none' }
@@ -85,11 +88,15 @@ function Step({ children }: { children: string }) {
 }
 
 export default function SuggestScreen() {
-  const { user } = useSession();
+  const { user, loading: sessionLoading } = useSession();
   const provinces = useFetch(loadProvinces);
   const provinceList = useMemo(() => provinces.data?.items ?? [], [provinces.data]);
-  const [choice, setChoice] = useState<SuggestChoice>(initialChoice);
-  const [provinceText, setProvinceText] = useState('');
+  const [choice, setChoice] = useState<SuggestChoice>(
+    () => parseSavedChoice(readStored(CHOICE_KEY)) ?? initialChoice(),
+  );
+  const [provinceText, setProvinceText] = useState(() => choice.province?.name ?? '');
+  const [locating, setLocating] = useState(false);
+  const locatedRef = useRef(false);
   const [fetched, setFetched] = useState<Fetched | null>(null);
   const [run, setRun] = useState(0);
   const [hand, setHand] = useState<SuggestPoolItemDto[]>([]);
@@ -133,18 +140,33 @@ export default function SuggestScreen() {
     setRun(0);
     setPhase(null);
     setResult(null);
-    setChoice((c) => ({ ...c, ...next }));
+    const merged = { ...choice, ...next };
+    setChoice(merged);
+    writeStored(CHOICE_KEY, JSON.stringify(merged));
   };
   const pickSource = (source: Source) => {
-    if (source === choice.source) return;
-    const home = provinceList.find((p) => p.code === user?.provinceCode);
-    if (source === 'city' && !choice.province && home) {
-      setProvinceText(home.name);
-      patch({ source, province: { code: home.code, name: home.name } });
-      return;
-    }
-    patch({ source });
+    if (source !== choice.source) patch({ source });
   };
+
+  const needsHome =
+    choice.source === 'city' && !choice.province && provinceList.length > 0 && !sessionLoading;
+  useEffect(() => {
+    if (!needsHome || locatedRef.current) return;
+    locatedRef.current = true;
+    setLocating(true);
+    void (user?.provinceCode ? Promise.resolve(user.provinceCode) : locateProvinceCode())
+      .then((code) => {
+        const home = provinceList.find((p) => p.code === code);
+        if (!home) return;
+        setProvinceText(home.name);
+        setChoice((c) =>
+          c.source === 'city' && !c.province
+            ? { ...c, province: { code: home.code, name: home.name } }
+            : c,
+        );
+      })
+      .finally(() => setLocating(false));
+  }, [needsHome, provinceList, user?.provinceCode]);
 
   const items = useMemo(
     () => (fetched && fetched.key === queryKey && 'items' in fetched ? fetched.items : []),
@@ -169,9 +191,11 @@ export default function SuggestScreen() {
 
   const idleHint = !choice.source
     ? 'Chọn nguồn ở bước 1 trước'
-    : items.length > 0
-      ? 'Bấm TRÁO BÀI'
-      : '';
+    : locating
+      ? 'Đang tìm thành phố của bạn…'
+      : items.length > 0
+        ? 'Bấm TRÁO BÀI'
+        : '';
 
   return (
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">

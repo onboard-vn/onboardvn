@@ -10,7 +10,6 @@ export const SOURCES: { value: Source; label: string; needsLogin?: boolean }[] =
   { value: 'cafe', label: 'Quán' },
   { value: 'city', label: 'Cùng thành phố' },
   { value: 'wishlist', label: 'Muốn chơi', needsLogin: true },
-  { value: 'all', label: 'Toàn quốc' },
 ];
 
 export const PLAYER_OPTIONS: { value: number | null; label: string }[] = [
@@ -31,7 +30,7 @@ export interface SuggestChoice {
 }
 
 export const initialChoice = (): SuggestChoice => ({
-  source: null,
+  source: 'city',
   cafe: null,
   club: null,
   province: null,
@@ -123,4 +122,23 @@ export function eventParams(c: SuggestChoice, gameSlug: string): Record<string, 
   if (c.source === 'cafe' && c.cafe) params.cafe = c.cafe.slug;
   if (c.source === 'club' && c.club) params.club = c.club.slug;
   return params;
+}
+
+/** Restores a saved choice, dropping anything that no longer matches the current sources. */
+export function parseSavedChoice(raw: string | null): SuggestChoice | null {
+  if (!raw) return null;
+  try {
+    const v = JSON.parse(raw) as Partial<SuggestChoice>;
+    if (!SOURCES.some((s) => s.value === v.source)) return null;
+    return {
+      ...initialChoice(),
+      source: v.source ?? null,
+      cafe: v.cafe?.id && v.cafe.slug && v.cafe.name ? v.cafe : null,
+      club: v.club?.id && v.club.slug && v.club.name ? v.club : null,
+      province: v.province?.code && v.province.name ? v.province : null,
+      players: typeof v.players === 'number' ? v.players : null,
+    };
+  } catch {
+    return null;
+  }
 }

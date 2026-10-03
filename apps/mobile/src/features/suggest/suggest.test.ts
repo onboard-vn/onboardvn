@@ -8,6 +8,7 @@ import {
   buildSuggestQuery,
   eventParams,
   initialChoice,
+  parseSavedChoice,
   poolLabel,
   whoHasIt,
 } from './sources';
@@ -175,5 +176,29 @@ describe('cafeContacts', () => {
       { label: 'Gọi quán', url: 'tel:02838221234' },
     ]);
     expect(cafeContacts({ zalo: 'https://zalo.me/abc' })[0]?.url).toBe('https://zalo.me/abc');
+  });
+});
+
+describe('saved choice', () => {
+  it('defaults to the same-city source and restores only valid saved fields', () => {
+    expect(initialChoice().source).toBe('city');
+    expect(parseSavedChoice(null)).toBeNull();
+    expect(parseSavedChoice('not json')).toBeNull();
+    expect(parseSavedChoice(JSON.stringify({ source: 'all' }))).toBeNull();
+    expect(
+      parseSavedChoice(
+        JSON.stringify({
+          source: 'club',
+          club: { id: 'k', slug: 'c', name: 'CLB' },
+          cafe: { id: 1 },
+          players: 4,
+        }),
+      ),
+    ).toEqual({
+      ...initialChoice(),
+      source: 'club',
+      club: { id: 'k', slug: 'c', name: 'CLB' },
+      players: 4,
+    });
   });
 });

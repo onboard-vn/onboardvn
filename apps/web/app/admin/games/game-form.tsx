@@ -47,9 +47,7 @@ export function GameForm({
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
-  const [source, setSource] = useState<DescriptionSource>(
-    initial?.descriptionSource ?? 'original',
-  );
+  const [source, setSource] = useState<DescriptionSource>(initial?.descriptionSource ?? 'original');
   const selectedCategoryIds = new Set(initial?.categories.map((c) => c.id) ?? []);
   const categoryGroups: Array<{ label: string; kind: Category['kind'] }> = [
     { label: 'Thể loại', kind: 'category' },
