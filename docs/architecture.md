@@ -67,7 +67,7 @@ Luồng gọi: `routes → service → repo`. Route không gọi thẳng repo; s
 
 Frontend (`apps/web`, `apps/mobile`) không bao giờ giữ API key của bên thứ ba. Mọi request tới dịch vụ ngoài đi qua `apps/api` làm proxy giữ secret:
 
-- **GameUPC key** — dùng cho lookup/submit barcode ↔ game (xem `plans/reports/researcher-260924-1650-shelfscan-xia.md`).
+- **GameUPC key** — dùng cho lookup/submit barcode ↔ game (xem [nguồn tham khảo](references.md#gameupc)).
 - **BGG token proxy** — nếu tích hợp BoardGameGeek XML API v2 (cần Bearer token phía server, không public free-for-all nữa).
 
 ## Data provenance
