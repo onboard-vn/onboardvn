@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { gangCards } from '../../../games/the-gang/cards';
@@ -124,6 +124,9 @@ function TheGangMissions() {
   return (
     <ScrollView contentContainerStyle={styles.content}>
       <View style={styles.column}>
+        <Link href="/credits" style={styles.sourceLink}>
+          Nguồn luật và thẻ The Gang
+        </Link>
         <View style={styles.langRow}>
           <Text style={styles.langLabel}>Ngôn ngữ nội dung thẻ</Text>
           <View style={styles.langChips} accessibilityRole="radiogroup">
@@ -289,6 +292,7 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', gap: space.md },
   flex: { flex: 1 },
   meta: { color: colors.muted },
+  sourceLink: { color: colors.primary, textDecorationLine: 'underline' },
   tracker: {
     flexDirection: 'row',
     alignItems: 'center',

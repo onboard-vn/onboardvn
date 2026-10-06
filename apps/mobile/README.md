@@ -6,7 +6,7 @@ Hiện có prototype bảng điểm: route `/score/[slug]` cho `acquire-1963` v�
 
 ## Game
 
-`/games` tìm game trong thư viện CLB (551 game, gõ không dấu) từ `src/games/game-index.json` — sinh lại bằng `pnpm --filter @onboard/mobile games:index` khi template đổi. Công cụ riêng của từng game khai báo trong `src/games/modules.ts`; hiện có The Gang → Rút nhiệm vụ (`src/games/the-gang/`, engine thuần + test, dữ liệu thẻ VI/EN dùng chung với `tools/the-gang-print`).
+`/games` tìm game trong thư viện CLB (551 game, gõ không dấu) từ `src/games/game-index.json` — sinh lại bằng `pnpm --filter @onboard/mobile games:index` khi template đổi. Công cụ riêng của từng game khai báo trong `src/games/modules.ts`; hiện có The Gang → Rút nhiệm vụ (`src/games/the-gang/`, engine thuần + test, dữ liệu runtime VI/EN). Màn hình rút nhiệm vụ dẫn tới nguồn luật và thẻ tại `/credits`; tài liệu và công cụ in nằm ngoài repo.
 
 Web chạy dưới `baseUrl` `/app` (dev: `http://localhost:8081/app/`, prod: `https://onboard.j2teamnnl.com/app/`). Deploy: xem `docs/deployment.md`.
 

@@ -13,9 +13,9 @@
 
 ## README in English
 
-**OnBoardVN** — Vietnam's Open Board Game Community. A player-centric platform for Vietnam's board game scene: a directory of board-game cafés, a personal game shelf (barcode scan via GameUPC), and events/meetups — built for players first, not just cafés.
+**OnBoardVN** — Vietnam's Open Board Game Community. A player-centric platform for Vietnam's board game scene: a directory of board-game cafés, a personal game shelf with barcode lookup, and events/meetups — built for players first, not just cafés.
 
-- **Stack**: pnpm monorepo + Turborepo · `apps/web` (Next.js 16 App Router + Tailwind) · `apps/api` (Hono on Node 22) · `apps/mobile` (Expo, planned) · `packages/shared` (zod schemas) · `packages/config` (shared tsconfig/eslint).
+- **Stack**: pnpm monorepo + Turborepo · `apps/mobile` (Expo Router for web, iOS and Android) · `apps/api` (Hono on Node 22) · `packages/shared` (zod schemas) · `packages/config` (shared tsconfig/eslint). The retired Next.js frontend remains in `apps/web`.
 - **Quickstart**: see the [Quickstart](#quickstart) section below (Vietnamese steps, same commands: `pnpm i`, `pnpm db:up`, `pnpm db:migrate`, `pnpm dev`).
 - **License**: source is [GNU AGPL-3.0-only](LICENSE); catalog data (never player data) is CC0 (`facts/`), CC BY-SA 4.0 (descriptions/cafés), MIT (`admin-units/`).
 - **Contributing**: see [CONTRIBUTING.md](CONTRIBUTING.md) (DCO, no CLA) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
@@ -32,17 +32,18 @@ Nền tảng cộng đồng board game Việt Nam: danh bạ quán café board g
 
 ```
 apps/
-  web/       Next.js 16 App Router + Tailwind — frontend (:3000)
+  web/       Next.js 16 — frontend cũ, không còn deploy
   api/       Hono trên Node 22 — backend API (:8787, GET /health)
-  mobile/    Expo (kế hoạch phase P5, xem apps/mobile/README.md)
+  mobile/    Expo Router — web/iOS/Android (xem apps/mobile/README.md)
 packages/
   shared/    Types/schema dùng chung, zod
   config/    tsconfig, eslint config dùng chung
 docs/        Tài liệu kiến trúc, nguồn tham khảo
-plans/       Kế hoạch triển khai theo phase
 ```
 
 Quản lý bằng pnpm workspaces + Turborepo.
+
+Kế hoạch cá nhân, báo cáo nghiên cứu và tài liệu/công cụ in được lưu trong workspace riêng, không phân phối cùng repo. Repo giữ chức năng ứng dụng, tài liệu vận hành và trích dẫn nguồn.
 
 ## Yêu cầu môi trường
 

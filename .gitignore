@@ -20,5 +20,11 @@ backups/
 data/private/
 plans/private/
 
+# Personal planning and print materials live outside the application repository.
+/plans/
+/docs/private/
+/tools/the-gang-print/
+/printing/
+
 # Expo web build synced to the VPS
 deploy/mobile-web/

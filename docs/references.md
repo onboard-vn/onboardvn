@@ -1,6 +1,6 @@
 # Nguồn tham khảo
 
-OnBoardVN học **pattern và ý tưởng kiến trúc/UX** từ các dự án dưới đây, không sao chép mã nguồn, mô tả, hay hình ảnh của họ. Xem chi tiết khảo sát trong `plans/reports/`.
+OnBoardVN học **pattern và ý tưởng kiến trúc/UX** từ các dự án dưới đây, không sao chép mã nguồn, mô tả, hay hình ảnh của họ.
 
 ## Board Game Wikia
 
@@ -10,8 +10,6 @@ Nền tảng cộng đồng board game Việt Nam đang hoạt động: danh b�
 - https://boardgamewikia.com/vi/shops/
 - https://boardgamewikia.com/vi/events/
 
-Chi tiết: `plans/reports/researcher-260924-1650-boardgamewikia-xia.md`.
-
 OnBoardVN học ý tưởng tính năng (kho game theo quán, sự kiện, tủ game cá nhân) và chủ động khác biệt: mã nguồn mở, dữ liệu mở CC BY-SA, hỗ trợ kèo riêng tư, quét mã vạch nạp kho.
 
 ## ShelfScan
@@ -19,8 +17,6 @@ OnBoardVN học ý tưởng tính năng (kho game theo quán, sự kiện, tủ 
 Ứng dụng scan barcode board game (không có license mở — "not licensed for modification"). Học kiến trúc quét mã vạch, luồng xác nhận barcode ↔ game, và cách tích hợp GameUPC/BGG — **không copy code**.
 
 - https://github.com/j5bot/shelfscan (clone shallow, chỉ đọc, không có LICENSE)
-
-Chi tiết: `plans/reports/researcher-260924-1650-shelfscan-xia.md`.
 
 Điểm học được: kiến trúc frontend không gọi trực tiếp API bên thứ ba có key (luôn qua backend proxy), luồng UX 5 trạng thái xác nhận barcode↔game khi độ tin cậy thấp, cơ chế tăng dần độ tin cậy (confidence) thay vì đúng/sai nhị phân, dedupe scan theo session + cache offline-first.
 
@@ -56,3 +52,11 @@ File trong `apps/mobile/public/sfx/` (đã đổi tên, chuyển mp3):
 OnBoardVN lưu **`bgg_id` và link** tới trang BGG. Từ 2026-10-03 (quyết định của owner): ảnh bìa game chưa có ảnh upload được **hiển thị bằng link ảnh trên CDN của BGG** (`games.external_image_url`, không tải về server) kèm ghi nguồn "Ảnh: BoardGameGeek"; mô tả tiếng Việt được **dịch từ mô tả trên BGG**, gắn nhãn `translated_from_bgg` + `permission-only` (bản quyền thuộc BGG / nhà phát hành), hiện ghi chú "Dịch từ mô tả trên BoardGameGeek" và **không nằm trong dataset CC BY-SA**. Ảnh upload và mô tả cộng đồng tự viết luôn được ưu tiên, import không ghi đè. XML API v2 hiện yêu cầu Bearer token phía server (không còn free-for-all hoàn toàn public).
 
 - https://boardgamegeek.com/xmlapi2
+
+## The Gang — công cụ rút nhiệm vụ
+
+Công cụ trong app tham khảo luật chính thức của The Gang và bộ homebrew của cộng đồng. Tên tác giả homebrew được giữ trên các thẻ có thông tin này.
+
+- [Luật chính thức — Thames & Kosmos](https://www.thamesandkosmos.com/manuals/full/683887_TheGang_Manual-Web_051624.pdf).
+- [The Gang — trang nhà phát hành](https://thamesandkosmos.com/collections/board-games/products/the-gang).
+- [Homebrew Modifier Cards — ColorfulPockets / Andrew Nathenson trên BoardGameGeek](https://boardgamegeek.com/filepage/321535/homebrew-modifier-cards).
