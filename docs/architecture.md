@@ -59,7 +59,8 @@ Luồng gọi: `routes → service → repo`. Route không gọi thẳng repo; s
 
 ## SEO & API công khai
 
-- Web: `robots.txt`, `sitemap.xml`, `llms.txt`, `llms-full.txt` render lúc request (image build không có `SITE_URL`), dữ liệu sitemap/llms cache trong process 1 giờ.
+- Frontend công khai Expo: API trả HTML ban đầu với metadata Open Graph/X Cards, canonical, JSON-LD và nội dung công khai; Caddy giữ asset tĩnh. `MOBILE_WEB_DIR` mount export; robots/sitemap được tạo lúc request, sitemap phân trang 1000 URL. Chuyển trang SPA đồng bộ metadata qua endpoint ẩn danh, không dùng session/invite code. Xem [deployment](deployment.md#seo-cho-frontend-expo-công-khai).
+- Phần Next.js cũ vẫn có robots/sitemap/llms riêng nhưng không phải nguồn HTML của site Expo production.
 - JSON-LD `Game` / `EntertainmentBusiness` trên trang chi tiết; `/developers` hướng dẫn API + dataset.
 - `GET /api/openapi.json`: OpenAPI 3.0 cho route đọc công khai. Response ẩn danh có `Cache-Control: public` + `Vary: Cookie`.
 
