@@ -1,6 +1,7 @@
 import type { GameSummaryDto } from '@onboard/shared';
 import { Link } from 'expo-router';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { hasCapability } from '../../games/capabilities';
 import { colors, radius, space } from '../../ui/theme';
 import { mediaUrl } from '../media';
 import { summaryMeta } from './filters';
@@ -34,6 +35,12 @@ export function GameRail({ games }: { games: GameSummaryDto[] }) {
                 <Text style={styles.name} numberOfLines={2}>
                   {g.nameVi || g.nameEn}
                 </Text>
+                {hasCapability(g.slug, 'scoring') ? (
+                  <Text style={styles.meta}>Có tính điểm</Text>
+                ) : null}
+                {hasCapability(g.slug, 'tools') ? (
+                  <Text style={styles.meta}>Có công cụ chơi</Text>
+                ) : null}
                 {meta ? (
                   <Text style={styles.meta} numberOfLines={2}>
                     {meta}

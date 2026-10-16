@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { api } from '../api/client';
 import { useSession } from '../auth/session';
+import { capabilitySlugs } from '../games/capabilities';
 import { GameRail } from '../features/games/game-rail';
 import { formatVnDateTime } from '../features/events/time';
 import { PageShell } from '../features/static/page-shell';
@@ -130,6 +131,35 @@ function GameSection({ title, query }: { title: string; query: Record<string, st
   );
 }
 
+const TOOLS_QUERY = { slugs: capabilitySlugs('any').join(','), sort: 'updated', pageSize: 4 };
+
+function ToolsSection() {
+  const games = useLoad(
+    () => api<GameListResponse>('/games', { query: TOOLS_QUERY }).then((r) => r.items),
+    [],
+  );
+  return (
+    <Section
+      title="Tính điểm & công cụ chơi"
+      action={{
+        href: { pathname: '/games', params: { capability: 'any', sort: 'updated' } },
+        label: 'Xem tất cả',
+      }}
+    >
+      <Hint>Game có bảng điểm hoặc công cụ hỗ trợ · Mới cập nhật trong danh mục</Hint>
+      {games.loading ? (
+        <Hint>Đang tải game…</Hint>
+      ) : games.error ? (
+        <Hint>Không tải được game. Bấm Xem tất cả để tìm lại.</Hint>
+      ) : games.data?.length ? (
+        <GameRail games={games.data} />
+      ) : (
+        <Hint>Chưa có game phù hợp.</Hint>
+      )}
+    </Section>
+  );
+}
+
 const BEGINNER_QUERY = { maxWeight: 2, maxTime: 60 };
 const VIETNAMESE_QUERY = { isVietnamese: 'true' };
 const POPULAR_QUERY = { sort: 'cafes' };
@@ -207,23 +237,7 @@ export default function Home() {
         <UpcomingEvents />
       </Section>
 
-      <Section title="Công cụ cho bàn chơi">
-        <Link
-          href={{ pathname: '/games/[slug]/missions', params: { slug: 'the-gang-2024' } }}
-          asChild
-        >
-          <Pressable accessibilityRole="link" style={styles.tool}>
-            <View style={{ flex: 1, gap: 4 }}>
-              <Text style={styles.toolEyebrow}>The Gang</Text>
-              <Text style={styles.toolTitle}>Rút thẻ nhiệm vụ Thử thách & Chuyên gia</Text>
-              <Text style={styles.toolBody}>
-                Không cần đăng nhập · Tiếng Việt / English · Hoàn tác được
-              </Text>
-            </View>
-            <Text style={styles.toolArrow}>→</Text>
-          </Pressable>
-        </Link>
-      </Section>
+      <ToolsSection />
     </PageShell>
   );
 }

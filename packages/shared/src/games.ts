@@ -101,7 +101,12 @@ export const gameFilterSchema = z.object({
   maxWeight: z.coerce.number().min(1).max(5).optional(),
   categoryId: z.uuid().optional(),
   isVietnamese: boolQueryParam,
-  sort: z.enum(['name', 'cafes']).default('name'),
+  slugs: z
+    .string()
+    .max(4000)
+    .regex(/^[a-z0-9-]+(?:,[a-z0-9-]+){0,49}$/)
+    .optional(),
+  sort: z.enum(['name', 'cafes', 'updated']).default('name'),
   page: z.coerce.number().int().positive().default(1),
   pageSize: z.coerce.number().int().positive().max(50).default(20),
 });

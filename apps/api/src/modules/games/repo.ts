@@ -26,6 +26,7 @@ export type GameRow = NonNullable<Awaited<ReturnType<typeof findGameBySlug>>>;
 
 function buildWhere(filter: GameFilter) {
   const conditions = [];
+  if (filter.slugs) conditions.push(inArray(games.slug, filter.slugs.split(',')));
 
   if (filter.q) {
     const pattern = `%${filter.q}%`;
@@ -93,6 +94,7 @@ function buildWhere(filter: GameFilter) {
 }
 
 function buildOrderBy(filter: GameFilter) {
+  if (filter.sort === 'updated') return [desc(games.updatedAt), asc(games.slug)];
   if (filter.sort === 'name') return [asc(games.nameEn)];
   const publicCafeCount = db
     .select({ n: count() })
