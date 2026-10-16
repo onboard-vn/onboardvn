@@ -19,11 +19,13 @@ services:
     image: onboard-api:vps
     build: *api-build
     volumes:
+      - ./deploy/mobile-web:/srv/mobile-web:ro
       - uploads:${UPLOADS_DIR:-/data/uploads}
       - ./data:/app/data:ro
       - ${PRIVATE_PLUGINS_DIR:-../onboardvn-private/plugins}:/plugins:ro
     environment:
       GAMEUPC_BASE_URL: !reset null
+      MOBILE_WEB_DIR: /srv/mobile-web
       EXTERNAL_CLUB_PLUGIN: /plugins/thursday-club/index.mjs
       EXTERNAL_CLUB_BASE_URL: ${EXTERNAL_CLUB_BASE_URL:?EXTERNAL_CLUB_BASE_URL is required}
 

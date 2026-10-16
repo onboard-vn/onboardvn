@@ -6,11 +6,11 @@ import { templateList } from '../../score/templates';
 import { Badge, Card, Heading, Hint } from '../../ui/primitives';
 import { colors } from '../../ui/theme';
 
-export default function ScoreDevIndex() {
+export default function ScoreIndex() {
   return (
     <PageShell footer={false}>
-      <Stack.Screen options={{ title: 'Bảng điểm (dev)' }} />
-      <Hint>Dev: mở thẳng bảng điểm theo game (không có bàn/người chơi thật).</Hint>
+      <Stack.Screen options={{ title: 'Tính điểm' }} />
+      <Hint>Chọn game để mở bảng điểm, sau đó thêm tên người chơi.</Hint>
       {templateList.map((t) => (
         <Link key={t.slug} href={{ pathname: '/score/[slug]', params: { slug: t.slug } }} asChild>
           <Pressable accessibilityRole="button">

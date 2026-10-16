@@ -8,6 +8,7 @@
 }
 
 :8080 {
+	root * /srv/mobile-web
 	handle /health {
 		reverse_proxy api:8787
 	}
@@ -44,9 +45,16 @@
 		file_server
 	}
 
-	handle {
+	# Real assets stay static; document requests receive anonymous per-page SEO HTML.
+	@staticFile {
+		not path /robots.txt /sitemap*.xml /index.html /
+		file {path}
+	}
+	handle @staticFile {
 		root * /srv/mobile-web
-		try_files {path} /index.html
 		file_server
+	}
+	handle {
+		reverse_proxy api:8787
 	}
 }

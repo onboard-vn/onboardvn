@@ -43,6 +43,7 @@ import { suggestRoutes } from './modules/suggest/routes.js';
 import { wishlistRoutes } from './modules/wishlist/routes.js';
 import { userRoutes } from './modules/users/routes.js';
 import { openApiRoutes } from './modules/openapi/routes.js';
+import { seoRoutes } from './modules/seo/routes.js';
 import type { AppEnv } from './types.js';
 
 export interface AppDeps {
@@ -132,7 +133,15 @@ export function createApp({
 
   app.on(['GET', 'POST'], '/api/auth/*', (c) => auth.handler(c.req.raw));
 
+  if (env.MOBILE_WEB_DIR) {
+    const seo = seoRoutes(env.MOBILE_WEB_DIR);
+    app.get('/api/site-metadata', (c) => seo.fetch(c.req.raw));
+  }
   const routed = app.route('/api', api);
+  if (env.MOBILE_WEB_DIR) {
+    // Explicit metadata endpoint precedes API fallback; SEO routes never resolve a session.
+    routed.route('/', seoRoutes(env.MOBILE_WEB_DIR));
+  }
   routed.onError(errorHandler);
   routed.notFound(notFoundHandler);
   return routed;
