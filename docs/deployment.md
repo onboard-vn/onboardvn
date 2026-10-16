@@ -205,3 +205,29 @@ tailscale serve --bg 8080   # KHÔNG dùng funnel
 ```
 
 Admin seed không có mật khẩu: đăng nhập bằng email OTP (đọc OTP trong mailpit) rồi đặt mật khẩu qua "quên mật khẩu".
+
+## Public site hiện tại: Expo web trên VPS
+
+Kiểm chứng 2026-10-16: `vps:/home/j2teamnnl/Code/onboardvn`, Compose project
+`onboard`. Caddy phục vụ bản export Expo từ `deploy/mobile-web` (mount vào
+`/srv/mobile-web`); container Next.js không phải frontend công khai. Xem cấu hình
+[compose.vps.yml](../compose.vps.yml) và [Caddyfile](../deploy/Caddyfile).
+
+Build thư viện dùng chung bằng `pnpm --filter @onboard/shared build`, sau đó
+build frontend bằng `pnpm --filter @onboard/mobile export:web` từ đúng commit cần
+phát hành, với cấu hình `EXPO_PUBLIC_*` production. Đầu ra mặc định ở
+`apps/mobile/dist`. Giữ bản index/assets cũ để rollback; chép assets mới trước,
+thay `index.html` cuối cùng bằng rename nguyên tử. Giữ hashed assets cũ để tab
+đang mở tiếp tục chạy. Không đổi thư mục bind mount mà chưa kiểm tra Caddy nhìn
+thấy nội dung mới.
+
+Workflow [release.yml](../.github/workflows/release.yml) chỉ build/push image khi
+push `main`; không tự deploy VPS và không export Expo. Frontend-only chỉ cần phát
+hành static export. Nếu API đổi, build/restart riêng API từ cùng commit. Backup DB
+bằng [backup.sh](../deploy/backup.sh) trước migration hoặc thay đổi dữ liệu. Không
+seed/import/xoá dữ liệu trong bước deploy thông thường.
+
+Sau deploy, kiểm tra `/health`, `/`, `/games?capability=any&sort=updated`, trang
+game và bảng điểm đã thay đổi; xác nhận bundle được phục vụ thuộc bản export mới.
+Ghi SHA đã deploy và bản rollback. Checkout VPS có thể đi trước GitHub: đối chiếu
+lịch sử trước khi fast-forward, không reset/force-push để ép khớp.
