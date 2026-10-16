@@ -131,22 +131,26 @@ function GameSection({ title, query }: { title: string; query: Record<string, st
   );
 }
 
-const TOOLS_QUERY = { slugs: capabilitySlugs('any').join(','), sort: 'updated', pageSize: 4 };
-
-function ToolsSection() {
+function ToolsSection({ capability, title }: { capability: 'scoring' | 'tools'; title: string }) {
   const games = useLoad(
-    () => api<GameListResponse>('/games', { query: TOOLS_QUERY }).then((r) => r.items),
-    [],
+    () =>
+      api<GameListResponse>('/games', {
+        query: { slugs: capabilitySlugs(capability).join(','), sort: 'updated', pageSize: 4 },
+      }).then((r) => r.items),
+    [capability],
   );
   return (
     <Section
-      title="Tính điểm & công cụ chơi"
+      title={title}
       action={{
-        href: { pathname: '/games', params: { capability: 'any', sort: 'updated' } },
+        href: { pathname: '/games', params: { capability, sort: 'updated' } },
         label: 'Xem tất cả',
       }}
     >
-      <Hint>Game có bảng điểm hoặc công cụ hỗ trợ · Mới cập nhật trong danh mục</Hint>
+      <Hint>
+        {capability === 'scoring' ? 'Game có bảng điểm' : 'Game có công cụ hỗ trợ'} · Mới cập nhật
+        trong danh mục
+      </Hint>
       {games.loading ? (
         <Hint>Đang tải game…</Hint>
       ) : games.error ? (
@@ -237,7 +241,8 @@ export default function Home() {
         <UpcomingEvents />
       </Section>
 
-      <ToolsSection />
+      <ToolsSection capability="scoring" title="Tính điểm" />
+      <ToolsSection capability="tools" title="Công cụ chơi" />
     </PageShell>
   );
 }
