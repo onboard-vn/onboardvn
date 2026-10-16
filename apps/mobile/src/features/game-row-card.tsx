@@ -1,15 +1,21 @@
 import { Link } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { hasCapability } from '../games/capabilities';
+import { gameDestination, hasCapability, type Capability } from '../games/capabilities';
 import { Card, Heading } from '../ui/primitives';
 import { colors, space } from '../ui/theme';
 import type { GameRow } from './games/filters';
 import { mediaUrl } from './media';
 
-export function GameRowCard({ row }: { row: GameRow }) {
+export function GameRowCard({
+  row,
+  capability = 'all',
+}: {
+  row: GameRow;
+  capability?: Capability;
+}) {
   const image = mediaUrl(row.imageUrl);
   return (
-    <Link href={{ pathname: '/games/[slug]', params: { slug: row.slug } }} asChild>
+    <Link href={gameDestination(row.slug, capability)} asChild>
       <Pressable accessibilityRole="button">
         <Card>
           <View style={styles.top}>

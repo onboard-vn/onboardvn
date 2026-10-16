@@ -1,3 +1,4 @@
+import type { Href } from 'expo-router';
 import { gameModules } from './modules';
 import { scoreTemplates } from '../score/templates';
 
@@ -23,4 +24,12 @@ export function capabilitySlugs(capability: Capability): string[] {
   return [...new Set([...Object.keys(scoreTemplates), ...Object.keys(gameModules)])]
     .filter((slug) => hasCapability(slug, capability))
     .sort();
+}
+
+export function gameDestination(slug: string, capability: Capability = 'all'): Href {
+  if (capability === 'scoring' && hasCapability(slug, 'scoring')) {
+    return { pathname: '/score/[slug]', params: { slug } };
+  }
+  if (capability === 'tools' && gameModules[slug]?.length) return gameModules[slug]![0]!.href;
+  return { pathname: '/games/[slug]', params: { slug } };
 }
