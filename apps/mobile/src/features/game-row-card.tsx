@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { gameModules } from '../games/modules';
+import { hasCapability } from '../games/capabilities';
 import { Card, Heading } from '../ui/primitives';
 import { colors, space } from '../ui/theme';
 import type { GameRow } from './games/filters';
@@ -25,9 +25,14 @@ export function GameRowCard({ row }: { row: GameRow }) {
                 <View style={styles.title}>
                   <Heading>{row.name}</Heading>
                 </View>
-                {gameModules[row.slug] ? (
+                {hasCapability(row.slug, 'any') ? (
                   <View style={styles.badge}>
-                    <Text style={styles.badgeText}>Có công cụ</Text>
+                    <Text style={styles.badgeText}>
+                      {hasCapability(row.slug, 'scoring') ? 'Có tính điểm' : 'Có công cụ'}
+                      {hasCapability(row.slug, 'scoring') && hasCapability(row.slug, 'tools')
+                        ? ' · Có công cụ'
+                        : ''}
+                    </Text>
                   </View>
                 ) : null}
               </View>

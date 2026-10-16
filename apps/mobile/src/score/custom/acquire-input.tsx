@@ -104,7 +104,7 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
         })}
       </Card>
 
-      <Collapsible title="Trợ giúp tính thưởng cổ đông">
+      <Collapsible defaultOpen title="Trợ giúp tính thưởng cổ đông">
         <Hint>
           Tùy chọn. Nhập giá cổ phiếu và số cổ phiếu mỗi người nắm; app tự tính tiền bán cổ phiếu và
           thưởng cổ đông lớn/nhỏ (hòa chia đều, làm tròn lên $100) rồi cộng vào tổng.

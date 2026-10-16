@@ -1,5 +1,5 @@
 import { StyleSheet, Text } from 'react-native';
-import { Card, Collapsible, Heading } from '../ui/primitives';
+import { Collapsible } from '../ui/primitives';
 import { colors } from '../ui/theme';
 import type { RuleNotes as Notes } from './model';
 
@@ -8,17 +8,16 @@ export function RuleNotes({ notes }: { notes: Notes }) {
   return (
     <>
       {notes.vi.length > 0 ? (
-        <Card>
-          <Heading>Ghi chú luật</Heading>
+        <Collapsible defaultOpen title="Ghi chú luật">
           {notes.vi.map((n) => (
             <Text key={n} style={styles.text}>
               {n}
             </Text>
           ))}
-        </Card>
+        </Collapsible>
       ) : null}
       {notes.en.length > 0 ? (
-        <Collapsible title="Ghi chú luật (EN)">
+        <Collapsible defaultOpen title="Ghi chú luật (EN)">
           {notes.en.map((n) => (
             <Text key={n} style={styles.text}>
               {n}
