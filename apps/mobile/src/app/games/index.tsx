@@ -157,7 +157,7 @@ export default function GameLibrary() {
           ListFooterComponent={list.loading ? <ActivityIndicator style={styles.spinner} /> : null}
           onEndReached={list.loadMore}
           onEndReachedThreshold={0.5}
-          renderItem={({ item }) => <GameRowCard row={item} />}
+          renderItem={({ item }) => <GameRowCard row={item} capability={capability} />}
         />
       </View>
     </View>

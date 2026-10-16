@@ -156,7 +156,7 @@ function ToolsSection({ capability, title }: { capability: 'scoring' | 'tools'; 
       ) : games.error ? (
         <Hint>Không tải được game. Bấm Xem tất cả để tìm lại.</Hint>
       ) : games.data?.length ? (
-        <GameRail games={games.data} />
+        <GameRail games={games.data} capability={capability} />
       ) : (
         <Hint>Chưa có game phù hợp.</Hint>
       )}

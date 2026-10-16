@@ -54,12 +54,13 @@ export interface SheetApi {
 export interface SheetOptions {
   actorId: string;
   saved?: SheetState | null;
+  allowIncompleteRoster?: boolean;
 }
 
 export function useSheet(
   template: ScoreTemplate,
   players: Player[],
-  { actorId, saved }: SheetOptions,
+  { actorId, saved, allowIncompleteRoster = false }: SheetOptions,
 ): SheetApi {
   const [state, setState] = useState<SheetState>(() => saved ?? initialState(players));
   const [presence, setPresenceState] = useState<Record<string, boolean>>({});
@@ -107,7 +108,7 @@ export function useSheet(
   const removePlayer = useCallback(
     (id: string) =>
       setState((s) => {
-        if (s.players.length <= playerBounds(template).min) return s;
+        if (!allowIncompleteRoster && s.players.length <= playerBounds(template).min) return s;
         const { [id]: _v, ...values } = s.values;
         const { [id]: _q, ...quickTotals } = s.quickTotals;
         const { [id]: _r, ...rounds } = s.rounds;
@@ -120,7 +121,7 @@ export function useSheet(
           pendingOps: s.pendingOps.filter((o) => o.identityId !== id),
         };
       }),
-    [template],
+    [template, allowIncompleteRoster],
   );
 
   const api = useMemo(

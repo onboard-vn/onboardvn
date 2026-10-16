@@ -1,12 +1,18 @@
 import type { GameSummaryDto } from '@onboard/shared';
 import { Link } from 'expo-router';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { hasCapability } from '../../games/capabilities';
+import { gameDestination, hasCapability, type Capability } from '../../games/capabilities';
 import { colors, radius, space } from '../../ui/theme';
 import { mediaUrl } from '../media';
 import { summaryMeta } from './filters';
 
-export function GameRail({ games }: { games: GameSummaryDto[] }) {
+export function GameRail({
+  games,
+  capability = 'all',
+}: {
+  games: GameSummaryDto[];
+  capability?: Capability;
+}) {
   return (
     <ScrollView
       horizontal
@@ -17,7 +23,7 @@ export function GameRail({ games }: { games: GameSummaryDto[] }) {
         const image = mediaUrl(g.imageUrl ?? g.externalThumbUrl);
         const meta = summaryMeta(g);
         return (
-          <Link key={g.id} href={{ pathname: '/games/[slug]', params: { slug: g.slug } }} asChild>
+          <Link key={g.id} href={gameDestination(g.slug, capability)} asChild>
             <Pressable accessibilityRole="link" style={styles.card}>
               {image ? (
                 <Image
