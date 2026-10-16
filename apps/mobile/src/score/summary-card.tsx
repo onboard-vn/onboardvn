@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { Card, Heading } from '../ui/primitives';
+import { Card, Heading, Hint } from '../ui/primitives';
 import { colors } from '../ui/theme';
 import { isCoop } from './model';
 import type { SheetApi } from './use-sheet';
@@ -35,7 +35,11 @@ export function SummaryCard({ sheet }: { sheet: SheetApi }) {
           {derived ? <Text style={styles.derivedNote}>Tự tính từ kết quả phi vụ</Text> : null}
         </View>
       ) : null}
-      {summary.error ? <Text style={styles.error}>{summary.error}</Text> : null}
+      {state.players.length === 0 ? (
+        <Hint>Thêm người chơi để xem kết quả.</Hint>
+      ) : summary.error ? (
+        <Text style={styles.error}>{summary.error}</Text>
+      ) : null}
       {!coop &&
         rows.map((r) => {
           const won = summary.winners.includes(r.id);
