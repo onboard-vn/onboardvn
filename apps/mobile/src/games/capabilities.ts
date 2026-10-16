@@ -6,9 +6,9 @@ export const capabilityOptions = [
   { value: 'all' as const, label: 'Tất cả' },
   { value: 'scoring' as const, label: 'Có tính điểm' },
   { value: 'tools' as const, label: 'Có công cụ chơi' },
-  { value: 'any' as const, label: 'Tính điểm / công cụ' },
 ];
 export function parseCapability(value: string | string[] | undefined): Capability {
+  if (value === 'any') return 'any'; // Preserve previously shared library links.
   return capabilityOptions.find((o) => o.value === value)?.value ?? 'all';
 }
 export function hasCapability(slug: string, capability: Capability): boolean {
