@@ -25,7 +25,9 @@ export function seoRoutes(directory: string) {
   app.get('/cafes', (c) => c.redirect('/map', 308));
   app.get('/index.html', (c) => c.redirect('/', 308));
   app.get('/robots.txt', (c) =>
-    c.text(`User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: ${siteOrigin}/sitemap.xml\n`),
+    c.text(
+      `User-agent: *\nAllow: /\nDisallow: /api/auth/\nDisallow: /api/me/\nDisallow: /api/admin/\nSitemap: ${siteOrigin}/sitemap.xml\n`,
+    ),
   );
   app.get('/sitemap.xml', async (c) => {
     const groups = await Promise.all(

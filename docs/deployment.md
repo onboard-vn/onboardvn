@@ -247,7 +247,7 @@ Caddy sang API. API chỉ dùng dịch vụ đọc ẩn danh: không nhận invi
 hiện tên trong metadata. URL không tồn tại trả404; lỗi dependency/shell trả503.
 Sitemap chia theo entity và từng1000 URL; chỉ gồm quán có consent công khai, club
 public, kèo public/scheduled chưa diễn ra. Kèo public đã hủy noindex. `robots.txt`
-cho phép crawler đọc document để nhận noindex, chặn `/api/`.
+cho phép crawler đọc document, metadata và API đọc công khai để render JavaScript; chặn các đường API auth/me/admin. Quyền truy cập vẫn do API kiểm soát.
 
 Đợt đầu cần rebuild/recreate API để mount export, sau đó validate và recreate Caddy
 vì `deploy/Caddyfile` bind-mount có thể giữ inode cũ sau Git checkout. Giữ bản Caddyfile,
