@@ -231,3 +231,31 @@ Sau deploy, kiểm tra `/health`, `/`, `/games?capability=any&sort=updated`, tra
 game và bảng điểm đã thay đổi; xác nhận bundle được phục vụ thuộc bản export mới.
 Ghi SHA đã deploy và bản rollback. Checkout VPS có thể đi trước GitHub: đối chiếu
 lịch sử trước khi fast-forward, không reset/force-push để ép khớp.
+
+## SEO cho frontend Expo công khai
+
+Khi API có `MOBILE_WEB_DIR=/srv/mobile-web`, [module SEO](../apps/api/src/modules/seo/routes.ts)
+đọc shell Expo từ volume read-only, trả HTML có title/description/canonical, Open
+Graph, X Cards, JSON-LD và nội dung công khai ban đầu. Caddy phục vụ file tĩnh có
+thật rồi proxy các document request tới API; không phân biệt user-agent. Trang
+SPA cập nhật head từ `/api/site-metadata?path=...` khi chuyển route, không gửi cookie.
+
+`pnpm --filter @onboard/mobile export:web` tạo thêm `seo-capabilities.json` từ các
+mẫu điểm/công cụ đang đăng ký. Phải phát hành manifest cùng export trước khi chuyển
+Caddy sang API. API chỉ dùng dịch vụ đọc ẩn danh: không nhận invite code hoặc session
+để tạo SEO; trang riêng tư generic/noindex và no-store. Private club không xuất
+hiện tên trong metadata. URL không tồn tại trả404; lỗi dependency/shell trả503.
+Sitemap chia theo entity và từng1000 URL; chỉ gồm quán có consent công khai, club
+public, kèo public/scheduled chưa diễn ra. Kèo public đã hủy noindex. `robots.txt`
+cho phép crawler đọc document để nhận noindex, chặn `/api/`.
+
+Đợt đầu cần rebuild/recreate API để mount export, sau đó validate và recreate Caddy
+vì `deploy/Caddyfile` bind-mount có thể giữ inode cũ sau Git checkout. Giữ bản Caddyfile,
+image API và export trước deploy để rollback. Không chạy migrate/seed cho thay đổi SEO.
+Kiểm tra HTML thô và ảnh với Facebook/Twitter/LinkedIn/Discord/Google user-agent,
+`/robots.txt`, `/sitemap.xml`, sitemap con, trang riêng tư và asset404.
+
+Các nền tảng có thể cache preview; sau deploy dùng công cụ re-scrape của nền tảng
+khi cần. Metadata không đảm bảo thứ hạng, thời điểm index hoặc hình thức hiển thị.
+Các bước xác minh Search Console/Bing Webmaster cần quyền tài khoản chủ site,
+không tự tạo token hoặc khai báo tài khoản mạng xã hội giả.
