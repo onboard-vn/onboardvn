@@ -22,6 +22,7 @@ import {
   type SheetMode,
   type SheetState,
 } from './model';
+import { LocalPlayerEditor } from './local-player-editor';
 import { PlayerEditor } from './player-editor';
 import { scoreInputRegistry } from './registry';
 import { RoundsTable } from './rounds-table';
@@ -33,6 +34,7 @@ import { QUICK_KEY } from '../api/plays-types';
 
 export interface ScoreSheetProps {
   template: ScoreTemplate;
+  localPlayers?: boolean;
   players: Player[];
   playId?: string;
   saved?: SheetState | null;
@@ -45,6 +47,7 @@ export interface ScoreSheetProps {
 export function ScoreSheet({
   template,
   players,
+  localPlayers = false,
   playId,
   saved,
   onExit,
@@ -52,7 +55,11 @@ export function ScoreSheet({
   actorId = CURRENT_IDENTITY_ID,
   restoredFromDraft = !!saved,
 }: ScoreSheetProps) {
-  const sheet = useSheet(template, players, { actorId, saved });
+  const sheet = useSheet(template, players, {
+    actorId,
+    saved,
+    allowIncompleteRoster: localPlayers,
+  });
   const sync = usePlaySync(playId, sheet, playsApi);
   const Custom = scoreInputRegistry[template.slug];
   const { state } = sheet;
@@ -116,7 +123,11 @@ export function ScoreSheet({
             ]}
           />
 
-          {playsApi.roster ? <PlayerEditor sheet={sheet} roster={playsApi.roster} /> : null}
+          {localPlayers ? (
+            <LocalPlayerEditor sheet={sheet} />
+          ) : playsApi.roster ? (
+            <PlayerEditor sheet={sheet} roster={playsApi.roster} />
+          ) : null}
 
           {needsOutcome(template) ? (
             <Card>
