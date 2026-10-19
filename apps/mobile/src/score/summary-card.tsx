@@ -11,7 +11,14 @@ export function SummaryCard({ sheet }: { sheet: SheetApi }) {
   const coop = isCoop(template);
   const rows = [...summary.rows].sort((a, b) => (a.rank ?? 99) - (b.rank ?? 99));
   const ranked = rows.some((r) => r.rank !== null);
-  const outcome = state.outcome ?? summary.result?.outcome ?? null;
+  const outcome =
+    template.templateVersion >= 3
+      ? summary.result
+        ? summary.result.outcome
+        : summary.error
+          ? null
+          : state.outcome
+      : (state.outcome ?? summary.result?.outcome ?? null);
   const derived = !state.outcome && !!outcome;
 
   return (

@@ -3,6 +3,7 @@ import { Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
 import type { FinishReceipt } from '../api/plays-types';
 import { Button, Heading, Hint } from '../ui/primitives';
 import { colors } from '../ui/theme';
+import type { Summary } from './model';
 import type { SheetApi } from './use-sheet';
 
 const fmt = (n: number) => n.toLocaleString('vi-VN');
@@ -14,18 +15,20 @@ export const receiptLines = (r: FinishReceipt): string[] => [
 
 export function FinishDialog({
   sheet,
+  summary: suppliedSummary,
   visible,
   onClose,
   onConfirm,
   onDone,
 }: {
   sheet: SheetApi;
+  summary?: Summary;
   visible: boolean;
   onClose: () => void;
   onConfirm: () => Promise<FinishReceipt>;
   onDone: () => void;
 }) {
-  const { summary } = sheet;
+  const summary = suppliedSummary ?? sheet.summary;
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [receipt, setReceipt] = useState<FinishReceipt | null>(null);

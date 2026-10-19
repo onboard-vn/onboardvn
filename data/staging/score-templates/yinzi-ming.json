@@ -3,7 +3,7 @@
   "name": "Yinzi: Ming",
   "year": null,
   "bggId": 369938,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
     "min": 1,
@@ -193,16 +193,29 @@
         "points": -2
       },
       "countsToTotal": true
+    },
+    {
+      "key": "turnOrder",
+      "label": "Thứ tự lượt cuối (1 đi trước)",
+      "labelVi": "Thứ tự lượt cuối (1 đi trước)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [
     {
-      "description": "Player furthest ahead in turn order in the final round wins.",
-      "descriptionVi": "Người đi trước trong thứ tự lượt ở vòng cuối thắng."
+      "categoryKey": "turnOrder",
+      "dir": "lowest",
+      "description": "Player furthest ahead in the final-round turn order wins."
     }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "family: point-salad-euro. Game ends after round 4; fulfil any kept Caravans first. Bribe the Administration is entered as 4 (sole most Overseers), 2 (tied) or 0. Exported goods slot values depend on market position so they are entered as a total. Solo and Natural Disaster optional rule not modelled. Verified only against RulesPal rulebook text; official PDF not retrieved.",
+  "notes": "family: point-salad-euro. Game ends after round 4; fulfil any kept Caravans first. Bribe the Administration is entered as 4 (sole most Overseers), 2 (tied) or 0. Exported goods slot values depend on market position so they are entered as a total. Solo and Natural Disaster optional rule not modelled. Verified only against RulesPal rulebook text; official PDF not retrieved. Final-round order is executable. Exact Ming English primary PDF remains unavailable; awarded export, caravan, escort and administration VP stay explicit manual inputs; no old Yinzi edition rules substituted.",
   "sources": [
     {
       "url": "https://www.rulespal.com/yinzi-ming/rulebook",
@@ -212,8 +225,5 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true,
-  "uiHint": "generic",
-  "uiHintReason": "Scoring pad rows are direct counts; no per-tile modelling.",
-  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc sau vòng 4 (hoàn thành Caravan còn giữ trước)."
+  "needsReview": true
 }

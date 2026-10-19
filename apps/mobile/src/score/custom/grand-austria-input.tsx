@@ -47,6 +47,7 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
                 value={num(p.id, 'trackVp')}
                 step={1}
                 width={80}
+                disabled={!sheet.canEditIdentity(p.id)}
                 onChange={(n) => sheet.setValue(p.id, 'trackVp', n)}
               />
               <View style={styles.wrap}>
@@ -55,6 +56,7 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
                     key={q}
                     label={`+${q}`}
                     onPress={() => sheet.setValue(p.id, 'trackVp', num(p.id, 'trackVp') + q)}
+                    disabled={!sheet.canEditIdentity(p.id)}
                   />
                 ))}
               </View>
@@ -69,23 +71,27 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
                         {r.label} · {r.vp} VP
                       </Text>
                       <View style={styles.rooms}>
-                        {Array.from({ length: ROOM_SLOTS }, (_, i) => {
-                          const filled = i < n;
-                          return (
-                            <Pressable
-                              key={i}
-                              accessibilityRole="button"
-                              accessibilityLabel={`${r.label}, phòng ${i + 1}`}
-                              accessibilityState={{ selected: filled }}
-                              onPress={() => sheet.setValue(p.id, r.key, n === i + 1 ? i : i + 1)}
-                              style={[styles.room, filled && styles.roomOn]}
-                            >
-                              <Text style={[styles.roomText, filled && { color: '#fff' }]}>
-                                {filled ? r.vp : ''}
-                              </Text>
-                            </Pressable>
-                          );
-                        })}
+                        {Array.from(
+                          { length: sheet.template.templateVersion >= 3 ? 5 : ROOM_SLOTS },
+                          (_, i) => {
+                            const filled = i < n;
+                            return (
+                              <Pressable
+                                key={i}
+                                accessibilityRole="button"
+                                accessibilityLabel={`${r.label}, phòng ${i + 1}`}
+                                accessibilityState={{ selected: filled }}
+                                onPress={() => sheet.setValue(p.id, r.key, n === i + 1 ? i : i + 1)}
+                                disabled={!sheet.canEditIdentity(p.id)}
+                                style={[styles.room, filled && styles.roomOn]}
+                              >
+                                <Text style={[styles.roomText, filled && { color: '#fff' }]}>
+                                  {filled ? r.vp : ''}
+                                </Text>
+                              </Pressable>
+                            );
+                          },
+                        )}
                       </View>
                       <Text style={styles.floorSum}>{n * r.vp} VP</Text>
                     </View>
@@ -100,6 +106,7 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
                   value={num(p.id, 'staffVp')}
                   min={0}
                   width={56}
+                  disabled={!sheet.canEditIdentity(p.id)}
                   onChange={(n) => sheet.setValue(p.id, 'staffVp', n)}
                 />
               </View>
@@ -117,6 +124,7 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
                     value={num(p.id, c.key)}
                     min={0}
                     width={56}
+                    disabled={!sheet.canEditIdentity(p.id)}
                     onChange={(n) => sheet.setValue(p.id, c.key, n)}
                   />
                 </View>

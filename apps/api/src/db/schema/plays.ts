@@ -39,6 +39,7 @@ export const plays = pgTable(
       .references(() => games.id, { onDelete: 'cascade' }),
     scoreTemplateId: uuid().references(() => scoreTemplates.id, { onDelete: 'restrict' }),
     templateVersion: integer(),
+    setup: jsonb().$type<Record<string, unknown> | null>(),
     status: text({ enum: ['draft', 'final'] })
       .default('draft')
       .notNull(),

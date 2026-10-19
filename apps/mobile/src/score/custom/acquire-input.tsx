@@ -4,6 +4,7 @@ import { Flash, PresenceLabel } from '../cell-flash';
 import { NumberField } from '../../ui/number-field';
 import { Card, Chip, Collapsible, Heading, Hint } from '../../ui/primitives';
 import { colors } from '../../ui/theme';
+import { TEAM_ID } from '../../api/plays-types';
 import type { SheetApi } from '../use-sheet';
 import {
   ACQUIRE_CHAINS,
@@ -27,12 +28,28 @@ const QUICK = [100, 500, 1000];
 export function AcquireInput({ sheet }: { sheet: SheetApi }) {
   const { players } = sheet.state;
   const touched = sheet.state.extras.acquire as AcquireExtras | undefined;
-  const { prices, shares } = touched ?? EMPTY;
+  const persisted =
+    sheet.template.templateVersion >= 3 &&
+    ['chainPrices', 'chainShares', 'marketShares'].every((key) =>
+      sheet.template.categories.some((c) => c.key === key),
+    );
+  const record = (value: unknown): Prices =>
+    value && typeof value === 'object' && !Array.isArray(value) ? (value as Prices) : {};
+  const prices = persisted ? record(sheet.state.teamValues.chainPrices) : (touched ?? EMPTY).prices;
+  const shares: Shares = persisted
+    ? Object.fromEntries(players.map((p) => [p.id, record(sheet.state.values[p.id]?.chainShares)]))
+    : (touched ?? EMPTY).shares;
+  const market = persisted ? record(sheet.state.teamValues.marketShares) : {};
+
   const ids = players.map((p) => p.id);
-  const bonuses = chainBonuses(prices, shares, ids);
+  const bonuses = chainBonuses(
+    prices,
+    ids.length === 2 && persisted ? { ...shares, __market: market } : shares,
+    ids.length === 2 && persisted ? [...ids, '__market'] : ids,
+  );
 
   useEffect(() => {
-    if (!touched) return;
+    if (persisted || !touched) return;
     const live = players.map((p) => p.id);
     const b = chainBonuses(touched.prices, touched.shares, live);
     sheet.patchValues(
@@ -50,12 +67,16 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
   }, [touched, players.length]);
 
   const setPrice = (key: ChainKey, n: number) =>
-    sheet.setExtra<AcquireExtras>('acquire', { prices: { ...prices, [key]: n }, shares });
+    persisted
+      ? sheet.setInputValue(TEAM_ID, 'chainPrices', key, n)
+      : sheet.setExtra<AcquireExtras>('acquire', { prices: { ...prices, [key]: n }, shares });
   const setShares = (id: string, key: ChainKey, n: number) =>
-    sheet.setExtra<AcquireExtras>('acquire', {
-      prices,
-      shares: { ...shares, [id]: { ...shares[id], [key]: n } },
-    });
+    persisted
+      ? sheet.setInputValue(id, 'chainShares', key, n)
+      : sheet.setExtra<AcquireExtras>('acquire', {
+          prices,
+          shares: { ...shares, [id]: { ...shares[id], [key]: n } },
+        });
 
   const num = (id: string, key: string) => {
     const v = sheet.state.values[id]?.[key];
@@ -68,7 +89,10 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
         <Heading>Tiền mặt cuối ván</Heading>
         {players.map((p) => {
           const row = sheet.summary.rows.find((r) => r.id === p.id);
-          const extra = num(p.id, 'stockSales') + num(p.id, 'endBonuses');
+          const computed = sheet.summary.result?.players.find((r) => r.id === p.id)?.categories;
+          const extra = persisted
+            ? (computed?.stockSales ?? 0) + (computed?.endBonuses ?? 0)
+            : num(p.id, 'stockSales') + num(p.id, 'endBonuses');
           return (
             <View key={p.id} style={styles.player}>
               <View style={styles.header}>
@@ -84,6 +108,7 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
                   min={0}
                   step={100}
                   width={110}
+                  disabled={!sheet.canEditIdentity(p.id)}
                   prefix="$"
                   onChange={(n) => sheet.setValue(p.id, 'cash', n)}
                 />
@@ -93,10 +118,15 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
                   <Chip
                     key={q}
                     label={`+${q}`}
+                    disabled={!sheet.canEditIdentity(p.id)}
                     onPress={() => sheet.setValue(p.id, 'cash', num(p.id, 'cash') + q)}
                   />
                 ))}
-                <Chip label="Xóa" onPress={() => sheet.setValue(p.id, 'cash', 0)} />
+                <Chip
+                  label="Xóa"
+                  disabled={!sheet.canEditIdentity(p.id)}
+                  onPress={() => sheet.setValue(p.id, 'cash', 0)}
+                />
               </View>
               {extra > 0 ? <Hint>Đã cộng từ trợ giúp cổ đông: {money(extra)}</Hint> : null}
             </View>
@@ -104,10 +134,10 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
         })}
       </Card>
 
-      <Collapsible defaultOpen title="Trợ giúp tính thưởng cổ đông">
+      <Collapsible title="Trợ giúp tính thưởng cổ đông" defaultOpen={persisted}>
         <Hint>
-          Tùy chọn. Nhập giá cổ phiếu và số cổ phiếu mỗi người nắm; app tự tính tiền bán cổ phiếu và
-          thưởng cổ đông lớn/nhỏ (hòa chia đều, làm tròn lên $100) rồi cộng vào tổng.
+          Nhập giá cổ phiếu và số cổ phiếu mỗi người nắm; app tự tính tiền bán cổ phiếu và thưởng cổ
+          đông lớn/nhỏ (hòa chia đều, làm tròn lên $100) rồi cộng vào tổng.
         </Hint>
         <Text style={styles.label}>Giá cổ phiếu hiện tại</Text>
         {ACQUIRE_CHAINS.map((c) => (
@@ -119,13 +149,40 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
               min={0}
               step={100}
               width={84}
+              disabled={!sheet.canManage}
               prefix="$"
               onChange={(n) => setPrice(c.key, n)}
             />
           </View>
         ))}
+        {persisted && players.length === 2 ? (
+          <View style={{ gap: 8 }}>
+            <Heading>Cổ phần thị trường · 2 người</Heading>
+            <Hint>
+              Chủ bàn rút theo luật Renegade Classic và nhập số ô rút. Thị trường tham gia xét
+              thưởng; tiền thưởng của thị trường trả về ngân hàng.
+            </Hint>
+            {ACQUIRE_CHAINS.filter((c) => (prices[c.key] ?? 0) > 0).map((c) => (
+              <View key={c.key} style={styles.row}>
+                <Text style={styles.chain}>
+                  {c.name}
+                  {market[c.key] === undefined ? ' · chưa nhập' : ''}
+                </Text>
+                <NumberField
+                  value={market[c.key] ?? 0}
+                  min={0}
+                  max={25}
+                  disabled={!sheet.canManage}
+                  onChange={(n) => sheet.setInputValue(TEAM_ID, 'marketShares', c.key, n)}
+                />
+              </View>
+            ))}
+          </View>
+        ) : null}
         {players.map((p) => {
-          const bonus = endBonus(bonuses, p.id);
+          const bonus = persisted
+            ? (sheet.summary.result?.players.find((r) => r.id === p.id)?.categories.endBonuses ?? 0)
+            : endBonus(bonuses, p.id);
           const detail = bonuses
             .filter((b) => b.payouts[p.id])
             .map(
@@ -151,6 +208,7 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
                       min={0}
                       max={25}
                       width={44}
+                      disabled={!sheet.canEditIdentity(p.id)}
                       onChange={(n) => setShares(p.id, c.key, n)}
                     />
                   </View>
@@ -159,7 +217,7 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
               <Text style={styles.sumLine}>
                 Bán cổ phiếu: {money(stockSales(prices, shares, p.id))} · Thưởng: {money(bonus)}
               </Text>
-              {detail ? <Hint>{detail}</Hint> : null}
+              {detail && (!persisted || sheet.summary.result) ? <Hint>{detail}</Hint> : null}
             </View>
           );
         })}

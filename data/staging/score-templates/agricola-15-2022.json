@@ -3,7 +3,7 @@
   "name": "Agricola 15",
   "year": 2022,
   "bggId": 359999,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "15th anniversary box (revised rules)",
   "playerCount": {
     "min": 1,
@@ -22,7 +22,7 @@
       "key": "fields",
       "label": "Fields",
       "labelVi": "Ruộng",
-      "hint": "0-1 fields = -1; 2 = 1; 3 = 2; 4 = 3; 5+ = 4",
+      "hint": "Count only field tiles on your farmyard; field cards do not count. 0–1: −1 VP; 2: 1; 3: 2; 4: 3; 5+: 4.",
       "scope": "player",
       "input": "count",
       "min": 0,
@@ -64,7 +64,7 @@
       "key": "grain",
       "label": "Grain",
       "labelVi": "Ngũ cốc",
-      "hint": "0 = -1; 1-3 = 1; 4-5 = 2; 6-7 = 3; 8+ = 4",
+      "hint": "0 = -1; 1-3 = 1; 4-5 = 2; 6-7 = 3; 8+ = 4 Include supply and planted crops on fields/eligible cards; exclude goods not yet earned or bought.",
       "scope": "player",
       "input": "count",
       "min": 0,
@@ -85,7 +85,7 @@
       "key": "vegetables",
       "label": "Vegetables",
       "labelVi": "Rau",
-      "hint": "0 = -1; 1 = 1; 2 = 2; 3 = 3; 4+ = 4",
+      "hint": "0 = -1; 1 = 1; 2 = 2; 3 = 3; 4+ = 4 Include supply and planted crops on fields/eligible cards; exclude goods not yet earned or bought.",
       "scope": "player",
       "input": "count",
       "min": 0,
@@ -244,7 +244,7 @@
       "key": "cardPoints",
       "label": "Card points",
       "labelVi": "Điểm từ lá bài",
-      "hint": "Printed points on improvements/occupations played",
+      "hint": "Printed points on face-up major/minor improvements; occupations have no printed points.",
       "scope": "player",
       "input": "number",
       "min": null,
@@ -282,29 +282,42 @@
         "points": -3
       },
       "countsToTotal": true
+    },
+    {
+      "key": "buildingResources",
+      "label": "Vật liệu xây dựng còn trong kho",
+      "labelVi": "Vật liệu xây dựng còn trong kho",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
-  "tiebreakers": [],
+  "tiebreakers": [
+    {
+      "categoryKey": "buildingResources",
+      "dir": "highest",
+      "description": "Most building resources remaining in supply; if still tied, share rank."
+    }
+  ],
   "sharedVictoryOnTie": true,
-  "notes": "family: point-salad-euro. Scoring tables cross-checked against a secondary transcription of the Revised Edition rules (UltraBoardGames scoring page); the official Agricola 15 rulebook PDF could not be fetched (publisher 403, BGG 403, web search budget exhausted). Assumes Agricola 15 uses the Revised Edition scoring unchanged. Rulebook tie rule: tied players share the victory. Grain row: 0 = -1, 1-3 = 1, 4-5 = 2, 6-7 = 3, 8+ = 4. Rooms in wooden huts score 0. Solo target and Agricola 15 specific cards not modelled.",
+  "notes": "Verified edition: 15th Anniversary (2022). Count field tiles on the farmyard, not field cards; include eligible crops/animals on cards. Printed improvement points and card-dependent bonuses remain manual. Solo campaign and expansion-specific rules are not automated. Ties use building resources, then shared rank.",
   "sources": [
     {
-      "url": "https://www.ultraboardgames.com/agricola/scoring.php",
-      "title": "Agricola Revised - Scoring System (UltraBoardGames)",
-      "type": "other",
-      "section": "The Scoring System of Agricola"
+      "url": "https://www.lookout-spiele.de/upload/en_agricolare.html_Rules_Agricola-RE_EN.pdf",
+      "title": "Agricola Revised official rules",
+      "type": "official-rulebook",
+      "section": "p12: scoring and tie"
     },
     {
-      "url": "https://www.ultraboardgames.com/agricola/game-rules.php",
-      "title": "Agricola Revised - Game rules (UltraBoardGames)",
-      "type": "other",
-      "section": "End of the Game (tie: share victory)"
-    },
-    {
-      "url": "https://boardgamegeek.com/boardgame/359999",
-      "title": "Agricola 15 - BGG page (identification only)",
-      "type": "other",
-      "section": "Game identity"
+      "url": "https://www.lookout-spiele.de/upload/de_15jahreagricolajubilaeumsbox.html_Argicola_Aniversery_Appendix_155_EN_WEB.pdf",
+      "title": "Agricola 15 official appendix",
+      "type": "official-rulebook",
+      "section": "pp15–16: category definitions and thresholds"
     }
   ],
   "confidence": "medium",

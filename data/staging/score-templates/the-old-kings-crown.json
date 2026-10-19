@@ -12,7 +12,7 @@
       "key": "influence",
       "label": "Influence in Supply",
       "labelVi": "Influence trong kho",
-      "hint": "Total Influence tokens in your Supply (5-value tokens count 5).",
+      "hint": "Influence trong Supply TRƯỚC quy đổi Lore; không cộng phần Lore một lần nữa.",
       "scope": "player",
       "input": "number",
       "min": 0,
@@ -26,7 +26,7 @@
       "key": "loreBonus",
       "label": "Lore converted at game end",
       "labelVi": "Lore quy đổi cuối ván",
-      "hint": "Only if your Site of Power has no cards: 1 Influence per 2 Lore.",
+      "hint": "Số Lore còn lại trước quy đổi; chỉ tính nếu Site of Power không còn thẻ.",
       "scope": "player",
       "input": "count",
       "min": 0,
@@ -64,41 +64,70 @@
         "type": "sum"
       },
       "countsToTotal": false
+    },
+    {
+      "key": "supplyTokens",
+      "label": "Influence trước quy đổi Lore",
+      "labelVi": "Influence trước quy đổi Lore",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "inputs": [
+        "ones",
+        "fives"
+      ]
+    },
+    {
+      "key": "siteEmpty",
+      "label": "Site of Power không còn thẻ",
+      "labelVi": "Site of Power không còn thẻ",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [
     {
       "categoryKey": "favour",
       "dir": "highest",
-      "description": "Tied player who controls the Kingdom's Favour",
-      "descriptionVi": "Người giữ Kingdom's Favour thắng."
+      "description": "Tied player who controls the Kingdom's Favour"
     },
     {
       "categoryKey": "orderPos",
       "dir": "lowest",
-      "description": "Otherwise the tied player highest on the Order Track",
-      "descriptionVi": "Nếu không, người đứng cao nhất trên Order Track thắng."
+      "description": "Otherwise the tied player highest on the Order Track"
     }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "family: resource-count (winner = most Influence in Supply after final round; no separate point tally). Influence is the single running currency; enter the final Supply total. Standard game is 5 rounds (short 4, extended 6). Order Track position 1 is the best.",
+  "notes": "Base multiplayer. Enter Supply influence before final Lore conversion; do not double count. Lore only converts if no cards remain on Site of Power. Ties use Kingdom’s Favour, then highest Order Track position. Solo and second-printing/expansion changes are not automated.",
   "sources": [
     {
       "url": "https://www.rulespal.com/the-old-kings-crown/rulebook",
       "title": "RulesPal transcription of the official rulebook",
       "type": "other",
       "section": "Winning the Game; Supply (Lore to Influence at end); Kingdom's Favour tiebreak"
+    },
+    {
+      "url": "https://gamers-hq.de/media/pdf/23/1b/5a/The-Old-King-s-Crown-Rulebook-Single-Page-Version.pdf",
+      "title": "Eerie Idol Games official multiplayer rulebook, mirrored",
+      "type": "official-rulebook",
+      "section": "Supply/Lore p.15; Winning the Game and glossary"
     }
   ],
   "slug": "the-old-kings-crown",
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "mode": "competitive",
   "scoringStyle": "end-game-categories",
   "rounds": null,
-  "confidence": "medium",
-  "needsReview": true,
-  "uiHint": "generic",
-  "uiHintReason": "Single Influence total plus lore; tiebreak inputs are collapsed.",
-  "winConditionVi": "Nhiều Influence trong kho nhất sau vòng cuối thắng (không có bảng điểm riêng)."
+  "confidence": "high",
+  "needsReview": false
 }

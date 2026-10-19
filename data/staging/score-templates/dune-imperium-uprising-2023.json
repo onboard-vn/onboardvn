@@ -3,11 +3,11 @@
   "name": "Dune: Imperium - Uprising",
   "year": 2023,
   "bggId": 397598,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
-    "min": 1,
-    "max": 6
+    "min": 3,
+    "max": 4
   },
   "mode": "competitive",
   "winRule": "highest",
@@ -103,26 +103,22 @@
     {
       "categoryKey": "spice",
       "dir": "highest",
-      "description": "Most spice",
-      "descriptionVi": "Nhiều spice nhất"
+      "description": "Most spice"
     },
     {
       "categoryKey": "solari",
       "dir": "highest",
-      "description": "Most Solari",
-      "descriptionVi": "Nhiều Solari nhất"
+      "description": "Most Solari"
     },
     {
       "categoryKey": "water",
       "dir": "highest",
-      "description": "Most water",
-      "descriptionVi": "Nhiều nước nhất"
+      "description": "Most water"
     },
     {
       "categoryKey": "troops",
       "dir": "highest",
-      "description": "Most garrisoned troops",
-      "descriptionVi": "Nhiều quân đóng trong doanh trại nhất"
+      "description": "Most garrisoned troops"
     }
   ],
   "sharedVictoryOnTie": false,
@@ -131,18 +127,15 @@
     "target": 10,
     "description": "Checked in the Recall phase: any player at 10+ VP, or the Conflict deck is empty."
   },
-  "notes": "family: running-track. VP are gained during play and tracked on the Score track; at the end only Endgame Intrigue cards are resolved before comparing totals. Tiebreakers are listed as spice, Solari, water, then garrisoned troops. One/two-player (Rivals) and six-player supplements and the CHOAM module were not checked. Verified only via a RulesPal mirror of the rulebook, not the PDF.",
+  "notes": "Verified standard3–4-player Uprising (2023). VP track is before Endgame Intrigue resolution; enter only additional Intrigue VP not already included. Spice/Solari/water/garrison troops break ties in order. Rivals1–2player, six-player teams, CHOAM and other expansions not automated.",
   "sources": [
     {
-      "url": "https://www.rulespal.com/dune-imperium-uprising/rulebook",
-      "title": "Dune: Imperium - Uprising rulebook (RulesPal mirror)",
-      "type": "other",
-      "section": "Phase 5 Recall; Endgame"
+      "url": "https://dwd-web.s3.us-west-2.amazonaws.com/pdfs/DUNE_IMPERIUM_UPRISING_Main_Rulebook_23-10-12.pdf",
+      "title": "Dire Wolf Uprising official rules 2023-10-12",
+      "type": "official-rulebook",
+      "section": "p15: Recall and Endgame"
     }
   ],
   "confidence": "medium",
-  "needsReview": true,
-  "uiHint": "generic",
-  "uiHintReason": "Score track plus endgame intrigue VP; tiebreak resources are collapsed.",
-  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc khi có người đạt 10 VP hoặc hết bài Xung đột (kiểm tra ở pha Recall)."
+  "needsReview": true
 }

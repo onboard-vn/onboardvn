@@ -3,7 +3,7 @@
   "name": "Vantage",
   "year": 2025,
   "bggId": 420033,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": null,
   "playerCount": {
     "min": 1,
@@ -37,39 +37,40 @@
         "type": "sum"
       },
       "countsToTotal": false
+    },
+    {
+      "key": "sessionEnded",
+      "label": "Đã kết thúc phiên chơi",
+      "labelVi": "Đã kết thúc phiên chơi",
+      "scope": "team",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [],
-  "winCondition": "Game ends when a player completes a mission or a destiny, or a player's health, morale or time reaches 0 a second time. Mission victory, destiny victory, or epic victory (both).",
+  "winCondition": "Mission or destiny completed gives mission/destiny victory; both give epic victory. Mission completion permits continued play. Ending a destiny requires choosing to read its entry. At zero time/morale/health follow the mission TAKE entry; a final chance is ordinarily available once. Record the actual session outcome, without points.",
   "endCondition": {
     "type": "objective",
     "target": null,
-    "description": "Ends on mission or destiny completion, or when a player's health, morale or time hits 0 a second time."
+    "description": "Mission or destiny completed gives mission/destiny victory; both give epic victory. Mission completion permits continued play. Ending a destiny requires choosing to read its entry. At zero time/morale/health follow the mission TAKE entry; a final chance is ordinarily available once. Record the actual session outcome, without points."
   },
   "outcome": {
     "winLose": true
   },
-  "notes": "family: coop. No points. Epic victory = both mission and destiny in the same game. Official rulebook is in a Dropbox folder (too large to download) and the box; verified only against the Stonemaier rules/FAQ page. Intrinsic (self-defined) success not modelled. Check rulebook before upgrading confidence.",
+  "notes": "Cooperative outcome only, no numeric VP. Guided inputs derive mission/destiny/epic victory only after the session is marked ended. Intrinsic success can remain a play note; storybook instructions and player choices are not automated.",
   "sources": [
     {
-      "url": "https://stonemaiergames.com/games/vantage/rules-faq/",
-      "title": "Vantage Rules & FAQ (Stonemaier Games)",
+      "url": "https://vantage.rulepop.com/#end-of-game",
+      "title": "Vantage official rules reference (Stonemaier)",
       "type": "publisher-page",
-      "section": "Game end / victory types"
-    },
-    {
-      "url": "https://stonemaiergames.com/games/vantage/",
-      "title": "Vantage (Stonemaier Games)",
-      "type": "publisher-page",
-      "section": "Victory types"
-    },
-    {
-      "url": "https://boardgamegeek.com/boardgame/420033",
-      "title": "BoardGameGeek game page and publisher description",
-      "type": "bgg-forum",
-      "section": "Description"
+      "section": "End of Game; FAQ: victory and final chance"
     }
   ],
-  "confidence": "medium",
-  "needsReview": true
+  "confidence": "high",
+  "needsReview": false
 }

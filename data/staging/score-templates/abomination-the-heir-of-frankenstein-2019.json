@@ -3,9 +3,12 @@
   "name": "Abomination: The Heir of Frankenstein",
   "year": 2019,
   "bggId": 239472,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
-  "playerCount": { "min": 1, "max": 4 },
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
   "mode": "competitive",
   "winRule": "highest",
   "scoringStyle": "end-game-categories",
@@ -20,7 +23,9 @@
       "input": "number",
       "min": 0,
       "max": null,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": true
     },
     {
@@ -32,7 +37,9 @@
       "input": "repeating",
       "min": 0,
       "max": null,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": true
     },
     {
@@ -44,7 +51,10 @@
       "input": "count",
       "min": 0,
       "max": null,
-      "formula": { "type": "multiply", "points": 10 },
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
       "countsToTotal": true
     },
     {
@@ -56,7 +66,9 @@
       "input": "number",
       "min": 0,
       "max": null,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": true
     },
     {
@@ -68,7 +80,9 @@
       "input": "number",
       "min": 0,
       "max": null,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": true
     },
     {
@@ -80,7 +94,9 @@
       "input": "number",
       "min": null,
       "max": null,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": true
     },
     {
@@ -92,7 +108,10 @@
       "input": "bool",
       "min": null,
       "max": null,
-      "formula": { "type": "exclusiveBonus", "points": 5 },
+      "formula": {
+        "type": "exclusiveBonus",
+        "points": 5
+      },
       "countsToTotal": true
     },
     {
@@ -103,7 +122,9 @@
       "input": "count",
       "min": 0,
       "max": 6,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": false
     },
     {
@@ -114,17 +135,97 @@
       "input": "number",
       "min": 0,
       "max": null,
-      "formula": { "type": "sum" },
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "bodyParts",
+      "label": "Bộ phận sống và điểm in trên bộ phận",
+      "labelVi": "Bộ phận sống và điểm in trên bộ phận",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "inputs": [
+        "headAlive",
+        "headVp",
+        "torsoAlive",
+        "torsoVp",
+        "leftArmAlive",
+        "leftArmVp",
+        "rightArmAlive",
+        "rightArmVp",
+        "leftLegAlive",
+        "leftLegVp",
+        "rightLegAlive",
+        "rightLegVp"
+      ]
+    },
+    {
+      "key": "captainEnded",
+      "label": "Captain đã tới ô cuối",
+      "labelVi": "Captain đã tới ô cuối",
+      "scope": "team",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "humanityValue",
+      "label": "Giá trị nhân tính hiện tại",
+      "labelVi": "Giá trị nhân tính hiện tại",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "turnOrder",
+      "label": "Vị trí so với người đi đầu (1 là đầu tiên)",
+      "labelVi": "Vị trí so với người đi đầu (1 là đầu tiên)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
       "countsToTotal": false
     }
   ],
   "tiebreakers": [
-    { "categoryKey": "aliveCount", "dir": "highest", "description": "Most alive monster parts" },
-    { "categoryKey": "francs", "dir": "highest", "description": "Most francs" },
-    { "description": "Turn order relative to first player (first player wins, then clockwise)" }
+    {
+      "categoryKey": "aliveCount",
+      "dir": "highest",
+      "description": "Most alive monster parts"
+    },
+    {
+      "categoryKey": "francs",
+      "dir": "highest",
+      "description": "Most francs"
+    },
+    {
+      "categoryKey": "turnOrder",
+      "dir": "lowest",
+      "description": "Turn order relative to first player"
+    }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "family: word-trivia-party (batch guess; actual scoring family is end-game-categories with a running VP track). Game ends when the Captain reaches the final story space or a player has all 6 parts alive at end of a lab phase (12 rounds max per search summary; not verified in rulebook text read). Per-part Alive points, dial VP values and bonus-objective availability are printed on components, so they are scorer inputs. Bonus objectives are 10 VP each. Solo mode not modelled.",
+  "notes": "Base competitive 2–4 players. End score: track + printed Alive values + 10 per achieved objective + dial VP + Captain-only highest positive humanity bonus (+5 each tied leader). The third tiebreak is turn order. Dial VP and body-part printed VP remain explicit component inputs; solo and Igor variant not modelled.",
   "sources": [
     {
       "url": "https://media.plaidhatgames.com/old_images/games/abomination/rules.pdf",

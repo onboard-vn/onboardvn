@@ -3,7 +3,7 @@
   "name": "Brass: Birmingham",
   "year": 2018,
   "bggId": 224517,
-  "templateVersion": 2,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
     "min": 2,
@@ -11,7 +11,7 @@
   },
   "mode": "competitive",
   "winRule": "highest",
-  "scoringStyle": "rounds",
+  "scoringStyle": "end-game-categories",
   "rounds": {
     "count": 2,
     "aggregate": "sum",
@@ -19,15 +19,75 @@
   },
   "categories": [
     {
-      "key": "vpTrack",
-      "label": "Final VP (score track)",
-      "labelVi": "Điểm VP cuối (trên track)",
-      "hint": "VP marker after the Rail Era scoring; add 100 per lap. Link and industry VP are scored onto the track at the end of each era; shortfall penalties are already deducted.",
+      "key": "canalLinks",
+      "label": "Canal Era: links",
+      "labelVi": "Kỳ Kênh: điểm đường nối",
+      "hint": "Per link tile: 1 VP per VP icon at each adjacent location.",
       "scope": "player",
-      "input": "number",
+      "input": "count",
       "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "canalIndustries",
+      "label": "Canal Era: flipped industries",
+      "labelVi": "Kỳ Kênh: công nghiệp đã lật",
+      "hint": "Sum of VPs printed on your flipped industry tiles.",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
       "formula": {
         "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "railLinks",
+      "label": "Rail Era: links",
+      "labelVi": "Kỳ Ray: điểm đường nối",
+      "hint": "Same as canal era, using rail links.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "railIndustries",
+      "label": "Rail Era: flipped industries",
+      "labelVi": "Kỳ Ray: công nghiệp đã lật",
+      "hint": "All your flipped industry tiles on board (level 2+ also scored in canal era).",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "shortfallPenalty",
+      "label": "Shortfall penalties",
+      "labelVi": "Điểm phạt thiếu tiền",
+      "hint": "Enter actual VP lost during play, capped by VP available at the time, not unpaid money. Do not subtract again if already included in an entered net era subtotal.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": -1
       },
       "countsToTotal": true
     },
@@ -63,39 +123,27 @@
     {
       "categoryKey": "incomeLevel",
       "dir": "highest",
-      "description": "Highest income level",
-      "descriptionVi": "Thu nhập cao nhất"
+      "description": "Highest income level"
     },
     {
       "categoryKey": "moneyRemaining",
       "dir": "highest",
-      "description": "Most money remaining",
-      "descriptionVi": "Nhiều tiền còn lại nhất"
+      "description": "Most money remaining"
     },
     {
-      "description": "If still tied, those players draw.",
-      "descriptionVi": "Vẫn hòa thì bốc thăm."
+      "description": "If still tied, those players draw."
     }
   ],
   "sharedVictoryOnTie": true,
-  "notes": "VPs are only awarded at the end of each era (links first, then flipped industries; unflipped industries score nothing). Link tiles are removed as scored; level-1 industries are removed after canal era. If you enter the final VP marker position instead, use one number per era. Beyond 100 VP the track loops. Per-player scorers can record era subtotals via the four categories. Final score is the VP marker on the track: era scoring (links, flipped industries) and shortfall penalties move it during play, so no per-link or per-industry entry is needed.",
+  "notes": "VPs are only awarded at the end of each era (links first, then flipped industries; unflipped industries score nothing). Link tiles are removed as scored; level-1 industries are removed after canal era. If you enter the final VP marker position instead, use one number per era. Beyond 100 VP the track loops. Per-player scorers can record era subtotals via the four categories. Guided inputs are the two era scoring subtotals, not repeated cumulative final marker values. Enter only actual VP penalties lost (cannot lose VP below zero at the time).",
   "sources": [
     {
-      "url": "https://www.orderofgamers.com/downloads/BrassBirmingham_v1.2.pdf",
-      "title": "Brass: Birmingham Rules Summary and Reference v1.2",
+      "url": "https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-Birmingham-Rulebook.pdf?v=1758826281",
+      "title": "Brass Birmingham publisher rulebook (Roxley)",
       "type": "official-rulebook",
-      "section": "p.4 End of Canal & Rail Eras; p.5 Winning the Game (tiebreakers), Flipping industry tiles"
-    },
-    {
-      "url": "https://www.rulespal.com/brass-birmingham/rulebook",
-      "title": "Brass: Birmingham rulebook summary (RulesPal)",
-      "type": "other",
-      "section": "End of Canal/Rail Era scoring; Tiebreakers"
+      "section": "pp.6–7 era scoring, shortfalls, winning"
     }
   ],
   "confidence": "high",
-  "needsReview": false,
-  "uiHint": "generic",
-  "uiHintReason": "Track marker already contains both era scorings; only income and money are extra for ties.",
-  "winConditionVi": "Điểm cao nhất thắng. Hòa: thu nhập cao hơn, rồi nhiều tiền hơn; vẫn hòa thì bốc thăm."
+  "needsReview": false
 }

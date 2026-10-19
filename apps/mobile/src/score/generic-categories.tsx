@@ -16,7 +16,15 @@ const asList = (v: RawValue | undefined): number[] =>
 const asRecord = (v: RawValue | undefined): Record<string, number> =>
   v && typeof v === 'object' && !Array.isArray(v) ? v : {};
 
-function ListField({ value, onChange }: { value: number[]; onChange: (v: number[]) => void }) {
+function ListField({
+  value,
+  onChange,
+  disabled,
+}: {
+  value: number[];
+  onChange: (v: number[]) => void;
+  disabled?: boolean;
+}) {
   const [draft, setDraft] = useState('');
   const add = () => {
     const n = Number(draft.replace(',', '.'));
@@ -31,6 +39,7 @@ function ListField({ value, onChange }: { value: number[]; onChange: (v: number[
           <Chip
             key={`${i}-${n}`}
             label={`${n} ✕`}
+            disabled={disabled}
             onPress={() => onChange(value.filter((_, j) => j !== i))}
           />
         ))}
@@ -38,13 +47,19 @@ function ListField({ value, onChange }: { value: number[]; onChange: (v: number[
       <View style={styles.inline}>
         <TextInput
           value={draft}
+          editable={!disabled}
           onChangeText={setDraft}
           onSubmitEditing={add}
           keyboardType="numbers-and-punctuation"
           placeholder="Thêm giá trị"
           style={styles.input}
         />
-        <Button label="Thêm" tone="ghost" onPress={add} disabled={draft.trim() === ''} />
+        <Button
+          label="Thêm"
+          tone="ghost"
+          onPress={add}
+          disabled={disabled || draft.trim() === ''}
+        />
       </View>
     </View>
   );
@@ -54,9 +69,11 @@ function BoolListField({
   value,
   max,
   onChange,
+  disabled,
 }: {
   value: number[];
   max?: number;
+  disabled?: boolean;
   onChange: (v: number[]) => void;
 }) {
   const full = max !== undefined && value.length >= max;
@@ -66,6 +83,7 @@ function BoolListField({
         {value.map((n, i) => (
           <Chip
             key={`${i}-${n}`}
+            disabled={disabled}
             label={`${i + 1}: ${n ? '✓' : '✗'}`}
             tint={n ? colors.success : colors.danger}
             selected
@@ -75,11 +93,15 @@ function BoolListField({
         {value.length === 0 ? <Hint>Chưa có phi vụ nào.</Hint> : null}
       </View>
       <View style={styles.wrap}>
-        <Button label="✓ Thành công" disabled={full} onPress={() => onChange([...value, 1])} />
+        <Button
+          label="✓ Thành công"
+          disabled={disabled || full}
+          onPress={() => onChange([...value, 1])}
+        />
         <Button
           label="✗ Thất bại"
           tone="ghost"
-          disabled={full}
+          disabled={disabled || full}
           onPress={() => onChange([...value, 0])}
         />
       </View>
@@ -88,18 +110,26 @@ function BoolListField({
   );
 }
 
-function Control({
+export function CategoryControl({
   cat,
   value,
   onChange,
+  disabled,
 }: {
   cat: ScoreCategory;
+  disabled?: boolean;
   value: RawValue | undefined;
   onChange: (v: RawValue) => void;
 }) {
   switch (cat.input) {
     case 'bool':
-      return <Switch value={asNumber(value) !== 0} onValueChange={(b) => onChange(b ? 1 : 0)} />;
+      return (
+        <Switch
+          disabled={disabled}
+          value={asNumber(value) !== 0}
+          onValueChange={(b) => onChange(b ? 1 : 0)}
+        />
+      );
     case 'counts': {
       const rec = asRecord(value);
       return (
@@ -111,6 +141,7 @@ function Control({
                 value={rec[name] ?? 0}
                 min={0}
                 width={56}
+                disabled={disabled}
                 onChange={(n) => onChange({ ...rec, [name]: n })}
               />
             </View>
@@ -121,15 +152,26 @@ function Control({
     case 'perRound':
       if (cat.roundInput === 'bool') {
         return (
-          <BoolListField value={asList(value)} max={cat.max ?? undefined} onChange={onChange} />
+          <BoolListField
+            disabled={disabled}
+            value={asList(value)}
+            max={cat.max ?? undefined}
+            onChange={onChange}
+          />
         );
       }
-      return <ListField value={asList(value)} onChange={onChange} />;
+      return <ListField disabled={disabled} value={asList(value)} onChange={onChange} />;
     case 'repeating':
-      return <ListField value={asList(value)} onChange={onChange} />;
+      return <ListField disabled={disabled} value={asList(value)} onChange={onChange} />;
     default:
       return (
-        <NumberField value={asNumber(value)} min={cat.min} max={cat.max} onChange={onChange} />
+        <NumberField
+          disabled={disabled}
+          value={asNumber(value)}
+          min={cat.min}
+          max={cat.max}
+          onChange={onChange}
+        />
       );
   }
 }
@@ -168,18 +210,30 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
       );
     body = (
       <View style={styles.wrap}>
-        <Chip label="Không ai" selected={chosen === null} onPress={() => pick(null)} />
+        <Chip
+          disabled={!sheet.canManage}
+          label="Không ai"
+          selected={chosen === null}
+          onPress={() => pick(null)}
+        />
         {players.map((p) => (
-          <Chip key={p.id} label={p.name} selected={chosen === p.id} onPress={() => pick(p.id)} />
+          <Chip
+            disabled={!sheet.canManage}
+            key={p.id}
+            label={p.name}
+            selected={chosen === p.id}
+            onPress={() => pick(p.id)}
+          />
         ))}
       </View>
     );
   } else if (cat.scope === 'team') {
     body = (
       <Flash sheet={sheet} id={TEAM_ID} cat={cat.key}>
-        <Control
+        <CategoryControl
           cat={cat}
           value={state.teamValues[cat.key]}
+          disabled={!sheet.canManage}
           onChange={(v) => sheet.setTeamValue(cat.key, v)}
         />
       </Flash>
@@ -199,9 +253,10 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
           </View>
           {applies ? (
             <Flash sheet={sheet} id={p.id} cat={cat.key}>
-              <Control
+              <CategoryControl
                 cat={cat}
                 value={state.values[p.id]?.[cat.key]}
+                disabled={!sheet.canEditIdentity(p.id)}
                 onChange={(v) => sheet.setValue(p.id, cat.key, v)}
               />
             </Flash>

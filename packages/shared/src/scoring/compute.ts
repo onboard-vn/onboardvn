@@ -1,3 +1,7 @@
+import { prepareClassicScoring } from './club-classic/prepare.js';
+import { prepareStrategyScoring } from './club-strategy/prepare.js';
+import { prepareEuroScoring } from './club-euro/prepare.js';
+import { prepareMixedScoring } from './club-mixed/prepare.js';
 import { z } from 'zod';
 import { evaluateExpr, type CompiledExpr, type ExprValue } from './expr.js';
 import { err, ok, type Result, type ScoreError } from './result.js';
@@ -556,7 +560,56 @@ function compute(template: ScoreTemplate, rawInput: unknown): ScoreResult {
 
 export function computeScores(template: ScoreTemplate, input: ScoreInput): Result<ScoreResult> {
   try {
-    return ok(compute(template, input));
+    const parsed = scoreInputSchema.safeParse(input);
+    if (!parsed.success)
+      return err('INPUT_INVALID', parsed.error.issues[0]?.message ?? 'Invalid input');
+    const prepared =
+      prepareClassicScoring(template, parsed.data) ??
+      prepareStrategyScoring(template, parsed.data) ??
+      prepareEuroScoring(template, parsed.data) ??
+      prepareMixedScoring(template, parsed.data);
+    if (prepared?.error) return err('INPUT_INVALID', prepared.error);
+    const selected = prepared?.template ?? template;
+    const result = compute(selected, prepared?.input ?? parsed.data);
+    if (
+      selected.slug === 'cloudspire' &&
+      selected.templateVersion >= 2 &&
+      prepared?.input.winners?.length
+    ) {
+      for (const player of result.players) player.rank = result.winners.includes(player.id) ? 1 : 2;
+      if (selected.mode === 'team')
+        for (const team of result.teams)
+          team.rank = team.memberIds.every((id) => result.winners.includes(id)) ? 1 : 2;
+    }
+    if (selected.mode === 'team') {
+      result.winnerTeams = result.teams
+        .filter((team) => team.memberIds.every((id) => result.winners.includes(id)))
+        .map((team) => team.id);
+    }
+    result.warnings.push(...(prepared?.warnings ?? []));
+    const excluded = new Set(prepared?.excludedIds ?? []);
+    if (excluded.size) {
+      const eligible = result.players.filter((p) => !excluded.has(p.id));
+      const compare = (a: PlayerScore, b: PlayerScore): number => {
+        const diff = a.total - b.total;
+        if (diff) return selected.winRule === 'lowest' ? diff : -diff;
+        for (const tb of selected.tiebreakers ?? []) {
+          if (!tb.categoryKey) continue;
+          const delta = (a.categories[tb.categoryKey] ?? 0) - (b.categories[tb.categoryKey] ?? 0);
+          if (delta) return tb.dir === 'lowest' ? delta : -delta;
+        }
+        return 0;
+      };
+      for (const p of result.players)
+        p.rank = excluded.has(p.id)
+          ? null
+          : 1 + eligible.filter((other) => compare(other, p) < 0).length;
+      const leaders = eligible.filter((p) => p.rank === 1).map((p) => p.id);
+      result.tieUnresolved = leaders.length > 1 && !selected.sharedVictoryOnTie;
+      result.tiedIds = result.tieUnresolved ? leaders : [];
+      result.winners = result.tieUnresolved ? [] : leaders;
+    }
+    return ok(result);
   } catch (e) {
     if (e instanceof InputFailure) return { ok: false, error: e.error };
     return err('INTERNAL', e instanceof Error ? e.message : 'unexpected error');

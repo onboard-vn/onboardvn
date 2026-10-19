@@ -12,7 +12,8 @@ export interface PlayOp {
   identityId: string;
   categoryKey: string;
   roundIndex?: number;
-  value: RawValue;
+  inputKey?: string;
+  value: RawValue | null;
 }
 
 export type PlayEvent =

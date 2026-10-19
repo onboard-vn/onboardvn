@@ -3,7 +3,7 @@
   "name": "Amsterdam",
   "year": 2020,
   "bggId": 314582,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
     "min": 1,
@@ -89,27 +89,58 @@
         "type": "sum"
       },
       "countsToTotal": true
+    },
+    {
+      "key": "leftovers",
+      "label": "Thành phần còn lại",
+      "labelVi": "Thành phần còn lại",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "inputs": [
+        "commodities",
+        "dockWorkers",
+        "gulden",
+        "resources"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "floor((commodities + dockWorkers + gulden + resources) / 2)"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "amstelPosition",
+      "label": "Vị trí trên Amstel",
+      "labelVi": "Vị trí trên Amstel",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [
     {
-      "description": "Tied player who is further ahead on the Amstel canal wins.",
-      "descriptionVi": "Người đi xa hơn trên kênh Amstel thắng."
+      "categoryKey": "amstelPosition",
+      "dir": "highest",
+      "description": "Tied player further ahead on the Amstel wins."
     }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "family: point-salad-euro. Only a third-party rulebook transcription (RulesPal) could be reached; official PDF/BGG pages were not accessible, so values are not verified against the printed rulebook. Expansions (Specialized Workers, Secret Orders, Black-Marketeer, Extra Market Tiles) and solo TOM not modelled; Secret Orders add extra final points. Penalty cumulative table: 1:-3, 2:-8, 3:-15, 4:-22.",
+  "notes": "Base game: 12 rounds. Leftover commodities, dock workers, gulden and resources score jointly at 1 VP per 2. Enter cards and district awards as manual VP. Amstel position must encode ordering (larger means further ahead). Expansions and solo TOM not automated.",
   "sources": [
     {
-      "url": "https://www.rulespal.com/amsterdam/rulebook",
-      "title": "Amsterdam rulebook (RulesPal transcription)",
-      "type": "other",
-      "section": "End of the Game: penalty tokens, end-game cards, city and district evaluation, tiebreak"
+      "url": "https://rules.queen-games.com/amsterdam_en.pdf",
+      "title": "Amsterdam official rules",
+      "type": "official-rulebook",
+      "section": "p13: final scoring and Amstel tie"
     }
   ],
   "confidence": "medium",
-  "needsReview": true,
-  "uiHint": "generic",
-  "uiHintReason": "Track VP plus four direct end-game reads.",
-  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc sau vòng 12."
+  "needsReview": true
 }

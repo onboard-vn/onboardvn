@@ -29,7 +29,7 @@
       "hint": "Sum of each Cockpit's criteria; -5 for each ship never launched.",
       "scope": "player",
       "input": "number",
-      "min": 0,
+      "min": null,
       "max": null,
       "formula": {
         "type": "sum"
@@ -145,11 +145,42 @@
       "key": "cockpitVp",
       "label": "VP from Cockpits (tiebreak)",
       "labelVi": "VP từ Cockpit (phân định hòa)",
-      "hint": "Cockpit score total.",
+      "hint": "Tự lấy từ tổng Cockpit, không nhập lần hai.",
       "scope": "player",
       "input": "number",
-      "min": 0,
+      "min": null,
       "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "supplyQuantities",
+      "label": "Vật tư còn lại",
+      "labelVi": "Vật tư còn lại",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "inputs": [
+        "resources",
+        "money",
+        "ads",
+        "agendaCards",
+        "blueprints"
+      ]
+    },
+    {
+      "key": "turnOrder",
+      "label": "Thứ tự lượt cuối (1 đi trước)",
+      "labelVi": "Thứ tự lượt cuối (1 đi trước)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
       "formula": {
         "type": "sum"
       },
@@ -173,21 +204,29 @@
       "description": "Most VP from Cockpits"
     },
     {
-      "description": "Then the tied player later in turn order."
+      "categoryKey": "turnOrder",
+      "dir": "highest",
+      "description": "Later in turn order wins after all previous tiebreakers."
     }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "family: point-salad-euro. Reputation and Developments values are printed on the player board so they are entered directly. Enter the VP track as it stands before AGM C scoring. The mostReputation input is 1 if you alone or tied hold the most Reputation (ties all get the extra cube). Tiebreak 'VP from Cockpits' duplicates the cockpits category value.",
+  "notes": "Multiplayer base scoring. Cockpits is the signed net total after subtracting 5 per unlaunched shuttle; cockpitVp derives from it. Supply quantities combine at 1 VP per 3. Complete final shuttle advancement before entering pre-AGM-C track VP. Retail printing still needs comparison with the accessible publisher-authored training manual; Rachel solo and expansion modules are not automated.",
   "sources": [
     {
       "url": "https://www.rulespal.com/galactic-cruise/rulebook",
       "title": "RulesPal transcription of the official rulebook",
       "type": "other",
       "section": "Progress Track and Game End; Final Scoring - AGM C; tiebreakers"
+    },
+    {
+      "url": "https://bghub.org/r/galacticcruise.pdf",
+      "title": "Kinson Key Games Training Manual, mirrored",
+      "type": "official-rulebook",
+      "section": "pp.27–28 Progress and AGM C; retail wording comparison remains open"
     }
   ],
   "slug": "galactic-cruise",
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "mode": "competitive",
   "scoringStyle": "end-game-categories",

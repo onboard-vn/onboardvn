@@ -64,6 +64,7 @@ export function RoundsTable({ sheet }: { sheet: SheetApi }) {
                     <NumberField
                       value={roundScore(state, p.id, r)}
                       width={52}
+                      disabled={!sheet.canEditIdentity(p.id)}
                       onChange={(n) => sheet.setRoundScore(p.id, r, n)}
                     />
                   </Flash>
@@ -97,12 +98,12 @@ export function RoundsTable({ sheet }: { sheet: SheetApi }) {
       </ScrollView>
 
       <View style={styles.actions}>
-        <Button label="Thêm vòng" onPress={sheet.addRound} />
+        <Button label="Thêm vòng" onPress={sheet.addRound} disabled={!sheet.canManage} />
         <Button
           label="Xóa vòng cuối"
           tone="ghost"
           onPress={sheet.removeLastRound}
-          disabled={state.roundCount <= 1}
+          disabled={!sheet.canManage || state.roundCount <= 1}
         />
       </View>
     </Card>

@@ -3,7 +3,7 @@
   "name": "Age of Steam: Deluxe",
   "year": 2019,
   "bggId": 4098,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
     "min": 2,
@@ -58,27 +58,75 @@
         "points": -3
       },
       "countsToTotal": true
+    },
+    {
+      "key": "insolvent",
+      "label": "Đã phá sản, không được thắng",
+      "labelVi": "Đã phá sản, không được thắng",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "mapVariant",
+      "label": "Bản đồ: Rust Belt=0, Western US=1",
+      "labelVi": "Bản đồ: Rust Belt=0, Western US=1",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "cashRemaining",
+      "label": "Tiền mặt còn lại (Western US)",
+      "labelVi": "Tiền mặt còn lại (Western US)",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "tieRoll",
+      "label": "Kết quả xúc xắc phân thắng (Western US)",
+      "labelVi": "Kết quả xúc xắc phân thắng (Western US)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 6,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [
     {
-      "description": "Tie rule not verified; victory treated as shared.",
-      "descriptionVi": "Luật hòa chưa xác minh; coi như cùng thắng."
+      "description": "Tie rule not verified; victory treated as shared."
     }
   ],
   "sharedVictoryOnTie": true,
-  "notes": "family: auction-money. Game length depends on player count (Turn Track). Money has no value at the end. A player whose income would drop below 0 is eliminated and cannot win; score only surviving players. Tiebreaker not confirmed (rules reference Ill. 17). Official rulebook PDF not retrievable; verified against a rules transcription only.",
+  "notes": "Official Deluxe base/Rust Belt: 3 VP per final income + completed track sections - 3 VP per issued share; cash has no VP. Base ties share victory. Western US ties: cash, then track, then die roll. Insolvent players cannot win. Other maps and solo maps require separate rule review; choose the map explicitly.",
   "sources": [
     {
-      "url": "https://www.ultraboardgames.com/age-of-steam/game-rules.php",
-      "title": "Age of Steam rules (UltraBoardGames)",
-      "type": "other",
-      "section": "Victory Point Computations; Pay Expenses"
+      "url": "https://cdn.1j1ju.com/medias/fe/42/15-age-of-steam-deluxe-edition-rulebook.pdf",
+      "title": "Age of Steam Deluxe publisher rulebook (mirror)",
+      "type": "official-rulebook",
+      "section": "pp.9–10 scoring and Western US; p.9 insolvency"
     }
   ],
-  "confidence": "medium",
-  "needsReview": true,
-  "uiHint": "generic",
-  "uiHintReason": "Three direct reads: income level, completed track sections, shares issued.",
-  "winConditionVi": "Điểm cao nhất thắng; người chơi bị loại (thu nhập âm) không thể thắng. Điểm = 3 x thu nhập + đoạn đường hoàn chỉnh - 3 x cổ phiếu phát hành."
+  "confidence": "high",
+  "needsReview": false
 }

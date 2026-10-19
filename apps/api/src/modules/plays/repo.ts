@@ -1,4 +1,4 @@
-import { and, desc, eq, or, sql } from 'drizzle-orm';
+import { and, eq, or, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import {
   clubMembers,
@@ -58,6 +58,59 @@ export async function loadBundle(
   };
 }
 
+export async function lockTable(tableId: string, executor: Executor): Promise<boolean> {
+  const [row] = await executor
+    .select({ id: meetupTables.id })
+    .from(meetupTables)
+    .where(eq(meetupTables.id, tableId))
+    .for('update');
+  return Boolean(row);
+}
+
+export async function loadCurrentTablePlay(
+  tableId: string,
+  executor: Executor = db,
+): Promise<PlayBundle | undefined> {
+  const [row] = await executor
+    .select({ id: plays.id })
+    .from(plays)
+    .where(eq(plays.meetupTableId, tableId))
+    .orderBy(
+      sql`case when ${plays.status} = 'draft' then 0 else 1 end`,
+      sql`${plays.startedAt} desc`,
+      sql`${plays.createdAt} desc`,
+      sql`${plays.id} desc`,
+    )
+    .limit(1);
+  return row ? loadBundle(row.id, executor) : undefined;
+}
+
+export async function loadCurrentTableDraft(
+  tableId: string,
+  executor: Executor,
+): Promise<PlayBundle | undefined> {
+  const [row] = await executor
+    .select({ id: plays.id })
+    .from(plays)
+    .where(and(eq(plays.meetupTableId, tableId), eq(plays.status, 'draft')))
+    .orderBy(sql`${plays.startedAt} desc`, sql`${plays.createdAt} desc`, sql`${plays.id} desc`)
+    .limit(1);
+  return row ? loadBundle(row.id, executor) : undefined;
+}
+
+export async function isTableHost(
+  tableId: string,
+  userId: string,
+  executor: Executor = db,
+): Promise<boolean> {
+  const [row] = await executor
+    .select({ id: meetupTables.id })
+    .from(meetupTables)
+    .where(and(eq(meetupTables.id, tableId), eq(meetupTables.hostUserId, userId)))
+    .limit(1);
+  return Boolean(row);
+}
+
 export interface PlayAccess {
   canEdit: boolean;
   canView: boolean;
@@ -71,6 +124,30 @@ export async function resolveAccess(
   userId: string,
   executor: Executor = db,
 ): Promise<PlayAccess> {
+  if (play.meetupTableId) {
+    const [host] = await executor
+      .select({ id: meetupTables.id })
+      .from(meetupTables)
+      .where(and(eq(meetupTables.id, play.meetupTableId), eq(meetupTables.hostUserId, userId)))
+      .limit(1);
+    const own = players.length
+      ? await executor
+          .select({ id: identities.id })
+          .from(identities)
+          .where(
+            and(
+              eq(identities.userId, userId),
+              or(...players.map((p) => eq(identities.id, p.identityId))),
+            ),
+          )
+          .limit(1)
+      : [];
+    const seated = await isSeatedUser(play.meetupTableId, userId, executor);
+    const canManage = Boolean(host);
+    const canEdit = canManage || own.length > 0;
+    return { canEdit, canView: canEdit || seated };
+  }
+
   let canEdit = play.createdBy === userId;
   if (!canEdit && players.length) {
     const [mine] = await executor
@@ -84,15 +161,6 @@ export async function resolveAccess(
       )
       .limit(1);
     canEdit = Boolean(mine);
-  }
-  if (!canEdit && play.meetupTableId) {
-    const [table] = await executor
-      .select({ hostUserId: meetupTables.hostUserId })
-      .from(meetupTables)
-      .where(eq(meetupTables.id, play.meetupTableId))
-      .limit(1);
-    canEdit =
-      table?.hostUserId === userId || (await isSeatedUser(play.meetupTableId, userId, executor));
   }
   let member: { role: 'owner' | 'admin' | 'member' } | undefined;
   if (play.clubId) {
@@ -144,12 +212,26 @@ export async function pickTemplate(
     })[0];
 }
 
-export async function latestPlayIdForTable(tableId: string): Promise<string | null> {
-  const [row] = await db
-    .select({ id: plays.id })
-    .from(plays)
-    .where(eq(plays.meetupTableId, tableId))
-    .orderBy(desc(plays.createdAt))
-    .limit(1);
-  return row?.id ?? null;
+/** Latest available shared Critter Kitchen input template, while preserving pinned legacy templates. */
+export async function pickCritterKitchenMealTemplate(
+  gameId: string,
+  executor: Executor = db,
+): Promise<TemplateRow | undefined> {
+  const rows = await executor
+    .select()
+    .from(scoreTemplates)
+    .where(eq(scoreTemplates.gameId, gameId));
+  return rows
+    .filter((row) => {
+      if (!['approved', 'pending'].includes(row.status)) return false;
+      const definition = row.definition as { categories?: { key?: unknown }[] } | null;
+      return (
+        Array.isArray(definition?.categories) &&
+        definition.categories.some((category) => category?.key === 'meal')
+      );
+    })
+    .sort((a, b) => {
+      const approved = Number(a.status !== 'approved') - Number(b.status !== 'approved');
+      return approved || b.version - a.version;
+    })[0];
 }

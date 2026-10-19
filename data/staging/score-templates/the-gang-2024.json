@@ -3,7 +3,7 @@
   "name": "The Gang",
   "year": 2024,
   "bggId": 411567,
-  "templateVersion": 2,
+  "templateVersion": 3,
   "variant": "basic game",
   "playerCount": {
     "min": 3,
@@ -13,11 +13,63 @@
   "winRule": "objective",
   "scoringStyle": "objective-only",
   "rounds": {
-    "count": 5,
-    "aggregate": "sum",
+    "count": null,
+    "aggregate": "rounds-won",
     "endCondition": "Game ends when the team has 3 successful heists or 3 failed heists (3 to 5 heists)"
   },
   "categories": [
+    {
+      "key": "won",
+      "label": "Team won (3 successful heists)",
+      "labelVi": "Cả đội thắng (3 phi vụ thành công)",
+      "hint": "Win by cracking 3 vaults before tripping 3 alarms",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "heistsSucceeded",
+      "label": "Successful heists (vault cards)",
+      "labelVi": "Phi vụ thành công (thẻ Vault)",
+      "hint": "Heist succeeds when chip order matches the hand ranking order at showdown",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "heistsFailed",
+      "label": "Failed heists (alarm cards)",
+      "labelVi": "Phi vụ thất bại (thẻ Alarm)",
+      "hint": "At least one mistake in the order trips an alarm",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 3,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "manualResult",
+      "label": "Quick result only",
+      "labelVi": "Chỉ ghi kết quả nhanh (không đếm phi vụ)",
+      "hint": "Chỉ bật khi cả bàn xác nhận kết quả theo luật. Nếu đã nhập số phi vụ, kết quả vẫn phải khớp.",
+      "scope": "team",
+      "input": "bool",
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
     {
       "key": "heists",
       "label": "Heist results (tick = success, cross = failure)",
@@ -30,31 +82,8 @@
       "formula": {
         "type": "sum"
       },
-      "countsToTotal": false
-    },
-    {
-      "key": "heistWins",
-      "label": "Successful heists (vault cards)",
-      "labelVi": "Phi vụ thành công (thẻ Vault)",
-      "scope": "team",
-      "input": "derived",
-      "formula": {
-        "type": "expr",
-        "expr": "countTrue(cat_heists)"
-      },
-      "countsToTotal": false
-    },
-    {
-      "key": "heistLosses",
-      "label": "Failed heists (alarm cards)",
-      "labelVi": "Phi vụ thất bại (thẻ Alarm)",
-      "scope": "team",
-      "input": "derived",
-      "formula": {
-        "type": "expr",
-        "expr": "count(cat_heists) - countTrue(cat_heists)"
-      },
-      "countsToTotal": false
+      "countsToTotal": false,
+      "optional": true
     }
   ],
   "tiebreakers": [],
@@ -75,18 +104,5 @@
     }
   ],
   "confidence": "high",
-  "needsReview": false,
-  "outcome": {
-    "winLose": true,
-    "winWhen": "cat_heistWins >= 3",
-    "loseWhen": "cat_heistLosses >= 3"
-  },
-  "endCondition": {
-    "type": "objective",
-    "when": "cat_heistWins >= 3 || cat_heistLosses >= 3",
-    "description": "3 successful or 3 failed heists"
-  },
-  "winConditionVi": "Mỗi ván có 3-5 phi vụ. Cả đội thắng khi đạt 3 phi vụ thành công, thua khi dính 3 phi vụ thất bại. Chỉ cần ghi kết quả từng phi vụ.",
-  "uiHint": "custom:the-gang",
-  "uiHintReason": "Heist strip: tap success/failure per heist, auto-stop at 3 wins or 3 losses."
+  "needsReview": false
 }

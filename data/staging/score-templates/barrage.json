@@ -3,7 +3,7 @@
   "name": "Barrage",
   "year": 2019,
   "bggId": 251247,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
     "min": 1,
@@ -82,33 +82,77 @@
       "min": 0,
       "max": null,
       "formula": {
-        "type": "multiply",
-        "points": 0
+        "type": "sum"
       },
       "countsToTotal": false
+    },
+    {
+      "key": "supplyQuantities",
+      "label": "Máy móc và tín dụng trong kho",
+      "labelVi": "Máy móc và tín dụng trong kho",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "inputs": [
+        "excavators",
+        "mixers",
+        "credits"
+      ]
+    },
+    {
+      "key": "leeghwaterEnabled",
+      "label": "Dùng The Leeghwater Project",
+      "labelVi": "Dùng The Leeghwater Project",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "privateBuildingVp",
+      "label": "VP cuối từ Private Buildings đã kích hoạt",
+      "labelVi": "VP cuối từ Private Buildings đã kích hoạt",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_leeghwaterEnabled > 0",
+      "hint": "Chỉ VP cuối in trên ô đã kích hoạt; thưởng công nghệ nhận trong ván đã nằm trên track."
     }
   ],
   "tiebreakers": [
     {
       "categoryKey": "lastRoundEnergy",
       "dir": "highest",
-      "description": "Most Energy Units produced in the last round",
-      "descriptionVi": "Sản xuất nhiều năng lượng nhất ở vòng cuối thắng."
+      "description": "Most Energy Units produced in the last round"
     }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "family: point-salad-euro. Game ends after round 5 scoring. Objective tie rule is 'split, round up' which rankAward cannot express, so the awarded VP is entered directly. Solo/automa and 2-player variants not modelled. Verified only against RulesPal rulebook text; official PDF not retrieved.",
+  "notes": "Base multiplayer final scoring; supply quantities exclude machinery on the wheel. Objective VP remains manually awarded with split ties rounded up. Leeghwater adds final VP printed on activated Private Buildings, entered separately; immediate advanced-technology VP already belongs on the track. Solo/automa, Duel/new maps and five-player modules not automated.",
   "sources": [
     {
       "url": "https://www.rulespal.com/barrage/rulebook",
       "title": "Barrage rulebook text (RulesPal)",
       "type": "other",
       "section": "Aim of the Game; Phase 4 Scoring; End of the Game"
+    },
+    {
+      "url": "https://www.craniocreations.it/storage/media/product_downloads/35/488/Barrage_LWP_Rulebook_ENG_Low.pdf",
+      "title": "Barrage: The Leeghwater Project official rules",
+      "type": "official-rulebook",
+      "section": "pp.5–6 Private Buildings; End of the Game"
     }
   ],
   "confidence": "medium",
-  "needsReview": true,
-  "uiHint": "generic",
-  "uiHintReason": "Track VP plus direct end counts; last-round energy only for ties.",
-  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc sau vòng 5."
+  "needsReview": true
 }

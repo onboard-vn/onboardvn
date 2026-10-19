@@ -117,4 +117,31 @@ describe('play mapping', () => {
     expect(quick.mode).toBe('quick');
     expect(quick.quickTotals.a).toBe(9);
   });
+  it('preserves named quantity edits across the server mapping and polling', () => {
+    expect(
+      toServerOp(
+        {
+          opId: 'nested',
+          actorId: 'a',
+          identityId: TEAM_ID,
+          categoryKey: 'won',
+          inputKey: 'red',
+          value: 4,
+        },
+        map,
+      ),
+    ).toMatchObject({
+      identityId: 'a',
+      categoryKey: 'won',
+      inputKey: 'red',
+      value: 4,
+    });
+    const before = play([player('a', { stock: { red: 1, blue: 3 } })]);
+    const after = play([player('a', { stock: { red: 2 } })]);
+    expect(diffPlays(before, after)).toEqual([
+      { identityId: 'a', categoryKey: 'stock', inputKey: 'red', value: 2 },
+      { identityId: 'a', categoryKey: 'stock', inputKey: 'blue', value: null },
+    ]);
+    expect(sheetFromPlay(after, template).values.a?.stock).toEqual({ red: 2 });
+  });
 });
