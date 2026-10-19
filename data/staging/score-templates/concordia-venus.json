@@ -3,11 +3,11 @@
   "name": "Concordia Venus",
   "year": 2018,
   "bggId": 256916,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "Individual play (team variant in notes)",
   "playerCount": {
     "min": 2,
-    "max": 6
+    "max": 5
   },
   "mode": "competitive",
   "winRule": "highest",
@@ -156,18 +156,52 @@
         "type": "expr",
         "expr": "if(value,7,0)"
       }
+    },
+    {
+      "key": "vestaSupply",
+      "label": "Hàng tồn kho và tiền mặt",
+      "labelVi": "Hàng tồn kho và tiền mặt",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "inputs": [
+        "cards",
+        "cash",
+        "brick",
+        "food",
+        "tool",
+        "wine",
+        "cloth"
+      ]
+    },
+    {
+      "key": "prefectOrder",
+      "label": "Thứ tự nhận Præfectus Magnus (0: đang giữ)",
+      "labelVi": "Thứ tự nhận Præfectus Magnus (0: đang giữ)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [
     {
-      "categoryKey": null,
-      "dir": null,
-      "description": "Player/team holding the Praefectus Magnus wins; otherwise the tied player who would receive it next",
-      "descriptionVi": "Người (đội) giữ Praefectus Magnus thắng; nếu không thì người hòa sẽ nhận nó tiếp theo."
+      "categoryKey": "prefectOrder",
+      "dir": "lowest",
+      "description": "Current holder, then next recipient of Praefectus Magnus"
     }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "family: auction-money (card-purchase end-game god scoring). Game ends when the last display card is bought or a player builds their 15th house; the trigger player takes the Concordia card, all others play one last turn. Each card scored per its god; Legatus counts once each for Jupiter, Saturnus and Venus. Team play variant: Venus = 1 VP per province where both partners each have a house (max = number of provinces); team VP = sum of both partners; not modelled. Optional intermediate scoring (first Tribune play) gives sestertii not VP; not modelled. Caps are enforced via min() in expr.",
+  "notes": "family: auction-money (card-purchase end-game god scoring). Game ends when the last display card is bought or a player builds their 15th house; the trigger player takes the Concordia card, all others play one last turn. Each card scored per its god; Legatus counts once each for Jupiter, Saturnus and Venus. Team play variant: Venus = 1 VP per province where both partners each have a house (max = number of provinces); team VP = sum of both partners; not modelled. Optional intermediate scoring (first Tribune play) gives sestertii not VP; not modelled. Caps are enforced via min() in expr. Guided individual play is 2–5 players; team 4/6-player scoring is excluded from this variant. Count cards from hand and discard; Vesta goods use printed prices 3/4/5/6/7.",
   "sources": [
     {
       "url": "https://www.pd-verlag.de/WebRoot/HostEurope/Shops/es719366/MediaGallery/Venus/Rules_Venus_Expansion_engl_A4_1_01.pdf",
@@ -183,8 +217,5 @@
     }
   ],
   "confidence": "high",
-  "needsReview": false,
-  "uiHint": "generic",
-  "uiHintReason": "Each god needs card count plus one board metric; both are physically countable.",
-  "winConditionVi": "Điểm cao nhất thắng. Hòa thì người giữ Praefectus Magnus thắng; nếu không, người sẽ nhận nó tiếp theo."
+  "needsReview": false
 }

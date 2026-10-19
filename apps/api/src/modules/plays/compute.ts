@@ -83,7 +83,8 @@ export function computePlay(
 
   const r = result.value;
   let winnerIds = new Set(r.winners);
-  if (template.winRule === 'none') winnerIds = new Set(overrideWinners);
+  if (template.mode === 'coop' && r.outcome === 'loss') winnerIds = new Set();
+  else if (template.winRule === 'none') winnerIds = new Set(overrideWinners);
   else if (r.tieUnresolved) {
     winnerIds = new Set(r.tiedIds.filter((id) => overrideWinners.includes(id)));
   }
@@ -91,7 +92,11 @@ export function computePlay(
   const teams = new Map(r.teams.map((t) => [t.id, t]));
   const byIdentity = new Map<string, PlayComputed | null>();
   for (const p of r.players) {
-    const team = p.team ? teams.get(p.team) : undefined;
+    const candidate = p.team ? teams.get(p.team) : undefined;
+    const team =
+      candidate && (template.mode === 'team' || template.mode === 'coop' || candidate.rank !== null)
+        ? candidate
+        : undefined;
     byIdentity.set(
       p.id,
       team
@@ -99,7 +104,7 @@ export function computePlay(
             categories: { ...p.categories, ...team.categories },
             total: team.total,
             rank: team.rank,
-            isWinner: winnerTeams.has(team.id) || winnerIds.has(p.id),
+            isWinner: r.outcome !== 'loss' && (winnerTeams.has(team.id) || winnerIds.has(p.id)),
           }
         : { categories: p.categories, total: p.total, rank: p.rank, isWinner: winnerIds.has(p.id) },
     );

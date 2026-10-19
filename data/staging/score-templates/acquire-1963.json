@@ -3,7 +3,7 @@
   "name": "Acquire",
   "year": 1964,
   "bggId": 5,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
     "min": 2,
@@ -55,16 +55,75 @@
         "type": "sum"
       },
       "countsToTotal": true
+    },
+    {
+      "key": "chainPrices",
+      "label": "Giá cổ phiếu từng chuỗi",
+      "labelVi": "Giá cổ phiếu từng chuỗi",
+      "scope": "team",
+      "input": "counts",
+      "inputs": [
+        "tower",
+        "luxor",
+        "american",
+        "festival",
+        "worldwide",
+        "imperial",
+        "continental"
+      ],
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "marketShares",
+      "label": "Cổ phần thị trường (chỉ 2 người)",
+      "labelVi": "Cổ phần thị trường (chỉ 2 người)",
+      "scope": "team",
+      "input": "counts",
+      "inputs": [
+        "tower",
+        "luxor",
+        "american",
+        "festival",
+        "worldwide",
+        "imperial",
+        "continental"
+      ],
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "chainShares",
+      "label": "Cổ phiếu đang giữ",
+      "labelVi": "Cổ phiếu đang giữ",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "tower",
+        "luxor",
+        "american",
+        "festival",
+        "worldwide",
+        "imperial",
+        "continental"
+      ],
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [
     {
-      "description": "If tied for most money, victory is shared.",
-      "descriptionVi": "Hòa tiền thì cùng thắng."
+      "description": "If tied for most money, victory is shared."
     }
   ],
   "sharedVictoryOnTie": true,
-  "notes": "family: money-economy. Scores are dollars, not VP. End: a player announces all active chains are safe or one chain has 41+ tiles. Verified on Renegade modern rulebook (Classic Mode); the 1963/Avalon Hill editions use the same end-game flow, but price chart values vary by edition, so bonuses/stock values are scorer inputs. Tycoon mode (tertiary bonus) not modelled.",
+  "notes": "family: money-economy. Scores are dollars, not VP. End: a player announces all active chains are safe or one chain has 41+ tiles. Verified on Renegade modern rulebook (Classic Mode); the 1963/Avalon Hill editions use the same end-game flow, but price chart values vary by edition, so bonuses/stock values are scorer inputs. Tycoon mode (tertiary bonus) not modelled. Version 2 persists stock prices, real holdings and the two-player market draw. Classic Renegade 2023 market participates in bonuses; its payout returns to the bank. Derived sales/bonuses are authoritative; Tycoon remains unsupported.",
   "sources": [
     {
       "url": "https://renegadegamestudios.com/content/File%20Storage%20for%20site/Rulebooks/Acquire/Acquire_RGS_Rulebook_WEB.pdf",
@@ -80,8 +139,5 @@
     }
   ],
   "confidence": "medium",
-  "needsReview": true,
-  "uiHint": "custom:acquire",
-  "uiHintReason": "Stock prices and holdings per chain derive bonuses and stock sales; typing them by hand is error-prone.",
-  "winConditionVi": "Người có nhiều tiền nhất sau khi bán cổ phiếu và nhận thưởng cổ đông lớn/nhỏ thắng."
+  "needsReview": true
 }

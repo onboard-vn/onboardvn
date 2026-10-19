@@ -3,7 +3,7 @@
   "name": "Luthier",
   "year": 2024,
   "bggId": 371330,
-  "templateVersion": 2,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
     "min": 2,
@@ -29,9 +29,9 @@
     },
     {
       "key": "firstChairs",
-      "label": "First chairs held",
-      "labelVi": "Ghế nhất dàn nhạc",
-      "hint": "Count orchestra first chairs you occupy; the points table switches automatically at 4 players.",
+      "label": "First chairs held (1-3 players)",
+      "labelVi": "Ghế nhất dàn nhạc (1-3 người)",
+      "hint": "Count orchestra first chairs you occupy. Use this row for 1-3 players only",
       "scope": "player",
       "input": "count",
       "min": 0,
@@ -40,27 +40,38 @@
         "table": {
           "0": 0,
           "1": 0,
-          "2": 0,
-          "3": 0,
-          "4": 1,
-          "5": 3,
-          "6": 6,
-          "7": 10,
-          "8+": 15
-        },
-        "byPlayerCount": {
-          "4+": {
-            "table": {
-              "0": 0,
-              "1": 0,
-              "2": 0,
-              "3": 1,
-              "4": 3,
-              "5": 6,
-              "6": 10,
-              "7+": 15
-            }
-          }
+          "2": 1,
+          "3": 2,
+          "4": 4,
+          "5": 6,
+          "6": 9,
+          "7": 13,
+          "8": 18,
+          "9+": 24
+        }
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "firstChairs4p",
+      "label": "First chairs held (4 players)",
+      "labelVi": "Ghế nhất dàn nhạc (4 người)",
+      "hint": "Use this row for 4 players only",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "table",
+        "table": {
+          "0": 0,
+          "1": 0,
+          "2": 2,
+          "3": 4,
+          "4": 6,
+          "5": 9,
+          "6": 13,
+          "7": 18,
+          "8+": 24
         }
       },
       "countsToTotal": true
@@ -82,7 +93,7 @@
       "key": "patronPenalty",
       "label": "Unmet requirements on abandoned patrons",
       "labelVi": "Yêu cầu patron không đạt",
-      "hint": "-3 prestige per requirement not met on an abandoned patron",
+      "hint": "Lịch sử đã trừ trên track khi patron rời đi; không trừ lần nữa ở cuối ván.",
       "scope": "player",
       "input": "count",
       "min": 0,
@@ -90,7 +101,7 @@
         "type": "multiply",
         "points": -3
       },
-      "countsToTotal": true
+      "countsToTotal": false
     },
     {
       "key": "unfinishedPrestige",
@@ -104,7 +115,7 @@
         "type": "expr",
         "expr": "ceil(value/2)"
       },
-      "countsToTotal": true
+      "countsToTotal": false
     },
     {
       "key": "personalGoals",
@@ -159,18 +170,71 @@
         "type": "sum"
       },
       "countsToTotal": false
+    },
+    {
+      "key": "chairCount",
+      "label": "Số First Chairs đang giữ",
+      "labelVi": "Số First Chairs đang giữ",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "finishingInstruments",
+      "label": "Uy tín in trên từng nhạc cụ ở finishing bench",
+      "labelVi": "Uy tín in trên từng nhạc cụ ở finishing bench",
+      "scope": "player",
+      "input": "repeating",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "resourceQuantities",
+      "label": "Tài nguyên trước quy đổi cuối",
+      "labelVi": "Tài nguyên trước quy đổi cuối",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "inputs": [
+        "money",
+        "materials",
+        "inspiration",
+        "apprentices"
+      ]
+    },
+    {
+      "key": "finishingVp",
+      "label": "Uy tín nhạc cụ đang hoàn thiện",
+      "labelVi": "Uy tín nhạc cụ đang hoàn thiện",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
     }
   ],
   "tiebreakers": [
     {
       "categoryKey": "leftoverMoney",
       "dir": "highest",
-      "description": "Most leftover money wins",
-      "descriptionVi": "Nhiều tiền còn dư nhất thắng."
+      "description": "Most leftover money wins"
     }
   ],
-  "sharedVictoryOnTie": false,
-  "notes": "Game lasts 6 rounds. Official rulebook (BGG files 301687, Scribd mirror, publisher pages) re-attempted and still not readable (403 / no text); values come from a single detailed how-to-play article, so verify against the rulebook. Unclear whether roughed-out (unfinished) instruments on the workbench count for the half-points rule or only those on the finishing board. 4-player first-chair table: sources disagree on whether 3 chairs scores 1 (<=3 vs exactly 3); modelled as 3 -> 1. Built instruments always hold first chair; otherwise majority of repair/performance tokens decides (done before counting chairs). Awards/real-time points belong in the prestige track. Possible second-edition / Deluxe differences not checked. family: auction-money.",
+  "sharedVictoryOnTie": true,
+  "notes": "2025 first English edition, end-game rulebook p.26 visually verified. First-chair table selected by player count. Each finishing-bench instrument rounds half prestige upward separately; roughing bench instruments do not count. Patron abandonment penalties were already deducted during play, with a zero floor. Money tiebreak uses money remaining after resource conversion. Old aggregate unfinishedPrestige is retained as a legacy fallback when no individual instrument list exists.",
   "sources": [
     {
       "url": "https://nightsaroundatable.com/2024/07/15/how-to-play-luthier/",
@@ -195,11 +259,14 @@
       "title": "Luthier rules (English) - BGG files",
       "type": "bgg-file",
       "section": "Not accessible (403); listed for reviewer"
+    },
+    {
+      "url": "https://bghub.org/r/luthier.pdf",
+      "title": "Paverson Games Luthier 2025 English rulebook, mirrored",
+      "type": "official-rulebook",
+      "section": "p.26 End of Game Scoring; full table visually verified"
     }
   ],
-  "confidence": "medium",
-  "needsReview": true,
-  "uiHint": "generic",
-  "uiHintReason": "Prestige track plus a few direct end counts; first-chair table follows player count.",
-  "winConditionVi": "Điểm cao nhất thắng. Ván có 6 vòng."
+  "confidence": "high",
+  "needsReview": false
 }

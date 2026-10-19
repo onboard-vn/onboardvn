@@ -50,13 +50,44 @@ export interface Summary {
   result: ScoreResult | null;
 }
 
-export const cellKey = (identityId: string, categoryKey: string, roundIndex?: number): string =>
-  `${identityId}|${categoryKey}|${roundIndex ?? ''}`;
+export const cellKey = (
+  identityId: string,
+  categoryKey: string,
+  roundIndex?: number,
+  inputKey?: string,
+): string => `${identityId}|${categoryKey}|${roundIndex ?? ''}|${inputKey ?? ''}`;
 
-export const opCell = (op: PlayOp): string => cellKey(op.identityId, op.categoryKey, op.roundIndex);
+export const opCell = (op: PlayOp): string =>
+  cellKey(op.identityId, op.categoryKey, op.roundIndex, op.inputKey);
 
 export function applyOp(s: SheetState, op: PlayOp): SheetState {
+  if (op.inputKey !== undefined) {
+    const current =
+      op.identityId === TEAM_ID
+        ? s.teamValues[op.categoryKey]
+        : s.values[op.identityId]?.[op.categoryKey];
+    const record = current && typeof current === 'object' && !Array.isArray(current) ? current : {};
+    const updated = { ...record } as Record<string, number>;
+    if (op.value === null) delete updated[op.inputKey];
+    else if (typeof op.value === 'number') updated[op.inputKey] = op.value;
+    else return s;
+    if (op.identityId === TEAM_ID) {
+      return { ...s, teamValues: { ...s.teamValues, [op.categoryKey]: updated } };
+    }
+    if (!s.players.some((p) => p.id === op.identityId)) return s;
+    return {
+      ...s,
+      values: {
+        ...s.values,
+        [op.identityId]: { ...s.values[op.identityId], [op.categoryKey]: updated },
+      },
+    };
+  }
   if (op.identityId === TEAM_ID) {
+    if (op.value === null) {
+      const { [op.categoryKey]: _removed, ...teamValues } = s.teamValues;
+      return { ...s, teamValues };
+    }
     return { ...s, teamValues: { ...s.teamValues, [op.categoryKey]: op.value } };
   }
   if (!s.players.some((p) => p.id === op.identityId)) return s;
@@ -64,11 +95,16 @@ export function applyOp(s: SheetState, op: PlayOp): SheetState {
     return { ...s, quickTotals: { ...s.quickTotals, [op.identityId]: op.value } };
   }
   if (op.categoryKey === ROUND_KEY) {
-    if (typeof op.value !== 'number' || op.roundIndex === undefined) return s;
+    if (op.roundIndex === undefined || (op.value !== null && typeof op.value !== 'number'))
+      return s;
     const count = Math.max(s.roundCount, op.roundIndex + 1);
     const list = Array.from({ length: count }, (_, r) => s.rounds[op.identityId]?.[r] ?? 0);
-    list[op.roundIndex] = op.value;
+    list[op.roundIndex] = op.value ?? 0;
     return { ...s, roundCount: count, rounds: { ...s.rounds, [op.identityId]: list } };
+  }
+  if (op.value === null) {
+    const { [op.categoryKey]: _removed, ...values } = s.values[op.identityId] ?? {};
+    return { ...s, values: { ...s.values, [op.identityId]: values } };
   }
   return {
     ...s,
@@ -81,9 +117,18 @@ export function applyOp(s: SheetState, op: PlayOp): SheetState {
 
 export function readCell(
   s: SheetState,
-  op: Pick<PlayOp, 'identityId' | 'categoryKey' | 'roundIndex'>,
+  op: Pick<PlayOp, 'identityId' | 'categoryKey' | 'roundIndex' | 'inputKey'>,
 ) {
-  if (op.identityId === TEAM_ID) return s.teamValues[op.categoryKey];
+  const value =
+    op.identityId === TEAM_ID
+      ? s.teamValues[op.categoryKey]
+      : s.values[op.identityId]?.[op.categoryKey];
+  if (op.inputKey !== undefined) {
+    return value && typeof value === 'object' && !Array.isArray(value)
+      ? (value as Record<string, number>)[op.inputKey]
+      : undefined;
+  }
+  if (op.identityId === TEAM_ID) return value;
   if (op.categoryKey === QUICK_KEY) return s.quickTotals[op.identityId];
   if (op.categoryKey === ROUND_KEY) return s.rounds[op.identityId]?.[op.roundIndex ?? 0];
   return s.values[op.identityId]?.[op.categoryKey];
@@ -255,7 +300,16 @@ export function summarize(t: ScoreTemplate, s: SheetState): Summary {
   const r = res.value;
   const rows = s.players.map((p) => {
     const ps = r.players.find((x) => x.id === p.id);
-    return { id: p.id, name: p.name, total: ps?.total ?? 0, rank: ps?.rank ?? null };
+    const team =
+      t.templateVersion >= 3 && ps?.team
+        ? r.teams.find((candidate) => candidate.id === ps.team && candidate.rank !== null)
+        : undefined;
+    return {
+      id: p.id,
+      name: p.name,
+      total: team?.total ?? ps?.total ?? 0,
+      rank: team?.rank ?? ps?.rank ?? null,
+    };
   });
   const note = r.tieUnresolved
     ? tieNote(t, s, r.tiedIds)

@@ -36,6 +36,15 @@ export async function loadTableBundle(tableId: string): Promise<TableBundle> {
     clubsApi.table(tableId),
     orNull(api<PlayDto>(`/tables/${tableId}/play`)),
   ]);
+  if (play?.template) {
+    const pinned = scoreTemplateSchema.safeParse(play.template.definition);
+    return {
+      table,
+      play,
+      template: pinned.success ? pinned.data : null,
+      templateId: play.template.id,
+    };
+  }
   return { table, play, ...(await loadTemplate(table.game)) };
 }
 

@@ -22,7 +22,7 @@ export const cellMapFor = (template: ScoreTemplate | null, play: PlayDto): CellM
   teamAnchor: play.players[0]?.identity.id ?? null,
 });
 
-type Cell = Pick<PlayOp, 'identityId' | 'categoryKey' | 'roundIndex'>;
+type Cell = Pick<PlayOp, 'identityId' | 'categoryKey' | 'roundIndex' | 'inputKey'>;
 
 export function toServerCell(cell: Cell, map: CellMap): Cell | null {
   const identityId = cell.identityId === TEAM_ID ? map.teamAnchor : cell.identityId;
@@ -33,12 +33,20 @@ export function toServerCell(cell: Cell, map: CellMap): Cell | null {
       ? { identityId, categoryKey: map.roundKey, roundIndex: cell.roundIndex ?? 0 }
       : null;
   }
-  return { identityId, categoryKey: cell.categoryKey };
+  return {
+    identityId,
+    categoryKey: cell.categoryKey,
+    ...(cell.inputKey !== undefined ? { inputKey: cell.inputKey } : {}),
+  };
 }
 
 export function fromServerCell(cell: Cell, map: CellMap): Cell {
   if (map.teamKeys.has(cell.categoryKey)) {
-    return { identityId: TEAM_ID, categoryKey: cell.categoryKey };
+    return {
+      identityId: TEAM_ID,
+      categoryKey: cell.categoryKey,
+      ...(cell.inputKey !== undefined ? { inputKey: cell.inputKey } : {}),
+    };
   }
   if (cell.categoryKey === FREE_TOTAL_KEY && !map.teamKeys.has(FREE_TOTAL_KEY)) {
     return { identityId: cell.identityId, categoryKey: QUICK_KEY };
@@ -60,7 +68,11 @@ export function playCells(play: PlayDto): ServerCell[] {
   const out: ServerCell[] = [];
   for (const p of play.players) {
     for (const [categoryKey, value] of Object.entries(p.values)) {
-      out.push({ identityId: p.identity.id, categoryKey, value: value as PlayOp['value'] });
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        for (const [inputKey, quantity] of Object.entries(value)) {
+          out.push({ identityId: p.identity.id, categoryKey, inputKey, value: quantity as number });
+        }
+      } else out.push({ identityId: p.identity.id, categoryKey, value: value as PlayOp['value'] });
     }
     for (const [categoryKey, list] of Object.entries(p.rounds ?? {})) {
       list.forEach((value, roundIndex) =>
@@ -71,14 +83,20 @@ export function playCells(play: PlayDto): ServerCell[] {
   return out;
 }
 
-const cellId = (c: Cell) => `${c.identityId}|${c.categoryKey}|${c.roundIndex ?? ''}`;
+const cellId = (c: Cell) =>
+  `${c.identityId}|${c.categoryKey}|${c.roundIndex ?? ''}|${c.inputKey ?? ''}`;
 
 export function diffPlays(prev: PlayDto | null, next: PlayDto): ServerCell[] {
   const before = new Map((prev ? playCells(prev) : []).map((c) => [cellId(c), c]));
   const changed: ServerCell[] = [];
-  for (const c of playCells(next)) {
+  const afterCells = playCells(next);
+  const afterKeys = new Set(afterCells.map(cellId));
+  for (const c of afterCells) {
     const old = before.get(cellId(c));
     if (!old || JSON.stringify(old.value) !== JSON.stringify(c.value)) changed.push(c);
+  }
+  for (const [key, cell] of before) {
+    if (!afterKeys.has(key)) changed.push({ ...cell, value: null });
   }
   return changed;
 }

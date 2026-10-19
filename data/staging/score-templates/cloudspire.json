@@ -3,7 +3,7 @@
   "name": "Cloudspire",
   "year": 2019,
   "bggId": 262211,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "2-4 players",
   "playerCount": {
     "min": 2,
@@ -87,26 +87,62 @@
         "type": "sum"
       },
       "countsToTotal": false
+    },
+    {
+      "key": "teamMode",
+      "label": "Chế độ: cá nhân / hai đội",
+      "labelVi": "Chế độ: cá nhân / hai đội",
+      "scope": "team",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "teamSeat",
+      "label": "Đội của bạn (1 hoặc 2)",
+      "labelVi": "Đội của bạn (1 hoặc 2)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 2,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "earlyWinner",
+      "label": "Thắng sớm: chỉ chọn người/đội thắng",
+      "labelVi": "Thắng sớm: chỉ chọn người/đội thắng",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [
     {
       "categoryKey": "gateHealth",
       "dir": "highest",
-      "description": "Most fortress gate health",
-      "descriptionVi": "Nhiều máu cổng nhất"
+      "description": "Most fortress gate health"
     },
     {
       "categoryKey": "sourceRemaining",
       "dir": "highest",
-      "description": "Most remaining Source",
-      "descriptionVi": "Nhiều Source còn lại nhất"
+      "description": "Most remaining Source"
     },
     {
       "categoryKey": "spiresInPlay",
       "dir": "highest",
-      "description": "Most spires in play",
-      "descriptionVi": "Nhiều tháp (spire) trên bàn nhất"
+      "description": "Most spires in play"
     }
   ],
   "sharedVictoryOnTie": true,
@@ -116,7 +152,7 @@
     "target": 4,
     "description": "4 waves, or earlier when only one fortress gate remains"
   },
-  "notes": "family: fortress-power-compare. Team play (2 vs 2): add teammates' fortress power; highest team total wins (entered per player here, sum manually). A player whose gate was defeated early still plays on in 3-4p games; if defeated in the last wave their power is 0. Solo/co-op scenario books are not modelled.",
+  "notes": "family: fortress-power-compare. Team play (2 vs 2): add teammates' fortress power; highest team total wins (entered per player here, sum manually). A player whose gate was defeated early still plays on in 3-4p games; if defeated in the last wave their power is 0. Solo/co-op scenario books are not modelled. Guided version supports explicit two-team setup and immediate gate-defeat outcome. Individual tiebreaks are not assumed to aggregate for team ties; tied teams need rule confirmation.",
   "sources": [
     {
       "url": "https://www.dropbox.com/scl/fi/as4q6xhmgr6j87o9vmp5r/Cloudspire-Rulebook_v2.pdf?rlkey=s72c4heuj3g57oe4oltj9izgz&e=1&dl=0",
@@ -132,8 +168,5 @@
     }
   ],
   "confidence": "high",
-  "needsReview": false,
-  "uiHint": "generic",
-  "uiHintReason": "Fortress power = gate health + advancements; tiebreak numbers are collapsed.",
-  "winConditionVi": "Phá cổng pháo đài đối thủ. Nếu sau đợt 4 vẫn còn nhiều pháo đài: so sức mạnh = máu cổng + số nâng cấp. 2 người: ván kết thúc ngay khi một cổng bị phá."
+  "needsReview": false
 }

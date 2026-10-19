@@ -3,10 +3,10 @@
   "name": "Zoo Tycoon",
   "year": 2022,
   "bggId": 370757,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
-    "min": 1,
+    "min": 2,
     "max": 4
   },
   "mode": "competitive",
@@ -68,6 +68,47 @@
         "expr": "cat_eliminated == 1 ? 0 : min(cat_popularity, cat_conservation)"
       },
       "countsToTotal": true
+    },
+    {
+      "key": "newShores",
+      "label": "Có New Shores",
+      "labelVi": "Có New Shores",
+      "scope": "team",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "endQuantities",
+      "label": "Dữ liệu trước khi tính cuối ván",
+      "labelVi": "Dữ liệu trước khi tính cuối ván",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false,
+      "inputs": [
+        "popularity",
+        "conservation",
+        "offspring",
+        "enclosureEggs",
+        "vivariumSections",
+        "parkPoints",
+        "breedingTrack",
+        "yellowSpecies",
+        "greenSpecies",
+        "darkGreenSpecies",
+        "buildingPopularity",
+        "buildingConservation",
+        "equalTrackFirst"
+      ]
     }
   ],
   "tiebreakers": [],
@@ -77,13 +118,19 @@
     "target": 7,
     "description": "After round 7: eliminate players with negative money, deduct offspring from Popularity, score conservation projects, spend all money on construction, then compare"
   },
-  "notes": "family: min-of-tracks. Enter Popularity and Conservation after all end-of-game steps; the Animal Welfare project points (5/3, -2 below -1) are added to whichever value is currently lower and must be applied by the scorer beforehand. Victory points input is derived (enter 0 for it). Co-op/solo variants not modelled.",
+  "notes": "Competitive base and New Shores 2–4 players. Guided inputs are tracks before final scoring, offspring in enclosures, New Shores eggs in enclosures (never Vivarium eggs), filled Vivarium sections, park points, breeding track, welfare species counts, and actual final construction track changes. Projects/welfare scored before final building. Negative-money players are excluded. Two-player breeding second place requires the leader’s segment and welfare awards no second place. Welfare points are distributed one at a time across the lower tracks; on equal tracks choose which receives the next point. Solo/co-op not modelled.",
   "sources": [
     {
       "url": "https://api.treecer.com/storage/1695/Zoo-Tycoon-The-Board-Game-English.pdf",
       "title": "Zoo Tycoon: The Board Game rulebook (English)",
       "type": "official-rulebook",
       "section": "Gameplay Overview, End of the Game"
+    },
+    {
+      "url": "https://api.treecer.com/storage/1702/Zoo-Tycoon-The-Board-Game-New-Shores-English.pdf",
+      "title": "Zoo Tycoon New Shores publisher rulebook",
+      "type": "official-rulebook",
+      "section": "pp.3,6,10,16 final scoring, eggs, Vivarium"
     },
     {
       "url": "https://opinionatedgamers.com/2025/08/15/i-bought-a-zoo-alternate-title-the-new-zoo-review-a-solo-review-of-zoo-tycoon-the-board-game-the-new-shores-expansion/",

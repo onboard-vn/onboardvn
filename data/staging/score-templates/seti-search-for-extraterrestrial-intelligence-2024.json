@@ -3,7 +3,7 @@
   "name": "SETI: Search for Extraterrestrial Intelligence",
   "year": 2024,
   "bggId": null,
-  "templateVersion": 2,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
     "min": 1,
@@ -34,11 +34,11 @@
     },
     {
       "key": "endGameCards",
-      "label": "End-of-game cards VP total",
-      "labelVi": "Tổng điểm thẻ tính điểm cuối",
-      "hint": "Total points from played cards with a gold box.",
+      "label": "End-of-game scoring cards",
+      "labelVi": "Điểm thẻ chấm cuối game",
+      "hint": "Sum of points from played cards with a gold box.",
       "scope": "player",
-      "input": "number",
+      "input": "repeating",
       "min": 0,
       "max": null,
       "formula": {
@@ -47,14 +47,59 @@
       "countsToTotal": true
     },
     {
-      "key": "goldTiles",
-      "label": "Gold scoring tiles VP total",
-      "labelVi": "Tổng điểm ô vàng (25/50/70)",
-      "hint": "Sum over the gold tiles you marked at 25/50/70 VP: sets of the tile's condition x your marker value on that tile. Skip tiles you never reached.",
+      "key": "goldTile25",
+      "label": "Gold scoring tile chosen at 25 VP",
+      "labelVi": "Thẻ vàng chọn ở mốc 25 điểm",
+      "hint": "Sets of the tile's condition x value of your marker on that tile.",
       "scope": "player",
-      "input": "number",
+      "input": "counts",
+      "inputs": [
+        "sets",
+        "valuePerSet"
+      ],
+      "min": 0,
+      "max": null,
       "formula": {
-        "type": "sum"
+        "type": "expr",
+        "expr": "sets * valuePerSet"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goldTile50",
+      "label": "Gold scoring tile chosen at 50 VP",
+      "labelVi": "Thẻ vàng chọn ở mốc 50 điểm",
+      "hint": "Skip if you never reached 50 VP.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "sets",
+        "valuePerSet"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "sets * valuePerSet"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "goldTile70",
+      "label": "Gold scoring tile chosen at 70 VP",
+      "labelVi": "Thẻ vàng chọn ở mốc 70 điểm",
+      "hint": "Skip if you never reached 70 VP.",
+      "scope": "player",
+      "input": "counts",
+      "inputs": [
+        "sets",
+        "valuePerSet"
+      ],
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "sets * valuePerSet"
       },
       "countsToTotal": true
     },
@@ -71,33 +116,196 @@
         "type": "sum"
       },
       "countsToTotal": true
+    },
+    {
+      "key": "techTriples",
+      "label": "Công nghệ: bộ 3 loại",
+      "labelVi": "Công nghệ: bộ 3 loại",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "inputs": [
+        "probe",
+        "telescope",
+        "computer",
+        "rate"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "min(probe, telescope, computer) * rate"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "techPairs",
+      "label": "Công nghệ: từng đôi",
+      "labelVi": "Công nghệ: từng đôi",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "inputs": [
+        "techs",
+        "rate"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "floor(techs / 2) * rate"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "missionSingles",
+      "label": "Nhiệm vụ: số đã hoàn thành",
+      "labelVi": "Nhiệm vụ: số đã hoàn thành",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "inputs": [
+        "missions",
+        "rate"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "missions * rate"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "missionPairs",
+      "label": "Nhiệm vụ + thẻ cuối ván: từng đôi",
+      "labelVi": "Nhiệm vụ + thẻ cuối ván: từng đôi",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "inputs": [
+        "missions",
+        "endCards",
+        "rate"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "floor((missions + endCards) / 2) * rate"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incomeTriples",
+      "label": "Thu nhập: bộ 3 loại thẻ",
+      "labelVi": "Thu nhập: bộ 3 loại thẻ",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "inputs": [
+        "credits",
+        "energy",
+        "cards",
+        "rate"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "min(credits, energy, cards) * rate"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "incomeMajority",
+      "label": "Thu nhập: loại thẻ nhiều nhất",
+      "labelVi": "Thu nhập: loại thẻ nhiều nhất",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "inputs": [
+        "credits",
+        "energy",
+        "rate"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "max(credits, energy) * rate"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "traceTriples",
+      "label": "Dấu vết: bộ 3 màu",
+      "labelVi": "Dấu vết: bộ 3 màu",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "inputs": [
+        "red",
+        "yellow",
+        "blue",
+        "rate"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "min(red, yellow, blue) * rate"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "sectorPairs",
+      "label": "Thắng khu vực ghép tàu",
+      "labelVi": "Thắng khu vực ghép tàu",
+      "scope": "player",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "inputs": [
+        "wins",
+        "orbiters",
+        "landers",
+        "rate"
+      ],
+      "formula": {
+        "type": "expr",
+        "expr": "min(wins, orbiters + landers) * rate"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "organizations",
+      "label": "Dùng tổ chức + khởi đầu nhanh",
+      "labelVi": "Dùng tổ chức + khởi đầu nhanh",
+      "scope": "team",
+      "input": "bool",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [
     {
-      "description": "No tiebreaker: players with equal points share the tie.",
-      "descriptionVi": "Không có luật phân định: người hòa điểm cùng thắng."
+      "description": "No tiebreaker: players with equal points share the tie."
     }
   ],
   "sharedVictoryOnTie": true,
-  "notes": "Gold tiles are entered as one total (3 of 4 in play): Tech (sets of 3 types / pairs of techs), Mission (completed missions / pairs of missions+end-game cards), Income (sets of 3 income types / most-tucked type), Other (sets of 3 life-trace colours / sector wins paired with orbiter or lander). Marker values on each tile depend on selection order (first picker gets highest). Each gold milestone can only pick a tile not already marked by that player. Solo: rival scores 5 per uncompleted objective instead of gold tiles. Expansion 'Space Agencies' not modelled. Which gold-tile side is in play is not recorded.",
+  "notes": "Base scoring plus quantity calculators for all eight gold-tile sides. Enter either legacy goldTile25/50/70 sets or new tile quantities, never both. Printed rate0 means tile unselected; at most one side per physical tile and three selected tiles. Tucked income cards exclude printed starting income. Trace counts include overflow. Space Agencies organizations use four rounds numbered2–5; expansion cards/species/signals may be used without organizations. Species/card final VP remain manual; new alien sheets, organization exceptions, solo rival scoring not automated.",
   "sources": [
     {
       "url": "https://bghub.org/r/setisearchforextraterrestrialintelligence.pdf",
-      "title": "SETI rulebook EN (CGE, 2024-09-17)",
+      "title": "CGE SETI2024 official rules (mirror)",
       "type": "official-rulebook",
-      "section": "p.18 Milestones (gold milestones at 25/50/70); p.21 End of Game (final scoring, gold scoring tiles); p.22 solo end of game"
+      "section": "pp18,21: gold milestones and eight tile sides"
     },
     {
-      "url": "https://www.rulespal.com/seti/rulebook",
-      "title": "SETI rulebook summary (RulesPal)",
-      "type": "other",
-      "section": "End of game final scoring"
+      "url": "https://www.hras.cz/user/related_files/se2_rulebook_en_13_lowres.pdf",
+      "title": "CGE Space Agencies October2025 rules (mirror)",
+      "type": "official-rulebook",
+      "section": "pp2–5: expansion modules and organizations"
     }
   ],
   "confidence": "high",
-  "needsReview": false,
-  "uiHint": "generic",
-  "uiHintReason": "Score track plus three simple end totals (cards, gold tiles, alien bonus).",
-  "winConditionVi": "Điểm cao nhất thắng. Hòa điểm thì cùng thắng. Ván kết thúc sau vòng 5 khi người cuối cùng bỏ lượt."
+  "needsReview": false
 }

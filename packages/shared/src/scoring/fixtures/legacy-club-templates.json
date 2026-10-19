@@ -1,0 +1,296 @@
+{
+  "brass-birmingham-2018": {
+    "slug": "brass-birmingham-2018",
+    "name": "Brass: Birmingham",
+    "year": 2018,
+    "bggId": 224517,
+    "templateVersion": 2,
+    "variant": "base",
+    "playerCount": {
+      "min": 2,
+      "max": 4
+    },
+    "mode": "competitive",
+    "winRule": "highest",
+    "scoringStyle": "rounds",
+    "rounds": {
+      "count": 2,
+      "aggregate": "sum",
+      "endCondition": "Canal Era and Rail Era each end after all players use their last cards"
+    },
+    "categories": [
+      {
+        "key": "vpTrack",
+        "label": "Final VP (score track)",
+        "labelVi": "Điểm VP cuối (trên track)",
+        "hint": "VP marker after the Rail Era scoring; add 100 per lap. Link and industry VP are scored onto the track at the end of each era; shortfall penalties are already deducted.",
+        "scope": "player",
+        "input": "number",
+        "min": 0,
+        "formula": {
+          "type": "sum"
+        },
+        "countsToTotal": true
+      },
+      {
+        "key": "incomeLevel",
+        "label": "Income level (tiebreak)",
+        "labelVi": "Mức thu nhập (phân định hòa)",
+        "hint": "Income level number, not income track space.",
+        "scope": "player",
+        "input": "number",
+        "min": -10,
+        "max": 30,
+        "formula": {
+          "type": "sum"
+        },
+        "countsToTotal": false
+      },
+      {
+        "key": "moneyRemaining",
+        "label": "Money remaining (tiebreak)",
+        "labelVi": "Tiền còn lại (phân định hòa)",
+        "scope": "player",
+        "input": "number",
+        "min": 0,
+        "max": null,
+        "formula": {
+          "type": "sum"
+        },
+        "countsToTotal": false
+      }
+    ],
+    "tiebreakers": [
+      {
+        "categoryKey": "incomeLevel",
+        "dir": "highest",
+        "description": "Highest income level",
+        "descriptionVi": "Thu nhập cao nhất"
+      },
+      {
+        "categoryKey": "moneyRemaining",
+        "dir": "highest",
+        "description": "Most money remaining",
+        "descriptionVi": "Nhiều tiền còn lại nhất"
+      },
+      {
+        "description": "If still tied, those players draw.",
+        "descriptionVi": "Vẫn hòa thì bốc thăm."
+      }
+    ],
+    "sharedVictoryOnTie": true,
+    "notes": "VPs are only awarded at the end of each era (links first, then flipped industries; unflipped industries score nothing). Link tiles are removed as scored; level-1 industries are removed after canal era. If you enter the final VP marker position instead, use one number per era. Beyond 100 VP the track loops. Per-player scorers can record era subtotals via the four categories. Final score is the VP marker on the track: era scoring (links, flipped industries) and shortfall penalties move it during play, so no per-link or per-industry entry is needed.",
+    "sources": [
+      {
+        "url": "https://www.orderofgamers.com/downloads/BrassBirmingham_v1.2.pdf",
+        "title": "Brass: Birmingham Rules Summary and Reference v1.2",
+        "type": "official-rulebook",
+        "section": "p.4 End of Canal & Rail Eras; p.5 Winning the Game (tiebreakers), Flipping industry tiles"
+      },
+      {
+        "url": "https://www.rulespal.com/brass-birmingham/rulebook",
+        "title": "Brass: Birmingham rulebook summary (RulesPal)",
+        "type": "other",
+        "section": "End of Canal/Rail Era scoring; Tiebreakers"
+      }
+    ],
+    "confidence": "high",
+    "needsReview": false,
+    "uiHint": "generic",
+    "uiHintReason": "Track marker already contains both era scorings; only income and money are extra for ties.",
+    "winConditionVi": "Điểm cao nhất thắng. Hòa: thu nhập cao hơn, rồi nhiều tiền hơn; vẫn hòa thì bốc thăm."
+  },
+  "gaia-project-2017": {
+    "slug": "gaia-project-2017",
+    "name": "Gaia Project",
+    "year": 2017,
+    "bggId": 220308,
+    "templateVersion": 2,
+    "variant": "base (expansion The Lost Fleet not modelled)",
+    "playerCount": {
+      "min": 1,
+      "max": 4
+    },
+    "mode": "competitive",
+    "winRule": "highest",
+    "scoringStyle": "running-track",
+    "categories": [
+      {
+        "key": "vpTrack",
+        "label": "Victory points before final scoring",
+        "labelVi": "Điểm VP trước khi tính điểm cuối",
+        "hint": "Marker on the VP track (starts at 10) after round 6.",
+        "scope": "player",
+        "input": "number",
+        "min": 0,
+        "formula": {
+          "type": "sum"
+        },
+        "countsToTotal": true
+      },
+      {
+        "key": "finalTiles",
+        "label": "Final scoring tiles VP total",
+        "labelVi": "Tổng điểm 2 ô tính điểm cuối",
+        "hint": "VP from both final scoring tiles: 1st/2nd/3rd/4th = 18/12/6/0 each; ties split the VP of the shared ranks evenly.",
+        "scope": "player",
+        "input": "number",
+        "min": 0,
+        "max": 36,
+        "formula": {
+          "type": "sum"
+        },
+        "countsToTotal": true
+      },
+      {
+        "key": "researchLevels",
+        "label": "Research levels 3, 4, 5",
+        "labelVi": "Cấp nghiên cứu 3, 4, 5",
+        "hint": "Count each level 3, 4 and 5 reached or passed across all six tracks.",
+        "scope": "player",
+        "input": "count",
+        "min": 0,
+        "max": 18,
+        "formula": {
+          "type": "multiply",
+          "points": 4
+        },
+        "countsToTotal": true
+      },
+      {
+        "key": "leftoverResources",
+        "label": "Leftover credits + knowledge + ore",
+        "labelVi": "Credit + knowledge + ore còn lại",
+        "hint": "Total of credits, knowledge and ore; 1 VP per 3 in any combination.",
+        "scope": "player",
+        "input": "count",
+        "min": 0,
+        "formula": {
+          "type": "expr",
+          "expr": "floor(value / 3)"
+        },
+        "countsToTotal": true
+      }
+    ],
+    "tiebreakers": [],
+    "sharedVictoryOnTie": true,
+    "notes": "Game ends after round 6. Final tiles come from: most structures in federations, most structures, most planet types, most Gaia planets, most sectors, most satellites. In 1-2 player games a neutral player's satellites occupy a rank, which can push the human players down a rank. Power/Q.I.C. and other resources do not convert to VP. Rank-based tile awards (with tie splitting) are entered as final VP rather than computed. The rulebook has no extra tiebreaker: tied players share victory. Lost Fleet extras (Lost Planet, Ivits) only affect what counts in final tiles.",
+    "sources": [
+      {
+        "url": "https://cdn.1j1ju.com/medias/98/91/61-gaia-project-rulebook.pdf",
+        "title": "Gaia Project rulebook (Z-Man Games / Feuerland)",
+        "type": "official-rulebook",
+        "section": "Game End and Scoring p.18; neutral player p.7; research board p.12"
+      },
+      {
+        "url": "https://boardgamewikia.com/gaia-project",
+        "title": "Gaia Project (2017) - Board Game Wikia",
+        "type": "wiki",
+        "section": "Final scoring summary"
+      },
+      {
+        "url": "https://meeplygames.com/games/gaia-project",
+        "title": "Gaia Project score calculator and scoring guide",
+        "type": "other",
+        "section": "Cross-check of final scoring categories"
+      }
+    ],
+    "confidence": "high",
+    "needsReview": false,
+    "uiHint": "generic",
+    "uiHintReason": "Track VP plus final tiles, research levels and one leftover-resource total.",
+    "winConditionVi": "Điểm cao nhất thắng. Hòa thì cùng thắng. Ván kết thúc sau vòng 6."
+  },
+  "the-gang-2024": {
+    "slug": "the-gang-2024",
+    "name": "The Gang",
+    "year": 2024,
+    "bggId": 411567,
+    "templateVersion": 2,
+    "variant": "basic game",
+    "playerCount": {
+      "min": 3,
+      "max": 6
+    },
+    "mode": "coop",
+    "winRule": "objective",
+    "scoringStyle": "objective-only",
+    "rounds": {
+      "count": 5,
+      "aggregate": "sum",
+      "endCondition": "Game ends when the team has 3 successful heists or 3 failed heists (3 to 5 heists)"
+    },
+    "categories": [
+      {
+        "key": "heists",
+        "label": "Heist results (tick = success, cross = failure)",
+        "labelVi": "Kết quả từng phi vụ (✓ thành công, ✗ thất bại)",
+        "hint": "A heist succeeds when the chip order matches the hand ranking order at showdown; any mistake trips an alarm",
+        "scope": "team",
+        "input": "perRound",
+        "roundInput": "bool",
+        "max": 5,
+        "formula": {
+          "type": "sum"
+        },
+        "countsToTotal": false
+      },
+      {
+        "key": "heistWins",
+        "label": "Successful heists (vault cards)",
+        "labelVi": "Phi vụ thành công (thẻ Vault)",
+        "scope": "team",
+        "input": "derived",
+        "formula": {
+          "type": "expr",
+          "expr": "countTrue(cat_heists)"
+        },
+        "countsToTotal": false
+      },
+      {
+        "key": "heistLosses",
+        "label": "Failed heists (alarm cards)",
+        "labelVi": "Phi vụ thất bại (thẻ Alarm)",
+        "scope": "team",
+        "input": "derived",
+        "formula": {
+          "type": "expr",
+          "expr": "count(cat_heists) - countTrue(cat_heists)"
+        },
+        "countsToTotal": false
+      }
+    ],
+    "tiebreakers": [],
+    "winCondition": "Each game has 3 to 5 heists of 4 rounds each. A heist succeeds if the final (red) chips are in the correct order of hand strength at the showdown; the team wins on 3 successful heists and loses on 3 failures. Advanced/Professional/Master Thief modes add challenge and specialist cards (not modelled).",
+    "notes": "family: coop. No points. Difficulty rises with player count. Advanced/Professional modes add an extra showdown requirement (guessing hand rank).",
+    "sources": [
+      {
+        "url": "https://www.thamesandkosmos.com/manuals/full/683887_TheGang_Manual-Web_051624.pdf",
+        "title": "The Gang rulebook (Thames & Kosmos)",
+        "type": "official-rulebook",
+        "section": "p.1 intro; p.4 Game Overview"
+      },
+      {
+        "url": "https://whatsericplaying.com/2025/01/27/the-gang/",
+        "title": "The Gang Review: High-Stakes Cooperative Poker",
+        "type": "other",
+        "section": "Rules overview"
+      }
+    ],
+    "confidence": "high",
+    "needsReview": false,
+    "outcome": {
+      "winLose": true,
+      "winWhen": "cat_heistWins >= 3",
+      "loseWhen": "cat_heistLosses >= 3"
+    },
+    "endCondition": {
+      "type": "objective",
+      "when": "cat_heistWins >= 3 || cat_heistLosses >= 3",
+      "description": "3 successful or 3 failed heists"
+    },
+    "winConditionVi": "Mỗi ván có 3-5 phi vụ. Cả đội thắng khi đạt 3 phi vụ thành công, thua khi dính 3 phi vụ thất bại. Chỉ cần ghi kết quả từng phi vụ.",
+    "uiHint": "custom:the-gang",
+    "uiHintReason": "Heist strip: tap success/failure per heist, auto-stop at 3 wins or 3 losses."
+  }
+}

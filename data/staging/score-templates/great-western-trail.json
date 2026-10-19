@@ -1,9 +1,9 @@
 {
   "slug": "great-western-trail",
-  "name": "Great Western Trail",
+  "name": "Great Western Trail (Second Edition)",
   "year": 2021,
   "bggId": 341169,
-  "templateVersion": 2,
+  "templateVersion": 3,
   "variant": "second-edition",
   "playerCount": {
     "min": 2,
@@ -31,11 +31,11 @@
     },
     {
       "key": "buildings",
-      "label": "Private buildings VP total",
-      "labelVi": "Tổng điểm công trình tư nhân",
-      "hint": "Sum of VP printed on your private buildings on the board.",
+      "label": "Private buildings on board",
+      "labelVi": "Công trình tư nhân trên bản đồ",
+      "hint": "Sum of VP printed on your private buildings placed on the board.",
       "scope": "player",
-      "input": "number",
+      "input": "repeating",
       "min": 0,
       "max": null,
       "formula": {
@@ -59,11 +59,11 @@
     },
     {
       "key": "stations",
-      "label": "Train stations VP total",
-      "labelVi": "Tổng điểm ga tàu",
+      "label": "Train station VP",
+      "labelVi": "Điểm ga tàu",
       "hint": "Sum of VP printed next to stations with your disc.",
       "scope": "player",
-      "input": "number",
+      "input": "repeating",
       "min": 0,
       "max": null,
       "formula": {
@@ -73,11 +73,11 @@
     },
     {
       "key": "hazards",
-      "label": "Hazard tiles VP total",
-      "labelVi": "Tổng điểm thẻ hiểm họa",
+      "label": "Hazard tiles VP",
+      "labelVi": "Điểm thẻ hiểm họa",
       "hint": "Sum of VP on your collected hazard tiles.",
       "scope": "player",
-      "input": "number",
+      "input": "repeating",
       "min": 0,
       "max": null,
       "formula": {
@@ -87,11 +87,11 @@
     },
     {
       "key": "cattle",
-      "label": "Cattle cards VP total",
-      "labelVi": "Tổng điểm thẻ bò",
+      "label": "Cattle cards VP",
+      "labelVi": "Điểm thẻ bò",
       "hint": "Sum of VP on cattle cards in your whole deck.",
       "scope": "player",
-      "input": "number",
+      "input": "repeating",
       "min": 0,
       "max": null,
       "formula": {
@@ -175,8 +175,7 @@
   ],
   "tiebreakers": [
     {
-      "description": "No tiebreaker: victory is shared.",
-      "descriptionVi": "Không có luật phân định: cùng thắng."
+      "description": "No tiebreaker: victory is shared."
     }
   ],
   "sharedVictoryOnTie": true,
@@ -185,18 +184,15 @@
     "target": null,
     "description": "Triggered when a worker tile fills the last job market space in Kansas City; other players take one final turn."
   },
-  "notes": "family: point-salad-euro. The scoring pad has 11 categories matching the list above. Station master tasks (1 VP per worker; 3 VP per 2 objective cards / hazards / certificates / station spaces; 3 VP per green+orange outlaw pair; 2 VP per placed private building) are summed into one input. Unused objective cards in the deck must be removed or added to the objective area before scoring. Simmental variant adds no scoring categories. Verified only via a RulesPal mirror of the rulebook, not the PDF.",
+  "notes": "Verified2021 Second Edition, not2016 original or Argentina/NewZealand/ElPaso. Eleven final categories. Printed building/cattle/hazard/station VP and station-master tasks remain manual VP. Objective cards in deck may be discarded or added to objective area before scoring; unfulfilled cards in objective area deduct points. Solo/Rails to the North not automated.",
   "sources": [
     {
-      "url": "https://www.rulespal.com/great-western-trail/rulebook",
-      "title": "Great Western Trail: Second Edition rulebook (RulesPal mirror)",
-      "type": "other",
-      "section": "The final scoring"
+      "url": "https://cdn.1j1ju.com/medias/de/cb/bb-great-western-trail-second-edition-rulebook.pdf",
+      "title": "Great Western Trail Second Edition official rulebook (mirror)",
+      "type": "official-rulebook",
+      "section": "p18: eleven final-scoring categories"
     }
   ],
   "confidence": "medium",
-  "needsReview": true,
-  "uiHint": "generic",
-  "uiHintReason": "Scoring pad rows are single totals; no per-tile modelling.",
-  "winConditionVi": "Điểm cao nhất thắng. Ván kết thúc khi công nhân lấp ô cuối của chợ việc làm ở Kansas City; người khác chơi thêm 1 lượt."
+  "needsReview": true
 }

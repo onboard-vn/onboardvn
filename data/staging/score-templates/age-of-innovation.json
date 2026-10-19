@@ -3,7 +3,7 @@
   "name": "Age of Innovation",
   "year": 2023,
   "bggId": 383179,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
     "min": 1,
@@ -167,27 +167,43 @@
         "expr": "floor(value / 5)"
       },
       "countsToTotal": true
+    },
+    {
+      "key": "neutralFaction",
+      "label": "Đối thủ trung lập (chỉ ván 2 người)",
+      "labelVi": "Đối thủ trung lập (chỉ ván 2 người)",
+      "scope": "team",
+      "input": "counts",
+      "min": 0,
+      "max": null,
+      "inputs": [
+        "area",
+        "discOne",
+        "discTwo",
+        "discThree",
+        "discFour"
+      ],
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [
     {
-      "description": "No tiebreaker: tied players share the win.",
-      "descriptionVi": "Không có luật phân định: người hòa điểm cùng thắng."
+      "description": "No tiebreaker: tied players share the win."
     }
   ],
   "sharedVictoryOnTie": true,
-  "notes": "family: point-salad-euro. Game ends after round 6 actions. The 4 Discipline tracks are generic keys discOne..discFour (rename per Science display). Rank values entered per player are the compared values (building count / track level). 2-player game adds a non-player faction that can take 1st/2nd in area and science scoring (reducing others' points); not modelled. Solo not modelled. Verified only against RulesPal rulebook text; official PDF not retrieved.",
+  "notes": "Base game. Two-player neutral faction competes for area and four science rankings but never receives VP or victory. Enter the revealed Area Score tile and neutral discipline levels; required in two-player games. Three to five players use normal ranking. Solo/Automa and expansions not automated.",
   "sources": [
     {
-      "url": "https://www.rulespal.com/age-of-innovation/rulebook",
-      "title": "Age of Innovation rulebook text (RulesPal)",
-      "type": "other",
-      "section": "End of Game and Final Scoring: Area Score, Science Scoring, Resource Scoring"
+      "url": "https://www.feuerland-spiele.de/fileadmin/game/Age_of_Innovation/Age_of_Innovation_rules_EN_V1-1_low.pdf",
+      "title": "Age of Innovation official rules v1.1",
+      "type": "official-rulebook",
+      "section": "pp18–19: final scoring and two-player neutral faction"
     }
   ],
   "confidence": "medium",
-  "needsReview": true,
-  "uiHint": "generic",
-  "uiHintReason": "Rankings compare track levels and building counts across players; engine derives the awards.",
-  "winConditionVi": "Điểm cao nhất thắng. Hòa thì cùng thắng. Ván kết thúc sau vòng 6."
+  "needsReview": true
 }

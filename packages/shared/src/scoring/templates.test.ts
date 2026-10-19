@@ -1,3 +1,4 @@
+import legacyClubTemplates from './fixtures/legacy-club-templates.json' with { type: 'json' };
 import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { computeScores, type RawValue, type ScoreInput } from './compute.js';
@@ -36,7 +37,7 @@ function sampleValue(c: ScoreCategory, n: number): RawValue {
 function sampleInput(t: ScoreTemplate, n: number): ScoreInput {
   const count = Math.max(2, t.playerCount?.min ?? 2);
   const teamed = t.mode === 'team';
-  return {
+  const sample: ScoreInput = {
     playerCount: count,
     outcome: 'win',
     players: Array.from({ length: count }, (_, i) => ({
@@ -48,6 +49,68 @@ function sampleInput(t: ScoreTemplate, n: number): ScoreInput {
       ),
     })),
   };
+  // Rule-aware samples respect mutually exclusive modes and required table setup.
+  for (const [index, player] of sample.players.entries()) {
+    const v = player.values;
+    if (t.templateVersion < 3) continue;
+    if (t.slug === 'age-of-innovation')
+      v.neutralFaction = { area: 12, discOne: 0, discTwo: 0, discThree: 0, discFour: 0 };
+    if (t.slug === 'cloudspire') {
+      v.teamMode = 0;
+      v.earlyWinner = 0;
+    }
+    if (t.slug === 'feya-s-swamp-2025') {
+      v.scoreCardOne = 1;
+      v.scoreCardTwo = 2;
+      v.islandQuantities = {};
+    }
+    if (t.slug === 'galactic-cruise') {
+      v.turnOrder = index + 1;
+      v.progress = { mostReputation: 0, progressCubes: 0, wings: 0 };
+    }
+    if (t.slug === 'nucleum-2023') {
+      v.milestones = 0;
+      v.energizedBuildings = 0;
+    }
+    if (t.slug === 'seti-search-for-extraterrestrial-intelligence-2024') {
+      for (const key of [
+        'techTriples',
+        'techPairs',
+        'missionSingles',
+        'missionPairs',
+        'incomeTriples',
+        'incomeMajority',
+        'traceTriples',
+        'sectorPairs',
+      ])
+        v[key] = {};
+    }
+    if (t.slug === 'the-gang-2024') {
+      v.heistsSucceeded = 3;
+      v.heistsFailed = 0;
+      v.heists = [];
+    }
+    if (t.slug === 'the-old-kings-crown') {
+      v.favour = index === 0 ? 1 : 0;
+      v.orderPos = index + 1;
+    }
+    if (t.slug === 'trajan-2011') {
+      v.senatePosition = index + 1;
+      v.entryMode = 0;
+    }
+    if (t.slug === 'abomination-the-heir-of-frankenstein-2019') {
+      v.turnOrder = index + 1;
+      v.bodyParts = {};
+    }
+    if (t.slug === 'concordia-venus') v.prefectOrder = index;
+    if (t.slug === 'yinzi-ming') v.turnOrder = index + 1;
+    if (t.slug === 'vantage') v.sessionEnded = 1;
+    if (t.slug === 'zoo-tycoon') {
+      v.newShores = 0;
+      v.endQuantities = {};
+    }
+  }
+  return sample;
 }
 
 // Templates whose expr uses its own key/raw name instead of `value`; remove entries once fixed.
@@ -88,6 +151,12 @@ const solve = (
   return r.value;
 };
 
+const solveLegacy = (
+  slug: keyof typeof legacyClubTemplates,
+  players: { id: string; values: V }[],
+  extra: Partial<ScoreInput> = {},
+) => solve(slug, players, extra, () => scoreTemplateSchema.parse(legacyClubTemplates[slug]));
+
 // Template currently references its own key instead of `value`; drop once the template is fixed.
 const useValueForOwnKey = (t: ScoreTemplate): ScoreTemplate => ({
   ...t,
@@ -109,7 +178,7 @@ describe('golden vectors', () => {
     const p1: V = { vpTrack: 58, incomeLevel: 10, moneyRemaining: 5 };
     const p2: V = { vpTrack: 58, incomeLevel: 12, moneyRemaining: 5 };
     const p3: V = { ...p2, moneyRemaining: 9 };
-    const r = solve('brass-birmingham-2018', [
+    const r = solveLegacy('brass-birmingham-2018', [
       { id: 'p1', values: p1 },
       { id: 'p2', values: p2 },
       { id: 'p3', values: p3 },
@@ -117,7 +186,7 @@ describe('golden vectors', () => {
     expect(r.players.map((x) => x.total)).toEqual([58, 58, 58]);
     expect(r.players.map((x) => x.rank)).toEqual([3, 2, 1]);
     expect(r.winners).toEqual(['p3']);
-    const shared = solve('brass-birmingham-2018', [
+    const shared = solveLegacy('brass-birmingham-2018', [
       { id: 'p2', values: p2 },
       { id: 'p4', values: { ...p2 } },
     ]);
@@ -182,13 +251,13 @@ describe('golden vectors', () => {
       leftoverResources: 7 + 5 + 3,
     };
     const b: V = { vpTrack: 140, researchLevels: 10 };
-    const r = solve('gaia-project-2017', [
+    const r = solveLegacy('gaia-project-2017', [
       { id: 'a', values: a },
       { id: 'b', values: b },
     ]);
     expect(r.players.map((x) => x.total)).toEqual([130 + 12 + 6 + 48 + 5, 180]);
     expect(r.winners).toEqual(['a']);
-    const tie = solve('gaia-project-2017', [
+    const tie = solveLegacy('gaia-project-2017', [
       { id: 'a', values: a },
       { id: 'c', values: { ...a } },
     ]);
@@ -221,7 +290,7 @@ describe('golden vectors', () => {
   it('the-gang-2024: outcome and end derived from per-heist results', () => {
     const play = (heists: number[], extra: Partial<ScoreInput> = {}) => {
       const players = ['a', 'b', 'c', 'd'].map((id) => ({ id, values: { heists } }));
-      return solve('the-gang-2024', players, extra);
+      return solveLegacy('the-gang-2024', players, extra);
     };
     const win = play([1, 0, 1, 1]);
     expect(win.outcome).toBe('win');

@@ -129,7 +129,12 @@ export function ScoreSheet({
             <PlayerEditor sheet={sheet} roster={playsApi.roster} />
           ) : null}
 
-          {needsOutcome(template) ? (
+          {needsOutcome(template) &&
+          !(
+            template.slug === 'vantage' &&
+            template.templateVersion >= 3 &&
+            template.categories.some((c) => c.key === 'sessionEnded')
+          ) ? (
             <Card>
               <Heading>Kết quả ván</Heading>
               <View style={styles.wrap}>

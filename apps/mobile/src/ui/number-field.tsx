@@ -10,6 +10,7 @@ export interface NumberFieldProps {
   step?: number;
   width?: number;
   prefix?: string;
+  disabled?: boolean;
 }
 
 const clamp = (n: number, min?: number | null, max?: number | null): number => {
@@ -27,6 +28,7 @@ export function NumberField({
   step = 1,
   width = 72,
   prefix,
+  disabled = false,
 }: NumberFieldProps) {
   const [draft, setDraft] = useState<string | null>(null);
 
@@ -48,8 +50,8 @@ export function NumberField({
         accessibilityLabel="Giảm"
         accessibilityRole="button"
         onPress={() => bump(-1)}
-        disabled={min != null && value <= min}
-        style={[styles.btn, min != null && value <= min && styles.off]}
+        disabled={disabled || (min != null && value <= min)}
+        style={[styles.btn, (disabled || (min != null && value <= min)) && styles.off]}
       >
         <Text style={styles.btnText}>−</Text>
       </Pressable>
@@ -62,6 +64,7 @@ export function NumberField({
           onSubmitEditing={() => draft !== null && commit(draft)}
           keyboardType="numbers-and-punctuation"
           selectTextOnFocus
+          editable={!disabled}
           style={styles.input}
         />
       </View>
@@ -69,8 +72,8 @@ export function NumberField({
         accessibilityLabel="Tăng"
         accessibilityRole="button"
         onPress={() => bump(1)}
-        disabled={max != null && value >= max}
-        style={[styles.btn, max != null && value >= max && styles.off]}
+        disabled={disabled || (max != null && value >= max)}
+        style={[styles.btn, (disabled || (max != null && value >= max)) && styles.off]}
       >
         <Text style={styles.btnText}>+</Text>
       </Pressable>

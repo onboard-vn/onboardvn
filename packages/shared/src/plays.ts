@@ -6,6 +6,24 @@ export type PlayStatus = z.infer<typeof playStatusEnum>;
 
 export const MAX_PLAY_PLAYERS = 20;
 export const FREE_TOTAL_KEY = 'total';
+const MAX_PLAY_SETUP_JSON_LENGTH = 64 * 1024;
+const utf8ByteLength = (value: string) => {
+  let bytes = 0;
+  for (const character of value) {
+    const codePoint = character.codePointAt(0)!;
+    bytes += codePoint <= 0x7f ? 1 : codePoint <= 0x7ff ? 2 : codePoint <= 0xffff ? 3 : 4;
+  }
+  return bytes;
+};
+export const playSetupSchema = z
+  .record(z.string().min(1).max(80), z.unknown())
+  .nullable()
+  .refine(
+    (setup) =>
+      setup === null || utf8ByteLength(JSON.stringify(setup)) <= MAX_PLAY_SETUP_JSON_LENGTH,
+    { message: 'Play setup is too large.' },
+  );
+export type PlaySetup = z.infer<typeof playSetupSchema>;
 
 const fieldValueSchema = z.union([
   z.number().finite(),
@@ -30,6 +48,7 @@ export const playPatchSchema = z
   .object({
     scoreTemplateId: z.uuid().nullable(),
     outcome: z.enum(['win', 'loss']).nullable(),
+    setup: playSetupSchema,
     startedAt: z.iso.datetime({ offset: true }),
     endedAt: z.iso.datetime({ offset: true }).nullable(),
     addPlayers: z.array(z.uuid()).max(MAX_PLAY_PLAYERS),
@@ -52,6 +71,8 @@ export const playValueOpSchema = z.object({
   opId: z.uuid(),
   identityId: z.uuid(),
   categoryKey: z.string().min(1).max(60),
+  /** Updates one scalar inside a numeric record category such as Critter Kitchen's `meal`. */
+  inputKey: z.string().min(1).max(60).optional(),
   roundIndex: z.number().int().min(0).max(99).optional(),
   /** `null` clears the field. With `roundIndex` the value must be a number. */
   value: fieldValueSchema.nullable(),
@@ -101,7 +122,14 @@ export interface PlayDto {
   clubId: string | null;
   meetupTableId: string | null;
   game: { id: string; slug: string; name: string };
-  template: { id: string; version: number; variant: string; needsReview: boolean } | null;
+  template: {
+    id: string;
+    version: number;
+    variant: string;
+    needsReview: boolean;
+    definition: unknown;
+  } | null;
+  setup: PlaySetup;
   status: PlayStatus;
   outcome: 'win' | 'loss' | null;
   rev: number;
@@ -113,6 +141,8 @@ export interface PlayDto {
   tieUnresolved: boolean;
   warnings: string[];
   canEdit: boolean;
+  canManage: boolean;
+  editableIdentityIds: string[];
 }
 
 export interface PlayValuesResponse {
@@ -134,6 +164,8 @@ export interface PlayStreamEvent {
   ops: PlayValueOp[];
   computed: Record<string, PlayComputedDto | null>;
   presence: PlayPresenceEntry[];
+  /** Viewer-specific full state so clients can reconcile edits without replaying local ops. */
+  state?: PlayDto;
 }
 
 export interface PlayPollResponse {
@@ -179,6 +211,14 @@ export interface TableDetailDto {
   position: number;
   host: IdentityDto | null;
   seated: IdentityDto[];
+}
+
+export interface TableCurrentPlayResponse {
+  table: TableDetailDto;
+  play: PlayDto | null;
+  canManage: boolean;
+  editableIdentityIds: string[];
+  template: ScoreTemplateDto | null;
 }
 
 export interface ClubMeetupItemDto {

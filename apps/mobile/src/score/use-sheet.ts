@@ -15,10 +15,11 @@ import {
   type Summary,
   type Values,
 } from './model';
+import { mergePendingEdits } from './shared-play-state';
 
 const FLASH_MS = 1600;
 
-type Draft = Pick<PlayOp, 'identityId' | 'categoryKey' | 'roundIndex' | 'value'>;
+type Draft = Pick<PlayOp, 'identityId' | 'categoryKey' | 'roundIndex' | 'inputKey' | 'value'>;
 
 const newOpId = () =>
   'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -31,6 +32,8 @@ export interface SheetApi {
   state: SheetState;
   summary: Summary;
   presence: Record<string, boolean>;
+  canManage: boolean;
+  canEditIdentity: (identityId: string) => boolean;
   isFlashed: (identityId: string, categoryKey?: string, roundIndex?: number) => boolean;
   setMode: (m: SheetMode) => void;
   setOutcome: (o: SheetState['outcome']) => void;
@@ -38,6 +41,7 @@ export interface SheetApi {
   addPlayer: (player: Player) => void;
   removePlayer: (id: string) => void;
   setValue: (playerId: string, key: string, value: RawValue) => void;
+  setInputValue: (playerId: string, key: string, inputKey: string, value: number | null) => void;
   patchValues: (patch: Record<string, Values>) => void;
   setTeamValue: (key: string, value: RawValue) => void;
   setQuickTotal: (playerId: string, total: number) => void;
@@ -49,23 +53,42 @@ export interface SheetApi {
   applyRemote: (op: PlayOp) => void;
   setPresence: (identityId: string, typing: boolean) => void;
   ackOps: (opIds: string[]) => void;
+  restorePending: (ops: PlayOp[]) => void;
+  applySnapshot: (snapshot: SheetState) => void;
+  replaceSnapshot: (snapshot: SheetState) => void;
 }
 
 export interface SheetOptions {
   actorId: string;
   saved?: SheetState | null;
   allowIncompleteRoster?: boolean;
+  editableIdentityIds?: string[];
+  canManage?: boolean;
+  canEdit?: boolean;
 }
 
 export function useSheet(
   template: ScoreTemplate,
   players: Player[],
-  { actorId, saved, allowIncompleteRoster = false }: SheetOptions,
+  {
+    actorId,
+    saved,
+    editableIdentityIds,
+    canManage = true,
+    canEdit = true,
+    allowIncompleteRoster = false,
+  }: SheetOptions,
 ): SheetApi {
   const [state, setState] = useState<SheetState>(() => saved ?? initialState(players));
   const [presence, setPresenceState] = useState<Record<string, boolean>>({});
   const [flash, setFlash] = useState<Record<string, true>>({});
   const timers = useRef(new Set<ReturnType<typeof setTimeout>>());
+  const editableIds = useMemo(() => new Set(editableIdentityIds ?? []), [editableIdentityIds]);
+  const canEditIdentity = useCallback(
+    (identityId: string) =>
+      canEdit && (editableIdentityIds === undefined || canManage || editableIds.has(identityId)),
+    [canEdit, canManage, editableIds, editableIdentityIds],
+  );
 
   useEffect(() => {
     const live = timers.current;
@@ -77,7 +100,18 @@ export function useSheet(
       setState((s) => {
         let next = s;
         for (const d of drafts) {
-          if (JSON.stringify(readCell(next, d)) === JSON.stringify(d.value)) continue;
+          if (
+            !canEdit ||
+            (d.identityId === TEAM_ID ? !canManage : !canEditIdentity(d.identityId))
+          ) {
+            continue;
+          }
+          const previous = readCell(next, d);
+          if (
+            (d.value === null && previous === undefined) ||
+            JSON.stringify(previous) === JSON.stringify(d.value)
+          )
+            continue;
           const op: PlayOp = { opId: newOpId(), actorId, ...d };
           const cell = opCell(op);
           next = applyOp(next, op);
@@ -88,13 +122,15 @@ export function useSheet(
         }
         return next;
       }),
-    [actorId],
+    [actorId, canEdit, canEditIdentity, canManage],
   );
 
   const addPlayer = useCallback(
     (player: Player) =>
       setState((s) => {
         if (
+          !canEdit ||
+          !canManage ||
           s.players.length >= playerBounds(template).max ||
           s.players.some((p) => p.id === player.id)
         ) {
@@ -102,13 +138,18 @@ export function useSheet(
         }
         return { ...s, players: [...s.players, player] };
       }),
-    [template],
+    [canEdit, canManage, template],
   );
 
   const removePlayer = useCallback(
     (id: string) =>
       setState((s) => {
-        if (!allowIncompleteRoster && s.players.length <= playerBounds(template).min) return s;
+        if (
+          !canEdit ||
+          !canManage ||
+          (!allowIncompleteRoster && s.players.length <= playerBounds(template).min)
+        )
+          return s;
         const { [id]: _v, ...values } = s.values;
         const { [id]: _q, ...quickTotals } = s.quickTotals;
         const { [id]: _r, ...rounds } = s.rounds;
@@ -121,22 +162,28 @@ export function useSheet(
           pendingOps: s.pendingOps.filter((o) => o.identityId !== id),
         };
       }),
-    [template, allowIncompleteRoster],
+    [canEdit, canManage, template, allowIncompleteRoster],
   );
 
   const api = useMemo(
     () => ({
-      setMode: (mode: SheetMode) => setState((s) => ({ ...s, mode })),
-      setOutcome: (outcome: SheetState['outcome']) => setState((s) => ({ ...s, outcome })),
+      setMode: (mode: SheetMode) =>
+        canEdit && canManage ? setState((s) => ({ ...s, mode })) : undefined,
+      setOutcome: (outcome: SheetState['outcome']) =>
+        canEdit && canManage ? setState((s) => ({ ...s, outcome })) : undefined,
       toggleExpansion: (name: string) =>
-        setState((s) => ({
-          ...s,
-          expansions: s.expansions.includes(name)
-            ? s.expansions.filter((e) => e !== name)
-            : [...s.expansions, name],
-        })),
+        canEdit && canManage
+          ? setState((s) => ({
+              ...s,
+              expansions: s.expansions.includes(name)
+                ? s.expansions.filter((e) => e !== name)
+                : [...s.expansions, name],
+            }))
+          : undefined,
       setValue: (playerId: string, key: string, value: RawValue) =>
         edit([{ identityId: playerId, categoryKey: key, value }]),
+      setInputValue: (playerId: string, key: string, inputKey: string, value: number | null) =>
+        edit([{ identityId: playerId, categoryKey: key, inputKey, value }]),
       patchValues: (patch: Record<string, Values>) =>
         edit(
           Object.entries(patch).flatMap(([identityId, v]) =>
@@ -167,8 +214,10 @@ export function useSheet(
           };
         }),
       setExtra: <T>(key: string, value: T) =>
-        setState((s) => ({ ...s, extras: { ...s.extras, [key]: value } })),
-      reset: () => setState((s) => initialState(s.players)),
+        canEdit && canManage
+          ? setState((s) => ({ ...s, extras: { ...s.extras, [key]: value } }))
+          : undefined,
+      reset: () => (canEdit && canManage ? setState((s) => initialState(s.players)) : undefined),
       applyRemote: (op: PlayOp) => {
         const cell = opCell(op);
         setState((s) => (s.pendingOps.some((o) => opCell(o) === cell) ? s : applyOp(s, op)));
@@ -189,8 +238,27 @@ export function useSheet(
             ? { ...s, pendingOps: s.pendingOps.filter((o) => !done.has(o.opId)) }
             : s;
         }),
+      restorePending: (ops: PlayOp[]) =>
+        setState((s) => {
+          let next = s;
+          for (const op of ops) {
+            if (op.actorId !== actorId) continue;
+            next = applyOp(next, op);
+            next = {
+              ...next,
+              pendingOps: [
+                ...next.pendingOps.filter((pending) => opCell(pending) !== opCell(op)),
+                op,
+              ],
+            };
+          }
+          return next;
+        }),
+      applySnapshot: (snapshot: SheetState) =>
+        setState((current) => mergePendingEdits(snapshot, current)),
+      replaceSnapshot: (snapshot: SheetState) => setState(snapshot),
     }),
-    [edit],
+    [actorId, canEdit, canManage, edit],
   );
 
   const isFlashed = useCallback(
@@ -203,5 +271,16 @@ export function useSheet(
 
   const summary = useMemo(() => summarize(template, state), [template, state]);
 
-  return { template, state, summary, presence, isFlashed, addPlayer, removePlayer, ...api };
+  return {
+    template,
+    state,
+    summary,
+    presence,
+    canManage: canManage && canEdit,
+    canEditIdentity,
+    isFlashed,
+    addPlayer,
+    removePlayer,
+    ...api,
+  };
 }

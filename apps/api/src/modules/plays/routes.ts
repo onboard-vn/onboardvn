@@ -135,6 +135,17 @@ export const tablePlayRoutes = new Hono<AppEnv>()
     noStore(c);
     return c.json(await service.getTablePlayService(c.req.valid('param').tableId, c.var.user.id));
   })
+  .get(
+    '/:tableId/plays/current',
+    requireUser,
+    zValidator('param', tableIdParamSchema),
+    async (c) => {
+      noStore(c);
+      return c.json(
+        await service.getCurrentTablePlayService(c.req.valid('param').tableId, c.var.user.id),
+      );
+    },
+  )
   .post(
     '/:tableId/plays',
     requireUser,

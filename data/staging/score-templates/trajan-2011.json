@@ -3,7 +3,7 @@
   "name": "Trajan",
   "year": 2011,
   "bggId": 118048,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
     "min": 2,
@@ -20,27 +20,153 @@
       "hint": "Read your marker on the VP track after the end-game scoring is resolved.",
       "scope": "player",
       "input": "number",
-      "min": 0,
+      "min": null,
       "max": null,
       "formula": {
         "type": "sum"
       },
-      "countsToTotal": true
+      "countsToTotal": true,
+      "appliesWhen": "cat_entryMode == 0"
+    },
+    {
+      "key": "entryMode",
+      "label": "Cách nhập kết quả",
+      "labelVi": "Cách nhập kết quả",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "trackBeforeFinal",
+      "label": "VP trên track trước tính điểm cuối",
+      "labelVi": "VP trên track trước tính điểm cuối",
+      "scope": "player",
+      "input": "number",
+      "min": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_entryMode == 1"
+    },
+    {
+      "key": "handCards",
+      "label": "Bài hàng hóa trên tay",
+      "labelVi": "Bài hàng hóa trên tay",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_entryMode == 1"
+    },
+    {
+      "key": "campWorkers",
+      "label": "Thợ còn ở trại",
+      "labelVi": "Thợ còn ở trại",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_entryMode == 1"
+    },
+    {
+      "key": "campLegionnaires",
+      "label": "Lính còn ở trại quân",
+      "labelVi": "Lính còn ở trại quân",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_entryMode == 1"
+    },
+    {
+      "key": "constructionTriples",
+      "label": "Bộ ba công trình cùng biểu tượng",
+      "labelVi": "Bộ ba công trình cùng biểu tượng",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 10
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_entryMode == 1"
+    },
+    {
+      "key": "constructionQuadruples",
+      "label": "Bộ bốn công trình cùng biểu tượng",
+      "labelVi": "Bộ bốn công trình cùng biểu tượng",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "multiply",
+        "points": 20
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_entryMode == 1"
+    },
+    {
+      "key": "bonusTileVp",
+      "label": "VP từ thẻ thưởng vàng/xám",
+      "labelVi": "VP từ thẻ thưởng vàng/xám",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_entryMode == 1"
+    },
+    {
+      "key": "senatePosition",
+      "label": "Thứ hạng cuối tại Senate (1 cao nhất)",
+      "labelVi": "Thứ hạng cuối tại Senate (1 cao nhất)",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [
     {
-      "description": "Not verified against rulebook; confirm in the official rules."
+      "categoryKey": "senatePosition",
+      "dir": "lowest",
+      "description": "Higher position in the final Senate ordering wins (1 = highest)."
     }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "family: mixed-engine (mancala-style action selection scored on a VP track). Detailed end-game categories could not be verified: official rulebook and BGG were not reachable, so only the final VP total is modelled. Wikipedia confirms players score VP across six tactical facilities.",
+  "notes": "0 = legacy final VP after all scoring; 1 = quantities added to pre-final track. Never enter the same construction tiles in both triples and quadruples. Construction wilds must be assigned before counting sets. Bonus tiles remain manually awarded VP; their printed face and category matter. Senate position is the final complete order including stack order.",
   "sources": [
     {
       "url": "https://en.wikipedia.org/wiki/Trajan_(board_game)",
       "title": "Trajan (board game) (Wikipedia)",
       "type": "wiki",
       "section": "Gameplay"
+    },
+    {
+      "url": "https://www.boardgamesbot.com/assets/games-library/trajan/manual_eng.pdf",
+      "title": "Ammonit 2011 Trajan English rulebook, mirrored",
+      "type": "official-rulebook",
+      "section": "pp.8–11 negative VP, final scoring, Senate and wilds"
     }
   ],
   "confidence": "low",

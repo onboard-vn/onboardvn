@@ -1,0 +1,802 @@
+import type { GameGuide } from './types';
+
+export const mixedGuides: Record<string, GameGuide> = {
+  cloudspire: {
+    edition: '2-4 players',
+    summary: 'Nhập số lượng và giá trị trên thành phần; xem điểm quy đổi tự động.',
+    minTemplateVersion: 3,
+    requiredKeys: [
+      'gateDefeated',
+      'gateHealth',
+      'advancements',
+      'sourceRemaining',
+      'spiresInPlay',
+      'teamMode',
+      'teamSeat',
+      'earlyWinner',
+    ],
+    groups: [
+      {
+        title: 'Dữ liệu tính điểm',
+        icon: '🎲',
+        fields: [
+          {
+            key: 'gateDefeated',
+            label: 'Cổng bị hạ ở đợt cuối',
+            icon: '📦',
+          },
+          {
+            key: 'gateHealth',
+            label: 'Máu cổng còn lại',
+            icon: '📦',
+          },
+          {
+            key: 'advancements',
+            label: 'Số nâng cấp còn giữ',
+            icon: '📦',
+          },
+          {
+            key: 'sourceRemaining',
+            label: 'Source còn lại',
+            icon: '📦',
+          },
+          {
+            key: 'spiresInPlay',
+            label: 'Số tháp trên bàn',
+            icon: '📦',
+          },
+          {
+            key: 'teamMode',
+            label: 'Chế độ: cá nhân / hai đội',
+            icon: '📦',
+            hostOnly: true,
+          },
+          {
+            key: 'teamSeat',
+            label: 'Đội của bạn (1 hoặc 2)',
+            icon: '📦',
+            choices: [
+              {
+                value: 1,
+                label: 'Đội 1',
+              },
+              {
+                value: 2,
+                label: 'Đội 2',
+              },
+            ],
+          },
+          {
+            key: 'earlyWinner',
+            label: 'Thắng sớm: chỉ chọn người/đội thắng',
+            icon: '📦',
+          },
+        ],
+      },
+    ],
+    sources: [
+      'https://www.dropbox.com/scl/fi/as4q6xhmgr6j87o9vmp5r/Cloudspire-Rulebook_v2.pdf?rlkey=s72c4heuj3g57oe4oltj9izgz&e=1&dl=0',
+      'https://chiptheorygames.com/products/cloudspire',
+    ],
+    limitations: [
+      'Cá nhân 2–4 người hoặc hai đội, mỗi đội hai người. Hạ bất kỳ cổng nào kết thúc ngay khi chơi đội.',
+      'Solo/co-op và số đợt tùy chỉnh chưa hỗ trợ. Nếu hai đội bằng sức mạnh, chưa tự phân thắng.',
+    ],
+  },
+  'age-of-steam-deluxe-2019': {
+    edition: 'base',
+    summary: 'Nhập số lượng và giá trị trên thành phần; xem điểm quy đổi tự động.',
+    minTemplateVersion: 3,
+    requiredKeys: [
+      'income',
+      'trackSections',
+      'sharesIssued',
+      'insolvent',
+      'mapVariant',
+      'cashRemaining',
+      'tieRoll',
+    ],
+    groups: [
+      {
+        title: 'Dữ liệu tính điểm',
+        icon: '🎲',
+        fields: [
+          {
+            key: 'income',
+            label: 'Thu nhập cuối cùng',
+            icon: '📦',
+          },
+          {
+            key: 'trackSections',
+            label: 'Đoạn ray thuộc tuyến hoàn chỉnh',
+            icon: '📦',
+          },
+          {
+            key: 'sharesIssued',
+            label: 'Cổ phiếu đã phát hành',
+            icon: '📦',
+          },
+          {
+            key: 'insolvent',
+            label: 'Đã phá sản, không được thắng',
+            icon: '📦',
+          },
+          {
+            key: 'mapVariant',
+            label: 'Bản đồ: Rust Belt=0, Western US=1',
+            icon: '📦',
+            hostOnly: true,
+            choices: [
+              {
+                value: 0,
+                label: 'Rust Belt (luật gốc)',
+              },
+              {
+                value: 1,
+                label: 'Western US',
+              },
+            ],
+          },
+          {
+            key: 'cashRemaining',
+            label: 'Tiền mặt còn lại (Western US)',
+            icon: '📦',
+          },
+          {
+            key: 'tieRoll',
+            label: 'Kết quả xúc xắc phân thắng (Western US)',
+            icon: '📦',
+          },
+        ],
+      },
+    ],
+    sources: ['https://cdn.1j1ju.com/medias/fe/42/15-age-of-steam-deluxe-edition-rulebook.pdf'],
+    limitations: [
+      'Chỉ Rust Belt và Western US. Các bản đồ khác và solo cần luật riêng.',
+      'Chỉ tính người chưa phá sản. Western US hòa phải so tiền, ray, rồi tung xúc xắc.',
+    ],
+  },
+  'concordia-venus': {
+    edition: 'Individual play (team variant in notes)',
+    summary: 'Nhập số lượng và giá trị trên thành phần; xem điểm quy đổi tự động.',
+    minTemplateVersion: 3,
+    requiredKeys: [
+      'vesta',
+      'jupiter',
+      'saturnus',
+      'venus',
+      'mercurius',
+      'mars',
+      'minerva',
+      'concordiaCard',
+      'vestaSupply',
+      'prefectOrder',
+    ],
+    groups: [
+      {
+        title: 'Dữ liệu tính điểm',
+        icon: '🎲',
+        fields: [
+          {
+            key: 'vesta',
+            label: 'Điểm Vesta tự tính',
+            icon: '🧮',
+            readOnly: true,
+            inputs: {
+              cards: 'Số thẻ',
+              sestertii: 'sestertii',
+            },
+          },
+          {
+            key: 'jupiter',
+            label: 'Jupiter: thẻ và nhà không sản xuất gạch',
+            icon: '📦',
+            inputs: {
+              cards: 'Số thẻ',
+              houses: 'Số nhà',
+            },
+          },
+          {
+            key: 'saturnus',
+            label: 'Saturnus: thẻ và tỉnh có nhà',
+            icon: '📦',
+            inputs: {
+              cards: 'Số thẻ',
+              provinces: 'Số tỉnh',
+            },
+          },
+          {
+            key: 'venus',
+            label: 'Venus: thẻ và tỉnh có ít nhất hai nhà',
+            icon: '📦',
+            inputs: {
+              cards: 'Số thẻ',
+              provinces: 'Số tỉnh',
+            },
+          },
+          {
+            key: 'mercurius',
+            label: 'Mercurius: thẻ và loại hàng sản xuất',
+            icon: '📦',
+            inputs: {
+              cards: 'Số thẻ',
+              goodTypes: 'Số loại hàng',
+            },
+          },
+          {
+            key: 'mars',
+            label: 'Mars: thẻ và dân trên bản đồ',
+            icon: '📦',
+            inputs: {
+              cards: 'Số thẻ',
+              colonists: 'Số dân',
+            },
+          },
+          {
+            key: 'minerva',
+            label: 'Minerva: điểm in trên từng thẻ chuyên gia',
+            icon: '📦',
+            manualPoints: true,
+          },
+          {
+            key: 'concordiaCard',
+            label: 'Bạn giữ thẻ Concordia (+7)',
+            icon: '📦',
+          },
+          {
+            key: 'vestaSupply',
+            label: 'Hàng tồn kho và tiền mặt',
+            icon: '📦',
+            inputs: {
+              cards: 'Số thẻ',
+              cash: 'Tiền mặt',
+              brick: 'Gạch',
+              food: 'Thức ăn',
+              tool: 'Công cụ',
+              wine: 'Rượu',
+              cloth: 'Vải',
+            },
+          },
+          {
+            key: 'prefectOrder',
+            label: 'Thứ tự nhận Præfectus Magnus (0: đang giữ)',
+            icon: '📦',
+            choices: [
+              {
+                value: 0,
+                label: 'Đang giữ',
+              },
+              {
+                value: 1,
+                label: 'Nhận sau 1 lần chuyển',
+              },
+              {
+                value: 2,
+                label: 'Nhận sau 2 lần chuyển',
+              },
+              {
+                value: 3,
+                label: 'Nhận sau 3 lần chuyển',
+              },
+              {
+                value: 4,
+                label: 'Nhận sau 4 lần chuyển',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    sources: [
+      'https://www.pd-verlag.de/WebRoot/HostEurope/Shops/es719366/MediaGallery/Venus/Rules_Venus_Expansion_engl_A4_1_01.pdf',
+    ],
+    limitations: [
+      'Chỉ cá nhân 2–5 người; luật đội không dùng bảng này.',
+      'Đếm thẻ cả trên tay và chồng bỏ. Thứ tự Præfectus Magnus bắt đầu 0 ở người đang giữ, rồi theo chiều chuyển thẻ.',
+    ],
+  },
+  'brass-birmingham-2018': {
+    edition: 'base',
+    summary: 'Nhập số lượng và giá trị trên thành phần; xem điểm quy đổi tự động.',
+    minTemplateVersion: 3,
+    requiredKeys: [
+      'canalLinks',
+      'canalIndustries',
+      'railLinks',
+      'railIndustries',
+      'shortfallPenalty',
+      'incomeLevel',
+      'moneyRemaining',
+    ],
+    groups: [
+      {
+        title: 'Dữ liệu tính điểm',
+        icon: '🎲',
+        fields: [
+          {
+            key: 'canalLinks',
+            label: 'Kênh: tổng biểu tượng VP cạnh đường nối',
+            icon: '📦',
+          },
+          {
+            key: 'canalIndustries',
+            label: 'Kênh: điểm từng công nghiệp đã lật',
+            icon: '📦',
+          },
+          {
+            key: 'railLinks',
+            label: 'Ray: tổng biểu tượng VP cạnh đường nối',
+            icon: '📦',
+          },
+          {
+            key: 'railIndustries',
+            label: 'Ray: điểm từng công nghiệp đã lật',
+            icon: '📦',
+          },
+          {
+            key: 'shortfallPenalty',
+            label: 'Số VP thực sự đã mất vì thiếu tiền',
+            icon: '📦',
+            manualPoints: true,
+          },
+          {
+            key: 'incomeLevel',
+            label: 'Mức thu nhập cuối cùng',
+            icon: '📦',
+          },
+          {
+            key: 'moneyRemaining',
+            label: 'Tiền còn lại',
+            icon: '📦',
+          },
+        ],
+      },
+    ],
+    sources: [
+      'https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-Birmingham-Rulebook.pdf?v=1758826281',
+    ],
+    limitations: [
+      'Nhập điểm riêng của từng kỳ, không nhập hai lần điểm cộng dồn.',
+      'Điểm phạt là VP thực mất trong ván; không nhập số tiền thiếu nếu đã không còn VP để mất.',
+    ],
+  },
+  'feya-s-swamp-2025': {
+    edition: 'base',
+    summary: 'Chọn đúng hai thẻ; điểm đảo từ số khu định cư × ô Spirit.',
+    minTemplateVersion: 3,
+    requiredKeys: [
+      'trackScore',
+      'islandPoints',
+      'cardLargestGroup',
+      'cardTemple',
+      'cardIslandMajority',
+      'cardSingleSettlement',
+      'cardLargestIsland',
+      'cardSmallestIsland',
+      'fish',
+      'manaGems',
+      'gold',
+      'islandQuantities',
+      'scoreCardOne',
+      'scoreCardTwo',
+    ],
+    groups: [
+      {
+        title: 'Dữ liệu tính điểm',
+        icon: '🎲',
+        fields: [
+          {
+            key: 'trackScore',
+            label: 'Điểm trên đường điểm trước tính cuối',
+            icon: '📦',
+          },
+          {
+            key: 'islandPoints',
+            label: 'Điểm đảo tự tính',
+            icon: '🧮',
+            readOnly: true,
+          },
+          {
+            key: 'cardLargestGroup',
+            label: 'Số khu định cư trong nhóm lớn nhất',
+            icon: '📦',
+          },
+          {
+            key: 'cardTemple',
+            label: 'Khu định cư cạnh đền',
+            icon: '📦',
+          },
+          {
+            key: 'cardIslandMajority',
+            label: 'Đảo bạn nhiều khu định cư nhất (kể cả hòa)',
+            icon: '📦',
+          },
+          {
+            key: 'cardSingleSettlement',
+            label: 'Đảo có đúng một khu định cư của bạn',
+            icon: '📦',
+          },
+          {
+            key: 'cardLargestIsland',
+            label: 'Khu định cư trên đảo lớn nhất',
+            icon: '📦',
+          },
+          {
+            key: 'cardSmallestIsland',
+            label: 'Khu định cư trên đảo nhỏ nhất',
+            icon: '📦',
+          },
+          {
+            key: 'fish',
+            label: 'Cá còn trên khu định cư',
+            icon: '📦',
+          },
+          {
+            key: 'manaGems',
+            label: 'Mana trong kho cá nhân',
+            icon: '📦',
+          },
+          {
+            key: 'gold',
+            label: 'Vàng trong kho cá nhân',
+            icon: '📦',
+          },
+          {
+            key: 'islandQuantities',
+            label: 'Từng đảo: số khu định cư và ô Spirit',
+            icon: '📦',
+            inputs: {
+              settlements1: 'Khu định cư đảo 1',
+              spirits1: 'Ô Spirit đảo 1',
+              settlements2: 'Khu định cư đảo 2',
+              spirits2: 'Ô Spirit đảo 2',
+              settlements3: 'Khu định cư đảo 3',
+              spirits3: 'Ô Spirit đảo 3',
+              settlements4: 'Khu định cư đảo 4',
+              spirits4: 'Ô Spirit đảo 4',
+              settlements5: 'Khu định cư đảo 5',
+              spirits5: 'Ô Spirit đảo 5',
+              settlements6: 'Khu định cư đảo 6',
+              spirits6: 'Ô Spirit đảo 6',
+              settlements7: 'Khu định cư đảo 7',
+              spirits7: 'Ô Spirit đảo 7',
+              settlements8: 'Khu định cư đảo 8',
+              spirits8: 'Ô Spirit đảo 8',
+              settlements9: 'Khu định cư đảo 9',
+              spirits9: 'Ô Spirit đảo 9',
+              settlements10: 'Khu định cư đảo 10',
+              spirits10: 'Ô Spirit đảo 10',
+              settlements11: 'Khu định cư đảo 11',
+              spirits11: 'Ô Spirit đảo 11',
+              settlements12: 'Khu định cư đảo 12',
+              spirits12: 'Ô Spirit đảo 12',
+              settlements13: 'Khu định cư đảo 13',
+              spirits13: 'Ô Spirit đảo 13',
+              settlements14: 'Khu định cư đảo 14',
+              spirits14: 'Ô Spirit đảo 14',
+              settlements15: 'Khu định cư đảo 15',
+              spirits15: 'Ô Spirit đảo 15',
+              settlements16: 'Khu định cư đảo 16',
+              spirits16: 'Ô Spirit đảo 16',
+              settlements17: 'Khu định cư đảo 17',
+              spirits17: 'Ô Spirit đảo 17',
+              settlements18: 'Khu định cư đảo 18',
+              spirits18: 'Ô Spirit đảo 18',
+              settlements19: 'Khu định cư đảo 19',
+              spirits19: 'Ô Spirit đảo 19',
+              settlements20: 'Khu định cư đảo 20',
+              spirits20: 'Ô Spirit đảo 20',
+            },
+          },
+          {
+            key: 'scoreCardOne',
+            label: 'Thẻ tính điểm thứ nhất',
+            icon: '📦',
+            hostOnly: true,
+            choices: [
+              {
+                value: 1,
+                label: 'Nhóm lớn nhất',
+              },
+              {
+                value: 2,
+                label: 'Cạnh đền',
+              },
+              {
+                value: 3,
+                label: 'Đa số trên đảo',
+              },
+              {
+                value: 4,
+                label: 'Một khu trên đảo',
+              },
+              {
+                value: 5,
+                label: 'Đảo lớn nhất',
+              },
+              {
+                value: 6,
+                label: 'Đảo nhỏ nhất',
+              },
+            ],
+          },
+          {
+            key: 'scoreCardTwo',
+            label: 'Thẻ tính điểm thứ hai',
+            icon: '📦',
+            hostOnly: true,
+            choices: [
+              {
+                value: 1,
+                label: 'Nhóm lớn nhất',
+              },
+              {
+                value: 2,
+                label: 'Cạnh đền',
+              },
+              {
+                value: 3,
+                label: 'Đa số trên đảo',
+              },
+              {
+                value: 4,
+                label: 'Một khu trên đảo',
+              },
+              {
+                value: 5,
+                label: 'Đảo lớn nhất',
+              },
+              {
+                value: 6,
+                label: 'Đảo nhỏ nhất',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    sources: ['https://fractaljuegos.cl/wp-content/uploads/2026/04/Feyas_Swamp_Rulebook.pdf'],
+    limitations: [
+      'Chỉ hai thẻ được chọn tính điểm. Các số lượng ở thẻ khác vẫn lưu nhưng không cộng.',
+      'Cá trong kho không tính; chỉ cá trên khu định cư. Mana và vàng dùng kho cá nhân.',
+    ],
+  },
+  vantage: {
+    edition: 'Luật gốc',
+    summary: 'Kết quả hợp tác Mission / Destiny / Epic; không có điểm số.',
+    minTemplateVersion: 3,
+    requiredKeys: ['missionCompleted', 'destinyCompleted', 'sessionEnded'],
+    groups: [
+      {
+        title: 'Kết quả khám phá',
+        icon: '🧭',
+        fields: [
+          {
+            key: 'missionCompleted',
+            label: 'Đã hoàn thành Mission',
+            icon: '🧭',
+            hostOnly: true,
+          },
+          {
+            key: 'destinyCompleted',
+            label: 'Đã hoàn thành Destiny',
+            icon: '🧭',
+            hostOnly: true,
+          },
+          {
+            key: 'sessionEnded',
+            label: 'Đã kết thúc phiên chơi',
+            icon: '🧭',
+            hostOnly: true,
+          },
+        ],
+      },
+    ],
+    sources: ['https://vantage.rulepop.com/#end-of-game'],
+    limitations: [
+      'Không có VP hay xếp hạng cá nhân. Hoàn thành Mission có thể tiếp tục chơi.',
+      'Khi chỉ số về 0, làm theo mục TAKE của Mission; không tự kết thúc. Thành công cá nhân ghi vào ghi chú.',
+    ],
+  },
+  'abomination-the-heir-of-frankenstein-2019': {
+    edition: 'base',
+    summary: 'Nhập số lượng và giá trị trên thành phần; xem điểm quy đổi tự động.',
+    minTemplateVersion: 3,
+    requiredKeys: [
+      'trackVp',
+      'aliveParts',
+      'bonusObjectives',
+      'reputationPeak',
+      'expertisePeak',
+      'humanityExtreme',
+      'humanityLeaderBonus',
+      'aliveCount',
+      'francs',
+      'bodyParts',
+      'captainEnded',
+      'humanityValue',
+      'turnOrder',
+    ],
+    groups: [
+      {
+        title: 'Dữ liệu tính điểm',
+        icon: '🎲',
+        fields: [
+          {
+            key: 'trackVp',
+            label: 'VP tích lũy trong ván',
+            icon: '📦',
+            manualPoints: true,
+          },
+          {
+            key: 'aliveParts',
+            label: 'Điểm bộ phận sống tự tính',
+            icon: '🧮',
+            readOnly: true,
+          },
+          {
+            key: 'bonusObjectives',
+            label: 'Số mục tiêu thưởng đã đạt',
+            icon: '📦',
+          },
+          {
+            key: 'reputationPeak',
+            label: 'VP ghi trên mốc danh tiếng',
+            icon: '📦',
+            manualPoints: true,
+          },
+          {
+            key: 'expertisePeak',
+            label: 'VP ghi trên mốc chuyên môn',
+            icon: '📦',
+            manualPoints: true,
+          },
+          {
+            key: 'humanityExtreme',
+            label: 'VP nhân tính (có thể âm)',
+            icon: '📦',
+            manualPoints: true,
+          },
+          {
+            key: 'humanityLeaderBonus',
+            label: 'Thưởng nhân tính tự tính',
+            icon: '🧮',
+            readOnly: true,
+          },
+          {
+            key: 'aliveCount',
+            label: 'Số bộ phận sống tự tính',
+            icon: '🧮',
+            readOnly: true,
+          },
+          {
+            key: 'francs',
+            label: 'Franc còn lại',
+            icon: '📦',
+          },
+          {
+            key: 'bodyParts',
+            label: 'Bộ phận sống và điểm in trên bộ phận',
+            icon: '📦',
+            inputs: {
+              headAlive: 'Đầu: sống (0/1)',
+              headVp: 'Đầu: VP Alive in trên bộ phận',
+              torsoAlive: 'Thân: sống (0/1)',
+              torsoVp: 'Thân: VP Alive in trên bộ phận',
+              leftArmAlive: 'Tay trái: sống (0/1)',
+              leftArmVp: 'Tay trái: VP Alive in trên bộ phận',
+              rightArmAlive: 'Tay phải: sống (0/1)',
+              rightArmVp: 'Tay phải: VP Alive in trên bộ phận',
+              leftLegAlive: 'Chân trái: sống (0/1)',
+              leftLegVp: 'Chân trái: VP Alive in trên bộ phận',
+              rightLegAlive: 'Chân phải: sống (0/1)',
+              rightLegVp: 'Chân phải: VP Alive in trên bộ phận',
+            },
+          },
+          {
+            key: 'captainEnded',
+            label: 'Captain đã tới ô cuối',
+            icon: '📦',
+            hostOnly: true,
+          },
+          {
+            key: 'humanityValue',
+            label: 'Giá trị nhân tính hiện tại',
+            icon: '📦',
+          },
+          {
+            key: 'turnOrder',
+            label: 'Vị trí so với người đi đầu (1 là đầu tiên)',
+            icon: '📦',
+          },
+        ],
+      },
+    ],
+    sources: ['https://media.plaidhatgames.com/old_images/games/abomination/rules.pdf'],
+    limitations: [
+      'Luật gốc cạnh tranh 2–4 người; chưa hỗ trợ solo hoặc Igor.',
+      'VP bộ phận và mốc dial đọc từ thành phần. Thứ tự 1 là người đi đầu, sau đó theo chiều chơi.',
+    ],
+  },
+  'zoo-tycoon': {
+    edition: 'base',
+    summary: 'Nhập số lượng trước tính cuối; tự tính dự án, phúc lợi và đường thấp hơn.',
+    minTemplateVersion: 3,
+    requiredKeys: [
+      'popularity',
+      'conservation',
+      'eliminated',
+      'victoryPoints',
+      'newShores',
+      'endQuantities',
+    ],
+    groups: [
+      {
+        title: 'Dữ liệu tính điểm',
+        icon: '🎲',
+        fields: [
+          {
+            key: 'popularity',
+            label: 'Độ nổi tiếng cuối tự tính',
+            icon: '🧮',
+            readOnly: true,
+          },
+          {
+            key: 'conservation',
+            label: 'Bảo tồn cuối tự tính',
+            icon: '🧮',
+            readOnly: true,
+          },
+          {
+            key: 'eliminated',
+            label: 'Âm tiền sau năm 7: bị loại',
+            icon: '📦',
+          },
+          {
+            key: 'victoryPoints',
+            label: 'VP = đường thấp hơn',
+            icon: '🧮',
+            readOnly: true,
+          },
+          {
+            key: 'newShores',
+            label: 'Có New Shores',
+            icon: '📦',
+            hostOnly: true,
+          },
+          {
+            key: 'endQuantities',
+            inputMin: { buildingPopularity: null, buildingConservation: null },
+            hint: 'Hai mục xây cuối nhập chênh lệch có dấu; các mục khác nhập số lượng không âm.',
+            label: 'Dữ liệu trước khi tính cuối ván',
+            icon: '📦',
+            inputs: {
+              popularity: 'Nổi tiếng trước tính cuối',
+              conservation: 'Bảo tồn trước tính cuối',
+              offspring: 'Đĩa con non trong chuồng',
+              enclosureEggs: 'Trứng trong chuồng (không tính Vivarium)',
+              vivariumSections: 'Khu Vivarium đầy (0–3)',
+              parkPoints: 'VP bảo tồn công viên theo ô đã nhận',
+              breedingTrack: 'Vị trí chương trình sinh sản',
+              yellowSpecies: 'Số loài hạnh phúc vàng',
+              greenSpecies: 'Số loài xanh nhạt',
+              darkGreenSpecies: 'Số loài xanh đậm',
+              buildingPopularity: 'Thay đổi nổi tiếng do xây cuối',
+              buildingConservation: 'Thay đổi bảo tồn do xây cuối',
+              equalTrackFirst: 'Khi hai đường bằng: 0 nổi tiếng, 1 bảo tồn',
+            },
+          },
+        ],
+      },
+    ],
+    sources: [
+      'https://api.treecer.com/storage/1695/Zoo-Tycoon-The-Board-Game-English.pdf',
+      'https://api.treecer.com/storage/1702/Zoo-Tycoon-The-Board-Game-New-Shores-English.pdf',
+    ],
+    limitations: [
+      'Cạnh tranh 2–4 người, luật gốc hoặc New Shores; chưa hỗ trợ solo/co-op.',
+      'Không cộng lại thưởng Vivarium đã ghi trong ván. Trứng trong Vivarium không bị trừ.',
+      'Nhập tác động xây cuối đã thực hiện; không tự suy diễn bố trí sở thú. Khi hai đường bằng nhau, chọn đường nhận điểm tiếp theo.',
+    ],
+  },
+};
