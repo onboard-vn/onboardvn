@@ -9,6 +9,7 @@ import {
   playSetupSchema,
   scoreTemplateSchema,
   type MyPlaysResponse,
+  type MyPlayHistoryStatus,
   type PlayCreateInput,
   type PlayDto,
   type PlayPatchInput,
@@ -553,6 +554,8 @@ export async function getCurrentTablePlayService(
     const access = await repo.resolveAccess(bundle.play, bundle.players, userId);
     if (!access.canView) return notFound('Không tìm thấy bàn');
     play = await toPlayDto(bundle, userId, access);
+  } else if (table.clubId) {
+    if (!(await isMember(table.clubId, userId))) return notFound('Không tìm thấy bàn');
   } else if (!canManage && !seated) {
     return notFound('Không tìm thấy bàn');
   }
@@ -1023,6 +1026,7 @@ export async function listMyPlaysService(
   userId: string,
   cursor: string | undefined,
   limit: number,
+  status?: MyPlayHistoryStatus,
 ): Promise<MyPlaysResponse> {
   const mine = db
     .select({ id: identities.id })
@@ -1038,6 +1042,7 @@ export async function listMyPlaysService(
     ),
   );
   const clauses = [involved];
+  if (status === 'finished') clauses.push(eq(plays.status, 'final'));
   if (cursor) {
     const [iso, id] = Buffer.from(cursor, 'base64url').toString().split('|');
     const at = new Date(iso ?? '');
@@ -1058,13 +1063,17 @@ export async function listMyPlaysService(
         .select({
           playId: playPlayers.playId,
           identityId: playPlayers.identityId,
+          seat: playPlayers.seat,
           computed: playPlayers.computed,
           userId: identities.userId,
         })
         .from(playPlayers)
         .innerJoin(identities, eq(identities.id, playPlayers.identityId))
         .where(inArray(playPlayers.playId, ids))
+        .orderBy(playPlayers.seat)
     : [];
+  const winnerIds = players.filter((p) => p.computed?.isWinner).map((p) => p.identityId);
+  const winnerDtos = winnerIds.length ? await identityDtosByIds(winnerIds, userId) : new Map();
   const last = page.at(-1);
   return {
     items: page.map((r) => {
@@ -1077,6 +1086,18 @@ export async function listMyPlaysService(
         startedAt: r.play.startedAt.toISOString(),
         playerCount: all.length,
         myComputed: (all.find((p) => p.userId === userId)?.computed as PlayComputed | null) ?? null,
+        winners: all.flatMap((p) => {
+          const winner = p.computed?.isWinner ? winnerDtos.get(p.identityId) : undefined;
+          return winner
+            ? [
+                {
+                  identityId: winner.id,
+                  displayName: winner.displayName,
+                  isGuest: winner.kind === 'guest',
+                },
+              ]
+            : [];
+        }),
       };
     }),
     nextCursor:

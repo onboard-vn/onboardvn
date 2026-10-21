@@ -1,7 +1,7 @@
 import {
   gameIdParamSchema,
   idParamSchema,
-  myPlaysQuerySchema,
+  myPlayHistoryQuerySchema,
   playCreateSchema,
   playGetQuerySchema,
   playPatchSchema,
@@ -13,6 +13,7 @@ import { Hono } from 'hono';
 import { streamSSE } from 'hono/streaming';
 import { z } from 'zod';
 import { requireUser } from '../../auth/middleware.js';
+import { ApiError } from '../../lib/errors.js';
 import { userRateLimit } from '../../lib/user-rate-limit.js';
 import { zValidator } from '../../lib/validator.js';
 import type { AppEnv } from '../../types.js';
@@ -164,11 +165,18 @@ export const tablePlayRoutes = new Hono<AppEnv>()
 export const myPlayRoutes = new Hono<AppEnv>().get(
   '/plays',
   requireUser,
-  zValidator('query', myPlaysQuerySchema),
+  async (c, next) => {
+    const statuses = c.req.queries('status');
+    if (statuses && (statuses.length !== 1 || statuses[0] !== 'finished')) {
+      throw new ApiError('BAD_REQUEST', 400, 'Trạng thái không hợp lệ');
+    }
+    await next();
+  },
+  zValidator('query', myPlayHistoryQuerySchema),
   async (c) => {
     noStore(c);
-    const { cursor, limit } = c.req.valid('query');
-    return c.json(await service.listMyPlaysService(c.var.user.id, cursor, limit));
+    const { cursor, limit, status } = c.req.valid('query');
+    return c.json(await service.listMyPlaysService(c.var.user.id, cursor, limit, status));
   },
 );
 

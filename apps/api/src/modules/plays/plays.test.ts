@@ -498,10 +498,10 @@ describe('permissions', () => {
       403,
     );
     expect((await send(as('admin'), 'PATCH', `/api/plays/${id}`, { addPlayers: [] })).status).toBe(
-      404,
+      403,
     );
-    expect((await send(as('owner'), 'POST', `/api/plays/${id}/finalize`)).status).toBe(404);
-    expect((await patchValues('other', id, [op(hostIdentity, 'coins', 1)])).status).toBe(404);
+    expect((await send(as('owner'), 'POST', `/api/plays/${id}/finalize`)).status).toBe(403);
+    expect((await patchValues('other', id, [op(hostIdentity, 'coins', 1)])).status).toBe(403);
     expect((await send(as('outsider'), 'GET', `/api/plays/${id}`)).status).toBe(404);
     expect((await send(as(null), 'GET', `/api/plays/${id}`)).status).toBe(401);
     const view = (await (await send(as('seated'), 'GET', `/api/plays/${id}`)).json()) as PlayJson;
@@ -577,9 +577,11 @@ describe('permissions', () => {
         ),
       );
     expect((await send(as('seated'), 'GET', `/api/plays/${id}?sinceRev=${json.rev}`)).status).toBe(
-      404,
+      200,
     );
-    expect((await send(as('seated'), 'GET', `/api/plays/${id}/stream`)).status).toBe(404);
+    const stream = await send(as('seated'), 'GET', `/api/plays/${id}/stream`);
+    expect(stream.status).toBe(200);
+    await stream.body?.cancel();
   });
 
   it('moves only pinned shared categories when the first player is removed', async () => {

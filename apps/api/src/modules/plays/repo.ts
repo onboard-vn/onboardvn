@@ -4,11 +4,14 @@ import {
   clubMembers,
   games,
   identities,
+  meetups,
   meetupTables,
   playPlayers,
   plays,
   scoreTemplates,
 } from '../../db/schema/index.js';
+import { isClubMember } from '../clubs/repo.js';
+import { canViewMeetup } from '../events/service.js';
 import { isSeatedUser, type Executor } from '../identities/repo.js';
 
 export type PlayRow = typeof plays.$inferSelect;
@@ -125,6 +128,18 @@ export async function resolveAccess(
   executor: Executor = db,
 ): Promise<PlayAccess> {
   if (play.meetupTableId) {
+    const [meetup] = await executor
+      .select({
+        id: meetups.id,
+        createdBy: meetups.createdBy,
+        visibility: meetups.visibility,
+        inviteCodeHash: meetups.inviteCodeHash,
+        clubId: meetups.clubId,
+      })
+      .from(meetupTables)
+      .innerJoin(meetups, eq(meetups.id, meetupTables.meetupId))
+      .where(eq(meetupTables.id, play.meetupTableId))
+      .limit(1);
     const [host] = await executor
       .select({ id: meetupTables.id })
       .from(meetupTables)
@@ -145,6 +160,13 @@ export async function resolveAccess(
     const seated = await isSeatedUser(play.meetupTableId, userId, executor);
     const canManage = Boolean(host);
     const canEdit = canManage || own.length > 0;
+    if (meetup?.clubId) {
+      const [isCurrentMember, canViewMeetupAccess] = await Promise.all([
+        isClubMember(meetup.clubId, userId),
+        canViewMeetup(meetup, userId),
+      ]);
+      return { canEdit, canView: isCurrentMember && canViewMeetupAccess };
+    }
     return { canEdit, canView: canEdit || seated };
   }
 
