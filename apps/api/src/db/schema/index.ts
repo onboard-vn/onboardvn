@@ -8,6 +8,7 @@ export * from './shelf.js';
 export * from './social.js';
 export * from './scoring.js';
 export * from './clubs.js';
+export * from './club-link-attempts.js';
 export * from './external.js';
 export * from './identities.js';
 export * from './plays.js';

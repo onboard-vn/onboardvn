@@ -16,7 +16,7 @@ export interface SyncReport {
   games: { created: number; linked: number; unchanged: number };
   ownerships: { added: number; removed: number };
   meetups: Counts;
-  tables: Counts & { removed: number };
+  tables: Counts & { removed: number; skipped?: number };
   participantsAdded: number;
   unknownMemberRefs: number;
 }

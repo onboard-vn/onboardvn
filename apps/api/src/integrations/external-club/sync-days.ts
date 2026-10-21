@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from 'node:crypto';
-import { and, eq, inArray, sql } from 'drizzle-orm';
+import { and, asc, eq, inArray, sql } from 'drizzle-orm';
 import {
+  clubExternalMembers,
   externalRefs,
   gameExternalMetadata,
   games,
@@ -9,7 +10,9 @@ import {
   meetups,
   meetupTableIdentities,
   meetupTables,
+  plays,
 } from '../../db/schema/index.js';
+import { logger } from '../../lib/logger.js';
 import { slugify } from '../../modules/games/slug.js';
 import { chunked, dedupe, type SyncContext } from './context.js';
 import type { ExternalDay, ExternalTable } from './types.js';
@@ -42,6 +45,36 @@ async function resolveTableGames(ctx: SyncContext, days: ExternalDay[]): Promise
         ),
       );
     for (const row of rows) ctx.gameIds.set(row.externalId, row.gameId);
+  }
+}
+
+async function loadExistingMembers(ctx: SyncContext): Promise<void> {
+  const rows = await ctx.tx
+    .select({
+      externalId: clubExternalMembers.externalId,
+      id: clubExternalMembers.id,
+      userId: clubExternalMembers.userId,
+      identityId: identities.id,
+    })
+    .from(clubExternalMembers)
+    .leftJoin(
+      identities,
+      and(
+        eq(identities.clubId, clubExternalMembers.clubId),
+        eq(identities.kind, 'external'),
+        eq(identities.externalSource, ctx.source),
+        eq(identities.externalId, clubExternalMembers.externalId),
+      ),
+    )
+    .where(eq(clubExternalMembers.clubId, ctx.club.id));
+
+  for (const row of rows) {
+    if (!row.identityId || ctx.members.has(row.externalId)) continue;
+    ctx.members.set(row.externalId, {
+      id: row.id,
+      userId: row.userId,
+      identityId: row.identityId,
+    });
   }
 }
 
@@ -169,6 +202,14 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
   if (days.length === 0) return;
   if (!club.provinceCode) throw new Error('Club has no province; set one before syncing days');
 
+  // PostgreSQL hashes each club/date pair to the shared 64-bit transaction lock key used across processes.
+  for (const day of [...days].sort((a, b) => a.date.localeCompare(b.date))) {
+    await tx.execute(
+      sql`select pg_advisory_xact_lock(hashtextextended(${`${club.id}:${day.date}`}, 0))`,
+    );
+  }
+
+  await loadExistingMembers(ctx);
   await resolveTableGames(ctx, days);
   const byName = await gameIdsByName(ctx, days);
   const { seated: guestIdentities, managed: guestIds } = await syncGuests(ctx, days);
@@ -178,20 +219,52 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
     ...guestIdentities.values(),
   ]);
 
-  const refRows = await tx.select().from(externalRefs).where(eq(externalRefs.source, source));
-  const refs = new Map(refRows.map((r) => [refKey(r.kind, r.externalId), r.internalId]));
-  const tableRefByInternal = new Set(
-    refRows.filter((r) => r.kind === 'meetup_table').map((r) => r.internalId),
-  );
-
-  const meetupIds = refRows.filter((r) => r.kind === 'meetup').map((r) => r.internalId);
+  const meetupRefRows = await tx
+    .select()
+    .from(externalRefs)
+    .where(
+      and(
+        eq(externalRefs.source, source),
+        eq(externalRefs.kind, 'meetup'),
+        inArray(externalRefs.externalId, days.map((day) => day.date)),
+      ),
+    );
+  const meetupIds = meetupRefRows.map((row) => row.internalId);
   const meetupRows = meetupIds.length
-    ? await tx.select().from(meetups).where(inArray(meetups.id, meetupIds))
+    ? await tx
+        .select()
+        .from(meetups)
+        .where(inArray(meetups.id, meetupIds))
+        .orderBy(asc(meetups.id))
+        .for('update')
     : [];
   const meetupById = new Map(meetupRows.map((m) => [m.id, m]));
   const tableRows = meetupIds.length
-    ? await tx.select().from(meetupTables).where(inArray(meetupTables.meetupId, meetupIds))
+    ? await tx
+        .select()
+        .from(meetupTables)
+        .where(inArray(meetupTables.meetupId, meetupIds))
+        .orderBy(asc(meetupTables.id))
+        .for('update')
     : [];
+  const tableRefRows = tableRows.length
+    ? await tx
+        .select()
+        .from(externalRefs)
+        .where(
+          and(
+            eq(externalRefs.source, source),
+            eq(externalRefs.kind, 'meetup_table'),
+            inArray(
+              externalRefs.internalId,
+              tableRows.map((table) => table.id),
+            ),
+          ),
+        )
+    : [];
+  const refRows = [...meetupRefRows, ...tableRefRows];
+  const refs = new Map(refRows.map((row) => [refKey(row.kind, row.externalId), row.internalId]));
+  const tableRefByInternal = new Set(tableRefRows.map((row) => row.internalId));
   const playerRows = tableRows.length
     ? await tx
         .select()
@@ -203,6 +276,20 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
           ),
         )
     : [];
+  const playRows = tableRows.length
+    ? await tx
+        .select({ tableId: plays.meetupTableId, status: plays.status })
+        .from(plays)
+        .where(inArray(plays.meetupTableId, tableRows.map((table) => table.id)))
+    : [];
+  const tablesWithAnyPlay = new Set(
+    playRows.flatMap((play) => (play.tableId ? [play.tableId] : [])),
+  );
+  const tablesWithDraftPlay = new Set(
+    playRows.flatMap((play) =>
+      play.tableId && play.status === 'draft' ? [play.tableId] : [],
+    ),
+  );
   const playersByTable = new Map<string, Set<string>>();
   for (const row of playerRows) {
     if (!managedIdentityIds.has(row.identityId)) continue;
@@ -277,6 +364,18 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
 
     for (const [position, table] of dedupe(day.tables, (t) => t.externalId).entries()) {
       const values = tableValues(ctx, table, position, byName);
+      const hostUserId =
+        (table.hostExternalMemberId
+          ? ctx.members.get(table.hostExternalMemberId)?.userId
+          : undefined) ?? ctx.actorUserId;
+      let row = existingTables.get(refs.get(refKey('meetup_table', table.externalId)) ?? '');
+      if (row && tablesWithDraftPlay.has(row.id)) {
+        keep.add(row.id);
+        report.tables.skipped = (report.tables.skipped ?? 0) + 1;
+        logger.warn({ tableId: row.id }, 'External club table refresh skipped because a draft play exists');
+        continue;
+      }
+
       const playerIds = new Set<string>();
       const userIds: string[] = [];
       for (const player of table.players) {
@@ -297,12 +396,11 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
         if (identityId) playerIds.add(identityId);
       }
 
-      let row = existingTables.get(refs.get(refKey('meetup_table', table.externalId)) ?? '');
       let currentPlayers = new Set<string>();
       if (!row) {
         [row] = await tx
           .insert(meetupTables)
-          .values({ meetupId, hostUserId: ctx.actorUserId, ...values })
+          .values({ meetupId, hostUserId, ...values })
           .returning();
         await saveRef('meetup_table', table.externalId, row!.id);
         report.tables.created++;
@@ -313,9 +411,13 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
           row.seats !== values.seats ||
           row.note !== values.note ||
           row.position !== values.position ||
+          row.hostUserId !== hostUserId ||
           !sameSet(currentPlayers, playerIds);
         if (changed) {
-          await tx.update(meetupTables).set(values).where(eq(meetupTables.id, row.id));
+          await tx
+            .update(meetupTables)
+            .set({ ...values, hostUserId })
+            .where(eq(meetupTables.id, row.id));
           report.tables.updated++;
         } else {
           report.tables.unchanged++;
@@ -361,6 +463,11 @@ export async function syncDays(ctx: SyncContext, input: ExternalDay[]): Promise<
 
     for (const stale of existingTables.values()) {
       if (keep.has(stale.id) || !tableRefByInternal.has(stale.id)) continue;
+      if (tablesWithAnyPlay.has(stale.id)) {
+        report.tables.skipped = (report.tables.skipped ?? 0) + 1;
+        logger.warn({ tableId: stale.id }, 'External club table deletion skipped because a play exists');
+        continue;
+      }
       await tx.delete(meetupTables).where(eq(meetupTables.id, stale.id));
       await tx
         .delete(externalRefs)

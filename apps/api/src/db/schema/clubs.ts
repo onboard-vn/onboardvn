@@ -57,8 +57,7 @@ export const clubMembers = pgTable(
   ],
 );
 
-/** Members imported from an external club app. `externalLoginId` exists only for invite-time
- * matching and must never be selected into a DTO. */
+/** Members imported from an external club app. The legacy raw login id stays until digest backfill. */
 export const clubExternalMembers = pgTable(
   'club_external_members',
   {
@@ -70,6 +69,7 @@ export const clubExternalMembers = pgTable(
     nickname: text().notNull(),
     stats: jsonb().$type<Record<string, unknown>>().default({}).notNull(),
     externalLoginId: text(),
+    externalLoginDigest: text(),
     userId: text().references(() => users.id, { onDelete: 'set null' }),
     createdAt: timestamp().defaultNow().notNull(),
     updatedAt: timestamp()
@@ -83,6 +83,10 @@ export const clubExternalMembers = pgTable(
       .on(table.clubId, table.userId)
       .where(sql`${table.userId} is not null`),
     index('club_external_members_user_id_idx').on(table.userId),
+    index('club_external_members_club_login_digest_idx').on(
+      table.clubId,
+      table.externalLoginDigest,
+    ),
   ],
 );
 

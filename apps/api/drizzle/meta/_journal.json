@@ -204,6 +204,13 @@
       "when": 1792564442392,
       "tag": "0028_critter_kitchen_meal_template",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1792566478185,
+      "tag": "0029_club_login_digest",
+      "breakpoints": true
     }
   ]
 }

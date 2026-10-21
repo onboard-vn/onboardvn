@@ -20,6 +20,7 @@ import {
   users,
 } from '../../db/schema/index.js';
 import { fakeUser } from '../../test/fake-auth.js';
+import { digestLoginId } from '../../lib/login-digest.js';
 import { loadExternalClubSource } from './loader.js';
 import { syncExternalClub } from './sync.js';
 import type { ExternalClubSource, ExternalDay, ExternalGame, ExternalMember } from './types.js';
@@ -45,7 +46,12 @@ let clubId = '';
 let preexistingGameId = '';
 
 const members: ExternalMember[] = [
-  { externalId: 'm1', nickname: 'Member One', stats: { hosted: 2 }, loginId: 'login-1' },
+  {
+    externalId: 'm1',
+    nickname: 'Member One',
+    stats: { tablesHosted: 2 },
+    loginDigest: digestLoginId('login-1'),
+  },
   { externalId: 'm2', nickname: 'Member Two', stats: {} },
   { externalId: 'm3', nickname: 'Member Three', stats: {} },
 ];
@@ -100,11 +106,15 @@ const baseTables: ExternalDay['tables'] = [
   },
 ];
 
-function fakeSource(state: { days: ExternalDay[]; games?: ExternalGame[] }): ExternalClubSource {
+function fakeSource(state: {
+  days: ExternalDay[];
+  games?: ExternalGame[];
+  members?: ExternalMember[];
+}): ExternalClubSource {
   return {
     source: SOURCE,
     listGames: async () => state.games ?? catalog,
-    listMembers: async () => members,
+    listMembers: async () => state.members ?? members,
     listDays: async () => state.days,
   };
 }
@@ -206,7 +216,21 @@ describe('syncExternalClub', () => {
       .select()
       .from(clubExternalMembers)
       .where(and(eq(clubExternalMembers.clubId, clubId), eq(clubExternalMembers.externalId, 'm1')));
-    expect(m1?.externalLoginId).toBe('login-1');
+    expect(m1?.externalLoginId).toBeNull();
+    expect(m1?.externalLoginDigest).toBe(digestLoginId('login-1'));
+  });
+
+  it('keeps an existing digest when a later payload has no login id', async () => {
+    const withoutDigests = members.map(({ loginDigest: _loginDigest, ...member }) => member);
+    await syncExternalClub(fakeSource({ days: [day(baseTables)], members: withoutDigests }), {
+      clubSlug: CLUB_SLUG,
+    });
+
+    const [m1] = await db
+      .select()
+      .from(clubExternalMembers)
+      .where(and(eq(clubExternalMembers.clubId, clubId), eq(clubExternalMembers.externalId, 'm1')));
+    expect(m1?.externalLoginDigest).toBe(digestLoginId('login-1'));
   });
 
   it('is idempotent on a second run', async () => {

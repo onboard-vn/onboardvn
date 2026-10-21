@@ -17,6 +17,7 @@ const envSchema = z
     UPLOADS_DIR: z.string().optional().default('./uploads'),
     GAMEUPC_BASE_URL: z.url().optional(),
     GAMEUPC_API_KEY: z.string().optional(),
+    CLUB_LOGIN_HMAC_KEY: z.string().min(32).optional(),
     EXTERNAL_CLUB_PLUGIN: z.preprocess((v) => v || undefined, z.string().optional()),
     EXTERNAL_CLUB_BASE_URL: z.preprocess((v) => v || undefined, z.url().optional()),
     /** Set to true only behind a reverse proxy (Caddy) that itself sets X-Forwarded-For to the real client IP. */
@@ -39,6 +40,13 @@ const envSchema = z
         code: 'custom',
         path: ['AUTH_RATE_LIMIT_DISABLED'],
         message: 'AUTH_RATE_LIMIT_DISABLED không được bật khi production',
+      });
+    }
+    if (!v.CLUB_LOGIN_HMAC_KEY) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['CLUB_LOGIN_HMAC_KEY'],
+        message: 'CLUB_LOGIN_HMAC_KEY bắt buộc khi production',
       });
     }
   });

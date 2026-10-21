@@ -26,5 +26,6 @@ export function testEnv(): Record<string, string> {
     BETTER_AUTH_SECRET: 'test-secret-test-secret-test-secret-123',
     BETTER_AUTH_URL: 'http://localhost:3000',
     WEB_ORIGIN: 'http://localhost:3000',
+    CLUB_LOGIN_HMAC_KEY: 'onboard-test-club-login-hmac-key-v1',
   };
 }

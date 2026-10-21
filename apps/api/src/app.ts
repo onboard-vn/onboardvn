@@ -8,7 +8,7 @@ import type { Auth } from './auth/better-auth.js';
 import { sessionMiddleware } from './auth/middleware.js';
 import { publicCache } from './lib/cache-control.js';
 import { DEV_EXPO_ORIGIN } from './lib/dev-origins.js';
-import { env } from './lib/env.js';
+import { env, type Env } from './lib/env.js';
 import { errorHandler, notFoundHandler } from './lib/error-handler.js';
 import { apiRateLimit } from './lib/rate-limit.js';
 import { UPLOADS_PUBLIC_PREFIX } from './lib/storage/index.js';
@@ -33,6 +33,7 @@ import {
 import { locationRoutes } from './modules/locations/routes.js';
 import { meRoutes } from './modules/me/routes.js';
 import { localBarcodeRoutes, shelfRoutes } from './modules/shelf/routes.js';
+import { clubPlayHistoryRoutes } from './modules/plays/history-routes.js';
 import {
   gameScoreTemplateRoutes,
   myPlayRoutes,
@@ -44,18 +45,68 @@ import { wishlistRoutes } from './modules/wishlist/routes.js';
 import { userRoutes } from './modules/users/routes.js';
 import { openApiRoutes } from './modules/openapi/routes.js';
 import { seoRoutes } from './modules/seo/routes.js';
+import { createClubLiveRoutes } from './modules/clubs/live-routes.js';
+import { createLiveReader } from './integrations/external-club/live-fetch.js';
+import { loadExternalClubSource } from './integrations/external-club/loader.js';
+import type { LiveReader } from './integrations/external-club/live-types.js';
 import type { AppEnv } from './types.js';
+
+type ExternalClubBootConfig = Pick<
+  Env,
+  'NODE_ENV' | 'EXTERNAL_CLUB_PLUGIN' | 'EXTERNAL_CLUB_BASE_URL' | 'CLUB_LOGIN_HMAC_KEY'
+>;
+
+export function assertExternalClubBootConfig(config: ExternalClubBootConfig): void {
+  if (
+    config.NODE_ENV !== 'test' &&
+    config.EXTERNAL_CLUB_PLUGIN &&
+    config.EXTERNAL_CLUB_BASE_URL &&
+    !config.CLUB_LOGIN_HMAC_KEY
+  ) {
+    throw new Error(
+      'CLUB_LOGIN_HMAC_KEY is required when EXTERNAL_CLUB_PLUGIN and EXTERNAL_CLUB_BASE_URL are configured',
+    );
+  }
+}
+
+assertExternalClubBootConfig(env);
+
+let processLiveReader: Promise<LiveReader> | null = null;
+
+function getProcessLiveReader(): Promise<LiveReader> {
+  if (!processLiveReader) {
+    const loading = loadExternalClubSource(env).then((source) => createLiveReader({ source }));
+    processLiveReader = loading;
+    void loading.catch(() => {
+      if (processLiveReader === loading) processLiveReader = null;
+    });
+  }
+  return processLiveReader;
+}
+
+const processLiveReaderProxy: LiveReader = {
+  readDay: (clubId, date) =>
+    getProcessLiveReader().then((reader) => reader.readDay(clubId, date)),
+  readMembers: (clubId) =>
+    getProcessLiveReader().then((reader) => reader.readMembers(clubId)),
+  readGames: (clubId) =>
+    getProcessLiveReader().then((reader) => reader.readGames(clubId)),
+  readHistoryDates: (clubId) =>
+    getProcessLiveReader().then((reader) => reader.readHistoryDates(clubId)),
+};
 
 export interface AppDeps {
   auth: Pick<Auth, 'api' | 'handler'>;
   rateLimit?: boolean;
   barcodeProvider?: BarcodeProvider;
+  clubLiveReader?: LiveReader;
 }
 
 export function createApp({
   auth,
   rateLimit = true,
   barcodeProvider = createBarcodeProviderFromEnv(),
+  clubLiveReader = processLiveReaderProxy,
 }: AppDeps) {
   const api = new Hono<AppEnv>()
     .use(sessionMiddleware(auth))
@@ -69,7 +120,9 @@ export function createApp({
     .route('/events', eventRoutes({ rateLimit }))
     .route('/events-admin', adminEventRoutes)
     .route('/clubs', clubRoutes({ rateLimit }))
+    .route('/clubs', createClubLiveRoutes(clubLiveReader))
     .route('/clubs', clubScopedRoutes)
+    .route('/clubs', clubPlayHistoryRoutes)
     .route('/tables', tableRoutes({ rateLimit }))
     .route('/tables', tablePlayRoutes)
     .route('/identities', identityRoutes({ rateLimit }))

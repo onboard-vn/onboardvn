@@ -9,11 +9,12 @@ import {
 import { slugify } from '../../modules/games/slug.js';
 import { chunked, dedupe, stableJson, type SyncContext } from './context.js';
 import type { ExternalGame, ExternalMember } from './types.js';
+import type { LoginDigest } from '../../lib/login-digest.js';
 
 export async function syncMembers(
   ctx: SyncContext,
   members: ExternalMember[],
-  loginIds: Map<string, string>,
+  digests: Map<string, LoginDigest>,
 ): Promise<void> {
   const { tx, club, report } = ctx;
   const existing = await tx
@@ -53,7 +54,7 @@ export async function syncMembers(
   };
 
   for (const dto of dedupe(members, (m) => m.externalId)) {
-    const loginId = dto.loginId ?? loginIds.get(dto.externalId);
+    const loginDigest = digests.get(dto.externalId);
     const row = byExternalId.get(dto.externalId);
     if (!row) {
       const [created] = await tx
@@ -63,7 +64,7 @@ export async function syncMembers(
           externalId: dto.externalId,
           nickname: dto.nickname,
           stats: dto.stats,
-          externalLoginId: loginId ?? null,
+          externalLoginDigest: loginDigest ?? null,
         })
         .returning({ id: clubExternalMembers.id });
       const identityId = await upsertIdentity(dto.externalId, dto.nickname, null);
@@ -76,7 +77,8 @@ export async function syncMembers(
     const changes: Partial<typeof clubExternalMembers.$inferInsert> = {};
     if (row.nickname !== dto.nickname) changes.nickname = dto.nickname;
     if (stableJson(row.stats) !== stableJson(dto.stats)) changes.stats = dto.stats;
-    if (loginId && row.externalLoginId !== loginId) changes.externalLoginId = loginId;
+    if (loginDigest && row.externalLoginDigest !== loginDigest)
+      changes.externalLoginDigest = loginDigest;
     if (Object.keys(changes).length === 0) {
       report.members.unchanged++;
       continue;
@@ -88,7 +90,11 @@ export async function syncMembers(
 
 const slugFor = (game: ExternalGame) => slugify(game.name) || `game-${game.externalId}`;
 
-export async function syncGames(ctx: SyncContext, input: ExternalGame[]): Promise<void> {
+export async function syncGames(
+  ctx: SyncContext,
+  input: ExternalGame[],
+  options: { syncOwnerships?: boolean } = {},
+): Promise<void> {
   const { tx, source, report } = ctx;
   const list = dedupe(input, (g) => g.externalId);
 
@@ -160,7 +166,7 @@ export async function syncGames(ctx: SyncContext, input: ExternalGame[]): Promis
     ctx.gameIds.set(dto.externalId, gameId);
   }
 
-  await syncOwnerships(ctx, list);
+  if (options.syncOwnerships !== false) await syncOwnerships(ctx, list);
 }
 
 async function syncOwnerships(ctx: SyncContext, list: ExternalGame[]): Promise<void> {
