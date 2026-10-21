@@ -53,6 +53,7 @@ services:
       SMTP_URL: ${SMTP_URL:?SMTP_URL is required}
       MAIL_FROM: ${MAIL_FROM:?MAIL_FROM is required}
       SHOW_EXTERNAL_METADATA: ${SHOW_EXTERNAL_METADATA:-false}
+      CLUB_LOGIN_HMAC_KEY: ${CLUB_LOGIN_HMAC_KEY:?CLUB_LOGIN_HMAC_KEY is required}
     command: ['node', 'dist/db/migrate.js']
 
   api:

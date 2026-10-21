@@ -48,6 +48,8 @@ Compose project riêng `onboard`, network riêng — không đụng container kh
    UPLOADS_DIR=/data/uploads
    GAMEUPC_BASE_URL=
    GAMEUPC_API_KEY=
+   # Bắt buộc ở production, tối thiểu 32 ký tự; chỉ lưu trong .env.prod.
+   CLUB_LOGIN_HMAC_KEY=<giá trị ngẫu nhiên ít nhất 32 ký tự>
    ADMIN_EMAIL=<email admin đầu tiên>
 
    API_INTERNAL_URL=http://api:8787
@@ -168,16 +170,60 @@ ss -ltn
 
 Không được thấy port Postgres (mặc định 5432) publish ra host — `compose.prod.yml` không map port cho service `postgres`, chỉ network nội bộ.
 
-## Đồng bộ club từ app ngoài (tùy chọn)
+## Liên kết tài khoản club ngoài
 
-Tắt mặc định. Bật bằng 2 biến môi trường của API: `EXTERNAL_CLUB_PLUGIN` (đường dẫn tuyệt đối tới module ESM plugin, mount vào container) và `EXTERNAL_CLUB_BASE_URL` (truyền cho plugin). Plugin implement `ExternalClubSource` ([types.ts](../apps/api/src/integrations/external-club/types.ts)) và nằm ngoài repo công khai.
+`CLUB_LOGIN_HMAC_KEY` phải có ít nhất 32 ký tự và được đặt trong `.env.prod`; production thiếu key hoặc key quá ngắn sẽ fail closed. Import mới chỉ lưu digest HMAC-SHA-256 có khóa và matching chỉ so digest. Migration mở rộng thêm cột digest và bảng `club_link_attempts`, còn cột raw cũ được giữ tạm để backfill. Khóa trước bước đối chiếu: 5 lần sai trong 15 phút theo từng link, IP hoặc tài khoản sẽ khóa 60 phút; phản hồi liên kết không tiết lộ danh tính.
+
+Triển khai theo thứ tự expand/contract:
+
+1. Đặt key trong `.env.prod`, rồi deploy release có migration mở rộng.
+2. Chạy CLI `db:backfill-login-digest` ở chế độ xem trước, sau đó chạy thật để ghi digest:
+
+   ```bash
+   docker compose -p onboard --env-file .env.prod -f compose.prod.yml run --rm migrate node dist/integrations/external-club/backfill-login-digest-cli.js --dry-run
+   docker compose -p onboard --env-file .env.prod -f compose.prod.yml run --rm migrate node dist/integrations/external-club/backfill-login-digest-cli.js
+   ```
+
+3. Chạy lại `--dry-run` và xác nhận `digestCandidates=0`; xem trước việc xóa raw bằng:
+
+   ```bash
+   docker compose -p onboard --env-file .env.prod -f compose.prod.yml run --rm migrate node dist/integrations/external-club/backfill-login-digest-cli.js --dry-run --clear-raw
+   ```
+
+   Chỉ tiếp tục khi `digestMismatches=0`.
+
+4. Xóa raw bằng `--clear-raw`:
+
+   ```bash
+   docker compose -p onboard --env-file .env.prod -f compose.prod.yml run --rm migrate node dist/integrations/external-club/backfill-login-digest-cli.js --clear-raw
+   ```
+
+5. Một release sau mới drop cột raw. Chủ sở hữu cần rotate/expire các bản dump DB cũ còn chứa cột raw trên VPS; xóa cột không làm sạch các bản dump đã tạo trước đó.
+
+## Đồng bộ và dữ liệu live của club
+
+Private club adapter tuần tự hoá request để tôn trọng rate limit của ứng dụng club; mỗi API process giữ một instance adapter và gộp các request trùng đang chạy. Khi upstream quá hạn hoặc không khả dụng, API trả dữ liệu DB gần nhất và gắn nhãn stale.
+
+Các endpoint live:
+
+- `GET /api/clubs/:id/days/:date`
+- `GET /api/clubs/:id/members-live`
+- `GET /api/clubs/:id/games-live`
+- `GET /api/clubs/:id/history-live`
+
+API kiểm tra membership trước khi gọi upstream; non-member nhận 404. Response đặt `Cache-Control: private, no-store`.
+
+Khi sync ngày, API và CLI dùng PostgreSQL advisory lock theo club + ngày. Nếu bàn có ván draft, sync bỏ qua toàn bộ thay đổi bàn, ghế và host; bàn có bất kỳ ván nào không bị xóa. Host ID từ app club được ánh xạ sang tài khoản đã liên kết; nếu host chưa liên kết, người tạo club (`clubs.created_by`) là host, hoặc thành viên có `joined_at` sớm nhất nếu trường này null. Người này giữ quyền host trên bàn cho đến khi host thật liên kết tài khoản.
+
+CLI `sync:club` là fallback vận hành thủ công, không chạy khi API đang bận xử lý live fetch/sync. `--dry-run` chạy trong một transaction rồi rollback. Không có nightly backfill và không lên lịch bổ sung.
+
+Chạy CLI trong container API với VPS Compose overlay để dùng đúng adapter private và biến môi trường của service:
 
 ```bash
-# backup DB trước lần chạy đầu (có migration), rồi:
-pnpm --filter @onboard/api sync:club --club <slug> [--from YYYY-MM-DD] [--to YYYY-MM-DD] [--dry-run]
+docker compose -p onboard --env-file .env.prod -f compose.prod.yml -f compose.vps.yml exec api node dist/integrations/external-club/sync-cli.js --club <slug> [--from YYYY-MM-DD] [--to YYYY-MM-DD] [--dry-run]
 ```
 
-`--dry-run` chạy toàn bộ trong 1 transaction rồi rollback và in số lượng tạo/sửa. Chạy lại nhiều lần là idempotent (ánh xạ qua `external_refs`). Mỗi ngày thành 1 Kèo `club`, mỗi bàn thành 1 `meetup_tables`; người chơi chưa có tài khoản nằm ở `meetup_table_external_players` (không tạo user giả).
+Mỗi ngày được đồng bộ thành một Kèo visibility `club`, mỗi bàn thành một bảng; người chơi chưa có tài khoản được giữ dưới dạng danh tính guest/external, không tạo user giả.
 
 ## Import ảnh bìa + mô tả từ BGG
 
@@ -192,7 +238,7 @@ Backup DB trước khi chạy thật (`./deploy/backup.sh`).
 
 ## Môi trường nội bộ trên VPS (chỉ tailnet, build tại chỗ)
 
-`compose.vps.yml` chồng lên `compose.prod.yml`: build image api/web tại máy (`onboard-api:vps`, `onboard-web:vps`), mount `./data` (read-only) và plugin club riêng (`PRIVATE_PLUGINS_DIR`, mặc định `../onboardvn-private/plugins`), thêm `mailpit` làm SMTP sink (`SMTP_URL=smtp://mailpit:1025`, UI `127.0.0.1:8025`) để đọc link xác minh/OTP mà không gửi mail thật. `.env.prod` cần thêm `EXTERNAL_CLUB_BASE_URL`.
+`compose.vps.yml` chồng lên `compose.prod.yml`: build image api/web tại máy (`onboard-api:vps`, `onboard-web:vps`), mount `./data` (read-only), cấu hình private club adapter theo môi trường VPS, thêm `mailpit` làm SMTP sink (`SMTP_URL=smtp://mailpit:1025`, UI `127.0.0.1:8025`) để đọc link xác minh/OTP mà không gửi mail thật. `.env.prod` cần có `CLUB_LOGIN_HMAC_KEY` và cấu hình endpoint của adapter.
 
 ```bash
 dc() { docker compose -p onboard --env-file .env.prod -f compose.prod.yml -f compose.vps.yml "$@"; }
