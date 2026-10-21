@@ -94,6 +94,10 @@ export const myPlaysQuerySchema = z.object({
   cursor: z.string().max(200).optional(),
   limit: z.coerce.number().int().min(1).max(50).default(20),
 });
+export const myPlayHistoryQuerySchema = myPlaysQuerySchema.extend({
+  status: z.enum(['finished']).optional(),
+});
+export type MyPlayHistoryStatus = z.infer<typeof myPlayHistoryQuerySchema>['status'];
 export const clubMeetupsQuerySchema = z.object({
   from: z.iso.datetime({ offset: true }).optional(),
   to: z.iso.datetime({ offset: true }).optional(),
@@ -184,8 +188,35 @@ export interface PlaySummaryDto {
   playerCount: number;
   myComputed: PlayComputedDto | null;
 }
+
+export interface PlayHistoryWinnerDto {
+  identityId: string;
+  displayName: string;
+  isGuest: boolean;
+}
+
+export interface PlayHistoryItemDto {
+  id: string;
+  game: { id: string; slug: string; name: string };
+  clubId: string | null;
+  status: 'final';
+  startedAt: string;
+  playerCount: number;
+  winners: PlayHistoryWinnerDto[];
+}
+
+export interface MyPlayHistoryItemDto extends Omit<PlayHistoryItemDto, 'status'> {
+  status: PlayStatus;
+  myComputed: PlayComputedDto | null;
+}
+
 export interface MyPlaysResponse {
-  items: PlaySummaryDto[];
+  items: MyPlayHistoryItemDto[];
+  nextCursor: string | null;
+}
+
+export interface ClubPlaysResponse {
+  items: PlayHistoryItemDto[];
   nextCursor: string | null;
 }
 
