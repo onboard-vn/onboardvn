@@ -8,6 +8,7 @@ export interface FinishedResult {
   finishedAt: string;
   rows: SummaryRow[];
   winners: string[];
+  values?: SheetState['values'];
   memberCount: number;
   guestCount: number;
 }

@@ -1,4 +1,4 @@
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 import {
   clubExternalMembers,
   clubExternalOwnerships,
@@ -107,7 +107,7 @@ export async function syncGames(ctx: SyncContext, input: ExternalGame[]): Promis
   const byBgg = new Map<number, string>();
   for (const part of chunked(bggIds)) {
     const rows = await tx
-      .select({ id: games.id, bggId: games.bggId })
+      .select({ id: sql<string>`coalesce(${games.canonicalId}, ${games.id})`, bggId: games.bggId })
       .from(games)
       .where(inArray(games.bggId, part));
     for (const row of rows) byBgg.set(row.bggId!, row.id);
@@ -115,7 +115,7 @@ export async function syncGames(ctx: SyncContext, input: ExternalGame[]): Promis
   const bySlug = new Map<string, string>();
   for (const part of chunked(list.map(slugFor))) {
     const rows = await tx
-      .select({ id: games.id, slug: games.slug })
+      .select({ id: sql<string>`coalesce(${games.canonicalId}, ${games.id})`, slug: games.slug })
       .from(games)
       .where(inArray(games.slug, part));
     for (const row of rows) bySlug.set(row.slug, row.id);

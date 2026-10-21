@@ -1,5 +1,5 @@
 import { createHash, randomBytes } from 'node:crypto';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 import {
   externalRefs,
   gameExternalMetadata,
@@ -60,7 +60,7 @@ async function gameIdsByName(ctx: SyncContext, days: ExternalDay[]): Promise<Map
   ];
   if (names.length === 0) return new Map();
   const rows = await ctx.tx
-    .select({ id: games.id, slug: games.slug })
+    .select({ id: sql<string>`coalesce(${games.canonicalId}, ${games.id})`, slug: games.slug })
     .from(games)
     .where(inArray(games.slug, names));
   return new Map(rows.map((r) => [r.slug, r.id]));

@@ -174,7 +174,10 @@ export async function importGamesCsv(
               ...(v.weight !== undefined && { weight: v.weight.toFixed(2) }),
               ...(v.minAge !== undefined && { minAge: v.minAge }),
               ...(v.isVietnamese !== undefined && { isVietnamese: v.isVietnamese }),
-              ...(v.bggId !== undefined && { bggId: v.bggId }),
+              ...(v.bggId !== undefined &&
+                item.slug === (await gamesRepo.findGameById(item.existingId))?.slug && {
+                  bggId: v.bggId,
+                }),
               ...(v.videoUrls !== undefined && { videoUrls: v.videoUrls }),
             },
             item.categoryIds,

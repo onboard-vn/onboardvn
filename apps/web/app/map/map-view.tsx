@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { VENUE_TYPE_LABELS } from '@/lib/cafe-labels';
 import { api } from '@/lib/api';
+import { DEFAULT_MAP_CENTER } from '@/lib/map-style';
 import { mapFiltersToParams, mapFiltersToQuery, type MapFilterValues } from '@/lib/map-filters';
 
 const CafeMap = dynamic(() => import('@/components/cafe-map').then((m) => m.CafeMap), {
@@ -51,6 +52,83 @@ export function MapView({
 }) {
   const router = useRouter();
   const [filters, setFilters] = useState(initialFilters);
+  const [draftCenter, setDraftCenter] = useState<[number, number]>(() =>
+    initialFilters.centerLng !== undefined && initialFilters.centerLat !== undefined
+      ? [initialFilters.centerLng, initialFilters.centerLat]
+      : DEFAULT_MAP_CENTER,
+  );
+  const [mapCenter, setMapCenter] = useState<[number, number]>(() =>
+    initialFilters.centerLng !== undefined && initialFilters.centerLat !== undefined
+      ? [initialFilters.centerLng, initialFilters.centerLat]
+      : DEFAULT_MAP_CENTER,
+  );
+  const [radiusInput, setRadiusInput] = useState(String(initialFilters.radiusKm ?? 5));
+  const [manualCenter, setManualCenter] = useState(Boolean(initialFilters.radiusKm));
+  const [locationMessage, setLocationMessage] = useState('');
+  const [locating, setLocating] = useState(false);
+  const locationRequest = useRef(0);
+  const radius = Number(radiusInput);
+  const validRadius =
+    radiusInput.trim() !== '' && Number.isFinite(radius) && radius >= 1 && radius <= 50;
+  const nearby = useMemo(
+    () => ({ center: draftCenter, radiusKm: validRadius ? radius : 5 }),
+    [draftCenter, radius, validRadius],
+  );
+
+  useEffect(
+    () => () => {
+      locationRequest.current += 1;
+    },
+    [],
+  );
+
+  function moveCenter(center: [number, number]) {
+    locationRequest.current += 1;
+    setLocating(false);
+    setDraftCenter(center);
+    setManualCenter(true);
+  }
+
+  function locate() {
+    if (!navigator.geolocation) {
+      setLocationMessage(
+        'Trình duyệt không hỗ trợ vị trí. Bạn vẫn có thể kéo tâm tìm kiếm trên bản đồ.',
+      );
+      return;
+    }
+    const request = ++locationRequest.current;
+    setLocating(true);
+    setLocationMessage('');
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        if (request !== locationRequest.current) return;
+        setLocating(false);
+        setDraftCenter([position.coords.longitude, position.coords.latitude]);
+        setMapCenter([position.coords.longitude, position.coords.latitude]);
+        setManualCenter(true);
+        setLocationMessage('Đã chọn vị trí của bạn. Bấm Tìm quanh đây để tìm quán.');
+      },
+      () => {
+        if (request !== locationRequest.current) return;
+        setLocating(false);
+        setLocationMessage('Không lấy được vị trí. Bạn vẫn có thể kéo tâm tìm kiếm trên bản đồ.');
+      },
+      { timeout: 10000, maximumAge: 60000 },
+    );
+  }
+
+  function searchNearby() {
+    if (!validRadius) return;
+    locationRequest.current += 1;
+    setLocating(false);
+    setManualCenter(true);
+    setFilters((f) => ({
+      ...f,
+      centerLng: draftCenter[0],
+      centerLat: draftCenter[1],
+      radiusKm: radius,
+    }));
+  }
   const [pins, setPins] = useState(initialPins);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState(false);
@@ -78,7 +156,8 @@ export function MapView({
       setLoadError(false);
       try {
         const res = await api.api.cafes.map.$get({ query: mapFiltersToQuery(filters) });
-        const items = res.ok ? await res.json() : [];
+        if (!res.ok) throw new Error('Không tải được ghim');
+        const items = await res.json();
         if (cancelled) return;
         setPins(items);
       } catch {
@@ -123,12 +202,72 @@ export function MapView({
     setFilters((f) => ({ ...f, [key]: !f[key] || undefined }));
   }
 
-  const fitToPins = useMemo(() => Boolean(filters.province), [filters.province]);
+  const fitToPins = Boolean(filters.province) && !manualCenter;
 
   return (
     <div className="flex h-full flex-1 flex-col md:flex-row">
       <div className="flex flex-col gap-3 border-b p-4 md:w-80 md:shrink-0 md:overflow-y-auto md:border-r md:border-b-0">
         <h1 className="text-lg font-semibold">Bản đồ quán</h1>
+
+        <fieldset className="flex flex-col gap-2 rounded-md border p-3">
+          <legend className="px-1 text-sm font-medium">Tìm quanh đây</legend>
+          <p className="text-muted-foreground text-xs">
+            Kéo tâm đỏ trên bản đồ, chọn bán kính rồi tìm. Bộ lọc bên dưới vẫn được áp dụng.
+          </p>
+          <Label htmlFor="nearby-radius">Bán kính (km)</Label>
+          <Input
+            id="nearby-radius"
+            type="number"
+            min={1}
+            max={50}
+            step="any"
+            value={radiusInput}
+            onChange={(e) => setRadiusInput(e.target.value)}
+            aria-invalid={!validRadius}
+          />
+          {!validRadius ? (
+            <p className="text-destructive text-xs">Chọn bán kính từ 1 đến 50 km.</p>
+          ) : null}
+          <Button type="button" onClick={searchNearby} disabled={!validRadius}>
+            Tìm quanh đây
+          </Button>
+          <Button type="button" variant="outline" onClick={locate} disabled={locating}>
+            {locating ? 'Đang lấy vị trí…' : 'Vị trí của tôi'}
+          </Button>
+          {locationMessage ? (
+            <p role="status" className="text-muted-foreground text-xs">
+              {locationMessage}
+            </p>
+          ) : null}
+          <p className="text-muted-foreground text-xs">
+            Tâm: {draftCenter[1].toFixed(5)}, {draftCenter[0].toFixed(5)}
+          </p>
+          {filters.radiusKm !== undefined ? (
+            <>
+              <p className="text-xs">
+                Kết quả trong {filters.radiusKm} km quanh tâm đã tìm. Kéo tâm hoặc đổi bán kính rồi
+                bấm tìm để cập nhật.
+              </p>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => {
+                  locationRequest.current += 1;
+                  setLocating(false);
+                  setManualCenter(false);
+                  setFilters((f) => ({
+                    ...f,
+                    centerLat: undefined,
+                    centerLng: undefined,
+                    radiusKm: undefined,
+                  }));
+                }}
+              >
+                Bỏ lọc bán kính
+              </Button>
+            </>
+          ) : null}
+        </fieldset>
 
         <div className="flex flex-col gap-1">
           <Label htmlFor="map-province">Tỉnh/thành</Label>
@@ -298,7 +437,20 @@ export function MapView({
       </div>
 
       <div className={`min-h-[50vh] flex-1 ${showList ? 'hidden md:block' : ''}`}>
-        <CafeMap pins={pins} fitToPins={fitToPins} />
+        <CafeMap
+          pins={pins}
+          fitToPins={fitToPins}
+          center={mapCenter}
+          nearby={nearby}
+          onNearbyCenterChange={moveCenter}
+          onViewportCenterChange={(center, userDrag) => {
+            if (userDrag) moveCenter(center);
+            else if (!manualCenter)
+              setDraftCenter((previous) =>
+                previous[0] === center[0] && previous[1] === center[1] ? previous : center,
+              );
+          }}
+        />
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import { Card, Chip, Heading, Hint } from '../../ui/primitives';
 import { colors } from '../../ui/theme';
 import type { SheetApi } from '../use-sheet';
 
-const ROOM_SLOTS = 4;
+const ROOM_SLOTS = 5;
 const ROWS = [
   { key: 'roomRow4', label: 'Hàng trên cùng', vp: 4 },
   { key: 'roomRow3', label: 'Hàng 3', vp: 3 },

@@ -132,6 +132,10 @@ test('admin pins a café on the map, then /map shows the pin with a working "Ch�
   await expect(cafeMap).toBeVisible();
   await expect(cafeMap).toHaveAttribute('data-map-ready', 'true');
 
+  // Move the search-center control away from the café pin before opening its popup.
+  await page.getByTestId('nearby-center').focus();
+  for (let step = 0; step < 5; step += 1)
+    await page.getByTestId('nearby-center').press('ArrowRight');
   const mapBox = await cafeMap.boundingBox();
   if (!mapBox) throw new Error('cafe map has no bounding box');
   await cafeMap.click({ position: { x: mapBox.width / 2, y: mapBox.height / 2 } });
@@ -189,7 +193,7 @@ test('changing the game filter after the map has loaded updates the pins (no sta
     await expect(list.getByText('E2E Map Plain Cafe')).toBeVisible();
 
     await page.getByPlaceholder('Tên game...').fill('E2E Map Filter Game');
-    await page.getByRole('button', { name: 'Tìm' }).click();
+    await page.getByRole('button', { name: 'Tìm', exact: true }).click();
     await page.getByRole('button', { name: 'E2E Map Filter Game' }).click();
 
     await expect(list.getByText('E2E Map Game Cafe')).toBeVisible();
@@ -198,5 +202,118 @@ test('changing the game filter after the map has loaded updates the pins (no sta
     await client.query('delete from cafe_games where cafe_id = $1', [gameCafeId]);
     await client.query('delete from cafes where id = any($1)', [[gameCafeId, plainCafeId]]);
     await client.query('delete from games where id = $1', [gameId]);
+  }
+});
+
+test('nearby center is manually movable and radius/game URL survives refresh', async ({
+  page,
+  context,
+}) => {
+  await context.clearPermissions();
+  await page.goto('/map?game=nonexistent-nearby-game');
+  const map = page.getByTestId('cafe-map');
+  await expect(map).toHaveAttribute('data-map-ready', 'true');
+  const marker = page.getByTestId('nearby-center');
+  await expect(marker).toBeVisible();
+  await expect(page.getByLabel('Bán kính (km)')).toHaveValue('5');
+  const previousCenter = await page.getByText(/^Tâm:/).textContent();
+  await marker.focus();
+  await marker.press('ArrowRight');
+  await expect(page.getByText(/^Tâm:/)).not.toHaveText(previousCenter!);
+  // Draft movement does not start a search until explicitly applied.
+  expect(new URL(page.url()).searchParams.has('radiusKm')).toBe(false);
+  await page.getByLabel('Bán kính (km)').fill('3');
+  await page.getByRole('button', { name: 'Tìm quanh đây', exact: true }).click();
+  await expect(page).toHaveURL(/radiusKm=3/);
+  expect(new URL(page.url()).searchParams.get('game')).toBe('nonexistent-nearby-game');
+  const appliedCenter = new URL(page.url()).searchParams.get('centerLng');
+  await page.reload();
+  await expect(page.getByLabel('Bán kính (km)')).toHaveValue('3');
+  expect(new URL(page.url()).searchParams.get('centerLng')).toBe(appliedCenter);
+  await page.getByLabel('Bán kính (km)').fill('51');
+  await expect(page.getByRole('button', { name: 'Tìm quanh đây', exact: true })).toBeDisabled();
+  await page.getByRole('button', { name: 'Bỏ lọc bán kính' }).click();
+  await expect(page).not.toHaveURL(/radiusKm=/);
+});
+
+test('optional browser location selects a center and still requires explicit search', async ({
+  page,
+  context,
+}) => {
+  await context.grantPermissions(['geolocation']);
+  await context.setGeolocation({ latitude: 10.7769, longitude: 106.7009 });
+  await page.goto('/map');
+  await page.getByRole('button', { name: 'Vị trí của tôi' }).click();
+  await expect(page.getByText(/^Tâm:/)).toHaveText('Tâm: 10.77690, 106.70090');
+  expect(new URL(page.url()).searchParams.has('radiusKm')).toBe(false);
+  await page.getByRole('button', { name: 'Tìm quanh đây', exact: true }).click();
+  await expect(page).toHaveURL(/centerLng=106.7009/);
+  await expect(page).toHaveURL(/radiusKm=5/);
+});
+
+test('denied browser location leaves manual nearby search available', async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  const session = await context.newCDPSession(page);
+  const { targetInfo } = await session.send('Target.getTargetInfo');
+  await session.send('Browser.setPermission', {
+    permission: { name: 'geolocation' },
+    setting: 'denied',
+    origin: new URL(baseURL!).origin,
+    browserContextId: targetInfo.browserContextId,
+  });
+  await page.goto('/map');
+  await expect(page.getByTestId('cafe-map')).toHaveAttribute('data-map-ready', 'true');
+  await page.getByRole('button', { name: 'Vị trí của tôi' }).click();
+  await expect(page.getByRole('status')).toContainText('Không lấy được vị trí');
+  const previousCenter = await page.getByText(/^Tâm:/).textContent();
+  await page.getByTestId('nearby-center').focus();
+  await page.getByTestId('nearby-center').press('ArrowLeft');
+  await expect(page.getByText(/^Tâm:/)).not.toHaveText(previousCenter!);
+  await page.getByRole('button', { name: 'Tìm quanh đây', exact: true }).click();
+  await expect(page).toHaveURL(/radiusKm=5/);
+  expect(new URL(page.url()).searchParams.get('centerLng')).not.toBeNull();
+  await session.detach();
+});
+
+test('moving nearby center after province fitting preserves the fitted viewport', async ({
+  page,
+}) => {
+  const province = await client.query('select code, slug from provinces limit 1');
+  const provinceCode = province.rows[0].code as string;
+  const provinceSlug = province.rows[0].slug as string;
+  const ward = await client.query('select code from wards where province_code = $1 limit 1', [
+    provinceCode,
+  ]);
+  const gameSlug = `e2e-nearby-viewport-${Date.now()}`;
+  const game = await client.query(
+    'insert into games (slug, name_en) values ($1, $2) returning id',
+    [gameSlug, 'Nearby viewport game'],
+  );
+  const cafe = await client.query(
+    `insert into cafes (slug, name, province_code, ward_code, address_line, consent_status, lat, lng)
+    values ($1, $2, $3, $4, 'Viewport fixture', 'granted', 10.7769, 106.7009) returning id`,
+    [`${gameSlug}-cafe`, 'Nearby viewport café', provinceCode, ward.rows[0].code],
+  );
+  try {
+    await client.query('insert into cafe_games (cafe_id, game_id) values ($1, $2)', [
+      cafe.rows[0].id,
+      game.rows[0].id,
+    ]);
+    await page.goto(`/map?province=${provinceSlug}&game=${gameSlug}`);
+    await expect(page.getByTestId('cafe-map')).toHaveAttribute('data-map-ready', 'true');
+    await expect(page.getByText(/^Tâm:/)).toContainText('10.77690');
+    const marker = page.getByTestId('nearby-center');
+    await expect(marker).toBeInViewport();
+    await marker.focus();
+    await marker.press('ArrowRight');
+    await expect(marker).toBeInViewport();
+    await expect(page.getByText(/^Tâm:/)).toContainText('10.77690');
+    expect(new URL(page.url()).searchParams.has('radiusKm')).toBe(false);
+  } finally {
+    await client.query('delete from cafes where id = $1', [cafe.rows[0].id]);
+    await client.query('delete from games where id = $1', [game.rows[0].id]);
   }
 });

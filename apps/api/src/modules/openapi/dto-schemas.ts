@@ -1,4 +1,9 @@
-import { cafeAmenitiesSchema, cafeFeeModelEnum, venueTypeEnum } from '@onboard/shared';
+import {
+  cafeAmenitiesSchema,
+  cafeFeeModelEnum,
+  gameAliasSchema,
+  venueTypeEnum,
+} from '@onboard/shared';
 import { z } from 'zod';
 
 /**
@@ -37,9 +42,20 @@ export const gameSummaryDtoSchema = z.object({
   bggId: z.number().int().nullable(),
   imageUrl: z.string().nullable(),
   categories: z.array(categoryDtoSchema),
+  aliases: z.array(gameAliasSchema).optional(),
+  variantOfId: z.uuid().nullable().optional(),
+});
+
+const gameIdentityDtoSchema = z.object({
+  id: z.uuid(),
+  slug: z.string(),
+  nameEn: z.string(),
+  nameVi: z.string().nullable(),
 });
 
 export const gameDetailDtoSchema = gameSummaryDtoSchema.extend({
+  variantOf: gameIdentityDtoSchema.nullable().optional(),
+  variants: z.array(gameIdentityDtoSchema).optional(),
   descriptionVi: z.string().nullable(),
   descriptionSource: z.enum(['original', 'translated_with_permission', 'translated_from_bgg']),
   descriptionRightsHolder: z.string().nullable(),

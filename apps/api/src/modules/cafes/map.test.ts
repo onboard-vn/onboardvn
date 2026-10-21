@@ -159,6 +159,45 @@ describe('GET /cafes/map', () => {
     expect(slugs).not.toContain(withoutGame.slug);
   });
 
+  it('filters a spherical radius, excluding bbox corners and intersecting game/visibility', async () => {
+    const { json: inside } = await createCafe(baseCafeBody({ lat: 21.03, lng: 105.85 }));
+    const { json: corner } = await createCafe(baseCafeBody({ lat: 21.07, lng: 105.89 }));
+    const { json: far } = await createCafe(baseCafeBody({ lat: 10.7769, lng: 106.7009 }));
+    const { json: pending } = await createCafe(
+      baseCafeBody({
+        lat: 21.03,
+        lng: 105.85,
+        consentStatus: 'pending',
+        sourceUrl: 'https://example.test',
+      }),
+    );
+    const game = await createGame(`Nearby Filter Game ${Date.now()}`);
+    const add = await maintainerApp.request(`/api/cafes/${inside.id}/games`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ gameId: game.id }),
+    });
+    expect(add.status).toBe(201);
+    const query = `centerLat=21.03&centerLng=105.85&radiusKm=5&province=${PROVINCE.slug}`;
+    const { body } = await pins(query);
+    const slugs = body.map((pin) => pin.slug);
+    expect(slugs).toContain(inside.slug);
+    expect(slugs).not.toContain(corner.slug);
+    expect(slugs).not.toContain(far.slug);
+    expect(slugs).not.toContain(pending.slug);
+    const { body: matchingGame } = await pins(`${query}&gameSlug=${game.slug}`);
+    expect(matchingGame.map((pin) => pin.slug)).toEqual([inside.slug]);
+  });
+
+  it.each([
+    'centerLat=21&centerLng=105',
+    'centerLat=21&centerLng=105&radiusKm=51',
+    'centerLat=&centerLng=105&radiusKm=5',
+  ])('rejects invalid nearby query with 422: %s', async (query) => {
+    const res = await publicApp.request(`/api/cafes/map?${query}`);
+    expect(res.status).toBe(422);
+  });
+
   it('filters by bbox', async () => {
     const { json: inside } = await createCafe(baseCafeBody());
     const { json: outside } = await createCafe(baseCafeBody({ lat: 10.7769, lng: 106.7009 }));

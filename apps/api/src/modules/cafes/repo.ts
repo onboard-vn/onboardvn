@@ -477,6 +477,7 @@ export async function deleteCafePhoto(id: string): Promise<void> {
 }
 
 export interface CafeMapFilter extends CafeListFilter {
+  nearby?: { centerLat: number; centerLng: number; radiusKm: number };
   gameSlug?: string;
   bbox?: { minLng: number; minLat: number; maxLng: number; maxLat: number };
 }
@@ -512,6 +513,16 @@ function bboxConditions(bbox: CafeMapFilter['bbox']): SQL[] {
   ];
 }
 
+/** Haversine great-circle distance; clamp rounding at antipodal points. Runs before pin cap. */
+function nearbyCondition(nearby: CafeMapFilter['nearby']): SQL | undefined {
+  if (!nearby) return undefined;
+  return sql`6371 * 2 * asin(sqrt(least(1.0, greatest(0.0,
+    power(sin(radians(${cafes.lat}::double precision - ${nearby.centerLat}) / 2), 2) +
+    cos(radians(${nearby.centerLat}::double precision)) * cos(radians(${cafes.lat}::double precision)) *
+    power(sin(radians(${cafes.lng}::double precision - ${nearby.centerLng}) / 2), 2)
+  )))) <= ${nearby.radiusKm}`;
+}
+
 /** Lightweight pins for `/map` — same public/attribute filters as {@link listCafes}, plus
  * coordinates required (no pin without a lat/lng), an optional `gameSlug` and viewport bbox.
  * Ordered `granted` cafés first then by name so the {@link MAP_PIN_CAP} cutoff is deterministic
@@ -527,6 +538,7 @@ export function listCafeMapPins(
     isNotNull(cafes.lng),
     gameSlugCondition(filter.gameSlug),
     ...bboxConditions(filter.bbox),
+    nearbyCondition(filter.nearby),
   ]);
   return db
     .select({

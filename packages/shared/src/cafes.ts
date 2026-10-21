@@ -378,6 +378,11 @@ export const cafeFilterSchema = z.object({
 export type CafeFilter = z.infer<typeof cafeFilterSchema>;
 
 const optionalCoord = (min: number, max: number) => z.coerce.number().min(min).max(max).optional();
+const nearbyCoord = (min: number, max: number) =>
+  z
+    .union([z.string().trim().min(1), z.number()])
+    .pipe(z.coerce.number<string | number>().min(min).max(max))
+    .optional();
 
 export const cafeMapFilterSchema = z
   .object({
@@ -392,11 +397,20 @@ export const cafeMapFilterSchema = z
     openNow: boolQueryParam,
     /** "có game X" — matches `cafe_games` by game slug. */
     gameSlug: z.string().trim().min(1).max(150).optional(),
+    centerLat: nearbyCoord(-90, 90),
+    centerLng: nearbyCoord(-180, 180),
+    radiusKm: z.coerce.number().min(1).max(50).optional(),
     minLng: optionalCoord(-180, 180),
     minLat: optionalCoord(-90, 90),
     maxLng: optionalCoord(-180, 180),
     maxLat: optionalCoord(-90, 90),
   })
+  .refine(
+    (v) =>
+      [v.centerLat, v.centerLng, v.radiusKm].every((x) => x === undefined) ||
+      [v.centerLat, v.centerLng, v.radiusKm].every((x) => x !== undefined),
+    { message: 'Tìm quanh đây cần đủ centerLat, centerLng, radiusKm', path: ['centerLat'] },
+  )
   .refine(
     (v) =>
       [v.minLng, v.minLat, v.maxLng, v.maxLat].every((x) => x === undefined) ||

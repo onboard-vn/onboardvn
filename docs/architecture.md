@@ -29,7 +29,20 @@ Từ 2026-10-02 website là bản web của `apps/mobile` (Caddy phục vụ fil
 - **Club** private (owner/admin/member), mã mời lưu hash; Kèo visibility `club` chỉ member hiện tại xem/ghi.
 - **`identities`** (member | guest | external) là đơn vị ngồi bàn và chơi ván. Khách: tên gọi + năm sinh tuỳ chọn, gắn người mời; nhận hồ sơ qua link hoặc yêu cầu được người mời/admin duyệt → gộp vào user trong một transaction.
 - **Ván chơi** (`plays`, `play_players`, `play_events`): pin version score template, server luôn tính lại bằng engine `packages/shared/src/scoring`; sửa theo từng ô (op id idempotent, last-write-wins từng ô), đẩy thay đổi qua SSE `/api/plays/:id/stream`. Presence giữ trong RAM (một node).
+- **Bảng điểm chung của bàn**: chủ bàn quản lý thiết lập/chốt ván và nhập thay người chơi; thành viên nhập cho danh tính gắn với tài khoản của mình. Quyền và ván đang mở thuộc [plays/service.ts](../apps/api/src/modules/plays/service.ts); client thật thuộc [SharedTableScreen](../apps/mobile/src/score/shared-table-screen.tsx). Các bảng điểm cục bộ vẫn phục vụ thử nghiệm độc lập.
+- **Critter Kitchen**: ghi sao đã kiếm được và bữa ăn cuối thực tế, không dựng lại các lượt mua hàng/món thử thách. Danh mục và bộ tính thuộc [scoring/critter-kitchen](../packages/shared/src/scoring/critter-kitchen/index.ts); lá chưa xác minh không được dùng để chốt tự động. Ván cũ giữ mẫu đã ghim để tránh đổi kết quả lịch sử.
 - **Đồng bộ club ngoài**: repo public chỉ có interface `ExternalClubSource` + sync service + CLI `sync:club`; adapter cụ thể là plugin private nạp qua `EXTERNAL_CLUB_PLUGIN`/`EXTERNAL_CLUB_BASE_URL`. Dữ liệu club/BGG thô ở `data/private/` (gitignore) và bảng `game_external_metadata` (không trả cho người chưa đăng nhập; bật bằng `SHOW_EXTERNAL_METADATA`).
+
+## Shadow Hunters trên mobile
+
+Route `/score/shadow-hunters` ghi kết quả cuối ván cho bộ gốc 10 nhân vật, 4–8 người.
+Template [shadow-hunters.json](../data/staging/score-templates/shadow-hunters.json) lưu mã nhân vật
+theo `roles.key` và ô `won` của từng người; cả hai dùng luồng sửa ô/lưu nháp hiện có.
+Người dùng xác nhận kết quả theo thẻ nhân vật; nhiều người có thể cùng thắng, không có điểm hay xếp hạng.
+Giao diện chặn kết thúc nếu thiếu nhân vật/kết quả, trùng nhân vật hoặc chưa có người thắng.
+Đây là giao diện ghi kết quả, chưa mô phỏng lượt, kỹ năng hay nhân vật mở rộng.
+Kết quả lưu trên thiết bị giữ cả nhân vật/phe để xem lại sau khi xoá bản nháp.
+Luồng Shadow Hunters cục bộ dùng `plays-mock` (xem `apps/mobile/src/api/plays.ts`); bảng điểm bàn có UUID thật dùng client API riêng.
 
 ## Vì sao Hono thay vì NestJS
 
@@ -91,3 +104,11 @@ Việt Nam chuyển sang mô hình **2 cấp** (tỉnh → xã/phường) từ 0
 - Hỗ trợ tra cứu/hiển thị lịch sử khi cần đối chiếu địa chỉ cũ ↔ mới.
 
 `legacy_district` là trường tham chiếu lịch sử, không dùng cho logic định tuyến/lọc hiện hành.
+
+## Tìm quanh vị trí và danh tính game
+
+Tâm tìm kiếm là điểm người dùng chọn, không bắt buộc là vị trí thực của họ. Bán kính tính theo đường chim bay; kéo tâm và đổi bán kính là chỉnh bản nháp, chỉ áp dụng khi bấm tìm để tránh danh sách thay đổi trong lúc thao tác. Bộ lọc game và địa điểm vẫn giao nhau với vùng tìm kiếm. Chủ sở hữu giao diện là [MapView](../apps/web/app/map/map-view.tsx); hợp đồng truy vấn nằm ở [cafeMapFilterSchema](../packages/shared/src/cafes.ts).
+
+Tên khác hoặc bản custom giữ nguyên luật thuộc cùng một game; bản đổi luật là game riêng có liên kết về game gốc. Không suy ra hai game là một chỉ vì trùng tên. Hợp đồng tên gọi và phiên bản nằm ở [games.ts](../packages/shared/src/games.ts).
+
+Gộp mục trùng là quyết định quản trị có xem trước, không phải xóa game. Mục cũ được giữ làm đầu mối cho UUID/URL cũ và nguồn gốc nội dung. Xung đột kho sở hữu hoặc phiên bản bảng điểm phải được xử lý trước; hệ thống không tự cộng số lượng, bỏ ghi chú hay ghi đè bảng điểm. Quy tắc và kiểm tra toàn bộ tham chiếu thuộc [merge.ts](../apps/api/src/modules/games/merge.ts); việc giữ danh tính cũ thuộc [migration game identity](../apps/api/drizzle/0023_game_identity.sql).

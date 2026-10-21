@@ -1,6 +1,6 @@
 'use client';
 
-import type { DescriptionSource, GameCreateInput } from '@onboard/shared';
+import type { DescriptionSource, GameAliasInput, GameCreateInput } from '@onboard/shared';
 import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { api } from '@/lib/api';
+import type { SelectedGame } from '@/components/game-selection';
+import { GameIdentityFields } from './game-identity-fields';
 
 interface Category {
   id: string;
@@ -35,6 +37,8 @@ export interface GameFormInitial {
   videoUrls: string[];
   imageCredit: string | null;
   categories: Category[];
+  aliases?: GameAliasInput[];
+  variantOf?: SelectedGame | null;
 }
 
 export function GameForm({
@@ -48,6 +52,8 @@ export function GameForm({
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [source, setSource] = useState<DescriptionSource>(initial?.descriptionSource ?? 'original');
+  const [aliases, setAliases] = useState<GameAliasInput[]>(initial?.aliases ?? []);
+  const [variantOf, setVariantOf] = useState<SelectedGame | null>(initial?.variantOf ?? null);
   const selectedCategoryIds = new Set(initial?.categories.map((c) => c.id) ?? []);
   const categoryGroups: Array<{ label: string; kind: Category['kind'] }> = [
     { label: 'Thể loại', kind: 'category' },
@@ -77,6 +83,12 @@ export function GameForm({
       .filter(Boolean);
 
     const body = {
+      aliases: aliases.map((alias) => ({
+        ...alias,
+        name: alias.name.trim(),
+        language: alias.language?.trim() || undefined,
+      })),
+      variantOfId: variantOf?.id ?? null,
       nameEn: str('nameEn') ?? '',
       nameVi: str('nameVi'),
       minPlayers: num('minPlayers'),
@@ -98,20 +110,27 @@ export function GameForm({
       categoryIds: data.getAll('categoryIds').map(String),
     };
 
-    const res = initial
-      ? await api.api.games[':id'].$patch({ param: { id: initial.id }, json: body })
-      : // num()/str() only return null on edit (see above), so this is a safe create-time narrowing.
-        await api.api.games.$post({ json: body as unknown as GameCreateInput });
+    try {
+      const res = initial
+        ? await api.api.games[':id'].$patch({ param: { id: initial.id }, json: body })
+        : // num()/str() only return null on edit.
+          await api.api.games.$post({ json: body as unknown as GameCreateInput });
 
-    setPending(false);
-    if (!res.ok) {
-      const json = (await res.json().catch(() => null)) as { error?: { message?: string } } | null;
-      setError(json?.error?.message ?? 'Có lỗi xảy ra, thử lại sau');
-      return;
+      if (!res.ok) {
+        const json = (await res.json().catch(() => null)) as {
+          error?: { message?: string };
+        } | null;
+        setError(json?.error?.message ?? 'Có lỗi xảy ra, thử lại sau');
+        return;
+      }
+      const game = await res.json();
+      router.push(`/games/${game.slug}`);
+      router.refresh();
+    } catch {
+      setError('Không kết nối được máy chủ. Dữ liệu trong form vẫn được giữ để thử lại.');
+    } finally {
+      setPending(false);
     }
-    const game = await res.json();
-    router.push(`/games/${game.slug}`);
-    router.refresh();
   }
 
   return (
@@ -126,6 +145,15 @@ export function GameForm({
           <Input id="nameVi" name="nameVi" defaultValue={initial?.nameVi ?? ''} />
         </div>
       </div>
+
+      <GameIdentityFields
+        aliases={aliases}
+        onAliasesChange={setAliases}
+        variantOf={variantOf}
+        onVariantChange={setVariantOf}
+        gameId={initial?.id}
+        disabled={pending}
+      />
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="flex flex-col gap-1">

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { JsonLdScript } from '@/components/json-ld-script';
 import { Badge } from '@/components/ui/badge';
 import { getCurrentUser, serverApi } from '@/lib/api-server';
@@ -30,11 +30,11 @@ export async function generateMetadata(props: PageProps<'/games/[slug]'>): Promi
   return {
     title,
     description,
-    alternates: { canonical: `/games/${slug}` },
+    alternates: { canonical: `/games/${game.slug}` },
     openGraph: {
       title,
       description,
-      url: `/games/${slug}`,
+      url: `/games/${game.slug}`,
       ...(game.imageUrl && { images: [{ url: game.imageUrl }] }),
     },
   };
@@ -47,6 +47,7 @@ export default async function GameDetailPage(props: PageProps<'/games/[slug]'>) 
   if (res.status === 404) notFound();
   if (!res.ok) throw new Error('Không tải được game');
   const game = await res.json();
+  if (game.slug !== slug) permanentRedirect(`/games/${game.slug}`);
 
   const cafesRes = await client.api.games[':slug'].cafes.$get({ param: { slug } });
   const cafesForGame = cafesRes.ok ? await cafesRes.json() : [];
@@ -71,6 +72,45 @@ export default async function GameDetailPage(props: PageProps<'/games/[slug]'>) 
         {game.isVietnamese ? <Badge variant="secondary">Việt hóa</Badge> : null}
       </div>
       {game.nameVi ? <p className="text-muted-foreground">{game.nameEn}</p> : null}
+      {game.aliases?.length ? (
+        <section className="flex flex-col gap-2">
+          <h2 className="text-sm font-medium">Tên gọi và bản custom cùng luật</h2>
+          <ul className="flex flex-wrap gap-2">
+            {game.aliases.map((alias, index) => (
+              <li key={index}>
+                <Badge variant="outline">
+                  {alias.name}
+                  {alias.language ? ` · ${alias.language}` : ''}
+                  {alias.kind === 'custom' ? ' · custom' : ''}
+                </Badge>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+      {game.variantOf ? (
+        <p className="text-sm">
+          Bản đổi luật của{' '}
+          <Link href={`/games/${game.variantOf.slug}`} className="underline">
+            {game.variantOf.nameVi || game.variantOf.nameEn}
+          </Link>
+          . Bản này có lượt chơi và bảng điểm riêng.
+        </p>
+      ) : null}
+      {game.variants?.length ? (
+        <section className="flex flex-col gap-2">
+          <h2 className="text-sm font-medium">Các bản đổi luật liên quan</h2>
+          <ul className="list-disc pl-5 text-sm">
+            {game.variants.map((variant) => (
+              <li key={variant.id}>
+                <Link href={`/games/${variant.slug}`} className="underline">
+                  {variant.nameVi || variant.nameEn}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
       {game.ownersCount > 0 ? (
         <p className="text-muted-foreground text-sm">{game.ownersCount} người có game này</p>
       ) : null}

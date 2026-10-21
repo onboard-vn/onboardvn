@@ -140,7 +140,15 @@ export async function createWorld(tag: string): Promise<World> {
     templateId: template!.id,
     appFor: (user) => createApp({ auth: fakeAuth(user), rateLimit: false }),
     cleanup: async () => {
-      await db.delete(plays).where(eq(plays.gameId, game!.id));
+      await db
+        .delete(plays)
+        .where(
+          or(
+            eq(plays.gameId, game!.id),
+            eq(plays.clubId, club!.id),
+            inArray(plays.createdBy, userIds),
+          ),
+        );
       await db
         .delete(identities)
         .where(or(inArray(identities.userId, userIds), eq(identities.clubId, club!.id)));

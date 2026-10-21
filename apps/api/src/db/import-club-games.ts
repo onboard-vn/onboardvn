@@ -1,3 +1,4 @@
+import { resolveCanonicalId } from '../modules/games/repo.js';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { and, eq } from 'drizzle-orm';
@@ -81,11 +82,14 @@ async function findOrCreateGame(club: ClubGame, bgg: BggCache | null): Promise<s
       eq(gameExternalMetadata.externalId, club.externalId),
     ),
   });
-  const existing =
+  const found =
     (bggId && (await db.query.games.findFirst({ where: eq(games.bggId, bggId) }))) ||
     (mapped && (await db.query.games.findFirst({ where: eq(games.id, mapped.gameId) }))) ||
     (await db.query.games.findFirst({ where: eq(games.slug, club.slug) }));
 
+  const existing = found
+    ? await db.query.games.findFirst({ where: eq(games.id, await resolveCanonicalId(found.id)) })
+    : undefined;
   if (existing) {
     await db
       .update(games)
@@ -95,7 +99,7 @@ async function findOrCreateGame(club: ClubGame, bgg: BggCache | null): Promise<s
         playMinutes: existing.playMinutes ?? values.playMinutes,
         weight: existing.weight ?? values.weight,
         minAge: existing.minAge ?? values.minAge,
-        bggId: existing.bggId ?? bggId,
+        bggId: existing.bggId ?? (found?.canonicalId ? null : bggId),
       })
       .where(eq(games.id, existing.id));
     return existing.id;

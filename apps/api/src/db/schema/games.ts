@@ -1,6 +1,8 @@
 import { relations, sql } from 'drizzle-orm';
 import {
   boolean,
+  check,
+  type AnyPgColumn,
   index,
   integer,
   jsonb,
@@ -15,44 +17,65 @@ import {
 } from 'drizzle-orm/pg-core';
 import { users } from './auth.js';
 
-export const games = pgTable('games', {
-  id: uuid().primaryKey().defaultRandom(),
-  slug: text().notNull().unique(),
-  nameVi: text(),
-  nameEn: text().notNull(),
-  minPlayers: smallint(),
-  maxPlayers: smallint(),
-  playMinutes: smallint(),
-  weight: numeric({ precision: 3, scale: 2 }),
-  minAge: smallint(),
-  isVietnamese: boolean().default(false).notNull(),
-  bggId: integer().unique(),
-  descriptionVi: text(),
-  descriptionSource: text({
-    enum: ['original', 'translated_with_permission', 'translated_from_bgg'],
-  })
-    .default('original')
-    .notNull(),
-  descriptionRightsHolder: text(),
-  descriptionPermissionRef: text(),
-  descriptionLicense: text({ enum: ['CC-BY-SA-4.0', 'permission-only'] })
-    .default('CC-BY-SA-4.0')
-    .notNull(),
-  videoUrls: text()
-    .array()
-    .default(sql`'{}'::text[]`)
-    .notNull(),
-  imageKey: text(),
-  /** Hotlinked cover (BGG CDN) used only when no uploaded image exists. */
-  externalImageUrl: text(),
-  imageCredit: text(),
-  createdBy: text().references(() => users.id),
-  createdAt: timestamp().defaultNow().notNull(),
-  updatedAt: timestamp()
-    .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
-});
+export const games = pgTable(
+  'games',
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    slug: text().notNull().unique(),
+    canonicalId: uuid().references((): AnyPgColumn => games.id, { onDelete: 'restrict' }),
+    variantOfId: uuid().references((): AnyPgColumn => games.id, { onDelete: 'restrict' }),
+    aliases: jsonb()
+      .$type<{ name: string; kind: 'name' | 'custom'; language?: string }[]>()
+      .default([])
+      .notNull(),
+    nameVi: text(),
+    nameEn: text().notNull(),
+    minPlayers: smallint(),
+    maxPlayers: smallint(),
+    playMinutes: smallint(),
+    weight: numeric({ precision: 3, scale: 2 }),
+    minAge: smallint(),
+    isVietnamese: boolean().default(false).notNull(),
+    bggId: integer().unique(),
+    descriptionVi: text(),
+    descriptionSource: text({
+      enum: ['original', 'translated_with_permission', 'translated_from_bgg'],
+    })
+      .default('original')
+      .notNull(),
+    descriptionRightsHolder: text(),
+    descriptionPermissionRef: text(),
+    descriptionLicense: text({ enum: ['CC-BY-SA-4.0', 'permission-only'] })
+      .default('CC-BY-SA-4.0')
+      .notNull(),
+    videoUrls: text()
+      .array()
+      .default(sql`'{}'::text[]`)
+      .notNull(),
+    imageKey: text(),
+    /** Hotlinked cover (BGG CDN) used only when no uploaded image exists. */
+    externalImageUrl: text(),
+    imageCredit: text(),
+    createdBy: text().references(() => users.id),
+    createdAt: timestamp().defaultNow().notNull(),
+    updatedAt: timestamp()
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [
+    index('games_canonical_id_idx').on(table.canonicalId),
+    index('games_variant_of_id_idx').on(table.variantOfId),
+    check(
+      'games_canonical_not_self',
+      sql`${table.canonicalId} is null or ${table.canonicalId} <> ${table.id}`,
+    ),
+    check(
+      'games_variant_not_self',
+      sql`${table.variantOfId} is null or ${table.variantOfId} <> ${table.id}`,
+    ),
+  ],
+);
 
 export const categories = pgTable(
   'categories',

@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
-import { asc, eq } from 'drizzle-orm';
+import { and, asc, isNull, eq } from 'drizzle-orm';
 import { db } from '../db/client.js';
 import {
   cafeGames,
@@ -76,6 +76,7 @@ async function writeFileDeterministic(path: string, content: string): Promise<vo
 
 async function exportGameFacts(outDir: string): Promise<void> {
   const rows = await db.query.games.findMany({
+    where: isNull(games.canonicalId),
     orderBy: [asc(games.slug)],
     with: { categories: { with: { category: true } } },
   });
@@ -158,7 +159,7 @@ async function exportDescriptions(outDir: string): Promise<void> {
       descriptionLicense: games.descriptionLicense,
     })
     .from(games)
-    .where(eq(games.descriptionLicense, 'CC-BY-SA-4.0'))
+    .where(and(eq(games.descriptionLicense, 'CC-BY-SA-4.0'), isNull(games.canonicalId)))
     .orderBy(asc(games.slug));
 
   const descriptions = rows

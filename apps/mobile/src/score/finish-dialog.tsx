@@ -5,6 +5,7 @@ import { Button, Heading, Hint } from '../ui/primitives';
 import { colors } from '../ui/theme';
 import type { Summary } from './model';
 import type { SheetApi } from './use-sheet';
+import { isShadowHunters } from './custom/shadow-hunters-rules';
 
 const fmt = (n: number) => n.toLocaleString('vi-VN');
 
@@ -39,8 +40,8 @@ export function FinishDialog({
     setError(null);
     try {
       setReceipt(await onConfirm());
-    } catch {
-      setError('Không thể lưu ván. Kiểm tra kết nối rồi thử lại.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Không thể lưu ván. Kiểm tra kết nối rồi thử lại.');
     } finally {
       setBusy(false);
     }
@@ -74,7 +75,9 @@ export function FinishDialog({
                         {r.name}
                         {won ? '  🏆' : ''}
                       </Text>
-                      <Text style={styles.total}>{fmt(r.total)}</Text>
+                      <Text style={styles.total}>
+                        {isShadowHunters(sheet.template) ? (won ? 'Thắng' : 'Thua') : fmt(r.total)}
+                      </Text>
                     </View>
                   );
                 })}

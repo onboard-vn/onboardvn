@@ -1,3 +1,4 @@
+import { resolveCanonicalId } from '../games/repo.js';
 import type {
   AdminContributionListResponse,
   AdminContributionsQuery,
@@ -66,7 +67,7 @@ export async function addCommunityGamesService(
     throw new ApiError('FORBIDDEN', 403, 'Quán chưa công khai để đóng góp');
   }
 
-  const uniqueIds = [...new Set(gameIds)];
+  const uniqueIds = [...new Set(await Promise.all(gameIds.map(resolveCanonicalId)))];
   const allExist = await repo.gameIdsExist(uniqueIds);
   if (!allExist) throw new ApiError('VALIDATION_FAILED', 422, 'Danh sách game có mục không hợp lệ');
 
@@ -134,6 +135,7 @@ export async function confirmCafeGameService(
   userId: string,
   source: CafeGameSource,
 ): Promise<void> {
+  gameId = await resolveCanonicalId(gameId);
   await db.transaction(async (tx) => {
     const [existing] = await tx
       .select({ source: cafeGames.source })

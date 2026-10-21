@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   cafeCreateSchema,
+  cafeMapFilterSchema,
   getOpenStatus,
   mergeCafeHourRanges,
   type CafeOpeningHours,
@@ -206,5 +207,25 @@ describe('cafe links schema', () => {
   it('rejects a non-zalo.me URL for zalo', () => {
     const result = cafeCreateSchema.safeParse(validCafeBody({ zalo: 'https://evil.test/x' }));
     expect(result.success).toBe(false);
+  });
+});
+
+describe('nearby map query', () => {
+  it('accepts a complete query and zero coordinates', () => {
+    expect(
+      cafeMapFilterSchema.parse({ centerLat: '0', centerLng: '0', radiusKm: '5' }),
+    ).toMatchObject({ centerLat: 0, centerLng: 0, radiusKm: 5 });
+  });
+  it.each([
+    { centerLat: '21', centerLng: '105' },
+    { radiusKm: '5' },
+    { centerLat: '91', centerLng: '105', radiusKm: '5' },
+    { centerLat: '21', centerLng: '181', radiusKm: '5' },
+    { centerLat: 'NaN', centerLng: '105', radiusKm: '5' },
+    { centerLat: '21', centerLng: 'Infinity', radiusKm: '5' },
+    { centerLat: '21', centerLng: '105', radiusKm: '0' },
+    { centerLat: '21', centerLng: '105', radiusKm: '51' },
+  ])('rejects invalid nearby query: %j', (query) => {
+    expect(cafeMapFilterSchema.safeParse(query).success).toBe(false);
   });
 });

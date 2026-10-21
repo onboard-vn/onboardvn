@@ -1,4 +1,5 @@
 export * from './compute.js';
+export * from './critter-kitchen/index.js';
 export * from './expr.js';
 export * from './result.js';
 export * from './template-schema.js';

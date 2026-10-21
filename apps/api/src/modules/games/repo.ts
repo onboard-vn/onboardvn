@@ -1,5 +1,5 @@
 import type { GameFilter } from '@onboard/shared';
-import { and, asc, count, desc, eq, exists, inArray, or, sql } from 'drizzle-orm';
+import { and, asc, count, desc, eq, exists, inArray, isNull, or, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import { users } from '../../db/schema/auth.js';
 import {
@@ -25,7 +25,7 @@ function withTx<T>(tx: Tx | undefined, fn: (tx: Tx) => Promise<T>): Promise<T> {
 export type GameRow = NonNullable<Awaited<ReturnType<typeof findGameBySlug>>>;
 
 function buildWhere(filter: GameFilter) {
-  const conditions = [];
+  const conditions: (ReturnType<typeof sql> | undefined)[] = [isNull(games.canonicalId)];
   if (filter.slugs) conditions.push(inArray(games.slug, filter.slugs.split(',')));
 
   if (filter.q) {
@@ -34,6 +34,7 @@ function buildWhere(filter: GameFilter) {
       or(
         sql`unaccent_immutable(${games.nameEn}) ilike unaccent_immutable(${pattern})`,
         sql`unaccent_immutable(coalesce(${games.nameVi}, '')) ilike unaccent_immutable(${pattern})`,
+        sql`exists (select 1 from jsonb_array_elements(${games.aliases}) a where unaccent_immutable(a->>'name') ilike unaccent_immutable(${pattern}))`,
       ),
     );
   }
@@ -121,17 +122,44 @@ export async function listGames(filter: GameFilter) {
   return { rows, total: totalRows[0]?.total ?? 0 };
 }
 
-export function findGameBySlug(slug: string) {
-  return db.query.games.findFirst({ where: eq(games.slug, slug), with: withRelations });
+export async function resolveCanonicalId(id: string): Promise<string> {
+  const seen = new Set<string>();
+  let current = id;
+  while (!seen.has(current)) {
+    seen.add(current);
+    const row = await db.query.games.findFirst({
+      where: eq(games.id, current),
+      columns: { canonicalId: true },
+    });
+    if (!row?.canonicalId) return current;
+    current = row.canonicalId;
+  }
+  throw new Error('Cyclic canonical game identity');
 }
 
-export function findGameById(id: string) {
-  return db.query.games.findFirst({ where: eq(games.id, id), with: withRelations });
+export async function findGameBySlug(slug: string) {
+  const row = await db.query.games.findFirst({ where: eq(games.slug, slug), with: withRelations });
+  return row?.canonicalId ? findGameById(row.canonicalId) : row;
 }
 
-export function findGamesByIds(ids: string[]) {
-  if (ids.length === 0) return Promise.resolve([]);
-  return db.query.games.findMany({ where: inArray(games.id, ids), with: withRelations });
+export async function findGameById(id: string) {
+  return db.query.games.findFirst({
+    where: eq(games.id, await resolveCanonicalId(id)),
+    with: withRelations,
+  });
+}
+
+export async function findGamesByIds(ids: string[]) {
+  if (ids.length === 0) return [];
+  const canonicalIds = await Promise.all(ids.map(resolveCanonicalId));
+  return db.query.games.findMany({ where: inArray(games.id, canonicalIds), with: withRelations });
+}
+
+export function listVariants(id: string) {
+  return db.query.games.findMany({
+    where: and(eq(games.variantOfId, id), isNull(games.canonicalId)),
+    columns: { id: true, slug: true, nameEn: true, nameVi: true },
+  });
 }
 
 export async function slugExists(slug: string): Promise<boolean> {
@@ -200,6 +228,8 @@ async function fetchCategoryIdsTx(tx: Tx, gameId: string): Promise<string[]> {
 function buildRevisionSnapshot(row: typeof games.$inferSelect, categoryIds: string[]) {
   return {
     slug: row.slug,
+    aliases: row.aliases,
+    variantOfId: row.variantOfId,
     nameVi: row.nameVi,
     nameEn: row.nameEn,
     minPlayers: row.minPlayers,
@@ -216,6 +246,7 @@ function buildRevisionSnapshot(row: typeof games.$inferSelect, categoryIds: stri
     descriptionLicense: row.descriptionLicense,
     videoUrls: row.videoUrls,
     imageKey: row.imageKey,
+    externalImageUrl: row.externalImageUrl,
     imageCredit: row.imageCredit,
     categoryIds,
   };
@@ -284,7 +315,9 @@ export function listGameRevisions(gameId: string) {
     })
     .from(gameRevisions)
     .leftJoin(users, eq(gameRevisions.editorId, users.id))
-    .where(eq(gameRevisions.gameId, gameId))
+    .where(
+      sql`${gameRevisions.gameId} in (select id from ${games} where id = ${gameId} or canonical_id = ${gameId})`,
+    )
     .orderBy(desc(gameRevisions.createdAt));
 }
 

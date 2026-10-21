@@ -704,7 +704,12 @@ export async function userOwnsGame(userId: string, gameId: string): Promise<bool
   const [row] = await db
     .select({ userId: userGames.userId })
     .from(userGames)
-    .where(and(eq(userGames.userId, userId), eq(userGames.gameId, gameId)))
+    .where(
+      and(
+        eq(userGames.userId, userId),
+        sql`${userGames.gameId} = resolve_canonical_game_id(${gameId}::uuid)`,
+      ),
+    )
     .limit(1);
   return Boolean(row);
 }

@@ -68,3 +68,34 @@ describe('parseMapSearchParams', () => {
     expect(parseMapSearchParams({ byog: 'true' }).byog).toBe(true);
   });
 });
+
+describe('nearby map URL', () => {
+  it('round trips coordinates, radius and existing game/attribute filters including zero coordinates', () => {
+    const filters = { centerLat: 0, centerLng: 0, radiusKm: 5, gameSlug: 'catan', byog: true };
+    const parsed = parseMapSearchParams(Object.fromEntries(mapFiltersToParams(filters)));
+    expect(parsed).toMatchObject(filters);
+    expect(mapFiltersToQuery(parsed)).toMatchObject({
+      centerLat: '0',
+      centerLng: '0',
+      radiusKm: '5',
+      gameSlug: 'catan',
+      byog: 'true',
+    });
+  });
+
+  it.each([
+    { centerLat: '21', centerLng: '105' },
+    { centerLat: '', centerLng: '105', radiusKm: '5' },
+    { centerLat: 'NaN', centerLng: '105', radiusKm: '5' },
+    { centerLat: '91', centerLng: '105', radiusKm: '5' },
+    { centerLat: '21', centerLng: 'Infinity', radiusKm: '5' },
+    { centerLat: '21', centerLng: '105', radiusKm: '51' },
+    { centerLat: '21', centerLng: '105', radiusKm: '0' },
+  ])('drops invalid nearby triplets without losing game filter: %j', (nearby) => {
+    const parsed = parseMapSearchParams({ ...nearby, game: 'catan' });
+    expect(parsed.centerLat).toBeUndefined();
+    expect(parsed.centerLng).toBeUndefined();
+    expect(parsed.radiusKm).toBeUndefined();
+    expect(parsed.gameSlug).toBe('catan');
+  });
+});

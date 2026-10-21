@@ -7,6 +7,7 @@ import {
   LngLatBounds,
   Map as MapLibreMap,
   NavigationControl,
+  Marker,
   Popup,
   setWorkerUrl,
   type MapLayerMouseEvent,
@@ -14,6 +15,7 @@ import {
 import 'maplibre-gl/dist/maplibre-gl.css';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { nearbyCircle } from '@/lib/nearby-circle';
 import { renderCafeMapPopupHtml } from './cafe-map-popup';
 import {
   DEFAULT_MAP_CENTER,
@@ -53,8 +55,14 @@ export function CafeMap({
   center = DEFAULT_MAP_CENTER,
   zoom = 12,
   fitToPins = false,
+  nearby,
+  onNearbyCenterChange,
+  onViewportCenterChange,
 }: {
   pins: CafeMapPinDto[];
+  nearby?: { center: [number, number]; radiusKm: number };
+  onNearbyCenterChange?: (center: [number, number]) => void;
+  onViewportCenterChange?: (center: [number, number], userDrag: boolean) => void;
   center?: [number, number];
   zoom?: number;
   /** Fits the viewport to `pins`' bounds instead of `center`/`zoom` (e.g. when a province filter narrows the set). */
@@ -63,7 +71,16 @@ export function CafeMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const [supported] = useState(() => typeof window !== 'undefined' && isWebglSupported());
+  const markerRef = useRef<Marker | null>(null);
+  const nearbyCallbackRef = useRef(onNearbyCenterChange);
+
+  const viewportCallbackRef = useRef(onViewportCenterChange);
+
   const [ready, setReady] = useState(false);
+  useEffect(() => {
+    nearbyCallbackRef.current = onNearbyCenterChange;
+    viewportCallbackRef.current = onViewportCenterChange;
+  }, [onNearbyCenterChange, onViewportCenterChange]);
   // Kept in sync every render so the 'load' handler (which can fire well after mount, once
   // tiles/style are fetched) always adds the source with the *latest* pins, not a stale closure.
   const pinsRef = useRef(pins);
@@ -83,6 +100,14 @@ export function CafeMap({
     });
     mapRef.current = map;
     map.addControl(new NavigationControl(), 'top-right');
+    map.on('dragend', () => {
+      const position = map.getCenter();
+      viewportCallbackRef.current?.([position.lng, position.lat], true);
+    });
+    map.on('moveend', () => {
+      const position = map.getCenter();
+      viewportCallbackRef.current?.([position.lng, position.lat], false);
+    });
 
     map.on('load', () => onMapLoad(map));
 
@@ -170,6 +195,8 @@ export function CafeMap({
     }
 
     return () => {
+      markerRef.current?.remove();
+      markerRef.current = null;
       map.remove();
       mapRef.current = null;
     };
@@ -201,8 +228,79 @@ export function CafeMap({
   }, [pins, fitToPins, ready]);
 
   useEffect(() => {
-    if (!fitToPins) mapRef.current?.setCenter(center);
-  }, [center, fitToPins]);
+    const map = mapRef.current;
+    if (!map || !ready) return;
+    if (!nearby) {
+      markerRef.current?.remove();
+      markerRef.current = null;
+      if (map.getLayer('nearby-outline')) map.removeLayer('nearby-outline');
+      if (map.getLayer('nearby-fill')) map.removeLayer('nearby-fill');
+      if (map.getSource('nearby-circle')) map.removeSource('nearby-circle');
+      return;
+    }
+    if (!markerRef.current) {
+      const element = document.createElement('button');
+      element.type = 'button';
+      element.setAttribute('aria-label', 'Tâm tìm kiếm — kéo hoặc dùng phím mũi tên');
+      element.setAttribute('data-testid', 'nearby-center');
+      element.style.cssText =
+        'width:24px;height:24px;border:3px solid white;border-radius:50%;background:#e11d48;box-shadow:0 0 0 2px #e11d48;cursor:move';
+      const marker = new Marker({ element, draggable: true }).setLngLat(nearby.center).addTo(map);
+      marker.on('dragend', () => {
+        const position = marker.getLngLat();
+        nearbyCallbackRef.current?.([position.lng, position.lat]);
+      });
+      element.addEventListener('keydown', (event) => {
+        const delta = (360 / (512 * 2 ** map.getZoom())) * 20;
+        const direction = {
+          ArrowLeft: [-delta, 0],
+          ArrowRight: [delta, 0],
+          ArrowUp: [0, delta],
+          ArrowDown: [0, -delta],
+        }[event.key];
+        if (!direction) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const position = marker.getLngLat();
+        nearbyCallbackRef.current?.([
+          ((position.lng + direction[0]! + 540) % 360) - 180,
+          Math.max(-85, Math.min(85, position.lat + direction[1]!)),
+        ]);
+      });
+      markerRef.current = marker;
+    }
+    markerRef.current.setLngLat(nearby.center);
+    const data = nearbyCircle(nearby.center, nearby.radiusKm);
+    const source = map.getSource<GeoJSONSource>('nearby-circle');
+    if (source) source.setData(data);
+    else {
+      map.addSource('nearby-circle', { type: 'geojson', data });
+      map.addLayer(
+        {
+          id: 'nearby-fill',
+          type: 'fill',
+          source: 'nearby-circle',
+          paint: { 'fill-color': '#e11d48', 'fill-opacity': 0.08 },
+        },
+        'clusters',
+      );
+      map.addLayer(
+        {
+          id: 'nearby-outline',
+          type: 'line',
+          source: 'nearby-circle',
+          paint: { 'line-color': '#e11d48', 'line-width': 2 },
+        },
+        'clusters',
+      );
+    }
+  }, [nearby, ready]);
+
+  useEffect(() => {
+    // Only explicit external recenter requests move the viewport; toggling fit-to-pins
+    // after dragging the search center must not restore an old initial center.
+    mapRef.current?.setCenter(center);
+  }, [center]);
 
   if (!supported) {
     return (

@@ -3,6 +3,7 @@ import { Card, Heading, Hint } from '../ui/primitives';
 import { colors } from '../ui/theme';
 import { isCoop } from './model';
 import type { SheetApi } from './use-sheet';
+import { isShadowHunters } from './custom/shadow-hunters-rules';
 
 const fmt = (n: number) => n.toLocaleString('vi-VN');
 
@@ -57,7 +58,15 @@ export function SummaryCard({ sheet }: { sheet: SheetApi }) {
                 {r.name}
                 {won ? '  🏆' : ''}
               </Text>
-              <Text style={styles.total}>{fmt(r.total)}</Text>
+              <Text style={styles.total}>
+                {isShadowHunters(template)
+                  ? won
+                    ? 'Thắng'
+                    : typeof state.values[r.id]?.won === 'boolean'
+                      ? 'Thua'
+                      : '—'
+                  : fmt(r.total)}
+              </Text>
             </View>
           );
         })}

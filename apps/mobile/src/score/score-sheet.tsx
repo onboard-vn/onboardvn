@@ -10,6 +10,7 @@ import { colors } from '../ui/theme';
 import { Flash, PresenceLabel } from './cell-flash';
 import { clearDraft, saveDraft, saveResult } from './draft-storage';
 import { FinishDialog } from './finish-dialog';
+import { isShadowHunters } from './custom/shadow-hunters-rules';
 import { GenericCategories } from './generic-categories';
 import {
   expansionsOf,
@@ -65,6 +66,7 @@ export function ScoreSheet({
   const { state } = sheet;
   const expansions = expansionsOf(template);
   const detailed = state.mode === 'detailed';
+  const shadowHunters = isShadowHunters(template);
   const [finishing, setFinishing] = useState(false);
   const [notice, setNotice] = useState<string | null>(
     restoredFromDraft ? 'Đã khôi phục bản nháp.' : null,
@@ -82,6 +84,7 @@ export function ScoreSheet({
 
   const confirmFinish = async () => {
     if (!playId) throw new Error('missing play');
+    if (sheet.summary.error) throw new Error(sheet.summary.error);
     await sync.flush();
     const receipt = await playsApi.finish(playId, {
       outcome: needsOutcome(template) ? state.outcome : undefined,
@@ -94,6 +97,7 @@ export function ScoreSheet({
       rows: sheet.summary.rows,
       winners: sheet.summary.winners,
       ...receipt,
+      ...(shadowHunters ? { values: state.values } : {}),
     });
     await clearDraft(playId);
     return receipt;
@@ -104,24 +108,28 @@ export function ScoreSheet({
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         <View style={styles.column}>
           <Hint>
-            {template.mode === 'coop'
-              ? 'Co-op'
-              : template.winRule === 'lowest'
-                ? 'Điểm thấp nhất thắng'
-                : 'Điểm cao nhất thắng'}
+            {shadowHunters
+              ? 'Thắng theo mục tiêu nhân vật'
+              : template.mode === 'coop'
+                ? 'Co-op'
+                : template.winRule === 'lowest'
+                  ? 'Điểm thấp nhất thắng'
+                  : 'Điểm cao nhất thắng'}
             {' · '}
             {template.playerCount?.min}-{template.playerCount?.max} người
           </Hint>
           {template.needsReview ? <Badge label="Mẫu chưa duyệt" /> : null}
 
-          <Segmented<SheetMode>
-            value={state.mode}
-            onChange={sheet.setMode}
-            options={[
-              { value: 'quick', label: 'Nhanh (chỉ tổng)' },
-              { value: 'detailed', label: 'Chi tiết' },
-            ]}
-          />
+          {!shadowHunters ? (
+            <Segmented<SheetMode>
+              value={state.mode}
+              onChange={sheet.setMode}
+              options={[
+                { value: 'quick', label: 'Nhanh (chỉ tổng)' },
+                { value: 'detailed', label: 'Chi tiết' },
+              ]}
+            />
+          ) : null}
 
           {localPlayers ? (
             <LocalPlayerEditor sheet={sheet} />
@@ -177,7 +185,7 @@ export function ScoreSheet({
             </Card>
           ) : null}
 
-          {detailed ? (
+          {detailed || shadowHunters ? (
             <>
               {expansions.length > 0 ? (
                 <Card>

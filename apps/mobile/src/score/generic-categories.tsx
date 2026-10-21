@@ -182,6 +182,7 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
   const resultOf = (id: string) =>
     summary.result?.players.find((p) => p.id === id)?.categories[cat.key];
   const showPoints = cat.formula.type !== 'sum';
+  const canEditTeamCategory = sheet.canManage;
 
   let body;
   if (cat.input === 'derived') {
@@ -233,8 +234,8 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
         <CategoryControl
           cat={cat}
           value={state.teamValues[cat.key]}
-          disabled={!sheet.canManage}
           onChange={(v) => sheet.setTeamValue(cat.key, v)}
+          disabled={!canEditTeamCategory}
         />
       </Flash>
     );

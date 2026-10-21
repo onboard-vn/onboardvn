@@ -9,6 +9,7 @@ import {
 } from '@onboard/shared';
 import { QUICK_KEY, ROUND_KEY, TEAM_ID, type PlayOp } from '../api/plays-types';
 import type { PlayerKind } from '../mock/club';
+import { isShadowHunters, shadowHuntersError } from './custom/shadow-hunters-rules';
 
 export type SheetMode = 'quick' | 'detailed';
 export type Values = Record<string, RawValue>;
@@ -286,6 +287,7 @@ export function summarize(t: ScoreTemplate, s: SheetState): Summary {
   if (s.mode === 'quick' && isRankable(t))
     return totalsSummary(t, s, (id) => s.quickTotals[id] ?? 0);
   if (isRoundsGame(t)) return totalsSummary(t, s, (id) => roundTotal(t, s, id));
+  const gameError = isShadowHunters(t) ? shadowHuntersError(t, s) : null;
   const res = computeScores(t, buildInput(t, s));
   if (!res.ok) {
     const missingOutcome = res.error.path === 'outcome';
@@ -293,7 +295,8 @@ export function summarize(t: ScoreTemplate, s: SheetState): Summary {
       rows: s.players.map((p) => ({ id: p.id, name: p.name, total: 0, rank: null })),
       winners: [],
       note: null,
-      error: missingOutcome ? 'Chọn kết quả Thắng/Thua để tính điểm.' : res.error.message,
+      error:
+        gameError ?? (missingOutcome ? 'Chọn kết quả Thắng/Thua để tính điểm.' : res.error.message),
       result: null,
     };
   }
@@ -314,7 +317,13 @@ export function summarize(t: ScoreTemplate, s: SheetState): Summary {
   const note = r.tieUnresolved
     ? tieNote(t, s, r.tiedIds)
     : (r.warnings[0] ?? tieNoteShared(t, s, r));
-  return { rows, winners: r.winners, note, error: null, result: r };
+  return {
+    rows,
+    winners: r.winners,
+    note,
+    error: gameError,
+    result: r,
+  };
 }
 
 function tieNoteShared(t: ScoreTemplate, s: SheetState, r: ScoreResult): string | null {

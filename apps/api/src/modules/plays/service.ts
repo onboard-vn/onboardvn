@@ -1,3 +1,4 @@
+import { resolveCanonicalId } from '../games/repo.js';
 import {
   CRITTER_KITCHEN_MEAL_CATEGORY_KEY,
   MAX_PLAY_PLAYERS,
@@ -410,7 +411,8 @@ export async function createPlayService(userId: string, input: PlayCreateInput):
   if (!input.meetupTableId && clubId && !(await isMember(clubId, userId)))
     return forbidden('Bạn không phải thành viên của club này');
 
-  const gameId = input.gameId ?? tableGame;
+  const submittedGameId = input.gameId ?? tableGame;
+  const gameId = submittedGameId ? await resolveCanonicalId(submittedGameId) : null;
   if (!gameId) return invalid('Cần chọn game');
   if (!(await repo.gameExists(gameId))) return invalid('Game không tồn tại');
   const [gameRow] = await db

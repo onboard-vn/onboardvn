@@ -32,7 +32,34 @@ const videoUrlSchema = z
   .max(500)
   .regex(VIDEO_URL_PATTERN, 'Chỉ chấp nhận link YouTube hoặc Facebook');
 
+export const gameAliasSchema = z.object({
+  name: z.string().trim().min(1).max(200),
+  kind: z.enum(['name', 'custom']).default('name'),
+  language: z.string().trim().min(2).max(20).optional(),
+});
+export type GameAliasInput = z.infer<typeof gameAliasSchema>;
+export type GameAliasDto = z.infer<typeof gameAliasSchema>;
+export const gameMergePreviewSchema = z.object({ targetId: z.uuid() });
+export const gameMergeSchema = gameMergePreviewSchema.extend({
+  fingerprint: z.string().regex(/^[a-f0-9]{64}$/),
+});
+export interface GameMergePreviewDto {
+  sourceId: string;
+  targetId: string;
+  fingerprint: string;
+  blockers: { table: string; reason: string }[];
+  counts: Record<string, number>;
+}
+export interface GameIdentityDto {
+  id: string;
+  slug: string;
+  nameEn: string;
+  nameVi: string | null;
+}
+
 const gameBaseFields = {
+  aliases: z.array(gameAliasSchema).max(100).optional(),
+  variantOfId: z.uuid().nullable().optional(),
   nameVi: z.string().trim().min(1).max(200).optional(),
   nameEn: z.string().trim().min(1).max(200),
   minPlayers: z.coerce.number().int().positive().max(100).optional(),
@@ -151,6 +178,8 @@ export const gameExternalSchema = z.object({
 export type GameExternalDto = z.infer<typeof gameExternalSchema>;
 
 export interface GameSummaryDto {
+  aliases?: GameAliasDto[];
+  variantOfId?: string | null;
   id: string;
   slug: string;
   nameVi: string | null;
@@ -169,6 +198,8 @@ export interface GameSummaryDto {
 }
 
 export interface GameDetailDto extends GameSummaryDto {
+  variantOf?: GameIdentityDto | null;
+  variants?: GameIdentityDto[];
   descriptionVi: string | null;
   descriptionSource: DescriptionSource;
   descriptionRightsHolder: string | null;

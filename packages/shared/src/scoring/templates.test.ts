@@ -194,6 +194,71 @@ describe('golden vectors', () => {
     expect(shared.tieUnresolved).toBe(false);
   });
 
+  it('grand-austria-hotel-deluxe: converts room and guest counts into final VP', () => {
+    const r = solve('grand-austria-hotel-deluxe', [
+      {
+        id: 'a',
+        values: {
+          trackVp: 80,
+          staffVp: 12,
+          roomRow1: 4,
+          roomRow2: 3,
+          roomRow3: 2,
+          roomRow4: 1,
+          krones: 5,
+          kitchen: 3,
+          cafeGuests: 2,
+        },
+      },
+      { id: 'b', values: {} },
+    ]);
+    expect(r.players[0]?.total).toBe(110);
+    expect(r.players[0]?.categories).toMatchObject({
+      roomRow1: 4,
+      roomRow2: 6,
+      roomRow3: 6,
+      roomRow4: 4,
+      cafeGuests: -10,
+    });
+    expect(r.winners).toEqual(['a']);
+  });
+
+  it('grand-austria-hotel-deluxe: five occupied rooms on every floor score 50 VP', () => {
+    const r = solve('grand-austria-hotel-deluxe', [
+      { id: 'a', values: { roomRow1: 5, roomRow2: 5, roomRow3: 5, roomRow4: 5 } },
+      { id: 'b', values: {} },
+    ]);
+    expect(r.players[0]?.categories).toMatchObject({
+      roomRow1: 5,
+      roomRow2: 10,
+      roomRow3: 15,
+      roomRow4: 20,
+    });
+    expect(r.players[0]?.total).toBe(50);
+  });
+
+  it('grand-austria-hotel-deluxe: breaks equal VP by combined leftover money and kitchen items', () => {
+    const r = solve('grand-austria-hotel-deluxe', [
+      { id: 'a', values: { trackVp: 90, krones: 5, kitchen: 5 } },
+      { id: 'b', values: { trackVp: 98, krones: 2 } },
+      { id: 'c', values: { trackVp: 96, kitchen: 4 } },
+    ]);
+    expect(r.players.map((p) => p.total)).toEqual([100, 100, 100]);
+    expect(r.players.map((p) => p.rank)).toEqual([1, 3, 2]);
+    expect(r.winners).toEqual(['a']);
+    expect(r.tieUnresolved).toBe(false);
+  });
+
+  it('grand-austria-hotel-deluxe: leaves equal VP and equal resource totals unresolved', () => {
+    const r = solve('grand-austria-hotel-deluxe', [
+      { id: 'a', values: { trackVp: 90, krones: 7, kitchen: 3 } },
+      { id: 'b', values: { trackVp: 90, krones: 1, kitchen: 9 } },
+    ]);
+    expect(r.players.map((p) => p.total)).toEqual([100, 100]);
+    expect(r.winners).toEqual([]);
+    expect(r.tieUnresolved).toBe(true);
+  });
+
   it('azul: rows/columns/colors bonuses and rows tiebreak', () => {
     const r = solve('azul', [
       {

@@ -11,6 +11,9 @@ import type {
   GameSummaryDto,
   GameUpdateInput,
 } from '@onboard/shared';
+import { eq, sql } from 'drizzle-orm';
+import { games } from '../../db/schema/games.js';
+import { dedupeAliases, validateVariant, withGameIdentityLock } from './identity.js';
 import { ApiError } from '../../lib/errors.js';
 import { storage } from '../../lib/storage/index.js';
 import { countOwners } from '../shelf/repo.js';
@@ -23,6 +26,8 @@ import { slugify } from './slug.js';
 export function toSummaryDto(row: GameRow): GameSummaryDto {
   return {
     id: row.id,
+    aliases: row.aliases,
+    variantOfId: row.variantOfId,
     slug: row.slug,
     nameVi: row.nameVi,
     nameEn: row.nameEn,
@@ -91,6 +96,16 @@ export async function getGameBySlugService(
   const row = await repo.findGameBySlug(slug);
   if (!row) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy game');
   const dto = toDetailDto(row, includePermissionRef, await countOwners(row.id));
+  dto.variantOf = row.variantOfId
+    ? await repo
+        .findGameById(row.variantOfId)
+        .then((parent) =>
+          parent
+            ? { id: parent.id, slug: parent.slug, nameEn: parent.nameEn, nameVi: parent.nameVi }
+            : null,
+        )
+    : null;
+  dto.variants = await repo.listVariants(row.id);
   if (!includeExternal) return dto;
   const external = await findExternalByGameIds([row.id]);
   return { ...dto, external: external.get(row.id) ?? null };
@@ -178,30 +193,36 @@ export async function createGameService(
   });
 
   const slug = await repo.findAvailableSlug(slugify(input.nameEn));
-  const created = await repo.insertGameWithRevision(
-    {
-      slug,
-      nameVi: input.nameVi,
-      nameEn: input.nameEn,
-      minPlayers: input.minPlayers,
-      maxPlayers: input.maxPlayers,
-      playMinutes: input.playMinutes,
-      weight: input.weight !== undefined ? input.weight.toFixed(2) : undefined,
-      minAge: input.minAge,
-      isVietnamese: input.isVietnamese ?? false,
-      bggId: input.bggId,
-      descriptionVi: input.descriptionVi,
-      descriptionSource: source,
-      descriptionRightsHolder: input.descriptionRightsHolder,
-      descriptionPermissionRef: input.descriptionPermissionRef,
-      descriptionLicense: license,
-      videoUrls: input.videoUrls ?? [],
-      imageCredit: input.imageCredit,
-      createdBy: userId,
-    },
-    input.categoryIds,
-    { editorId: userId, licenseAcceptedAt: input.acceptLicense ? new Date() : undefined },
-  );
+  const created = await withGameIdentityLock(async (tx) => {
+    await validateVariant(tx, null, input.variantOfId);
+    return repo.insertGameWithRevision(
+      {
+        slug,
+        aliases: dedupeAliases(input.aliases ?? []),
+        variantOfId: input.variantOfId,
+        nameVi: input.nameVi,
+        nameEn: input.nameEn,
+        minPlayers: input.minPlayers,
+        maxPlayers: input.maxPlayers,
+        playMinutes: input.playMinutes,
+        weight: input.weight !== undefined ? input.weight.toFixed(2) : undefined,
+        minAge: input.minAge,
+        isVietnamese: input.isVietnamese ?? false,
+        bggId: input.bggId,
+        descriptionVi: input.descriptionVi,
+        descriptionSource: source,
+        descriptionRightsHolder: input.descriptionRightsHolder,
+        descriptionPermissionRef: input.descriptionPermissionRef,
+        descriptionLicense: license,
+        videoUrls: input.videoUrls ?? [],
+        imageCredit: input.imageCredit,
+        createdBy: userId,
+      },
+      input.categoryIds,
+      { editorId: userId, licenseAcceptedAt: input.acceptLicense ? new Date() : undefined },
+      tx,
+    );
+  });
 
   return getGameByIdOrThrow(created.id);
 }
@@ -240,40 +261,49 @@ export async function updateGameService(
   });
 
   // slug is intentionally never regenerated here: it must stay stable once assigned.
-  await repo.updateGameWithRevision(
-    id,
-    {
-      ...(input.nameVi !== undefined && { nameVi: input.nameVi }),
-      ...(input.nameEn !== undefined && { nameEn: input.nameEn }),
-      ...(input.minPlayers !== undefined && { minPlayers: input.minPlayers }),
-      ...(input.maxPlayers !== undefined && { maxPlayers: input.maxPlayers }),
-      ...(input.playMinutes !== undefined && { playMinutes: input.playMinutes }),
-      ...(input.weight !== undefined && {
-        weight: input.weight === null ? null : input.weight.toFixed(2),
-      }),
-      ...(input.minAge !== undefined && { minAge: input.minAge }),
-      ...(input.isVietnamese !== undefined && { isVietnamese: input.isVietnamese }),
-      ...(input.bggId !== undefined && { bggId: input.bggId }),
-      ...(input.descriptionVi !== undefined && { descriptionVi: input.descriptionVi }),
-      ...(input.descriptionSource !== undefined && { descriptionSource: input.descriptionSource }),
-      ...(input.descriptionRightsHolder !== undefined && {
-        descriptionRightsHolder: input.descriptionRightsHolder,
-      }),
-      ...(input.descriptionPermissionRef !== undefined && {
-        descriptionPermissionRef: input.descriptionPermissionRef,
-      }),
-      ...(input.descriptionLicense !== undefined && {
-        descriptionLicense: input.descriptionLicense,
-      }),
-      ...(input.videoUrls !== undefined && { videoUrls: input.videoUrls }),
-      ...(input.imageCredit !== undefined && { imageCredit: input.imageCredit }),
-    },
-    input.categoryIds,
-    {
-      editorId: userId,
-      licenseAcceptedAt: input.acceptLicense ? new Date() : undefined,
-    },
-  );
+  await withGameIdentityLock(async (tx) => {
+    await assertWritableGame(tx, id);
+    await validateVariant(tx, id, input.variantOfId);
+    await repo.updateGameWithRevision(
+      id,
+      {
+        ...(input.aliases !== undefined && { aliases: dedupeAliases(input.aliases) }),
+        ...(input.variantOfId !== undefined && { variantOfId: input.variantOfId }),
+        ...(input.nameVi !== undefined && { nameVi: input.nameVi }),
+        ...(input.nameEn !== undefined && { nameEn: input.nameEn }),
+        ...(input.minPlayers !== undefined && { minPlayers: input.minPlayers }),
+        ...(input.maxPlayers !== undefined && { maxPlayers: input.maxPlayers }),
+        ...(input.playMinutes !== undefined && { playMinutes: input.playMinutes }),
+        ...(input.weight !== undefined && {
+          weight: input.weight === null ? null : input.weight.toFixed(2),
+        }),
+        ...(input.minAge !== undefined && { minAge: input.minAge }),
+        ...(input.isVietnamese !== undefined && { isVietnamese: input.isVietnamese }),
+        ...(input.bggId !== undefined && { bggId: input.bggId }),
+        ...(input.descriptionVi !== undefined && { descriptionVi: input.descriptionVi }),
+        ...(input.descriptionSource !== undefined && {
+          descriptionSource: input.descriptionSource,
+        }),
+        ...(input.descriptionRightsHolder !== undefined && {
+          descriptionRightsHolder: input.descriptionRightsHolder,
+        }),
+        ...(input.descriptionPermissionRef !== undefined && {
+          descriptionPermissionRef: input.descriptionPermissionRef,
+        }),
+        ...(input.descriptionLicense !== undefined && {
+          descriptionLicense: input.descriptionLicense,
+        }),
+        ...(input.videoUrls !== undefined && { videoUrls: input.videoUrls }),
+        ...(input.imageCredit !== undefined && { imageCredit: input.imageCredit }),
+      },
+      input.categoryIds,
+      {
+        editorId: userId,
+        licenseAcceptedAt: input.acceptLicense ? new Date() : undefined,
+      },
+      tx,
+    );
+  });
 
   return getGameByIdOrThrow(id);
 }
@@ -290,11 +320,29 @@ export async function getGameRevisionsService(slug: string): Promise<GameRevisio
   }));
 }
 
+async function assertWritableGame(tx: repo.Tx, id: string): Promise<void> {
+  const [row] = await tx
+    .select({ canonicalId: games.canonicalId })
+    .from(games)
+    .where(eq(games.id, id));
+  if (!row) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy game');
+  if (row.canonicalId)
+    throw new ApiError('CONFLICT', 409, 'Game đã được gộp; chỉnh sửa game chuẩn');
+}
+
 export async function deleteGameService(id: string): Promise<void> {
   const existing = await repo.findGameById(id);
   if (!existing) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy game');
+  await withGameIdentityLock(async (tx) => {
+    await assertWritableGame(tx, id);
+    const refs =
+      await tx.execute(sql`select 1 from games where canonical_id = ${id} or variant_of_id = ${id}
+      limit 1`);
+    if (refs.rows.length)
+      throw new ApiError('CONFLICT', 409, 'Game có lịch sử hoặc liên kết; không thể xóa');
+    await tx.delete(games).where(eq(games.id, id));
+  });
   if (existing.imageKey) await storage.delete(existing.imageKey);
-  await repo.deleteGameRow(id);
 }
 
 export async function addBarcodeService(
@@ -304,6 +352,7 @@ export async function addBarcodeService(
   const existing = await repo.findGameById(gameId);
   if (!existing) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy game');
 
+  gameId = existing.id;
   const code = normalizeBarcode(input.code);
   const duplicate = await repo.findBarcode(code);
   if (duplicate) throw new ApiError('CONFLICT', 409, 'Mã vạch đã được gắn cho game khác');
@@ -315,6 +364,7 @@ export async function addBarcodeService(
 export async function removeBarcodeService(gameId: string, code: string): Promise<GameDetailDto> {
   const existing = await repo.findGameById(gameId);
   if (!existing) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy game');
+  gameId = existing.id;
   await repo.deleteBarcode(gameId, code);
   return getGameByIdOrThrow(gameId);
 }
@@ -331,22 +381,29 @@ export async function setGameImageService(
   file: File,
   imageCredit: string | undefined,
 ): Promise<GameDetailDto> {
-  const existing = await repo.findGameById(gameId);
-  if (!existing) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy game');
+  await withGameIdentityLock(async (tx) => {
+    await assertWritableGame(tx, gameId);
+    const [existing] = await tx.select().from(games).where(eq(games.id, gameId));
+    if (!existing) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy game');
 
-  const ext = ALLOWED_IMAGE_TYPES[file.type];
-  if (!ext) throw new ApiError('VALIDATION_FAILED', 422, 'Chỉ chấp nhận ảnh JPEG/PNG/WEBP');
-  if (file.size > MAX_IMAGE_BYTES) throw new ApiError('VALIDATION_FAILED', 422, 'Ảnh vượt quá 2MB');
+    gameId = existing.id;
+    const ext = ALLOWED_IMAGE_TYPES[file.type];
+    if (!ext) throw new ApiError('VALIDATION_FAILED', 422, 'Chỉ chấp nhận ảnh JPEG/PNG/WEBP');
+    if (file.size > MAX_IMAGE_BYTES)
+      throw new ApiError('VALIDATION_FAILED', 422, 'Ảnh vượt quá 2MB');
 
-  const bytes = new Uint8Array(await file.arrayBuffer());
-  const key = `games/${gameId}.${ext}`;
-  await storage.put(key, bytes, file.type);
-  if (existing.imageKey && existing.imageKey !== key) await storage.delete(existing.imageKey);
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const key = `games/${gameId}.${ext}`;
+    await storage.put(key, bytes, file.type);
+    if (existing.imageKey && existing.imageKey !== key) await storage.delete(existing.imageKey);
 
-  await repo.updateGameRow(gameId, {
-    imageKey: key,
-    ...(imageCredit !== undefined && { imageCredit }),
+    await tx
+      .update(games)
+      .set({
+        imageKey: key,
+        ...(imageCredit !== undefined && { imageCredit }),
+      })
+      .where(eq(games.id, gameId));
   });
-
   return getGameByIdOrThrow(gameId);
 }

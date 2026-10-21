@@ -1,3 +1,4 @@
+import { findGameById } from '../games/repo.js';
 import { parse } from 'csv-parse/sync';
 import { inArray, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
@@ -146,7 +147,20 @@ async function findGamesByBggIds(bggIds: number[]): Promise<Map<number, GameRef>
     .select({ id: games.id, nameVi: games.nameVi, nameEn: games.nameEn, bggId: games.bggId })
     .from(games)
     .where(inArray(games.bggId, bggIds));
-  return new Map(rows.filter((r) => r.bggId !== null).map((r) => [r.bggId!, r]));
+  const matches = await Promise.all(
+    rows
+      .filter((r) => r.bggId !== null)
+      .map(async (r) => {
+        const canonical = await findGameById(r.id);
+        return [
+          r.bggId!,
+          canonical
+            ? { ...r, id: canonical.id, nameVi: canonical.nameVi, nameEn: canonical.nameEn }
+            : r,
+        ] as const;
+      }),
+  );
+  return new Map(matches);
 }
 
 /** Exact match is case/accent-insensitive but doesn't need the trigram index (not fuzzy). */
@@ -163,9 +177,20 @@ async function findGamesByExactNames(names: string[]): Promise<Map<string, GameR
     join ${games} g
       on unaccent_immutable(lower(g.name_en)) = unaccent_immutable(lower(n.name))
       or unaccent_immutable(lower(coalesce(g.name_vi, ''))) = unaccent_immutable(lower(n.name))
+      or exists (select 1 from jsonb_array_elements(g.aliases) a where unaccent_immutable(lower(a->>'name')) = unaccent_immutable(lower(n.name)))
+    where g.canonical_id is null
   `);
   const map = new Map<string, GameRef>();
+  const ambiguous = new Set<string>();
   for (const row of result.rows) {
+    if (ambiguous.has(row.input_name)) continue;
+    const existing = map.get(row.input_name);
+    if (existing && existing.id !== row.id) {
+      // A shared name is not identity evidence; leave this row for manual selection.
+      map.delete(row.input_name);
+      ambiguous.add(row.input_name);
+      continue;
+    }
     map.set(row.input_name, { id: row.id, nameVi: row.name_vi, nameEn: row.name_en });
   }
   return map;
@@ -209,6 +234,7 @@ async function findGameSuggestionsBatch(
         join ${games} g
           on unaccent_immutable(g.name_en) % unaccent_immutable(n.name)
           or unaccent_immutable(coalesce(g.name_vi, '')) % unaccent_immutable(n.name)
+        where g.canonical_id is null
       ) ranked
       where rn <= ${SUGGESTION_LIMIT}
       order by input_name, sim desc

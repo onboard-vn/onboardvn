@@ -1,11 +1,15 @@
 import {
   barcodeInputSchema,
   gameCreateSchema,
+  gameMergePreviewSchema,
+  gameMergeSchema,
   gameFilterSchema,
   gameUpdateSchema,
   idAndCodeParamSchema,
   idParamSchema,
 } from '@onboard/shared';
+import { findGameById } from './repo.js';
+import { mergeGames, previewGameMerge } from './merge.js';
 import { Hono } from 'hono';
 import { requireRole } from '../../auth/middleware.js';
 import { env } from '../../lib/env.js';
@@ -37,6 +41,27 @@ export const gameRoutes = new Hono<AppEnv>()
   .get('/', zValidator('query', gameFilterSchema), async (c) => {
     return c.json(await listGamesService(c.req.valid('query'), canSeeExternal(c.get('user'))));
   })
+  .post(
+    '/:id/merge-preview',
+    requireRole('admin'),
+    zValidator('param', idParamSchema),
+    zValidator('json', gameMergePreviewSchema),
+    async (c) => {
+      return c.json(await previewGameMerge(c.req.param('id'), c.req.valid('json').targetId));
+    },
+  )
+  .post(
+    '/:id/merge',
+    requireRole('admin'),
+    zValidator('param', idParamSchema),
+    zValidator('json', gameMergeSchema),
+    async (c) => {
+      const { targetId, fingerprint } = c.req.valid('json');
+      await mergeGames(c.req.param('id'), targetId, fingerprint, c.var.user.id);
+      const target = await findGameById(targetId);
+      return c.json(await getGameBySlugService(target!.slug, true, canSeeExternal(c.get('user'))));
+    },
+  )
   .get('/:slug', async (c) => {
     const user = c.get('user');
     return c.json(

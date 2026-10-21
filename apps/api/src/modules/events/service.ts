@@ -1,3 +1,4 @@
+import { resolveCanonicalId } from '../games/repo.js';
 import { createHash, randomBytes } from 'node:crypto';
 import type {
   ClubRef,
@@ -710,6 +711,10 @@ async function insertTableTx(
   const tableCount = await repo.countTables(meetup.id, tx);
   if (tableCount >= MAX_TABLES_PER_MEETUP) conflict('Đã đạt giới hạn 30 bàn/Kèo');
 
+  input = {
+    ...input,
+    gameId: input.gameId ? await resolveCanonicalId(input.gameId) : input.gameId,
+  };
   await validateBroughtBy(input.gameId, input.broughtByUserId);
 
   const existing = await repo.findParticipant(meetup.id, hostUserId, tx);
@@ -810,6 +815,8 @@ export async function updateTableService(
       if (input.seats < seated)
         validationFailed('Không thể giảm số ghế xuống dưới số người đã ngồi');
     }
+
+    if (input.gameId) input = { ...input, gameId: await resolveCanonicalId(input.gameId) };
 
     // Snapshot rule: only re-validate brought-by when this PATCH actually touches `gameId` or
     // `broughtByUserId` — editing e.g. `note` must not re-check a game since removed from shelf.

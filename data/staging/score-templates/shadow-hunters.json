@@ -1,0 +1,68 @@
+{
+  "slug": "shadow-hunters",
+  "name": "Shadow Hunters",
+  "bggId": 24068,
+  "templateVersion": 1,
+  "variant": "Base characters; manual end-game results",
+  "playerCount": { "min": 4, "max": 8 },
+  "mode": "hidden-traitor",
+  "winRule": "objective",
+  "scoringStyle": "objective-only",
+  "categories": [
+    {
+      "key": "character",
+      "label": "Character",
+      "labelVi": "Nhân vật",
+      "hint": "Numeric ID matching roles.key; record after the game has ended.",
+      "scope": "player",
+      "input": "number",
+      "min": 1,
+      "max": 10,
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    },
+    {
+      "key": "won",
+      "label": "Victory condition fulfilled",
+      "labelVi": "Đạt điều kiện thắng",
+      "scope": "player",
+      "input": "bool",
+      "formula": { "type": "sum" },
+      "countsToTotal": false
+    }
+  ],
+  "roles": [
+    { "key": "1", "label": "Allie · Neutral", "labelVi": "Allie · Trung lập" },
+    { "key": "2", "label": "Bob · Neutral", "labelVi": "Bob · Trung lập" },
+    { "key": "3", "label": "Charles · Neutral", "labelVi": "Charles · Trung lập" },
+    { "key": "4", "label": "Daniel · Neutral", "labelVi": "Daniel · Trung lập" },
+    { "key": "5", "label": "Emi · Hunter", "labelVi": "Emi · Thợ săn" },
+    { "key": "6", "label": "Franklin · Hunter", "labelVi": "Franklin · Thợ săn" },
+    { "key": "7", "label": "George · Hunter", "labelVi": "George · Thợ săn" },
+    { "key": "8", "label": "Unknown · Shadow", "labelVi": "Unknown · Bóng tối" },
+    { "key": "9", "label": "Vampire · Shadow", "labelVi": "Vampire · Bóng tối" },
+    { "key": "10", "label": "Werewolf · Shadow", "labelVi": "Werewolf · Bóng tối" }
+  ],
+  "endCondition": {
+    "type": "objective",
+    "description": "The game ends immediately when a character fulfills their victory condition."
+  },
+  "winCondition": "Record every player who fulfilled their character's victory condition, including eligible eliminated Hunters or Shadows.",
+  "notes": "Manual results only, after identities may be disclosed. No points or ranking. Character IDs are stable and match roles.key. Does not infer victory from faction, survival or abilities. Additional characters and variants are not modelled.",
+  "sources": [
+    {
+      "url": "https://images.zmangames.com/filer_public/64/5b/645bebeb-6bef-4d62-8d92-b9ca65450e85/shadow-hunter-rules.pdf",
+      "title": "Shadow Hunters rulebook (Z-Man Games)",
+      "type": "official-rulebook",
+      "section": "Character Cards; End of the game; Special Abilities"
+    },
+    {
+      "url": "https://cdn.1j1ju.com/medias/66/3c/85-shadow-hunters-rulebook.pdf",
+      "title": "Z-Man Games rulebook mirror",
+      "type": "official-rulebook",
+      "section": "pp. 1, 3-6"
+    }
+  ],
+  "confidence": "high",
+  "needsReview": false
+}

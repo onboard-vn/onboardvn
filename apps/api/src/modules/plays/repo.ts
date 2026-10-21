@@ -194,10 +194,13 @@ export async function pickTemplate(
   variant = 'base',
   executor: Executor = db,
 ): Promise<TemplateRow | undefined> {
+  const canonical = await executor.execute<{ id: string }>(
+    sql`select resolve_canonical_game_id(${gameId}::uuid) as id`,
+  );
   const rows = await executor
     .select()
     .from(scoreTemplates)
-    .where(eq(scoreTemplates.gameId, gameId));
+    .where(eq(scoreTemplates.gameId, canonical.rows[0]!.id));
   const rank = (r: TemplateRow) => [
     r.variant === variant ? 0 : 1,
     r.status === 'approved' ? 0 : 1,
@@ -217,10 +220,13 @@ export async function pickCritterKitchenMealTemplate(
   gameId: string,
   executor: Executor = db,
 ): Promise<TemplateRow | undefined> {
+  const canonical = await executor.execute<{ id: string }>(
+    sql`select resolve_canonical_game_id(${gameId}::uuid) as id`,
+  );
   const rows = await executor
     .select()
     .from(scoreTemplates)
-    .where(eq(scoreTemplates.gameId, gameId));
+    .where(eq(scoreTemplates.gameId, canonical.rows[0]!.id));
   return rows
     .filter((row) => {
       if (!['approved', 'pending'].includes(row.status)) return false;

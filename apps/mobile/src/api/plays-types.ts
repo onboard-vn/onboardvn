@@ -11,8 +11,8 @@ export interface PlayOp {
   actorId: string;
   identityId: string;
   categoryKey: string;
-  roundIndex?: number;
   inputKey?: string;
+  roundIndex?: number;
   value: RawValue | null;
 }
 

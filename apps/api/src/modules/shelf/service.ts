@@ -52,15 +52,21 @@ export async function addToShelfService(
   input: ShelfAddInput,
 ): Promise<ShelfItemDto> {
   const game = await requireGame(input.gameId);
-  const { gameId, ...fields } = input;
-  await repo.upsertShelfItem(userId, gameId, fields);
-  const row = await repo.findShelfItem(userId, gameId);
+  const fields = {
+    note: input.note,
+    condition: input.condition,
+    sleeved: input.sleeved,
+    boxProtected: input.boxProtected,
+    edition: input.edition,
+  };
+  await repo.upsertShelfItem(userId, game.id, fields);
+  const row = await repo.findShelfItem(userId, game.id);
   if (!row) throw new ApiError('NOT_FOUND', 404, 'Game không có trong tủ');
-  return toItemDto(game, row, (await repo.lastPlayedByGame(userId)).get(gameId));
+  return toItemDto(game, row, (await repo.lastPlayedByGame(userId)).get(game.id));
 }
 
 export async function removeFromShelfService(userId: string, gameId: string): Promise<void> {
-  const deleted = await repo.deleteShelfItem(userId, gameId);
+  const deleted = await repo.deleteShelfItem(userId, await gamesRepo.resolveCanonicalId(gameId));
   if (!deleted) throw new ApiError('NOT_FOUND', 404, 'Game không có trong tủ');
 }
 

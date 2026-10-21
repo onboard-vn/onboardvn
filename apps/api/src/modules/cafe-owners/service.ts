@@ -1,3 +1,4 @@
+import { resolveCanonicalId } from '../games/repo.js';
 import { createHash, randomBytes } from 'node:crypto';
 import type {
   CafeConsentDecisionInput,
@@ -224,7 +225,7 @@ export async function applyInventoryImportService(
   // Dedupe by gameId: later rows in the payload win over earlier ones for the same game.
   const byGameId = new Map<string, number>();
   for (const row of input.rows) {
-    if (row.gameId) byGameId.set(row.gameId, row.copies);
+    if (row.gameId) byGameId.set(await resolveCanonicalId(row.gameId), row.copies);
   }
   const items = [...byGameId.entries()].map(([gameId, copies]) => ({ gameId, copies }));
   if (items.length === 0) {

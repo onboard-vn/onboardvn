@@ -1,16 +1,17 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { serverApi } from '@/lib/api-server';
 import { requireStaff } from '@/lib/require-staff';
 import { BarcodeManager } from '../../barcode-manager';
 import { GameForm } from '../../game-form';
+import { GameMergePanel } from '../../game-merge-panel';
 import { RevisionsList } from '../../revisions-list';
 import { SITE_NAME } from '@/lib/site';
 
 export const metadata: Metadata = { title: `Sửa game · ${SITE_NAME}` };
 
 export default async function EditGamePage(props: PageProps<'/admin/games/[slug]/edit'>) {
-  await requireStaff();
+  const user = await requireStaff();
   const { slug } = await props.params;
 
   const client = await serverApi();
@@ -24,13 +25,15 @@ export default async function EditGamePage(props: PageProps<'/admin/games/[slug]
   if (!gameRes.ok) throw new Error('Không tải được game');
 
   const game = await gameRes.json();
+  if (game.slug !== slug) permanentRedirect(`/admin/games/${game.slug}/edit`);
   const categories = categoriesRes.ok ? (await categoriesRes.json()).items : [];
   const revisions = revisionsRes.ok ? (await revisionsRes.json()).items : [];
 
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-6 py-10">
       <h1 className="text-2xl font-semibold tracking-tight">Sửa game</h1>
-      <GameForm categories={categories} initial={game} />
+      <GameForm key={`form-${game.id}`} categories={categories} initial={game} />
+      {user.role === 'admin' ? <GameMergePanel key={`merge-${game.id}`} source={game} /> : null}
       <BarcodeManager gameId={game.id} barcodes={game.barcodes} />
       <RevisionsList revisions={revisions} />
     </main>

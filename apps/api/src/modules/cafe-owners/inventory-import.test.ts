@@ -87,6 +87,47 @@ describe('parseInventoryCsv', () => {
 });
 
 describe('matchInventoryRow', () => {
+  it('leaves a shared alias unresolved instead of choosing an arbitrary canonical game', async () => {
+    const alias = `Shared alias ${suffix}`;
+    const fixtures = await db
+      .insert(games)
+      .values([
+        {
+          slug: `shared-alias-first-${suffix}`,
+          nameEn: 'Distinct first title',
+          aliases: [{ name: alias, kind: 'name' }],
+        },
+        {
+          slug: `shared-alias-second-${suffix}`,
+          nameEn: 'Distinct second title',
+          aliases: [{ name: alias, kind: 'custom' }],
+        },
+      ])
+      .returning({ id: games.id });
+    gameIds.push(...fixtures.map((game) => game.id));
+    const result = await matchInventoryRow({
+      line: 2,
+      name: alias,
+      nameEn: null,
+      bggId: null,
+      copies: 1,
+      error: null,
+    });
+    expect(result.gameId).toBeNull();
+    expect(result.status).not.toBe('matched');
+    expect(
+      await db
+        .select({ id: games.id })
+        .from(games)
+        .where(
+          inArray(
+            games.id,
+            fixtures.map((game) => game.id),
+          ),
+        ),
+    ).toHaveLength(2);
+  });
+
   it('matches an accented catalog name against an unaccented CSV name', async () => {
     const result = await matchInventoryRow({
       line: 2,

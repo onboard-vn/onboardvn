@@ -26,6 +26,7 @@ import { ApiError } from '../../lib/errors.js';
 import { sniffImageMime } from '../../lib/image-mime.js';
 import { storage } from '../../lib/storage/index.js';
 import * as locationsRepo from '../locations/repo.js';
+import * as gamesRepo from '../games/repo.js';
 import { slugify } from '../games/slug.js';
 import * as repo from './repo.js';
 import type { CafeFullRow, CafeListRow } from './repo.js';
@@ -424,15 +425,16 @@ export async function addGameToCafeService(
   const exists = await repo.cafeExists(cafeId);
   if (!exists) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
 
-  const gameExists = await repo.gameExists(input.gameId);
+  const gameId = await gamesRepo.resolveCanonicalId(input.gameId);
+  const gameExists = await repo.gameExists(gameId);
   if (!gameExists) throw new ApiError('VALIDATION_FAILED', 422, 'Game không hợp lệ');
 
-  const duplicate = await repo.findCafeGame(cafeId, input.gameId);
+  const duplicate = await repo.findCafeGame(cafeId, gameId);
   if (duplicate) throw new ApiError('CONFLICT', 409, 'Game đã có trong kho của quán này');
 
   await repo.insertCafeGameWithEvent({
     cafeId,
-    gameId: input.gameId,
+    gameId,
     copies: input.copies ?? 1,
     addedBy: userId,
     addedVia: input.addedVia ?? 'manual',
@@ -445,6 +447,7 @@ export async function updateCafeGameCopiesService(
   gameId: string,
   copies: number,
 ): Promise<void> {
+  gameId = await gamesRepo.resolveCanonicalId(gameId);
   const existing = await repo.findCafeGame(cafeId, gameId);
   if (!existing) throw new ApiError('NOT_FOUND', 404, 'Game không có trong kho của quán này');
   await repo.updateCafeGameCopies(cafeId, gameId, copies);
@@ -456,6 +459,7 @@ export async function removeGameFromCafeService(
   userId: string,
   source: CafeGameSource,
 ): Promise<void> {
+  gameId = await gamesRepo.resolveCanonicalId(gameId);
   await repo.deleteCafeGameWithEvent(cafeId, gameId, userId, source);
 }
 
@@ -469,7 +473,7 @@ export async function bulkAddGamesToCafeService(
   const exists = await repo.cafeExists(cafeId);
   if (!exists) throw new ApiError('NOT_FOUND', 404, 'Không tìm thấy quán');
 
-  const uniqueIds = [...new Set(gameIds)];
+  const uniqueIds = [...new Set(await Promise.all(gameIds.map(gamesRepo.resolveCanonicalId)))];
   const allExist = await repo.gameIdsExist(uniqueIds);
   if (!allExist) throw new ApiError('VALIDATION_FAILED', 422, 'Danh sách game có mục không hợp lệ');
 
@@ -676,7 +680,15 @@ export async function getCafeMapPinsService(filter: CafeMapFilter): Promise<Cafe
         }
       : undefined;
 
-  const rows = await repo.listCafeMapPins({ ...resolved, gameSlug: filter.gameSlug, bbox });
+  const nearby =
+    filter.centerLat !== undefined &&
+    filter.centerLng !== undefined &&
+    filter.radiusKm !== undefined
+      ? { centerLat: filter.centerLat, centerLng: filter.centerLng, radiusKm: filter.radiusKm }
+      : undefined;
+  const game = filter.gameSlug ? await gamesRepo.findGameBySlug(filter.gameSlug) : undefined;
+  if (filter.gameSlug && !game) return [];
+  const rows = await repo.listCafeMapPins({ ...resolved, gameSlug: game?.slug, bbox, nearby });
 
   const openFiltered = filter.openNow
     ? rows.filter((row) => {
@@ -691,6 +703,7 @@ export async function getCafeMapPinsService(filter: CafeMapFilter): Promise<Cafe
 }
 
 export async function getCafesForGameService(gameId: string): Promise<CafeForGameDto[]> {
+  gameId = await gamesRepo.resolveCanonicalId(gameId);
   const rows = await repo.findCafesForGame(gameId);
   return rows
     .filter((row) => isPubliclyVisibleCafe(row.cafe.consentStatus))
