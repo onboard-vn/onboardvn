@@ -1,14 +1,16 @@
 import type { ClubRole } from '@onboard/shared';
-import { and, asc, count, desc, eq, inArray, isNull, or, sql } from 'drizzle-orm';
+import { and, asc, count, desc, eq, inArray, isNull, sql } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import {
   clubExternalMembers,
+  clubLinkAttempts,
   clubMembers,
   clubs,
   identities,
   meetups,
   users,
 } from '../../db/schema/index.js';
+import { digestLoginId } from '../../lib/login-digest.js';
 
 export type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
 export type Executor = Tx | typeof db;
@@ -44,8 +46,15 @@ export async function findClubById(id: string, executor: Executor = db) {
   return row;
 }
 
-export async function findClubByInviteHash(hash: string): Promise<ClubRow | undefined> {
-  const [row] = await db.select().from(clubs).where(eq(clubs.inviteCodeHash, hash)).limit(1);
+export async function findClubByInviteHash(
+  hash: string,
+  executor: Executor = db,
+): Promise<ClubRow | undefined> {
+  const [row] = await executor
+    .select()
+    .from(clubs)
+    .where(eq(clubs.inviteCodeHash, hash))
+    .limit(1);
   return row;
 }
 
@@ -223,29 +232,88 @@ export function listExternalMembers(clubId: string) {
 }
 
 export async function findExternalMatches(tx: Tx, clubId: string, input: string) {
+  const loginDigest = digestLoginId(input);
   return tx
     .select({ id: clubExternalMembers.id, userId: clubExternalMembers.userId })
     .from(clubExternalMembers)
     .where(
       and(
         eq(clubExternalMembers.clubId, clubId),
-        or(
-          eq(clubExternalMembers.externalId, input),
-          eq(clubExternalMembers.externalLoginId, input),
-        ),
+        eq(clubExternalMembers.externalLoginDigest, loginDigest),
       ),
     )
     .limit(2);
 }
 
-export async function claimExternalMember(tx: Tx, id: string, userId: string): Promise<boolean> {
-  const rows = await tx
-    .update(clubExternalMembers)
-    .set({ userId })
-    .where(and(eq(clubExternalMembers.id, id), isNull(clubExternalMembers.userId)))
-    .returning({ clubId: clubExternalMembers.clubId, externalId: clubExternalMembers.externalId });
-  if (rows[0]) await setExternalIdentityUser(tx, rows[0].clubId, rows[0].externalId, userId);
-  return rows.length > 0;
+export async function bindExternalMember(tx: Tx, id: string, userId: string): Promise<boolean> {
+  const [member] = await tx
+    .select({
+      clubId: clubExternalMembers.clubId,
+      externalId: clubExternalMembers.externalId,
+      userId: clubExternalMembers.userId,
+    })
+    .from(clubExternalMembers)
+    .where(eq(clubExternalMembers.id, id))
+    .for('update');
+  if (!member) return false;
+  if (member.userId !== null && member.userId !== userId) return false;
+
+  if (member.userId === null) {
+    const [existingLink] = await tx
+      .select({ id: clubExternalMembers.id })
+      .from(clubExternalMembers)
+      .where(
+        and(
+          eq(clubExternalMembers.clubId, member.clubId),
+          eq(clubExternalMembers.userId, userId),
+        ),
+      )
+      .limit(1);
+    if (existingLink) return false;
+
+    const rows = await tx
+      .update(clubExternalMembers)
+      .set({ userId })
+      .where(and(eq(clubExternalMembers.id, id), isNull(clubExternalMembers.userId)))
+      .returning({ id: clubExternalMembers.id });
+    if (rows.length === 0) return false;
+  }
+
+  await setExternalIdentityUser(tx, member.clubId, member.externalId, userId);
+  return true;
+}
+
+export async function lockLinkAttemptScopes(tx: Tx, scopeKeys: string[], now: Date) {
+  await tx
+    .insert(clubLinkAttempts)
+    .values(
+      scopeKeys.map((scopeKey) => ({
+        scopeKey,
+        failures: 0,
+        windowStartedAt: now,
+        lockedUntil: null,
+        updatedAt: now,
+      })),
+    )
+    .onConflictDoNothing();
+
+  return tx
+    .select()
+    .from(clubLinkAttempts)
+    .where(inArray(clubLinkAttempts.scopeKey, scopeKeys))
+    .orderBy(asc(clubLinkAttempts.scopeKey))
+    .for('update');
+}
+
+export async function updateLinkAttemptScope(
+  tx: Tx,
+  scopeKey: string,
+  values: Pick<
+    typeof clubLinkAttempts.$inferInsert,
+    'failures' | 'windowStartedAt' | 'lockedUntil' | 'updatedAt'
+  >,
+): Promise<void> {
+  await tx.update(clubLinkAttempts).set(values).where(eq(clubLinkAttempts.scopeKey, scopeKey));
 }
 
 async function setExternalIdentityUser(

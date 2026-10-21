@@ -1,20 +1,29 @@
 import { createHash } from 'node:crypto';
-import { and, eq, inArray } from 'drizzle-orm';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { and, eq, inArray, type SQL } from 'drizzle-orm';
+import { PgDialect } from 'drizzle-orm/pg-core';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { createApp } from '../../app.js';
 import { db, pool } from '../../db/client.js';
 import {
   adminAuditLog,
   clubExternalMembers,
+  clubLinkAttempts,
   clubMembers,
   clubs,
   friendships,
+  identities,
   meetups,
   provinces,
   users,
 } from '../../db/schema/index.js';
+import { env } from '../../lib/env.js';
+import { digestLoginId } from '../../lib/login-digest.js';
+import { logger } from '../../lib/logger.js';
 import { fakeAuth, fakeUser } from '../../test/fake-auth.js';
 import type { SessionUser } from '../../types.js';
+import { linkAttemptScopeKeys } from './link-lockout.js';
+import * as clubRepo from './repo.js';
+import { findExternalMatches, type Tx } from './repo.js';
 import { handOverClubsBeforeUserDelete } from './service.js';
 
 const stamp = Date.now();
@@ -33,26 +42,66 @@ const owner = user('owner');
 const admin = user('admin');
 const member = user('member');
 const member2 = user('member2');
+const failureOutcomeUser = user('failure-outcomes');
 const outsider = user('outsider');
 const friend = user('friend');
 const staff = user('staff', 'admin');
-const allUsers = [owner, admin, member, member2, outsider, friend, staff];
+const allUsers = [owner, admin, member, member2, failureOutcomeUser, outsider, friend, staff];
 
-const appFor = (u: SessionUser | null) => createApp({ auth: fakeAuth(u), rateLimit: false });
+type App = ReturnType<typeof createApp>;
+const appUsers = new WeakMap<App, string>();
+const appFor = (u: SessionUser | null): App => {
+  const app = createApp({ auth: fakeAuth(u), rateLimit: false });
+  if (u) appUsers.set(app, u.id);
+  return app;
+};
 const ownerApp = appFor(owner);
 const adminApp = appFor(admin);
 const memberApp = appFor(member);
 const member2App = appFor(member2);
+const failureOutcomeApp = appFor(failureOutcomeUser);
 const outsiderApp = appFor(outsider);
 const staffApp = appFor(staff);
 const anonApp = appFor(null);
 
 const headers = { 'content-type': 'application/json' };
 const createdClubIds = new Set<string>();
+const createdLinkAttemptScopeKeys = new Set<string>();
+let requestIpSequence = 1;
+const originalTrustProxy = env.TRUST_PROXY;
 
-type App = typeof ownerApp;
-const post = (app: App, path: string, body: unknown = {}) =>
-  app.request(path, { method: 'POST', headers, body: JSON.stringify(body) });
+function nextTestIp(): string {
+  const octet = ((requestIpSequence++ - 1) % 254) + 1;
+  return `198.51.100.${octet}`;
+}
+
+const post = async (app: App, path: string, body: unknown = {}, ip = nextTestIp()) => {
+  const externalId = (body as { externalId?: unknown } | null)?.externalId;
+  const userId = appUsers.get(app);
+  if (userId && typeof externalId === 'string') {
+    const joinCode = /^\/api\/clubs\/join\/([^/]+)$/.exec(path)?.[1];
+    const externalMatchClubId = /^\/api\/clubs\/([^/]+)\/external-match$/.exec(path)?.[1];
+    let inviteCodeHash: string | undefined;
+    if (joinCode) inviteCodeHash = createHash('sha256').update(joinCode).digest('hex');
+    else if (externalMatchClubId) {
+      const [club] = await db
+        .select({ inviteCodeHash: clubs.inviteCodeHash })
+        .from(clubs)
+        .where(eq(clubs.id, externalMatchClubId))
+        .limit(1);
+      inviteCodeHash = club?.inviteCodeHash;
+    }
+    if (inviteCodeHash) {
+      const keys = linkAttemptScopeKeys({ inviteCodeHash, clientIp: ip, userId });
+      for (const key of Object.values(keys)) createdLinkAttemptScopeKeys.add(key);
+    }
+  }
+  return app.request(path, {
+    method: 'POST',
+    headers: { ...headers, 'x-forwarded-for': ip },
+    body: JSON.stringify(body),
+  });
+};
 const patch = (app: App, path: string, body: unknown) =>
   app.request(path, { method: 'PATCH', headers, body: JSON.stringify(body) });
 const del = (app: App, path: string) => app.request(path, { method: 'DELETE', headers });
@@ -107,6 +156,7 @@ async function createClubMeetup(app: App, clubId: string, visibility = 'club') {
 }
 
 beforeAll(async () => {
+  env.TRUST_PROXY = true;
   await db.insert(users).values(allUsers).onConflictDoNothing({ target: users.id });
   await db.insert(provinces).values(PROVINCE).onConflictDoNothing();
   const [a, b] = owner.id < friend.id ? [owner.id, friend.id] : [friend.id, owner.id];
@@ -115,6 +165,10 @@ beforeAll(async () => {
 
 afterAll(async () => {
   const ids = [...createdClubIds];
+  const attemptKeys = [...createdLinkAttemptScopeKeys];
+  if (attemptKeys.length > 0) {
+    await db.delete(clubLinkAttempts).where(inArray(clubLinkAttempts.scopeKey, attemptKeys));
+  }
   if (ids.length > 0) {
     await db.delete(meetups).where(inArray(meetups.clubId, ids));
     await db.delete(clubs).where(inArray(clubs.id, ids));
@@ -125,6 +179,7 @@ afterAll(async () => {
   await db.delete(friendships).where(inArray(friendships.userA, userIds));
   await db.delete(users).where(inArray(users.id, userIds));
   await db.delete(provinces).where(eq(provinces.code, PROVINCE.code));
+  env.TRUST_PROXY = originalTrustProxy;
   await pool.end();
 });
 
@@ -477,18 +532,60 @@ describe('external members', () => {
         externalId: 'ext-1',
         nickname: 'Alpha',
         stats: { played: 7 },
-        externalLoginId: LOGIN_ID,
+        externalLoginDigest: digestLoginId(LOGIN_ID),
       },
-      { clubId: club!.id, externalId: 'ext-2', nickname: 'Beta', externalLoginId: 'dup-login' },
-      { clubId: club!.id, externalId: 'ext-3', nickname: 'Gamma', externalLoginId: 'dup-login' },
+      {
+        clubId: club!.id,
+        externalId: 'ext-2',
+        nickname: 'Beta',
+        externalLoginDigest: digestLoginId('dup-login'),
+      },
+      {
+        clubId: club!.id,
+        externalId: 'ext-3',
+        nickname: 'Gamma',
+        externalLoginDigest: digestLoginId('dup-login'),
+      },
+      {
+        clubId: club!.id,
+        externalId: 'ext-4',
+        nickname: 'Delta',
+        externalLoginDigest: digestLoginId('member-login'),
+      },
+      {
+        clubId: club!.id,
+        externalId: 'ext-5',
+        nickname: 'Epsilon',
+        externalLoginDigest: digestLoginId('another-member-login'),
+      },
     ]);
     return club!;
   }
 
-  it('joining with an external id links the member; the login id never leaks', async () => {
+  it('matches by club ID instead of public external ID; the login id never leaks', async () => {
     const club = await clubWithExternals();
-    const res = await post(outsiderApp, `/api/clubs/join/${club.code}`, { externalId: 'ext-1' });
+    const [identity] = await db
+      .insert(identities)
+      .values({
+        kind: 'external',
+        clubId: club.id,
+        displayName: 'Alpha',
+        externalSource: 'test-club',
+        externalId: 'ext-1',
+      })
+      .returning({ id: identities.id });
+    const publicId = await post(outsiderApp, `/api/clubs/join/${club.code}`, {
+      externalId: 'ext-1',
+    });
+    expect(((await publicId.json()) as { externalMatched: boolean }).externalMatched).toBe(false);
+
+    const res = await post(outsiderApp, `/api/clubs/join/${club.code}`, { externalId: LOGIN_ID });
     expect(((await res.json()) as { externalMatched: boolean }).externalMatched).toBe(true);
+    const rebound = await post(outsiderApp, `/api/clubs/${club.id}/external-match`, {
+      externalId: LOGIN_ID,
+    });
+    expect(rebound.status).toBe(200);
+    expect(await rebound.json()).toEqual({ matched: true });
 
     const [row] = await db
       .select()
@@ -497,6 +594,11 @@ describe('external members', () => {
         and(eq(clubExternalMembers.clubId, club.id), eq(clubExternalMembers.externalId, 'ext-1')),
       );
     expect(row!.userId).toBe(outsider.id);
+    const [linkedIdentity] = await db
+      .select()
+      .from(identities)
+      .where(eq(identities.id, identity!.id));
+    expect(linkedIdentity!.userId).toBe(outsider.id);
 
     const bodies = [
       await (await outsiderApp.request(`/api/clubs/${club.slug}`)).text(),
@@ -516,16 +618,123 @@ describe('external members', () => {
     expect(list.items.find((i) => i.externalId === 'ext-1')?.linkedUserId).toBe(outsider.id);
   });
 
-  it('matches by login id too, and refuses unknown, ambiguous or already-claimed ids', async () => {
+  it('refuses public external IDs, unknown or ambiguous club IDs, and already-claimed matches', async () => {
     const club = await clubWithExternals();
     const join = async (app: App, externalId: string) => {
       const res = await post(app, `/api/clubs/join/${club.code}`, { externalId });
       return ((await res.json()) as { externalMatched: boolean }).externalMatched;
     };
+    expect(await join(memberApp, 'ext-1')).toBe(false);
     expect(await join(memberApp, 'nope')).toBe(false);
     expect(await join(memberApp, 'dup-login')).toBe(false);
     expect(await join(memberApp, LOGIN_ID)).toBe(true);
     expect(await join(member2App, 'ext-1')).toBe(false);
+  });
+
+  it('returns the same match response for wrong, unknown, linked, and already-linked-user IDs', async () => {
+    const club = await clubWithExternals();
+    await post(ownerApp, `/api/clubs/${club.id}/external-match`, { externalId: LOGIN_ID });
+    await post(failureOutcomeApp, `/api/clubs/join/${club.code}`);
+    expect(
+      await (
+        await post(failureOutcomeApp, `/api/clubs/${club.id}/external-match`, {
+          externalId: 'member-login',
+        })
+      ).json(),
+    ).toEqual({ matched: true });
+
+    const outcomes = await Promise.all(
+      ['wrong-login-id', 'unknown-login-id', 'dup-login', LOGIN_ID, 'another-member-login'].map(
+        async (externalId) => {
+          const response = await post(failureOutcomeApp, `/api/clubs/${club.id}/external-match`, {
+            externalId,
+          });
+          return { status: response.status, body: await response.text() };
+        },
+      ),
+    );
+    expect(outcomes.map((outcome) => outcome.status)).toEqual([200, 200, 200, 200, 200]);
+    expect(new Set(outcomes.map((outcome) => outcome.body))).toEqual(
+      new Set([JSON.stringify({ matched: false })]),
+    );
+  });
+
+  it('persists lockout across app instances and skips the match query while locked', async () => {
+    const club = await clubWithExternals();
+    const ip = '203.0.113.73';
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const response = await post(
+        outsiderApp,
+        `/api/clubs/join/${club.code}`,
+        { externalId: `wrong-login-${attempt}` },
+        ip,
+      );
+      expect(response.status).toBe(200);
+      expect(((await response.json()) as { externalMatched: boolean }).externalMatched).toBe(false);
+    }
+
+    const matchSpy = vi.spyOn(clubRepo, 'findExternalMatches');
+    try {
+      const response = await post(
+        appFor(outsider),
+        `/api/clubs/${club.id}/external-match`,
+        { externalId: LOGIN_ID },
+        ip,
+      );
+      expect(response.status).toBe(429);
+      expect(await response.json()).toEqual({
+        error: { code: 'RATE_LIMITED', message: 'Quá nhiều yêu cầu' },
+      });
+      expect(matchSpy).not.toHaveBeenCalled();
+    } finally {
+      matchSpy.mockRestore();
+    }
+
+    const [memberRow] = await db
+      .select()
+      .from(clubExternalMembers)
+      .where(
+        and(eq(clubExternalMembers.clubId, club.id), eq(clubExternalMembers.externalId, 'ext-1')),
+      );
+    expect(memberRow!.userId).toBeNull();
+  });
+
+  it('sanitizes a forced database error in the response and logs', async () => {
+    const club = await clubWithExternals();
+    await post(memberApp, `/api/clubs/join/${club.code}`);
+    const matchSpy = vi
+      .spyOn(clubRepo, 'findExternalMatches')
+      .mockRejectedValueOnce(new Error(`forced database failure ${LOGIN_ID}`));
+    const logSpy = vi.spyOn(logger, 'error');
+    try {
+      const response = await post(memberApp, `/api/clubs/${club.id}/external-match`, {
+        externalId: LOGIN_ID,
+      });
+      const body = await response.text();
+      expect(response.status).toBe(500);
+      expect(body).not.toContain(LOGIN_ID);
+      expect(JSON.stringify(logSpy.mock.calls)).not.toContain(LOGIN_ID);
+    } finally {
+      matchSpy.mockRestore();
+      logSpy.mockRestore();
+    }
+  });
+
+  it('does not let guest claim links accept an external member identity', async () => {
+    const club = await clubWithExternals();
+    const [identity] = await db
+      .insert(identities)
+      .values({
+        kind: 'external',
+        clubId: club.id,
+        displayName: 'External member',
+        externalSource: 'test-club',
+        externalId: `external-claim-${stamp}`,
+      })
+      .returning({ id: identities.id });
+
+    const response = await post(memberApp, `/api/identities/${identity!.id}/claim-links`);
+    expect(response.status).toBe(404);
   });
 
   it('existing members can match later; admin can unlink', async () => {
@@ -557,6 +766,36 @@ describe('external members', () => {
       .from(clubExternalMembers)
       .where(eq(clubExternalMembers.id, row!.id));
     expect(after!.userId).toBeNull();
+  });
+
+  it('does not expose the raw club ID when the matching query fails', async () => {
+    let params: unknown[] = [];
+    const tx = {
+      select: () => ({
+        from: () => ({
+          where: (condition: SQL) => {
+            params = new PgDialect({ casing: 'snake_case' }).sqlToQuery(condition).params;
+            return {
+              limit: async () => {
+                throw new Error(`simulated database query failure: ${params.join(',')}`);
+              },
+            };
+          },
+        }),
+      }),
+    } as unknown as Tx;
+
+    let message = '';
+    try {
+      await findExternalMatches(tx, 'club-id', LOGIN_ID);
+    } catch (error) {
+      message = error instanceof Error ? error.message : String(error);
+    }
+
+    expect(message).toContain('simulated database query failure');
+    expect(message).not.toContain(LOGIN_ID);
+    expect(params).toContain(digestLoginId(LOGIN_ID));
+    expect(params).not.toContain(LOGIN_ID);
   });
 
   it('only members can list external members', async () => {

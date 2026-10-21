@@ -11,9 +11,10 @@ import {
   clubUpdateSchema,
   idParamSchema,
 } from '@onboard/shared';
-import { Hono } from 'hono';
+import { Hono, type Context } from 'hono';
 import { requireClubRole } from '../../auth/club-role.js';
 import { requireRole, requireUser } from '../../auth/middleware.js';
+import { getClientIp } from '../../lib/client-ip.js';
 import { userRateLimit } from '../../lib/user-rate-limit.js';
 import { zValidator } from '../../lib/validator.js';
 import type { AppEnv } from '../../types.js';
@@ -50,6 +51,7 @@ export const clubRoutes = ({ rateLimit }: ClubRoutesOptions) =>
             c.var.user.id,
             c.req.valid('param').code,
             c.req.valid('json'),
+            getClientIp(c as unknown as Context<AppEnv>),
           ),
         ),
     )
@@ -157,6 +159,7 @@ export const clubRoutes = ({ rateLimit }: ClubRoutesOptions) =>
             c.req.valid('param').id,
             c.var.user.id,
             c.req.valid('json').externalId,
+            getClientIp(c as unknown as Context<AppEnv>),
           ),
         ),
     )

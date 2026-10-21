@@ -18,11 +18,13 @@ import { db } from '../../db/client.js';
 import { adminAuditLog } from '../../db/schema/index.js';
 import { env } from '../../lib/env.js';
 import { ApiError } from '../../lib/errors.js';
+import { logger } from '../../lib/logger.js';
 import { areFriends, canView, isBlocked } from '../../lib/visibility.js';
 import { slugify } from '../games/slug.js';
 import { batchRelations } from '../events/repo.js';
 import * as repo from './repo.js';
 import type { ClubRow, MemberUserRow, Tx } from './repo.js';
+import { runClubLinkAttempt, type LinkAttemptInput } from './link-lockout.js';
 
 const UNIQUE_VIOLATION = '23505';
 const ANONYMOUS_NAME = 'Người chơi ẩn danh';
@@ -205,8 +207,7 @@ export async function rotateInviteCodeService(clubId: string): Promise<ClubInvit
   return { inviteUrl: inviteUrlFor(code) };
 }
 
-/** Matches `input` against an unclaimed external member (external id or login id) and links it
- * to `userId`. Ambiguous or unknown input returns false without saying which. */
+/** Matches the login digest against one unclaimed external member and links it to `userId`. */
 async function matchExternalMember(
   tx: Tx,
   clubId: string,
@@ -216,16 +217,23 @@ async function matchExternalMember(
   const matches = await repo.findExternalMatches(tx, clubId, input);
   const [only] = matches;
   if (matches.length !== 1 || !only) return false;
-  if (only.userId) return only.userId === userId;
-  return repo.claimExternalMember(tx, only.id, userId);
+  return repo.bindExternalMember(tx, only.id, userId);
 }
 
-async function tryMatchExternal(clubId: string, userId: string, input: string): Promise<boolean> {
+async function performMemberLink<T>(
+  scopes: LinkAttemptInput,
+  attempt: (tx: Tx) => Promise<{ success: boolean; value: T }>,
+): Promise<T> {
   try {
-    return await db.transaction((tx) => matchExternalMember(tx, clubId, userId, input));
+    const result = await runClubLinkAttempt(scopes, attempt);
+    if (result.status === 'locked') {
+      throw new ApiError('RATE_LIMITED', 429, 'Quá nhiều yêu cầu');
+    }
+    return result.value;
   } catch (err) {
-    if (isUniqueViolation(err)) return false;
-    throw err;
+    if (err instanceof ApiError) throw err;
+    logger.error({ operation: 'club-member-link' }, 'Club member binding failed');
+    throw new ApiError('INTERNAL', 500, 'Lỗi hệ thống');
   }
 }
 
@@ -233,23 +241,46 @@ export async function joinByCodeService(
   userId: string,
   code: string,
   input: ClubJoinInput,
+  clientIp: string,
 ): Promise<ClubJoinResponse> {
-  const club = await repo.findClubByInviteHash(hashCode(code));
-  if (!club) notFound();
-  await repo.insertMember({ clubId: club.id, userId, role: 'member' });
-  const member = await repo.findMember(club.id, userId);
-  const externalMatched = input.externalId
-    ? await tryMatchExternal(club.id, userId, input.externalId)
-    : false;
-  return { slug: club.slug, role: member?.role ?? 'member', externalMatched };
+  const inviteCodeHash = hashCode(code);
+  if (!input.externalId) {
+    const club = await repo.findClubByInviteHash(inviteCodeHash);
+    if (!club) notFound();
+    await repo.insertMember({ clubId: club.id, userId, role: 'member' });
+    const member = await repo.findMember(club.id, userId);
+    return { slug: club.slug, role: member?.role ?? 'member', externalMatched: false };
+  }
+
+  return performMemberLink({ inviteCodeHash, clientIp, userId }, async (tx) => {
+    const club = await repo.findClubByInviteHash(inviteCodeHash, tx);
+    if (!club) notFound();
+    await repo.insertMember({ clubId: club.id, userId, role: 'member' }, tx);
+    const member = await repo.findMember(club.id, userId, tx);
+    const externalMatched = await matchExternalMember(tx, club.id, userId, input.externalId!);
+    return {
+      success: externalMatched,
+      value: { slug: club.slug, role: member?.role ?? 'member', externalMatched },
+    };
+  });
 }
 
 export async function matchExternalService(
   clubId: string,
   userId: string,
   externalId: string,
+  clientIp: string,
 ): Promise<{ matched: boolean }> {
-  return { matched: await tryMatchExternal(clubId, userId, externalId) };
+  const club = await repo.findClubById(clubId);
+  if (!club) notFound();
+  const matched = await performMemberLink(
+    { inviteCodeHash: club.inviteCodeHash, clientIp, userId },
+    async (tx) => {
+      const success = await matchExternalMember(tx, club.id, userId, externalId);
+      return { success, value: success };
+    },
+  );
+  return { matched };
 }
 
 export async function listExternalMembersService(
