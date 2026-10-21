@@ -18,6 +18,7 @@ import { useSheet } from './use-sheet';
 import type { RosterApi } from '../api/plays-types';
 import { PlayerEditor } from './player-editor';
 import { RoundsTable } from './rounds-table';
+import { isReadOnlyPlayViewer, scoreInputState } from './readonly-play';
 
 function usesCritterMealTemplate(play: PlayDto): boolean {
   const definition = play.template?.definition;
@@ -59,7 +60,7 @@ export function SharedScoreSheet({
     saved: sheetStateFromPlay(template, play),
     editableIdentityIds: play.editableIdentityIds,
     canManage: play.canManage,
-    canEdit: play.status === 'draft',
+    canEdit: play.status === 'draft' && play.canEdit,
   });
   const sync = useSharedPlaySync(play.id, currentUserId, play, sheet, onPlayChange);
   const [finishing, setFinishing] = useState(false);
@@ -139,24 +140,33 @@ export function SharedScoreSheet({
             {current.players
               .slice()
               .sort((a, b) => a.seat - b.seat)
-              .map((row) => (
-                <View key={row.identity.id} style={styles.playerRow}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.playerName}>{row.identity.displayName}</Text>
-                    {row.identity.kind !== 'member' ? (
-                      <Hint>{row.identity.kind === 'guest' ? 'Khách' : 'Ngoài CLB'}</Hint>
-                    ) : null}
+              .map((row) => {
+                const input = scoreInputState(current, row.identity.id);
+                return (
+                  <View
+                    key={row.identity.id}
+                    accessibilityState={input.accessibilityState}
+                    style={styles.playerRow}
+                  >
+                    <View style={{ flex: 1 }}>
+                      <Text style={styles.playerName}>{row.identity.displayName}</Text>
+                      {row.identity.kind !== 'member' ? (
+                        <Hint>{row.identity.kind === 'guest' ? 'Khách' : 'Ngoài CLB'}</Hint>
+                      ) : null}
+                    </View>
+                    {!input.disabled ? <Badge label="Bạn có thể nhập" /> : null}
                   </View>
-                  {current.editableIdentityIds.includes(row.identity.id) || current.canManage ? (
-                    <Badge label="Bạn có thể nhập" />
-                  ) : null}
-                </View>
-              ))}
-            <Hint>
-              {current.canManage
-                ? 'Bạn là chủ bàn và có thể nhập điểm cho mọi người.'
-                : 'Bạn chỉ sửa được hàng điểm gắn với tài khoản của mình.'}
-            </Hint>
+                );
+              })}
+            {isReadOnlyPlayViewer(current) ? (
+              <Hint>Đang xem — chỉ chủ bàn và người chơi được sửa</Hint>
+            ) : (
+              <Hint>
+                {current.canManage
+                  ? 'Bạn là chủ bàn và có thể nhập điểm cho mọi người.'
+                  : 'Bạn chỉ sửa được hàng điểm gắn với tài khoản của mình.'}
+              </Hint>
+            )}
           </Card>
 
           {needsOutcome(template) &&

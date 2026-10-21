@@ -1,15 +1,21 @@
 import type {
   ClaimRedeemResponse,
   ClubListResponse,
+  ClubJoinResponse,
   ClubMeetupsResponse,
   IdentityDto,
   IdentityListResponse,
   TableDetailDto,
 } from '@onboard/shared';
 import { api } from './client';
+import { buildClubJoinRequest } from './club-join-request';
 
 export const clubsApi = {
   myClubs: () => api<ClubListResponse>('/clubs').then((r) => r.items),
+  joinByInvite: (code: string, clubId?: string) => {
+    const request = buildClubJoinRequest(code, clubId);
+    return api<ClubJoinResponse>(request.path, { method: 'POST', body: request.body });
+  },
   meetups: (clubId: string, range: { from?: string; to?: string } = {}) =>
     api<ClubMeetupsResponse>(`/clubs/${clubId}/meetups`, { query: range }).then((r) => r.items),
   identities: (clubId: string, q?: string) =>

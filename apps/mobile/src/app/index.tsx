@@ -230,6 +230,20 @@ export default function Home() {
               </Pressable>
             </Link>
           ))}
+          {user ? (
+            <Link href={'/history' as Href} asChild>
+              <Pressable
+                accessibilityRole="link"
+                style={StyleSheet.flatten([styles.tile, wide && styles.tileWide])}
+              >
+                <View style={[styles.mark, { backgroundColor: colors.primarySoft }]}>
+                  <Text style={styles.markText}>L</Text>
+                </View>
+                <Text style={styles.cardTitle}>Lịch sử chơi</Text>
+                <Text style={styles.meta}>Các ván đã chốt và kết quả của bạn.</Text>
+              </Pressable>
+            </Link>
+          ) : null}
         </View>
       </Section>
 

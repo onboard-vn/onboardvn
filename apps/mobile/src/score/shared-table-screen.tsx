@@ -23,9 +23,16 @@ import { colors } from '../ui/theme';
 import { createHttpPlaysApi } from '../api/plays-http';
 import { GuestActions } from './guest-actions';
 import { LegacyTableScoreScreen } from './legacy-table-screen';
+import {
+  canStartNewPlay,
+  readOnlyPlayHint,
+  scoreSheetAccessForPlay,
+  shouldUseLegacyTableScoreSheet,
+} from './readonly-play';
 import { gameGuides } from './registry';
 import { usesSharedScoreSheet } from './shared-sheet-selection';
 import { SharedScoreSheet } from './shared-score-sheet';
+import { SheetAccessProvider } from './use-sheet';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -322,8 +329,34 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
     );
   }
 
-  if (current.play && !usesSharedScoreSheet(template, gameGuides))
-    return <LegacyTableScoreScreen />;
+  if (
+    current.play &&
+    shouldUseLegacyTableScoreSheet(current.play, usesSharedScoreSheet(template, gameGuides))
+  ) {
+    const hint = readOnlyPlayHint(current.play);
+    return (
+      <>
+        {hint ? (
+          <View style={styles.statusBanner}>
+            <Hint>{hint}</Hint>
+          </View>
+        ) : null}
+        {canStartNewPlay(current.play) ? (
+          <View style={styles.statusBanner}>
+            <Button
+              label="Bắt đầu ván mới"
+              disabled={busy}
+              onPress={() => void startPlay()}
+            />
+            {error ? <Text style={styles.error}>{error}</Text> : null}
+          </View>
+        ) : null}
+        <SheetAccessProvider access={scoreSheetAccessForPlay(current.play)}>
+          <LegacyTableScoreScreen />
+        </SheetAccessProvider>
+      </>
+    );
+  }
 
   const title = current.table.game?.name ?? current.play?.game.name ?? 'Bảng điểm chung';
 
@@ -439,6 +472,7 @@ const styles = StyleSheet.create({
   gameOption: { padding: 10, borderTopWidth: 1, borderTopColor: colors.border, gap: 4 },
   gameName: { color: colors.text, fontWeight: '700', fontSize: 15 },
   errorBanner: { padding: 12, backgroundColor: colors.dangerSoft },
+  statusBanner: { padding: 12, backgroundColor: colors.surfaceMuted },
   error: { color: colors.danger, fontSize: 14 },
   linkButton: {
     backgroundColor: colors.primary,

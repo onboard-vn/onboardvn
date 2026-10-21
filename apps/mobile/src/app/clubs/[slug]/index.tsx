@@ -6,7 +6,7 @@ import { api } from '../../../api/client';
 import { useSession } from '../../../auth/session';
 import { LeaveClubButton } from '../../../features/clubs/leave-club-button';
 import { ROLE_LABEL } from '../../../features/clubs/club-manage-panel';
-import { formatVnDateTime } from '../../../features/events/time';
+import { formatVnDateTime, todayVnDateKey } from '../../../features/events/time';
 import {
   Body,
   CardLink,
@@ -57,6 +57,8 @@ export default function ClubDetailPage() {
   const myRole = detail?.myRole ?? null;
   const canManage = myRole === 'owner' || myRole === 'admin';
   const meetups = data?.meetups ?? [];
+  const liveBase = club?.id ? `/clubs/${encodeURIComponent(club.slug)}` : null;
+  const liveQuery = club?.id ? `?clubId=${encodeURIComponent(club.id)}` : '';
 
   return (
     <Page>
@@ -97,6 +99,44 @@ export default function ClubDetailPage() {
                   ) : null}
                   {myRole !== 'owner' && club.id ? <LeaveClubButton clubId={club.id} /> : null}
                 </Row>
+
+                {liveBase ? (
+                  <View style={{ gap: space.sm }}>
+                    <SectionTitle>App CLB</SectionTitle>
+                    <Row style={{ flexWrap: 'wrap' }}>
+                      <LinkBtn
+                        small
+                        variant="outline"
+                        label="Hôm nay"
+                        to={`${liveBase}/day/${todayVnDateKey()}${liveQuery}`}
+                      />
+                      <LinkBtn
+                        small
+                        variant="outline"
+                        label="Thành viên"
+                        to={`${liveBase}/members${liveQuery}`}
+                      />
+                      <LinkBtn
+                        small
+                        variant="outline"
+                        label="Kệ game"
+                        to={`${liveBase}/shelf${liveQuery}`}
+                      />
+                      <LinkBtn
+                        small
+                        variant="outline"
+                        label="Lịch sử"
+                        to={`${liveBase}/history${liveQuery}`}
+                      />
+                      <LinkBtn
+                        small
+                        variant="outline"
+                        label="Ván đã chơi"
+                        to={`/clubs/${encodeURIComponent(club.slug)}/plays`}
+                      />
+                    </Row>
+                  </View>
+                ) : null}
 
                 <View style={{ gap: space.md }}>
                   <SectionTitle>Kèo sắp tới ({meetups.length})</SectionTitle>

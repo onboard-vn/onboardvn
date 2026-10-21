@@ -1,5 +1,15 @@
 import type { RawValue, ScoreTemplate } from '@onboard/shared';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  createContext,
+  createElement,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import { QUICK_KEY, ROUND_KEY, TEAM_ID, type PlayOp } from '../api/plays-types';
 import {
   applyOp,
@@ -58,27 +68,63 @@ export interface SheetApi {
   replaceSnapshot: (snapshot: SheetState) => void;
 }
 
-export interface SheetOptions {
-  actorId: string;
-  saved?: SheetState | null;
-  allowIncompleteRoster?: boolean;
+export interface SheetAccess {
   editableIdentityIds?: string[];
   canManage?: boolean;
   canEdit?: boolean;
 }
 
+export interface ResolvedSheetAccess {
+  editableIdentityIds?: string[];
+  canManage: boolean;
+  canEdit: boolean;
+}
+
+export interface SheetOptions extends SheetAccess {
+  actorId: string;
+  saved?: SheetState | null;
+  allowIncompleteRoster?: boolean;
+}
+
+const SheetAccessContext = createContext<ResolvedSheetAccess | null>(null);
+
+export function resolveSheetAccess(
+  explicit: SheetAccess,
+  inherited: SheetAccess | null,
+): ResolvedSheetAccess {
+  return {
+    editableIdentityIds: explicit.editableIdentityIds ?? inherited?.editableIdentityIds,
+    canManage: explicit.canManage ?? inherited?.canManage ?? true,
+    canEdit: explicit.canEdit ?? inherited?.canEdit ?? true,
+  };
+}
+
+export function SheetAccessProvider({
+  access,
+  children,
+}: {
+  access: SheetAccess;
+  children: ReactNode;
+}) {
+  const { canEdit, canManage, editableIdentityIds } = access;
+  const inherited = useMemo(
+    () => resolveSheetAccess({ canEdit, canManage, editableIdentityIds }, null),
+    [canEdit, canManage, editableIdentityIds],
+  );
+  return createElement(SheetAccessContext.Provider, { value: inherited }, children);
+}
+
 export function useSheet(
   template: ScoreTemplate,
   players: Player[],
-  {
-    actorId,
-    saved,
-    editableIdentityIds,
-    canManage = true,
-    canEdit = true,
-    allowIncompleteRoster = false,
-  }: SheetOptions,
+  options: SheetOptions,
 ): SheetApi {
+  const { actorId, saved, allowIncompleteRoster = false } = options;
+  const inheritedAccess = useContext(SheetAccessContext);
+  const { editableIdentityIds, canManage, canEdit } = resolveSheetAccess(
+    options,
+    inheritedAccess,
+  );
   const [state, setState] = useState<SheetState>(() => saved ?? initialState(players));
   const [presence, setPresenceState] = useState<Record<string, boolean>>({});
   const [flash, setFlash] = useState<Record<string, true>>({});

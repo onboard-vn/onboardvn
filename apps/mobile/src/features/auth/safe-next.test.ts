@@ -6,6 +6,11 @@ describe('safeNextPath', () => {
     expect(safeNextPath('/invite/abc?x=1#top')).toBe('/invite/abc?x=1#top');
   });
 
+  it('preserves encoded club invite paths for auth continuation', () => {
+    const invitePath = `/clubs/join/${encodeURIComponent('invite/code')}`;
+    expect(safeNextPath(invitePath)).toBe(invitePath);
+  });
+
   it('rejects missing, absolute and protocol-relative values', () => {
     expect(safeNextPath(undefined)).toBeNull();
     expect(safeNextPath('https://evil.com')).toBeNull();

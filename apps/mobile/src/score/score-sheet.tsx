@@ -30,10 +30,10 @@ import { RoundsTable } from './rounds-table';
 import { RuleNotes } from './rule-notes';
 import { SummaryCard } from './summary-card';
 import { usePlaySync } from './use-play-sync';
-import { useSheet } from './use-sheet';
+import { useSheet, type SheetAccess } from './use-sheet';
 import { QUICK_KEY } from '../api/plays-types';
 
-export interface ScoreSheetProps {
+export interface ScoreSheetProps extends SheetAccess {
   template: ScoreTemplate;
   localPlayers?: boolean;
   players: Player[];
@@ -55,11 +55,17 @@ export function ScoreSheet({
   api: playsApi = defaultPlaysApi,
   actorId = CURRENT_IDENTITY_ID,
   restoredFromDraft = !!saved,
+  canEdit,
+  canManage,
+  editableIdentityIds,
 }: ScoreSheetProps) {
   const sheet = useSheet(template, players, {
     actorId,
     saved,
     allowIncompleteRoster: localPlayers,
+    canEdit,
+    canManage,
+    editableIdentityIds,
   });
   const sync = usePlaySync(playId, sheet, playsApi);
   const Custom = scoreInputRegistry[template.slug];
@@ -84,6 +90,7 @@ export function ScoreSheet({
 
   const confirmFinish = async () => {
     if (!playId) throw new Error('missing play');
+    if (!sheet.canManage) throw new Error('Chủ bàn mới có thể kết thúc ván.');
     if (sheet.summary.error) throw new Error(sheet.summary.error);
     await sync.flush();
     const receipt = await playsApi.finish(playId, {
@@ -120,7 +127,7 @@ export function ScoreSheet({
           </Hint>
           {template.needsReview ? <Badge label="Mẫu chưa duyệt" /> : null}
 
-          {!shadowHunters ? (
+          {!shadowHunters && sheet.canManage ? (
             <Segmented<SheetMode>
               value={state.mode}
               onChange={sheet.setMode}
@@ -131,9 +138,9 @@ export function ScoreSheet({
             />
           ) : null}
 
-          {localPlayers ? (
+          {localPlayers && sheet.canManage ? (
             <LocalPlayerEditor sheet={sheet} />
-          ) : playsApi.roster ? (
+          ) : playsApi.roster && sheet.canManage ? (
             <PlayerEditor sheet={sheet} roster={playsApi.roster} />
           ) : null}
 
@@ -150,12 +157,14 @@ export function ScoreSheet({
                   label="Thắng"
                   tint={colors.success}
                   selected={state.outcome === 'win'}
+                  disabled={!sheet.canManage}
                   onPress={() => sheet.setOutcome('win')}
                 />
                 <Chip
                   label="Thua"
                   tint={colors.danger}
                   selected={state.outcome === 'loss'}
+                  disabled={!sheet.canManage}
                   onPress={() => sheet.setOutcome('loss')}
                 />
               </View>
@@ -177,6 +186,7 @@ export function ScoreSheet({
                     <NumberField
                       value={state.quickTotals[p.id] ?? 0}
                       width={96}
+                      disabled={!sheet.canEditIdentity(p.id)}
                       onChange={(n) => sheet.setQuickTotal(p.id, n)}
                     />
                   </Flash>
@@ -195,6 +205,7 @@ export function ScoreSheet({
                       <Text style={styles.quickName}>{e}</Text>
                       <Switch
                         value={state.expansions.includes(e)}
+                        disabled={!sheet.canManage}
                         onValueChange={() => sheet.toggleExpansion(e)}
                       />
                     </View>
@@ -225,13 +236,27 @@ export function ScoreSheet({
               </Text>
               {notice ? <Hint>{notice}</Hint> : null}
               <View style={styles.wrap}>
-                <Button label="Lưu nháp" tone="ghost" onPress={saveNow} />
-                <Button label="Kết thúc ván" onPress={() => setFinishing(true)} />
+                <Button
+                  label="Lưu nháp"
+                  tone="ghost"
+                  disabled={!sheet.canManage}
+                  onPress={saveNow}
+                />
+                <Button
+                  label="Kết thúc ván"
+                  disabled={!sheet.canManage || !!sheet.summary.error}
+                  onPress={() => setFinishing(true)}
+                />
               </View>
             </Card>
           ) : null}
 
-          <Button label="Làm lại từ đầu" tone="ghost" onPress={sheet.reset} />
+          <Button
+            label="Làm lại từ đầu"
+            tone="ghost"
+            disabled={!sheet.canManage}
+            onPress={sheet.reset}
+          />
         </View>
       </ScrollView>
       {playId ? (

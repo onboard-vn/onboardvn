@@ -6,6 +6,7 @@ import { colors } from '../ui/theme';
 import { Flash, PresenceLabel } from './cell-flash';
 import { roundScore, roundsConfig, targetReached } from './model';
 import type { SheetApi } from './use-sheet';
+import { disabledScoreInputState } from './readonly-play';
 
 const AGG_LABEL = {
   sum: 'Tổng các vòng',
@@ -58,18 +59,23 @@ export function RoundsTable({ sheet }: { sheet: SheetApi }) {
           {rounds.map((r) => (
             <View key={r} style={styles.row}>
               <Text style={[styles.cell, styles.roundCol]}>{r + 1}</Text>
-              {state.players.map((p) => (
-                <View key={p.id} style={[styles.cell, styles.playerCol]}>
-                  <Flash sheet={sheet} id={p.id} cat={ROUND_KEY} round={r}>
-                    <NumberField
-                      value={roundScore(state, p.id, r)}
-                      width={52}
-                      disabled={!sheet.canEditIdentity(p.id)}
-                      onChange={(n) => sheet.setRoundScore(p.id, r, n)}
-                    />
-                  </Flash>
-                </View>
-              ))}
+              {state.players.map((p) => {
+                const input = disabledScoreInputState(!sheet.canEditIdentity(p.id));
+                return (
+                  <View key={p.id} style={[styles.cell, styles.playerCol]}>
+                    <Flash sheet={sheet} id={p.id} cat={ROUND_KEY} round={r}>
+                      <View accessibilityState={input.accessibilityState}>
+                        <NumberField
+                          value={roundScore(state, p.id, r)}
+                          width={52}
+                          disabled={input.disabled}
+                          onChange={(n) => sheet.setRoundScore(p.id, r, n)}
+                        />
+                      </View>
+                    </Flash>
+                  </View>
+                );
+              })}
             </View>
           ))}
           <View style={[styles.row, styles.totalRow]}>

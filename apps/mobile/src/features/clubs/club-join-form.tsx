@@ -1,46 +1,74 @@
-import type { ClubJoinResponse } from '@onboard/shared';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { api } from '../../api/client';
+import { ApiError } from '../../api/client';
+import { clubsApi } from '../../api/clubs';
 import { space } from '../../ui/theme';
-import { Body, Btn, FormError, TextField, href, useAction } from '../events/ui';
+import { clubJoinErrorMessage } from './club-join-error';
+import { canSubmitClubJoin } from './club-join-state';
+import { Btn, FormError, TextField, href } from '../events/ui';
 
 export function ClubJoinForm({ code }: { code: string }) {
   const router = useRouter();
-  const [externalId, setExternalId] = useState('');
-  const [notice, setNotice] = useState<string | null>(null);
-  const { pending, error, run } = useAction();
+  const [clubId, setClubId] = useState('');
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [requiresClubIdForRetry, setRequiresClubIdForRetry] = useState(false);
 
   async function onSubmit() {
-    await run(async () => {
-      const joined = await api<ClubJoinResponse>(`/clubs/join/${encodeURIComponent(code)}`, {
-        method: 'POST',
-        body: { externalId: externalId.trim() || undefined },
-      });
-      if (externalId.trim() && !joined.externalMatched) {
-        setNotice('Đã tham gia club, nhưng không khớp được ID. Bạn có thể thử lại trong club.');
-        setTimeout(() => router.replace(href(`/clubs/${joined.slug}`)), 1500);
+    if (pending) return;
+    const submittedClubId = clubId.trim();
+    if (!canSubmitClubJoin(submittedClubId, requiresClubIdForRetry)) {
+      setError(clubJoinErrorMessage(null));
+      return;
+    }
+    setClubId('');
+    setError(null);
+    setPending(true);
+    if (requiresClubIdForRetry) setRequiresClubIdForRetry(false);
+    try {
+      const joined = await clubsApi.joinByInvite(code, submittedClubId || undefined);
+      if (submittedClubId && !joined.externalMatched) {
+        setRequiresClubIdForRetry(true);
+        setError(clubJoinErrorMessage(null));
         return;
       }
       router.replace(href(`/clubs/${joined.slug}`));
-    }, 'Link mời không hợp lệ hoặc đã hết hạn');
+    } catch (cause) {
+      if (submittedClubId) setRequiresClubIdForRetry(true);
+      setError(clubJoinErrorMessage(cause instanceof ApiError ? cause.status : null));
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
     <View style={{ gap: space.lg }}>
       <TextField
-        label="ID trên app club cũ (tùy chọn)"
-        hint="Nhập nếu bạn đã có tài khoản ở app club cũ để liên kết lịch sử chơi."
+        label="Club ID"
+        hint={
+          requiresClubIdForRetry
+            ? 'Nhập lại Club ID để thử liên kết lần nữa.'
+            : 'Nhập nếu bạn muốn liên kết tài khoản club cũ. Có thể để trống.'
+        }
         maxLength={100}
+        editable={!pending}
         autoCapitalize="none"
         autoCorrect={false}
-        value={externalId}
-        onChangeText={setExternalId}
+        autoComplete="off"
+        importantForAutofill="no"
+        textContentType="none"
+        secureTextEntry
+        value={clubId}
+        onChangeText={setClubId}
+        onSubmitEditing={() => void onSubmit()}
       />
       <FormError message={error} />
-      {notice ? <Body>{notice}</Body> : null}
-      <Btn disabled={pending} label="Tham gia" onPress={() => void onSubmit()} />
+      <Btn
+        disabled={pending || !canSubmitClubJoin(clubId, requiresClubIdForRetry)}
+        label={pending ? 'Đang liên kết…' : 'Tham gia CLB'}
+        onPress={() => void onSubmit()}
+      />
     </View>
   );
 }
