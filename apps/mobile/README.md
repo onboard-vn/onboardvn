@@ -14,7 +14,7 @@ Web chạy dưới `baseUrl` `/app` (dev: `http://localhost:8081/app/`, prod: `h
 
 Bảng điểm dùng chung mở từ CLB → kèo → bàn tại `/score/table/[tableId]` với UUID thật. Đăng nhập bằng tài khoản Onboard ở `/club`; chủ bàn chọn game, mở ván, nhập thiết lập chung và chốt ván. Thành viên chỉ sửa hàng điểm gắn với danh tính của mình. Với điện thoại, đặt `EXPO_PUBLIC_API_URL` thành địa chỉ API mà thiết bị truy cập được (chỉ origin, ví dụ `http://192.168.1.10:3000`), rồi khởi động Expo.
 
-Màn hình `/shadow-hunters` mở từ trang chủ là công cụ chọn mode, xem luật và tra phiên bản thẻ, độc lập với bảng ghi kết quả cuối ván. Danh mục đọc trực tiếp từ [JSON đang duyệt](../../plans/reports/shadow-hunters-print-review.json). Ván đang chơi lưu trên thiết bị, giữ bản chụp cấu hình/luật/thẻ/nguồn và khóa sửa cho tới khi tạo ván mới. Quyết định của nhóm hiển thị riêng với luật nguồn; Fangs chưa đủ danh mục nên chưa thể bắt đầu. Mẫu dấu bộ hai mặt là bản xem chữ, chưa xuất file in. Jenemai hiện cố định mỗi mẫu một lá theo đề xuất trong JSON.
+Companion chọn mode và tra cứu thẻ Shadow Hunters được duy trì trong một repo riêng tư.
 
 ## Chạy
 

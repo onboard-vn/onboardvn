@@ -33,7 +33,6 @@ export default function RootLayout() {
           <Stack.Screen name="clubs/index" options={{ title: 'CLB' }} />
           <Stack.Screen name="clubs/[slug]/index" options={{ title: 'CLB' }} />
           <Stack.Screen name="club/[slug]" options={{ title: 'CLB' }} />
-          <Stack.Screen name="shadow-hunters" options={{ title: 'Shadow Hunters' }} />
           <Stack.Screen name="score/table/[tableId]" options={{ title: 'Bảng điểm' }} />
           <Stack.Screen name="score/[slug]" options={{ title: 'Tính điểm' }} />
         </Stack>
