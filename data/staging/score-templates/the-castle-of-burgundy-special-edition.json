@@ -3,7 +3,7 @@
   "name": "The Castles of Burgundy: Special Edition",
   "year": 2022,
   "bggId": 363622,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "special edition (base game rules)",
   "playerCount": {
     "min": 1,
@@ -73,14 +73,14 @@
       "key": "yellowGoodsTypesSold",
       "label": "Tile 15: goods types sold",
       "labelVi": "Ô vàng 15: loại hàng đã bán",
-      "hint": "3 VP per goods type sold at least once (needs tile 15)",
+      "hint": "2 VP per different goods type sold (needs tile 15)",
       "scope": "player",
       "input": "count",
       "min": 0,
       "max": 6,
       "formula": {
         "type": "multiply",
-        "points": 3
+        "points": 2
       },
       "countsToTotal": true
     },
@@ -131,33 +131,66 @@
       "key": "yellowBonusTiles",
       "label": "Tile 26: bonus tiles claimed",
       "labelVi": "Ô vàng 26: ô thưởng đã nhận",
-      "hint": "2 VP per bonus tile claimed, large or small (needs tile 26)",
+      "hint": "3 VP per bonus tile owned, large or small (needs tile 26)",
       "scope": "player",
       "input": "count",
       "min": 0,
       "max": 12,
       "formula": {
         "type": "multiply",
-        "points": 2
+        "points": 3
       },
       "countsToTotal": true
+    },
+    {
+      "key": "emptyEstateSpaces",
+      "label": "Empty estate spaces (tiebreaker)",
+      "labelVi": "Ô trống trong điền trang (phân định hòa)",
+      "hint": "Count empty hex spaces on your duchy board; fewer wins the first tiebreak.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "turnOrderPosition",
+      "label": "Final turn order position, including stack order (tiebreaker)",
+      "labelVi": "Vị trí thứ tự lượt cuối, gồm thứ tự xếp chồng (phân định hòa)",
+      "hint": "Enter each player's final rank from first (1) to last; for markers on the same space, use their top-to-bottom stack order. The player farthest behind wins the second tiebreak.",
+      "scope": "player",
+      "input": "count",
+      "min": 1,
+      "max": 4,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [
     {
-      "categoryKey": null,
+      "categoryKey": "emptyEstateSpaces",
       "dir": "lowest",
       "description": "Fewest empty estate spaces"
     },
     {
-      "categoryKey": null,
-      "dir": null,
+      "categoryKey": "turnOrderPosition",
+      "dir": "highest",
       "description": "Still tied: the player who went later in turn order wins"
     }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "family: point-salad-euro (running-track + end bonuses). Base-game scoring: points during play already sit on the VP track; final scoring adds unsold goods (1 each), Silverlings (1 each), every 2 workers (1), and VP-bearing yellow tiles. Unplaced six-sided tiles in storage score nothing. Tiebreak: fewest empty estate spaces, then later in turn order. Special Edition rulebook could not be fetched; categories follow the original alea/Ravensburger rulebook (same game). Special Edition components/extra modules and solo target not modelled; verify against the Special Edition rulebook.",
+  "notes": "family: point-salad-euro (running-track + end bonuses). Base-game scoring verified against the Special Edition rulebook: points during play already sit on the VP track; final scoring adds unsold goods (1 each), Silverlings (1 each), every 2 workers (1), and VP-bearing yellow tiles. Unplaced hex tiles in storage score nothing. Tiebreaks are executable: fewest empty estate spaces, then later in turn order. Special Edition expansions and solo target are not modelled.",
   "sources": [
+    {
+      "url": "https://awakenrealms.com/images/download/CoB/CoB_Rulebook_285x210mm%20%5B28%20pages%5D.pdf",
+      "title": "The Castles of Burgundy Special Edition rulebook (Awaken Realms)",
+      "type": "official-rulebook",
+      "section": "End of the Game; final scoring; yellow tile effects"
+    },
     {
       "url": "https://cdn.1j1ju.com/medias/04/f5/f9-the-castles-of-burgundy-rulebook.pdf",
       "title": "The Castles of Burgundy Rulebook (alea/Ravensburger)",
@@ -171,6 +204,6 @@
       "section": "Final scoring cross-check"
     }
   ],
-  "confidence": "medium",
-  "needsReview": true
+  "confidence": "high",
+  "needsReview": false
 }

@@ -3,7 +3,7 @@
   "name": "The Voyages of Marco Polo",
   "year": 2015,
   "bggId": 171623,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
     "min": 2,
@@ -84,7 +84,8 @@
         "type": "expr",
         "expr": "floor(value/2)"
       },
-      "countsToTotal": true
+      "countsToTotal": true,
+      "appliesWhen": "cat_beijing > 0"
     },
     {
       "key": "contracts",
@@ -137,12 +138,18 @@
       "description": "Most camels"
     },
     {
-      "description": "If still tied, multiple winners."
+      "description": "If still tied, the player with the largest camel wins; if indistinguishable, players share victory."
     }
   ],
-  "sharedVictoryOnTie": true,
-  "notes": "family: point-salad-euro. Goal card values depend on which cards are dealt (printed on cards). Per UltraBoardGames, camels are not goods. Characters have special abilities not modelled. Only secondary summary found; official rulebook not retrieved.",
+  "sharedVictoryOnTie": false,
+  "notes": "family: point-salad-euro. Goal card values depend on which cards are dealt (printed on cards). Camels are not goods. Characters have special abilities not modelled. The official rulebook gives the most-camels tiebreak, then uses the physical largest camel as a final tie-break; that non-numeric comparison is left unresolved for manual adjudication, with indistinguishable camels sharing victory.",
   "sources": [
+    {
+      "url": "https://www.hans-im-glueck.de/_Resources/Persistent/ce611053e53e69864bacc257d3e10f60d41f1ed1/MarcoPolo_Spielregel.pdf",
+      "title": "Auf den Spuren von Marco Polo German rulebook (Hans im Glück)",
+      "type": "official-rulebook",
+      "section": "Final Scoring; Ties"
+    },
     {
       "url": "https://www.ultraboardgames.com/the-voyages-of-marco-polo/game-rules.php",
       "title": "Voyages of Marco Polo rules (Ultra BoardGames)",
@@ -150,6 +157,6 @@
       "section": "End of the Game; Final Scoring"
     }
   ],
-  "confidence": "medium",
-  "needsReview": true
+  "confidence": "high",
+  "needsReview": false
 }

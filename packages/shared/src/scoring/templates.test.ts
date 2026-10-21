@@ -384,4 +384,210 @@ describe('golden vectors', () => {
     ]);
     expect(both.players.map((x) => x.total)).toEqual([25, 25]);
   });
+
+  it('seti: adds the running track, end-game cards, and gold-tile set value', () => {
+    const counts = {
+      techTriples: {},
+      techPairs: {},
+      missionSingles: {},
+      missionPairs: {},
+      incomeTriples: {},
+      incomeMajority: {},
+      traceTriples: {},
+      sectorPairs: {},
+    };
+    const r = solve('seti-search-for-extraterrestrial-intelligence-2024', [
+      {
+        id: 'a',
+        values: { ...counts, trackScore: 70, endGameCards: [2, 3], goldTile25: { sets: 2, valuePerSet: 4 } },
+      },
+      {
+        id: 'b',
+        values: { ...counts, trackScore: 70, endGameCards: [2, 3], goldTile25: { sets: 1, valuePerSet: 4 } },
+      },
+    ]);
+    expect(r.players.map((x) => x.total)).toEqual([83, 79]);
+    expect(r.winners).toEqual(['a']);
+  });
+
+  it('imperial-steam: converts goods and hub influence before the investor deduction', () => {
+    const r = solve('imperial-steam-2021', [
+      {
+        id: 'a',
+        values: {
+          cash: 20,
+          goodsSold: 2,
+          cityKeys: 100,
+          hubInfluence: 2,
+          contracts: 10,
+          shareholders: 2,
+        },
+      },
+      { id: 'b', values: { cash: 65 } },
+    ]);
+    expect(r.players.map((x) => x.total)).toEqual([144, 65]);
+    expect(r.winners).toEqual(['a']);
+  });
+
+  it('barrage: scores reachable objective places and breaks equal VP by last-round energy', () => {
+    const r = solve('barrage', [
+      {
+        id: 'a',
+        values: { vpTrack: 40, objective: 15, leftoverItems: 4, waterDrops: 2, lastRoundEnergy: 5 },
+      },
+      {
+        id: 'b',
+        values: { vpTrack: 45, objective: 10, leftoverItems: 5, waterDrops: 1, lastRoundEnergy: 8 },
+      },
+      {
+        id: 'c',
+        values: { vpTrack: 40, objective: 5, leftoverItems: 0, waterDrops: 0, lastRoundEnergy: 0 },
+      },
+    ]);
+    expect(r.players.map((x) => x.total)).toEqual([57, 57, 45]);
+    expect(r.winners).toEqual(['b']);
+  });
+
+  it('alchemists: converts gold and favors, then breaks VP ties by leftover gold', () => {
+    const r = solve('alchemists', [
+      {
+        id: 'a',
+        values: {
+          reputation: 10,
+          artifacts: 4,
+          grants: 1,
+          goldConversion: { gold: 6, favorCards: 1 },
+          theorySeals: { goldCorrect: 1, silverCorrect: 1, wrongStarred: 0, wrongUnhedged: 0 },
+          leftoverGold: { gold: 6, favorCards: 1 },
+        },
+      },
+      { id: 'b', values: { reputation: 25 } },
+    ]);
+    expect(r.players.map((x) => x.total)).toEqual([25, 25]);
+    expect(r.winners).toEqual(['a']);
+  });
+
+  it('carnegie: scores an unused Action Choice tile in a three-player game', () => {
+    const r = solve('carnegie', [
+      {
+        id: 'first',
+        values: { immediateVp: 20, employees: 2 },
+      },
+      {
+        id: 'second',
+        values: { immediateVp: 25, employees: 3 },
+      },
+      {
+        id: 'third',
+        values: {
+          immediateVp: 20,
+          connections: 5,
+          actionChoice: true,
+          employees: 2,
+          deptTop: 1,
+          deptOther: 2,
+          projectTabs: 6,
+          constructions: [0, 2],
+          donations: [4, 5],
+        },
+      },
+    ]);
+    expect(r.players.find((player) => player.id === 'third')?.total).toBe(54);
+    expect(r.winners).toEqual(['third']);
+  });
+
+  it('the-voyages-of-marco-polo: gates goods on Beijing and adjudicates the physical camel tie', () => {
+    const boundary = solve('the-voyages-of-marco-polo-2015', [
+      { id: 'nine', values: { coins: 9 } },
+      { id: 'ten', values: { coins: 10 } },
+    ]);
+    expect(boundary.players.map((x) => x.total)).toEqual([0, 1]);
+
+    const goods = solve('the-voyages-of-marco-polo-2015', [
+      { id: 'no-beijing', values: { trackScore: 20, beijing: 0, goods: 4 } },
+      { id: 'beijing', values: { trackScore: 20, beijing: 10, goods: 4 } },
+    ]);
+    expect(goods.players.map((x) => x.categories.goods)).toEqual([0, 2]);
+    expect(goods.players.map((x) => x.total)).toEqual([20, 32]);
+
+    const tie = solve('the-voyages-of-marco-polo-2015', [
+      { id: 'a', values: { trackScore: 20, camels: 3 } },
+      { id: 'b', values: { trackScore: 20, camels: 2 } },
+    ]);
+    expect(tie.winners).toEqual(['a']);
+
+    const physicalCamelTie = solve('the-voyages-of-marco-polo-2015', [
+      { id: 'a', values: { trackScore: 20, camels: 3 } },
+      { id: 'b', values: { trackScore: 20, camels: 3 } },
+    ]);
+    expect(physicalCamelTie.tieUnresolved).toBe(true);
+    expect(physicalCamelTie.tiedIds).toEqual(['a', 'b']);
+  });
+
+  it('the-castles-of-burgundy-special-edition: scores workers and yellow tile awards', () => {
+    const values: V = {
+      trackScore: 120,
+      unsoldGoods: 3,
+      silverlings: 4,
+      workers: 5,
+      yellowGoodsTypesSold: 4,
+      yellowBuildingTiles: 2,
+      yellowAnimalTypes: 3,
+      yellowSoldGoods: 5,
+      yellowBonusTiles: 3,
+    };
+    const r = solve('the-castle-of-burgundy-special-edition', [
+      { id: 'a', values },
+      { id: 'b', values: {} },
+    ]);
+    expect(r.players[0]?.total).toBe(171);
+    expect(r.winners).toEqual(['a']);
+
+    const emptySpaceTie = solve('the-castle-of-burgundy-special-edition', [
+      { id: 'a', values: { ...values, emptyEstateSpaces: 3, turnOrderPosition: 4 } },
+      { id: 'b', values: { ...values, emptyEstateSpaces: 2, turnOrderPosition: 1 } },
+    ]);
+    expect(emptySpaceTie.winners).toEqual(['b']);
+
+    const stackedTurnOrderTie = solve('the-castle-of-burgundy-special-edition', [
+      // The markers share a space; their top-to-bottom stack order is reflected in final rank.
+      { id: 'top', values: { ...values, emptyEstateSpaces: 2, turnOrderPosition: 1 } },
+      { id: 'bottom', values: { ...values, emptyEstateSpaces: 2, turnOrderPosition: 2 } },
+    ]);
+    expect(stackedTurnOrderTie.winners).toEqual(['bottom']);
+    expect(stackedTurnOrderTie.tieUnresolved).toBe(false);
+  });
+
+  it('avalon: final VP ties break by Holy Grail, then printed Faction Board VP', () => {
+    const tied = [
+      {
+        id: 'a',
+        values: {
+          vpBeforeFinalScoring: 20,
+          finalSettlementVp: 5,
+          grailBearer: true,
+          factionBoardVpValue: 4,
+        },
+      },
+      {
+        id: 'b',
+        values: {
+          vpBeforeFinalScoring: 23,
+          finalSettlementVp: 2,
+          grailBearer: false,
+          factionBoardVpValue: 1,
+        },
+      },
+    ];
+    const r = solve('avalon-the-riven-veil-2026', tied);
+    expect(r.players.map((x) => x.total)).toEqual([25, 25]);
+    expect(r.winners).toEqual(['a']);
+
+    const noGrail = solve('avalon-the-riven-veil-2026', tied.map((p) => ({
+      ...p,
+      values: { ...p.values, grailBearer: false },
+    })));
+    expect(noGrail.winners).toEqual(['b']);
+    expect(noGrail.tieUnresolved).toBe(false);
+  });
 });

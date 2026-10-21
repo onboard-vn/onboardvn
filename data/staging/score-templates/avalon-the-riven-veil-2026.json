@@ -1,0 +1,110 @@
+{
+  "slug": "avalon-the-riven-veil-2026",
+  "name": "Avalon: The Riven Veil",
+  "year": 2026,
+  "bggId": 402276,
+  "templateVersion": 1,
+  "variant": "retail core",
+  "playerCount": {
+    "min": 2,
+    "max": 4
+  },
+  "mode": "competitive",
+  "winRule": "highest",
+  "scoringStyle": "running-track",
+  "rounds": null,
+  "categories": [
+    {
+      "key": "vpBeforeFinalScoring",
+      "label": "VP earned before final scoring",
+      "labelVi": "Điểm đã ghi trước khi tính cuối game",
+      "hint": "Enter all VP earned from battles and game effects before final scoring.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "finalSettlementVp",
+      "label": "Final revealed settlement VP",
+      "labelVi": "Điểm khu định cư lật ngửa ở cuối game",
+      "hint": "Sum the VP printed in your revealed settlement slots scored at game end.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "grailBearer",
+      "label": "Holy Grail holder (tiebreaker)",
+      "labelVi": "Người giữ Chén Thánh (phân định hòa)",
+      "hint": "Select only for the player holding the Holy Grail at game end.",
+      "scope": "player",
+      "input": "bool",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "factionBoardVpValue",
+      "label": "Printed VP value on Faction Board (tiebreaker)",
+      "labelVi": "Giá trị VP in trên Bảng phe (phân định hòa)",
+      "hint": "Enter the faction's printed VP value. Lower value wins a final VP tie after the Holy Grail holder.",
+      "scope": "player",
+      "input": "number",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    }
+  ],
+  "tiebreakers": [
+    {
+      "categoryKey": "grailBearer",
+      "dir": "highest",
+      "description": "If tied on VP, the Holy Grail holder wins."
+    },
+    {
+      "categoryKey": "factionBoardVpValue",
+      "dir": "lowest",
+      "description": "If still tied, the faction with the lowest printed VP value on its Faction Board wins."
+    }
+  ],
+  "sharedVictoryOnTie": false,
+  "notes": "Retail core game only; Mist Walker and other expansion modules are excluded. Record all VP earned from battles and effects before final scoring, then add final revealed settlement VP once. No automated faction-specific or expansion scoring.",
+  "sources": [
+    {
+      "url": "https://boardgamegeek.com/filepage/325461/avalon-retail-rulebook",
+      "title": "Avalon: The Riven Veil Retail Rulebook (publisher file)",
+      "type": "official-rulebook",
+      "section": "Scoring and Ending the Game, pp.22–23"
+    },
+    {
+      "url": "https://www.shadowborne-games.com/pages/resources",
+      "title": "Shadowborne Games Printable Files",
+      "type": "publisher-page",
+      "section": "Publisher links the Avalon Retail Rulebook"
+    },
+    {
+      "url": "https://askrule.gg/g/avalon-the-riven-veil/sheets",
+      "title": "Avalon rules reference (comparison only)",
+      "type": "other",
+      "section": "Scoring and end-game tie summary"
+    }
+  ],
+  "confidence": "medium",
+  "needsReview": true
+}

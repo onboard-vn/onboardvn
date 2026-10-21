@@ -3,7 +3,7 @@
   "name": "Barrage",
   "year": 2019,
   "bggId": 251247,
-  "templateVersion": 3,
+  "templateVersion": 4,
   "variant": "base",
   "playerCount": {
     "min": 1,
@@ -138,8 +138,14 @@
     }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "Base multiplayer final scoring; supply quantities exclude machinery on the wheel. Objective VP remains manually awarded with split ties rounded up. Leeghwater adds final VP printed on activated Private Buildings, entered separately; immediate advanced-technology VP already belongs on the track. Solo/automa, Duel/new maps and five-player modules not automated.",
+  "notes": "Base multiplayer final scoring verified against Cranio's core rules; supply quantities exclude machinery on the wheel. Objective VP remains manually awarded with split ties rounded up. Leeghwater adds final VP printed on activated Private Buildings, entered separately; immediate advanced-technology VP already belongs on the track. Solo/automa, Duel/new maps and five-player modules not automated.",
   "sources": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/1010/2246/6379/files/Barrage_Rules_Core_ENG_compressed_compressed_2.pdf?v=1784708012",
+      "title": "Barrage core English rulebook (Cranio Creations)",
+      "type": "official-rulebook",
+      "section": "End of the Game; final scoring"
+    },
     {
       "url": "https://www.rulespal.com/barrage/rulebook",
       "title": "Barrage rulebook text (RulesPal)",
@@ -153,6 +159,6 @@
       "section": "pp.5–6 Private Buildings; End of the Game"
     }
   ],
-  "confidence": "medium",
-  "needsReview": true
+  "confidence": "high",
+  "needsReview": false
 }

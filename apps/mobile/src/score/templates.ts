@@ -23,6 +23,10 @@ import club21 from '../../../../data/staging/score-templates/feya-s-swamp-2025.j
 import club22 from '../../../../data/staging/score-templates/vantage.json';
 import club23 from '../../../../data/staging/score-templates/abomination-the-heir-of-frankenstein-2019.json';
 import club24 from '../../../../data/staging/score-templates/zoo-tycoon.json';
+import club25 from '../../../../data/staging/score-templates/alchemists.json';
+import club26 from '../../../../data/staging/score-templates/carnegie.json';
+import club27 from '../../../../data/staging/score-templates/the-voyages-of-marco-polo-2015.json';
+import club28 from '../../../../data/staging/score-templates/the-castle-of-burgundy-special-edition.json';
 import { scoreTemplateSchema, type ScoreTemplate } from '@onboard/shared';
 import acquire from '../../../../data/staging/score-templates/acquire-1963.json';
 import flip7 from '../../../../data/staging/score-templates/flip-7.json';
@@ -63,6 +67,10 @@ export const scoreTemplates: Record<string, ScoreTemplate> = Object.fromEntries(
     club22,
     club23,
     club24,
+    club25,
+    club26,
+    club27,
+    club28,
     shadowHunters,
   ].map((raw) => {
     const t = scoreTemplateSchema.parse(raw);

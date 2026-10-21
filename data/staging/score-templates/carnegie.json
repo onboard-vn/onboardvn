@@ -3,7 +3,7 @@
   "name": "Carnegie",
   "year": 2022,
   "bggId": 310873,
-  "templateVersion": 1,
+  "templateVersion": 3,
   "variant": "base",
   "playerCount": {
     "min": 1,
@@ -36,7 +36,7 @@
       "key": "connections",
       "label": "City connections",
       "labelVi": "Kết nối thành phố",
-      "hint": "Up to 36 VP: network linking New York, Chicago, New Orleans, San Francisco; read from the board table using your lowest transport level.",
+      "hint": "Up to 36 VP: connect New York, Chicago, New Orleans, and San Francisco; use the lowest transport level across connected regions. If you have separate networks, count only the highest-scoring one.",
       "scope": "player",
       "input": "number",
       "min": 0,
@@ -160,8 +160,14 @@
     "target": 20,
     "description": "After 20 rounds."
   },
-  "notes": "family: point-salad-euro. Exact per-donation, per-city and project-tab tables are printed on the board/tabs, so they are entered as numbers rather than modelled. Any end-of-game money conversion was not confirmed. Solo game not modelled. Verified only from a RulesPal summary, not the official PDF.",
+  "notes": "family: point-salad-euro. Exact per-donation, per-city and project-tab tables are printed on the board/tabs, so they are entered as numbers rather than modelled. The official final-scoring list has no additional end-of-game money conversion. Solo game not modelled.",
   "sources": [
+    {
+      "url": "https://www.quined.nl/wp-content/uploads/2022/05/Carnegie-rules-EN-WEB.pdf",
+      "title": "Carnegie English rulebook (Quined Games)",
+      "type": "official-rulebook",
+      "section": "End of the Game; Scoring; Donations"
+    },
     {
       "url": "https://www.rulespal.com/carnegie/rulebook",
       "title": "Carnegie rulebook summary (RulesPal)",
@@ -169,6 +175,6 @@
       "section": "End of the Game"
     }
   ],
-  "confidence": "medium",
-  "needsReview": true
+  "confidence": "high",
+  "needsReview": false
 }
