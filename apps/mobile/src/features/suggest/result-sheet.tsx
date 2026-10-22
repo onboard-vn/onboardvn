@@ -12,15 +12,18 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { api } from '../../api/client';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { summaryMeta } from '../games/filters';
 import { mediaUrl } from '../media';
 import { gameName } from '../shelf/logic';
 import { useFetch } from '../use-fetch';
 import { WishlistButton } from '../wishlist/wishlist-button';
-import { RARITY } from './rarity';
+import { RARITY, rarityForeground } from './rarity';
 import { cafeContacts } from './cafe-contacts';
 import { actionGroup, eventParams, whoHasIt, type SuggestChoice } from './sources';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 const DESKTOP_MIN_WIDTH = 700;
 
@@ -35,6 +38,7 @@ export function ResultSheet({
   onClose: () => void;
   onAgain: () => void;
 }) {
+  useAppPreferences();
   const { width } = useWindowDimensions();
   const desktop = width >= DESKTOP_MIN_WIDTH;
   return (
@@ -45,14 +49,14 @@ export function ResultSheet({
       onRequestClose={onClose}
     >
       <Pressable
-        accessibilityLabel="Đóng"
+        accessibilityLabel={t("Đóng")}
         style={[styles.scrim, desktop ? styles.scrimCenter : styles.scrimBottom]}
         onPress={onClose}
       >
         {item ? (
           <Pressable
             accessibilityRole="none"
-            accessibilityLabel="Kết quả rút thẻ"
+            accessibilityLabel={t("Kết quả rút thẻ")}
             onPress={() => undefined}
             style={[
               styles.sheet,
@@ -79,6 +83,7 @@ function SheetBody({
   onClose: () => void;
   onAgain: () => void;
 }) {
+  useAppPreferences();
   const router = useRouter();
   const { game } = item;
   const rarity = RARITY[item.rarity];
@@ -115,16 +120,16 @@ function SheetBody({
 
   const cta =
     group === 'cafe'
-      ? { label: 'Tạo Kèo tại quán này', onPress: toEvent }
+      ? { label: t('Tạo Kèo tại quán này'), onPress: toEvent }
       : group === 'personal'
-        ? { label: 'Rủ chơi · Tạo Kèo', onPress: toEvent }
-        : { label: 'Xem quán & người có game', onPress: toGame };
+        ? { label: t('Rủ chơi · Tạo Kèo'), onPress: toEvent }
+        : { label: t('Xem quán & người có game'), onPress: toGame };
 
   return (
     <>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Đóng"
+        accessibilityLabel={t("Đóng")}
         onPress={onClose}
         style={styles.close}
       >
@@ -150,17 +155,17 @@ function SheetBody({
           ) : null}
         </View>
         <View style={styles.heroText}>
-          <Text style={[styles.badge, { backgroundColor: rarity.color }]}>{rarity.label}</Text>
+          <Text style={[styles.badge, { backgroundColor: rarity.color, color: rarityForeground(item.rarity) }]}>{t(rarity.label)}</Text>
           <Text style={styles.title}>{gameName(game)}</Text>
-          <Text style={styles.sub}>{summaryMeta(game) || 'Chưa có thông tin chi tiết'}</Text>
+          <Text style={styles.sub}>{summaryMeta(game) || t('Chưa có thông tin chi tiết')}</Text>
         </View>
       </View>
 
       <View style={styles.who}>
         <Text style={styles.whoText}>{whoHasIt(choice, item)}</Text>
-        {showCafes && cafes.loading ? <Text style={styles.sub}>Đang tải quán...</Text> : null}
+        {showCafes && cafes.loading ? <Text style={styles.sub}>{t("Đang tải quán...")}</Text> : null}
         {showCafes && !cafes.loading && nearby.length === 0 ? (
-          <Text style={styles.sub}>Chưa có quán nào ghi nhận game này.</Text>
+          <Text style={styles.sub}>{t("Chưa có quán nào ghi nhận game này.")}</Text>
         ) : null}
         {showCafes
           ? nearby.map((c) => (
@@ -191,30 +196,31 @@ function SheetBody({
           : null}
         {group === 'personal' ? (
           <SecondaryButton
-            label={showCafes ? 'Ẩn quán có game' : 'Quán có game này'}
+            label={showCafes ? t("Ẩn quán có game") : t("Quán có game này")}
             onPress={() => setShowCafes((v) => !v)}
           />
         ) : null}
         {group === 'area' ? (
-          <SecondaryButton label="Tạo Kèo" onPress={toEvent} />
+          <SecondaryButton label={t("Tạo Kèo")} onPress={toEvent} />
         ) : (
-          <SecondaryButton label="Xem game" onPress={toGame} />
+          <SecondaryButton label={t('Xem game')} onPress={toGame} />
         )}
         <View style={styles.secondaryWrap}>
           <WishlistButton gameId={game.id} nextPath="/suggest" />
         </View>
       </View>
       <Pressable accessibilityRole="button" onPress={onAgain} style={styles.again}>
-        <Text style={styles.againText}>TRÁO LẠI</Text>
+        <Text style={styles.againText}>{t("TRÁO LẠI")}</Text>
       </Pressable>
       <Text style={[styles.sub, { textAlign: 'center' }]}>
-        Đóng khung này để xem 4 lá bạn đã bỏ qua.
+        {t("Đóng khung này để xem 4 lá bạn đã bỏ qua.")}
       </Text>
     </>
   );
 }
 
 function SecondaryButton({ label, onPress }: { label: string; onPress: () => void }) {
+  useAppPreferences();
   return (
     <Pressable accessibilityRole="button" onPress={onPress} style={styles.secondary}>
       <Text style={styles.secondaryText}>{label}</Text>
@@ -222,7 +228,7 @@ function SecondaryButton({ label, onPress }: { label: string; onPress: () => voi
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   scrim: { flex: 1, backgroundColor: 'rgba(28,25,23,0.55)', cursor: 'auto' },
   scrimBottom: { justifyContent: 'flex-end', alignItems: 'center' },
   scrimCenter: { justifyContent: 'center', alignItems: 'center', padding: space.lg },
@@ -278,7 +284,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     boxShadow: '0 4px 0 #0b5a54',
   },
-  ctaText: { color: '#fff', fontWeight: '800', fontSize: 17 },
+  ctaText: { color: colors.onPrimary, fontWeight: '800', fontSize: 17 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
   secondary: {
     flexGrow: 1,
@@ -299,5 +305,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     boxShadow: '0 3px 0 #c28d10',
   },
-  againText: { color: colors.text, fontWeight: '800' },
-});
+  againText: { color: colors.onAccent, fontWeight: '800' },
+}));

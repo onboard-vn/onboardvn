@@ -2,8 +2,12 @@ import { useRouter } from 'expo-router';
 import { View } from 'react-native';
 import { api } from '../../api/client';
 import { Btn, FormError, confirmAsync, href, useAction } from '../events/ui';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 export function LeaveClubButton({ clubId }: { clubId: string }) {
+  useAppPreferences();
   const router = useRouter();
   const { pending, error, run } = useAction();
 
@@ -22,7 +26,7 @@ export function LeaveClubButton({ clubId }: { clubId: string }) {
         small
         variant="danger"
         disabled={pending}
-        label="Rời club"
+        label={t("Rời club")}
         onPress={() => void onLeave()}
       />
       <FormError message={error} />

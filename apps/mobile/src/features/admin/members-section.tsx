@@ -1,8 +1,10 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { CafeMemberDto } from '@onboard/shared';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { api } from '../../api/client';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { errorMessage } from '../errors';
 import { ErrorText, Section, SmallButton } from './ui';
 
@@ -15,6 +17,7 @@ export function MembersSection({
   cafeId: string;
   initialMembers: CafeMemberDto[];
 }) {
+  useAppPreferences();
   const [members, setMembers] = useState(initialMembers);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,35 +29,38 @@ export function MembersSection({
       await api(`/cafes/${cafeId}/members/${encodeURIComponent(userId)}`, { method: 'DELETE' });
       setMembers((await api<{ items: CafeMemberDto[] }>(`/cafes/${cafeId}/members`)).items);
     } catch (e) {
-      setError(errorMessage(e, 'Không gỡ được thành viên'));
+      setError(errorMessage(e, t('Không gỡ được thành viên')));
     } finally {
       setPending(false);
     }
   }
 
   return (
-    <Section title="Thành viên quán">
+    <Section title={t('Thành viên quán')}>
       {members.map((m) => (
         <View key={m.userId} style={styles.row}>
           <Text style={styles.text}>
-            {m.name} (@{m.username ?? m.userId}) · {ROLE_LABEL[m.role] ?? m.role}
+            {m.name} (@{m.username ?? m.userId}) ·{' '}
+            {ROLE_LABEL[m.role] ? t(ROLE_LABEL[m.role]) : m.role}
           </Text>
-          <SmallButton label="Gỡ" disabled={pending} onPress={() => void onRemove(m.userId)} />
+          <SmallButton label={t('Gỡ')} disabled={pending} onPress={() => void onRemove(m.userId)} />
         </View>
       ))}
-      {members.length === 0 ? <Text style={styles.muted}>Chưa có thành viên.</Text> : null}
+      {members.length === 0 ? <Text style={styles.muted}>{t('Chưa có thành viên.')}</Text> : null}
       <ErrorText message={error} />
     </Section>
   );
 }
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space.sm,
-  },
-  text: { fontSize: 13, color: colors.text, flex: 1 },
-  muted: { fontSize: 13, color: colors.muted },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: space.sm,
+    },
+    text: { fontSize: 13, color: colors.text, flex: 1 },
+    muted: { fontSize: 13, color: colors.muted },
+  }),
+);

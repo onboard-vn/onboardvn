@@ -1,4 +1,6 @@
 import { TextField } from './ui';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 export function DateField({
   label,
@@ -11,6 +13,7 @@ export function DateField({
   onChange: (value: string) => void;
   kind: 'date' | 'datetime-local';
 }) {
+  useAppPreferences();
   return (
     <TextField
       label={label}

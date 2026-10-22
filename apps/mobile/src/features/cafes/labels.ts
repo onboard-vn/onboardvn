@@ -6,6 +6,7 @@ import type {
   CafeOpenStatus,
   VenueType,
 } from '@onboard/shared';
+import { t } from '../../ui/i18n';
 
 export const VENUE_TYPE_LABELS: Record<VenueType, string> = {
   boardgame_cafe: 'Cafe board game',
@@ -56,13 +57,16 @@ export function openStatusLabel(status: CafeOpenStatus | undefined): string | nu
   if (!status) return null;
   switch (status.state) {
     case 'open':
-      return status.until ? `Đang mở · Đóng lúc ${status.until}` : 'Đang mở';
+      return status.until ? t('Đang mở · Đóng lúc {time}', { time: status.until }) : t('Đang mở');
     case 'closing_soon':
-      return status.until ? `Sắp đóng · Đóng lúc ${status.until}` : 'Sắp đóng';
+      return status.until ? t('Sắp đóng · Đóng lúc {time}', { time: status.until }) : t('Sắp đóng');
     case 'closed':
       return status.nextOpen
-        ? `Đã đóng · Mở lúc ${status.nextOpen.time} ${DAY_LABELS[status.nextOpen.day]}`
-        : 'Đã đóng';
+        ? t('Đã đóng · Mở lúc {time} {day}', {
+            time: status.nextOpen.time,
+            day: t(DAY_LABELS[status.nextOpen.day]),
+          })
+        : t('Đã đóng');
     default:
       return null;
   }
@@ -71,19 +75,23 @@ export function openStatusLabel(status: CafeOpenStatus | undefined): string | nu
 export function amenityLines(amenities: CafeAmenities | undefined): string[] {
   if (!amenities) return [];
   const lines = AMENITY_KEYS.filter((k) => amenities[k] != null).map(
-    (k) => `${AMENITY_LABELS[k]}: ${amenities[k] ? 'Có' : 'Không'}`,
+    (k) =>
+      t('{label}: {value}', {
+        label: t(AMENITY_LABELS[k]),
+        value: t(amenities[k] ? 'Có' : 'Không'),
+      }),
   );
   if (amenities.privateRoomCapacity != null) {
-    lines.push(`Sức chứa phòng riêng: ${amenities.privateRoomCapacity}`);
+    lines.push(t('Sức chứa phòng riêng: {count}', { count: amenities.privateRoomCapacity }));
   }
   if (amenities.maxGroupSize != null) {
-    lines.push(`Sức chứa nhóm tối đa: ${amenities.maxGroupSize}`);
+    lines.push(t('Sức chứa nhóm tối đa: {count}', { count: amenities.maxGroupSize }));
   }
   return lines;
 }
 
 export function formatRanges(ranges: CafeHourRange[] | undefined): string {
-  if (!ranges || ranges.length === 0) return 'Đóng cửa';
+  if (!ranges || ranges.length === 0) return t('Đóng cửa');
   return ranges.map((r) => `${r.open}–${r.close}`).join(', ');
 }
 

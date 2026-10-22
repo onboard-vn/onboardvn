@@ -17,6 +17,8 @@ export type Values = Record<string, RawValue>;
 export interface Player {
   id: string;
   name: string;
+  /** Seat used only when a shared-play identity has no display name. */
+  fallbackSeat?: number;
   kind?: PlayerKind;
   avatarColor?: string;
   birthYear?: number;
@@ -252,7 +254,7 @@ export function tiebreakerNotes(t: ScoreTemplate): RuleNotes {
   for (const tb of t.tiebreakers ?? []) {
     const vi = (tb as { descriptionVi?: string | null }).descriptionVi;
     if (vi) out.vi.push(vi);
-    else if (tb.description) out.en.push(tb.description);
+    if (tb.description) out.en.push(tb.description);
   }
   return out;
 }

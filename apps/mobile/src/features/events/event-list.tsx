@@ -2,6 +2,9 @@ import { View } from 'react-native';
 import { space } from '../../ui/theme';
 import { formatVnDateTime } from './time';
 import { Body, CardLink, Muted } from './ui';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 export interface EventListItem {
   id: string;
@@ -14,6 +17,7 @@ export interface EventListItem {
 }
 
 export function EventList({ items }: { items: EventListItem[] }) {
+  useAppPreferences();
   return (
     <View style={{ gap: space.md }}>
       {items.map((meetup) => (
@@ -23,8 +27,7 @@ export function EventList({ items }: { items: EventListItem[] }) {
           <Muted>{meetup.locationLabel}</Muted>
           <Body>
             {meetup.goingCount}
-            {meetup.capacity ? `/${meetup.capacity}` : ''} người đi
-          </Body>
+            {meetup.capacity ? `/${meetup.capacity}` : ''} {' '}{t("người đi")}</Body>
         </CardLink>
       ))}
     </View>

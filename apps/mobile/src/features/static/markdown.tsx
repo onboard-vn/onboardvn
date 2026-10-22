@@ -1,9 +1,12 @@
 import { marked, type Token, type Tokens } from 'marked';
 import { StyleSheet, Text, View } from 'react-native';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { openUrl } from './text';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 function Inline({ tokens }: { tokens: Token[] | undefined }) {
+  useAppPreferences();
   return (
     <>
       {(tokens ?? []).map((t, i) => {
@@ -53,6 +56,7 @@ function Inline({ tokens }: { tokens: Token[] | undefined }) {
 }
 
 function Block({ token }: { token: Token }) {
+  useAppPreferences();
   switch (token.type) {
     case 'heading': {
       const h = token as Tokens.Heading;
@@ -94,6 +98,7 @@ function Block({ token }: { token: Token }) {
 }
 
 export function Markdown({ source }: { source: string }) {
+  useAppPreferences();
   const tokens = marked.lexer(source);
   return (
     <View style={styles.root}>
@@ -104,7 +109,7 @@ export function Markdown({ source }: { source: string }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   root: { gap: space.md },
   h1: { fontSize: 24, fontWeight: '700', color: colors.text },
   h2: { fontSize: 19, fontWeight: '600', color: colors.text, marginTop: space.md },
@@ -117,4 +122,4 @@ const styles = StyleSheet.create({
   list: { gap: space.xs, paddingLeft: space.sm },
   item: { flexDirection: 'row', gap: space.sm },
   itemText: { flex: 1 },
-});
+}));

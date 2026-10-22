@@ -1,9 +1,11 @@
+import { t, translateKnown } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { InventoryImportApplyResponse, InventoryImportRowDto } from '@onboard/shared';
 import { useState } from 'react';
 import { Linking, Platform, StyleSheet, Text, View } from 'react-native';
 import { api } from '../../api/client';
 import { Badge, Button, Card, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { errorMessage } from '../errors';
 import { GamePicker } from '../scan/game-picker';
 import { NumberField } from '../../ui/number-field';
@@ -35,6 +37,7 @@ const toRowState = (row: InventoryImportRowDto): RowState => ({
 const TEMPLATE_URL = '/templates/cafe-inventory.csv';
 
 export function ImportManager({ cafeId, onApplied }: { cafeId: string; onApplied?: () => void }) {
+  useAppPreferences();
   const [rows, setRows] = useState<RowState[] | null>(null);
   const [uploadPending, setUploadPending] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -54,14 +57,14 @@ export function ImportManager({ cafeId, onApplied }: { cafeId: string; onApplied
       );
       setRows(body.rows.map(toRowState));
     } catch (e) {
-      setUploadError(errorMessage(e, 'Không đọc được file CSV'));
+      setUploadError(errorMessage(e, t('Không đọc được file CSV')));
     } finally {
       setUploadPending(false);
     }
   };
 
   const onFile = (file: File) => {
-    void file.text().then(dryRun, () => setUploadError('Không đọc được file CSV'));
+    void file.text().then(dryRun, () => setUploadError(t('Không đọc được file CSV')));
   };
 
   const updateRow = (line: number, patch: Partial<RowState>) =>
@@ -87,7 +90,7 @@ export function ImportManager({ cafeId, onApplied }: { cafeId: string; onApplied
       );
       onApplied?.();
     } catch (e) {
-      setApplyError(errorMessage(e, 'Không áp dụng được import'));
+      setApplyError(errorMessage(e, t('Không áp dụng được import')));
     } finally {
       setApplyPending(false);
     }
@@ -101,19 +104,19 @@ export function ImportManager({ cafeId, onApplied }: { cafeId: string; onApplied
           style={styles.link}
           onPress={() => void Linking.openURL(TEMPLATE_URL)}
         >
-          Tải file mẫu CSV
+          {t('Tải file mẫu CSV')}
         </Text>
         {Platform.OS === 'web' ? (
           <FilePick
             accept=".csv,text/csv"
-            label="Chọn file CSV"
+            label={t('Chọn file CSV')}
             disabled={uploadPending}
             onFile={onFile}
           />
         ) : (
           <CsvInput disabled={uploadPending} onCsv={(t) => void dryRun(t)} />
         )}
-        {uploadPending ? <Hint>Đang đọc file...</Hint> : null}
+        {uploadPending ? <Hint>{t('Đang đọc file...')}</Hint> : null}
         <FormError message={uploadError} />
       </Card>
 
@@ -123,11 +126,14 @@ export function ImportManager({ cafeId, onApplied }: { cafeId: string; onApplied
             <Card key={row.line}>
               <View style={styles.head}>
                 <Text style={styles.title}>
-                  Dòng {row.line}: {row.input.name || '(trống)'}
+                  {t('Dòng')}
+                  {row.line}: {row.input.name || t('(trống)')}
                 </Text>
-                <Badge label={STATUS_LABEL[row.status]} />
+                <Badge label={t(STATUS_LABEL[row.status])} />
               </View>
-              {row.error ? <Text style={styles.error}>{row.error}</Text> : null}
+              {row.error ? (
+                <Text style={styles.error}>{translateKnown(row.error ?? '')}</Text>
+              ) : null}
 
               {row.selectedGameId ? (
                 <View style={styles.head}>
@@ -139,7 +145,7 @@ export function ImportManager({ cafeId, onApplied }: { cafeId: string; onApplied
                     onChange={(copies) => updateRow(row.line, { copies })}
                   />
                   <Button
-                    label="Bỏ qua"
+                    label={t('Bỏ qua')}
                     tone="ghost"
                     onPress={() =>
                       updateRow(row.line, { selectedGameId: null, selectedGameName: null })
@@ -157,7 +163,7 @@ export function ImportManager({ cafeId, onApplied }: { cafeId: string; onApplied
                         <Text style={styles.muted}>({Math.round(s.similarity * 100)}%)</Text>
                       </Text>
                       <Button
-                        label="Dùng gợi ý này"
+                        label={t('Dùng gợi ý này')}
                         onPress={() =>
                           updateRow(row.line, {
                             selectedGameId: s.gameId,
@@ -180,11 +186,15 @@ export function ImportManager({ cafeId, onApplied }: { cafeId: string; onApplied
 
           <Card>
             <Button
-              label={`Thêm ${selectedCount} game vào kho`}
+              label={t('Thêm {count} game vào kho', { count: selectedCount })}
               disabled={selectedCount === 0 || applyPending}
               onPress={() => void onApply()}
             />
-            {applyResult ? <Hint>Đã áp dụng {applyResult.rowsApplied} dòng.</Hint> : null}
+            {applyResult ? (
+              <Hint>
+                {t('Đã áp dụng')} {applyResult.rowsApplied} {t('dòng.')}
+              </Hint>
+            ) : null}
             <FormError message={applyError} />
           </Card>
         </View>
@@ -193,18 +203,20 @@ export function ImportManager({ cafeId, onApplied }: { cafeId: string; onApplied
   );
 }
 
-const styles = StyleSheet.create({
-  root: { gap: space.md },
-  head: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: space.sm,
-  },
-  title: { flex: 1, fontWeight: '600', color: colors.text },
-  suggestion: { flex: 1, color: colors.text },
-  muted: { color: colors.muted, fontSize: 13 },
-  error: { color: colors.danger, fontSize: 13 },
-  link: { color: colors.primary, textDecorationLine: 'underline', fontWeight: '600' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    root: { gap: space.md },
+    head: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: space.sm,
+    },
+    title: { flex: 1, fontWeight: '600', color: colors.text },
+    suggestion: { flex: 1, color: colors.text },
+    muted: { color: colors.muted, fontSize: 13 },
+    error: { color: colors.danger, fontSize: 13 },
+    link: { color: colors.primary, textDecorationLine: 'underline', fontWeight: '600' },
+  }),
+);

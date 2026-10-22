@@ -19,6 +19,9 @@ import {
   gameName,
   useAction,
 } from './ui';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 const userName = (u: MeetupPublicUser) =>
   u.id === '' ? u.name : (u.displayUsername ?? u.username ?? u.name);
@@ -44,6 +47,7 @@ export function SessionTableCard({
   clubMeetup: boolean;
   onChanged: () => void;
 }) {
+  useAppPreferences();
   const { pending, error, run } = useAction();
   const [editing, setEditing] = useState(false);
   const [pickingGame, setPickingGame] = useState(false);
@@ -89,11 +93,11 @@ export function SessionTableCard({
         style={{ justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'nowrap' }}
       >
         <View style={{ flex: 1, gap: 2 }}>
-          <Body bold>Bàn của {userName(table.host)}</Body>
+          <Body bold>{t('Bàn của {name}', { name: userName(table.host) })}</Body>
           {table.game ? (
             <TextLink to={`/games/${table.game.slug}`}>{gameName(table.game)}</TextLink>
           ) : (
-            <Muted>Chưa chọn game</Muted>
+            <Muted>{t("Chưa chọn game")}</Muted>
           )}
         </View>
         <Muted small>
@@ -106,7 +110,7 @@ export function SessionTableCard({
       {seatedCount > 0 ? <Muted small>{table.seatedUsers.map(userName).join(', ')}</Muted> : null}
 
       <Row>
-        {clubMeetup ? <LinkBtn small label="Tính điểm" to={`/score/table/${table.id}`} /> : null}
+        {clubMeetup ? <LinkBtn small label={t("Tính điểm")} to={`/score/table/${table.id}`} /> : null}
         {modules.map((m) => (
           <LinkBtn key={m.key} small variant="outline" label={m.title} to={m.href} />
         ))}
@@ -119,14 +123,14 @@ export function SessionTableCard({
               small
               variant="outline"
               disabled={pending}
-              label="Rời bàn"
+              label={t("Rời bàn")}
               onPress={() => void act(() => api(`${base}/seat`, { method: 'DELETE' }))}
             />
           ) : viewerGoing && !viewerTableId && !isFull ? (
             <Btn
               small
               disabled={pending}
-              label="Ngồi bàn này"
+              label={t("Ngồi bàn này")}
               onPress={() => void act(() => api(`${base}/seat`, { method: 'POST', body: {} }))}
             />
           ) : null}
@@ -137,14 +141,14 @@ export function SessionTableCard({
                 small
                 variant="outline"
                 disabled={pending}
-                label="Sửa bàn"
+                label={t("Sửa bàn")}
                 onPress={() => setEditing(true)}
               />
               <Btn
                 small
                 variant="danger"
                 disabled={pending}
-                label="Xóa bàn"
+                label={t("Xóa bàn")}
                 onPress={() => void remove()}
               />
             </>
@@ -159,7 +163,7 @@ export function SessionTableCard({
             <Btn
               small
               variant="outline"
-              label="Đổi game"
+              label={t("Đổi game")}
               onPress={() => setPickingGame((v) => !v)}
             />
           </Row>
@@ -177,12 +181,12 @@ export function SessionTableCard({
             value={seats}
             onChangeText={setSeats}
             keyboardType="number-pad"
-            placeholder="Số ghế (tính cả host)"
+            placeholder={t("Số ghế (tính cả host)")}
           />
-          <TextField value={note} onChangeText={setNote} maxLength={500} placeholder="Ghi chú" />
+          <TextField value={note} onChangeText={setNote} maxLength={500} placeholder={t("Ghi chú")} />
           <Row>
-            <Btn small disabled={pending} label="Lưu" onPress={() => void saveEdit()} />
-            <Btn small variant="ghost" label="Hủy" onPress={() => setEditing(false)} />
+            <Btn small disabled={pending} label={t("Lưu")} onPress={() => void saveEdit()} />
+            <Btn small variant="ghost" label={t("Hủy")} onPress={() => setEditing(false)} />
           </Row>
         </View>
       ) : null}

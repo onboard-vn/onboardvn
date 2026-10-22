@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Avatar, Button, Card, Heading, Hint } from '../ui/primitives';
-import { colors } from '../ui/theme';
+import { themeStyles, colors } from '../ui/theme';
 import { PresenceLabel } from './cell-flash';
 import { AddPlayerSheet } from './add-player-sheet';
 import { playerBounds } from './model';
 import type { RosterApi } from '../api/plays-types';
 import type { SheetApi } from './use-sheet';
-
+import { scorePlayerName, scoreText } from './localization';
 const KIND_LABEL = { member: '', guest: 'Khách', external: 'Ngoài CLB' } as const;
 
 export function PlayerEditor({ sheet, roster }: { sheet: SheetApi; roster: RosterApi }) {
@@ -19,22 +19,22 @@ export function PlayerEditor({ sheet, roster }: { sheet: SheetApi; roster: Roste
   return (
     <Card>
       <Heading>
-        Người chơi ({players.length}/{max})
+        {scoreText("Người chơi (")}{players.length}/{max})
       </Heading>
       {players.map((p) => (
         <View key={p.id} style={styles.row}>
-          <Avatar name={p.name} color={p.avatarColor ?? colors.muted} />
+          <Avatar name={scorePlayerName(p)} color={p.avatarColor ?? colors.muted} />
           <View style={{ flex: 1 }}>
             <Text style={styles.name} numberOfLines={1}>
-              {p.name}
+              {scorePlayerName(p)}
             </Text>
-            <PresenceLabel sheet={sheet} id={p.id} name={p.name} />
+            <PresenceLabel sheet={sheet} id={p.id} name={p.name} fallbackSeat={p.fallbackSeat} />
           </View>
           {p.kind && KIND_LABEL[p.kind] ? (
-            <Text style={styles.kind}>{KIND_LABEL[p.kind]}</Text>
+            <Text style={styles.kind}>{scoreText(KIND_LABEL[p.kind])}</Text>
           ) : null}
           <Pressable
-            accessibilityLabel={`Xóa ${p.name}`}
+            accessibilityLabel={scoreText('Xóa {name}', { name: scorePlayerName(p) })}
             accessibilityRole="button"
             disabled={players.length <= min}
             onPress={() =>
@@ -50,11 +50,11 @@ export function PlayerEditor({ sheet, roster }: { sheet: SheetApi; roster: Roste
         </View>
       ))}
       {full ? (
-        <Hint>Đã đạt tối đa {max} người chơi.</Hint>
+        <Hint>{scoreText("Đã đạt tối đa")}{" "}{max} {scoreText("người chơi.")}</Hint>
       ) : (
-        <Button label="Thêm người chơi" tone="ghost" onPress={() => setOpen(true)} />
+        <Button label={scoreText("Thêm người chơi")} tone="ghost" onPress={() => setOpen(true)} />
       )}
-      {players.length < min ? <Hint>Cần ít nhất {min} người chơi.</Hint> : null}
+      {players.length < min ? <Hint>{scoreText("Cần ít nhất")}{" "}{min} {scoreText("người chơi.")}</Hint> : null}
       <AddPlayerSheet
         visible={open}
         seatedIds={players.map((p) => p.id)}
@@ -69,7 +69,7 @@ export function PlayerEditor({ sheet, roster }: { sheet: SheetApi; roster: Roste
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   name: { fontSize: 15, fontWeight: '600', color: colors.text },
   kind: { fontSize: 12, color: colors.muted },
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.dangerSoft,
   },
   removeText: { color: colors.danger, fontWeight: '700' },
-});
+}));

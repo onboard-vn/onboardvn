@@ -6,6 +6,9 @@ import { eventFiltersToParams, type EventFilterValues, type EventsView } from '.
 import { Select } from './select';
 import { useWards } from './use-wards';
 import { Box, Btn, href } from './ui';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 export function EventFilters({
   provinces,
@@ -22,6 +25,7 @@ export function EventFilters({
   view: EventsView;
   month?: string;
 }) {
+  useAppPreferences();
   const router = useRouter();
   const [provinceCode, setProvinceCode] = useState(initialProvinceCode ?? '');
   const [wardCode, setWardCode] = useState(initialWardCode ?? '');
@@ -43,8 +47,8 @@ export function EventFilters({
   return (
     <Box>
       <Select
-        label="Tỉnh/thành"
-        placeholder="Tất cả"
+        label={t("Tỉnh/thành")}
+        placeholder={t("Tất cả")}
         value={provinceCode}
         options={provinces.map((p) => ({ value: p.code, label: p.name }))}
         onChange={(code) => {
@@ -53,15 +57,15 @@ export function EventFilters({
         }}
       />
       <Select
-        label="Phường/xã"
-        placeholder="Tất cả"
+        label={t("Phường/xã")}
+        placeholder={t("Tất cả")}
         value={wardCode}
         disabled={!provinceCode}
         options={wards.map((w) => ({ value: w.code, label: w.name }))}
         onChange={setWardCode}
       />
-      <DateField label="Từ ngày" kind="date" value={from} onChange={setFrom} />
-      <Btn small label="Lọc" onPress={onSubmit} style={{ alignSelf: 'flex-start' }} />
+      <DateField label={t("Từ ngày")} kind="date" value={from} onChange={setFrom} />
+      <Btn small label={t("Lọc")} onPress={onSubmit} style={{ alignSelf: 'flex-start' }} />
     </Box>
   );
 }

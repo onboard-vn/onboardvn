@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { colors, radius, space } from '../../ui/theme';
+import { themeStyles, colors, radius, space } from '../../ui/theme';
 import { Field } from './ui';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 export interface SelectOption {
   value: string;
@@ -23,6 +25,7 @@ export function Select({
   onChange: (value: string) => void;
   disabled?: boolean;
 }) {
+  useAppPreferences();
   const [open, setOpen] = useState(false);
   const current = options.find((o) => o.value === value);
   const all: SelectOption[] = [{ value: '', label: placeholder }, ...options];
@@ -62,7 +65,7 @@ export function Select({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   trigger: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -83,4 +86,4 @@ const styles = StyleSheet.create({
   },
   item: { paddingHorizontal: space.md, paddingVertical: 10 },
   itemText: { fontSize: 15, color: colors.text },
-});
+}));

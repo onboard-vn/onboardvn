@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import { Linking, Platform, Share, StyleSheet, Text } from 'react-native';
-import { colors } from '../../ui/theme';
+import { themeStyles, colors } from '../../ui/theme';
 import { Box, Btn, Row } from './ui';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 export function InviteShare({ inviteUrl, title }: { inviteUrl: string; title: string }) {
+  useAppPreferences();
   const [copied, setCopied] = useState(false);
 
   async function copy() {
@@ -37,7 +41,7 @@ export function InviteShare({ inviteUrl, title }: { inviteUrl: string; title: st
 
   return (
     <Box>
-      <Text style={styles.heading}>Link mời (chỉ hiện một lần, hãy lưu lại)</Text>
+      <Text style={styles.heading}>{t("Link mời (chỉ hiện một lần, hãy lưu lại)")}</Text>
       <Text selectable style={styles.code}>
         {inviteUrl}
       </Text>
@@ -45,16 +49,16 @@ export function InviteShare({ inviteUrl, title }: { inviteUrl: string; title: st
         <Btn
           small
           variant="outline"
-          label={copied ? 'Đã sao chép' : 'Sao chép link'}
+          label={copied ? t("Đã sao chép") : t("Sao chép link")}
           onPress={() => void copy()}
         />
-        <Btn small label="Chia sẻ qua Zalo" onPress={() => void share()} />
+        <Btn small label={t("Chia sẻ qua Zalo")} onPress={() => void share()} />
       </Row>
     </Box>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   heading: { fontSize: 14, fontWeight: '600', color: colors.text },
   code: {
     fontSize: 12,
@@ -63,4 +67,4 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 6,
   },
-});
+}));

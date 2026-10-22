@@ -1,3 +1,5 @@
+import { getActiveLanguage, t, translateKnown } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import type { ClubDetailDto, ClubPlaysResponse } from '@onboard/shared';
 import { Stack, useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -16,7 +18,7 @@ import {
 import { formatVnDateTime } from '../../../features/events/time';
 import { Body, Page } from '../../../features/events/ui';
 import { Button, Card, Heading, Hint } from '../../../ui/primitives';
-import { colors, space } from '../../../ui/theme';
+import { themeStyles, colors, space } from '../../../ui/theme';
 
 interface ClubPlayHistoryState {
   key: object;
@@ -45,6 +47,7 @@ function emptyClubPlayHistoryState(key: object): ClubPlayHistoryState {
 }
 
 function ClubPlayHistory() {
+  useAppPreferences();
   const { slug: routeSlug, playId: routePlayId } = useLocalSearchParams<{
     slug: string;
     playId?: string;
@@ -78,11 +81,11 @@ function ClubPlayHistory() {
         signal: request.signal,
       });
       const resolvedClubId = club.club.id;
-      if (!club.myRole || !resolvedClubId) throw new ApiError(404, 'Không tìm thấy');
+      if (!club.myRole || !resolvedClubId) throw new ApiError(404, t('Không tìm thấy'));
       if (playId) {
         const play = await playsHistoryApi.play(playId, { signal: request.signal });
         if (play.status !== 'final' || play.clubId !== resolvedClubId)
-          throw new ApiError(404, 'Không tìm thấy');
+          throw new ApiError(404, t('Không tìm thấy'));
         return {
           clubId: resolvedClubId,
           detail: mapPlayHistoryDetail(play),
@@ -170,12 +173,12 @@ function ClubPlayHistory() {
   if (sessionLoading || !user) {
     return (
       <Page>
-        <Stack.Screen options={{ title: 'Ván đã chơi' }} />
+        <Stack.Screen options={{ title: t('Ván đã chơi') }} />
         {sessionLoading ? (
           <ActivityIndicator style={styles.spinner} />
         ) : (
           <Card>
-            <Hint>Cần đăng nhập để xem ván đã chơi.</Hint>
+            <Hint>{t('Cần đăng nhập để xem ván đã chơi.')}</Hint>
           </Card>
         )}
       </Page>
@@ -184,27 +187,33 @@ function ClubPlayHistory() {
 
   return (
     <Page>
-      <Stack.Screen options={{ title: 'Ván đã chơi' }} />
+      <Stack.Screen options={{ title: t('Ván đã chơi') }} />
       <Text accessibilityRole="header" style={styles.title}>
-        {playId ? 'Chi tiết ván chơi' : 'Ván đã chơi'}
+        {playId ? t('Chi tiết ván chơi') : t('Ván đã chơi')}
       </Text>
       {playId ? (
-        <Button label="Quay lại lịch sử club" tone="ghost" onPress={returnToList} />
+        <Button label={t('Quay lại lịch sử club')} tone="ghost" onPress={returnToList} />
       ) : (
-        <Hint>Các ván đã chốt, mới nhất trước.</Hint>
+        <Hint>{t('Các ván đã chốt, mới nhất trước.')}</Hint>
       )}
 
       {view.loading ? <ActivityIndicator style={styles.spinner} /> : null}
       {!view.loading && view.error ? (
         <Card>
-          <Hint>{view.error}</Hint>
-          <Button label="Thử lại" tone="ghost" onPress={() => setReloadKey((value) => value + 1)} />
+          <Hint>{translateKnown(view.error ?? '')}</Hint>
+          <Button
+            label={t('Thử lại')}
+            tone="ghost"
+            onPress={() => setReloadKey((value) => value + 1)}
+          />
         </Card>
       ) : null}
-      {!view.loading && !view.error && view.detail ? <HistoryPlayDetail detail={view.detail} /> : null}
+      {!view.loading && !view.error && view.detail ? (
+        <HistoryPlayDetail detail={view.detail} />
+      ) : null}
       {!view.loading && !view.error && !playId && view.items.length === 0 ? (
         <Card>
-          <Hint>Chưa có ván nào được chốt.</Hint>
+          <Hint>{t('Chưa có ván nào được chốt.')}</Hint>
         </Card>
       ) : null}
       {!view.loading && !view.error && !playId
@@ -213,10 +222,16 @@ function ClubPlayHistory() {
               key={item.id}
               accessibilityRole="link"
               accessibilityLabel={[
-                `Mở ván ${item.gameName}`,
+                t('Mở ván {game}', { game: item.gameName }),
                 formatVnDateTime(item.startedAt),
-                `Thắng: ${item.winners.length ? item.winners.join(', ') : 'Chưa ghi nhận'}`,
-                `${item.playerCount.toLocaleString('vi-VN')} người chơi`,
+                t('Thắng: {winners}', {
+                  winners: item.winners.length ? item.winners.join(', ') : t('Chưa ghi nhận'),
+                }),
+                t('{count} người chơi', {
+                  count: item.playerCount.toLocaleString(
+                    getActiveLanguage() === 'en' ? 'en-US' : 'vi-VN',
+                  ),
+                }),
               ].join(', ')}
               onPress={() =>
                 router.push(
@@ -227,8 +242,12 @@ function ClubPlayHistory() {
             >
               <Body bold>{item.gameName}</Body>
               <Hint>{formatVnDateTime(item.startedAt)}</Hint>
-              <Hint>Thắng: {item.winners.length ? item.winners.join(', ') : 'Chưa ghi nhận'}</Hint>
-              <Hint>{item.playerCount} người chơi</Hint>
+              <Hint>
+                {t('Thắng:')} {item.winners.length ? item.winners.join(', ') : t('Chưa ghi nhận')}
+              </Hint>
+              <Hint>
+                {item.playerCount} {t('người chơi')}
+              </Hint>
             </Pressable>
           ))
         : null}
@@ -236,7 +255,9 @@ function ClubPlayHistory() {
         <View style={styles.more}>
           {view.moreError ? <Hint>{view.moreError}</Hint> : null}
           <Button
-            label={view.loadingMore ? 'Đang tải…' : view.moreError ? 'Thử lại' : 'Xem thêm'}
+            label={
+              view.loadingMore ? t('Đang tải…') : view.moreError ? t('Thử lại') : t('Xem thêm')
+            }
             tone="ghost"
             disabled={view.loadingMore}
             onPress={() => void loadMore()}
@@ -248,6 +269,7 @@ function ClubPlayHistory() {
 }
 
 function HistoryPlayDetail({ detail }: { detail: PlayHistoryDetail }) {
+  useAppPreferences();
   return (
     <Card>
       <Heading>{detail.gameName}</Heading>
@@ -260,7 +282,9 @@ function HistoryPlayDetail({ detail }: { detail: PlayHistoryDetail }) {
               {player.isWinner ? ' 🏆' : ''}
             </Text>
             <Text style={styles.total}>
-              {player.total === null ? '—' : player.total.toLocaleString('vi-VN')}
+              {player.total === null
+                ? '—'
+                : player.total.toLocaleString(getActiveLanguage() === 'en' ? 'en-US' : 'vi-VN')}
             </Text>
           </View>
         ))}
@@ -270,33 +294,36 @@ function HistoryPlayDetail({ detail }: { detail: PlayHistoryDetail }) {
 }
 
 export default function ClubPlayHistoryScreen() {
+  useAppPreferences();
   return <ClubPlayHistory />;
 }
 
-const styles = StyleSheet.create({
-  title: { color: colors.text, fontSize: 24, fontWeight: '700' },
-  spinner: { marginVertical: space.lg },
-  row: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 12,
-    backgroundColor: colors.card,
-    padding: space.md,
-    gap: 4,
-  },
-  rowPressed: { opacity: 0.7 },
-  more: { alignItems: 'center', gap: space.xs },
-  players: { gap: space.sm, marginTop: space.sm },
-  playerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space.md,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    paddingTop: space.sm,
-  },
-  playerName: { color: colors.text, flex: 1, fontWeight: '600' },
-  total: { color: colors.primary, fontSize: 18, fontWeight: '700' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    title: { color: colors.text, fontSize: 24, fontWeight: '700' },
+    spinner: { marginVertical: space.lg },
+    row: {
+      width: '100%',
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 12,
+      backgroundColor: colors.card,
+      padding: space.md,
+      gap: 4,
+    },
+    rowPressed: { opacity: 0.7 },
+    more: { alignItems: 'center', gap: space.xs },
+    players: { gap: space.sm, marginTop: space.sm },
+    playerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: space.md,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      paddingTop: space.sm,
+    },
+    playerName: { color: colors.text, flex: 1, fontWeight: '600' },
+    total: { color: colors.primary, fontSize: 18, fontWeight: '700' },
+  }),
+);

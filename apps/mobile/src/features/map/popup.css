@@ -3,7 +3,15 @@
   flex-direction: column;
   gap: 0.25rem;
   font-size: 0.875rem;
-  color: #111827;
+  color: var(--onboard-text, #111827);
+}
+.maplibregl-popup-content {
+  background: var(--onboard-card, #fff);
+  color: var(--onboard-text, #111827);
+  border: 1px solid var(--onboard-border, #e5e7eb);
+}
+.maplibregl-popup-close-button {
+  color: var(--onboard-muted, #4b5563);
 }
 .cafe-map-popup__title {
   font-weight: 600;
@@ -12,14 +20,14 @@
 .cafe-map-popup__badge {
   margin-left: 0.25rem;
   border-radius: 9999px;
-  background: #dcfce7;
-  color: #166534;
+  background: var(--onboard-success-soft, #dcfce7);
+  color: var(--onboard-success, #166534);
   font-size: 0.6875rem;
   font-weight: 500;
   padding: 0.0625rem 0.5rem;
 }
 .cafe-map-popup__meta {
-  color: #4b5563;
+  color: var(--onboard-muted, #4b5563);
   font-size: 0.75rem;
   margin: 0;
 }
@@ -29,7 +37,7 @@
   margin-top: 0.25rem;
 }
 .cafe-map-popup__actions a {
-  color: #4f46e5;
+  color: var(--onboard-primary, #4f46e5);
   font-size: 0.8125rem;
   font-weight: 500;
   text-decoration: underline;

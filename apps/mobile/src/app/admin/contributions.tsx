@@ -1,3 +1,5 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { AdminContributionListResponse } from '@onboard/shared';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -16,7 +18,7 @@ import {
   Section,
 } from '../../features/admin/ui';
 import { Button, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { useLoad } from '../../ui/use-load';
 
 type Result = (AdminContributionListResponse & { invalid?: false }) | { invalid: true };
@@ -33,6 +35,7 @@ async function loadContributions(userId?: string, cafeId?: string): Promise<Resu
 }
 
 export default function AdminContributionsPage() {
+  useAppPreferences();
   const router = useRouter();
   const params = useLocalSearchParams<{ userId?: string | string[]; cafeId?: string | string[] }>();
   const userId = normalizeFilterParam(params.userId);
@@ -56,12 +59,15 @@ export default function AdminContributionsPage() {
   };
 
   return (
-    <AdminPage title={`Đóng góp cộng đồng${data ? ` (${total})` : ''}`} access="admin">
-      <Section title="Lọc">
-        <Field label="User ID" value={userInput} onChangeText={setUserInput} />
-        <Field label="Café ID" value={cafeInput} onChangeText={setCafeInput} />
+    <AdminPage
+      title={data ? t('Đóng góp cộng đồng ({count})', { count: total }) : t('Đóng góp cộng đồng')}
+      access="admin"
+    >
+      <Section title={t('Lọc')}>
+        <Field label={t('User ID')} value={userInput} onChangeText={setUserInput} />
+        <Field label={t('Café ID')} value={cafeInput} onChangeText={setCafeInput} />
         <Button
-          label="Lọc"
+          label={t('Lọc')}
           onPress={() =>
             router.replace({
               pathname: '/admin/contributions',
@@ -75,10 +81,10 @@ export default function AdminContributionsPage() {
       </Section>
 
       <LoadState loading={list.loading && !data} error={list.error} onRetry={list.reload} />
-      {invalid ? <ErrorText message="Bộ lọc không hợp lệ" /> : null}
+      {invalid ? <ErrorText message={t('Bộ lọc không hợp lệ')} /> : null}
 
       {seenUsers.size > 0 ? (
-        <Section title="Thao tác theo người đóng góp">
+        <Section title={t('Thao tác theo người đóng góp')}>
           {[...seenUsers.entries()].map(([id, name]) => (
             <View key={id} style={styles.user}>
               <Text style={styles.name}>
@@ -86,21 +92,21 @@ export default function AdminContributionsPage() {
               </Text>
               <View style={styles.actions}>
                 <ActionButton
-                  label="Chặn đóng góp"
-                  failure="Không chặn được đóng góp"
-                  confirmText={`Chặn đóng góp cộng đồng của "${name}"?`}
+                  label={t('Chặn đóng góp')}
+                  failure={t('Không chặn được đóng góp')}
+                  confirmText={t('Chặn đóng góp cộng đồng của "{name}"?', { name })}
                   run={act(`/admin/users/${encodeURIComponent(id)}/contribution-block`, 'POST')}
                 />
                 <ActionButton
-                  label="Bỏ chặn"
-                  failure="Không bỏ chặn được đóng góp"
+                  label={t('Bỏ chặn')}
+                  failure={t('Không bỏ chặn được đóng góp')}
                   run={act(`/admin/users/${encodeURIComponent(id)}/contribution-block`, 'DELETE')}
                 />
                 <ActionButton
                   danger
-                  label="Gỡ toàn bộ đóng góp"
-                  failure="Không gỡ được đóng góp"
-                  confirmText={`Gỡ toàn bộ đóng góp của "${name}"? Không thể hoàn tác.`}
+                  label={t('Gỡ toàn bộ đóng góp')}
+                  failure={t('Không gỡ được đóng góp')}
+                  confirmText={t('Gỡ toàn bộ đóng góp của "{name}"? Không thể hoàn tác.', { name })}
                   run={act(`/admin/users/${encodeURIComponent(id)}/community-games`, 'DELETE')}
                 />
               </View>
@@ -116,21 +122,23 @@ export default function AdminContributionsPage() {
               <Row
                 key={item.id}
                 title={item.gameNameEn}
-                subtitle={`${item.cafeName} · ${item.userName ?? 'Không rõ người dùng'} · ${formatVnDateTime(item.createdAt)}`}
+                subtitle={`${item.cafeName} · ${item.userName ?? t('Không rõ người dùng')} · ${formatVnDateTime(item.createdAt)}`}
               />
             ))}
           </ListCard>
         ) : (
-          <Hint>Chưa có đóng góp nào khớp bộ lọc.</Hint>
+          <Hint>{t('Chưa có đóng góp nào khớp bộ lọc.')}</Hint>
         )
       ) : null}
     </AdminPage>
   );
 }
 
-const styles = StyleSheet.create({
-  user: { gap: space.sm },
-  name: { fontSize: 15, color: colors.text },
-  muted: { fontSize: 12, color: colors.muted },
-  actions: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    user: { gap: space.sm },
+    name: { fontSize: 15, color: colors.text },
+    muted: { fontSize: 12, color: colors.muted },
+    actions: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+  }),
+);

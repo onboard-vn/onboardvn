@@ -1,8 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Chip } from '../ui/primitives';
-import { colors, space } from '../ui/theme';
+import { themeStyles, colors, space } from '../ui/theme';
 import { findOption, suggestOptions, type NamedOption } from './games/filters';
 import { SearchInput } from './search-input';
+import { t } from '../ui/i18n';
+import { useAppPreferences } from '../ui/preferences';
+
 
 export function TypeAhead({
   label,
@@ -19,6 +22,7 @@ export function TypeAhead({
   onTextChange: (text: string) => void;
   onSelect: (id: string | undefined) => void;
 }) {
+  useAppPreferences();
   const suggestions = suggestOptions(options, text);
   const matched = findOption(options, text);
 
@@ -46,15 +50,15 @@ export function TypeAhead({
         </View>
       ) : null}
       {text.trim() && !matched && suggestions.length === 0 ? (
-        <Text style={styles.none}>Không có kết quả khớp.</Text>
+        <Text style={styles.none}>{t("Không có kết quả khớp.")}</Text>
       ) : null}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   wrap: { gap: space.xs },
   label: { fontSize: 13, fontWeight: '600', color: colors.muted },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
   none: { fontSize: 13, color: colors.muted },
-});
+}));

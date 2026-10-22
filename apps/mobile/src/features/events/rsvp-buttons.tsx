@@ -3,6 +3,8 @@ import { api } from '../../api/client';
 import { Btn, FormError, Muted, Row, useAction } from './ui';
 import { View } from 'react-native';
 import { space } from '../../ui/theme';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 const OPTIONS: { value: RsvpStatus; label: string }[] = [
   { value: 'going', label: 'Đi' },
@@ -31,6 +33,7 @@ export function RsvpButtons({
   waitlistPosition?: number | null;
   onChanged: () => void;
 }) {
+  useAppPreferences();
   const { pending, error, run } = useAction();
 
   async function rsvp(status: RsvpStatus) {

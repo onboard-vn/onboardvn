@@ -1,4 +1,6 @@
 import type { ClubDetailDto, MeetupListResponse } from '@onboard/shared';
+import { t } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback } from 'react';
 import { View } from 'react-native';
@@ -29,6 +31,7 @@ interface ClubView {
 }
 
 export default function ClubDetailPage() {
+  useAppPreferences();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const { user } = useSession();
   const userId = user?.id;
@@ -65,7 +68,7 @@ export default function ClubDetailPage() {
       <Stack.Screen options={{ title: club?.name ?? 'Club' }} />
       <LoadGate
         loading={loading}
-        error={status === 404 ? 'Không tìm thấy club' : error}
+        error={status === 404 ? t('Không tìm thấy club') : error}
         hasData={!!detail}
       >
         {detail && club ? (
@@ -73,8 +76,8 @@ export default function ClubDetailPage() {
             <View style={{ gap: 4 }}>
               <Title>{club.name}</Title>
               <Muted>
-                {detail.memberCount} thành viên · Club riêng tư
-                {myRole ? ` · ${ROLE_LABEL[myRole]}` : ''}
+                {detail.memberCount} {t('thành viên · Club riêng tư')}
+                {myRole ? ` · ${t(ROLE_LABEL[myRole])}` : ''}
               </Muted>
               {club.description ? <Body>{club.description}</Body> : null}
             </View>
@@ -82,18 +85,18 @@ export default function ClubDetailPage() {
             {!myRole ? (
               <Muted>
                 {user
-                  ? 'Đây là club riêng tư. Hãy mở link mời từ quản trị viên để tham gia.'
-                  : 'Đăng nhập và mở link mời để tham gia club này.'}
+                  ? t('Đây là club riêng tư. Hãy mở link mời từ quản trị viên để tham gia.')
+                  : t('Đăng nhập và mở link mời để tham gia club này.')}
               </Muted>
             ) : (
               <>
                 <Row>
-                  <LinkBtn small label="Tạo Kèo cho club" to={`/events/new?club=${club.slug}`} />
+                  <LinkBtn small label={t('Tạo Kèo cho club')} to={`/events/new?club=${club.slug}`} />
                   {canManage ? (
                     <LinkBtn
                       small
                       variant="outline"
-                      label="Quản lý"
+                      label={t('Quản lý')}
                       to={`/clubs/${club.slug}/manage`}
                     />
                   ) : null}
@@ -102,36 +105,36 @@ export default function ClubDetailPage() {
 
                 {liveBase ? (
                   <View style={{ gap: space.sm }}>
-                    <SectionTitle>App CLB</SectionTitle>
+                    <SectionTitle>{t('App CLB')}</SectionTitle>
                     <Row style={{ flexWrap: 'wrap' }}>
                       <LinkBtn
                         small
                         variant="outline"
-                        label="Hôm nay"
+                        label={t('Hôm nay')}
                         to={`${liveBase}/day/${todayVnDateKey()}${liveQuery}`}
                       />
                       <LinkBtn
                         small
                         variant="outline"
-                        label="Thành viên"
+                        label={t('Thành viên')}
                         to={`${liveBase}/members${liveQuery}`}
                       />
                       <LinkBtn
                         small
                         variant="outline"
-                        label="Kệ game"
+                        label={t('Kệ game')}
                         to={`${liveBase}/shelf${liveQuery}`}
                       />
                       <LinkBtn
                         small
                         variant="outline"
-                        label="Lịch sử"
+                        label={t('Lịch sử')}
                         to={`${liveBase}/history${liveQuery}`}
                       />
                       <LinkBtn
                         small
                         variant="outline"
-                        label="Ván đã chơi"
+                        label={t('Ván đã chơi')}
                         to={`/clubs/${encodeURIComponent(club.slug)}/plays`}
                       />
                     </Row>
@@ -139,9 +142,9 @@ export default function ClubDetailPage() {
                 ) : null}
 
                 <View style={{ gap: space.md }}>
-                  <SectionTitle>Kèo sắp tới ({meetups.length})</SectionTitle>
+                  <SectionTitle>{t('Kèo sắp tới (')}{meetups.length})</SectionTitle>
                   {meetups.length === 0 ? (
-                    <Muted>Chưa có Kèo nào.</Muted>
+                    <Muted>{t('Chưa có Kèo nào.')}</Muted>
                   ) : (
                     meetups.map((meetup) => (
                       <CardLink key={meetup.id} to={`/events/${meetup.slug}`}>
@@ -155,7 +158,7 @@ export default function ClubDetailPage() {
                 </View>
 
                 <View style={{ gap: space.md }}>
-                  <SectionTitle>Thành viên ({detail.memberCount})</SectionTitle>
+                  <SectionTitle>{t('Thành viên (')}{detail.memberCount})</SectionTitle>
                   <ListBox>
                     {(detail.members ?? []).map((m) => (
                       <View
@@ -175,7 +178,7 @@ export default function ClubDetailPage() {
                           ) : (
                             <Body>{m.user.name}</Body>
                           )}
-                          <Muted small>{ROLE_LABEL[m.role]}</Muted>
+                          <Muted small>{t(ROLE_LABEL[m.role])}</Muted>
                         </Row>
                       </View>
                     ))}

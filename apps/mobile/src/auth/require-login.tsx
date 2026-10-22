@@ -3,6 +3,9 @@ import type { ReactNode } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Button, Card, Heading, Hint } from '../ui/primitives';
 import { useSession } from './session';
+import { t } from '../ui/i18n';
+import { useAppPreferences } from '../ui/preferences';
+
 
 const withQuery = (path: string, params: Record<string, string | string[] | undefined>) => {
   const used = new Set(path.split('/'));
@@ -14,6 +17,7 @@ const withQuery = (path: string, params: Record<string, string | string[] | unde
 };
 
 export function RequireLogin({ children, reason }: { children: ReactNode; reason?: string }) {
+  useAppPreferences();
   const { user, loading } = useSession();
   const router = useRouter();
   const pathname = usePathname();
@@ -24,10 +28,10 @@ export function RequireLogin({ children, reason }: { children: ReactNode; reason
   return (
     <View style={styles.wrap}>
       <Card>
-        <Heading>Cần đăng nhập</Heading>
+        <Heading>{t("Cần đăng nhập")}</Heading>
         <Hint>{reason ?? 'Đăng nhập để xem nội dung này.'}</Hint>
         <Button
-          label="Đăng nhập"
+          label={t("Đăng nhập")}
           onPress={() =>
             router.push({ pathname: '/login', params: { next: withQuery(pathname, params) } })
           }

@@ -1,6 +1,10 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors, space } from '../ui/theme';
+import { themeStyles, colors, space } from '../ui/theme';
 import { rangeLabel, stepRange, type Bounds, type Range } from './games/filters';
+import { useAppPreferences } from '../ui/preferences';
+import { t } from '../ui/i18n';
+
+
 
 function Stepper({
   caption,
@@ -15,12 +19,13 @@ function Stepper({
   disabledDown: boolean;
   disabledUp: boolean;
 }) {
+  useAppPreferences();
   return (
     <View style={styles.stepper}>
       <Text style={styles.caption}>{caption}</Text>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={`Giảm ${caption}`}
+        accessibilityLabel={t("Giảm {caption}", { caption: caption })}
         disabled={disabledDown}
         onPress={() => onStep(-1)}
         style={[styles.btn, disabledDown && styles.off]}
@@ -30,7 +35,7 @@ function Stepper({
       <Text style={styles.value}>{value}</Text>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={`Tăng ${caption}`}
+        accessibilityLabel={t("Tăng {caption}", { caption: caption })}
         disabled={disabledUp}
         onPress={() => onStep(1)}
         style={[styles.btn, disabledUp && styles.off]}
@@ -54,6 +59,7 @@ export function RangeStepper({
   value: Range;
   onChange: (next: Range) => void;
 }) {
+  useAppPreferences();
   return (
     <View style={styles.wrap}>
       <View style={styles.head}>
@@ -62,14 +68,14 @@ export function RangeStepper({
       </View>
       <View style={styles.row}>
         <Stepper
-          caption="Từ"
+          caption={t("Từ")}
           value={value.min}
           onStep={(d) => onChange(stepRange(value, bounds, 'min', d))}
           disabledDown={value.min <= bounds.min}
           disabledUp={value.min >= value.max}
         />
         <Stepper
-          caption="Đến"
+          caption={t("Đến")}
           value={value.max}
           onStep={(d) => onChange(stepRange(value, bounds, 'max', d))}
           disabledDown={value.max <= value.min}
@@ -80,7 +86,7 @@ export function RangeStepper({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   wrap: { gap: space.xs },
   head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
   label: { fontSize: 13, fontWeight: '600', color: colors.muted },
@@ -101,4 +107,4 @@ const styles = StyleSheet.create({
   btnText: { fontSize: 20, color: colors.primary, lineHeight: 22 },
   off: { opacity: 0.35 },
   value: { minWidth: 36, textAlign: 'center', fontWeight: '600', color: colors.text },
-});
+}));

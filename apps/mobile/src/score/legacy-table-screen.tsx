@@ -11,10 +11,12 @@ import { useSession } from '../auth/session';
 import { isCoop } from '../score/model';
 import { ScoreSheet } from '../score/score-sheet';
 import { Button, Card, Heading, Hint } from '../ui/primitives';
-import { colors } from '../ui/theme';
+import { themeStyles, colors } from '../ui/theme';
 import { useLoad } from '../ui/use-load';
-
+import { useAppPreferences } from '../ui/preferences';
+import { scoreFeedbackText, scoreLocale, scoreText, templateScoreText } from './localization';
 function FinalResult({ play, template }: { play: PlayDto; template: ScoreTemplate | null }) {
+  const { language } = useAppPreferences();
   const coop = template ? isCoop(template) : false;
   const rows = [...play.players].sort(
     (a, b) => (a.computed?.rank ?? 99) - (b.computed?.rank ?? 99),
@@ -26,7 +28,7 @@ function FinalResult({ play, template }: { play: PlayDto; template: ScoreTemplat
   const first = play.players[0]?.computed?.categories ?? {};
   return (
     <Card>
-      <Heading>Kết quả đã chốt</Heading>
+      <Heading>{scoreText("Kết quả đã chốt")}</Heading>
       {coop ? (
         <>
           <View
@@ -35,11 +37,11 @@ function FinalResult({ play, template }: { play: PlayDto; template: ScoreTemplat
               { backgroundColor: won ? colors.successSoft : colors.dangerSoft },
             ]}
           >
-            <Text style={styles.bannerText}>{won ? 'Cả đội thắng' : 'Cả đội thua'}</Text>
+            <Text style={styles.bannerText}>{won ? scoreText("Cả đội thắng") : scoreText("Cả đội thua")}</Text>
           </View>
           {teamStats?.map((c) => (
             <View key={c.key} style={styles.row}>
-              <Text style={styles.name}>{c.labelVi ?? c.label}</Text>
+              <Text style={styles.name}>{templateScoreText(c.labelVi ?? c.label, c.label, language)}</Text>
               <Text style={styles.total}>{first[c.key] ?? 0}</Text>
             </View>
           ))}
@@ -53,13 +55,13 @@ function FinalResult({ play, template }: { play: PlayDto; template: ScoreTemplat
               {p.identity.displayName}
               {p.computed?.isWinner ? '  🏆' : ''}
             </Text>
-            <Text style={styles.total}>{(p.computed?.total ?? 0).toLocaleString('vi-VN')}</Text>
+            <Text style={styles.total}>{(p.computed?.total ?? 0).toLocaleString(scoreLocale(language))}</Text>
           </View>
         ))
       )}
       {play.warnings.map((w) => (
         <Text key={w} style={styles.meta}>
-          {w}
+          {scoreFeedbackText(w)}
         </Text>
       ))}
     </Card>
@@ -74,11 +76,11 @@ function GuestActions({ guest, tableId }: { guest: IdentityDto; tableId: string 
     );
   return (
     <View style={styles.guest}>
-      <Text style={styles.name}>{guest.displayName} (khách)</Text>
+      <Text style={styles.name}>{guest.displayName} {scoreText("(khách)")}</Text>
       <View style={styles.actions}>
         <Button
           tone="ghost"
-          label="Đây là tôi"
+          label={scoreText("Đây là tôi")}
           onPress={() =>
             run(async () => {
               await clubsApi.requestClaim(guest.id, tableId);
@@ -88,7 +90,7 @@ function GuestActions({ guest, tableId }: { guest: IdentityDto; tableId: string 
         />
         <Button
           tone="ghost"
-          label="Tạo link nhận"
+          label={scoreText("Tạo link nhận")}
           onPress={() =>
             run(async () => `Gửi link này cho khách: ${(await clubsApi.claimLink(guest.id)).url}`)
           }
@@ -96,7 +98,7 @@ function GuestActions({ guest, tableId }: { guest: IdentityDto; tableId: string 
       </View>
       {note ? (
         <Text selectable style={styles.meta}>
-          {note}
+          {scoreFeedbackText(note)}
         </Text>
       ) : null}
     </View>
@@ -145,7 +147,7 @@ function TablePlay({ bundle, reload }: { bundle: TableBundle; reload: () => void
     }
   };
 
-  const title = <Stack.Screen options={{ title: table.game?.name ?? 'Bảng điểm' }} />;
+  const title = <Stack.Screen options={{ title: table.game?.name ?? scoreText('Bảng điểm') }} />;
 
   if (play?.status === 'final') {
     return (
@@ -156,7 +158,7 @@ function TablePlay({ bundle, reload }: { bundle: TableBundle; reload: () => void
             <FinalResult play={play} template={template} />
             {guests.length ? (
               <Card>
-                <Heading>Khách ở bàn</Heading>
+                <Heading>{scoreText("Khách ở bàn")}</Heading>
                 {guests.map((g) => (
                   <GuestActions key={g.id} guest={g} tableId={table.id} />
                 ))}
@@ -175,20 +177,20 @@ function TablePlay({ bundle, reload }: { bundle: TableBundle; reload: () => void
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.column}>
             <Card>
-              <Heading>{table.game?.name ?? 'Bàn chơi'}</Heading>
+              <Heading>{table.game?.name ?? scoreText("Bàn chơi")}</Heading>
               <Hint>
                 {table.meetupTitle} ·{' '}
-                {table.seated.map((s) => s.displayName).join(', ') || 'chưa có ai'}
+                {table.seated.map((s) => s.displayName).join(', ') || scoreText("chưa có ai")}
               </Hint>
-              {!template ? <Hint>Game này chưa có mẫu tính điểm.</Hint> : null}
+              {!template ? <Hint>{scoreText("Game này chưa có mẫu tính điểm.")}</Hint> : null}
               {template && !play ? (
                 <Button
-                  label={starting ? 'Đang tạo…' : 'Bắt đầu tính điểm'}
+                  label={starting ? scoreText("Đang tạo…") : scoreText("Bắt đầu tính điểm")}
                   disabled={starting}
                   onPress={() => void start()}
                 />
               ) : null}
-              {error ? <Text style={styles.error}>{error}</Text> : null}
+              {error ? <Text style={styles.error}>{scoreFeedbackText(error)}</Text> : null}
             </Card>
           </View>
         </ScrollView>
@@ -223,15 +225,16 @@ function TableScreenBody({ tableId }: { tableId: string }) {
 }
 
 export function LegacyTableScoreScreen() {
+  useAppPreferences();
   const { tableId } = useLocalSearchParams<{ tableId: string }>();
   return (
-    <RequireLogin reason="Đăng nhập để tính điểm cho bàn này.">
-      {tableId ? <TableScreenBody tableId={tableId} /> : <Hint>Thiếu mã bàn.</Hint>}
+    <RequireLogin reason={scoreText('Đăng nhập để tính điểm cho bàn này.')}>
+      {tableId ? <TableScreenBody tableId={tableId} /> : <Hint>{scoreText("Thiếu mã bàn.")}</Hint>}
     </RequireLogin>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   content: { padding: 16, alignItems: 'center' },
   column: { width: '100%', maxWidth: 720, gap: 12 },
   row: { flexDirection: 'row', justifyContent: 'space-between', gap: 8 },
@@ -243,4 +246,4 @@ const styles = StyleSheet.create({
   bannerText: { fontSize: 18, fontWeight: '800', color: colors.text },
   guest: { gap: 4, paddingVertical: 4 },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-});
+}));

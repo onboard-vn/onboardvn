@@ -2,8 +2,11 @@ import { useState, type ReactNode } from 'react';
 import { ActivityIndicator, Linking, StyleSheet, Text, View } from 'react-native';
 import { formatVnDateTime } from '../features/events/time';
 import { Body, Btn, FormError, Muted } from '../features/events/ui';
-import { colors, radius, space } from '../ui/theme';
+import { themeStyles, colors, radius, space } from '../ui/theme';
 import { safeClubLiveExternalUrl } from './club-live-utils';
+import { t } from '../ui/i18n';
+import { useAppPreferences } from '../ui/preferences';
+
 
 export function ClubLiveScreenState({
   loading,
@@ -20,22 +23,23 @@ export function ClubLiveScreenState({
   onRefresh: () => void;
   children: ReactNode;
 }) {
+  useAppPreferences();
   if (!hasData) {
     if (loading) {
       return (
         <View style={styles.loading}>
           <ActivityIndicator color={colors.primary} />
-          <Muted>Đang tải dữ liệu…</Muted>
+          <Muted>{t("Đang tải dữ liệu…")}</Muted>
         </View>
       );
     }
 
-    if (status === 404) return <Muted>Không tìm thấy</Muted>;
+    if (status === 404) return <Muted>{t("Không tìm thấy")}</Muted>;
 
     return (
       <View style={{ gap: space.md }}>
         <FormError message={error ?? 'Không thể tải dữ liệu club.'} />
-        <Btn label="Thử lại" onPress={onRefresh} variant="outline" />
+        <Btn label={t("Thử lại")} onPress={onRefresh} variant="outline" />
       </View>
     );
   }
@@ -43,7 +47,7 @@ export function ClubLiveScreenState({
   return (
     <View style={{ gap: space.md }}>
       <Btn
-        label={loading ? 'Đang cập nhật…' : 'Làm mới'}
+        label={loading ? t("Đang cập nhật…") : t("Làm mới")}
         onPress={onRefresh}
         disabled={loading}
         variant="outline"
@@ -60,19 +64,21 @@ export function ClubLiveStaleBanner({
   stale: boolean;
   lastSuccessAt: string | null;
 }) {
+  useAppPreferences();
   if (!stale) return null;
 
   return (
     <View style={styles.staleBanner}>
       <Text style={styles.staleText}>
-        Dữ liệu cũ — cập nhật lần cuối{' '}
-        {lastSuccessAt ? formatVnDateTime(lastSuccessAt) : 'chưa xác định'}
+        {t("Dữ liệu cũ — cập nhật lần cuối")}{' '}
+        {lastSuccessAt ? formatVnDateTime(lastSuccessAt) : t("chưa xác định")}
       </Text>
     </View>
   );
 }
 
 export function ClubLiveExternalLink({ url }: { url: string | null }) {
+  useAppPreferences();
   const [error, setError] = useState(false);
   const safeUrl = safeClubLiveExternalUrl(url);
   if (!safeUrl) return null;
@@ -80,19 +86,19 @@ export function ClubLiveExternalLink({ url }: { url: string | null }) {
   return (
     <View style={{ gap: space.xs }}>
       <Btn
-        label="Mở bên app CLB"
+        label={t("Mở bên app CLB")}
         onPress={() => {
           setError(false);
           void Linking.openURL(safeUrl).catch(() => setError(true));
         }}
         variant="outline"
       />
-      {error ? <Body>Không mở được app CLB.</Body> : null}
+      {error ? <Body>{t("Không mở được app CLB.")}</Body> : null}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   loading: { alignItems: 'center', gap: space.sm, paddingVertical: space.xl },
   staleBanner: {
     backgroundColor: colors.warnSoft,
@@ -101,4 +107,4 @@ const styles = StyleSheet.create({
     paddingVertical: space.sm,
   },
   staleText: { color: colors.warn, fontSize: 13, lineHeight: 20 },
-});
+}));

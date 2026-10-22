@@ -1,8 +1,10 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { CafeAmenities } from '@onboard/shared';
 import { StyleSheet, Text, View } from 'react-native';
 import { AMENITY_LABELS } from '../cafes/labels';
 import { Segmented } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { Field } from './ui';
 
 type Tri = 'unknown' | 'true' | 'false';
@@ -31,16 +33,18 @@ export function AmenitiesFields({
   value: CafeAmenities;
   onChange: (next: CafeAmenities) => void;
 }) {
+  useAppPreferences();
   const set = (key: keyof CafeAmenities, next: boolean | null | number) =>
     onChange({ ...value, [key]: next });
+  const triOptions = TRI_OPTIONS.map((option) => ({ ...option, label: t(option.label) }));
 
   return (
     <View style={{ gap: space.md }}>
       {KEYS.map((key) => (
         <View key={key} style={styles.item}>
-          <Text style={styles.label}>{AMENITY_LABELS[key]}</Text>
+          <Text style={styles.label}>{t(AMENITY_LABELS[key])}</Text>
           <Segmented
-            options={TRI_OPTIONS}
+            options={triOptions}
             value={toTri(value[key])}
             onChange={(v) => set(key, fromTri(v))}
           />
@@ -48,13 +52,13 @@ export function AmenitiesFields({
       ))}
       <View style={styles.pair}>
         <Field
-          label="Sức chứa phòng riêng"
+          label={t('Sức chứa phòng riêng')}
           keyboardType="number-pad"
           value={value.privateRoomCapacity?.toString() ?? ''}
           onChangeText={(t) => set('privateRoomCapacity', capacity(t))}
         />
         <Field
-          label="Sức chứa nhóm tối đa"
+          label={t('Sức chứa nhóm tối đa')}
           keyboardType="number-pad"
           value={value.maxGroupSize?.toString() ?? ''}
           onChangeText={(t) => set('maxGroupSize', capacity(t))}
@@ -64,8 +68,10 @@ export function AmenitiesFields({
   );
 }
 
-const styles = StyleSheet.create({
-  item: { gap: 4 },
-  label: { fontSize: 13, fontWeight: '600', color: colors.muted },
-  pair: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    item: { gap: 4 },
+    label: { fontSize: 13, fontWeight: '600', color: colors.muted },
+    pair: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
+  }),
+);

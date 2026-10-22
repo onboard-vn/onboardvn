@@ -3,8 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Flash, PresenceLabel } from '../cell-flash';
 import { NumberField } from '../../ui/number-field';
 import { Card, Chip, Collapsible, Heading, Hint } from '../../ui/primitives';
-import { colors } from '../../ui/theme';
+import { themeStyles, colors } from '../../ui/theme';
 import { TEAM_ID } from '../../api/plays-types';
+import { useAppPreferences } from '../../ui/preferences';
 import type { SheetApi } from '../use-sheet';
 import {
   ACQUIRE_CHAINS,
@@ -15,17 +16,18 @@ import {
   type Prices,
   type Shares,
 } from './acquire-bonus';
-
+import { scoreLocale, scorePlayerName, scoreText } from '../localization';
 interface AcquireExtras {
   prices: Prices;
   shares: Shares;
 }
 
 const EMPTY: AcquireExtras = { prices: {}, shares: {} };
-const money = (n: number) => `$${n.toLocaleString('vi-VN')}`;
+const money = (n: number, language: 'vi' | 'en') => `$${n.toLocaleString(scoreLocale(language))}`;
 const QUICK = [100, 500, 1000];
 
 export function AcquireInput({ sheet }: { sheet: SheetApi }) {
+  const { language } = useAppPreferences();
   const { players } = sheet.state;
   const touched = sheet.state.extras.acquire as AcquireExtras | undefined;
   const persisted =
@@ -86,7 +88,7 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
   return (
     <>
       <Card>
-        <Heading>Tiền mặt cuối ván</Heading>
+        <Heading>{scoreText("Tiền mặt cuối ván")}</Heading>
         {players.map((p) => {
           const row = sheet.summary.rows.find((r) => r.id === p.id);
           const computed = sheet.summary.result?.players.find((r) => r.id === p.id)?.categories;
@@ -97,10 +99,10 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
             <View key={p.id} style={styles.player}>
               <View style={styles.header}>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.name}>{p.name}</Text>
-                  <PresenceLabel sheet={sheet} id={p.id} name={p.name} />
+                  <Text style={styles.name}>{scorePlayerName(p)}</Text>
+                  <PresenceLabel sheet={sheet} id={p.id} name={p.name} fallbackSeat={p.fallbackSeat} />
                 </View>
-                <Text style={styles.total}>{money(row?.total ?? 0)}</Text>
+                <Text style={styles.total}>{money(row?.total ?? 0, language)}</Text>
               </View>
               <Flash sheet={sheet} id={p.id} cat="cash">
                 <NumberField
@@ -123,23 +125,21 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
                   />
                 ))}
                 <Chip
-                  label="Xóa"
+                  label={scoreText("Xóa")}
                   disabled={!sheet.canEditIdentity(p.id)}
                   onPress={() => sheet.setValue(p.id, 'cash', 0)}
                 />
               </View>
-              {extra > 0 ? <Hint>Đã cộng từ trợ giúp cổ đông: {money(extra)}</Hint> : null}
+              {extra > 0 ? <Hint>{scoreText("Đã cộng từ trợ giúp cổ đông:")}{" "}{money(extra, language)}</Hint> : null}
             </View>
           );
         })}
       </Card>
 
-      <Collapsible title="Trợ giúp tính thưởng cổ đông" defaultOpen={persisted}>
+      <Collapsible title={scoreText("Trợ giúp tính thưởng cổ đông")} defaultOpen={persisted}>
         <Hint>
-          Nhập giá cổ phiếu và số cổ phiếu mỗi người nắm; app tự tính tiền bán cổ phiếu và thưởng cổ
-          đông lớn/nhỏ (hòa chia đều, làm tròn lên $100) rồi cộng vào tổng.
-        </Hint>
-        <Text style={styles.label}>Giá cổ phiếu hiện tại</Text>
+          {scoreText("Nhập giá cổ phiếu và số cổ phiếu mỗi người nắm; app tự tính tiền bán cổ phiếu và thưởng cổ đông lớn/nhỏ (hòa chia đều, làm tròn lên $100) rồi cộng vào tổng.")}</Hint>
+        <Text style={styles.label}>{scoreText("Giá cổ phiếu hiện tại")}</Text>
         {ACQUIRE_CHAINS.map((c) => (
           <View key={c.key} style={styles.row}>
             <View style={[styles.dot, { backgroundColor: c.color }]} />
@@ -157,16 +157,14 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
         ))}
         {persisted && players.length === 2 ? (
           <View style={{ gap: 8 }}>
-            <Heading>Cổ phần thị trường · 2 người</Heading>
+            <Heading>{scoreText("Cổ phần thị trường · 2 người")}</Heading>
             <Hint>
-              Chủ bàn rút theo luật Renegade Classic và nhập số ô rút. Thị trường tham gia xét
-              thưởng; tiền thưởng của thị trường trả về ngân hàng.
-            </Hint>
+              {scoreText("Chủ bàn rút theo luật Renegade Classic và nhập số ô rút. Thị trường tham gia xét thưởng; tiền thưởng của thị trường trả về ngân hàng.")}</Hint>
             {ACQUIRE_CHAINS.filter((c) => (prices[c.key] ?? 0) > 0).map((c) => (
               <View key={c.key} style={styles.row}>
                 <Text style={styles.chain}>
                   {c.name}
-                  {market[c.key] === undefined ? ' · chưa nhập' : ''}
+                  {market[c.key] === undefined ? scoreText("· chưa nhập") : ''}
                 </Text>
                 <NumberField
                   value={market[c.key] ?? 0}
@@ -187,12 +185,12 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
             .filter((b) => b.payouts[p.id])
             .map(
               (b) =>
-                `${ACQUIRE_CHAINS.find((c) => c.key === b.chain)?.name}: ${money(b.payouts[p.id] ?? 0)}`,
+                `${ACQUIRE_CHAINS.find((c) => c.key === b.chain)?.name}: ${money(b.payouts[p.id] ?? 0, language)}`,
             )
             .join(' · ');
           return (
             <View key={p.id} style={styles.player}>
-              <Text style={styles.name}>{p.name} · cổ phiếu nắm giữ</Text>
+              <Text style={styles.name}>{scorePlayerName(p)} {scoreText("· cổ phiếu nắm giữ")}</Text>
               <View style={styles.grid}>
                 {ACQUIRE_CHAINS.map((c) => (
                   <View
@@ -215,7 +213,7 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
                 ))}
               </View>
               <Text style={styles.sumLine}>
-                Bán cổ phiếu: {money(stockSales(prices, shares, p.id))} · Thưởng: {money(bonus)}
+                {scoreText("Bán cổ phiếu:")}{" "}{money(stockSales(prices, shares, p.id), language)} {scoreText("· Thưởng:")}{" "}{money(bonus, language)}
               </Text>
               {detail && (!persisted || sheet.summary.result) ? <Hint>{detail}</Hint> : null}
             </View>
@@ -226,7 +224,7 @@ export function AcquireInput({ sheet }: { sheet: SheetApi }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   dot: { width: 12, height: 12, borderRadius: 6 },
   chain: { flex: 1, fontSize: 15, fontWeight: '600', color: colors.text },
@@ -241,4 +239,4 @@ const styles = StyleSheet.create({
   cellHead: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   cellName: { fontSize: 12, fontWeight: '600', color: colors.text },
   sumLine: { fontSize: 14, color: colors.text, fontWeight: '600' },
-});
+}));

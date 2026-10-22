@@ -1,3 +1,4 @@
+import { useAppPreferences } from '../../ui/preferences';
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { ActivityIndicator } from 'react-native';
 import { clubsApi } from '../../api/clubs';
@@ -5,6 +6,7 @@ import { href } from '../../features/events/ui';
 import { useLoad } from '../../ui/use-load';
 
 export default function MeetupRedirect() {
+  useAppPreferences();
   const { id, clubId } = useLocalSearchParams<{ id: string; clubId?: string }>();
   const meetups = useLoad(clubId ? () => clubsApi.meetups(clubId) : null, [clubId]);
 

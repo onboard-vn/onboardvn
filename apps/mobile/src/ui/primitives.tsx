@@ -1,8 +1,11 @@
 import { useState, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
-import { colors, radius, space } from './theme';
+import { themeStyles, colors, radius, space } from './theme';
+import { t } from './i18n';
+import { useAppPreferences } from './preferences';
 
 export function Card({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
+  useAppPreferences();
   return <View style={[styles.card, style]}>{children}</View>;
 }
 
@@ -17,6 +20,7 @@ export function Button({
   disabled?: boolean;
   tone?: 'primary' | 'ghost';
 }) {
+  useAppPreferences();
   const ghost = tone === 'ghost';
   return (
     <Pressable
@@ -43,6 +47,7 @@ export function Chip({
   tint?: string;
   disabled?: boolean;
 }) {
+  useAppPreferences();
   return (
     <Pressable
       accessibilityRole="button"
@@ -58,7 +63,7 @@ export function Chip({
         },
       ]}
     >
-      <Text style={[styles.chipText, selected && { color: '#fff' }]}>{label}</Text>
+      <Text style={[styles.chipText, selected && { color: colors.onPrimary }]}>{label}</Text>
     </Pressable>
   );
 }
@@ -72,6 +77,7 @@ export function Segmented<T extends string>({
   value: T;
   onChange: (v: T) => void;
 }) {
+  useAppPreferences();
   return (
     <View style={styles.segmented}>
       {options.map((o) => (
@@ -92,6 +98,7 @@ export function Segmented<T extends string>({
 }
 
 export function Badge({ label }: { label: string }) {
+  useAppPreferences();
   return (
     <View style={styles.badge}>
       <Text style={styles.badgeText}>{label}</Text>
@@ -100,14 +107,17 @@ export function Badge({ label }: { label: string }) {
 }
 
 export function Heading({ children }: { children: ReactNode }) {
+  useAppPreferences();
   return <Text style={styles.heading}>{children}</Text>;
 }
 
 export function Hint({ children }: { children: ReactNode }) {
+  useAppPreferences();
   return <Text style={styles.hint}>{children}</Text>;
 }
 
 export function Avatar({ name, color, size = 36 }: { name: string; color: string; size?: number }) {
+  useAppPreferences();
   return (
     <View
       style={{
@@ -135,6 +145,7 @@ export function Collapsible({
   children: ReactNode;
   defaultOpen?: boolean;
 }) {
+  useAppPreferences();
   const [open, setOpen] = useState(defaultOpen);
   return (
     <View style={styles.collapsible}>
@@ -145,14 +156,14 @@ export function Collapsible({
         style={styles.collapsibleHead}
       >
         <Text style={styles.collapsibleTitle}>{title}</Text>
-        <Text style={styles.collapsibleTitle}>{open ? '▴' : '▾'}</Text>
+        <Text accessibilityLabel={open ? t('Thu gọn') : t('Mở rộng')} style={styles.collapsibleTitle}>{open ? '▴' : '▾'}</Text>
       </Pressable>
       {open ? <View style={styles.collapsibleBody}>{children}</View> : null}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   collapsible: {
     borderRadius: radius,
     borderWidth: 1,
@@ -185,7 +196,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonGhost: { backgroundColor: 'transparent', borderWidth: 1, borderColor: colors.primary },
-  buttonText: { color: '#fff', fontWeight: '600', fontSize: 15 },
+  buttonText: { color: colors.onPrimary, fontWeight: '600', fontSize: 15 },
   disabled: { opacity: 0.4 },
   chip: {
     paddingHorizontal: space.md,
@@ -215,4 +226,4 @@ const styles = StyleSheet.create({
   badgeText: { color: colors.warn, fontSize: 12, fontWeight: '700' },
   heading: { fontSize: 17, fontWeight: '700', color: colors.text },
   hint: { fontSize: 13, color: colors.muted, lineHeight: 18 },
-});
+}));

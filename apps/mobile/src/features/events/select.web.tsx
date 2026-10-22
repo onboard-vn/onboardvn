@@ -2,6 +2,8 @@ import { createElement } from 'react';
 import { colors, radius, space } from '../../ui/theme';
 import type { SelectOption } from './select';
 import { Field } from './ui';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 export type { SelectOption };
 
@@ -20,6 +22,7 @@ export function Select({
   onChange: (value: string) => void;
   disabled?: boolean;
 }) {
+  useAppPreferences();
   return (
     <Field label={label}>
       {createElement(

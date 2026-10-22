@@ -1,10 +1,12 @@
+import { getActiveLanguage, t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { CafeOwnerInventoryItemDto } from '@onboard/shared';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { api } from '../../api/client';
 import { NumberField } from '../../ui/number-field';
 import { Badge, Button, Card, Chip, Heading, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { errorMessage } from '../errors';
 import { GamePicker } from '../scan/game-picker';
 import { FormError } from './form-bits';
@@ -18,6 +20,7 @@ export function InventoryManager({
   inventory: CafeOwnerInventoryItemDto[];
   onChanged: () => void;
 }) {
+  useAppPreferences();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [communityOnly, setCommunityOnly] = useState(false);
@@ -39,25 +42,28 @@ export function InventoryManager({
   };
 
   const onAdd = (gameId: string) =>
-    run('Có lỗi xảy ra, thử lại sau', () => api(base, { method: 'POST', body: { gameId } }));
+    run(t('Có lỗi xảy ra, thử lại sau'), () => api(base, { method: 'POST', body: { gameId } }));
 
   const onCopies = (gameId: string, copies: number) =>
-    run('Có lỗi xảy ra, thử lại sau', () =>
+    run(t('Có lỗi xảy ra, thử lại sau'), () =>
       api(`${base}/${gameId}`, { method: 'PATCH', body: { copies } }),
     );
 
   const onRemove = (gameId: string) =>
-    run('Có lỗi xảy ra, thử lại sau', () => api(`${base}/${gameId}`, { method: 'DELETE' }));
+    run(t('Có lỗi xảy ra, thử lại sau'), () => api(`${base}/${gameId}`, { method: 'DELETE' }));
 
   const onConfirm = (gameId: string) =>
-    run('Không xác nhận được game', () => api(`${base}/${gameId}/confirm`, { method: 'POST' }));
+    run(t('Không xác nhận được game'), () => api(`${base}/${gameId}/confirm`, { method: 'POST' }));
 
   return (
     <Card>
       <View style={styles.head}>
-        <Heading>Kho game ({inventory.length})</Heading>
+        <Heading>
+          {t('Kho game (')}
+          {inventory.length})
+        </Heading>
         <Chip
-          label="Chỉ đóng góp cộng đồng"
+          label={t('Chỉ đóng góp cộng đồng')}
           selected={communityOnly}
           onPress={() => setCommunityOnly((v) => !v)}
         />
@@ -67,8 +73,12 @@ export function InventoryManager({
         {visible.map((item) => (
           <View key={item.gameId} style={styles.item}>
             <View style={styles.name}>
-              <Text style={styles.nameText}>{item.nameVi || item.nameEn}</Text>
-              {item.community ? <Badge label="Cộng đồng đóng góp" /> : null}
+              <Text style={styles.nameText}>
+                {getActiveLanguage() === 'en'
+                  ? item.nameEn || item.nameVi
+                  : item.nameVi || item.nameEn}
+              </Text>
+              {item.community ? <Badge label={t('Cộng đồng đóng góp')} /> : null}
             </View>
             <View style={styles.actions}>
               <NumberField
@@ -80,14 +90,14 @@ export function InventoryManager({
               />
               {item.community ? (
                 <Button
-                  label="Xác nhận"
+                  label={t('Xác nhận')}
                   tone="ghost"
                   disabled={pending}
                   onPress={() => void onConfirm(item.gameId)}
                 />
               ) : null}
               <Button
-                label="Gỡ"
+                label={t('Gỡ')}
                 tone="ghost"
                 disabled={pending}
                 onPress={() => void onRemove(item.gameId)}
@@ -97,16 +107,18 @@ export function InventoryManager({
         ))}
         {visible.length === 0 ? (
           <Hint>
-            {communityOnly ? 'Chưa có đóng góp cộng đồng nào.' : 'Chưa có game nào trong kho.'}
+            {communityOnly
+              ? t('Chưa có đóng góp cộng đồng nào.')
+              : t('Chưa có game nào trong kho.')}
           </Hint>
         ) : null}
       </View>
 
       <GamePicker
-        actionLabel="Thêm"
+        actionLabel={t('Thêm')}
         allowCreate={false}
         isPicked={(id) => inventoryIds.has(id)}
-        pickedLabel="Đã có"
+        pickedLabel={t('Đã có')}
         disabled={pending}
         onPick={(g) => void onAdd(g.id)}
       />
@@ -115,17 +127,19 @@ export function InventoryManager({
   );
 }
 
-const styles = StyleSheet.create({
-  head: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: space.sm,
-  },
-  list: { gap: space.md },
-  item: { gap: space.sm },
-  name: { flexDirection: 'row', alignItems: 'center', gap: space.sm, flexWrap: 'wrap' },
-  nameText: { color: colors.text, fontWeight: '500' },
-  actions: { flexDirection: 'row', alignItems: 'center', gap: space.sm, flexWrap: 'wrap' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    head: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: space.sm,
+    },
+    list: { gap: space.md },
+    item: { gap: space.sm },
+    name: { flexDirection: 'row', alignItems: 'center', gap: space.sm, flexWrap: 'wrap' },
+    nameText: { color: colors.text, fontWeight: '500' },
+    actions: { flexDirection: 'row', alignItems: 'center', gap: space.sm, flexWrap: 'wrap' },
+  }),
+);

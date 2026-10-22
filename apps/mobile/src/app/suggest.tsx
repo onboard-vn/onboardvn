@@ -1,3 +1,5 @@
+import { t, translateKnown } from '../ui/i18n';
+import { useAppPreferences } from '../ui/preferences';
 import type {
   ClubListResponse,
   ProvinceListResponse,
@@ -32,7 +34,7 @@ import { DEFAULT_PROVINCE_CODE, locateProvinceCode } from '../features/location/
 import { TypeAhead } from '../features/type-ahead';
 import { useFetch } from '../features/use-fetch';
 import { Card, Chip, Hint } from '../ui/primitives';
-import { colors, radius, space } from '../ui/theme';
+import { themeStyles, colors, radius, space } from '../ui/theme';
 
 const MUTED_KEY = 'onboard.suggest.muted';
 const CHOICE_KEY = 'onboard.suggest.choice';
@@ -58,14 +60,15 @@ function ClubChoice({
   value: string | null;
   onChange: (club: SuggestChoice['club']) => void;
 }) {
+  useAppPreferences();
   const clubs = useFetch(loadMyClubs);
-  if (clubs.loading) return <Hint>Đang tải club của bạn…</Hint>;
-  if (clubs.error) return <Hint>{clubs.error}</Hint>;
+  if (clubs.loading) return <Hint>{t('Đang tải club của bạn…')}</Hint>;
+  if (clubs.error) return <Hint>{translateKnown(clubs.error ?? '')}</Hint>;
   const items = clubs.data?.items ?? [];
   if (items.length === 0) {
     return (
       <Link href="/clubs" style={styles.link}>
-        Bạn chưa tham gia club nào · xem các club
+        {t('Bạn chưa tham gia club nào · xem các club')}
       </Link>
     );
   }
@@ -84,10 +87,12 @@ function ClubChoice({
 }
 
 function Step({ children }: { children: string }) {
+  useAppPreferences();
   return <Text style={styles.step}>{children}</Text>;
 }
 
 export default function SuggestScreen() {
+  useAppPreferences();
   const { user, loading: sessionLoading } = useSession();
   const provinces = useFetch(loadProvinces);
   const provinceList = useMemo(() => provinces.data?.items ?? [], [provinces.data]);
@@ -122,7 +127,7 @@ export default function SuggestScreen() {
         !ctrl.signal.aborted &&
         setFetched({
           key: queryKey,
-          error: errorMessage(e, 'Không xem được chồng bài, thử lại sau'),
+          error: errorMessage(e, t('Không xem được chồng bài, thử lại sau')),
         }),
     );
     return () => ctrl.abort();
@@ -192,29 +197,29 @@ export default function SuggestScreen() {
   };
 
   const idleHint = !choice.source
-    ? 'Chọn nguồn ở bước 1 trước'
+    ? t('Chọn nguồn ở bước 1 trước')
     : locating
-      ? 'Đang tìm thành phố của bạn…'
+      ? t('Đang tìm thành phố của bạn…')
       : items.length > 0
-        ? 'Bấm TRÁO BÀI'
+        ? t('Bấm TRÁO BÀI')
         : '';
 
   return (
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ title: 'Hôm nay chơi gì?' }} />
+      <Stack.Screen options={{ title: t('Hôm nay chơi gì?') }} />
       <View style={styles.column}>
         <View>
-          <Text style={styles.title}>Hôm nay chơi gì?</Text>
-          <Hint>Chọn nguồn game, tráo bài rồi rút 1 lá để may mắn quyết định.</Hint>
+          <Text style={styles.title}>{t('Hôm nay chơi gì?')}</Text>
+          <Hint>{t('Chọn nguồn game, tráo bài rồi rút 1 lá để may mắn quyết định.')}</Hint>
         </View>
 
         <Card>
-          <Step>Bước 1 · Rút từ đâu?</Step>
+          <Step>{t('Bước 1 · Rút từ đâu?')}</Step>
           <View style={styles.chips}>
             {SOURCES.map((s) => (
               <Chip
                 key={s.value}
-                label={s.label}
+                label={t(s.label)}
                 selected={choice.source === s.value}
                 onPress={() => pickSource(s.value)}
               />
@@ -226,11 +231,11 @@ export default function SuggestScreen() {
               <View style={styles.picked}>
                 <Text style={styles.pickedName}>{choice.cafe.name}</Text>
                 <Pressable accessibilityRole="button" onPress={() => patch({ cafe: null })}>
-                  <Text style={styles.link}>Đổi quán</Text>
+                  <Text style={styles.link}>{t('Đổi quán')}</Text>
                 </Pressable>
               </View>
             ) : provinces.error ? (
-              <Hint>{provinces.error}</Hint>
+              <Hint>{translateKnown(provinces.error ?? '')}</Hint>
             ) : (
               <CafePicker
                 provinces={provinceList}
@@ -243,11 +248,11 @@ export default function SuggestScreen() {
           ) : null}
           {choice.source === 'city' ? (
             provinces.error ? (
-              <Hint>{provinces.error}</Hint>
+              <Hint>{translateKnown(provinces.error ?? '')}</Hint>
             ) : (
               <TypeAhead
-                label="Thành phố / tỉnh"
-                placeholder="Gõ để tìm tỉnh/thành..."
+                label={t('Thành phố / tỉnh')}
+                placeholder={t('Gõ để tìm tỉnh/thành...')}
                 options={provinceList.map((p) => ({ id: p.code, label: p.name }))}
                 text={provinceText}
                 onTextChange={setProvinceText}
@@ -260,12 +265,12 @@ export default function SuggestScreen() {
           ) : null}
 
           <View style={styles.playersRow}>
-            <Text style={styles.label}>Số người</Text>
+            <Text style={styles.label}>{t('Số người')}</Text>
             <View style={styles.chips}>
               {PLAYER_OPTIONS.map((o) => (
                 <Chip
                   key={o.label}
-                  label={o.label}
+                  label={/^\d/.test(o.label) ? o.label : t(o.label)}
                   selected={choice.players === o.value}
                   onPress={() => patch({ players: o.value })}
                 />
@@ -275,18 +280,20 @@ export default function SuggestScreen() {
 
           {needsLogin ? (
             <Link href={{ pathname: '/login', params: { next: '/suggest' } }} style={styles.link}>
-              Đăng nhập để rút từ nguồn này
+              {t('Đăng nhập để rút từ nguồn này')}
             </Link>
           ) : pool.kind === 'none' ? (
             <Hint>
-              {choice.source ? 'Chọn tiếp ở trên để xem chồng bài.' : 'Chọn nguồn để bắt đầu.'}
+              {choice.source
+                ? t('Chọn tiếp ở trên để xem chồng bài.')
+                : t('Chọn nguồn để bắt đầu.')}
             </Hint>
           ) : pool.kind === 'loading' ? (
-            <Hint>Đang xem chồng bài…</Hint>
+            <Hint>{t('Đang xem chồng bài…')}</Hint>
           ) : pool.kind === 'error' ? (
-            <Text style={styles.error}>{pool.message}</Text>
+            <Text style={styles.error}>{translateKnown(pool.message ?? '')}</Text>
           ) : pool.total === 0 ? (
-            <Hint>Không có game nào khớp, thử đổi nguồn hoặc số người nhé.</Hint>
+            <Hint>{t('Không có game nào khớp, thử đổi nguồn hoặc số người nhé.')}</Hint>
           ) : (
             <Hint>{poolLabel(choice, pool.total)}</Hint>
           )}
@@ -311,11 +318,11 @@ export default function SuggestScreen() {
             onPress={deal}
             style={[styles.go, !canDeal && styles.goDisabled]}
           >
-            <Text style={styles.goText}>{run === 0 ? 'TRÁO BÀI' : 'TRÁO LẠI'}</Text>
+            <Text style={styles.goText}>{run === 0 ? t('TRÁO BÀI') : t('TRÁO LẠI')}</Text>
           </Pressable>
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={muted ? 'Bật tiếng' : 'Tắt tiếng'}
+            accessibilityLabel={muted ? t('Bật tiếng') : t('Tắt tiếng')}
             accessibilityState={{ checked: muted }}
             onPress={toggleMute}
             style={styles.mute}
@@ -327,11 +334,11 @@ export default function SuggestScreen() {
           {RARITY_ORDER.map((r) => (
             <Text key={r} style={styles.legendItem}>
               <Text style={{ color: RARITY[r].color }}>■ </Text>
-              {RARITY[r].label}
+              {t(RARITY[r].label)}
             </Text>
           ))}
         </View>
-        <Hint>Độ hiếm theo số quán có game · âm thanh: Kenney (CC0) + Pixabay.</Hint>
+        <Hint>{t('Độ hiếm theo số quán có game · âm thanh: Kenney (CC0) + Pixabay.')}</Hint>
       </View>
 
       <ResultSheet item={result} choice={choice} onClose={() => setResult(null)} onAgain={deal} />
@@ -339,45 +346,47 @@ export default function SuggestScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  content: { padding: space.lg, alignItems: 'center' },
-  column: { width: '100%', maxWidth: 960, gap: 14 },
-  title: { fontSize: 26, fontWeight: '800', color: colors.text },
-  step: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: colors.primary,
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
-  },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, flexShrink: 1 },
-  playersRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, alignItems: 'center' },
-  label: { fontSize: 13, fontWeight: '600', color: colors.muted, width: 72 },
-  picked: { flexDirection: 'row', gap: space.md, alignItems: 'center', flexWrap: 'wrap' },
-  pickedName: { fontWeight: '700', color: colors.text },
-  link: { color: colors.primary, fontWeight: '600' },
-  error: { color: colors.danger },
-  actions: { flexDirection: 'row', gap: 10 },
-  go: {
-    flex: 1,
-    backgroundColor: colors.accent,
-    borderRadius: radius,
-    paddingVertical: 14,
-    alignItems: 'center',
-    boxShadow: '0 4px 0 #c28d10',
-  },
-  goDisabled: { opacity: 0.5 },
-  goText: { color: colors.text, fontSize: 18, fontWeight: '800', letterSpacing: 1 },
-  mute: {
-    width: 52,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  muteText: { fontSize: 20 },
-  legend: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
-  legendItem: { fontSize: 12, color: colors.muted },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    content: { padding: space.lg, alignItems: 'center' },
+    column: { width: '100%', maxWidth: 960, gap: 14 },
+    title: { fontSize: 26, fontWeight: '800', color: colors.text },
+    step: {
+      fontSize: 12,
+      fontWeight: '800',
+      color: colors.primary,
+      letterSpacing: 0.5,
+      textTransform: 'uppercase',
+    },
+    chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, flexShrink: 1 },
+    playersRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, alignItems: 'center' },
+    label: { fontSize: 13, fontWeight: '600', color: colors.muted, width: 72 },
+    picked: { flexDirection: 'row', gap: space.md, alignItems: 'center', flexWrap: 'wrap' },
+    pickedName: { fontWeight: '700', color: colors.text },
+    link: { color: colors.primary, fontWeight: '600' },
+    error: { color: colors.danger },
+    actions: { flexDirection: 'row', gap: 10 },
+    go: {
+      flex: 1,
+      backgroundColor: colors.accent,
+      borderRadius: radius,
+      paddingVertical: 14,
+      alignItems: 'center',
+      boxShadow: '0 4px 0 #c28d10',
+    },
+    goDisabled: { opacity: 0.5 },
+    goText: { color: colors.text, fontSize: 18, fontWeight: '800', letterSpacing: 1 },
+    mute: {
+      width: 52,
+      borderWidth: 1,
+      borderColor: colors.border,
+      backgroundColor: colors.card,
+      borderRadius: radius,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    muteText: { fontSize: 20 },
+    legend: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+    legendItem: { fontSize: 12, color: colors.muted },
+  }),
+);

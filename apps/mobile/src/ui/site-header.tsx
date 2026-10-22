@@ -1,14 +1,20 @@
 import { Link, usePathname, type Href } from 'expo-router';
 import { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import {
+  Image,
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSession, type MeUser } from '../auth/session';
-import { colors, space } from './theme';
-
-const ROLE_LABEL: Record<string, string> = {
-  user: 'Thành viên',
-  maintainer: 'Maintainer',
-  admin: 'Admin',
-};
+import { t } from './i18n';
+import { useAppPreferences } from './preferences';
+import { colors, space, themeStyles } from './theme';
 
 interface NavItem {
   href: Href;
@@ -17,47 +23,46 @@ interface NavItem {
 
 export function navItems(user: MeUser | null): NavItem[] {
   const items: NavItem[] = [
-    { href: '/games', label: 'Game' },
-    { href: '/map', label: 'Bản đồ' },
-    { href: '/events', label: 'Kèo' },
-    { href: '/suggest', label: 'Hôm nay chơi gì?' },
+    { href: '/games', label: t('Game') },
+    { href: '/map', label: t('Bản đồ') },
+    { href: '/events', label: t('Kèo') },
+    { href: '/suggest', label: t('Hôm nay chơi gì?') },
   ];
   if (!user) return items;
   items.push(
-    { href: '/clubs', label: 'Club' },
-    { href: '/friends', label: 'Bạn bè' },
-    { href: '/shelf', label: 'Tủ game' },
-    { href: '/wishlist', label: 'Muốn chơi' },
+    { href: '/clubs', label: t('Club') },
+    { href: '/friends', label: t('Bạn bè') },
+    { href: '/shelf', label: t('Tủ game') },
+    { href: '/wishlist', label: t('Muốn chơi') },
   );
   if (user.cafeMembershipCount > 0)
-    items.push({ href: '/my-cafes', label: 'Địa điểm chơi của tôi' });
+    items.push({ href: '/my-cafes', label: t('Địa điểm chơi của tôi') });
   if (user.role !== 'user') {
     items.push(
-      { href: '/admin/games', label: 'Quản lý game' },
-      { href: '/admin/cafes', label: 'Quản lý địa điểm chơi' },
-      { href: '/admin/scan', label: 'Quét mã' },
-      { href: '/admin/categories', label: 'Thể loại' },
-      { href: '/admin/events', label: 'Quản lý Kèo' },
-      { href: '/admin/clubs', label: 'Quản lý club' },
+      { href: '/admin/games', label: t('Quản lý game') },
+      { href: '/admin/cafes', label: t('Quản lý địa điểm chơi') },
+      { href: '/admin/scan', label: t('Quét mã') },
+      { href: '/admin/categories', label: t('Thể loại') },
+      { href: '/admin/events', label: t('Quản lý Kèo') },
+      { href: '/admin/clubs', label: t('Quản lý club') },
     );
   }
-  if (user.role === 'admin')
-    items.push({ href: '/admin/contributions', label: 'Đóng góp cộng đồng' });
+  if (user.role === 'admin') items.push({ href: '/admin/contributions', label: t('Đóng góp cộng đồng') });
   return items;
 }
 
 const WIDE = 900;
+const LIGHT_LOGO = require('../../assets/brand/logo-horizontal.png');
+const DARK_LOGO = require('../../assets/brand/logo-horizontal-dark.png');
 
 export function SiteHeader() {
+  const { theme } = useAppPreferences();
   const { user, loading, signOut } = useSession();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const [openedAt, setOpenedAt] = useState(pathname);
-  if (open && openedAt !== pathname) {
-    setOpen(false);
-    setOpenedAt(pathname);
-  }
+  const [openPath, setOpenPath] = useState<string | null>(null);
+  const open = openPath === pathname;
+  const setOpen = (next: boolean) => setOpenPath(next ? pathname : null);
   const wide = width >= WIDE;
   const items = navItems(user);
 
@@ -65,41 +70,39 @@ export function SiteHeader() {
     const h = String(href);
     return pathname === h || pathname.startsWith(`${h}/`);
   };
-  const links = items.map((i) => {
-    const active = isActive(i.href);
+  const links = items.map((item) => {
+    const active = isActive(item.href);
     return (
       <Link
-        key={i.label}
-        href={i.href}
+        key={String(item.href)}
+        href={item.href}
         aria-current={active ? 'page' : undefined}
-        style={[
-          styles.link,
-          !wide && styles.menuLink,
-          active && styles.linkActive,
-          active && !wide && styles.menuLinkActive,
-        ]}
+        onPress={() => setOpen(false)}
+        style={[styles.link, active && styles.linkActive]}
       >
-        {i.label}
+        {item.label}
       </Link>
     );
   });
   const account = loading ? null : user ? (
-    <View style={[styles.account, !wide && styles.menuAccount]}>
-      <Link href="/account" style={styles.accountName}>
+    <View style={styles.account}>
+      <Link href="/account" style={styles.accountName} onPress={() => setOpen(false)}>
         {user.name}
       </Link>
-      <Text style={styles.role}>{ROLE_LABEL[user.role] ?? user.role}</Text>
+      <Text style={styles.role}>
+        {user.role === 'user' ? t('Thành viên') : user.role === 'admin' ? t('Admin') : t('Maintainer')}
+      </Text>
       <Pressable accessibilityRole="button" onPress={() => void signOut()}>
-        <Text style={styles.link}>Đăng xuất</Text>
+        <Text style={styles.link}>{t('Đăng xuất')}</Text>
       </Pressable>
     </View>
   ) : (
-    <View style={[styles.account, !wide && styles.menuAccount]}>
-      <Link href="/login" style={styles.link}>
-        Đăng nhập
+    <View style={styles.account}>
+      <Link href="/login" style={styles.link} onPress={() => setOpen(false)}>
+        {t('Đăng nhập')}
       </Link>
-      <Link href="/signup" style={styles.link}>
-        Đăng ký
+      <Link href="/signup" style={styles.link} onPress={() => setOpen(false)}>
+        {t('Đăng ký')}
       </Link>
     </View>
   );
@@ -107,132 +110,259 @@ export function SiteHeader() {
   return (
     <View style={styles.header}>
       <View style={styles.inner}>
-        <Link href="/" accessibilityLabel="Onboard - trang chủ">
+        <Link href="/" accessibilityLabel={t('Onboard - trang chủ')} onPress={() => setOpen(false)}>
           <Image
-            source={require('../../assets/brand/logo-horizontal.png')}
+            source={theme === 'dark' ? DARK_LOGO : LIGHT_LOGO}
             style={styles.logo}
             resizeMode="contain"
           />
         </Link>
-        {wide ? (
-          <>
-            <View style={styles.links}>{links}</View>
-            {account}
-          </>
-        ) : (
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={open ? 'Đóng menu' : 'Mở menu'}
-            accessibilityState={{ expanded: open }}
-            onPress={() => {
-              setOpen(!open);
-              setOpenedAt(pathname);
-            }}
-            style={styles.menuButton}
-          >
-            <MenuIcon open={open} />
-          </Pressable>
-        )}
+        {wide ? <View style={styles.links}>{links}</View> : null}
+        {wide ? account : null}
+        <MenuButton open={open} setOpen={setOpen} />
       </View>
-      {!wide && open ? (
-        <View style={styles.menu}>
-          {links}
-          <View style={styles.divider} />
-          {account}
-        </View>
-      ) : null}
-    </View>
-  );
-}
-
-function MenuIcon({ open }: { open: boolean }) {
-  return (
-    <View style={styles.icon} accessibilityElementsHidden importantForAccessibility="no">
-      <View style={[styles.bar, open && { transform: [{ translateY: 7 }, { rotate: '45deg' }] }]} />
-      <View style={[styles.bar, open && { opacity: 0 }]} />
-      <View
-        style={[styles.bar, open && { transform: [{ translateY: -7 }, { rotate: '-45deg' }] }]}
+      <MenuModal
+        open={open}
+        onClose={() => setOpen(false)}
+        maxHeight={Math.max(240, height - 72)}
+        links={!wide ? links : []}
+        account={!wide ? account : null}
       />
     </View>
   );
 }
 
-export function SiteFooter() {
+/** Compact menu button for the native Stack header; Stack retains its back button. */
+export function SiteHeaderMenu() {
+  useAppPreferences();
+  const { height } = useWindowDimensions();
+  const pathname = usePathname();
+  const { user, loading, signOut } = useSession();
+  const [openPath, setOpenPath] = useState<string | null>(null);
+  const open = openPath === pathname;
+  const setOpen = (next: boolean) => setOpenPath(next ? pathname : null);
+  const items = navItems(user);
+  const links = items.map((item) => (
+    <Link key={String(item.href)} href={item.href} style={styles.menuLink} onPress={() => setOpen(false)}>
+      {item.label}
+    </Link>
+  ));
+  const account = loading ? null : user ? (
+    <View style={styles.menuAccount}>
+      <Link href="/account" style={styles.accountName} onPress={() => setOpen(false)}>{user.name}</Link>
+      <Text style={styles.role}>
+        {user.role === 'user' ? t('Thành viên') : user.role === 'admin' ? t('Admin') : t('Maintainer')}
+      </Text>
+      <Pressable accessibilityRole="button" onPress={() => void signOut()}>
+        <Text style={styles.menuLink}>{t('Đăng xuất')}</Text>
+      </Pressable>
+    </View>
+  ) : (
+    <View style={styles.menuAccount}>
+      <Link href="/login" style={styles.menuLink} onPress={() => setOpen(false)}>{t('Đăng nhập')}</Link>
+      <Link href="/signup" style={styles.menuLink} onPress={() => setOpen(false)}>{t('Đăng ký')}</Link>
+    </View>
+  );
+
   return (
-    <View style={styles.footer}>
-      <Text style={styles.footerText}>Code AGPL-3.0 · Dữ liệu CC BY-SA 4.0 · </Text>
-      <Link href="/credits" style={styles.footerLink}>
-        Nguồn tham khảo
-      </Link>
-      <Text style={styles.footerText}> · </Text>
-      <Link href="/data-sources" style={styles.footerLink}>
-        Nguồn dữ liệu &amp; yêu cầu sửa/gỡ
-      </Link>
+    <>
+      <MenuButton open={open} setOpen={setOpen} />
+      <MenuModal
+        open={open}
+        onClose={() => setOpen(false)}
+        maxHeight={Math.max(240, height - 32)}
+        links={links}
+        account={account}
+      />
+    </>
+  );
+}
+
+function MenuButton({ open, setOpen }: { open: boolean; setOpen: (open: boolean) => void }) {
+  useAppPreferences();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={open ? t('Đóng menu') : t('Mở menu')}
+      accessibilityState={{ expanded: open }}
+      onPress={() => setOpen(!open)}
+      style={styles.menuButton}
+    >
+      <MenuIcon open={open} />
+    </Pressable>
+  );
+}
+
+function MenuModal({
+  open,
+  onClose,
+  maxHeight,
+  links,
+  account,
+}: {
+  open: boolean;
+  onClose: () => void;
+  maxHeight: number;
+  links: React.ReactNode[];
+  account: React.ReactNode;
+}) {
+  const { language, theme, setLanguage, setTheme } = useAppPreferences();
+  return (
+    <Modal visible={open} transparent animationType="fade" onRequestClose={onClose}>
+      <SafeAreaView style={styles.modalRoot}>
+        <Pressable accessibilityLabel={t('Đóng menu')} style={StyleSheet.absoluteFill} onPress={onClose} />
+        <View style={[styles.menuFrame, { maxHeight }]}>
+          <ScrollView contentContainerStyle={styles.menuContent} keyboardShouldPersistTaps="handled">
+            {links}
+            {account ? <><View style={styles.divider} />{account}</> : null}
+            <View style={styles.preferenceGroup}>
+              <Text style={styles.groupLabel}>{t('Giao diện')}</Text>
+              <View style={styles.choices}>
+                <PreferenceChoice label={t('Sáng')} selected={theme === 'light'} onPress={() => setTheme('light')} />
+                <PreferenceChoice label={t('Tối')} selected={theme === 'dark'} onPress={() => setTheme('dark')} />
+              </View>
+            </View>
+            <View style={styles.preferenceGroup}>
+              <Text style={styles.groupLabel}>{t('Ngôn ngữ')}</Text>
+              <View style={styles.choices}>
+                <PreferenceChoice label={t('Tiếng Việt')} selected={language === 'vi'} onPress={() => setLanguage('vi')} />
+                <PreferenceChoice label={t('English')} selected={language === 'en'} onPress={() => setLanguage('en')} />
+              </View>
+            </View>
+            <View style={styles.divider} />
+            <Text style={styles.groupLabel}>{t('Thông tin & giấy phép')}</Text>
+            <Link href="https://github.com/onboard-vn/onboardvn" style={styles.menuLink} onPress={onClose}>
+              {t('Mã nguồn')}
+            </Link>
+            <Link href="https://github.com/onboard-vn/onboardvn/blob/main/LICENSE" style={styles.menuLink} onPress={onClose}>
+              {t('Giấy phép mã nguồn AGPL-3.0-only')}
+            </Link>
+            <Link href="/data-sources" style={styles.menuLink} onPress={onClose}>
+              {t('Giấy phép dữ liệu')} · {t('Dữ liệu CC BY-SA 4.0')}
+            </Link>
+            <Link href="/credits" style={styles.menuLink} onPress={onClose}>
+              {t('Nguồn tham khảo')}
+            </Link>
+            <Link href="/data-sources" style={styles.menuLink} onPress={onClose}>
+              {t('Nguồn dữ liệu & yêu cầu sửa/gỡ')}
+            </Link>
+          </ScrollView>
+        </View>
+      </SafeAreaView>
+    </Modal>
+  );
+}
+
+function PreferenceChoice({
+  label,
+  selected,
+  onPress,
+}: {
+  label: string;
+  selected: boolean;
+  onPress: () => void;
+}) {
+  useAppPreferences();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ selected }}
+      onPress={onPress}
+      style={[styles.choice, selected && styles.choiceSelected]}
+    >
+      <Text style={[styles.choiceText, selected && styles.choiceTextSelected]}>{label}</Text>
+    </Pressable>
+  );
+}
+
+function MenuIcon({ open }: { open: boolean }) {
+  useAppPreferences();
+  return (
+    <View style={styles.icon} accessibilityElementsHidden importantForAccessibility="no">
+      <View style={[styles.bar, open && { transform: [{ translateY: 7 }, { rotate: '45deg' }] }]} />
+      <View style={[styles.bar, open && { opacity: 0 }]} />
+      <View style={[styles.bar, open && { transform: [{ translateY: -7 }, { rotate: '-45deg' }] }]} />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  header: { backgroundColor: colors.card, borderBottomWidth: 1, borderBottomColor: colors.border },
-  inner: {
-    width: '100%',
-    maxWidth: 1024,
-    alignSelf: 'center',
-    paddingHorizontal: space.lg,
-    paddingVertical: space.sm,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space.lg,
-    minHeight: 56,
-  },
-  logo: { width: 109, height: 36 },
-  links: { flex: 1, flexDirection: 'row', flexWrap: 'wrap', columnGap: space.lg, rowGap: 4 },
-  link: { fontSize: 15, fontWeight: '500', color: colors.text, paddingVertical: 4 },
-  linkActive: {
-    color: colors.primary,
-    fontWeight: '700',
-    borderBottomWidth: 2,
-    borderBottomColor: colors.accent,
-  },
-  menuLinkActive: {
-    borderBottomWidth: 0,
-    borderLeftWidth: 3,
-    borderLeftColor: colors.accent,
-    paddingLeft: 10,
-  },
-  account: { flexDirection: 'row', alignItems: 'center', gap: space.md, flexWrap: 'wrap' },
-  accountName: { fontSize: 14, color: colors.text },
-  role: {
-    fontSize: 12,
-    backgroundColor: colors.bg,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-    color: colors.text,
-  },
-  menuButton: {
-    padding: space.sm,
-    minWidth: 44,
-    minHeight: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: { width: 22, height: 16, justifyContent: 'space-between' },
-  bar: { height: 2, borderRadius: 1, backgroundColor: colors.text },
-  menu: { paddingHorizontal: space.lg, paddingBottom: space.md, gap: 2 },
-  menuLink: { paddingVertical: 12, fontSize: 16 },
-  menuAccount: { paddingTop: space.sm },
-  divider: { height: 1, backgroundColor: colors.border, marginVertical: space.xs },
-  footer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingHorizontal: space.lg,
-    paddingVertical: space.lg,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    marginTop: space.xl,
-  },
-  footerText: { fontSize: 13, color: colors.muted },
-  footerLink: { fontSize: 13, color: colors.muted, textDecorationLine: 'underline' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    header: { backgroundColor: colors.card, borderBottomWidth: 1, borderBottomColor: colors.border, zIndex: 2 },
+    inner: {
+      width: '100%',
+      maxWidth: 1024,
+      alignSelf: 'center',
+      paddingHorizontal: space.lg,
+      paddingVertical: space.sm,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: space.lg,
+      minHeight: 56,
+    },
+    logo: { width: 109, height: 36 },
+    links: { flex: 1, flexDirection: 'row', flexWrap: 'wrap', columnGap: space.lg, rowGap: 4 },
+    link: { fontSize: 15, fontWeight: '500', color: colors.text, paddingVertical: 4 },
+    linkActive: {
+      color: colors.primary,
+      fontWeight: '700',
+      borderBottomWidth: 2,
+      borderBottomColor: colors.accent,
+    },
+    account: { flexDirection: 'row', alignItems: 'center', gap: space.md, flexWrap: 'wrap' },
+    accountName: { fontSize: 14, color: colors.text },
+    role: {
+      fontSize: 12,
+      backgroundColor: colors.bg,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      borderRadius: 4,
+      color: colors.text,
+    },
+    menuButton: {
+      padding: space.sm,
+      minWidth: 44,
+      minHeight: 44,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    icon: { width: 22, height: 16, justifyContent: 'space-between' },
+    bar: { height: 2, borderRadius: 1, backgroundColor: colors.text },
+    modalRoot: { flex: 1, alignItems: 'flex-end', backgroundColor: 'rgba(0,0,0,0.28)' },
+    menuFrame: {
+      width: 380,
+      maxWidth: '100%',
+      margin: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 12,
+      backgroundColor: colors.card,
+      elevation: 8,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.16,
+      shadowRadius: 12,
+      overflow: 'hidden',
+    },
+    menuContent: { paddingHorizontal: space.lg, paddingBottom: space.lg, paddingTop: space.md, gap: space.sm },
+    menuLink: { paddingVertical: 10, fontSize: 15, color: colors.text },
+    menuAccount: { flexDirection: 'row', alignItems: 'center', gap: space.md, flexWrap: 'wrap', paddingTop: space.sm },
+    divider: { height: 1, backgroundColor: colors.border, marginVertical: space.xs },
+    preferenceGroup: { gap: space.xs },
+    groupLabel: { fontSize: 13, fontWeight: '700', color: colors.muted },
+    choices: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+    choice: {
+      minHeight: 40,
+      justifyContent: 'center',
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 999,
+      paddingHorizontal: space.md,
+      backgroundColor: colors.bg,
+    },
+    choiceSelected: { backgroundColor: colors.primarySoft, borderColor: colors.primary },
+    choiceText: { fontSize: 14, fontWeight: '600', color: colors.text },
+    choiceTextSelected: { color: colors.primary },
+  }),
+);

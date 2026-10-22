@@ -1,3 +1,5 @@
+import { t } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback } from 'react';
 import { View } from 'react-native';
@@ -12,20 +14,22 @@ import { Box, Muted, Page, SectionTitle, Title } from '../../../features/events/
 import { space } from '../../../ui/theme';
 
 export default function ClubLiveMembersScreen() {
+  useAppPreferences();
   const { user } = useSession();
   return (
-    <RequireLogin reason="Đăng nhập để xem thành viên club.">
+    <RequireLogin reason={t('Đăng nhập để xem thành viên club.')}>
       {user ? <ClubLiveMembersContent key={user.id} userId={user.id} /> : null}
     </RequireLogin>
   );
 }
 
 function ClubLiveMembersContent({ userId }: { userId: string }) {
+  useAppPreferences();
   const { clubId } = useLocalSearchParams<{ clubId?: string }>();
   const scope = clubLiveRequestScope(userId, clubId);
   const load = useCallback(
     async (signal: AbortSignal) => {
-      if (!scope || !clubId) throw new ApiError(404, 'Không tìm thấy');
+      if (!scope || !clubId) throw new ApiError(404, t('Không tìm thấy'));
       return clubLiveApi.members(clubId, { signal }).then((response) => ({ scope, response }));
     },
     [clubId, scope],
@@ -35,8 +39,8 @@ function ClubLiveMembersContent({ userId }: { userId: string }) {
 
   return (
     <Page>
-      <Stack.Screen options={{ title: 'Thành viên club' }} />
-      <Title>Thành viên</Title>
+      <Stack.Screen options={{ title: t('Thành viên club') }} />
+      <Title>{t('Thành viên')}</Title>
       <ClubLiveScreenState
         loading={loading}
         error={error}
@@ -47,9 +51,12 @@ function ClubLiveMembersContent({ userId }: { userId: string }) {
         {data ? (
           <View style={{ gap: space.lg }}>
             <ClubLiveStaleBanner stale={data.stale} lastSuccessAt={data.lastSuccessAt} />
-            <SectionTitle>Thành viên bên app CLB ({data.data.items.length})</SectionTitle>
+            <SectionTitle>
+              {t('Thành viên bên app CLB (')}
+              {data.data.items.length})
+            </SectionTitle>
             {data.data.items.length === 0 ? (
-              <Muted>Chưa có thành viên nào.</Muted>
+              <Muted>{t('Chưa có thành viên nào.')}</Muted>
             ) : (
               <View style={{ gap: space.sm }}>
                 {data.data.items.map((member) => (

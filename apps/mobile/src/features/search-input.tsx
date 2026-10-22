@@ -1,5 +1,7 @@
 import { StyleSheet, TextInput } from 'react-native';
 import { colors, radius, space } from '../ui/theme';
+import { useAppPreferences } from '../ui/preferences';
+
 
 export function SearchInput({
   value,
@@ -12,6 +14,7 @@ export function SearchInput({
   placeholder: string;
   label: string;
 }) {
+  useAppPreferences();
   return (
     <TextInput
       style={styles.input}
@@ -28,14 +31,14 @@ export function SearchInput({
 }
 
 export const inputStyle = {
-  backgroundColor: colors.card,
+  get backgroundColor() { return colors.card; },
   borderWidth: 1,
-  borderColor: colors.border,
+  get borderColor() { return colors.border; },
   borderRadius: radius,
   paddingHorizontal: space.lg,
   paddingVertical: 10,
   fontSize: 16,
-  color: colors.text,
+  get color() { return colors.text; },
 } as const;
 
 const styles = StyleSheet.create({ input: inputStyle });

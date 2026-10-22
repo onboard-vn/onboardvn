@@ -7,14 +7,18 @@ import { inputStyle, SearchInput } from '../search-input';
 import { useDebounced } from '../use-debounced';
 import { useFetch } from '../use-fetch';
 import { Button, Card, Heading, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { gameName } from './logic';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 export function AddGame({
   onAdd,
 }: {
   onAdd: (game: Pick<GameSummaryDto, 'id' | 'nameVi' | 'nameEn'>) => void;
 }) {
+  useAppPreferences();
   const [text, setText] = useState('');
   const [code, setCode] = useState('');
   const [codeStatus, setCodeStatus] = useState<string | null>(null);
@@ -48,22 +52,22 @@ export function AddGame({
 
   return (
     <Card>
-      <Heading>Thêm game</Heading>
+      <Heading>{t("Thêm game")}</Heading>
       <SearchInput
         value={text}
         onChangeText={setText}
-        placeholder="Tìm game trong danh mục..."
-        label="Tìm game để thêm"
+        placeholder={t("Tìm game trong danh mục...")}
+        label={t("Tìm game để thêm")}
       />
       {results.loading && q ? <ActivityIndicator /> : null}
       {results.error ? <Text style={styles.error}>{results.error}</Text> : null}
       {q && !results.loading && !results.error && results.data?.items.length === 0 ? (
-        <Hint>Không tìm thấy.</Hint>
+        <Hint>{t("Không tìm thấy.")}</Hint>
       ) : null}
       {(results.data?.items ?? []).map((g) => (
         <View key={g.id} style={styles.rowHead}>
           <Text style={styles.name}>{gameName(g)}</Text>
-          <Button label="Chọn" onPress={() => onAdd(g)} />
+          <Button label={t("Chọn")} onPress={() => onAdd(g)} />
         </View>
       ))}
       <View style={styles.noteRow}>
@@ -71,13 +75,13 @@ export function AddGame({
           style={styles.noteInput}
           value={code}
           onChangeText={setCode}
-          placeholder="Hoặc nhập mã vạch"
+          placeholder={t("Hoặc nhập mã vạch")}
           placeholderTextColor={colors.muted}
           keyboardType="number-pad"
-          accessibilityLabel="Mã vạch"
+          accessibilityLabel={t("Mã vạch")}
         />
         <Button
-          label="Tra cứu"
+          label={t("Tra cứu")}
           tone="ghost"
           disabled={!code.trim()}
           onPress={() => void lookup()}
@@ -88,7 +92,7 @@ export function AddGame({
         <View style={styles.rowHead}>
           <Text style={styles.name}>{gameName(found)}</Text>
           <Button
-            label="Thêm vào tủ"
+            label={t("Thêm vào tủ")}
             onPress={() => {
               onAdd(found);
               setFound(null);
@@ -101,7 +105,7 @@ export function AddGame({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   rowHead: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -112,4 +116,4 @@ const styles = StyleSheet.create({
   noteRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   noteInput: { ...inputStyle, flex: 1, paddingVertical: 8, fontSize: 15 },
   error: { color: colors.danger },
-});
+}));

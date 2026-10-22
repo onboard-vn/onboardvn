@@ -7,8 +7,13 @@ import { space } from '../../ui/theme';
 import { clubJoinErrorMessage } from './club-join-error';
 import { canSubmitClubJoin } from './club-join-state';
 import { Btn, FormError, TextField, href } from '../events/ui';
+import { useAppPreferences } from '../../ui/preferences';
+import { t } from '../../ui/i18n';
+
+
 
 export function ClubJoinForm({ code }: { code: string }) {
+  useAppPreferences();
   const router = useRouter();
   const [clubId, setClubId] = useState('');
   const [pending, setPending] = useState(false);
@@ -48,8 +53,8 @@ export function ClubJoinForm({ code }: { code: string }) {
         label="Club ID"
         hint={
           requiresClubIdForRetry
-            ? 'Nhập lại Club ID để thử liên kết lần nữa.'
-            : 'Nhập nếu bạn muốn liên kết tài khoản club cũ. Có thể để trống.'
+            ? t("Nhập lại Club ID để thử liên kết lần nữa.")
+            : t("Nhập nếu bạn muốn liên kết tài khoản club cũ. Có thể để trống.")
         }
         maxLength={100}
         editable={!pending}
@@ -66,7 +71,7 @@ export function ClubJoinForm({ code }: { code: string }) {
       <FormError message={error} />
       <Btn
         disabled={pending || !canSubmitClubJoin(clubId, requiresClubIdForRetry)}
-        label={pending ? 'Đang liên kết…' : 'Tham gia CLB'}
+        label={pending ? t("Đang liên kết…") : t("Tham gia CLB")}
         onPress={() => void onSubmit()}
       />
     </View>

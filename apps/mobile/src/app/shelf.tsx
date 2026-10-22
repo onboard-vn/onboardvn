@@ -1,6 +1,8 @@
+import { t, translateKnown } from '../ui/i18n';
+import { useAppPreferences } from '../ui/preferences';
 import type { ShelfItemDto, ShelfListResult } from '@onboard/shared';
 import { Link, Stack } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { api } from '../api/client';
 import { RequireLogin } from '../auth/require-login';
@@ -19,7 +21,7 @@ import { ShelfGrid } from '../features/shelf/shelf-grid';
 import { ShelfRow, type ShelfPatch } from '../features/shelf/shelf-row';
 import { useFetch } from '../features/use-fetch';
 import { Button, Chip, Collapsible, Hint, Segmented } from '../ui/primitives';
-import { colors, space } from '../ui/theme';
+import { themeStyles, colors, space } from '../ui/theme';
 
 const COLUMNS_KEY = 'onboard.shelf.columns';
 const VIEW_KEY = 'onboard.shelf.view';
@@ -29,6 +31,7 @@ const loadShelf = (signal: AbortSignal) => api<ShelfListResult>('/me/shelf', { s
 type ViewMode = 'list' | 'grid';
 
 function ShelfManager() {
+  useAppPreferences();
   const shelf = useFetch(loadShelf);
   const { setData, reload } = shelf;
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +45,7 @@ function ShelfManager() {
   const [now] = useState(() => Date.now());
 
   const items = shelf.data && !shelf.data.hidden ? shelf.data.items : null;
-  const sorted = useMemo(() => (items ? sortShelf(items, sort) : []), [items, sort]);
+  const sorted = items ? sortShelf(items, sort) : [];
 
   const changeView = (v: ViewMode) => {
     setView(v);
@@ -78,7 +81,7 @@ function ShelfManager() {
         reload();
       }
     } catch (e) {
-      setError(errorMessage(e, 'Không lưu được, thử lại sau'));
+      setError(errorMessage(e, t('Không lưu được, thử lại sau')));
     }
   };
 
@@ -89,7 +92,7 @@ function ShelfManager() {
       if (item && typeof item === 'object' && 'game' in item) upsert(item);
       else reload();
     } catch (e) {
-      setError(errorMessage(e, 'Không thêm được vào tủ, thử lại sau'));
+      setError(errorMessage(e, t('Không thêm được vào tủ, thử lại sau')));
     }
   };
 
@@ -103,56 +106,58 @@ function ShelfManager() {
           : { hidden: false, items: prev.items.filter((i) => i.game.id !== gameId) },
       );
     } catch (e) {
-      setError(errorMessage(e, 'Không gỡ được, thử lại sau'));
+      setError(errorMessage(e, t('Không gỡ được, thử lại sau')));
     }
   };
 
   return (
     <View style={styles.stack}>
       <View style={styles.titleRow}>
-        <Text style={styles.title}>Tủ game của tôi</Text>
+        <Text style={styles.title}>{t('Tủ game của tôi')}</Text>
         <Link href="/wishlist" style={styles.link}>
-          Danh sách Muốn chơi
+          {t('Danh sách Muốn chơi')}
         </Link>
       </View>
       <AddGame onAdd={(g) => void add(g.id)} />
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+      {error ? <Text style={styles.error}>{translateKnown(error ?? '')}</Text> : null}
       {shelf.loading && !shelf.data ? <ActivityIndicator /> : null}
       {shelf.error ? (
         <View style={styles.stack}>
-          <Text style={styles.error}>{shelf.error}</Text>
-          <Button label="Thử lại" tone="ghost" onPress={reload} />
+          <Text style={styles.error}>{translateKnown(shelf.error ?? '')}</Text>
+          <Button label={t('Thử lại')} tone="ghost" onPress={reload} />
         </View>
       ) : null}
-      {items && items.length === 0 ? <Hint>Tủ game trống, hãy thêm game đầu tiên.</Hint> : null}
+      {items && items.length === 0 ? (
+        <Hint>{t('Tủ game trống, hãy thêm game đầu tiên.')}</Hint>
+      ) : null}
       {items && items.length > 0 ? (
         <>
           <Segmented
             value={view}
             onChange={changeView}
             options={[
-              { value: 'list', label: 'Danh sách' },
-              { value: 'grid', label: 'Lưới' },
+              { value: 'list', label: t('Danh sách') },
+              { value: 'grid', label: t('Lưới') },
             ]}
           />
           <View style={styles.chips}>
-            <Text style={styles.label}>Sắp xếp:</Text>
+            <Text style={styles.label}>{t('Sắp xếp:')}</Text>
             {SORT_OPTIONS.map((o) => (
               <Chip
                 key={o.value}
-                label={o.label}
+                label={/^\d/.test(o.label) ? o.label : t(o.label)}
                 selected={sort === o.value}
                 onPress={() => setSort(o.value)}
               />
             ))}
           </View>
           {view === 'list' ? (
-            <Collapsible title="Thuộc tính">
+            <Collapsible title={t('Thuộc tính')}>
               <View style={styles.chips}>
                 {COLUMN_OPTIONS.map((o) => (
                   <Chip
                     key={o.value}
-                    label={o.label}
+                    label={/^\d/.test(o.label) ? o.label : t(o.label)}
                     selected={columns.includes(o.value)}
                     onPress={() => toggleColumn(o.value)}
                   />
@@ -181,11 +186,12 @@ function ShelfManager() {
 }
 
 export default function ShelfScreen() {
+  useAppPreferences();
   return (
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ title: 'Tủ game' }} />
+      <Stack.Screen options={{ title: t('Tủ game') }} />
       <View style={styles.column}>
-        <RequireLogin reason="Đăng nhập để quản lý tủ game của bạn.">
+        <RequireLogin reason={t('Đăng nhập để quản lý tủ game của bạn.')}>
           <ShelfManager />
         </RequireLogin>
       </View>
@@ -193,20 +199,22 @@ export default function ShelfScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  content: { padding: space.lg, alignItems: 'center' },
-  column: { width: '100%', maxWidth: 960 },
-  stack: { gap: space.md },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: space.sm,
-  },
-  title: { fontSize: 22, fontWeight: '700', color: colors.text },
-  link: { color: colors.primary, fontWeight: '600' },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm },
-  label: { color: colors.muted, fontSize: 13 },
-  error: { color: colors.danger },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    content: { padding: space.lg, alignItems: 'center' },
+    column: { width: '100%', maxWidth: 960 },
+    stack: { gap: space.md },
+    titleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: space.sm,
+    },
+    title: { fontSize: 22, fontWeight: '700', color: colors.text },
+    link: { color: colors.primary, fontWeight: '600' },
+    chips: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm },
+    label: { color: colors.muted, fontSize: 13 },
+    error: { color: colors.danger },
+  }),
+);

@@ -2,57 +2,66 @@ import { ROUND_KEY } from '../api/plays-types';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { NumberField } from '../ui/number-field';
 import { Button, Card, Heading, Hint } from '../ui/primitives';
-import { colors } from '../ui/theme';
+import { themeStyles, colors } from '../ui/theme';
 import { Flash, PresenceLabel } from './cell-flash';
 import { roundScore, roundsConfig, targetReached } from './model';
 import type { SheetApi } from './use-sheet';
 import { disabledScoreInputState } from './readonly-play';
-
+import { scoreLocale, scorePlayerName, scoreText } from './localization';
+import { useAppPreferences } from '../ui/preferences';
 const AGG_LABEL = {
   sum: 'Tổng các vòng',
   best: 'Vòng tốt nhất',
   'rounds-won': 'Số vòng thắng',
 } as const;
 
-const fmt = (n: number) => n.toLocaleString('vi-VN');
-
 export function RoundsTable({ sheet }: { sheet: SheetApi }) {
+  const { language } = useAppPreferences();
+  const fmt = (n: number) => n.toLocaleString(scoreLocale(language));
   const { template, state, summary } = sheet;
   const { target, aggregate, roundLimit } = roundsConfig(template);
   const reached = targetReached(template, summary.rows);
   const winners = summary.rows.filter((r) => summary.winners.includes(r.id));
-  const winnerText = winners.map((w) => w.name).join(', ');
+  const winnerText = winners
+    .map((winner) => {
+      const player = state.players.find((candidate) => candidate.id === winner.id);
+      return player ? scorePlayerName(player) : winner.name;
+    })
+    .join(', ');
   const rounds = Array.from({ length: state.roundCount }, (_, i) => i);
 
   return (
     <Card>
-      <Heading>Bảng điểm theo vòng</Heading>
+      <Heading>{scoreText("Bảng điểm theo vòng")}</Heading>
       <Hint>
-        {AGG_LABEL[aggregate]}
-        {target !== null ? ` · mốc kết thúc ${fmt(target)}` : ''}
-        {roundLimit ? ` · ${roundLimit} vòng` : ''}
+        {scoreText(AGG_LABEL[aggregate])}
+        {target !== null ? ` ${scoreText('· mốc kết thúc {target}', { target: fmt(target) })}` : ''}
+        {roundLimit ? ` ${scoreText('· {roundLimit} vòng', { roundLimit })}` : ''}
       </Hint>
 
       {reached ? (
         <View style={[styles.banner, { backgroundColor: colors.successSoft }]}>
           <Text style={styles.bannerText}>
-            Đã đạt mốc {target !== null ? fmt(target) : ''} · Người thắng: {winnerText}
+            {scoreText('Đã đạt mốc {target} · Người thắng: {winnerText}', {
+              target: target !== null ? fmt(target) : '',
+              winnerText,
+            })}
           </Text>
         </View>
       ) : winnerText && summary.rows.some((r) => r.total !== 0) ? (
-        <Hint>Đang dẫn: {winnerText}</Hint>
+        <Hint>{scoreText('Đang dẫn: {names}', { names: winnerText })}</Hint>
       ) : null}
 
       <ScrollView horizontal>
         <View>
           <View style={styles.row}>
-            <Text style={[styles.cell, styles.roundCol, styles.head]}>Vòng</Text>
+            <Text style={[styles.cell, styles.roundCol, styles.head]}>{scoreText("Vòng")}</Text>
             {state.players.map((p) => (
               <View key={p.id} style={[styles.cell, styles.playerCol]}>
                 <Text style={styles.head} numberOfLines={1}>
-                  {p.name}
+                  {scorePlayerName(p)}
                 </Text>
-                <PresenceLabel sheet={sheet} id={p.id} name={p.name} />
+                <PresenceLabel sheet={sheet} id={p.id} name={p.name} fallbackSeat={p.fallbackSeat} />
               </View>
             ))}
           </View>
@@ -79,7 +88,7 @@ export function RoundsTable({ sheet }: { sheet: SheetApi }) {
             </View>
           ))}
           <View style={[styles.row, styles.totalRow]}>
-            <Text style={[styles.cell, styles.roundCol, styles.head]}>Tổng</Text>
+            <Text style={[styles.cell, styles.roundCol, styles.head]}>{scoreText("Tổng")}</Text>
             {summary.rows.map((row) => {
               const won = reached && summary.winners.includes(row.id);
               const hit = target !== null && row.total >= target;
@@ -104,9 +113,9 @@ export function RoundsTable({ sheet }: { sheet: SheetApi }) {
       </ScrollView>
 
       <View style={styles.actions}>
-        <Button label="Thêm vòng" onPress={sheet.addRound} disabled={!sheet.canManage} />
+        <Button label={scoreText("Thêm vòng")} onPress={sheet.addRound} disabled={!sheet.canManage} />
         <Button
-          label="Xóa vòng cuối"
+          label={scoreText("Xóa vòng cuối")}
           tone="ghost"
           onPress={sheet.removeLastRound}
           disabled={!sheet.canManage || state.roundCount <= 1}
@@ -116,7 +125,7 @@ export function RoundsTable({ sheet }: { sheet: SheetApi }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center' },
   cell: { paddingVertical: 6, paddingHorizontal: 4, alignItems: 'center' },
   roundCol: { width: 56, textAlign: 'center', color: colors.muted, fontWeight: '600' },
@@ -128,4 +137,4 @@ const styles = StyleSheet.create({
   banner: { padding: 12, borderRadius: 10 },
   bannerText: { fontWeight: '700', color: colors.text },
   actions: { flexDirection: 'row', gap: 8, flexWrap: 'wrap' },
-});
+}));

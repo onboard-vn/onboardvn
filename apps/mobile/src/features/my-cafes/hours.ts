@@ -1,3 +1,4 @@
+import { t } from '../../ui/i18n';
 import { CAFE_DAY_KEYS, type CafeOpeningHours } from '@onboard/shared';
 import { DAY_LABELS } from '../cafes/labels';
 
@@ -13,7 +14,7 @@ export function validateHours(hours: CafeOpeningHours): string | null {
   for (const day of CAFE_DAY_KEYS) {
     for (const range of hours[day] ?? []) {
       if (!TIME_RE.test(normalizeTime(range.open)) || !TIME_RE.test(normalizeTime(range.close))) {
-        return `Giờ ${DAY_LABELS[day]} phải theo định dạng HH:MM (00:00-23:59)`;
+        return t('Giờ {day} phải theo định dạng HH:MM (00:00-23:59)', { day: t(DAY_LABELS[day]) });
       }
     }
   }

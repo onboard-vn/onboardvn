@@ -1,3 +1,5 @@
+import { t } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import type { ClubDetailDto, ClubExternalMembersResponse } from '@onboard/shared';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback } from 'react';
@@ -9,6 +11,7 @@ import { LoadGate, Muted, Page, Title } from '../../../features/events/ui';
 import { useFetch } from '../../../features/use-fetch';
 
 function Manage({ slug, viewerId }: { slug: string; viewerId: string }) {
+  useAppPreferences();
   const load = useCallback(
     async (signal: AbortSignal) => {
       const detail = await api<ClubDetailDto>(`/clubs/${encodeURIComponent(slug)}`, { signal });
@@ -32,13 +35,15 @@ function Manage({ slug, viewerId }: { slug: string; viewerId: string }) {
   return (
     <LoadGate
       loading={loading}
-      error={status === 404 ? 'Không tìm thấy club' : error}
+      error={status === 404 ? t('Không tìm thấy club') : error}
       hasData={!!data}
     >
       {data && club && allowed && myRole ? (
         <>
-          <Stack.Screen options={{ title: 'Quản lý club' }} />
-          <Title>Quản lý {club.name}</Title>
+          <Stack.Screen options={{ title: t('Quản lý club') }} />
+          <Title>
+            {t('Quản lý')} {club.name}
+          </Title>
           <ClubManagePanel
             club={{
               id: club.id as string,
@@ -54,19 +59,20 @@ function Manage({ slug, viewerId }: { slug: string; viewerId: string }) {
           />
         </>
       ) : (
-        <Muted>Không tìm thấy club</Muted>
+        <Muted>{t('Không tìm thấy club')}</Muted>
       )}
     </LoadGate>
   );
 }
 
 export default function ManageClubPage() {
+  useAppPreferences();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const { user } = useSession();
   return (
     <Page>
-      <Stack.Screen options={{ title: 'Quản lý club' }} />
-      <RequireLogin reason="Đăng nhập để quản lý club.">
+      <Stack.Screen options={{ title: t('Quản lý club') }} />
+      <RequireLogin reason={t('Đăng nhập để quản lý club.')}>
         {user ? <Manage slug={slug} viewerId={user.id} /> : null}
       </RequireLogin>
     </Page>

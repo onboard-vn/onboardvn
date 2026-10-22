@@ -1,3 +1,5 @@
+import { t } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback } from 'react';
 import { View } from 'react-native';
@@ -17,20 +19,22 @@ import { Body, CardLink, Muted, Page, SectionTitle, Title } from '../../../featu
 import { space } from '../../../ui/theme';
 
 export default function ClubLiveHistoryScreen() {
+  useAppPreferences();
   const { user } = useSession();
   return (
-    <RequireLogin reason="Đăng nhập để xem lịch sử club.">
+    <RequireLogin reason={t('Đăng nhập để xem lịch sử club.')}>
       {user ? <ClubLiveHistoryContent key={user.id} userId={user.id} /> : null}
     </RequireLogin>
   );
 }
 
 function ClubLiveHistoryContent({ userId }: { userId: string }) {
+  useAppPreferences();
   const { slug, clubId } = useLocalSearchParams<{ slug: string; clubId?: string }>();
   const scope = clubLiveRequestScope(userId, clubId);
   const load = useCallback(
     async (signal: AbortSignal) => {
-      if (!scope || !clubId) throw new ApiError(404, 'Không tìm thấy');
+      if (!scope || !clubId) throw new ApiError(404, t('Không tìm thấy'));
       return clubLiveApi.history(clubId, { signal }).then((response) => ({ scope, response }));
     },
     [clubId, scope],
@@ -41,8 +45,8 @@ function ClubLiveHistoryContent({ userId }: { userId: string }) {
 
   return (
     <Page>
-      <Stack.Screen options={{ title: 'Lịch sử club' }} />
-      <Title>Lịch sử</Title>
+      <Stack.Screen options={{ title: t('Lịch sử club') }} />
+      <Title>{t('Lịch sử')}</Title>
       <ClubLiveScreenState
         loading={loading}
         error={error}
@@ -53,16 +57,19 @@ function ClubLiveHistoryContent({ userId }: { userId: string }) {
         {data ? (
           <View style={{ gap: space.lg }}>
             <ClubLiveStaleBanner stale={data.stale} lastSuccessAt={data.lastSuccessAt} />
-            <SectionTitle>Ngày đã chơi ({dates.length})</SectionTitle>
+            <SectionTitle>
+              {t('Ngày đã chơi (')}
+              {dates.length})
+            </SectionTitle>
             {dates.length === 0 ? (
-              <Muted>Chưa có ngày chơi nào.</Muted>
+              <Muted>{t('Chưa có ngày chơi nào.')}</Muted>
             ) : (
               <View style={{ gap: space.sm }}>
                 {dates.map((date) => (
                   <CardLink key={date} to={clubLiveDayHref(slug, clubId ?? '', date)}>
                     <View style={{ gap: space.xs }}>
                       <Body bold>{formatClubLiveDate(date)}</Body>
-                      <Muted>Xem các bàn trong ngày</Muted>
+                      <Muted>{t('Xem các bàn trong ngày')}</Muted>
                     </View>
                   </CardLink>
                 ))}

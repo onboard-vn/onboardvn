@@ -24,8 +24,15 @@ import {
   href,
   useAction,
 } from '../events/ui';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
-export const ROLE_LABEL = { owner: 'Owner', admin: 'Admin', member: 'Thành viên' } as const;
+
+export const ROLE_LABEL = {
+  owner: 'Chủ club',
+  admin: 'Quản trị viên',
+  member: 'Thành viên',
+} as const;
 
 interface Props {
   club: { id: string; slug: string; name: string; description: string | null };
@@ -37,6 +44,7 @@ interface Props {
 }
 
 function Item({ children }: { children: React.ReactNode }) {
+  useAppPreferences();
   return (
     <View
       style={{
@@ -60,6 +68,7 @@ export function ClubManagePanel({
   externalMembers,
   onChanged,
 }: Props) {
+  useAppPreferences();
   const router = useRouter();
   const isOwner = myRole === 'owner';
   const [name, setName] = useState(club.name);
@@ -120,10 +129,10 @@ export function ClubManagePanel({
       <FormError message={error} />
 
       <View style={{ gap: space.md }}>
-        <SectionTitle>Thông tin</SectionTitle>
-        <TextField label="Tên club" maxLength={80} value={name} onChangeText={setName} />
+        <SectionTitle>{t("Thông tin")}</SectionTitle>
+        <TextField label={t("Tên club")} maxLength={80} value={name} onChangeText={setName} />
         <TextField
-          label="Mô tả"
+          label={t("Mô tả")}
           multiline
           maxLength={1000}
           value={description}
@@ -132,19 +141,19 @@ export function ClubManagePanel({
         <Btn
           small
           disabled={pending}
-          label="Lưu"
+          label={t("Lưu")}
           onPress={onSave}
           style={{ alignSelf: 'flex-start' }}
         />
       </View>
 
       <View style={{ gap: space.md }}>
-        <SectionTitle>Link mời</SectionTitle>
+        <SectionTitle>{t("Link mời")}</SectionTitle>
         <Btn
           small
           variant="outline"
           disabled={pending}
-          label="Tạo link mời mới (link cũ hết hiệu lực)"
+          label={t("Tạo link mời mới (link cũ hết hiệu lực)")}
           onPress={() => void rotate()}
           style={{ alignSelf: 'flex-start' }}
         />
@@ -152,7 +161,7 @@ export function ClubManagePanel({
       </View>
 
       <View style={{ gap: space.md }}>
-        <SectionTitle>Thành viên ({members.length})</SectionTitle>
+        <SectionTitle>{t("Thành viên (")}{members.length})</SectionTitle>
         <ListBox>
           {members.map((m) => {
             const canRemove =
@@ -160,7 +169,7 @@ export function ClubManagePanel({
             return (
               <Item key={m.user.id}>
                 <Body>
-                  {m.user.displayUsername ?? m.user.name} · {ROLE_LABEL[m.role]}
+                  {m.user.displayUsername ?? m.user.name} · {t(ROLE_LABEL[m.role])}
                 </Body>
                 <Row>
                   {isOwner && m.user.id !== viewerId ? (
@@ -169,7 +178,7 @@ export function ClubManagePanel({
                         small
                         variant="outline"
                         disabled={pending}
-                        label={m.role === 'admin' ? 'Hạ xuống thành viên' : 'Lên admin'}
+                        label={m.role === 'admin' ? t("Hạ xuống thành viên") : t("Lên admin")}
                         onPress={() =>
                           void act(
                             () =>
@@ -185,9 +194,9 @@ export function ClubManagePanel({
                         small
                         variant="outline"
                         disabled={pending}
-                        label="Chuyển owner"
+                        label={t("Chuyển owner")}
                         onPress={async () => {
-                          if (!(await confirmAsync(`Chuyển quyền owner cho ${m.user.name}?`)))
+                          if (!(await confirmAsync(t('Chuyển quyền owner cho {name}?', { name: m.user.name }))))
                             return;
                           void act(
                             () =>
@@ -206,9 +215,9 @@ export function ClubManagePanel({
                       small
                       variant="danger"
                       disabled={pending}
-                      label="Xóa"
+                      label={t("Xóa")}
                       onPress={async () => {
-                        if (!(await confirmAsync(`Xóa ${m.user.name} khỏi club?`))) return;
+                        if (!(await confirmAsync(t('Xóa {name} khỏi club?', { name: m.user.name })))) return;
                         void act(
                           () => api(memberPath(m.user.id), { method: 'DELETE' }),
                           'Không xóa được thành viên',
@@ -224,11 +233,11 @@ export function ClubManagePanel({
       </View>
 
       <View style={{ gap: space.md }}>
-        <SectionTitle>Thêm bạn bè</SectionTitle>
+        <SectionTitle>{t("Thêm bạn bè")}</SectionTitle>
         {friends === null ? (
-          <Muted>Đang tải...</Muted>
+          <Muted>{t("Đang tải...")}</Muted>
         ) : addable.length === 0 ? (
-          <Muted>Không có bạn bè nào để thêm.</Muted>
+          <Muted>{t("Không có bạn bè nào để thêm.")}</Muted>
         ) : (
           addable.map((f) => (
             <Row key={f.id} style={{ justifyContent: 'space-between', flexWrap: 'nowrap' }}>
@@ -238,7 +247,7 @@ export function ClubManagePanel({
               <Btn
                 small
                 disabled={pending}
-                label="Thêm"
+                label={t("Thêm")}
                 onPress={() =>
                   void act(
                     () =>
@@ -254,12 +263,12 @@ export function ClubManagePanel({
 
       {externalMembers.length > 0 ? (
         <View style={{ gap: space.md }}>
-          <SectionTitle>Thành viên từ app club cũ ({externalMembers.length})</SectionTitle>
+          <SectionTitle>{t('Thành viên từ app club cũ ({count})', { count: externalMembers.length })}</SectionTitle>
           <ListBox>
             {externalMembers.map((m) => (
               <Item key={m.id}>
                 <Body>
-                  {m.nickname} · {m.linkedUserId ? 'Đã liên kết' : 'Chưa liên kết'}
+                  {m.nickname} · {m.linkedUserId ? t("Đã liên kết") : t("Chưa liên kết")}
                 </Body>
                 {m.linkedUserId ? (
                   <Row>
@@ -267,7 +276,7 @@ export function ClubManagePanel({
                       small
                       variant="outline"
                       disabled={pending}
-                      label="Hủy liên kết"
+                      label={t("Hủy liên kết")}
                       onPress={() =>
                         void act(
                           () =>
@@ -288,12 +297,12 @@ export function ClubManagePanel({
 
       {isOwner ? (
         <View style={{ gap: space.sm }}>
-          <SectionTitle>Vùng nguy hiểm</SectionTitle>
+          <SectionTitle>{t("Vùng nguy hiểm")}</SectionTitle>
           <Btn
             small
             variant="danger"
             disabled={pending}
-            label="Xóa club"
+            label={t("Xóa club")}
             style={{ alignSelf: 'flex-start' }}
             onPress={async () => {
               if (

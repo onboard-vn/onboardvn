@@ -2,9 +2,10 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Flash, PresenceLabel } from '../cell-flash';
 import { NumberField } from '../../ui/number-field';
 import { Card, Chip, Heading, Hint } from '../../ui/primitives';
-import { colors } from '../../ui/theme';
+import { getActiveTheme, themeStyles, colors } from '../../ui/theme';
+import { useAppPreferences } from '../../ui/preferences';
 import type { SheetApi } from '../use-sheet';
-
+import { scorePlayerName, scoreText } from '../localization';
 const ROOM_SLOTS = 5;
 const ROWS = [
   { key: 'roomRow4', label: 'Hàng trên cùng', vp: 4 },
@@ -22,6 +23,7 @@ const TRACK_CHIPS = [5, 10, 20];
 const sign = (n: number) => (n > 0 ? `+${n}` : String(n));
 
 export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
+  useAppPreferences();
   const num = (id: string, key: string) => {
     const v = sheet.state.values[id]?.[key];
     return typeof v === 'number' ? v : 0;
@@ -36,13 +38,13 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
             <Card>
               <View style={styles.header}>
                 <View>
-                  <Heading>{p.name}</Heading>
-                  <PresenceLabel sheet={sheet} id={p.id} name={p.name} />
+                  <Heading>{scorePlayerName(p)}</Heading>
+                  <PresenceLabel sheet={sheet} id={p.id} name={p.name} fallbackSeat={p.fallbackSeat} />
                 </View>
                 <Text style={styles.total}>{row?.total ?? 0} VP</Text>
               </View>
 
-              <Text style={styles.label}>Điểm trên track (trước tính điểm cuối)</Text>
+              <Text style={styles.label}>{scoreText("Điểm trên track (trước tính điểm cuối)")}</Text>
               <NumberField
                 value={num(p.id, 'trackVp')}
                 step={1}
@@ -61,14 +63,14 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
                 ))}
               </View>
 
-              <Text style={styles.label}>Phòng có khách (chạm để đánh dấu)</Text>
+              <Text style={styles.label}>{scoreText("Phòng có khách (chạm để đánh dấu)")}</Text>
               <View style={styles.hotel}>
                 {ROWS.map((r) => {
                   const n = num(p.id, r.key);
                   return (
                     <View key={r.key} style={styles.floor}>
                       <Text style={styles.floorLabel}>
-                        {r.label} · {r.vp} VP
+                        {scoreText(r.label)} · {r.vp} VP
                       </Text>
                       <View style={styles.rooms}>
                         {Array.from(
@@ -79,13 +81,23 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
                               <Pressable
                                 key={i}
                                 accessibilityRole="button"
-                                accessibilityLabel={`${r.label}, phòng ${i + 1}`}
+                                accessibilityLabel={scoreText('{label}, phòng {room}', {
+                                  label: scoreText(r.label),
+                                  room: i + 1,
+                                })}
                                 accessibilityState={{ selected: filled }}
                                 onPress={() => sheet.setValue(p.id, r.key, n === i + 1 ? i : i + 1)}
                                 disabled={!sheet.canEditIdentity(p.id)}
                                 style={[styles.room, filled && styles.roomOn]}
                               >
-                                <Text style={[styles.roomText, filled && { color: '#fff' }]}>
+                                <Text
+                                  style={[
+                                    styles.roomText,
+                                    filled && {
+                                      color: getActiveTheme() === 'dark' ? colors.bg : '#fff',
+                                    },
+                                  ]}
+                                >
                                   {filled ? r.vp : ''}
                                 </Text>
                               </Pressable>
@@ -99,9 +111,9 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
                 })}
               </View>
 
-              <Text style={styles.label}>Thẻ nhân viên</Text>
+              <Text style={styles.label}>{scoreText("Thẻ nhân viên")}</Text>
               <View style={styles.line}>
-                <Text style={styles.lineText}>VP từ nhân viên cuối game</Text>
+                <Text style={styles.lineText}>{scoreText("VP từ nhân viên cuối game")}</Text>
                 <NumberField
                   value={num(p.id, 'staffVp')}
                   min={0}
@@ -111,13 +123,13 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
                 />
               </View>
 
-              <Text style={styles.label}>Tài nguyên còn lại</Text>
+              <Text style={styles.label}>{scoreText("Tài nguyên còn lại")}</Text>
               {COUNTERS.map((c) => (
                 <View key={c.key} style={styles.line}>
                   <View style={{ flex: 1 }}>
-                    <Text style={styles.lineText}>{c.label}</Text>
+                    <Text style={styles.lineText}>{scoreText(c.label)}</Text>
                     <Hint>
-                      {sign(c.vp)} VP mỗi cái = {sign(c.vp * num(p.id, c.key))} VP
+                      {sign(c.vp)} {scoreText("VP mỗi cái =")}{" "}{sign(c.vp * num(p.id, c.key))} VP
                     </Hint>
                   </View>
                   <NumberField
@@ -137,7 +149,7 @@ export function GrandAustriaInput({ sheet }: { sheet: SheetApi }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   total: { fontSize: 22, fontWeight: '800', color: colors.primary },
   label: { fontSize: 13, fontWeight: '700', color: colors.muted, textTransform: 'uppercase' },
@@ -152,7 +164,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -161,4 +173,4 @@ const styles = StyleSheet.create({
   floorSum: { width: 44, textAlign: 'right', fontSize: 12, color: colors.muted },
   line: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
   lineText: { fontSize: 15, fontWeight: '600', color: colors.text },
-});
+}));

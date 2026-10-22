@@ -1,6 +1,9 @@
+import { getActiveLanguage } from '../../ui/i18n';
+
 /** Vietnam has a fixed UTC+7 offset (no DST), so wall-clock math can be done without a tz DB. */
 const VN_OFFSET_MS = 7 * 60 * 60 * 1000;
 const WEEKDAYS_VI = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+const WEEKDAYS_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function pad(n: number): string {
   return String(n).padStart(2, '0');
@@ -30,7 +33,7 @@ export function vnDateKey(iso: string): string {
 /** `HH:mm, Thứ X DD/MM/YYYY` in Asia/Saigon. */
 export function formatVnDateTime(iso: string): string {
   const vn = new Date(new Date(iso).getTime() + VN_OFFSET_MS);
-  const weekday = WEEKDAYS_VI[vn.getUTCDay()];
+  const weekday = (getActiveLanguage() === 'en' ? WEEKDAYS_EN : WEEKDAYS_VI)[vn.getUTCDay()];
   return `${pad(vn.getUTCHours())}:${pad(vn.getUTCMinutes())}, ${weekday} ${pad(vn.getUTCDate())}/${pad(vn.getUTCMonth() + 1)}/${vn.getUTCFullYear()}`;
 }
 

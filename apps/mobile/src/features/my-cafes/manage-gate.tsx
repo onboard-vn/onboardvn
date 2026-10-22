@@ -1,10 +1,13 @@
+import { t, translateKnown } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
+import { themeStyles, space } from '../../ui/theme';
 import type { CafeOwnerDto } from '@onboard/shared';
 import { useCallback, type ReactNode } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { api } from '../../api/client';
 import { RequireLogin } from '../../auth/require-login';
 import { Button, Hint } from '../../ui/primitives';
-import { space } from '../../ui/theme';
+
 import { PageShell } from '../static/page-shell';
 import { useFetch } from '../use-fetch';
 
@@ -19,8 +22,9 @@ export function ManageGate({
   maxWidth?: number;
   children: Render;
 }) {
+  useAppPreferences();
   return (
-    <RequireLogin reason="Đăng nhập để quản lý địa điểm chơi.">
+    <RequireLogin reason={t('Đăng nhập để quản lý địa điểm chơi.')}>
       <Inner id={id} maxWidth={maxWidth}>
         {children}
       </Inner>
@@ -29,6 +33,7 @@ export function ManageGate({
 }
 
 function Inner({ id, maxWidth, children }: { id: string; maxWidth: number; children: Render }) {
+  useAppPreferences();
   const load = useCallback(
     (signal: AbortSignal) =>
       api<CafeOwnerDto>(`/cafes/${encodeURIComponent(id)}/manage`, { signal }),
@@ -38,17 +43,17 @@ function Inner({ id, maxWidth, children }: { id: string; maxWidth: number; child
 
   if (!cafe) {
     return (
-      <PageShell footer={false} maxWidth={maxWidth}>
+      <PageShell maxWidth={maxWidth}>
         {loading ? (
           <ActivityIndicator />
         ) : status === 404 || status === 422 ? (
-          <Hint>Không tìm thấy địa điểm.</Hint>
+          <Hint>{t('Không tìm thấy địa điểm.')}</Hint>
         ) : status === 403 ? (
-          <Hint>Bạn không có quyền quản lý quán này.</Hint>
+          <Hint>{t('Bạn không có quyền quản lý quán này.')}</Hint>
         ) : (
           <View style={styles.stack}>
-            <Hint>{error}</Hint>
-            <Button label="Thử lại" tone="ghost" onPress={reload} />
+            <Hint>{translateKnown(error ?? '')}</Hint>
+            <Button label={t('Thử lại')} tone="ghost" onPress={reload} />
           </View>
         )}
       </PageShell>
@@ -57,4 +62,4 @@ function Inner({ id, maxWidth, children }: { id: string; maxWidth: number; child
   return <PageShell maxWidth={maxWidth}>{children(cafe, reload)}</PageShell>;
 }
 
-const styles = StyleSheet.create({ stack: { gap: space.md } });
+const styles = themeStyles(() => StyleSheet.create({ stack: { gap: space.md } }));

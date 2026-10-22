@@ -1,5 +1,6 @@
 import type { CategoryDto, GameDetailDto, GameSummaryDto } from '@onboard/shared';
 import { modeLabel, normalize, playersLabel, type GameEntry } from '../../games/catalog';
+import { getActiveLanguage, t } from '../../ui/i18n';
 
 export interface Bounds {
   min: number;
@@ -27,7 +28,7 @@ export function stepRange(r: Range, b: Bounds, edge: 'min' | 'max', dir: 1 | -1)
 }
 
 export function rangeLabel(r: Range, b: Bounds, unit: string): string {
-  if (isFullRange(r, b)) return 'Bất kỳ';
+  if (isFullRange(r, b)) return t('Bất kỳ');
   const lo = r.min > b.min;
   const hi = r.max < b.max;
   const suffix = unit ? ` ${unit}` : '';
@@ -77,7 +78,7 @@ export interface NamedOption {
 
 export const categoryOption = (c: Pick<CategoryDto, 'id' | 'name' | 'nameVi'>): NamedOption => ({
   id: c.id,
-  label: c.nameVi ?? c.name,
+  label: getActiveLanguage() === 'en' ? c.name : c.nameVi ?? c.name,
 });
 
 export function findOption(options: NamedOption[], text: string): NamedOption | undefined {
@@ -111,9 +112,9 @@ export interface GameRow {
 
 const playerText = (min: number | null, max: number | null) => {
   if (min == null && max == null) return '';
-  if (min === max || max == null) return `${min} người`;
-  if (min == null) return `${max} người`;
-  return `${min}-${max} người`;
+  if (min === max || max == null) return t('{count} người', { count: min ?? max! });
+  if (min == null) return t('{count} người', { count: max });
+  return t('{min}-{max} người', { min, max });
 };
 
 export function summaryMeta(
@@ -121,21 +122,22 @@ export function summaryMeta(
 ): string {
   return [
     playerText(g.minPlayers, g.maxPlayers),
-    g.playMinutes ? `${g.playMinutes} phút` : '',
-    g.weight ? `Độ khó ${g.weight}` : '',
+    g.playMinutes ? t('{count} phút', { count: g.playMinutes }) : '',
+    g.weight ? t('Độ khó {weight}', { weight: g.weight }) : '',
   ]
     .filter(Boolean)
     .join(' · ');
 }
 
 export function rowFromSummary(g: GameSummaryDto): GameRow {
+  const name = getActiveLanguage() === 'en' ? g.nameEn || g.nameVi || '' : g.nameVi || g.nameEn;
   return {
     slug: g.slug,
-    name: g.nameVi || g.nameEn,
-    subName: g.nameVi ? g.nameEn : null,
+    name,
+    subName: null,
     meta: summaryMeta(g),
     imageUrl: g.imageUrl ?? g.externalThumbUrl ?? null,
-    categories: g.categories.map((c) => c.nameVi ?? c.name),
+    categories: g.categories.map((c) => getActiveLanguage() === 'en' ? c.name : c.nameVi ?? c.name),
     isVietnamese: g.isVietnamese,
   };
 }
@@ -181,9 +183,9 @@ export function localView(g: GameEntry): GameView {
     imageUrl: null,
     imageCredit: null,
     meta: [
-      { label: 'Năm', value: g.year ? String(g.year) : '—' },
-      { label: 'Số người chơi', value: playersLabel(g.players) || '—' },
-      { label: 'Chế độ', value: modeLabel(g.mode) },
+      { label: t('Năm'), value: g.year ? String(g.year) : '—' },
+      { label: t('Số người chơi'), value: playersLabel(g.players) || '—' },
+      { label: t('Chế độ'), value: modeLabel(g.mode) },
     ],
     categories: [],
     mechanics: [],
@@ -197,35 +199,37 @@ export function localView(g: GameEntry): GameView {
 export function apiView(g: GameDetailDto, local?: GameEntry): GameView {
   const external = g.external ?? null;
   const externalText = external?.description ?? external?.shortDescription ?? null;
+  const language = getActiveLanguage();
   const description = g.descriptionVi
     ? {
         text: g.descriptionVi,
         note:
           g.descriptionSource === 'translated_with_permission'
-            ? `Bản dịch được ${g.descriptionRightsHolder ?? 'NPH'} cho phép`
+            ? t('Bản dịch được {name} cho phép', { name: g.descriptionRightsHolder ?? 'NPH' })
             : g.descriptionSource === 'translated_from_bgg'
-              ? 'Dịch từ mô tả trên BoardGameGeek'
-              : 'Mô tả do cộng đồng viết · CC BY-SA 4.0',
+              ? language === 'en' ? t('Mô tả bằng tiếng Việt') : t('Dịch từ mô tả trên BoardGameGeek')
+              : language === 'en' ? t('Mô tả bằng tiếng Việt') : t('Mô tả do cộng đồng viết · CC BY-SA 4.0'),
         foreign: false,
       }
     : externalText
-      ? { text: externalText, note: 'Nguồn: BoardGameGeek', foreign: true }
+      ? { text: externalText, note: t('Nguồn: BoardGameGeek'), foreign: true }
       : null;
   const players =
     playerText(g.minPlayers, g.maxPlayers) || (local ? playersLabel(local.players) : '');
+  const name = language === 'en' ? g.nameEn || g.nameVi || '' : g.nameVi || g.nameEn || '';
   return {
-    name: g.nameVi || g.nameEn,
-    subName: g.nameVi ? g.nameEn : null,
+    name,
+    subName: null,
     imageUrl: g.imageUrl ?? external?.imageUrl ?? external?.thumbUrl ?? null,
     imageCredit: g.imageCredit,
     meta: [
-      { label: 'Số người chơi', value: players || '—' },
-      { label: 'Thời gian', value: g.playMinutes ? `${g.playMinutes} phút` : '—' },
-      { label: 'Độ khó', value: g.weight ?? '—' },
-      { label: 'Tuổi tối thiểu', value: g.minAge != null ? `${g.minAge}+` : '—' },
+      { label: t('Số người chơi'), value: players || '—' },
+      { label: t('Thời gian'), value: g.playMinutes ? t('{count} phút', { count: g.playMinutes }) : '—' },
+      { label: t('Độ khó'), value: g.weight ?? '—' },
+      { label: t('Tuổi tối thiểu'), value: g.minAge != null ? `${g.minAge}+` : '—' },
     ],
-    categories: g.categories.filter((c) => c.kind === 'category').map((c) => c.nameVi ?? c.name),
-    mechanics: g.categories.filter((c) => c.kind === 'mechanic').map((c) => c.nameVi ?? c.name),
+    categories: g.categories.filter((c) => c.kind === 'category').map((c) => language === 'en' ? c.name : c.nameVi ?? c.name),
+    mechanics: g.categories.filter((c) => c.kind === 'mechanic').map((c) => language === 'en' ? c.name : c.nameVi ?? c.name),
     description,
     bggUrl: g.bggUrl ?? external?.bggUrl ?? null,
     isVietnamese: g.isVietnamese,

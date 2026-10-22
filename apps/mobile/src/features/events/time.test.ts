@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { setActiveLanguage } from '../../ui/i18n';
 import {
   currentVnMonth,
   formatVnDateTime,
@@ -35,8 +36,12 @@ describe('vnDateKey', () => {
 
 describe('formatVnDateTime / formatVnTime', () => {
   it('formats with weekday and VN time', () => {
+    setActiveLanguage('vi');
     expect(formatVnDateTime('2026-09-27T12:00:00.000Z')).toBe('19:00, Chủ nhật 27/09/2026');
     expect(formatVnTime('2026-09-27T12:00:00.000Z')).toBe('19:00');
+    setActiveLanguage('en');
+    expect(formatVnDateTime('2026-09-27T12:00:00.000Z')).toBe('19:00, Sunday 27/09/2026');
+    setActiveLanguage('vi');
   });
 });
 

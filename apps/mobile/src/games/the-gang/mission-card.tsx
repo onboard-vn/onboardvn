@@ -1,6 +1,10 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { radius, space } from '../../ui/theme';
+import { colors, radius, space, themeStyles } from '../../ui/theme';
 import { gangCards, type CardKind, type Lang } from './cards';
+import { useAppPreferences } from '../../ui/preferences';
+import { t } from '../../ui/i18n';
+
+
 
 export const kindStyle: Record<CardKind, { color: string; label: Record<Lang, string> }> = {
   challenge: { color: '#c8242b', label: { vi: 'Thử thách', en: 'Challenge' } },
@@ -10,6 +14,7 @@ export const kindStyle: Record<CardKind, { color: string; label: Record<Lang, st
 };
 
 function RichText({ html, style }: { html: string; style: object }) {
+  useAppPreferences();
   const lines = html.split(/<br\s*\/?>/i);
   return (
     <>
@@ -32,26 +37,24 @@ function RichText({ html, style }: { html: string; style: object }) {
 
 export function MissionCard({
   code,
-  lang,
   permanent,
   onDiscard,
 }: {
   code: string;
-  lang: Lang;
   permanent?: boolean;
   onDiscard?: () => void;
 }) {
+  const { language } = useAppPreferences();
   const card = gangCards[code];
   if (!card) return null;
   const k = kindStyle[card.kind];
-  const other: Lang = lang === 'vi' ? 'en' : 'vi';
   return (
     <View style={[styles.card, { borderColor: k.color }]}>
       <View style={[styles.head, { backgroundColor: k.color }]}>
         <Text style={styles.code}>{card.code}</Text>
-        <Text style={styles.kind}>{k.label[lang]}</Text>
+        <Text style={styles.kind}>{k.label[language]}</Text>
         {permanent ? (
-          <Text style={styles.tag}>{lang === 'vi' ? 'Cả ván' : 'Whole game'}</Text>
+          <Text style={styles.tag}>{language === 'vi' ? 'Cả ván' : 'Whole game'}</Text>
         ) : null}
         {card.difficulty != null ? (
           <Text style={styles.tag}>
@@ -62,7 +65,7 @@ export function MissionCard({
         {onDiscard ? (
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Bỏ thẻ"
+            accessibilityLabel={t("Bỏ thẻ")}
             onPress={onDiscard}
             hitSlop={8}
           >
@@ -71,17 +74,16 @@ export function MissionCard({
         ) : null}
       </View>
       <View style={styles.body}>
-        <Text style={[styles.title, { color: k.color }]}>{card.title[lang]}</Text>
-        <Text style={styles.sub}>{card.title[other]}</Text>
-        <RichText html={card.text[lang]} style={styles.text} />
+        <Text style={styles.title}>{card.title[language]}</Text>
+        <RichText html={card.text[language]} style={styles.text} />
         {card.credit ? <Text style={styles.sub}>{card.credit}</Text> : null}
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  card: { borderWidth: 2, borderRadius: radius, overflow: 'hidden', backgroundColor: '#fbf8f2' },
+const styles = themeStyles(() => StyleSheet.create({
+  card: { borderWidth: 2, borderRadius: radius, overflow: 'hidden', backgroundColor: colors.card },
   head: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -90,8 +92,8 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   code: {
-    backgroundColor: '#fff',
-    color: '#222',
+    backgroundColor: colors.surfaceMuted,
+    color: colors.text,
     fontWeight: '800',
     borderRadius: 999,
     paddingHorizontal: 8,
@@ -115,8 +117,8 @@ const styles = StyleSheet.create({
   },
   close: { color: '#fff', fontSize: 18, fontWeight: '700', paddingLeft: 4 },
   body: { padding: space.lg, gap: 6 },
-  title: { fontSize: 20, fontWeight: '800', textTransform: 'uppercase' },
-  sub: { fontSize: 12, color: '#8a7f72', fontStyle: 'italic' },
-  text: { fontSize: 16, lineHeight: 23, color: '#222', marginTop: 4 },
+  sub: { fontSize: 12, color: colors.muted, fontStyle: 'italic' },
+  title: { fontSize: 20, fontWeight: '800', color: colors.text, textTransform: 'uppercase' },
+  text: { fontSize: 16, lineHeight: 23, color: colors.text, marginTop: 4 },
   bold: { fontWeight: '800' },
-});
+}));

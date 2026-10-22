@@ -1,3 +1,5 @@
+import { t, translateKnown } from '../ui/i18n';
+import { useAppPreferences } from '../ui/preferences';
 import { Link, Stack } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 import { api } from '../api/client';
@@ -10,27 +12,28 @@ import { PrivacySettings } from '../features/account/privacy-settings';
 import { ProfileForm } from '../features/account/profile-form';
 import { Page } from '../features/auth/auth-ui';
 import { Card, Hint } from '../ui/primitives';
-import { colors, space } from '../ui/theme';
+import { themeStyles, colors, space } from '../ui/theme';
 import { useLoad } from '../ui/use-load';
 
 function AccountContent() {
+  useAppPreferences();
   const { user } = useSession();
   const me = useLoad(() => api<{ user: AccountMe }>('/me').then((r) => r.user), [user?.id]);
 
-  if (me.error && !me.data) return <Hint>{me.error}</Hint>;
-  if (!me.data) return <Hint>Đang tải…</Hint>;
+  if (me.error && !me.data) return <Hint>{translateKnown(me.error ?? '')}</Hint>;
+  if (!me.data) return <Hint>{t('Đang tải…')}</Hint>;
   const u = me.data;
   return (
     <>
       <View style={styles.head}>
-        <Text style={styles.title}>Tài khoản</Text>
+        <Text style={styles.title}>{t('Tài khoản')}</Text>
         <View style={styles.links}>
           <Link href="/events/mine" style={styles.link}>
-            Kèo của tôi
+            {t('Kèo của tôi')}
           </Link>
           {u.username ? (
             <Link href={`/u/${u.username}`} style={styles.link}>
-              Xem hồ sơ công khai
+              {t('Xem hồ sơ công khai')}
             </Link>
           ) : null}
         </View>
@@ -44,7 +47,7 @@ function AccountContent() {
         }}
       />
       <Card>
-        <Text style={styles.sectionTitle}>Mã mời kết bạn (QR)</Text>
+        <Text style={styles.sectionTitle}>{t('Mã mời kết bạn (QR)')}</Text>
         <FriendQr />
       </Card>
       <PrivacySettings initial={privacyValuesFrom(u)} />
@@ -54,20 +57,23 @@ function AccountContent() {
 }
 
 export default function Account() {
+  useAppPreferences();
   return (
     <Page maxWidth={640}>
-      <Stack.Screen options={{ title: 'Tài khoản' }} />
-      <RequireLogin reason="Đăng nhập để quản lý tài khoản.">
+      <Stack.Screen options={{ title: t('Tài khoản') }} />
+      <RequireLogin reason={t('Đăng nhập để quản lý tài khoản.')}>
         <AccountContent />
       </RequireLogin>
     </Page>
   );
 }
 
-const styles = StyleSheet.create({
-  head: { gap: space.sm },
-  title: { fontSize: 24, fontWeight: '600', color: colors.text },
-  links: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
-  link: { color: colors.primary, textDecorationLine: 'underline', fontSize: 14 },
-  sectionTitle: { fontSize: 14, fontWeight: '600', color: colors.text },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    head: { gap: space.sm },
+    title: { fontSize: 24, fontWeight: '600', color: colors.text },
+    links: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
+    link: { color: colors.primary, textDecorationLine: 'underline', fontSize: 14 },
+    sectionTitle: { fontSize: 14, fontWeight: '600', color: colors.text },
+  }),
+);

@@ -1,9 +1,12 @@
 import type { SuggestPoolItemDto } from '@onboard/shared';
 import { Animated, Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors } from '../../ui/theme';
+import { themeStyles, colors } from '../../ui/theme';
 import { mediaUrl } from '../media';
 import { gameName } from '../shelf/logic';
 import { RARITY } from './rarity';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 export interface CardMotion {
   x: Animated.Value;
@@ -29,9 +32,11 @@ export const newMotion = (): CardMotion => ({
 
 const web = Platform.OS === 'web';
 const BACK_PATTERN = web
-  ? ({
-      backgroundImage: `repeating-linear-gradient(45deg, ${colors.brand} 0 9px, #c8241c 9px 18px)`,
-    } as object)
+  ? {
+      get backgroundImage() {
+        return `repeating-linear-gradient(45deg, ${colors.brand} 0 9px, #c8241c 9px 18px)`;
+      },
+    }
   : null;
 
 export function PlayCard({
@@ -49,6 +54,7 @@ export function PlayCard({
   zIndex: number;
   onPick?: () => void;
 }) {
+  useAppPreferences();
   const rarity = item ? RARITY[item.rarity] : null;
   const image = item ? mediaUrl(item.game.imageUrl) : null;
   const backTurn = motion.flip.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '180deg'] });
@@ -124,10 +130,10 @@ export function PlayCard({
               <Text
                 style={[
                   styles.rarity,
-                  { color: rarity.color, fontSize: Math.max(7, width * 0.085) },
+                  { color: colors.text, fontSize: Math.max(7, width * 0.085) },
                 ]}
               >
-                {rarity.label}
+                {t(rarity.label)}
               </Text>
             </View>
           </Animated.View>
@@ -136,7 +142,7 @@ export function PlayCard({
       {onPick ? (
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Lật lá bài này"
+          accessibilityLabel={t("Lật lá bài này")}
           onPress={onPick}
           style={styles.fill}
         />
@@ -145,7 +151,7 @@ export function PlayCard({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   card: { position: 'absolute', left: '50%', top: '50%' },
   fill: { ...StyleSheet.absoluteFill, borderRadius: 10 },
   face: {
@@ -157,13 +163,13 @@ const styles = StyleSheet.create({
   back: {
     backgroundColor: colors.brand,
     borderWidth: 3,
-    borderColor: '#fff',
+    borderColor: colors.card,
     alignItems: 'center',
     justifyContent: 'center',
     boxShadow: '0 6px 14px rgba(0,0,0,0.35)',
   },
   logo: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     color: colors.brand,
     borderRadius: 999,
     paddingHorizontal: 6,
@@ -171,10 +177,10 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     overflow: 'hidden',
   },
-  front: { backgroundColor: '#fff', borderWidth: 4 },
+  front: { backgroundColor: colors.card, borderWidth: 4 },
   art: { width: '100%', aspectRatio: 1 },
   placeholder: { alignItems: 'center', justifyContent: 'center' },
-  initial: { fontWeight: '800', color: '#fff' },
+  initial: { fontWeight: '800', color: colors.onPrimary },
   name: { fontWeight: '800', color: colors.text },
   rarity: { fontWeight: '700', textTransform: 'uppercase' },
-});
+}));

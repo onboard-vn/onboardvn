@@ -4,11 +4,12 @@ import { TEAM_ID } from '../api/plays-types';
 import { StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { NumberField } from '../ui/number-field';
 import { Button, Card, Chip, Heading, Hint } from '../ui/primitives';
-import { colors } from '../ui/theme';
+import { themeStyles, colors } from '../ui/theme';
+import { useAppPreferences } from '../ui/preferences';
 import { Flash, PresenceLabel } from './cell-flash';
 import { categoryAppliesToAny, categoryApplies, visibleCategories } from './model';
 import type { SheetApi } from './use-sheet';
-
+import { scorePlayerName, scoreText, templateScoreText } from './localization';
 const asNumber = (v: RawValue | undefined): number =>
   typeof v === 'number' ? v : typeof v === 'boolean' ? Number(v) : 0;
 const asList = (v: RawValue | undefined): number[] =>
@@ -51,11 +52,11 @@ function ListField({
           onChangeText={setDraft}
           onSubmitEditing={add}
           keyboardType="numbers-and-punctuation"
-          placeholder="Thêm giá trị"
+          placeholder={scoreText("Thêm giá trị")}
           style={styles.input}
         />
         <Button
-          label="Thêm"
+          label={scoreText("Thêm")}
           tone="ghost"
           onPress={add}
           disabled={disabled || draft.trim() === ''}
@@ -90,22 +91,22 @@ function BoolListField({
             onPress={() => onChange(value.filter((_, j) => j !== i))}
           />
         ))}
-        {value.length === 0 ? <Hint>Chưa có phi vụ nào.</Hint> : null}
+        {value.length === 0 ? <Hint>{scoreText("Chưa có phi vụ nào.")}</Hint> : null}
       </View>
       <View style={styles.wrap}>
         <Button
-          label="✓ Thành công"
+          label={scoreText("✓ Thành công")}
           disabled={disabled || full}
           onPress={() => onChange([...value, 1])}
         />
         <Button
-          label="✗ Thất bại"
+          label={scoreText("✗ Thất bại")}
           tone="ghost"
           disabled={disabled || full}
           onPress={() => onChange([...value, 0])}
         />
       </View>
-      {value.length ? <Hint>Bấm vào một ô để xoá.</Hint> : null}
+      {value.length ? <Hint>{scoreText("Bấm vào một ô để xoá.")}</Hint> : null}
     </View>
   );
 }
@@ -136,7 +137,7 @@ export function CategoryControl({
         <View style={{ gap: 6 }}>
           {(cat.inputs ?? []).map((name) => (
             <View key={name} style={styles.inline}>
-              <Text style={styles.sub}>{name}</Text>
+              <Text style={styles.sub}>{scoreText(name)}</Text>
               <NumberField
                 value={rec[name] ?? 0}
                 min={0}
@@ -177,6 +178,7 @@ export function CategoryControl({
 }
 
 function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
+  const { language } = useAppPreferences();
   const { state, summary } = sheet;
   const { players } = state;
   const resultOf = (id: string) =>
@@ -198,7 +200,7 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
       ) : (
         players.map((p) => (
           <View key={p.id} style={styles.playerRow}>
-            <Text style={styles.player}>{p.name}</Text>
+            <Text style={styles.player}>{scorePlayerName(p)}</Text>
             <Text style={styles.derived}>{computed(p.id) ?? 0}</Text>
           </View>
         ))
@@ -213,7 +215,7 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
       <View style={styles.wrap}>
         <Chip
           disabled={!sheet.canManage}
-          label="Không ai"
+          label={scoreText("Không ai")}
           selected={chosen === null}
           onPress={() => pick(null)}
         />
@@ -221,7 +223,7 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
           <Chip
             disabled={!sheet.canManage}
             key={p.id}
-            label={p.name}
+            label={scorePlayerName(p)}
             selected={chosen === p.id}
             onPress={() => pick(p.id)}
           />
@@ -246,10 +248,10 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
       return (
         <View key={p.id} style={styles.playerRow}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.player}>{p.name}</Text>
-            <PresenceLabel sheet={sheet} id={p.id} name={p.name} />
+            <Text style={styles.player}>{scorePlayerName(p)}</Text>
+            <PresenceLabel sheet={sheet} id={p.id} name={p.name} fallbackSeat={p.fallbackSeat} />
             {applies && showPoints && pts !== undefined ? (
-              <Text style={styles.points}>= {pts} điểm</Text>
+              <Text style={styles.points}>= {pts} {scoreText("điểm")}</Text>
             ) : null}
           </View>
           {applies ? (
@@ -262,7 +264,7 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
               />
             </Flash>
           ) : (
-            <Text style={styles.na}>Không áp dụng</Text>
+            <Text style={styles.na}>{scoreText("Không áp dụng")}</Text>
           )}
         </View>
       );
@@ -272,9 +274,9 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
   return (
     <Card>
       <View style={{ gap: 2 }}>
-        <Heading>{cat.labelVi ?? cat.label}</Heading>
-        {cat.hint ? <Hint>{cat.hint}</Hint> : null}
-        {cat.expansion ? <Hint>Bản mở rộng: {cat.expansion}</Hint> : null}
+        <Heading>{templateScoreText(cat.labelVi ?? cat.label, cat.label, language)}</Heading>
+        {cat.hint ? <Hint>{scoreText(cat.hint)}</Hint> : null}
+        {cat.expansion ? <Hint>{scoreText("Bản mở rộng:")}{" "}{scoreText(cat.expansion)}</Hint> : null}
       </View>
       {body}
     </Card>
@@ -282,6 +284,7 @@ function CategoryCard({ sheet, cat }: { sheet: SheetApi; cat: ScoreCategory }) {
 }
 
 export function GenericCategories({ sheet }: { sheet: SheetApi }) {
+  useAppPreferences();
   const cats = visibleCategories(sheet.template, sheet.state).filter(
     (c) => c.scope === 'team' || categoryAppliesToAny(c, sheet.summary, sheet.state.players),
   );
@@ -294,7 +297,7 @@ export function GenericCategories({ sheet }: { sheet: SheetApi }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   inline: { flexDirection: 'row', alignItems: 'center', gap: 8, justifyContent: 'space-between' },
   playerRow: {
@@ -315,6 +318,6 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: 10,
     paddingHorizontal: 12,
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
   },
-});
+}));

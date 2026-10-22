@@ -1,9 +1,12 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import { Map as MapLibreMap, Marker, NavigationControl, setWorkerUrl } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { colors, radius } from '../../ui/theme';
-import { DEFAULT_MAP_CENTER, MAP_STYLE_URL, MAP_WORKER_URL } from '../map/style';
+import { themeStyles, colors, radius } from '../../ui/theme';
+import { DEFAULT_MAP_CENTER, getMapStyleUrl, MAP_WORKER_URL } from '../map/style';
+import { getMapLibreLocale, applyMapLibreControlLocale } from '../map/locale';
 import { isWebglSupported } from '../map/webgl';
 import type { PinEditorMapProps, RecenterTarget } from './pin-editor-map';
 
@@ -12,9 +15,11 @@ export type { RecenterTarget };
 setWorkerUrl(MAP_WORKER_URL);
 
 export default function PinEditorMap({ lat, lng, onPick, recenterTo }: PinEditorMapProps) {
+  const { language, theme } = useAppPreferences();
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const markerRef = useRef<Marker | null>(null);
+  const appliedTheme = useRef(theme);
   const onPickRef = useRef(onPick);
   const [supported] = useState(() => isWebglSupported());
   const [ready, setReady] = useState(false);
@@ -41,7 +46,8 @@ export default function PinEditorMap({ lat, lng, onPick, recenterTo }: PinEditor
     const hasCoords = lat !== null && lng !== null;
     const map = new MapLibreMap({
       container: containerRef.current,
-      style: MAP_STYLE_URL,
+      style: getMapStyleUrl(theme),
+      locale: getMapLibreLocale(language),
       center: hasCoords ? [lng, lat] : DEFAULT_MAP_CENTER,
       zoom: hasCoords ? 15 : 11,
     });
@@ -93,10 +99,20 @@ export default function PinEditorMap({ lat, lng, onPick, recenterTo }: PinEditor
     }
   }, [recenterTo]);
 
+  useEffect(() => {
+    if (containerRef.current) applyMapLibreControlLocale(containerRef.current, language);
+  }, [language]);
+
+  useEffect(() => {
+    if (appliedTheme.current === theme || !mapRef.current) return;
+    appliedTheme.current = theme;
+    mapRef.current.setStyle(getMapStyleUrl(theme));
+  }, [theme]);
+
   if (!supported) {
     return (
       <Text style={styles.note}>
-        Trình duyệt không hỗ trợ bản đồ (WebGL) — nhập vĩ độ/kinh độ trực tiếp ở ô bên dưới.
+        {t('Trình duyệt không hỗ trợ bản đồ (WebGL) — nhập vĩ độ/kinh độ trực tiếp ở ô bên dưới.')}
       </Text>
     );
   }
@@ -111,4 +127,6 @@ export default function PinEditorMap({ lat, lng, onPick, recenterTo }: PinEditor
   );
 }
 
-const styles = StyleSheet.create({ note: { color: colors.muted, fontSize: 13 } });
+const styles = themeStyles(() =>
+  StyleSheet.create({ note: { color: colors.muted, fontSize: 13 } }),
+);

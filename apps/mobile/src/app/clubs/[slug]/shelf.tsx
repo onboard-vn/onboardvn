@@ -1,3 +1,5 @@
+import { t } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback } from 'react';
 import { View } from 'react-native';
@@ -17,20 +19,22 @@ import { Body, Box, Muted, Page, SectionTitle, Title } from '../../../features/e
 import { space } from '../../../ui/theme';
 
 export default function ClubLiveShelfScreen() {
+  useAppPreferences();
   const { user } = useSession();
   return (
-    <RequireLogin reason="Đăng nhập để xem kệ game của club.">
+    <RequireLogin reason={t('Đăng nhập để xem kệ game của club.')}>
       {user ? <ClubLiveShelfContent key={user.id} userId={user.id} /> : null}
     </RequireLogin>
   );
 }
 
 function ClubLiveShelfContent({ userId }: { userId: string }) {
+  useAppPreferences();
   const { clubId } = useLocalSearchParams<{ clubId?: string }>();
   const scope = clubLiveRequestScope(userId, clubId);
   const load = useCallback(
     async (signal: AbortSignal) => {
-      if (!scope || !clubId) throw new ApiError(404, 'Không tìm thấy');
+      if (!scope || !clubId) throw new ApiError(404, t('Không tìm thấy'));
       const [games, members] = await Promise.all([
         clubLiveApi.games(clubId, { signal }),
         clubLiveApi.members(clubId, { signal }),
@@ -45,8 +49,8 @@ function ClubLiveShelfContent({ userId }: { userId: string }) {
 
   return (
     <Page>
-      <Stack.Screen options={{ title: 'Kệ game club' }} />
-      <Title>Kệ game</Title>
+      <Stack.Screen options={{ title: t('Kệ game club') }} />
+      <Title>{t('Kệ game')}</Title>
       <ClubLiveScreenState
         loading={loading}
         error={error}
@@ -57,9 +61,12 @@ function ClubLiveShelfContent({ userId }: { userId: string }) {
         {data ? (
           <View style={{ gap: space.lg }}>
             <ClubLiveStaleBanner {...freshness} />
-            <SectionTitle>Game bên app CLB ({data.games.data.items.length})</SectionTitle>
+            <SectionTitle>
+              {t('Game bên app CLB (')}
+              {data.games.data.items.length})
+            </SectionTitle>
             {data.games.data.items.length === 0 ? (
-              <Muted>Chưa có game nào trên kệ.</Muted>
+              <Muted>{t('Chưa có game nào trên kệ.')}</Muted>
             ) : (
               <View style={{ gap: space.sm }}>
                 {data.games.data.items.map((game) => {
@@ -70,9 +77,15 @@ function ClubLiveShelfContent({ userId }: { userId: string }) {
                       <View style={{ gap: space.xs }}>
                         <Body bold>{game.name}</Body>
                         {details.length ? <Muted>{details.join(' · ')}</Muted> : null}
-                        {owners.length ? <Muted>Chủ sở hữu: {owners.join(' · ')}</Muted> : null}
+                        {owners.length ? (
+                          <Muted>
+                            {t('Chủ sở hữu:')} {owners.join(' · ')}
+                          </Muted>
+                        ) : null}
                         {game.expansions.length ? (
-                          <Muted>Mở rộng: {game.expansions.map((item) => item.name).join(' · ')}</Muted>
+                          <Muted>
+                            {t('Mở rộng:')} {game.expansions.map((item) => item.name).join(' · ')}
+                          </Muted>
                         ) : null}
                       </View>
                     </Box>

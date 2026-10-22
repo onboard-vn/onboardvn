@@ -1,3 +1,5 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { ClubListResponse } from '@onboard/shared';
 import { Stack } from 'expo-router';
 import { useCallback } from 'react';
@@ -19,6 +21,7 @@ import {
 import { space } from '../../ui/theme';
 
 function Clubs() {
+  useAppPreferences();
   const load = useCallback(
     (signal: AbortSignal) => api<ClubListResponse>('/clubs', { signal }),
     [],
@@ -27,7 +30,7 @@ function Clubs() {
   return (
     <LoadGate loading={loading} error={error} hasData={!!data}>
       {data && data.items.length === 0 ? (
-        <Muted>Bạn chưa tham gia club nào. Tạo club mới hoặc mở link mời từ bạn bè.</Muted>
+        <Muted>{t('Bạn chưa tham gia club nào. Tạo club mới hoặc mở link mời từ bạn bè.')}</Muted>
       ) : (
         <View style={{ gap: space.md }}>
           {data?.items.map((club) => (
@@ -35,7 +38,7 @@ function Clubs() {
               <Row style={{ justifyContent: 'space-between' }}>
                 <Body bold>{club.name}</Body>
                 <Muted>
-                  {club.memberCount} thành viên · {ROLE_LABEL[club.myRole]}
+                  {club.memberCount} {t('thành viên ·')} {t(ROLE_LABEL[club.myRole])}
                 </Muted>
               </Row>
             </CardLink>
@@ -47,13 +50,14 @@ function Clubs() {
 }
 
 export default function ClubsPage() {
+  useAppPreferences();
   return (
     <Page>
       <Stack.Screen options={{ title: 'Club' }} />
-      <RequireLogin reason="Đăng nhập để xem club của bạn.">
+      <RequireLogin reason={t('Đăng nhập để xem club của bạn.')}>
         <Row style={{ justifyContent: 'space-between' }}>
-          <Title>Club của tôi</Title>
-          <LinkBtn small label="Tạo club" to="/clubs/new" />
+          <Title>{t('Club của tôi')}</Title>
+          <LinkBtn small label={t('Tạo club')} to="/clubs/new" />
         </Row>
         <Clubs />
       </RequireLogin>

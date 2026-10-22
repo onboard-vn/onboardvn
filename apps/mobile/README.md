@@ -10,7 +10,9 @@ Từ phần Tính điểm hoặc Công cụ chơi trên trang chủ và bộ l�
 
 `/games` tìm game trong thư viện CLB (551 game, gõ không dấu) từ `src/games/game-index.json` — sinh lại bằng `pnpm --filter @onboard/mobile games:index` khi template đổi. Công cụ riêng của từng game khai báo trong `src/games/modules.ts`; hiện có The Gang → Rút nhiệm vụ (`src/games/the-gang/`, engine thuần + test, dữ liệu runtime VI/EN). Màn hình rút nhiệm vụ dẫn tới nguồn luật và thẻ tại `/credits`; tài liệu và công cụ in nằm ngoài repo.
 
-Web chạy dưới `baseUrl` `/app` (dev: `http://localhost:8081/app/`, prod: `https://onboard.j2teamnnl.com/app/`). Deploy: xem `docs/deployment.md`.
+Web dev mở tại `http://localhost:8081/`. Đường dẫn triển khai do [tài liệu deployment](../../docs/deployment.md) quản lý.
+
+Menu dùng chung chứa lựa chọn VI/EN, Sáng/Tối và liên kết nguồn/giấy phép. Quy ước bảo trì: [ngôn ngữ và giao diện](../../docs/mobile-preferences.md).
 
 Bảng điểm dùng chung mở từ CLB → kèo → bàn tại `/score/table/[tableId]` với UUID thật. Đăng nhập bằng tài khoản Onboard ở `/club`; chủ bàn chọn game, mở ván, nhập thiết lập chung và chốt ván. Thành viên chỉ sửa hàng điểm gắn với danh tính của mình. Với điện thoại, đặt `EXPO_PUBLIC_API_URL` thành địa chỉ API mà thiết bị truy cập được (chỉ origin, ví dụ `http://192.168.1.10:3000`), rồi khởi động Expo.
 

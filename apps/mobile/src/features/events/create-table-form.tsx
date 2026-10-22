@@ -4,6 +4,9 @@ import { api } from '../../api/client';
 import { space } from '../../ui/theme';
 import { ShelfGamePicker } from './shelf-game-picker';
 import { Body, Box, Btn, FormError, Row, TextField, useAction } from './ui';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 export function CreateTableForm({
   meetupId,
@@ -12,6 +15,7 @@ export function CreateTableForm({
   meetupId: string;
   onCreated: () => void;
 }) {
+  useAppPreferences();
   const [open, setOpen] = useState(false);
   const [pickingGame, setPickingGame] = useState(false);
   const [gameId, setGameId] = useState<string | null>(null);
@@ -36,7 +40,7 @@ export function CreateTableForm({
     onCreated();
   }
 
-  if (!open) return <Btn small label="Tạo bàn mới" onPress={() => setOpen(true)} />;
+  if (!open) return <Btn small label={t("Tạo bàn mới")} onPress={() => setOpen(true)} />;
 
   return (
     <Box style={{ alignSelf: 'stretch' }}>
@@ -45,7 +49,7 @@ export function CreateTableForm({
         <Btn
           small
           variant="outline"
-          label="Chọn từ tủ game"
+          label={t("Chọn từ tủ game")}
           onPress={() => setPickingGame((v) => !v)}
         />
       </Row>
@@ -61,14 +65,14 @@ export function CreateTableForm({
       ) : null}
       <TextField
         keyboardType="number-pad"
-        placeholder="Số ghế (tính cả host, tùy chọn)"
+        placeholder={t("Số ghế (tính cả host, tùy chọn)")}
         value={seats}
         onChangeText={setSeats}
       />
       <FormError message={error} />
       <View style={{ flexDirection: 'row', gap: space.sm }}>
-        <Btn small disabled={pending} label="Tạo bàn" onPress={() => void create()} />
-        <Btn small variant="ghost" label="Hủy" onPress={() => setOpen(false)} />
+        <Btn small disabled={pending} label={t("Tạo bàn")} onPress={() => void create()} />
+        <Btn small variant="ghost" label={t("Hủy")} onPress={() => setOpen(false)} />
       </View>
     </Box>
   );

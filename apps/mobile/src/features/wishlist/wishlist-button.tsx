@@ -4,10 +4,15 @@ import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { api } from '../../api/client';
 import { useSession } from '../../auth/session';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { errorMessage } from '../errors';
+import { useAppPreferences } from '../../ui/preferences';
+import { t } from '../../ui/i18n';
+
+
 
 export function WishlistButton({ gameId, nextPath }: { gameId: string; nextPath: string }) {
+  useAppPreferences();
   const { user } = useSession();
   const [added, setAdded] = useState<boolean | null>(null);
   const [pending, setPending] = useState(false);
@@ -30,7 +35,7 @@ export function WishlistButton({ gameId, nextPath }: { gameId: string; nextPath:
         href={{ pathname: '/login', params: { next: nextPath } }}
         style={StyleSheet.flatten([styles.button, styles.text])}
       >
-        Muốn chơi (đăng nhập)
+        {t("Muốn chơi (đăng nhập)")}
       </Link>
     );
   }
@@ -63,7 +68,7 @@ export function WishlistButton({ gameId, nextPath }: { gameId: string; nextPath:
         style={StyleSheet.flatten([styles.button, added ? styles.on : null])}
       >
         <Text style={StyleSheet.flatten([styles.text, added ? styles.textOn : null])}>
-          {added ? 'Đã thêm vào Muốn chơi' : '♡ Muốn chơi'}
+          {added ? t("Đã thêm vào Muốn chơi") : t("♡ Muốn chơi")}
         </Text>
       </Pressable>
       {error ? <Text style={styles.error}>{error}</Text> : null}
@@ -71,7 +76,7 @@ export function WishlistButton({ gameId, nextPath }: { gameId: string; nextPath:
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   button: {
     alignSelf: 'flex-start',
     paddingHorizontal: space.lg,
@@ -85,4 +90,4 @@ const styles = StyleSheet.create({
   text: { color: colors.primary, fontWeight: '600', fontSize: 15 },
   textOn: { color: colors.primary },
   error: { color: colors.danger },
-});
+}));

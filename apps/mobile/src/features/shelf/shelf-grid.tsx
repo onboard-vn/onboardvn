@@ -1,12 +1,15 @@
 import type { ShelfItemDto } from '@onboard/shared';
 import { Link } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors, radius, space } from '../../ui/theme';
+import { themeStyles, colors, radius, space } from '../../ui/theme';
 import { mediaUrl } from '../media';
 import { gameName } from './logic';
 import { StaleDot } from './shelf-row';
+import { useAppPreferences } from '../../ui/preferences';
+
 
 export function ShelfGrid({ items, now }: { items: ShelfItemDto[]; now: number }) {
+  useAppPreferences();
   return (
     <View style={styles.grid}>
       {items.map((item) => {
@@ -42,7 +45,7 @@ export function ShelfGrid({ items, now }: { items: ShelfItemDto[]; now: number }
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
   tile: {
     flexGrow: 1,
@@ -57,4 +60,4 @@ const styles = StyleSheet.create({
   cover: { width: '100%', aspectRatio: 1, backgroundColor: colors.surfaceMuted },
   info: { padding: space.sm, gap: space.xs },
   name: { fontSize: 14, fontWeight: '600', color: colors.text },
-});
+}));

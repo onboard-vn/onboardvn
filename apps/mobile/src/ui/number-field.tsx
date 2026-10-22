@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { colors } from './theme';
+import { themeStyles, colors } from './theme';
+import { t } from './i18n';
+import { useAppPreferences } from './preferences';
+
 
 export interface NumberFieldProps {
   value: number;
@@ -30,6 +33,7 @@ export function NumberField({
   prefix,
   disabled = false,
 }: NumberFieldProps) {
+  useAppPreferences();
   const [draft, setDraft] = useState<string | null>(null);
 
   const commit = (raw: string) => {
@@ -47,7 +51,7 @@ export function NumberField({
   return (
     <View style={styles.row}>
       <Pressable
-        accessibilityLabel="Giảm"
+        accessibilityLabel={t("Giảm")}
         accessibilityRole="button"
         onPress={() => bump(-1)}
         disabled={disabled || (min != null && value <= min)}
@@ -69,7 +73,7 @@ export function NumberField({
         />
       </View>
       <Pressable
-        accessibilityLabel="Tăng"
+        accessibilityLabel={t("Tăng")}
         accessibilityRole="button"
         onPress={() => bump(1)}
         disabled={disabled || (max != null && value >= max)}
@@ -81,7 +85,7 @@ export function NumberField({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   btn: {
     width: 38,
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
   },
   prefix: { color: colors.muted, marginLeft: 6 },
   input: {
@@ -113,4 +117,4 @@ const styles = StyleSheet.create({
     padding: 0,
     minWidth: 0,
   },
-});
+}));

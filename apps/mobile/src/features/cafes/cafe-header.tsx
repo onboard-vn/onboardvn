@@ -2,18 +2,22 @@ import type { CafePublicDetailDto } from '@onboard/shared';
 import { useRouter } from 'expo-router';
 import { Image, Linking, Platform, StyleSheet, Text, View } from 'react-native';
 import { Badge, Button } from '../../ui/primitives';
-import { colors, radius, space } from '../../ui/theme';
+import { themeStyles, colors, radius, space } from '../../ui/theme';
 import { mediaUrl } from '../media';
 import { VENUE_TYPE_LABELS, mapsUrl, openStatusLabel, zaloUrl } from './labels';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
-const STATUS_COLOR: Record<string, string> = {
+
+const STATUS_COLOR = themeStyles((): Record<string, string> => ({
   open: colors.success,
   closing_soon: colors.warn,
-};
+}));
 
 const open = (url: string) => void Linking.openURL(url);
 
 export function CafeHeader({ cafe }: { cafe: CafePublicDetailDto }) {
+  useAppPreferences();
   const router = useRouter();
   const cover = mediaUrl(cafe.coverUrl);
   const logo = mediaUrl(cafe.logoUrl);
@@ -62,8 +66,8 @@ export function CafeHeader({ cafe }: { cafe: CafePublicDetailDto }) {
           <Text accessibilityRole="header" style={styles.title}>
             {cafe.name}
           </Text>
-          {cafe.verified ? <Badge label="Đã xác minh" /> : null}
-          <Text style={styles.muted}>{VENUE_TYPE_LABELS[cafe.venueType]}</Text>
+          {cafe.verified ? <Badge label={t("Đã xác minh")} /> : null}
+          <Text style={styles.muted}>{t(VENUE_TYPE_LABELS[cafe.venueType])}</Text>
           <Text style={styles.muted}>
             {cafe.addressLine}, {cafe.wardName}, {cafe.provinceName}
             {cafe.legacyDistrict ? ` (${cafe.legacyDistrict})` : ''}
@@ -81,25 +85,25 @@ export function CafeHeader({ cafe }: { cafe: CafePublicDetailDto }) {
         </View>
       </View>
       <View style={styles.actions}>
-        <Button label="Chỉ đường" onPress={() => open(mapsUrl(cafe))} />
+        <Button label={t("Chỉ đường")} onPress={() => open(mapsUrl(cafe))} />
         {cafe.links?.fanpage ? (
           <Button tone="ghost" label="Fanpage" onPress={() => open(cafe.links!.fanpage!)} />
         ) : null}
         {cafe.links?.zalo ? (
-          <Button tone="ghost" label="Nhắn Zalo" onPress={() => open(zaloUrl(cafe.links!.zalo!))} />
+          <Button tone="ghost" label={t("Nhắn Zalo")} onPress={() => open(zaloUrl(cafe.links!.zalo!))} />
         ) : null}
         <Button
           tone="ghost"
-          label="Tạo kèo tại đây"
+          label={t("Tạo kèo tại đây")}
           onPress={() => router.push({ pathname: '/events/new', params: { cafe: cafe.slug } })}
         />
-        <Button tone="ghost" label="Xem trên bản đồ" onPress={() => router.push('/map')} />
+        <Button tone="ghost" label={t("Xem trên bản đồ")} onPress={() => router.push('/map')} />
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themeStyles(() => StyleSheet.create({
   wrap: { gap: space.md },
   cover: {
     height: 176,
@@ -143,4 +147,4 @@ const styles = StyleSheet.create({
   muted: { color: colors.muted },
   status: { fontWeight: '600' },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
-});
+}));
