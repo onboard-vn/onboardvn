@@ -1,3 +1,5 @@
+import { t } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import type { CategoryDto } from '@onboard/shared';
 import { useRouter } from 'expo-router';
 import { api } from '../../../api/client';
@@ -17,15 +19,20 @@ const KIND_LABEL = { category: 'Thể loại', mechanic: 'Cơ chế' } as const;
 const load = () => api<{ items: CategoryDto[] }>('/categories');
 
 export default function AdminCategoriesPage() {
+  useAppPreferences();
   const router = useRouter();
   const list = useLoad(load, []);
   const { data } = list;
 
   return (
     <AdminPage
-      title={`Quản lý thể loại${data ? ` (${data.items.length})` : ''}`}
+      title={
+        data ? t('Quản lý thể loại ({count})', { count: data.items.length }) : t('Quản lý thể loại')
+      }
       width={768}
-      action={<Button label="Thêm thể loại" onPress={() => router.push('/admin/categories/new')} />}
+      action={
+        <Button label={t('Thêm thể loại')} onPress={() => router.push('/admin/categories/new')} />
+      }
     >
       <LoadState loading={list.loading && !data} error={list.error} onRetry={list.reload} />
       {data ? (
@@ -36,11 +43,11 @@ export default function AdminCategoriesPage() {
               <Row
                 key={category.id}
                 title={name}
-                subtitle={`${category.name} · ${KIND_LABEL[category.kind]}${category.bggId ? ` · BGG #${category.bggId}` : ''}`}
+                subtitle={`${category.name} · ${t(KIND_LABEL[category.kind])}${category.bggId ? ` · BGG #${category.bggId}` : ''}`}
                 right={
                   <>
                     <SmallButton
-                      label="Sửa"
+                      label={t('Sửa')}
                       onPress={() =>
                         router.push({
                           pathname: '/admin/categories/[id]/edit',
@@ -50,8 +57,8 @@ export default function AdminCategoriesPage() {
                     />
                     <ActionButton
                       danger
-                      label="Xóa"
-                      confirmText={`Xóa thể loại "${name}"?`}
+                      label={t('Xóa')}
+                      confirmText={t('Xóa thể loại "{name}"?', { name })}
                       run={async () => {
                         await api(`/categories/${category.id}`, { method: 'DELETE' });
                         list.reload();

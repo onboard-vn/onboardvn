@@ -1,3 +1,5 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { MeetupListResponse } from '@onboard/shared';
 import { Stack } from 'expo-router';
 import { useCallback } from 'react';
@@ -10,6 +12,7 @@ import { useFetch } from '../../features/use-fetch';
 import { colors, space } from '../../ui/theme';
 
 function Mine() {
+  useAppPreferences();
   const load = useCallback(
     (signal: AbortSignal) => api<Pick<MeetupListResponse, 'items'>>('/me/events', { signal }),
     [],
@@ -18,7 +21,7 @@ function Mine() {
   return (
     <LoadGate loading={loading} error={error} hasData={!!data}>
       {data && data.items.length === 0 ? (
-        <Muted>Bạn chưa tham gia Kèo nào.</Muted>
+        <Muted>{t('Bạn chưa tham gia Kèo nào.')}</Muted>
       ) : (
         <View style={{ gap: space.md }}>
           {data?.items.map((meetup) => (
@@ -27,7 +30,8 @@ function Mine() {
                 {meetup.title}
                 {meetup.status === 'cancelled' ? (
                   <Text style={{ color: colors.danger, fontSize: 12, fontWeight: '400' }}>
-                    {'  '}Đã hủy
+                    {'  '}
+                    {t('Đã hủy')}
                   </Text>
                 ) : null}
               </Body>
@@ -42,11 +46,12 @@ function Mine() {
 }
 
 export default function MyEventsPage() {
+  useAppPreferences();
   return (
     <Page>
-      <Stack.Screen options={{ title: 'Kèo của tôi' }} />
-      <RequireLogin reason="Đăng nhập để xem Kèo của bạn.">
-        <Title>Kèo của tôi</Title>
+      <Stack.Screen options={{ title: t('Kèo của tôi') }} />
+      <RequireLogin reason={t('Đăng nhập để xem Kèo của bạn.')}>
+        <Title>{t('Kèo của tôi')}</Title>
         <Mine />
       </RequireLogin>
     </Page>

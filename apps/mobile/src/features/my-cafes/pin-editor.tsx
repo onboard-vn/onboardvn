@@ -1,7 +1,9 @@
+import { t, translateKnown } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import { useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { Field, formStyles } from './form-bits';
 import PinEditorMap, { type RecenterTarget } from './pin-editor-map';
 
@@ -26,6 +28,7 @@ export function PinEditor({
   lng: number | null;
   onChange: (lat: number | null, lng: number | null) => void;
 }) {
+  useAppPreferences();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<NominatimResult[]>([]);
   const [searching, setSearching] = useState(false);
@@ -69,7 +72,7 @@ export function PinEditor({
       if (!res.ok) throw new Error('search failed');
       setResults((await res.json()) as NominatimResult[]);
     } catch {
-      setSearchError('Không tìm được địa chỉ, thử lại sau');
+      setSearchError(t('Không tìm được địa chỉ, thử lại sau'));
       setResults([]);
     } finally {
       setSearching(false);
@@ -89,24 +92,24 @@ export function PinEditor({
 
   return (
     <View style={styles.stack}>
-      <Text style={styles.label}>Vị trí trên bản đồ</Text>
+      <Text style={styles.label}>{t('Vị trí trên bản đồ')}</Text>
 
       <View style={formStyles.row}>
         <View style={formStyles.grow}>
           <Field
-            label="Tìm địa chỉ"
+            label={t('Tìm địa chỉ')}
             value={query}
             onChangeText={setQuery}
             onSubmitEditing={() => void onSearch()}
-            placeholder="Tìm địa chỉ để định vị bản đồ (không tự ghim)..."
+            placeholder={t('Tìm địa chỉ để định vị bản đồ (không tự ghim)...')}
             returnKeyType="search"
             autoCapitalize="sentences"
           />
         </View>
-        <Button label="Tìm" disabled={searching} onPress={() => void onSearch()} />
+        <Button label={t('Tìm')} disabled={searching} onPress={() => void onSearch()} />
       </View>
-      <Hint>Tìm kiếm © OpenStreetMap/Nominatim</Hint>
-      {searchError ? <Text style={styles.error}>{searchError}</Text> : null}
+      <Hint>{t('Tìm kiếm © OpenStreetMap/Nominatim')}</Hint>
+      {searchError ? <Text style={styles.error}>{translateKnown(searchError ?? '')}</Text> : null}
       {results.map((r) => (
         <Text
           key={`${r.lat}-${r.lon}`}
@@ -132,7 +135,7 @@ export function PinEditor({
       <View style={formStyles.row}>
         <View style={formStyles.grow}>
           <Field
-            label="Vĩ độ (lat)"
+            label={t('Vĩ độ (lat)')}
             value={latText}
             onChangeText={(t) => onManual('lat', t)}
             keyboardType="numbers-and-punctuation"
@@ -140,7 +143,7 @@ export function PinEditor({
         </View>
         <View style={formStyles.grow}>
           <Field
-            label="Kinh độ (lng)"
+            label={t('Kinh độ (lng)')}
             value={lngText}
             onChangeText={(t) => onManual('lng', t)}
             keyboardType="numbers-and-punctuation"
@@ -150,20 +153,22 @@ export function PinEditor({
 
       {outOfVn ? (
         <Text style={styles.error}>
-          Toạ độ nằm ngoài lãnh thổ Việt Nam — hệ thống sẽ từ chối khi lưu.
+          {t('Toạ độ nằm ngoài lãnh thổ Việt Nam — hệ thống sẽ từ chối khi lưu.')}
         </Text>
       ) : null}
 
       {lat !== null || lng !== null ? (
-        <Button label="Xoá vị trí" tone="ghost" onPress={() => onChange(null, null)} />
+        <Button label={t('Xoá vị trí')} tone="ghost" onPress={() => onChange(null, null)} />
       ) : null}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  stack: { gap: space.sm },
-  label: { fontSize: 13, fontWeight: '600', color: colors.muted },
-  result: { color: colors.primary, paddingVertical: 2 },
-  error: { color: colors.danger, fontSize: 13 },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    stack: { gap: space.sm },
+    label: { fontSize: 13, fontWeight: '600', color: colors.muted },
+    result: { color: colors.primary, paddingVertical: 2 },
+    error: { color: colors.danger, fontSize: 13 },
+  }),
+);

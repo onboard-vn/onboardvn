@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { colors, radius, space } from '../../ui/theme';
+import { themeStyles, colors, radius, space } from '../../ui/theme';
+import { useAppPreferences } from '../../ui/preferences';
 
 const DEFAULT_SCAN_FORMATS = ['ean_13', 'upc_a', 'ean_8'] as const;
 const SCAN_INTERVAL_MS = 300;
@@ -65,6 +66,7 @@ export function BarcodeScanner({
   onDetect: (code: string) => void;
   formats?: readonly string[];
 }) {
+  useAppPreferences();
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const lastDetectionRef = useRef<{ code: string; at: number } | null>(null);
@@ -158,22 +160,24 @@ export function BarcodeScanner({
   );
 }
 
-const styles = StyleSheet.create({
-  wrap: { gap: space.sm },
-  frame: {
-    width: '100%',
-    aspectRatio: 16 / 9,
-    overflow: 'hidden',
-    borderRadius: radius,
-    backgroundColor: '#000',
-  },
-  line: {
-    position: 'absolute',
-    left: 24,
-    right: 24,
-    top: '50%',
-    height: 2,
-    backgroundColor: 'rgba(239,68,68,0.7)',
-  },
-  error: { color: colors.danger, fontSize: 14 },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    wrap: { gap: space.sm },
+    frame: {
+      width: '100%',
+      aspectRatio: 16 / 9,
+      overflow: 'hidden',
+      borderRadius: radius,
+      backgroundColor: '#000',
+    },
+    line: {
+      position: 'absolute',
+      left: 24,
+      right: 24,
+      top: '50%',
+      height: 2,
+      backgroundColor: 'rgba(239,68,68,0.7)',
+    },
+    error: { color: colors.danger, fontSize: 14 },
+  }),
+);

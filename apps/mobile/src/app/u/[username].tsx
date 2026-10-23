@@ -1,3 +1,5 @@
+import { getActiveLanguage, t, translateKnown } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { PublicProfile, ShelfListResult } from '@onboard/shared';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
@@ -7,7 +9,7 @@ import { Page, withNext } from '../../features/auth/auth-ui';
 import { mediaUrl } from '../../features/media';
 import { FriendButton } from '../../features/profile/friend-button';
 import { Card, Hint } from '../../ui/primitives';
-import { colors, radius, space } from '../../ui/theme';
+import { themeStyles, colors, radius, space } from '../../ui/theme';
 import { useLoad } from '../../ui/use-load';
 
 interface Loaded {
@@ -30,6 +32,7 @@ async function loadProfile(username: string): Promise<Loaded> {
 }
 
 export default function ProfileScreen() {
+  useAppPreferences();
   const { username = '' } = useLocalSearchParams<{ username: string }>();
   const { user: viewer, loading: sessionLoading } = useSession();
   const res = useLoad(() => loadProfile(username), [username, viewer?.id, sessionLoading]);
@@ -44,7 +47,7 @@ export default function ProfileScreen() {
   if (res.error && !res.data) {
     return (
       <Page maxWidth={640}>
-        <Hint>{res.error}</Hint>
+        <Hint>{translateKnown(res.error ?? '')}</Hint>
       </Page>
     );
   }
@@ -52,11 +55,11 @@ export default function ProfileScreen() {
   if (!profile) {
     return (
       <Page maxWidth={640}>
-        <Stack.Screen options={{ title: 'Không tìm thấy' }} />
+        <Stack.Screen options={{ title: t('Không tìm thấy') }} />
         <Card>
-          <Text style={styles.title}>Không tìm thấy người dùng</Text>
+          <Text style={styles.title}>{t('Không tìm thấy người dùng')}</Text>
           <Link href="/" style={styles.link}>
-            Về trang chủ
+            {t('Về trang chủ')}
           </Link>
         </Card>
       </Page>
@@ -86,12 +89,12 @@ export default function ProfileScreen() {
           <FriendButton username={profile.username} />
         ) : (
           <Link href={withNext('/login', `/u/${profile.username}`)} style={styles.link}>
-            Đăng nhập để kết bạn
+            {t('Đăng nhập để kết bạn')}
           </Link>
         )}
       </View>
       {profile.hidden ? (
-        <Hint>Hồ sơ riêng tư.</Hint>
+        <Hint>{t('Hồ sơ riêng tư.')}</Hint>
       ) : profile.bggUrl ? (
         <Text style={styles.text}>
           BoardGameGeek:{' '}
@@ -108,11 +111,13 @@ export default function ProfileScreen() {
       ) : null}
       {items.length > 0 ? (
         <View style={styles.shelf}>
-          <Text style={styles.section}>Tủ game</Text>
+          <Text style={styles.section}>{t('Tủ game')}</Text>
           <View style={styles.chips}>
             {items.map((item) => (
               <Link key={item.game.id} href={`/games/${item.game.slug}`} style={styles.gameChip}>
-                {item.game.nameVi || item.game.nameEn}
+                {getActiveLanguage() === 'en'
+                  ? item.game.nameEn || item.game.nameVi
+                  : item.game.nameVi || item.game.nameEn}
               </Link>
             ))}
           </View>
@@ -122,28 +127,30 @@ export default function ProfileScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  spinner: { marginTop: 48 },
-  flex: { flex: 1 },
-  head: { gap: space.md },
-  who: { flexDirection: 'row', alignItems: 'center', gap: space.lg },
-  avatar: { width: 64, height: 64, borderRadius: 32, backgroundColor: colors.border },
-  title: { fontSize: 24, fontWeight: '600', color: colors.text },
-  handle: { fontSize: 15, color: colors.muted },
-  text: { fontSize: 14, color: colors.text },
-  link: { color: colors.primary, textDecorationLine: 'underline', fontSize: 14 },
-  shelf: { gap: space.sm },
-  section: { fontSize: 14, fontWeight: '600', color: colors.text },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
-  gameChip: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius,
-    backgroundColor: colors.card,
-    paddingHorizontal: space.md,
-    paddingVertical: 6,
-    fontSize: 14,
-    color: colors.text,
-    overflow: 'hidden',
-  },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    spinner: { marginTop: 48 },
+    flex: { flex: 1 },
+    head: { gap: space.md },
+    who: { flexDirection: 'row', alignItems: 'center', gap: space.lg },
+    avatar: { width: 64, height: 64, borderRadius: 32, backgroundColor: colors.border },
+    title: { fontSize: 24, fontWeight: '600', color: colors.text },
+    handle: { fontSize: 15, color: colors.muted },
+    text: { fontSize: 14, color: colors.text },
+    link: { color: colors.primary, textDecorationLine: 'underline', fontSize: 14 },
+    shelf: { gap: space.sm },
+    section: { fontSize: 14, fontWeight: '600', color: colors.text },
+    chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+    gameChip: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radius,
+      backgroundColor: colors.card,
+      paddingHorizontal: space.md,
+      paddingVertical: 6,
+      fontSize: 14,
+      color: colors.text,
+      overflow: 'hidden',
+    },
+  }),
+);

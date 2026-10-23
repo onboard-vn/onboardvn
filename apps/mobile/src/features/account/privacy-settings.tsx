@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Switch, Text, View } from 'react-native';
 import { api } from '../../api/client';
 import { Button, Card, Chip, Heading, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { Select } from '../events/select';
 import { FormError, Note } from '../auth/auth-ui';
 import { LEVELS, LEVEL_LABEL, type PrivacyValues } from './privacy-types';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 function LevelRow({
   label,
@@ -17,6 +19,7 @@ function LevelRow({
   value: PrivacyLevel;
   onChange: (v: PrivacyLevel) => void;
 }) {
+  useAppPreferences();
   return (
     <View style={styles.row}>
       <Text style={styles.label}>{label}</Text>
@@ -30,6 +33,7 @@ function LevelRow({
 }
 
 export function PrivacySettings({ initial }: { initial: PrivacyValues }) {
+  useAppPreferences();
   const [values, setValues] = useState(initial);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,68 +71,70 @@ export function PrivacySettings({ initial }: { initial: PrivacyValues }) {
 
   return (
     <Card>
-      <Heading>Riêng tư</Heading>
-      <Hint>Kiểm soát ai xem được hồ sơ, ván chơi và danh sách bạn bè.</Hint>
+      <Heading>{t('Riêng tư')}</Heading>
+      <Hint>{t('Kiểm soát ai xem được hồ sơ, ván chơi và danh sách bạn bè.')}</Hint>
       <LevelRow
-        label="Hồ sơ & tủ game"
+        label={t('Hồ sơ & tủ game')}
         value={values.profileVisibility}
         onChange={(v) => set('profileVisibility', v)}
       />
       <LevelRow
-        label="Ván chơi & thống kê"
+        label={t('Ván chơi & thống kê')}
         value={values.playsVisibility}
         onChange={(v) => set('playsVisibility', v)}
       />
       <LevelRow
-        label="Danh sách bạn bè"
+        label={t('Danh sách bạn bè')}
         value={values.friendsVisibility}
         onChange={(v) => set('friendsVisibility', v)}
       />
       <View style={[styles.switchRow]}>
-        <Text style={[styles.label, styles.flex]}>Email khi có lời mời kết bạn mới</Text>
+        <Text style={[styles.label, styles.flex]}>{t('Email khi có lời mời kết bạn mới')}</Text>
         <Switch
-          accessibilityLabel="Email khi có lời mời kết bạn mới"
+          accessibilityLabel={t('Email khi có lời mời kết bạn mới')}
           value={values.emailOnFriendRequest}
           onValueChange={(v) => set('emailOnFriendRequest', v)}
         />
       </View>
       <View style={styles.switchRow}>
-        <Text style={[styles.label, styles.flex]}>Cho thành viên club rút từ tủ game của tôi</Text>
+        <Text style={[styles.label, styles.flex]}>
+          {t('Cho thành viên club rút từ tủ game của tôi')}
+        </Text>
         <Switch
-          accessibilityLabel="Cho thành viên club rút từ tủ game của tôi"
+          accessibilityLabel={t('Cho thành viên club rút từ tủ game của tôi')}
           value={values.clubShelfSuggest}
           onValueChange={(v) => set('clubShelfSuggest', v)}
         />
       </View>
       <Select
-        label="Tỉnh/thành của bạn"
+        label={t('Tỉnh/thành của bạn')}
         value={values.provinceCode ?? ''}
         options={provinces}
-        placeholder="Chưa chọn"
+        placeholder={t('Chưa chọn')}
         onChange={(v) => set('provinceCode', v || null)}
       />
-      <Hint>
-        Dùng cho nguồn &quot;Cùng thành phố&quot; khi rút thẻ; chỉ tính khi hồ sơ công khai.
-      </Hint>
-      <Button label="Lưu cài đặt" disabled={pending} onPress={() => void onSubmit()} />
+      <Hint>{t('Dùng cho nguồn "Cùng thành phố" khi rút thẻ; chỉ tính khi hồ sơ công khai.')}</Hint>
+      <Button label={t('Lưu cài đặt')} disabled={pending} onPress={() => void onSubmit()} />
       <FormError message={error} />
-      {saved ? <Note>Đã lưu.</Note> : null}
+      {saved ? <Note>{t('Đã lưu.')}</Note> : null}
     </Card>
   );
 }
 
-const styles = StyleSheet.create({
-  row: { gap: space.sm },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
-  label: { fontSize: 14, fontWeight: '600', color: colors.text },
-  flex: { flex: 1 },
-  switchRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space.md,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    paddingTop: space.md,
-  },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    row: { gap: space.sm },
+    chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+    label: { fontSize: 14, fontWeight: '600', color: colors.text },
+    flex: { flex: 1 },
+    switchRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: space.md,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      paddingTop: space.md,
+    },
+  }),
+);

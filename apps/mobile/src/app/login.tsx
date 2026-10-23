@@ -1,3 +1,6 @@
+import { t } from '../ui/i18n';
+import { useAppPreferences } from '../ui/preferences';
+import { themeStyles, space } from '../ui/theme';
 import { Stack, router, useLocalSearchParams, type Href } from 'expo-router';
 import { useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
@@ -7,7 +10,6 @@ import { AuthShell, Field, FormError, Note, TextLink, withNext } from '../featur
 import { safeNextPath } from '../features/auth/safe-next';
 import { useAuthAction } from '../features/auth/use-auth-action';
 import { Button, Segmented } from '../ui/primitives';
-import { space } from '../ui/theme';
 
 type Mode = 'password' | 'otp';
 
@@ -16,6 +18,7 @@ const NOTICES: Record<string, string> = {
 };
 
 export default function Login() {
+  useAppPreferences();
   const params = useLocalSearchParams<{ next?: string; notice?: string }>();
   const next = safeNextPath(params.next);
   const notice = typeof params.notice === 'string' ? NOTICES[params.notice] : undefined;
@@ -51,17 +54,17 @@ export default function Login() {
 
   return (
     <AuthShell
-      title="Đăng nhập"
-      description="Dùng tài khoản, Google hoặc mã một lần gửi qua email."
+      title={t('Đăng nhập')}
+      description={t('Dùng tài khoản, Google hoặc mã một lần gửi qua email.')}
       next={next}
     >
-      <Stack.Screen options={{ title: 'Đăng nhập' }} />
-      {notice ? <Note>{notice}</Note> : null}
+      <Stack.Screen options={{ title: t('Đăng nhập') }} />
+      {notice ? <Note>{t(notice)}</Note> : null}
 
       {Platform.OS === 'web' ? (
         <Button
           tone="ghost"
-          label="Tiếp tục với Google"
+          label={t('Tiếp tục với Google')}
           disabled={pending}
           onPress={() =>
             void run(() => startSocial('sign-in/social', `${window.location.origin}${next || '/'}`))
@@ -76,22 +79,22 @@ export default function Login() {
           setError(null);
         }}
         options={[
-          { value: 'password', label: 'Mật khẩu' },
-          { value: 'otp', label: 'Mã qua email' },
+          { value: 'password', label: t('Mật khẩu') },
+          { value: 'otp', label: t('Mã qua email') },
         ]}
       />
 
       {mode === 'password' ? (
         <View style={styles.form}>
           <Field
-            label="Tên đăng nhập hoặc email"
+            label={t('Tên đăng nhập hoặc email')}
             value={identifier}
             onChangeText={setIdentifier}
             autoComplete="username"
             textContentType="username"
           />
           <Field
-            label="Mật khẩu"
+            label={t('Mật khẩu')}
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -99,10 +102,10 @@ export default function Login() {
             textContentType="password"
             onSubmitEditing={() => void onPassword()}
           />
-          <Button label="Đăng nhập" disabled={pending} onPress={() => void onPassword()} />
+          <Button label={t('Đăng nhập')} disabled={pending} onPress={() => void onPassword()} />
           <View style={styles.links}>
-            <TextLink href="/forgot-password">Quên mật khẩu?</TextLink>
-            <TextLink href={withNext('/signup', next)}>Tạo tài khoản</TextLink>
+            <TextLink href="/forgot-password">{t('Quên mật khẩu?')}</TextLink>
+            <TextLink href={withNext('/signup', next)}>{t('Tạo tài khoản')}</TextLink>
           </View>
         </View>
       ) : otpEmail === null ? (
@@ -116,12 +119,16 @@ export default function Login() {
             textContentType="emailAddress"
             onSubmitEditing={() => void onSendOtp()}
           />
-          <Button label="Gửi mã đăng nhập" disabled={pending} onPress={() => void onSendOtp()} />
+          <Button
+            label={t('Gửi mã đăng nhập')}
+            disabled={pending}
+            onPress={() => void onSendOtp()}
+          />
         </View>
       ) : (
         <View style={styles.form}>
           <Field
-            label={`Mã gửi tới ${otpEmail}`}
+            label={t('Mã gửi tới {email}', { email: otpEmail })}
             value={otp}
             onChangeText={setOtp}
             keyboardType="number-pad"
@@ -130,10 +137,10 @@ export default function Login() {
             maxLength={6}
             onSubmitEditing={() => void onOtp()}
           />
-          <Button label="Đăng nhập" disabled={pending} onPress={() => void onOtp()} />
+          <Button label={t('Đăng nhập')} disabled={pending} onPress={() => void onOtp()} />
           <Button
             tone="ghost"
-            label="Đổi email"
+            label={t('Đổi email')}
             onPress={() => {
               setOtpEmail(null);
               setOtp('');
@@ -148,7 +155,9 @@ export default function Login() {
   );
 }
 
-const styles = StyleSheet.create({
-  form: { gap: space.sm },
-  links: { flexDirection: 'row', justifyContent: 'space-between' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    form: { gap: space.sm },
+    links: { flexDirection: 'row', justifyContent: 'space-between' },
+  }),
+);

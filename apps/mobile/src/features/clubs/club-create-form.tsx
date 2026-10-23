@@ -5,8 +5,11 @@ import { api } from '../../api/client';
 import { space } from '../../ui/theme';
 import { InviteShare } from '../events/invite-share';
 import { Body, Btn, FormError, LinkBtn, Muted, TextField, useAction } from '../events/ui';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 export function ClubCreateForm() {
+  useAppPreferences();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [created, setCreated] = useState<ClubCreateResponse | null>(null);
@@ -30,28 +33,30 @@ export function ClubCreateForm() {
   if (created) {
     return (
       <View style={{ gap: space.lg }}>
-        <Body bold>Đã tạo club &quot;{created.club.name}&quot;.</Body>
+        <Body bold>{t('Đã tạo club "{name}"', { name: created.club.name })}.</Body>
         <InviteShare inviteUrl={created.inviteUrl} title={created.club.name} />
-        <LinkBtn label="Vào club" to={`/clubs/${created.club.slug}`} />
+        <LinkBtn label={t('Vào club')} to={`/clubs/${created.club.slug}`} />
       </View>
     );
   }
 
   return (
     <View style={{ gap: space.lg }}>
-      <TextField label="Tên club" maxLength={80} value={name} onChangeText={setName} />
+      <TextField label={t('Tên club')} maxLength={80} value={name} onChangeText={setName} />
       <TextField
-        label="Mô tả (tùy chọn)"
+        label={t('Mô tả (tùy chọn)')}
         multiline
         maxLength={1000}
         value={description}
         onChangeText={setDescription}
       />
       <Muted small>
-        Club ở chế độ riêng tư: người ngoài chỉ thấy tên và số thành viên, tham gia bằng link mời.
+        {t(
+          'Club ở chế độ riêng tư: người ngoài chỉ thấy tên và số thành viên, tham gia bằng link mời.',
+        )}
       </Muted>
       <FormError message={error} />
-      <Btn disabled={pending} label="Tạo club" onPress={() => void onSubmit()} />
+      <Btn disabled={pending} label={t('Tạo club')} onPress={() => void onSubmit()} />
     </View>
   );
 }

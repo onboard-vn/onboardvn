@@ -1,9 +1,11 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { CafeMaintainerInventoryItemDto, GameSummaryDto } from '@onboard/shared';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { api } from '../../api/client';
 import { Badge, Button } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { errorMessage } from '../errors';
 import { inputStyle } from '../search-input';
 import { CheckRow, ErrorText, Field, Section, SmallButton } from './ui';
@@ -19,7 +21,7 @@ function CopiesInput({ copies, onCommit }: { copies: number; onCommit: (n: numbe
   };
   return (
     <TextInput
-      accessibilityLabel="Số bản"
+      accessibilityLabel={t('Số bản')}
       value={text}
       onChangeText={setText}
       onBlur={commit}
@@ -39,6 +41,7 @@ export function InventoryManager({
   inventory: CafeMaintainerInventoryItemDto[];
   onChanged: () => void;
 }) {
+  useAppPreferences();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [q, setQ] = useState('');
@@ -79,9 +82,9 @@ export function InventoryManager({
   const gamePath = (gameId: string) => `/cafes/${cafeId}/games/${gameId}`;
 
   return (
-    <Section title={`Kho game (${inventory.length})`}>
+    <Section title={t('Kho game ({count})', { count: inventory.length })}>
       <CheckRow
-        label="Chỉ đóng góp cộng đồng"
+        label={t('Chỉ đóng góp cộng đồng')}
         checked={communityOnly}
         onChange={setCommunityOnly}
       />
@@ -90,7 +93,7 @@ export function InventoryManager({
         <View key={`${item.gameId}:${item.copies}`} style={styles.item}>
           <View style={styles.name}>
             <Text style={styles.nameText}>{item.nameVi || item.nameEn}</Text>
-            {item.community ? <Badge label="Cộng đồng đóng góp" /> : null}
+            {item.community ? <Badge label={t('Cộng đồng đóng góp')} /> : null}
           </View>
           <View style={styles.actions}>
             <CopiesInput
@@ -98,29 +101,29 @@ export function InventoryManager({
               onCommit={(copies) =>
                 void mutate(
                   () => api(gamePath(item.gameId), { method: 'PATCH', body: { copies } }),
-                  'Không cập nhật được số bản',
+                  t('Không cập nhật được số bản'),
                 )
               }
             />
             {item.community ? (
               <SmallButton
-                label="Xác nhận"
+                label={t('Xác nhận')}
                 disabled={pending}
                 onPress={() =>
                   void mutate(
                     () => api(`${gamePath(item.gameId)}/confirm`, { method: 'POST' }),
-                    'Không xác nhận được game',
+                    t('Không xác nhận được game'),
                   )
                 }
               />
             ) : null}
             <SmallButton
-              label="Gỡ"
+              label={t('Gỡ')}
               disabled={pending}
               onPress={() =>
                 void mutate(
                   () => api(gamePath(item.gameId), { method: 'DELETE' }),
-                  'Không gỡ được game',
+                  t('Không gỡ được game'),
                 )
               }
             />
@@ -129,15 +132,15 @@ export function InventoryManager({
       ))}
       {visible.length === 0 ? (
         <Text style={styles.muted}>
-          {communityOnly ? 'Chưa có đóng góp cộng đồng nào.' : 'Chưa có game nào trong kho.'}
+          {communityOnly ? t('Chưa có đóng góp cộng đồng nào.') : t('Chưa có game nào trong kho.')}
         </Text>
       ) : null}
 
       <View style={styles.searchRow}>
         <View style={{ flex: 1 }}>
-          <Field value={q} onChangeText={setQ} placeholder="Tìm game để thêm vào kho..." />
+          <Field value={q} onChangeText={setQ} placeholder={t('Tìm game để thêm vào kho...')} />
         </View>
-        <Button label="Tìm" onPress={() => void onSearch()} />
+        <Button label={t('Tìm')} onPress={() => void onSearch()} />
       </View>
 
       {results.map((g) => (
@@ -145,12 +148,12 @@ export function InventoryManager({
           <Text style={[styles.nameText, styles.name]}>{g.nameVi || g.nameEn}</Text>
           <SmallButton
             tone="solid"
-            label={inventoryIds.has(g.id) ? 'Đã có' : 'Thêm'}
+            label={inventoryIds.has(g.id) ? t('Đã có') : t('Thêm')}
             disabled={pending || inventoryIds.has(g.id)}
             onPress={() =>
               void mutate(
                 () => api(`/cafes/${cafeId}/games`, { method: 'POST', body: { gameId: g.id } }),
-                'Có lỗi xảy ra, thử lại sau',
+                t('Có lỗi xảy ra, thử lại sau'),
               )
             }
           />
@@ -162,18 +165,20 @@ export function InventoryManager({
   );
 }
 
-const styles = StyleSheet.create({
-  item: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space.sm,
-  },
-  name: { flex: 1, minWidth: 140, gap: 4 },
-  nameText: { fontSize: 15, color: colors.text },
-  actions: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
-  copies: { width: 64, paddingVertical: 6, textAlign: 'center' },
-  searchRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
-  muted: { fontSize: 14, color: colors.muted },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    item: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: space.sm,
+    },
+    name: { flex: 1, minWidth: 140, gap: 4 },
+    nameText: { fontSize: 15, color: colors.text },
+    actions: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+    copies: { width: 64, paddingVertical: 6, textAlign: 'center' },
+    searchRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+    muted: { fontSize: 14, color: colors.muted },
+  }),
+);

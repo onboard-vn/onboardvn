@@ -1,3 +1,5 @@
+import { t } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import type { CategoryDto } from '@onboard/shared';
 import { useLocalSearchParams } from 'expo-router';
 import { api } from '../../../api/client';
@@ -10,10 +12,11 @@ const load = () =>
   api<{ items: CategoryDto[] }>('/categories').catch(() => ({ items: [] as CategoryDto[] }));
 
 export default function NewGamePage() {
+  useAppPreferences();
   const { nameEn } = useLocalSearchParams<{ nameEn?: string }>();
   const categories = useLoad(load, []);
   return (
-    <AdminPage title="Thêm game" width={672}>
+    <AdminPage title={t('Thêm game')} width={672}>
       <LoadState loading={!categories.data} error={categories.error} onRetry={categories.reload} />
       {categories.data ? (
         <GameForm categories={categories.data.items} presetNameEn={normalizeFilterParam(nameEn)} />

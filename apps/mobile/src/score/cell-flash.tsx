@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { Text, View } from 'react-native';
 import { colors } from '../ui/theme';
 import type { SheetApi } from './use-sheet';
-
+import { scorePlayerName, scoreText } from './localization';
 export function Flash({
   sheet,
   id,
@@ -24,12 +24,24 @@ export function Flash({
   );
 }
 
-export function PresenceLabel({ sheet, id, name }: { sheet: SheetApi; id: string; name: string }) {
+export function PresenceLabel({
+  sheet,
+  id,
+  name,
+  fallbackSeat,
+}: {
+  sheet: SheetApi;
+  id: string;
+  name: string;
+  fallbackSeat?: number;
+}) {
   if (!sheet.presence[id]) return null;
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
       <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: colors.success }} />
-      <Text style={{ fontSize: 12, color: colors.success }}>{name} đang nhập</Text>
+      <Text style={{ fontSize: 12, color: colors.success }}>
+        {scorePlayerName({ name, fallbackSeat })} {scoreText('đang nhập')}
+      </Text>
     </View>
   );
 }

@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 import { tokenStore } from './token-store';
+import { t } from '../ui/i18n';
 
 const explicitBase = process.env.EXPO_PUBLIC_API_URL?.replace(/\/$/, '');
 
@@ -90,7 +91,7 @@ export async function api<T>(path: string, req: ApiRequest = {}): Promise<T> {
     };
     throw new ApiError(
       res.status,
-      err.error?.message ?? err.message ?? `Lỗi ${res.status}`,
+      err.error?.message ?? err.message ?? t('Lỗi {status}', { status: res.status }),
       err.error?.code ?? err.code,
     );
   }

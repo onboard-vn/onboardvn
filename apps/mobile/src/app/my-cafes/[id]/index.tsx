@@ -1,3 +1,5 @@
+import { t } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { InventoryManager } from '../../../features/my-cafes/inventory-manager';
@@ -6,15 +8,16 @@ import { ManageGate } from '../../../features/my-cafes/manage-gate';
 import { MediaForm } from '../../../features/my-cafes/media-form';
 import { StaffForm } from '../../../features/my-cafes/staff-form';
 import { H1 } from '../../../features/static/text';
-import { colors, space } from '../../../ui/theme';
+import { themeStyles, colors, space } from '../../../ui/theme';
 
 export default function MyCafeDetail() {
+  useAppPreferences();
   const { id } = useLocalSearchParams<{ id: string }>();
   return (
     <ManageGate id={id ?? ''}>
       {(cafe, reload) => (
         <>
-          <Stack.Screen options={{ title: 'Quản lý địa điểm chơi' }} />
+          <Stack.Screen options={{ title: t('Quản lý địa điểm chơi') }} />
           <View style={styles.head}>
             <H1>{cafe.name}</H1>
             <View style={styles.links}>
@@ -22,19 +25,19 @@ export default function MyCafeDetail() {
                 href={{ pathname: '/my-cafes/[id]/import', params: { id: cafe.id } }}
                 style={styles.link}
               >
-                Import kho CSV
+                {t('Import kho CSV')}
               </Link>
               <Link
                 href={{ pathname: '/my-cafes/[id]/scan', params: { id: cafe.id } }}
                 style={styles.link}
               >
-                Quét mã vạch
+                {t('Quét mã vạch')}
               </Link>
               <Link
                 href={{ pathname: '/my-cafes/[id]/consent', params: { id: cafe.id } }}
                 style={styles.link}
               >
-                Đồng ý hiển thị
+                {t('Đồng ý hiển thị')}
               </Link>
             </View>
           </View>
@@ -55,8 +58,10 @@ export default function MyCafeDetail() {
   );
 }
 
-const styles = StyleSheet.create({
-  head: { gap: space.sm },
-  links: { flexDirection: 'row', flexWrap: 'wrap', gap: space.lg },
-  link: { color: colors.primary, fontWeight: '600', textDecorationLine: 'underline' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    head: { gap: space.sm },
+    links: { flexDirection: 'row', flexWrap: 'wrap', gap: space.lg },
+    link: { color: colors.primary, fontWeight: '600', textDecorationLine: 'underline' },
+  }),
+);

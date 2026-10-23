@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { colors } from './theme';
+import { themeStyles, colors } from './theme';
+import { t } from './i18n';
+import { useAppPreferences } from './preferences';
 
 export interface NumberFieldProps {
   value: number;
@@ -30,6 +32,7 @@ export function NumberField({
   prefix,
   disabled = false,
 }: NumberFieldProps) {
+  useAppPreferences();
   const [draft, setDraft] = useState<string | null>(null);
 
   const commit = (raw: string) => {
@@ -47,7 +50,7 @@ export function NumberField({
   return (
     <View style={styles.row}>
       <Pressable
-        accessibilityLabel="Giảm"
+        accessibilityLabel={t('Giảm')}
         accessibilityRole="button"
         onPress={() => bump(-1)}
         disabled={disabled || (min != null && value <= min)}
@@ -69,7 +72,7 @@ export function NumberField({
         />
       </View>
       <Pressable
-        accessibilityLabel="Tăng"
+        accessibilityLabel={t('Tăng')}
         accessibilityRole="button"
         onPress={() => bump(1)}
         disabled={disabled || (max != null && value >= max)}
@@ -81,36 +84,38 @@ export function NumberField({
   );
 }
 
-const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  btn: {
-    width: 38,
-    height: 38,
-    borderRadius: 10,
-    backgroundColor: colors.primarySoft,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  off: { opacity: 0.35 },
-  btnText: { fontSize: 22, lineHeight: 24, fontWeight: '700', color: colors.primary },
-  inputWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 38,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: '#fff',
-  },
-  prefix: { color: colors.muted, marginLeft: 6 },
-  input: {
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: '600',
-    color: colors.text,
-    padding: 0,
-    minWidth: 0,
-  },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    row: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+    btn: {
+      width: 38,
+      height: 38,
+      borderRadius: 10,
+      backgroundColor: colors.primarySoft,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    off: { opacity: 0.35 },
+    btnText: { fontSize: 22, lineHeight: 24, fontWeight: '700', color: colors.primary },
+    inputWrap: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: 38,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: colors.border,
+      backgroundColor: colors.card,
+    },
+    prefix: { color: colors.muted, marginLeft: 6 },
+    input: {
+      flex: 1,
+      textAlign: 'center',
+      fontSize: 16,
+      fontWeight: '600',
+      color: colors.text,
+      padding: 0,
+      minWidth: 0,
+    },
+  }),
+);

@@ -1,3 +1,5 @@
+import { t, translateKnown } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { CafeMembershipListResponse } from '@onboard/shared';
 import { Link, Stack } from 'expo-router';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
@@ -6,7 +8,7 @@ import { RequireLogin } from '../../auth/require-login';
 import { PageShell } from '../../features/static/page-shell';
 import { H1 } from '../../features/static/text';
 import { Button, Card, Heading, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { useLoad } from '../../ui/use-load';
 
 const CONSENT_LABEL: Record<string, string> = {
@@ -17,6 +19,7 @@ const CONSENT_LABEL: Record<string, string> = {
 };
 
 function List() {
+  useAppPreferences();
   const { data, error, loading, reload } = useLoad(
     () => api<CafeMembershipListResponse>('/me/cafes'),
     [],
@@ -25,15 +28,17 @@ function List() {
   if (error && !data) {
     return (
       <View style={styles.stack}>
-        <Hint>{error}</Hint>
-        <Button label="Thử lại" tone="ghost" onPress={reload} />
+        <Hint>{translateKnown(error ?? '')}</Hint>
+        <Button label={t('Thử lại')} tone="ghost" onPress={reload} />
       </View>
     );
   }
   const items = data?.items ?? [];
   if (items.length === 0) {
     return (
-      <Hint>Bạn chưa quản lý quán nào. Dùng link mời từ quản trị viên để trở thành chủ quán.</Hint>
+      <Hint>
+        {t('Bạn chưa quản lý quán nào. Dùng link mời từ quản trị viên để trở thành chủ quán.')}
+      </Hint>
     );
   }
   return (
@@ -42,14 +47,14 @@ function List() {
         <Card key={item.cafeId}>
           <Heading>{item.cafeName}</Heading>
           <Text style={styles.meta}>
-            {item.role === 'owner' ? 'Chủ quán' : 'Nhân viên'} ·{' '}
-            {CONSENT_LABEL[item.consentStatus] ?? item.consentStatus}
+            {item.role === 'owner' ? t('Chủ quán') : t('Nhân viên')} ·{' '}
+            {t(CONSENT_LABEL[item.consentStatus] ?? item.consentStatus)}
           </Text>
           <Link
             href={{ pathname: '/my-cafes/[id]', params: { id: item.cafeId } }}
             style={styles.link}
           >
-            Quản lý
+            {t('Quản lý')}
           </Link>
         </Card>
       ))}
@@ -58,19 +63,22 @@ function List() {
 }
 
 export default function MyCafes() {
+  useAppPreferences();
   return (
     <PageShell maxWidth={672}>
-      <Stack.Screen options={{ title: 'Địa điểm chơi của tôi' }} />
-      <H1>Địa điểm chơi của tôi</H1>
-      <RequireLogin reason="Đăng nhập để xem địa điểm chơi bạn quản lý.">
+      <Stack.Screen options={{ title: t('Địa điểm chơi của tôi') }} />
+      <H1>{t('Địa điểm chơi của tôi')}</H1>
+      <RequireLogin reason={t('Đăng nhập để xem địa điểm chơi bạn quản lý.')}>
         <List />
       </RequireLogin>
     </PageShell>
   );
 }
 
-const styles = StyleSheet.create({
-  stack: { gap: space.md },
-  meta: { color: colors.muted, fontSize: 13 },
-  link: { color: colors.primary, fontWeight: '600', textDecorationLine: 'underline' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    stack: { gap: space.md },
+    meta: { color: colors.muted, fontSize: 13 },
+    link: { color: colors.primary, fontWeight: '600', textDecorationLine: 'underline' },
+  }),
+);

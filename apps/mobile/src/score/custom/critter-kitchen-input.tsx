@@ -26,11 +26,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { api } from '../../api/client';
 import { Button, Card, Chip, Collapsible, Heading, Hint } from '../../ui/primitives';
 import { NumberField } from '../../ui/number-field';
-import { colors } from '../../ui/theme';
+import { themeStyles, colors } from '../../ui/theme';
 import { leftoverIngredientTypes as availableLeftovers } from './critter-kitchen-leftovers';
 import { defaultCritterPriorities } from './critter-kitchen-priority';
 import type { SheetApi } from '../use-sheet';
-
+import { scoreFeedbackText, scorePlayerName, scoreText } from '../localization';
+import { useAppPreferences } from '../../ui/preferences';
 const COURSE_LABEL: Record<CritterKitchenCourseId, string> = {
   bread: 'Bánh mì',
   carrot: 'Cà rốt',
@@ -142,6 +143,7 @@ export function CritterKitchenInput({
   onSetupSaved: (play: PlayDto) => void;
   onSetupPendingChange: (pending: boolean) => void;
 }) {
+  useAppPreferences();
   const parsedSetup = critterKitchenSetupSchema.safeParse(setup);
   const serverSetup = parsedSetup.success ? parsedSetup.data : null;
   const [setupDraft, setSetupDraft] = useState<CritterKitchenSetup>(critterKitchenDefaultSetup);
@@ -240,23 +242,31 @@ export function CritterKitchenInput({
   return (
     <View style={styles.column}>
       <Card>
-        <Heading>Cách nhập món cuối</Heading>
+        <Heading>{scoreText('Cách nhập món cuối')}</Heading>
         <Hint>
-          Ở mỗi món, chọn loại token và giá trị in trên token (2–7), rồi thêm đúng số token đã phục
-          vụ. Sau đó nhập gia vị ghép với từng token; Allspice là lựa chọn riêng. Súp và bisque nhập
-          bằng số tô.
+          {scoreText(
+            'Ở mỗi món, chọn loại token và giá trị in trên token (2–7), rồi thêm đúng số token đã phục vụ. Sau đó nhập gia vị ghép với từng token; Allspice là lựa chọn riêng. Súp và bisque nhập bằng số tô.',
+          )}
         </Hint>
       </Card>
       <Card>
-        <Heading>Thiết lập chung cho Critter Kitchen</Heading>
-        <Hint>Chủ bàn chọn giám khảo, ba tin đồn đã lật và các mô-đun À La Carte đang dùng.</Hint>
+        <Heading>{scoreText('Thiết lập chung cho Critter Kitchen')}</Heading>
+        <Hint>
+          {scoreText(
+            'Chủ bàn chọn giám khảo, ba tin đồn đã lật và các mô-đun À La Carte đang dùng.',
+          )}
+        </Hint>
         <Card style={styles.nestedCard}>
-          <Heading>Giám khảo</Heading>
+          <Heading>{scoreText('Giám khảo')}</Heading>
           <View style={styles.wrap}>
             {CRITTER_KITCHEN_CATALOG.critics.map((item) => (
               <Chip
                 key={item.id}
-                label={item.supported ? item.label : `${item.label} · chưa hỗ trợ`}
+                label={
+                  item.supported
+                    ? scoreText(item.label)
+                    : scoreText('{label} · chưa hỗ trợ', { label: scoreText(item.label) })
+                }
                 selected={effectiveSetup.criticId === item.id}
                 disabled={!setupEditable || !item.supported}
                 onPress={() => editSetup((current) => ({ ...current, criticId: item.id }))}
@@ -266,21 +276,27 @@ export function CritterKitchenInput({
               .filter((item) => !item.supported)
               .map((item) => (
                 <Hint key={`unsupported-critic-${item.id}`}>
-                  {item.label}: {UNSUPPORTED_CARD_MESSAGE}
+                  {scoreText(item.label)}: {scoreText(UNSUPPORTED_CARD_MESSAGE)}
                 </Hint>
               ))}
           </View>
-          {selectedCriticExplanation ? <Hint>{selectedCriticExplanation}</Hint> : null}
+          {selectedCriticExplanation ? <Hint>{scoreText(selectedCriticExplanation)}</Hint> : null}
         </Card>
         <Card style={styles.nestedCard}>
-          <Heading>Ba tin đồn đã lật · {effectiveSetup.rumorIds.length}/3</Heading>
+          <Heading>
+            {scoreText('Ba tin đồn đã lật ·')} {effectiveSetup.rumorIds.length}/3
+          </Heading>
           <View style={styles.wrap}>
             {CRITTER_KITCHEN_CATALOG.rumors.map((item) => {
               const selected = effectiveSetup.rumorIds.includes(item.id);
               return (
                 <Chip
                   key={item.id}
-                  label={item.supported ? item.label : `${item.label} · chưa hỗ trợ`}
+                  label={
+                    item.supported
+                      ? scoreText(item.label)
+                      : scoreText('{label} · chưa hỗ trợ', { label: scoreText(item.label) })
+                  }
                   selected={selected}
                   disabled={!setupEditable || (!item.supported && !selected)}
                   onPress={() =>
@@ -308,20 +324,24 @@ export function CritterKitchenInput({
               .filter((item) => !item.supported)
               .map((item) => (
                 <Hint key={`unsupported-rumor-${item.id}`}>
-                  {item.label}: {UNSUPPORTED_CARD_MESSAGE}
+                  {scoreText(item.label)}: {scoreText(UNSUPPORTED_CARD_MESSAGE)}
                 </Hint>
               ))}
           </View>
           {(effectiveSetup.additionalRumorIds ?? []).length > 0 || jamieSelected ? (
             <>
-              <Heading>Tin đồn bổ sung do Jamie Owliver mở ra</Heading>
+              <Heading>{scoreText('Tin đồn bổ sung do Jamie Owliver mở ra')}</Heading>
               <View style={styles.wrap}>
                 {CRITTER_KITCHEN_CATALOG.rumors.map((item) => {
                   const selected = (effectiveSetup.additionalRumorIds ?? []).includes(item.id);
                   return (
                     <Chip
                       key={`extra-${item.id}`}
-                      label={item.supported ? item.label : `${item.label} · chưa hỗ trợ`}
+                      label={
+                        item.supported
+                          ? scoreText(item.label)
+                          : scoreText('{label} · chưa hỗ trợ', { label: scoreText(item.label) })
+                      }
                       selected={selected}
                       disabled={
                         !setupEditable ||
@@ -351,7 +371,7 @@ export function CritterKitchenInput({
                 .filter((item) => !item.supported)
                 .map((item) => (
                   <Hint key={`unsupported-extra-rumor-${item.id}`}>
-                    {item.label}: {UNSUPPORTED_CARD_MESSAGE}
+                    {scoreText(item.label)}: {scoreText(UNSUPPORTED_CARD_MESSAGE)}
                   </Hint>
                 ))}
             </>
@@ -361,24 +381,30 @@ export function CritterKitchenInput({
             if (!rumor?.supported) return null;
             const detail =
               rumor.effect === 'fanatic' && rumor.ingredientType
-                ? `Nhân đôi chất lượng món ${COURSE_LABEL[rumor.ingredientType]}; sao cuối được tính tự động.`
+                ? scoreText('Nhân đôi chất lượng món {course}; sao cuối được tính tự động.', {
+                    course: scoreText(COURSE_LABEL[rumor.ingredientType]),
+                  })
                 : RUMOR_EXPLANATIONS[rumor.effect];
             return detail ? (
               <Hint key={`rumor-explanation-${id}`}>
-                {rumor.label}: {detail}
+                {scoreText(rumor.label)}: {rumor.effect === 'fanatic' ? detail : scoreText(detail)}
               </Hint>
             ) : null;
           })}
         </Card>
         <Card style={styles.nestedCard}>
-          <Heading>À La Carte đang dùng</Heading>
+          <Heading>{scoreText('À La Carte đang dùng')}</Heading>
           <View style={styles.wrap}>
             {CRITTER_KITCHEN_CATALOG.carts.map((item) => {
               const selected = effectiveSetup.cartIds.includes(item.id);
               return (
                 <Chip
                   key={item.id}
-                  label={item.supported ? item.label : `${item.label} · chưa hỗ trợ`}
+                  label={
+                    item.supported
+                      ? scoreText(item.label)
+                      : scoreText('{label} · chưa hỗ trợ', { label: scoreText(item.label) })
+                  }
                   selected={selected}
                   disabled={!setupEditable || (!item.supported && !selected)}
                   onPress={() =>
@@ -399,12 +425,12 @@ export function CritterKitchenInput({
             .filter((item) => !item.supported)
             .map((item) => (
               <Hint key={`unsupported-cart-${item.id}`}>
-                {item.label}: {UNSUPPORTED_CARD_MESSAGE}
+                {scoreText(item.label)}: {scoreText(UNSUPPORTED_CARD_MESSAGE)}
               </Hint>
             ))}
           <View style={styles.wrap}>
             <Chip
-              label="Chế độ 6–7 người"
+              label={scoreText('Chế độ 6–7 người')}
               selected={effectiveSetup.sixSevenPlayerMode}
               disabled={!setupEditable}
               onPress={() =>
@@ -420,27 +446,30 @@ export function CritterKitchenInput({
           <Button
             label={
               saving
-                ? 'Đang lưu...'
+                ? scoreText('Đang lưu...')
                 : setupDirty || !hasSavedSetup
-                  ? 'Lưu thiết lập chung'
-                  : 'Cập nhật thiết lập'
+                  ? scoreText('Lưu thiết lập chung')
+                  : scoreText('Cập nhật thiết lập')
             }
             disabled={saving || effectiveSetup.rumorIds.length !== 3}
             onPress={() => void saveSetup()}
           />
         ) : null}
         {!hasSavedSetup && !setupEditable ? (
-          <Hint>Chờ chủ bàn lưu thiết lập trước khi nhập món.</Hint>
+          <Hint>{scoreText('Chờ chủ bàn lưu thiết lập trước khi nhập món.')}</Hint>
         ) : null}
-        {setupError ? <Text style={styles.error}>{setupError}</Text> : null}
-        {setupDirty ? <Hint>Thiết lập đang ở thiết bị này, chưa lưu lên bàn.</Hint> : null}
+        {setupError ? <Text style={styles.error}>{scoreFeedbackText(setupError)}</Text> : null}
+        {setupDirty ? (
+          <Hint>{scoreText('Thiết lập đang ở thiết bị này, chưa lưu lên bàn.')}</Hint>
+        ) : null}
       </Card>
 
       <Card>
-        <Heading>Món thử thách đã ghi từ ngày 1 và 2</Heading>
+        <Heading>{scoreText('Món thử thách đã ghi từ ngày 1 và 2')}</Heading>
         <Hint>
-          Nhập sao đã tích lũy trước bữa ăn giám khảo. Không cộng sao thưởng của giám khảo, tin đồn
-          hoặc chủ nhà hàng ở đây; hệ thống tự tính các sao đó.
+          {scoreText(
+            'Nhập sao đã tích lũy trước bữa ăn giám khảo. Không cộng sao thưởng của giám khảo, tin đồn hoặc chủ nhà hàng ở đây; hệ thống tự tính các sao đó.',
+          )}
         </Hint>
         {play.players.map((row) => {
           const meal = readMeal(sheet.state.values[row.identity.id]?.meal);
@@ -451,7 +480,7 @@ export function CritterKitchenInput({
             <View key={row.identity.id} style={styles.playerBlock}>
               <Text style={styles.playerName}>{row.identity.displayName}</Text>
               <Count
-                label="Sao đã có trước món cuối"
+                label={scoreText('Sao đã có trước món cuối')}
                 value={previousStars ?? 0}
                 disabled={!canEdit}
                 max={1000}
@@ -460,7 +489,9 @@ export function CritterKitchenInput({
                 }
               />
               {previousStars === undefined && canEdit ? (
-                <Hint>Nhập số sao hiện có; nếu chưa có sao, tăng lên 0 để xác nhận.</Hint>
+                <Hint>
+                  {scoreText('Nhập số sao hiện có; nếu chưa có sao, tăng lên 0 để xác nhận.')}
+                </Hint>
               ) : null}
             </View>
           );
@@ -479,17 +510,19 @@ export function CritterKitchenInput({
         ].filter((key) => meal[key] === undefined);
         return (
           <Card key={`meal-${row.identity.id}`}>
-            <Heading>{row.identity.displayName} · món giám khảo</Heading>
+            <Heading>
+              {row.identity.displayName} {scoreText('· món giám khảo')}
+            </Heading>
             <Hint>
               {sheet.canManage
-                ? 'Chủ bàn có thể sửa mọi hàng.'
+                ? scoreText('Chủ bàn có thể sửa mọi hàng.')
                 : canEdit
-                  ? 'Bạn đang sửa hàng gắn với tài khoản của mình.'
-                  : 'Hàng này chỉ chủ bàn hoặc người sở hữu danh tính mới sửa được.'}
+                  ? scoreText('Bạn đang sửa hàng gắn với tài khoản của mình.')
+                  : scoreText('Hàng này chỉ chủ bàn hoặc người sở hữu danh tính mới sửa được.')}
             </Hint>
             <View style={styles.wrap}>
               <Count
-                label="Vị trí ưu tiên (1 = đi trước)"
+                label={scoreText('Vị trí ưu tiên (1 = đi trước)')}
                 value={
                   meal[CRITTER_KITCHEN_SCALAR_KEYS.priorityPosition] ??
                   defaultPriorities[row.identity.id] ??
@@ -508,7 +541,7 @@ export function CritterKitchenInput({
                 }
               />
               <Count
-                label="Súp · mỗi tô = 1"
+                label={scoreText('Súp · mỗi tô = 1')}
                 value={meal[CRITTER_KITCHEN_SCALAR_KEYS.soupCount] ?? 0}
                 disabled={!canEdit}
                 onChange={(value) =>
@@ -516,7 +549,7 @@ export function CritterKitchenInput({
                 }
               />
               <Count
-                label="Bisque · mỗi tô = 3"
+                label={scoreText('Bisque · mỗi tô = 3')}
                 value={meal[CRITTER_KITCHEN_SCALAR_KEYS.bisqueCount] ?? 0}
                 disabled={!canEdit}
                 onChange={(value) =>
@@ -525,7 +558,7 @@ export function CritterKitchenInput({
               />
               {rumorTokenEnabled ? (
                 <Count
-                  label="Token tin đồn"
+                  label={scoreText('Token tin đồn')}
                   value={meal[CRITTER_KITCHEN_SCALAR_KEYS.rumorTokenCount] ?? 0}
                   disabled={!canEdit}
                   onChange={(value) =>
@@ -540,11 +573,13 @@ export function CritterKitchenInput({
               ) : null}
             </View>
             <Hint>
-              Vị trí ưu tiên phải khác nhau giữa mọi người: 1 đi trước, tiếp theo là 2, v.v.
+              {scoreText(
+                'Vị trí ưu tiên phải khác nhau giữa mọi người: 1 đi trước, tiếp theo là 2, v.v.',
+              )}
             </Hint>
             {missing.length > 0 && canEdit ? (
               <Button
-                label="Xác nhận giá trị đang hiện"
+                label={scoreText('Xác nhận giá trị đang hiện')}
                 tone="ghost"
                 onPress={() => {
                   putCell(
@@ -624,7 +659,7 @@ export function CritterKitchenInput({
         <EngineBreakdown
           result={result}
           playerNames={Object.fromEntries(
-            play.players.map((row) => [row.identity.id, row.identity.displayName]),
+            sheet.state.players.map((player) => [player.id, scorePlayerName(player)]),
           )}
         />
       ) : null}
@@ -697,15 +732,19 @@ function CourseMeal({
   );
 
   return (
-    <Collapsible title={COURSE_LABEL[course]}>
+    <Collapsible title={scoreText(COURSE_LABEL[course])}>
       <Hint>
-        Nhập nguyên liệu thực sự đã đặt lên món; dùng loại in trên token nếu hiệu ứng cho phép đổi
-        món.
+        {scoreText(
+          'Nhập nguyên liệu thực sự đã đặt lên món; dùng loại in trên token nếu hiệu ứng cho phép đổi món.',
+        )}
       </Hint>
       {used.map(({ source, value, served, allspice }) => (
         <View key={served} style={styles.ingredientRow}>
           <Count
-            label={`${COURSE_LABEL[source]} ${value}`}
+            label={scoreText('{ingredient} {value}', {
+              ingredient: scoreText(COURSE_LABEL[source]),
+              value,
+            })}
             value={meal[served] ?? 0}
             disabled={disabled}
             onChange={(count) => putCell(sheet, playerId, served, count, true)}
@@ -716,7 +755,7 @@ function CourseMeal({
             return (
               <Count
                 key={key}
-                label={`Gia vị ${COURSE_LABEL[spice]}`}
+                label={scoreText('Gia vị {spice}', { spice: scoreText(COURSE_LABEL[spice]) })}
                 value={meal[key] ?? 0}
                 disabled={disabled}
                 onChange={(count) => putCell(sheet, playerId, key, count, true)}
@@ -730,7 +769,9 @@ function CourseMeal({
               return selectedSpice ? (
                 <>
                   <Chip
-                    label={`Thêm gia vị ${COURSE_LABEL[selectedSpice]}`}
+                    label={scoreText('Thêm gia vị {spice}', {
+                      spice: scoreText(COURSE_LABEL[selectedSpice]),
+                    })}
                     disabled={disabled}
                     onPress={() => {
                       const key = critterKitchenSpiceKey(course, source, value, selectedSpice);
@@ -741,7 +782,7 @@ function CourseMeal({
                     {options.map((spice) => (
                       <Chip
                         key={spice}
-                        label={COURSE_LABEL[spice]}
+                        label={scoreText(COURSE_LABEL[spice])}
                         selected={selectedSpice === spice}
                         disabled={disabled}
                         onPress={() => setSpiceChoice(spice)}
@@ -752,7 +793,7 @@ function CourseMeal({
               ) : null;
             })()}
             <Count
-              label="Allspice"
+              label={scoreText('Allspice')}
               value={meal[allspice] ?? 0}
               disabled={disabled}
               onChange={(count) => putCell(sheet, playerId, allspice, count, true)}
@@ -761,12 +802,12 @@ function CourseMeal({
         </View>
       ))}
       <View style={styles.selectionBox}>
-        <Text style={styles.smallHeading}>Thêm nguyên liệu đã phục vụ</Text>
+        <Text style={styles.smallHeading}>{scoreText('Thêm nguyên liệu đã phục vụ')}</Text>
         <View style={styles.wrap}>
           {ingredientTypes.map((source) => (
             <Chip
               key={source}
-              label={COURSE_LABEL[source]}
+              label={scoreText(COURSE_LABEL[source])}
               selected={effectiveSourceChoice === source}
               disabled={disabled}
               onPress={() => setSourceChoice(source)}
@@ -785,7 +826,7 @@ function CourseMeal({
           ))}
         </View>
         <Button
-          label="Thêm 1 nguyên liệu"
+          label={scoreText('Thêm 1 nguyên liệu')}
           tone="ghost"
           disabled={disabled}
           onPress={() => {
@@ -796,7 +837,7 @@ function CourseMeal({
       </View>
       {showPairedWine ? (
         <View style={styles.selectionBox}>
-          <Text style={styles.smallHeading}>Rượu ghép · Fruit Bat</Text>
+          <Text style={styles.smallHeading}>{scoreText('Rượu ghép · Fruit Bat')}</Text>
           <View style={styles.wrap}>
             {VALUE_OPTIONS.map((value) => (
               <Chip
@@ -809,7 +850,7 @@ function CourseMeal({
             ))}
           </View>
           <Count
-            label={`Rượu ghép ${pairedWineValue}`}
+            label={scoreText('Rượu ghép {value}', { value: pairedWineValue })}
             value={meal[critterKitchenPairedWineKey(course, pairedWineValue)] ?? 0}
             disabled={disabled}
             onChange={(count) =>
@@ -843,13 +884,15 @@ function PersonalEffects({
   const selected = restaurateurs.find((item) => meal[critterKitchenRestaurateurKey(item.id)] === 1);
   const noRestaurateurSelected = meal[critterKitchenRestaurateurKey('none')] === 1;
   return (
-    <Collapsible title="Thẻ và hiệu ứng cá nhân">
+    <Collapsible title={scoreText('Thẻ và hiệu ứng cá nhân')}>
       <Hint>
-        Chọn đúng một chủ nhà hàng hoặc «Không dùng chủ nhà hàng». Sao thưởng được cộng tự động.
+        {scoreText(
+          'Chọn đúng một chủ nhà hàng hoặc «Không dùng chủ nhà hàng». Sao thưởng được cộng tự động.',
+        )}
       </Hint>
       <View style={styles.wrap}>
         <Chip
-          label="Không dùng chủ nhà hàng"
+          label={scoreText('Không dùng chủ nhà hàng')}
           selected={noRestaurateurSelected}
           disabled={disabled}
           onPress={() => {
@@ -861,7 +904,11 @@ function PersonalEffects({
         {restaurateurs.map((item) => (
           <Chip
             key={item.id}
-            label={item.supported ? item.label : `${item.label} · chưa hỗ trợ`}
+            label={
+              item.supported
+                ? scoreText(item.label)
+                : scoreText('{label} · chưa hỗ trợ', { label: scoreText(item.label) })
+            }
             selected={selected?.id === item.id}
             disabled={disabled || (!item.supported && selected?.id !== item.id)}
             onPress={() => {
@@ -879,16 +926,16 @@ function PersonalEffects({
         .filter((item) => !item.supported)
         .map((item) => (
           <Hint key={`unsupported-restaurateur-${item.id}`}>
-            {item.label}: {UNSUPPORTED_CARD_MESSAGE}
+            {scoreText(item.label)}: {scoreText(UNSUPPORTED_CARD_MESSAGE)}
           </Hint>
         ))}
       {selected ? (
         <Hint>
-          {selected.label}: +{selected.bonusStars} sao tự động.
+          {scoreText(selected.label)}: +{selected.bonusStars} {scoreText('sao tự động.')}
           {selected.finalMealAbility === 'allspice-conversion'
-            ? ' Gia vị bất kỳ có thể ghép như Allspice.'
+            ? scoreText('Gia vị bất kỳ có thể ghép như Allspice.')
             : selected.finalMealAbility === 'extra-rumor'
-              ? ' Chủ bàn sẽ nhập tin đồn bổ sung đã lật trong thiết lập chung.'
+              ? scoreText('Chủ bàn sẽ nhập tin đồn bổ sung đã lật trong thiết lập chung.')
               : ''}
         </Hint>
       ) : null}
@@ -933,12 +980,19 @@ function LeftoverInputs({
   const allspiceKey = critterKitchenLeftoverSpiceKey('allspice');
 
   return (
-    <Collapsible title="Nguyên liệu và gia vị còn thừa">
-      <Hint>Chỉ nhập phần thừa nếu một tin đồn hoặc hiệu ứng đang dùng chúng để chấm điểm.</Hint>
+    <Collapsible title={scoreText('Nguyên liệu và gia vị còn thừa')}>
+      <Hint>
+        {scoreText(
+          'Chỉ nhập phần thừa nếu một tin đồn hoặc hiệu ứng đang dùng chúng để chấm điểm.',
+        )}
+      </Hint>
       {existingIngredients.map(({ source, value, key }) => (
         <Count
           key={key}
-          label={`${COURSE_LABEL[source]} ${value} còn thừa`}
+          label={scoreText('{ingredient} {value} còn thừa', {
+            ingredient: scoreText(COURSE_LABEL[source]),
+            value,
+          })}
           value={meal[key] ?? 0}
           disabled={disabled}
           onChange={(count) => putCell(sheet, playerId, key, count, true)}
@@ -947,7 +1001,7 @@ function LeftoverInputs({
       {existingSpices.map(({ spice, key }) => (
         <Count
           key={key}
-          label={`Gia vị ${COURSE_LABEL[spice]} còn thừa`}
+          label={scoreText('Gia vị {spice} còn thừa', { spice: scoreText(COURSE_LABEL[spice]) })}
           value={meal[key] ?? 0}
           disabled={disabled}
           onChange={(count) => putCell(sheet, playerId, key, count, true)}
@@ -955,12 +1009,12 @@ function LeftoverInputs({
       ))}
       {ingredientTypes.length > 0 ? (
         <View style={styles.selectionBox}>
-          <Text style={styles.smallHeading}>Thêm nguyên liệu thừa</Text>
+          <Text style={styles.smallHeading}>{scoreText('Thêm nguyên liệu thừa')}</Text>
           <View style={styles.wrap}>
             {ingredientTypes.map((source) => (
               <Chip
                 key={source}
-                label={COURSE_LABEL[source]}
+                label={scoreText(COURSE_LABEL[source])}
                 selected={effectiveIngredientChoice === source}
                 disabled={disabled}
                 onPress={() => setIngredientChoice(source)}
@@ -979,7 +1033,7 @@ function LeftoverInputs({
             ))}
           </View>
           <Button
-            label="Thêm 1 nguyên liệu thừa"
+            label={scoreText('Thêm 1 nguyên liệu thừa')}
             tone="ghost"
             disabled={disabled}
             onPress={() => {
@@ -991,12 +1045,12 @@ function LeftoverInputs({
       ) : null}
       {showSpices ? (
         <View style={styles.selectionBox}>
-          <Text style={styles.smallHeading}>Thêm gia vị thừa</Text>
+          <Text style={styles.smallHeading}>{scoreText('Thêm gia vị thừa')}</Text>
           <View style={styles.wrap}>
             {SPICES.map((spice) => (
               <Chip
                 key={spice}
-                label={COURSE_LABEL[spice]}
+                label={scoreText(COURSE_LABEL[spice])}
                 selected={spiceChoice === spice}
                 disabled={disabled}
                 onPress={() => setSpiceChoice(spice)}
@@ -1004,7 +1058,9 @@ function LeftoverInputs({
             ))}
           </View>
           <Button
-            label={`Thêm 1 gia vị ${COURSE_LABEL[spiceChoice]}`}
+            label={scoreText('Thêm 1 gia vị {spice}', {
+              spice: scoreText(COURSE_LABEL[spiceChoice]),
+            })}
             tone="ghost"
             disabled={disabled}
             onPress={() => {
@@ -1013,7 +1069,7 @@ function LeftoverInputs({
             }}
           />
           <Count
-            label="Allspice còn thừa"
+            label={scoreText('Allspice còn thừa')}
             value={meal[allspiceKey] ?? 0}
             disabled={disabled}
             onChange={(count) => putCell(sheet, playerId, allspiceKey, count, true)}
@@ -1033,17 +1089,17 @@ function EngineBreakdown({
 }) {
   return (
     <Card>
-      <Heading>Phân tích Critter Kitchen</Heading>
+      <Heading>{scoreText('Phân tích Critter Kitchen')}</Heading>
       {!result.complete ? (
-        <Hint>Chưa thể chốt ván. Hoàn tất các trường bắt buộc bên dưới.</Hint>
+        <Hint>{scoreText('Chưa thể chốt ván. Hoàn tất các trường bắt buộc bên dưới.')}</Hint>
       ) : null}
       {result.errors.map((error) => (
         <Text key={`${error.code}-${error.path ?? error.message}`} style={styles.error}>
-          {error.message}
+          {scoreFeedbackText(error.message)}
         </Text>
       ))}
       {result.warnings.map((warning) => (
-        <Hint key={warning}>{warning}</Hint>
+        <Hint key={warning}>{scoreFeedbackText(warning)}</Hint>
       ))}
       {result.players.map((player) => (
         <View key={player.identityId} style={styles.resultPlayer}>
@@ -1056,25 +1112,29 @@ function EngineBreakdown({
             {Object.entries(player.courseQuality)
               .map(
                 ([course, quality]) =>
-                  `${COURSE_LABEL[course as CritterKitchenCourseId] ?? course}: ${quality}`,
+                  `${scoreText(COURSE_LABEL[course as CritterKitchenCourseId] ?? course)}: ${quality}`,
               )
-              .join(' · ') || 'Chưa đủ món để tính chất lượng.'}
+              .join(' · ') || scoreText('Chưa đủ món để tính chất lượng.')}
           </Hint>
           <Hint>
             {Object.entries(player.categories)
-              .map(([category, score]) => `${CATEGORY_LABEL[category] ?? category}: ${score}`)
+              .map(
+                ([category, score]) =>
+                  `${scoreText(CATEGORY_LABEL[category] ?? category)}: ${score}`,
+              )
               .join(' · ')}
           </Hint>
           {Object.entries(player.rumorScores).length ? (
             <Hint>
-              Tin đồn:{' '}
+              {scoreText('Tin đồn:')}{' '}
               {Object.entries(player.rumorScores)
                 .map(([id, score]) => `${id}: ${score}`)
                 .join(' · ')}
             </Hint>
           ) : null}
           <Hint>
-            Track: {player.trackPosition} · vượt mốc 70: {player.trackLoops}
+            {scoreText('Track:')} {player.trackPosition} {scoreText('· vượt mốc 70:')}{' '}
+            {player.trackLoops}
           </Hint>
         </View>
       ))}
@@ -1093,19 +1153,26 @@ const CATEGORY_LABEL: Record<string, string> = {
   criticTrackRowStars: 'Sao hàng cuối',
 };
 
-const styles = StyleSheet.create({
-  column: { gap: 12 },
-  nestedCard: { padding: 12 },
-  wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  playerBlock: { gap: 8, borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 10 },
-  playerName: { color: colors.text, fontSize: 15, fontWeight: '700' },
-  countRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
-  countLabel: { flex: 1, color: colors.text, fontSize: 13 },
-  inputGrid: { gap: 8 },
-  ingredientRow: { gap: 8, padding: 8, borderRadius: 10, backgroundColor: colors.bg },
-  selectionBox: { gap: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.border },
-  smallHeading: { color: colors.text, fontSize: 13, fontWeight: '700' },
-  error: { color: colors.danger, fontSize: 13 },
-  resultPlayer: { gap: 4, borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 8 },
-  total: { color: colors.primary, fontSize: 18, fontWeight: '800' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    column: { gap: 12 },
+    nestedCard: { padding: 12 },
+    wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+    playerBlock: { gap: 8, borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 10 },
+    playerName: { color: colors.text, fontSize: 15, fontWeight: '700' },
+    countRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 8,
+    },
+    countLabel: { flex: 1, color: colors.text, fontSize: 13 },
+    inputGrid: { gap: 8 },
+    ingredientRow: { gap: 8, padding: 8, borderRadius: 10, backgroundColor: colors.bg },
+    selectionBox: { gap: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.border },
+    smallHeading: { color: colors.text, fontSize: 13, fontWeight: '700' },
+    error: { color: colors.danger, fontSize: 13 },
+    resultPlayer: { gap: 4, borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 8 },
+    total: { color: colors.primary, fontSize: 18, fontWeight: '800' },
+  }),
+);

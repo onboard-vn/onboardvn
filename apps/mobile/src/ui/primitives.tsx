@@ -1,8 +1,11 @@
 import { useState, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
-import { colors, radius, space } from './theme';
+import { themeStyles, colors, radius, space } from './theme';
+import { t } from './i18n';
+import { useAppPreferences } from './preferences';
 
 export function Card({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
+  useAppPreferences();
   return <View style={[styles.card, style]}>{children}</View>;
 }
 
@@ -17,6 +20,7 @@ export function Button({
   disabled?: boolean;
   tone?: 'primary' | 'ghost';
 }) {
+  useAppPreferences();
   const ghost = tone === 'ghost';
   return (
     <Pressable
@@ -43,6 +47,7 @@ export function Chip({
   tint?: string;
   disabled?: boolean;
 }) {
+  useAppPreferences();
   return (
     <Pressable
       accessibilityRole="button"
@@ -58,7 +63,7 @@ export function Chip({
         },
       ]}
     >
-      <Text style={[styles.chipText, selected && { color: '#fff' }]}>{label}</Text>
+      <Text style={[styles.chipText, selected && { color: colors.onPrimary }]}>{label}</Text>
     </Pressable>
   );
 }
@@ -72,6 +77,7 @@ export function Segmented<T extends string>({
   value: T;
   onChange: (v: T) => void;
 }) {
+  useAppPreferences();
   return (
     <View style={styles.segmented}>
       {options.map((o) => (
@@ -92,6 +98,7 @@ export function Segmented<T extends string>({
 }
 
 export function Badge({ label }: { label: string }) {
+  useAppPreferences();
   return (
     <View style={styles.badge}>
       <Text style={styles.badgeText}>{label}</Text>
@@ -100,14 +107,17 @@ export function Badge({ label }: { label: string }) {
 }
 
 export function Heading({ children }: { children: ReactNode }) {
+  useAppPreferences();
   return <Text style={styles.heading}>{children}</Text>;
 }
 
 export function Hint({ children }: { children: ReactNode }) {
+  useAppPreferences();
   return <Text style={styles.hint}>{children}</Text>;
 }
 
 export function Avatar({ name, color, size = 36 }: { name: string; color: string; size?: number }) {
+  useAppPreferences();
   return (
     <View
       style={{
@@ -135,6 +145,7 @@ export function Collapsible({
   children: ReactNode;
   defaultOpen?: boolean;
 }) {
+  useAppPreferences();
   const [open, setOpen] = useState(defaultOpen);
   return (
     <View style={styles.collapsible}>
@@ -145,74 +156,81 @@ export function Collapsible({
         style={styles.collapsibleHead}
       >
         <Text style={styles.collapsibleTitle}>{title}</Text>
-        <Text style={styles.collapsibleTitle}>{open ? '▴' : '▾'}</Text>
+        <Text
+          accessibilityLabel={open ? t('Thu gọn') : t('Mở rộng')}
+          style={styles.collapsibleTitle}
+        >
+          {open ? '▴' : '▾'}
+        </Text>
       </Pressable>
       {open ? <View style={styles.collapsibleBody}>{children}</View> : null}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  collapsible: {
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
-    overflow: 'hidden',
-  },
-  collapsibleHead: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: space.lg,
-  },
-  collapsibleTitle: { fontSize: 15, fontWeight: '600', color: colors.primary },
-  collapsibleBody: { padding: space.lg, paddingTop: 0, gap: space.md },
-  card: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: space.lg,
-    gap: space.md,
-  },
-  button: {
-    backgroundColor: colors.primary,
-    paddingHorizontal: space.lg,
-    paddingVertical: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonGhost: { backgroundColor: 'transparent', borderWidth: 1, borderColor: colors.primary },
-  buttonText: { color: '#fff', fontWeight: '600', fontSize: 15 },
-  disabled: { opacity: 0.4 },
-  chip: {
-    paddingHorizontal: space.md,
-    paddingVertical: 8,
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
-  },
-  chipText: { color: colors.text, fontWeight: '500' },
-  segmented: {
-    flexDirection: 'row',
-    backgroundColor: colors.surfaceMuted,
-    borderRadius: 10,
-    padding: 3,
-  },
-  segment: { flex: 1, paddingVertical: 8, alignItems: 'center', borderRadius: 8 },
-  segmentOn: { backgroundColor: colors.card },
-  segmentText: { fontWeight: '600', color: colors.muted },
-  badge: {
-    alignSelf: 'flex-start',
-    backgroundColor: colors.warnSoft,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 999,
-  },
-  badgeText: { color: colors.warn, fontSize: 12, fontWeight: '700' },
-  heading: { fontSize: 17, fontWeight: '700', color: colors.text },
-  hint: { fontSize: 13, color: colors.muted, lineHeight: 18 },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    collapsible: {
+      borderRadius: radius,
+      borderWidth: 1,
+      borderColor: colors.border,
+      backgroundColor: colors.card,
+      overflow: 'hidden',
+    },
+    collapsibleHead: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: space.lg,
+    },
+    collapsibleTitle: { fontSize: 15, fontWeight: '600', color: colors.primary },
+    collapsibleBody: { padding: space.lg, paddingTop: 0, gap: space.md },
+    card: {
+      backgroundColor: colors.card,
+      borderRadius: radius,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: space.lg,
+      gap: space.md,
+    },
+    button: {
+      backgroundColor: colors.primary,
+      paddingHorizontal: space.lg,
+      paddingVertical: 10,
+      borderRadius: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    buttonGhost: { backgroundColor: 'transparent', borderWidth: 1, borderColor: colors.primary },
+    buttonText: { color: colors.onPrimary, fontWeight: '600', fontSize: 15 },
+    disabled: { opacity: 0.4 },
+    chip: {
+      paddingHorizontal: space.md,
+      paddingVertical: 8,
+      borderRadius: 999,
+      borderWidth: 1,
+      borderColor: colors.border,
+      backgroundColor: colors.card,
+    },
+    chipText: { color: colors.text, fontWeight: '500' },
+    segmented: {
+      flexDirection: 'row',
+      backgroundColor: colors.surfaceMuted,
+      borderRadius: 10,
+      padding: 3,
+    },
+    segment: { flex: 1, paddingVertical: 8, alignItems: 'center', borderRadius: 8 },
+    segmentOn: { backgroundColor: colors.card },
+    segmentText: { fontWeight: '600', color: colors.muted },
+    badge: {
+      alignSelf: 'flex-start',
+      backgroundColor: colors.warnSoft,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: 999,
+    },
+    badgeText: { color: colors.warn, fontSize: 12, fontWeight: '700' },
+    heading: { fontSize: 17, fontWeight: '700', color: colors.text },
+    hint: { fontSize: 13, color: colors.muted, lineHeight: 18 },
+  }),
+);

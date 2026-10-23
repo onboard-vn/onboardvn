@@ -1,7 +1,9 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import { useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import PinEditorMap, { pinMapAvailable } from './pin-editor-map';
 import { isOutsideVietnam, type RecenterTarget } from './pin-types';
 import { ErrorText, Field, SmallButton } from './ui';
@@ -56,6 +58,7 @@ export function PinEditor({
   lng: number | null;
   onChange: (lat: number | null, lng: number | null) => void;
 }) {
+  useAppPreferences();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<NominatimResult[]>([]);
   const [searching, setSearching] = useState(false);
@@ -78,7 +81,7 @@ export function PinEditor({
       if (!res.ok) throw new Error('search failed');
       setResults((await res.json()) as NominatimResult[]);
     } catch {
-      setSearchError('Không tìm được địa chỉ, thử lại sau');
+      setSearchError(t('Không tìm được địa chỉ, thử lại sau'));
       setResults([]);
     } finally {
       setSearching(false);
@@ -87,7 +90,7 @@ export function PinEditor({
 
   return (
     <View style={{ gap: space.sm }}>
-      <Text style={styles.label}>Vị trí trên bản đồ</Text>
+      <Text style={styles.label}>{t('Vị trí trên bản đồ')}</Text>
 
       {pinMapAvailable ? (
         <>
@@ -96,12 +99,12 @@ export function PinEditor({
               <Field
                 value={query}
                 onChangeText={setQuery}
-                placeholder="Tìm địa chỉ để định vị bản đồ (không tự ghim)..."
+                placeholder={t('Tìm địa chỉ để định vị bản đồ (không tự ghim)...')}
               />
             </View>
-            <Button label="Tìm" disabled={searching} onPress={() => void onSearch()} />
+            <Button label={t('Tìm')} disabled={searching} onPress={() => void onSearch()} />
           </View>
-          <Text style={styles.hint}>Tìm kiếm © OpenStreetMap/Nominatim</Text>
+          <Text style={styles.hint}>{t('Tìm kiếm © OpenStreetMap/Nominatim')}</Text>
           <ErrorText message={searchError} />
           {results.map((r) => (
             <Text
@@ -128,27 +131,31 @@ export function PinEditor({
       />
 
       <View style={styles.coords}>
-        <CoordInput label="Vĩ độ (lat)" value={lat} onChange={(v) => onChange(v, lng)} />
-        <CoordInput label="Kinh độ (lng)" value={lng} onChange={(v) => onChange(lat, v)} />
+        <CoordInput label={t('Vĩ độ (lat)')} value={lat} onChange={(v) => onChange(v, lng)} />
+        <CoordInput label={t('Kinh độ (lng)')} value={lng} onChange={(v) => onChange(lat, v)} />
       </View>
 
       {isOutsideVietnam(lat, lng) ? (
-        <ErrorText message="Toạ độ nằm ngoài lãnh thổ Việt Nam — hệ thống sẽ từ chối khi lưu." />
+        <ErrorText
+          message={t('Toạ độ nằm ngoài lãnh thổ Việt Nam — hệ thống sẽ từ chối khi lưu.')}
+        />
       ) : null}
 
       {lat !== null || lng !== null ? (
         <View style={{ alignSelf: 'flex-start' }}>
-          <SmallButton label="Xoá vị trí" onPress={() => onChange(null, null)} />
+          <SmallButton label={t('Xoá vị trí')} onPress={() => onChange(null, null)} />
         </View>
       ) : null}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  label: { fontSize: 13, fontWeight: '600', color: colors.muted },
-  hint: { fontSize: 12, color: colors.muted },
-  searchRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
-  result: { fontSize: 14, color: colors.primary, paddingVertical: 4 },
-  coords: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    label: { fontSize: 13, fontWeight: '600', color: colors.muted },
+    hint: { fontSize: 12, color: colors.muted },
+    searchRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+    result: { fontSize: 14, color: colors.primary, paddingVertical: 4 },
+    coords: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
+  }),
+);

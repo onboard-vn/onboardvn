@@ -9,13 +9,15 @@ import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { api, ApiError } from '../../api/client';
 import { Badge, Button, Card, Chip, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { errorMessage } from '../errors';
 import { inputStyle } from '../search-input';
 import { BarcodeScanner } from './barcode-scanner';
 import { chunk } from './chunk';
 import { applyCommunityBatchResult, type CommunityTotals } from './community-submit';
 import { GamePicker, type ResolvedGame } from './game-picker';
+import { getActiveLanguage, t, translateKnown } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 interface CafeOption {
   id: string;
@@ -37,7 +39,20 @@ type ScanMode = 'inventory' | 'community';
 const COMMUNITY_CHUNK_SIZE = 20;
 const NETWORK_ERROR = 'Mất kết nối, thử lại sau';
 
-const displayName = (g: { nameVi: string | null; nameEn: string }) => g.nameVi || g.nameEn;
+const displayName = (g: { nameVi: string | null; nameEn: string }) =>
+  getActiveLanguage() === 'en' ? g.nameEn || g.nameVi || '' : g.nameVi || g.nameEn;
+
+const resolvedGame = (g: { id: string; nameVi: string | null; nameEn: string }): ResolvedGame => ({
+  id: g.id,
+  name: displayName(g),
+  nameVi: g.nameVi,
+  nameEn: g.nameEn,
+});
+
+const resolvedGameName = (g: ResolvedGame) => {
+  if (getActiveLanguage() === 'en' && g.nameEn) return g.nameEn;
+  return g.nameVi ?? g.name;
+};
 
 function ScanEntryRow({
   entry,
@@ -50,12 +65,13 @@ function ScanEntryRow({
   mode: ScanMode;
   onLinked: (code: string, game: ResolvedGame) => void;
 }) {
+  useAppPreferences();
   const [pending, setPending] = useState(false);
   const [linkError, setLinkError] = useState<string | null>(null);
 
-  const link = async (gameId: string, gameName: string, submitUpstream: boolean) => {
+  const link = async (game: ResolvedGame, submitUpstream: boolean) => {
     if (lookup === 'local' || mode === 'community') {
-      onLinked(entry.code, { id: gameId, name: gameName });
+      onLinked(entry.code, game);
       return;
     }
     setPending(true);
@@ -63,11 +79,11 @@ function ScanEntryRow({
     try {
       await api(`/barcodes/${encodeURIComponent(entry.code)}/link`, {
         method: 'POST',
-        body: { gameId, submitUpstream },
+        body: { gameId: game.id, submitUpstream },
       });
-      onLinked(entry.code, { id: gameId, name: gameName });
+      onLinked(entry.code, game);
     } catch (e) {
-      setLinkError(e instanceof ApiError ? e.message : NETWORK_ERROR);
+      setLinkError(errorMessage(e, NETWORK_ERROR));
     } finally {
       setPending(false);
     }
@@ -78,12 +94,14 @@ function ScanEntryRow({
       <View style={styles.head}>
         <Text style={styles.code}>{entry.code}</Text>
         {entry.status === 'local' || entry.status === 'linked' ? (
-          <Badge label={entry.game?.name ?? 'Đã gắn'} />
+          <Badge label={entry.game ? resolvedGameName(entry.game) : t('Đã gắn')} />
         ) : null}
-        {entry.status === 'loading' ? <Hint>Đang tra cứu...</Hint> : null}
+        {entry.status === 'loading' ? <Hint>{t('Đang tra cứu...')}</Hint> : null}
       </View>
       {entry.status === 'error' ? (
-        <Text style={styles.error}>{entry.error ?? 'Không tra cứu được mã vạch'}</Text>
+        <Text style={styles.error}>
+          {translateKnown(entry.error ?? t('Không tra cứu được mã vạch'))}
+        </Text>
       ) : null}
 
       {entry.status === 'candidates' && entry.candidates ? (
@@ -92,20 +110,20 @@ function ScanEntryRow({
             <View key={c.bggId} style={styles.head}>
               <Text style={styles.name}>
                 {c.name} <Text style={styles.muted}>({c.confidence}%)</Text>
-                {c.localGame ? <Text style={styles.ok}> – có trong danh mục</Text> : null}
+                {c.localGame ? <Text style={styles.ok}> {t('– có trong danh mục')}</Text> : null}
               </Text>
               {c.localGame ? (
                 <Button
-                  label="Dùng gợi ý này"
+                  label={t('Dùng gợi ý này')}
                   disabled={pending}
-                  onPress={() => void link(c.localGame!.id, displayName(c.localGame!), true)}
+                  onPress={() => void link(resolvedGame(c.localGame!), true)}
                 />
               ) : null}
             </View>
           ))}
           <GamePicker
             initialQuery={entry.candidates[0]?.name}
-            onPick={(g) => void link(g.id, g.name, false)}
+            onPick={(g) => void link(g, false)}
           />
         </View>
       ) : null}
@@ -114,16 +132,16 @@ function ScanEntryRow({
         <View style={styles.stack}>
           <Hint>
             {mode === 'community'
-              ? 'Chưa có trong catalog, chọn game thủ công.'
+              ? t('Chưa có trong catalog, chọn game thủ công.')
               : entry.providerError
-                ? 'Không tra cứu được từ GameUPC (lỗi tạm thời). Chọn game thủ công bên dưới.'
-                : 'Chưa có gợi ý, chọn game thủ công.'}
+                ? t('Không tra cứu được từ GameUPC (lỗi tạm thời). Chọn game thủ công bên dưới.')
+                : t('Chưa có gợi ý, chọn game thủ công.')}
           </Hint>
-          <GamePicker onPick={(g) => void link(g.id, g.name, false)} />
+          <GamePicker onPick={(g) => void link(g, false)} />
         </View>
       ) : null}
 
-      {linkError ? <Text style={styles.error}>{linkError}</Text> : null}
+      {linkError ? <Text style={styles.error}>{translateKnown(linkError)}</Text> : null}
     </Card>
   );
 }
@@ -137,6 +155,7 @@ export function ScanSession({
   lookup?: ScanLookupMode;
   mode?: ScanMode;
 }) {
+  useAppPreferences();
   const effectiveLookup: ScanLookupMode = mode === 'community' ? 'local' : lookup;
   const [entries, setEntries] = useState<ScanEntry[]>([]);
   const [cafeId, setCafeId] = useState<string | undefined>(cafes[0]?.id);
@@ -152,8 +171,12 @@ export function ScanSession({
     setEntries((prev) =>
       prev.some((e) => e.code === code) ? prev : [{ code, status: 'loading' }, ...prev],
     );
-    const markError = (error: string) =>
-      patchEntry(code, (e) => ({ ...e, status: 'error', error }));
+    const markError = (error: unknown) =>
+      patchEntry(code, (e) => ({
+        ...e,
+        status: 'error',
+        error: errorMessage(error, NETWORK_ERROR),
+      }));
 
     try {
       if (effectiveLookup === 'local') {
@@ -162,7 +185,7 @@ export function ScanSession({
         );
         patchEntry(code, (e) =>
           body.game
-            ? { ...e, status: 'local', game: { id: body.game.id, name: displayName(body.game) } }
+            ? { ...e, status: 'local', game: resolvedGame(body.game) }
             : { ...e, status: 'unknown' },
         );
         return;
@@ -173,7 +196,7 @@ export function ScanSession({
           return {
             ...e,
             status: 'local',
-            game: { id: body.game.id, name: displayName(body.game) },
+            game: resolvedGame(body.game),
           };
         }
         if (body.kind === 'candidates') {
@@ -182,7 +205,7 @@ export function ScanSession({
         return { ...e, status: 'unknown', providerError: body.providerError };
       });
     } catch (e) {
-      markError(e instanceof ApiError ? e.message : NETWORK_ERROR);
+      markError(e);
     }
   };
 
@@ -226,7 +249,7 @@ export function ScanSession({
         }
         return applyCommunityBatchResult(totals, {
           kind: 'error',
-          message: e instanceof ApiError ? e.message : NETWORK_ERROR,
+          message: errorMessage(e, NETWORK_ERROR),
         });
       }
     }
@@ -270,16 +293,16 @@ export function ScanSession({
           value={manualCode}
           onChangeText={setManualCode}
           onSubmitEditing={onManualSubmit}
-          placeholder="Nhập mã vạch (EAN/UPC) khi camera kém"
+          placeholder={t('Nhập mã vạch (EAN/UPC) khi camera kém')}
           placeholderTextColor={colors.muted}
           keyboardType="number-pad"
-          accessibilityLabel="Mã vạch"
+          accessibilityLabel={t('Mã vạch')}
         />
-        <Button label="Tra cứu" onPress={onManualSubmit} />
+        <Button label={t('Tra cứu')} onPress={onManualSubmit} />
       </View>
 
       <Card>
-        <Text style={styles.label}>Địa điểm chơi</Text>
+        <Text style={styles.label}>{t('Địa điểm chơi')}</Text>
         <View style={styles.chips}>
           {cafes.map((c) => (
             <Chip
@@ -293,22 +316,30 @@ export function ScanSession({
         <Button
           label={
             mode === 'community'
-              ? `Đóng góp ${readyGames.length} game`
-              : `Thêm ${readyGames.length} game vào kho`
+              ? t('Đóng góp {count} game', { count: readyGames.length })
+              : t('Thêm {count} game vào kho', { count: readyGames.length })
           }
           disabled={!cafeId || readyGames.length === 0 || bulkPending}
           onPress={() => void onBulkAdd()}
         />
         {bulkResult ? (
           <Hint>
-            Đã thêm {bulkResult.added}, bỏ qua {bulkResult.skipped} (đã có sẵn)
             {mode === 'community' && bulkResult.skippedRemoved
-              ? `, ${bulkResult.skippedRemoved} bị quán gỡ nên cần xác nhận lại`
-              : ''}
-            .
+              ? t(
+                  'Đã thêm {added}, bỏ qua {skipped}; {removed} game đã bị quán gỡ nên cần xác nhận lại.',
+                  {
+                    added: bulkResult.added,
+                    skipped: bulkResult.skipped,
+                    removed: bulkResult.skippedRemoved,
+                  },
+                )
+              : t('Đã thêm {added}, bỏ qua {skipped} (đã có sẵn).', {
+                  added: bulkResult.added,
+                  skipped: bulkResult.skipped,
+                })}
           </Hint>
         ) : null}
-        {bulkError ? <Text style={styles.error}>{bulkError}</Text> : null}
+        {bulkError ? <Text style={styles.error}>{translateKnown(bulkError)}</Text> : null}
       </Card>
 
       <View style={styles.stack}>
@@ -321,28 +352,30 @@ export function ScanSession({
             onLinked={onLinked}
           />
         ))}
-        {entries.length === 0 ? <Hint>Chưa quét mã nào trong phiên này.</Hint> : null}
+        {entries.length === 0 ? <Hint>{t('Chưa quét mã nào trong phiên này.')}</Hint> : null}
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  root: { gap: space.lg },
-  stack: { gap: space.sm },
-  head: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space.sm,
-    flexWrap: 'wrap',
-  },
-  grow: { flex: 1, minWidth: 180 },
-  code: { fontFamily: 'monospace', color: colors.text },
-  name: { flex: 1, color: colors.text },
-  muted: { color: colors.muted, fontSize: 12 },
-  ok: { color: colors.success, fontSize: 12 },
-  label: { fontSize: 13, fontWeight: '600', color: colors.muted },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
-  error: { color: colors.danger, fontSize: 13 },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    root: { gap: space.lg },
+    stack: { gap: space.sm },
+    head: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: space.sm,
+      flexWrap: 'wrap',
+    },
+    grow: { flex: 1, minWidth: 180 },
+    code: { fontFamily: 'monospace', color: colors.text },
+    name: { flex: 1, color: colors.text },
+    muted: { color: colors.muted, fontSize: 12 },
+    ok: { color: colors.success, fontSize: 12 },
+    label: { fontSize: 13, fontWeight: '600', color: colors.muted },
+    chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+    error: { color: colors.danger, fontSize: 13 },
+  }),
+);

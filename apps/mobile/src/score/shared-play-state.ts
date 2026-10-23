@@ -33,12 +33,16 @@ function valuesFromPlay(play: PlayDto): Record<string, Record<string, RawValue>>
 export function playersFromPlay(play: PlayDto): Player[] {
   return [...play.players]
     .sort((a, b) => a.seat - b.seat)
-    .map(({ identity, seat }) => ({
-      id: identity.id,
-      name: identity.displayName || `Người chơi ${seat}`,
-      kind: identity.kind,
-      avatarColor: colorFor(identity.id),
-    }));
+    .map(({ identity, seat }) => {
+      const hasDisplayName = !!identity.displayName;
+      return {
+        id: identity.id,
+        name: identity.displayName || `Người chơi ${seat}`,
+        ...(!hasDisplayName ? { fallbackSeat: seat } : {}),
+        kind: identity.kind,
+        avatarColor: colorFor(identity.id),
+      };
+    });
 }
 
 export function sheetStateFromPlay(template: ScoreTemplate, play: PlayDto): SheetState {

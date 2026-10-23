@@ -1,3 +1,4 @@
+import { t } from '../../ui/i18n';
 import { Platform } from 'react-native';
 import { ApiError, apiUrl, authHeaders } from '../../api/client';
 
@@ -21,7 +22,7 @@ export async function apiBody<T>(path: string, req: BodyRequest): Promise<T> {
       credentials: Platform.OS === 'web' ? 'include' : 'omit',
     });
   } catch {
-    throw new ApiError(0, 'Mất kết nối, thử lại sau');
+    throw new ApiError(0, t('Mất kết nối, thử lại sau'));
   }
   const text = await res.text();
   let data: unknown = null;
@@ -34,7 +35,7 @@ export async function apiBody<T>(path: string, req: BodyRequest): Promise<T> {
     const err = (data ?? {}) as { error?: { message?: string; code?: string }; message?: string };
     throw new ApiError(
       res.status,
-      err.error?.message ?? err.message ?? `Lỗi ${res.status}`,
+      err.error?.message ?? err.message ?? t('Lỗi {status}', { status: res.status }),
       err.error?.code,
     );
   }

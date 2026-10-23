@@ -9,12 +9,14 @@ import {
   Text,
   View,
 } from 'react-native';
-import { colors } from '../../ui/theme';
+import { themeStyles, colors } from '../../ui/theme';
 import { DECK_SIZE, RARITY_LEVEL, dealPlan, tableLayout } from './deal';
 import { PlayCard, newMotion, type CardMotion } from './play-card';
 import { RARITY } from './rarity';
 import { RarityBurst } from './rarity-burst';
 import { playSfx, type SfxName } from './sfx';
+import { useAppPreferences } from '../../ui/preferences';
+import { t } from '../../ui/i18n';
 
 const tableHeight = (width: number) => (width > 0 && width < 500 ? 320 : 400);
 
@@ -32,7 +34,9 @@ const WOOD = web
   : null;
 const FELT = web
   ? ({
-      backgroundImage: `radial-gradient(ellipse at 50% 45%, #1a8a80, ${colors.primary} 70%, #0b5a54)`,
+      get backgroundImage() {
+        return `radial-gradient(ellipse at 50% 45%, #1a8a80, ${colors.primary} 70%, #0b5a54)`;
+      },
     } as object)
   : null;
 
@@ -52,6 +56,7 @@ export function CardTable({
   onPhase: (phase: TablePhase) => void;
   onReveal: (item: SuggestPoolItemDto) => void;
 }) {
+  useAppPreferences();
   const [width, setWidth] = useState(0);
   const [motions] = useState<CardMotion[]>(() => Array.from({ length: DECK_SIZE }, newMotion));
   const [z, setZ] = useState<number[]>(() => motions.map((_, i) => i));
@@ -259,8 +264,8 @@ export function CardTable({
       onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
     >
       <View style={[styles.felt, FELT]} />
-      <Text style={[styles.pileLabel, { left: 34 }]}>BỘ BÀI</Text>
-      <Text style={[styles.pileLabel, { right: 34 }]}>BÀI HUỶ</Text>
+      <Text style={[styles.pileLabel, { left: 34 }]}>{t('BỘ BÀI')}</Text>
+      <Text style={[styles.pileLabel, { right: 34 }]}>{t('BÀI HUỶ')}</Text>
       {burst ? (
         <RarityBurst key={`b${run}`} color={burst.color} level={burst.level} layer="back" />
       ) : null}
@@ -290,44 +295,46 @@ export function CardTable({
   );
 }
 
-const styles = StyleSheet.create({
-  table: {
-    position: 'relative',
-    borderRadius: 16,
-    overflow: 'hidden',
-    backgroundColor: '#8a5a32',
-    boxShadow: 'inset 0 0 0 6px #5b391e, inset 0 0 40px rgba(0,0,0,0.35)',
-  },
-  felt: {
-    position: 'absolute',
-    top: 24,
-    left: 24,
-    right: 24,
-    bottom: 24,
-    borderRadius: 12,
-    backgroundColor: colors.primary,
-    boxShadow: 'inset 0 0 30px rgba(0,0,0,0.35)',
-  },
-  pileLabel: {
-    position: 'absolute',
-    top: 34,
-    color: '#e6fffb',
-    fontSize: 11,
-    fontWeight: '700',
-    opacity: 0.8,
-  },
-  hint: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 38,
-    textAlign: 'center',
-    color: '#e6fffb',
-    fontWeight: '600',
-    fontSize: 14,
-    textShadowColor: 'rgba(0,0,0,0.4)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
-    zIndex: 80,
-  },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    table: {
+      position: 'relative',
+      borderRadius: 16,
+      overflow: 'hidden',
+      backgroundColor: '#8a5a32',
+      boxShadow: 'inset 0 0 0 6px #5b391e, inset 0 0 40px rgba(0,0,0,0.35)',
+    },
+    felt: {
+      position: 'absolute',
+      top: 24,
+      left: 24,
+      right: 24,
+      bottom: 24,
+      borderRadius: 12,
+      backgroundColor: colors.primary,
+      boxShadow: 'inset 0 0 30px rgba(0,0,0,0.35)',
+    },
+    pileLabel: {
+      position: 'absolute',
+      top: 34,
+      color: '#e6fffb',
+      fontSize: 11,
+      fontWeight: '700',
+      opacity: 0.8,
+    },
+    hint: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 38,
+      textAlign: 'center',
+      color: '#e6fffb',
+      fontWeight: '600',
+      fontSize: 14,
+      textShadowColor: 'rgba(0,0,0,0.4)',
+      textShadowOffset: { width: 0, height: 1 },
+      textShadowRadius: 2,
+      zIndex: 80,
+    },
+  }),
+);

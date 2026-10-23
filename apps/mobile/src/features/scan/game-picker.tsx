@@ -4,26 +4,31 @@ import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { api } from '../../api/client';
 import { Button, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { errorMessage } from '../errors';
 import { inputStyle } from '../search-input';
+import { getActiveLanguage, t, translateKnown } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 export interface ResolvedGame {
   id: string;
   name: string;
+  nameVi?: string | null;
+  nameEn?: string;
 }
 
 type GameResult = GameListResponse['items'][number];
 
-const displayName = (g: { nameVi: string | null; nameEn: string }) => g.nameVi || g.nameEn;
+const displayName = (g: { nameVi: string | null; nameEn: string }) =>
+  getActiveLanguage() === 'en' ? g.nameEn || g.nameVi || '' : g.nameVi || g.nameEn;
 
 export function GamePicker({
   onPick,
   initialQuery,
-  actionLabel = 'Chọn',
+  actionLabel,
   allowCreate = true,
   isPicked,
-  pickedLabel = 'Đã chọn',
+  pickedLabel,
   disabled,
 }: {
   onPick: (game: ResolvedGame) => void;
@@ -34,6 +39,7 @@ export function GamePicker({
   pickedLabel?: string;
   disabled?: boolean;
 }) {
+  useAppPreferences();
   const [text, setText] = useState(initialQuery ?? '');
   const [results, setResults] = useState<GameResult[]>([]);
   const [searched, setSearched] = useState(false);
@@ -64,25 +70,25 @@ export function GamePicker({
           value={text}
           onChangeText={setText}
           onSubmitEditing={() => void search()}
-          placeholder="Tìm game trong danh mục..."
+          placeholder={t('Tìm game trong danh mục...')}
           placeholderTextColor={colors.muted}
-          accessibilityLabel="Tìm game trong danh mục"
+          accessibilityLabel={t('Tìm game trong danh mục')}
           returnKeyType="search"
         />
-        <Button label="Tìm" onPress={() => void search()} />
+        <Button label={t('Tìm')} onPress={() => void search()} />
       </View>
       {error ? <Text style={styles.error}>{error}</Text> : null}
       {searched && !error && results.length === 0 ? (
         <View style={styles.row}>
           <View style={styles.input}>
-            <Hint>Không tìm thấy.</Hint>
+            <Hint>{t('Không tìm thấy.')}</Hint>
           </View>
           {allowCreate ? (
             <Link
               href={`/admin/games/new?nameEn=${encodeURIComponent(initialQuery ?? '')}` as Href}
               style={styles.link}
             >
-              Tạo game nhanh
+              {t('Tạo game nhanh')}
             </Link>
           ) : null}
         </View>
@@ -91,9 +97,20 @@ export function GamePicker({
         <View key={g.id} style={styles.result}>
           <Text style={styles.name}>{displayName(g)}</Text>
           <Button
-            label={isPicked?.(g.id) ? pickedLabel : actionLabel}
+            label={
+              isPicked?.(g.id)
+                ? translateKnown(pickedLabel ?? 'Đã chọn')
+                : translateKnown(actionLabel ?? 'Chọn')
+            }
             disabled={disabled || isPicked?.(g.id)}
-            onPress={() => onPick({ id: g.id, name: displayName(g) })}
+            onPress={() =>
+              onPick({
+                id: g.id,
+                name: displayName(g),
+                nameVi: g.nameVi,
+                nameEn: g.nameEn,
+              })
+            }
           />
         </View>
       ))}
@@ -101,17 +118,19 @@ export function GamePicker({
   );
 }
 
-const styles = StyleSheet.create({
-  stack: { gap: space.sm },
-  row: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
-  input: { flex: 1 },
-  result: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space.sm,
-  },
-  name: { flex: 1, color: colors.text },
-  link: { color: colors.primary, textDecorationLine: 'underline' },
-  error: { color: colors.danger, fontSize: 13 },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    stack: { gap: space.sm },
+    row: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+    input: { flex: 1 },
+    result: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: space.sm,
+    },
+    name: { flex: 1, color: colors.text },
+    link: { color: colors.primary, textDecorationLine: 'underline' },
+    error: { color: colors.danger, fontSize: 13 },
+  }),
+);

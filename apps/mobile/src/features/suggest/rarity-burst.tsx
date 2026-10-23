@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Animated, Easing, Platform, StyleSheet, View } from 'react-native';
+import { useAppPreferences } from '../../ui/preferences';
 
 const native = Platform.OS !== 'web';
 const RAY_COUNT = 12;
@@ -22,6 +23,7 @@ export function RarityBurst({
   level: number;
   layer: 'back' | 'front';
 }) {
+  useAppPreferences();
   const [glow] = useState(() => new Animated.Value(0));
   const [spin] = useState(() => new Animated.Value(0));
   const [sparks] = useState<Spark[]>(() =>

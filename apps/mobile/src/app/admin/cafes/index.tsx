@@ -1,3 +1,5 @@
+import { t } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import type { CafeMaintainerListResponse } from '@onboard/shared';
 import { useRouter } from 'expo-router';
 import { api } from '../../../api/client';
@@ -17,6 +19,7 @@ import { colors } from '../../../ui/theme';
 const load = () => api<CafeMaintainerListResponse>('/cafes/manage', { query: { pageSize: 50 } });
 
 export default function AdminCafesPage() {
+  useAppPreferences();
   const router = useRouter();
   const list = useLoad(load, []);
   const { data } = list;
@@ -24,8 +27,12 @@ export default function AdminCafesPage() {
 
   return (
     <AdminPage
-      title={`Quản lý địa điểm chơi${data ? ` (${data.total})` : ''}`}
-      action={<Button label="Thêm quán" onPress={() => router.push('/admin/cafes/new')} />}
+      title={
+        data
+          ? t('Quản lý địa điểm chơi ({count})', { count: data.total })
+          : t('Quản lý địa điểm chơi')
+      }
+      action={<Button label={t('Thêm quán')} onPress={() => router.push('/admin/cafes/new')} />}
     >
       <LoadState loading={list.loading && !data} error={list.error} onRetry={list.reload} />
       {unpinned > 0 ? (
@@ -37,7 +44,12 @@ export default function AdminCafesPage() {
             borderRadius: 10,
           }}
         >
-          ⚠ {unpinned} quán chưa ghim vị trí nên không hiện trên bản đồ (chỉ có trong danh sách).
+          {t(
+            '⚠ {count} quán chưa ghim vị trí nên không hiện trên bản đồ (chỉ có trong danh sách).',
+            {
+              count: unpinned,
+            },
+          )}
         </Text>
       ) : null}
       {data ? (
@@ -46,19 +58,19 @@ export default function AdminCafesPage() {
             <Row
               key={cafe.id}
               title={cafe.name}
-              subtitle={`${cafe.wardName}, ${cafe.provinceName} · ${cafe.gameCount} game${cafe.lat === null || cafe.lng === null ? ' · ⚠ Chưa ghim vị trí' : ''}`}
+              subtitle={`${cafe.wardName}, ${cafe.provinceName} · ${t('{count} game', { count: cafe.gameCount })}${cafe.lat === null || cafe.lng === null ? ` · ⚠ ${t('Chưa ghim vị trí')}` : ''}`}
               right={
                 <>
                   <SmallButton
-                    label="Sửa"
+                    label={t('Sửa')}
                     onPress={() =>
                       router.push({ pathname: '/admin/cafes/[id]/edit', params: { id: cafe.id } })
                     }
                   />
                   <ActionButton
                     danger
-                    label="Xóa"
-                    confirmText={`Xóa quán "${cafe.name}"?`}
+                    label={t('Xóa')}
+                    confirmText={t('Xóa quán "{name}"?', { name: cafe.name })}
                     run={async () => {
                       await api(`/cafes/${cafe.id}`, { method: 'DELETE' });
                       list.reload();

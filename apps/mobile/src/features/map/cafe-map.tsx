@@ -3,6 +3,8 @@ import { Linking, StyleSheet, View } from 'react-native';
 import { Button, Card, Heading, Hint } from '../../ui/primitives';
 import { space } from '../../ui/theme';
 import { VENUE_TYPE_LABELS } from '../cafes/labels';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 const pinUrl = (pin: CafeMapPinDto) =>
   `https://www.google.com/maps/search/?api=1&query=${pin.lat},${pin.lng}`;
@@ -14,14 +16,15 @@ export function CafeMap({
   fitToPins?: boolean;
   center?: [number, number];
 }) {
+  useAppPreferences();
   return (
     <View style={styles.list}>
       {pins.map((pin) => (
         <Card key={pin.slug}>
           <Heading>{pin.name}</Heading>
-          <Hint>{VENUE_TYPE_LABELS[pin.venueType]}</Hint>
+          <Hint>{t(VENUE_TYPE_LABELS[pin.venueType])}</Hint>
           <Button
-            label="Mở bản đồ"
+            label={t('Mở bản đồ')}
             tone="ghost"
             onPress={() => void Linking.openURL(pinUrl(pin))}
           />

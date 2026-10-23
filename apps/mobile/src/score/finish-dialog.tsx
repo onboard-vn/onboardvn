@@ -2,15 +2,17 @@ import { useState } from 'react';
 import { Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
 import type { FinishReceipt } from '../api/plays-types';
 import { Button, Heading, Hint } from '../ui/primitives';
-import { colors } from '../ui/theme';
+import { themeStyles, colors } from '../ui/theme';
 import type { Summary } from './model';
 import type { SheetApi } from './use-sheet';
-
-const fmt = (n: number) => n.toLocaleString('vi-VN');
+import { scoreFeedbackText, scoreLocale, scorePlayerName, scoreText } from './localization';
+import { useAppPreferences } from '../ui/preferences';
 
 export const receiptLines = (r: FinishReceipt): string[] => [
-  `Đã lưu vào lịch sử của ${r.memberCount} người`,
-  ...(r.guestCount > 0 ? [`${r.guestCount} khách sẽ thấy khi nhận hồ sơ`] : []),
+  scoreText('Đã lưu vào lịch sử của {memberCount} người', { memberCount: r.memberCount }),
+  ...(r.guestCount > 0
+    ? [scoreText('{guestCount} khách sẽ thấy khi nhận hồ sơ', { guestCount: r.guestCount })]
+    : []),
 ];
 
 export function FinishDialog({
@@ -28,6 +30,8 @@ export function FinishDialog({
   onConfirm: () => Promise<FinishReceipt>;
   onDone: () => void;
 }) {
+  const { language } = useAppPreferences();
+  const fmt = (n: number) => n.toLocaleString(scoreLocale(language));
   const summary = suppliedSummary ?? sheet.summary;
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,18 +56,20 @@ export function FinishDialog({
         <View style={styles.dialog}>
           {receipt ? (
             <>
-              <Heading>Đã kết thúc ván</Heading>
+              <Heading>{scoreText('Đã kết thúc ván')}</Heading>
               {receiptLines(receipt).map((l) => (
                 <Text key={l} style={styles.receipt}>
                   {l}
                 </Text>
               ))}
-              <Button label="Về danh sách bàn" onPress={onDone} />
+              <Button label={scoreText('Về danh sách bàn')} onPress={onDone} />
             </>
           ) : (
             <>
-              <Heading>Xác nhận kết thúc ván</Heading>
-              {summary.error ? <Text style={styles.error}>{summary.error}</Text> : null}
+              <Heading>{scoreText('Xác nhận kết thúc ván')}</Heading>
+              {summary.error ? (
+                <Text style={styles.error}>{scoreFeedbackText(summary.error)}</Text>
+              ) : null}
               <ScrollView style={{ maxHeight: 320 }}>
                 {rows.map((r) => {
                   const won = summary.winners.includes(r.id);
@@ -71,7 +77,11 @@ export function FinishDialog({
                     <View key={r.id} style={[styles.row, won && styles.win]}>
                       <Text style={styles.rank}>{r.rank ? `#${r.rank}` : ''}</Text>
                       <Text style={styles.name} numberOfLines={1}>
-                        {r.name}
+                        {scorePlayerName(
+                          sheet.state.players.find((player) => player.id === r.id) ?? {
+                            name: r.name,
+                          },
+                        )}
                         {won ? '  🏆' : ''}
                       </Text>
                       <Text style={styles.total}>{fmt(r.total)}</Text>
@@ -79,14 +89,19 @@ export function FinishDialog({
                   );
                 })}
               </ScrollView>
-              {summary.note ? <Hint>{summary.note}</Hint> : null}
-              {error ? <Text style={styles.error}>{error}</Text> : null}
+              {summary.note ? <Hint>{scoreFeedbackText(summary.note)}</Hint> : null}
+              {error ? <Text style={styles.error}>{scoreFeedbackText(error)}</Text> : null}
               <Button
-                label={busy ? 'Đang lưu...' : 'Xác nhận kết thúc'}
+                label={busy ? scoreText('Đang lưu...') : scoreText('Xác nhận kết thúc')}
                 onPress={confirm}
                 disabled={busy || !!summary.error}
               />
-              <Button label="Quay lại sửa" tone="ghost" onPress={onClose} disabled={busy} />
+              <Button
+                label={scoreText('Quay lại sửa')}
+                tone="ghost"
+                onPress={onClose}
+                disabled={busy}
+              />
             </>
           )}
         </View>
@@ -95,27 +110,29 @@ export function FinishDialog({
   );
 }
 
-const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16,
-  },
-  dialog: {
-    width: '100%',
-    maxWidth: 480,
-    backgroundColor: colors.card,
-    borderRadius: 16,
-    padding: 18,
-    gap: 12,
-  },
-  row: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 8, borderRadius: 10 },
-  win: { backgroundColor: colors.successSoft },
-  rank: { width: 30, fontWeight: '700', color: colors.muted },
-  name: { flex: 1, fontSize: 16, color: colors.text },
-  total: { fontSize: 18, fontWeight: '800', color: colors.text },
-  receipt: { fontSize: 15, color: colors.text },
-  error: { color: colors.danger, fontSize: 14 },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    backdrop: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.4)',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 16,
+    },
+    dialog: {
+      width: '100%',
+      maxWidth: 480,
+      backgroundColor: colors.card,
+      borderRadius: 16,
+      padding: 18,
+      gap: 12,
+    },
+    row: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 8, borderRadius: 10 },
+    win: { backgroundColor: colors.successSoft },
+    rank: { width: 30, fontWeight: '700', color: colors.muted },
+    name: { flex: 1, fontSize: 16, color: colors.text },
+    total: { fontSize: 18, fontWeight: '800', color: colors.text },
+    receipt: { fontSize: 15, color: colors.text },
+    error: { color: colors.danger, fontSize: 14 },
+  }),
+);

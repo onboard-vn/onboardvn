@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { api } from '../../api/client';
 import { Segmented } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { CafePicker, type CafeOption } from './cafe-picker';
 import { DateField } from './date-field';
 import { buildCreatePayload, buildUpdatePayload } from './form-payload';
@@ -31,6 +31,8 @@ import {
   href,
   useAction,
 } from './ui';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 const VISIBILITY_OPTIONS: { value: MeetupVisibility; label: string; hint: string }[] = [
   {
@@ -71,6 +73,7 @@ function Check({
   label: string;
   onPress: () => void;
 }) {
+  useAppPreferences();
   return (
     <Pressable
       accessibilityRole="checkbox"
@@ -101,6 +104,7 @@ export function EventForm({
   initialClubId?: string;
   prefillGame?: { id: string; name: string };
 }) {
+  useAppPreferences();
   const router = useRouter();
   const [title, setTitle] = useState(initial?.title ?? '');
   const [description, setDescription] = useState(initial?.description ?? '');
@@ -219,34 +223,39 @@ export function EventForm({
   if (created) {
     return (
       <View style={{ gap: space.lg }}>
-        <Body bold>Đã tạo Kèo &quot;{created.title}&quot;.</Body>
+        <Body bold>{t('Đã tạo Kèo "{title}"', { title: created.title })}.</Body>
         <InviteShare inviteUrl={created.inviteUrl} title={created.title} />
-        <LinkBtn label="Xem Kèo" to={`/events/${created.slug}`} />
+        <LinkBtn label={t('Xem Kèo')} to={`/events/${created.slug}`} />
       </View>
     );
   }
 
   return (
     <View style={{ gap: space.lg }}>
-      <TextField label="Tiêu đề" maxLength={140} value={title} onChangeText={setTitle} />
+      <TextField label={t('Tiêu đề')} maxLength={140} value={title} onChangeText={setTitle} />
       <TextField
-        label="Mô tả (tùy chọn)"
+        label={t('Mô tả (tùy chọn)')}
         multiline
         maxLength={2000}
         value={description}
         onChangeText={setDescription}
       />
 
-      <DateField label="Bắt đầu" kind="datetime-local" value={startsAt} onChange={setStartsAt} />
       <DateField
-        label="Kết thúc (tùy chọn)"
+        label={t('Bắt đầu')}
+        kind="datetime-local"
+        value={startsAt}
+        onChange={setStartsAt}
+      />
+      <DateField
+        label={t('Kết thúc (tùy chọn)')}
         kind="datetime-local"
         value={endsAt}
         onChange={setEndsAt}
       />
 
       <Box>
-        <SectionTitle>Địa điểm</SectionTitle>
+        <SectionTitle>{t('Địa điểm')}</SectionTitle>
         <Segmented
           value={placeMode}
           onChange={setPlaceMode}
@@ -259,7 +268,7 @@ export function EventForm({
           cafe ? (
             <Row style={{ justifyContent: 'space-between' }}>
               <Body>{cafe.name}</Body>
-              <Btn small variant="outline" label="Đổi quán" onPress={() => setCafe(null)} />
+              <Btn small variant="outline" label={t('Đổi quán')} onPress={() => setCafe(null)} />
             </Row>
           ) : (
             <CafePicker provinces={provinces} onPick={setCafe} />
@@ -267,21 +276,21 @@ export function EventForm({
         ) : (
           <View style={{ gap: space.sm }}>
             <TextField
-              label="Địa chỉ"
-              placeholder="Địa chỉ"
+              label={t('Địa chỉ')}
+              placeholder={t('Địa chỉ')}
               maxLength={300}
               value={addressLine}
               onChangeText={setAddressLine}
             />
             <Select
-              label="Tỉnh/thành"
-              placeholder="Chọn tỉnh/thành"
+              label={t('Tỉnh/thành')}
+              placeholder={t('Chọn tỉnh/thành')}
               value={provinceCode}
               options={provinces.map((p) => ({ value: p.code, label: p.name }))}
               onChange={setProvinceCode}
             />
             <TextField
-              label="Mã phường/xã (tùy chọn)"
+              label={t('Mã phường/xã (tùy chọn)')}
               value={wardCode}
               onChangeText={setWardCode}
               autoCapitalize="none"
@@ -291,13 +300,13 @@ export function EventForm({
       </Box>
 
       <TextField
-        label="Sức chứa (tùy chọn, tổng người đi)"
+        label={t('Sức chứa (tùy chọn, tổng người đi)')}
         keyboardType="number-pad"
         value={capacity}
         onChangeText={setCapacity}
       />
 
-      <Field label="Chế độ hiển thị">
+      <Field label={t('Chế độ hiển thị')}>
         <View style={{ gap: space.sm }}>
           {visibilityOptions.map((opt) => (
             <Pressable
@@ -316,8 +325,8 @@ export function EventForm({
           ))}
           {mode === 'create' && visibility === 'club' ? (
             <Select
-              label="Club"
-              placeholder="Chọn club"
+              label={t('Club')}
+              placeholder={t('Chọn club')}
               value={clubId}
               options={clubs.map((c) => ({ value: c.id, label: c.name }))}
               onChange={setClubId}
@@ -330,7 +339,7 @@ export function EventForm({
         <Box>
           <Check
             checked={wantsTable}
-            label="Tạo bàn đầu tiên (bạn sẽ là host)"
+            label={t('Tạo bàn đầu tiên (bạn sẽ là host)')}
             onPress={() => setWantsTable((v) => !v)}
           />
           {wantsTable ? (
@@ -340,7 +349,7 @@ export function EventForm({
                 <Btn
                   small
                   variant="outline"
-                  label="Chọn từ tủ game"
+                  label={t('Chọn từ tủ game')}
                   onPress={() => setPickingGame((v) => !v)}
                 />
               </Row>
@@ -356,7 +365,7 @@ export function EventForm({
               ) : null}
               <TextField
                 keyboardType="number-pad"
-                placeholder="Số ghế (tính cả host, tùy chọn)"
+                placeholder={t('Số ghế (tính cả host, tùy chọn)')}
                 value={tableSeats}
                 onChangeText={setTableSeats}
               />
@@ -368,16 +377,18 @@ export function EventForm({
       <FormError message={error} />
       <Btn
         disabled={pending}
-        label={mode === 'create' ? 'Tạo kèo' : 'Lưu thay đổi'}
+        label={mode === 'create' ? t('Tạo kèo') : t('Lưu thay đổi')}
         onPress={() => void onSubmit()}
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  check: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
-  checkBox: { fontSize: 18, color: colors.primary },
-  checkLabel: { fontSize: 14, fontWeight: '600', color: colors.text },
-  radio: { flexDirection: 'row', alignItems: 'flex-start', gap: space.sm },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    check: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+    checkBox: { fontSize: 18, color: colors.primary },
+    checkLabel: { fontSize: 14, fontWeight: '600', color: colors.text },
+    radio: { flexDirection: 'row', alignItems: 'flex-start', gap: space.sm },
+  }),
+);

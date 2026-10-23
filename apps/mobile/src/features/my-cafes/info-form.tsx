@@ -1,3 +1,5 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type {
   CafeAmenities,
   CafeFeeModel,
@@ -10,7 +12,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { api } from '../../api/client';
 import { Button, Card, Heading } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { FEE_MODEL_LABELS, VENUE_TYPE_LABELS } from '../cafes/labels';
 import { errorMessage } from '../errors';
 import { AmenitiesFields } from './amenities-fields';
@@ -19,18 +21,21 @@ import { HoursEditor } from './hours-editor';
 import { normalizeHours, validateHours } from './hours';
 import { PinEditor } from './pin-editor';
 
-const VENUE_OPTIONS = (Object.keys(VENUE_TYPE_LABELS) as VenueType[]).map((value) => ({
-  value,
-  label: VENUE_TYPE_LABELS[value],
-}));
-const FEE_OPTIONS = (Object.keys(FEE_MODEL_LABELS) as CafeFeeModel[]).map((value) => ({
-  value,
-  label: FEE_MODEL_LABELS[value],
-}));
+const venueOptions = () =>
+  (Object.keys(VENUE_TYPE_LABELS) as VenueType[]).map((value) => ({
+    value,
+    label: VENUE_TYPE_LABELS[value],
+  }));
+const feeOptions = () =>
+  (Object.keys(FEE_MODEL_LABELS) as CafeFeeModel[]).map((value) => ({
+    value,
+    label: FEE_MODEL_LABELS[value],
+  }));
 
 const orUndefined = (s: string) => s.trim() || undefined;
 
 export function OwnerCafeForm({ cafe, onSaved }: { cafe: CafeOwnerDto; onSaved: () => void }) {
+  useAppPreferences();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -93,7 +98,7 @@ export function OwnerCafeForm({ cafe, onSaved }: { cafe: CafeOwnerDto; onSaved: 
       setSaved(true);
       onSaved();
     } catch (e) {
-      setError(errorMessage(e, 'Có lỗi xảy ra, thử lại sau'));
+      setError(errorMessage(e, t('Có lỗi xảy ra, thử lại sau')));
     } finally {
       setPending(false);
     }
@@ -101,29 +106,29 @@ export function OwnerCafeForm({ cafe, onSaved }: { cafe: CafeOwnerDto; onSaved: 
 
   return (
     <Card>
-      <Heading>Thông tin địa điểm</Heading>
+      <Heading>{t('Thông tin địa điểm')}</Heading>
 
       <Field
-        label="Tên địa điểm *"
+        label={t('Tên địa điểm *')}
         value={name}
         onChangeText={setName}
         autoCapitalize="sentences"
       />
       <Field
-        label="Địa chỉ *"
+        label={t('Địa chỉ *')}
         value={addressLine}
         onChangeText={setAddressLine}
         autoCapitalize="sentences"
       />
       <Field
-        label="Địa bàn cũ (vd: Quận 3 cũ)"
+        label={t('Địa bàn cũ (vd: Quận 3 cũ)')}
         value={legacyDistrict}
         onChangeText={setLegacyDistrict}
         autoCapitalize="sentences"
       />
       <ChoiceRow
-        label="Loại địa điểm"
-        options={VENUE_OPTIONS}
+        label={t('Loại địa điểm')}
+        options={venueOptions().map((option) => ({ ...option, label: t(option.label) }))}
         value={venueType}
         onChange={setVenueType}
       />
@@ -140,36 +145,36 @@ export function OwnerCafeForm({ cafe, onSaved }: { cafe: CafeOwnerDto; onSaved: 
       </View>
 
       <View style={formStyles.split}>
-        <Text style={styles.sub}>Mạng xã hội &amp; liên hệ</Text>
+        <Text style={styles.sub}>{t('Mạng xã hội & liên hệ')}</Text>
         <Field label="Fanpage" value={fanpage} onChangeText={setFanpage} keyboardType="url" />
         <Field label="Instagram" value={instagram} onChangeText={setInstagram} keyboardType="url" />
         <Field label="TikTok" value={tiktok} onChangeText={setTiktok} keyboardType="url" />
         <Field
-          label="Số điện thoại"
+          label={t('Số điện thoại')}
           value={phone}
           onChangeText={setPhone}
           keyboardType="phone-pad"
         />
-        <Field label="Zalo (SĐT hoặc link)" value={zalo} onChangeText={setZalo} />
+        <Field label={t('Zalo (SĐT hoặc link)')} value={zalo} onChangeText={setZalo} />
         <Field label="Website" value={website} onChangeText={setWebsite} keyboardType="url" />
-        <Field label="Link chỉ đường" value={maps} onChangeText={setMaps} keyboardType="url" />
+        <Field label={t('Link chỉ đường')} value={maps} onChangeText={setMaps} keyboardType="url" />
       </View>
 
       <View style={formStyles.split}>
-        <Text style={styles.sub}>Tiêu chí</Text>
+        <Text style={styles.sub}>{t('Tiêu chí')}</Text>
         <AmenitiesFields value={amenities} onChange={setAmenities} />
       </View>
 
       <View style={formStyles.split}>
-        <Text style={styles.sub}>Cách tính phí</Text>
+        <Text style={styles.sub}>{t('Cách tính phí')}</Text>
         <ChoiceRow
-          label="Hình thức"
-          options={FEE_OPTIONS}
+          label={t('Hình thức')}
+          options={feeOptions().map((option) => ({ ...option, label: t(option.label) }))}
           value={feeModel}
           onChange={setFeeModel}
         />
         <Field
-          label="Ghi chú giá"
+          label={t('Ghi chú giá')}
           value={feeNote}
           onChangeText={setFeeNote}
           maxLength={120}
@@ -178,18 +183,20 @@ export function OwnerCafeForm({ cafe, onSaved }: { cafe: CafeOwnerDto; onSaved: 
       </View>
 
       <View style={formStyles.split}>
-        <Text style={styles.sub}>Giờ mở cửa</Text>
+        <Text style={styles.sub}>{t('Giờ mở cửa')}</Text>
         <HoursEditor value={hours} onChange={setHours} />
       </View>
 
       <FormError message={error} />
-      {saved ? <Text style={styles.saved}>Đã lưu.</Text> : null}
-      <Button label="Lưu thay đổi" disabled={pending} onPress={() => void onSubmit()} />
+      {saved ? <Text style={styles.saved}>{t('Đã lưu.')}</Text> : null}
+      <Button label={t('Lưu thay đổi')} disabled={pending} onPress={() => void onSubmit()} />
     </Card>
   );
 }
 
-const styles = StyleSheet.create({
-  sub: { fontSize: 14, fontWeight: '600', color: colors.text, marginBottom: space.xs },
-  saved: { color: colors.muted, fontSize: 14 },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    sub: { fontSize: 14, fontWeight: '600', color: colors.text, marginBottom: space.xs },
+    saved: { color: colors.muted, fontSize: 14 },
+  }),
+);

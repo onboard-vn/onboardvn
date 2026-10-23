@@ -1,7 +1,9 @@
+import { useAppPreferences } from '../../ui/preferences';
 import { createElement } from 'react';
 import type { FilePickProps } from './file-pick';
 
 export function FilePick({ accept, label, disabled, onFile }: FilePickProps) {
+  useAppPreferences();
   return createElement('input', {
     type: 'file',
     accept,

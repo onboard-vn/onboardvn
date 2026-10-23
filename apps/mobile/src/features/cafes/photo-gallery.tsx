@@ -2,14 +2,17 @@ import type { CafePhotoDto } from '@onboard/shared';
 import { useState } from 'react';
 import { Image, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Hint } from '../../ui/primitives';
-import { colors, radius, space } from '../../ui/theme';
+import { themeStyles, colors, radius, space } from '../../ui/theme';
 import { mediaUrl } from '../media';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 export function PhotoGallery({ photos }: { photos: CafePhotoDto[] }) {
+  useAppPreferences();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const active = openIndex != null ? photos[openIndex] : null;
 
-  if (photos.length === 0) return <Hint>Chưa có ảnh nào.</Hint>;
+  if (photos.length === 0) return <Hint>{t('Chưa có ảnh nào.')}</Hint>;
 
   return (
     <View>
@@ -55,7 +58,7 @@ export function PhotoGallery({ photos }: { photos: CafePhotoDto[] }) {
             onPress={() => setOpenIndex(null)}
             style={styles.close}
           >
-            <Text style={styles.closeText}>Đóng</Text>
+            <Text style={styles.closeText}>{t('Đóng')}</Text>
           </Pressable>
         </Pressable>
       </Modal>
@@ -63,35 +66,37 @@ export function PhotoGallery({ photos }: { photos: CafePhotoDto[] }) {
   );
 }
 
-const styles = StyleSheet.create({
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
-  cell: {
-    flexGrow: 1,
-    flexBasis: 150,
-    maxWidth: 240,
-    aspectRatio: 1,
-    borderRadius: radius,
-    overflow: 'hidden',
-    backgroundColor: colors.border,
-  },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.85)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: space.lg,
-    gap: space.md,
-  },
-  full: { width: '100%', maxWidth: 960, height: '75%' },
-  caption: { color: '#fff', fontSize: 14 },
-  close: {
-    position: 'absolute',
-    top: space.xl,
-    right: space.lg,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    paddingHorizontal: space.md,
-    paddingVertical: space.sm,
-    borderRadius: 8,
-  },
-  closeText: { color: '#fff', fontWeight: '600' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    grid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+    cell: {
+      flexGrow: 1,
+      flexBasis: 150,
+      maxWidth: 240,
+      aspectRatio: 1,
+      borderRadius: radius,
+      overflow: 'hidden',
+      backgroundColor: colors.border,
+    },
+    overlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.85)',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: space.lg,
+      gap: space.md,
+    },
+    full: { width: '100%', maxWidth: 960, height: '75%' },
+    caption: { color: '#fff', fontSize: 14 },
+    close: {
+      position: 'absolute',
+      top: space.xl,
+      right: space.lg,
+      backgroundColor: 'rgba(255,255,255,0.15)',
+      paddingHorizontal: space.md,
+      paddingVertical: space.sm,
+      borderRadius: 8,
+    },
+    closeText: { color: '#fff', fontWeight: '600' },
+  }),
+);

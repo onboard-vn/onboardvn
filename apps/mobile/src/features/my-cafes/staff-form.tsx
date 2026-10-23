@@ -1,11 +1,14 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { api } from '../../api/client';
 import { Button, Card, Heading } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { Field, FormError } from './form-bits';
 
 export function StaffForm({ cafeId }: { cafeId: string }) {
+  useAppPreferences();
   const [username, setUsername] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +28,7 @@ export function StaffForm({ cafeId }: { cafeId: string }) {
       setDone(true);
       setUsername('');
     } catch {
-      setError('Không tìm thấy người dùng hoặc có lỗi xảy ra');
+      setError(t('Không tìm thấy người dùng hoặc có lỗi xảy ra'));
     } finally {
       setPending(false);
     }
@@ -33,27 +36,33 @@ export function StaffForm({ cafeId }: { cafeId: string }) {
 
   return (
     <Card>
-      <Heading>Thêm nhân viên</Heading>
+      <Heading>{t('Thêm nhân viên')}</Heading>
       <View style={styles.row}>
         <View style={styles.grow}>
           <Field
-            label="Tên đăng nhập"
+            label={t('Tên đăng nhập')}
             value={username}
             onChangeText={setUsername}
             onSubmitEditing={() => void submit()}
-            placeholder="Tên đăng nhập"
+            placeholder={t('Tên đăng nhập')}
           />
         </View>
-        <Button label="Thêm" disabled={pending || !username.trim()} onPress={() => void submit()} />
+        <Button
+          label={t('Thêm')}
+          disabled={pending || !username.trim()}
+          onPress={() => void submit()}
+        />
       </View>
-      {done ? <Text style={styles.done}>Đã thêm nhân viên.</Text> : null}
+      {done ? <Text style={styles.done}>{t('Đã thêm nhân viên.')}</Text> : null}
       <FormError message={error} />
     </Card>
   );
 }
 
-const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'flex-end', gap: space.sm },
-  grow: { flex: 1 },
-  done: { color: colors.text, fontSize: 14 },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    row: { flexDirection: 'row', alignItems: 'flex-end', gap: space.sm },
+    grow: { flex: 1 },
+    done: { color: colors.text, fontSize: 14 },
+  }),
+);

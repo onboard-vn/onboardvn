@@ -5,6 +5,8 @@ import { api } from '../../api/client';
 import { Button } from '../../ui/primitives';
 import { space } from '../../ui/theme';
 import { FormError } from '../auth/auth-ui';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 type FriendState = 'loading' | 'none' | 'outgoing' | 'incoming' | 'friends';
 
@@ -31,6 +33,7 @@ async function loadRelation(username: string): Promise<Relation> {
 }
 
 export function FriendButton({ username }: { username: string }) {
+  useAppPreferences();
   const [relation, setRelation] = useState<Relation>({ state: 'loading', fromUserId: null });
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -78,14 +81,15 @@ export function FriendButton({ username }: { username: string }) {
 
   const { state } = relation;
   if (state === 'loading') return null;
-  if (state === 'friends') return <Button tone="ghost" label="Bạn bè" disabled onPress={noop} />;
+  if (state === 'friends')
+    return <Button tone="ghost" label={t('Bạn bè')} disabled onPress={noop} />;
   if (state === 'outgoing') {
-    return <Button tone="ghost" label="Đã gửi lời mời" disabled onPress={noop} />;
+    return <Button tone="ghost" label={t('Đã gửi lời mời')} disabled onPress={noop} />;
   }
   return (
     <View style={styles.wrap}>
       <Button
-        label={state === 'incoming' ? 'Chấp nhận lời mời' : 'Kết bạn'}
+        label={state === 'incoming' ? t('Chấp nhận lời mời') : t('Kết bạn')}
         disabled={pending || (state === 'incoming' && !relation.fromUserId)}
         onPress={() => void (state === 'incoming' ? accept() : send())}
       />

@@ -1,3 +1,5 @@
+import { containsVietnameseText, translateKnown } from '../../ui/i18n';
+
 const MESSAGES: Record<string, string> = {
   INVALID_EMAIL_OR_PASSWORD: 'Sai email hoặc mật khẩu',
   INVALID_USERNAME_OR_PASSWORD: 'Sai tên đăng nhập hoặc mật khẩu',
@@ -30,5 +32,9 @@ const isApiLike = (e: unknown): e is ApiLike =>
 export function authErrorMessage(error: unknown): string {
   if (!isApiLike(error)) return 'Không kết nối được máy chủ';
   if (error.status === 429) return 'Thử quá nhiều lần, vui lòng đợi một phút';
-  return (error.code && MESSAGES[error.code]) || error.message || 'Có lỗi xảy ra, thử lại sau';
+  const knownMessage = error.code ? MESSAGES[error.code] : undefined;
+  if (knownMessage) return knownMessage;
+  const translated = translateKnown(error.message);
+  if (translated !== error.message || !containsVietnameseText(error.message)) return translated;
+  return 'Có lỗi xảy ra, thử lại sau';
 }

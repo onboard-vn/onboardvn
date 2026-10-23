@@ -1,10 +1,12 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { GameSummaryDto } from '@onboard/shared';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { api } from '../../api/client';
 import { Button } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { displayName, type ResolvedGame } from './game-name';
 import { Field, SmallButton } from './ui';
 
@@ -17,6 +19,7 @@ export function GamePicker({
   onPick: (game: ResolvedGame) => void;
   initialQuery?: string;
 }) {
+  useAppPreferences();
   const router = useRouter();
   const [q, setQ] = useState(initialQuery ?? '');
   const [results, setResults] = useState<Result[]>([]);
@@ -42,15 +45,15 @@ export function GamePicker({
     <View style={{ gap: space.sm }}>
       <View style={styles.row}>
         <View style={{ flex: 1 }}>
-          <Field value={q} onChangeText={setQ} placeholder="Tìm game trong danh mục..." />
+          <Field value={q} onChangeText={setQ} placeholder={t('Tìm game trong danh mục...')} />
         </View>
-        <Button label="Tìm" onPress={() => void onSearch()} />
+        <Button label={t('Tìm')} onPress={() => void onSearch()} />
       </View>
       {searched && results.length === 0 ? (
         <View style={styles.row}>
-          <Text style={[styles.muted, { flex: 1 }]}>Không tìm thấy.</Text>
+          <Text style={[styles.muted, { flex: 1 }]}>{t('Không tìm thấy.')}</Text>
           <SmallButton
-            label="Tạo game nhanh"
+            label={t('Tạo game nhanh')}
             onPress={() =>
               router.push({ pathname: '/admin/games/new', params: { nameEn: initialQuery ?? '' } })
             }
@@ -62,7 +65,7 @@ export function GamePicker({
           <Text style={[styles.text, { flex: 1 }]}>{displayName(g)}</Text>
           <SmallButton
             tone="solid"
-            label="Chọn"
+            label={t('Chọn')}
             onPress={() => onPick({ id: g.id, name: displayName(g) })}
           />
         </View>
@@ -71,8 +74,10 @@ export function GamePicker({
   );
 }
 
-const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
-  text: { fontSize: 14, color: colors.text },
-  muted: { fontSize: 14, color: colors.muted },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    row: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+    text: { fontSize: 14, color: colors.text },
+    muted: { fontSize: 14, color: colors.muted },
+  }),
+);

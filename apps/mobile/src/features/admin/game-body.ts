@@ -1,3 +1,4 @@
+import { t } from '../../ui/i18n';
 import type { CategoryDto, GameDetailDto, GameCreateInput } from '@onboard/shared';
 
 export type DescriptionSource = 'original' | 'translated_with_permission' | 'translated_from_bgg';
@@ -51,12 +52,12 @@ export const gameValuesFrom = (
 });
 
 export function validateGame(v: GameFormValues): string | null {
-  if (!v.nameEn.trim()) return 'Nhập tên tiếng Anh';
+  if (!v.nameEn.trim()) return t('Nhập tên tiếng Anh');
   if (v.source === 'translated_with_permission') {
-    if (!v.rightsHolder.trim()) return 'Nhập đơn vị cấp phép';
-    if (!v.permissionRef.trim()) return 'Nhập tham chiếu giấy phép';
+    if (!v.rightsHolder.trim()) return t('Nhập đơn vị cấp phép');
+    if (!v.permissionRef.trim()) return t('Nhập tham chiếu giấy phép');
   } else if (v.source !== 'translated_from_bgg' && !v.acceptLicense) {
-    return 'Cần xác nhận tự viết nội dung và đồng ý cấp phép CC BY-SA 4.0';
+    return t('Cần xác nhận tự viết nội dung và đồng ý cấp phép CC BY-SA 4.0');
   }
   return null;
 }

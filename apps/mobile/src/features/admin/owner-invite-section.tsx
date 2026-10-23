@@ -1,19 +1,21 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { CafeOwnerInviteDto, CafeOwnerInviteListResponse } from '@onboard/shared';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { api } from '../../api/client';
 import { Button } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { errorMessage } from '../errors';
 import { copyText } from './clipboard';
 import { formatLocalDate } from './format';
 import { ErrorText, Section, SmallButton } from './ui';
 
 function inviteStatus(invite: CafeOwnerInviteDto): string {
-  if (invite.usedAt) return 'Đã dùng';
-  if (invite.revokedAt) return 'Đã thu hồi';
-  if (new Date(invite.expiresAt) < new Date()) return 'Hết hạn';
-  return 'Còn hiệu lực';
+  if (invite.usedAt) return t('Đã dùng');
+  if (invite.revokedAt) return t('Đã thu hồi');
+  if (new Date(invite.expiresAt) < new Date()) return t('Hết hạn');
+  return t('Còn hiệu lực');
 }
 
 export function OwnerInviteSection({
@@ -23,6 +25,7 @@ export function OwnerInviteSection({
   cafeId: string;
   initialInvites: CafeOwnerInviteDto[];
 }) {
+  useAppPreferences();
   const [invites, setInvites] = useState(initialInvites);
   const [newUrl, setNewUrl] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -46,7 +49,7 @@ export function OwnerInviteSection({
       setNewUrl(url);
       await refresh();
     } catch {
-      setError('Không tạo được link mời, thử lại sau');
+      setError(t('Không tạo được link mời, thử lại sau'));
     } finally {
       setPending(false);
     }
@@ -59,24 +62,24 @@ export function OwnerInviteSection({
       await api(`${base}/${inviteId}`, { method: 'DELETE' });
       await refresh();
     } catch (e) {
-      setError(errorMessage(e, 'Không thu hồi được link mời'));
+      setError(errorMessage(e, t('Không thu hồi được link mời')));
     } finally {
       setPending(false);
     }
   }
 
   return (
-    <Section title="Link mời chủ quán">
-      <Button label="Tạo link mời mới" disabled={pending} onPress={() => void onCreate()} />
+    <Section title={t('Link mời chủ quán')}>
+      <Button label={t('Tạo link mời mới')} disabled={pending} onPress={() => void onCreate()} />
 
       {newUrl ? (
         <View style={styles.created}>
-          <Text style={styles.strong}>Copy link này ngay — chỉ hiện 1 lần:</Text>
+          <Text style={styles.strong}>{t('Copy link này ngay — chỉ hiện 1 lần:')}</Text>
           <Text selectable style={styles.code}>
             {newUrl}
           </Text>
           <View style={{ alignSelf: 'flex-start' }}>
-            <SmallButton label="Copy" onPress={() => void copyText(newUrl)} />
+            <SmallButton label={t('Copy')} onPress={() => void copyText(newUrl)} />
           </View>
         </View>
       ) : null}
@@ -86,32 +89,37 @@ export function OwnerInviteSection({
       {invites.map((invite) => (
         <View key={invite.id} style={styles.row}>
           <Text style={styles.text}>
-            Tạo {formatLocalDate(invite.createdAt)} · {inviteStatus(invite)}
+            {t('Tạo {date} · {status}', {
+              date: formatLocalDate(invite.createdAt),
+              status: inviteStatus(invite),
+            })}
           </Text>
           {!invite.usedAt && !invite.revokedAt ? (
             <SmallButton
-              label="Thu hồi"
+              label={t('Thu hồi')}
               disabled={pending}
               onPress={() => void onRevoke(invite.id)}
             />
           ) : null}
         </View>
       ))}
-      {invites.length === 0 ? <Text style={styles.muted}>Chưa có link mời nào.</Text> : null}
+      {invites.length === 0 ? <Text style={styles.muted}>{t('Chưa có link mời nào.')}</Text> : null}
     </Section>
   );
 }
 
-const styles = StyleSheet.create({
-  created: { gap: 4, backgroundColor: colors.bg, borderRadius: 8, padding: space.sm },
-  strong: { fontSize: 12, fontWeight: '600', color: colors.text },
-  code: { fontSize: 12, color: colors.text, fontFamily: 'monospace' },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space.sm,
-  },
-  text: { fontSize: 13, color: colors.text, flex: 1 },
-  muted: { fontSize: 13, color: colors.muted },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    created: { gap: 4, backgroundColor: colors.bg, borderRadius: 8, padding: space.sm },
+    strong: { fontSize: 12, fontWeight: '600', color: colors.text },
+    code: { fontSize: 12, color: colors.text, fontFamily: 'monospace' },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: space.sm,
+    },
+    text: { fontSize: 13, color: colors.text, flex: 1 },
+    muted: { fontSize: 13, color: colors.muted },
+  }),
+);

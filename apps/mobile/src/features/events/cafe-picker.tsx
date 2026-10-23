@@ -6,6 +6,8 @@ import { space } from '../../ui/theme';
 import { Select } from './select';
 import { useWards } from './use-wards';
 import { Body, Btn, Muted, Row, TextField } from './ui';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 export interface CafeOption {
   id: string;
@@ -24,6 +26,7 @@ export function CafePicker({
   provinces: ProvinceDto[];
   onPick: (cafe: CafeOption) => void;
 }) {
+  useAppPreferences();
   const [provinceCode, setProvinceCode] = useState('');
   const [wardCode, setWardCode] = useState('');
   const wards = useWards(provinceCode);
@@ -70,8 +73,8 @@ export function CafePicker({
   return (
     <View style={{ gap: space.sm }}>
       <Select
-        label="Tỉnh/thành"
-        placeholder="Chọn tỉnh/thành"
+        label={t('Tỉnh/thành')}
+        placeholder={t('Chọn tỉnh/thành')}
         value={provinceCode}
         options={provinces.map((p) => ({ value: p.code, label: p.name }))}
         onChange={(code) => {
@@ -80,18 +83,18 @@ export function CafePicker({
         }}
       />
       <Select
-        label="Phường/xã"
-        placeholder="Tất cả"
+        label={t('Phường/xã')}
+        placeholder={t('Tất cả')}
         value={wardCode}
         disabled={!provinceCode}
         options={wards.map((w) => ({ value: w.code, label: w.name }))}
         onChange={setWardCode}
       />
       {provinceCode ? (
-        <TextField placeholder="Tìm theo tên quán..." value={query} onChangeText={setQuery} />
+        <TextField placeholder={t('Tìm theo tên quán...')} value={query} onChangeText={setQuery} />
       ) : null}
 
-      {loading ? <Muted>Đang tải...</Muted> : null}
+      {loading ? <Muted>{t('Đang tải...')}</Muted> : null}
       {error ? <Body>{error}</Body> : null}
 
       {results.length > 0 ? (
@@ -103,12 +106,12 @@ export function CafePicker({
                   {cafe.name} · {cafe.wardName}
                 </Body>
               </View>
-              <Btn small label="Chọn" onPress={() => onPick(cafe)} />
+              <Btn small label={t('Chọn')} onPress={() => onPick(cafe)} />
             </Row>
           ))}
         </View>
       ) : provinceCode && !loading && !error ? (
-        <Muted>Không tìm thấy quán phù hợp.</Muted>
+        <Muted>{t('Không tìm thấy quán phù hợp.')}</Muted>
       ) : null}
     </View>
   );

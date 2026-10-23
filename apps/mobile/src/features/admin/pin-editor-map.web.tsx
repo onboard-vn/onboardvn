@@ -1,7 +1,10 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import { Map as MapLibreMap, Marker, NavigationControl, setWorkerUrl } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef, useState } from 'react';
 import { Hint } from '../../ui/primitives';
+import { colors } from '../../ui/theme';
 import type { PinEditorMapProps } from './pin-types';
 
 export const pinMapAvailable = true;
@@ -24,6 +27,7 @@ function webglSupported(): boolean {
 }
 
 export default function PinEditorMap({ lat, lng, onPick, recenterTo }: PinEditorMapProps) {
+  useAppPreferences();
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const markerRef = useRef<Marker | null>(null);
@@ -103,7 +107,7 @@ export default function PinEditorMap({ lat, lng, onPick, recenterTo }: PinEditor
   if (!supported) {
     return (
       <Hint>
-        Trình duyệt không hỗ trợ bản đồ (WebGL) — nhập vĩ độ/kinh độ trực tiếp ở ô bên dưới.
+        {t('Trình duyệt không hỗ trợ bản đồ (WebGL) — nhập vĩ độ/kinh độ trực tiếp ở ô bên dưới.')}
       </Hint>
     );
   }
@@ -116,7 +120,7 @@ export default function PinEditorMap({ lat, lng, onPick, recenterTo }: PinEditor
         height: 256,
         width: '100%',
         borderRadius: 8,
-        border: '1px solid #e2e5ea',
+        border: `1px solid ${colors.border}`,
         overflow: 'hidden',
       }}
     />

@@ -1,5 +1,6 @@
 import type { CafeMapPinDto } from '@onboard/shared';
 import { VENUE_TYPE_LABELS, openStatusLabel } from '../cafes/labels';
+import { t } from '../../ui/i18n';
 
 const ESCAPES: Record<string, string> = {
   '&': '&amp;',
@@ -19,13 +20,13 @@ export function renderCafeMapPopupHtml(pin: CafeMapPinDto): string {
     <div class="cafe-map-popup">
       <p class="cafe-map-popup__title">
         ${escapeHtml(pin.name)}
-        ${pin.verified ? '<span class="cafe-map-popup__badge">Đã xác minh</span>' : ''}
+        ${pin.verified ? `<span class="cafe-map-popup__badge">${escapeHtml(t('Đã xác minh'))}</span>` : ''}
       </p>
-      <p class="cafe-map-popup__meta">${escapeHtml(VENUE_TYPE_LABELS[pin.venueType])}</p>
+      <p class="cafe-map-popup__meta">${escapeHtml(t(VENUE_TYPE_LABELS[pin.venueType]))}</p>
       ${statusText ? `<p class="cafe-map-popup__meta">${escapeHtml(statusText)}</p>` : ''}
       <div class="cafe-map-popup__actions">
-        <a data-cafe-link href="/cafes/${encodeURIComponent(pin.slug)}">Xem trang</a>
-        <a href="${directionsUrl}" target="_blank" rel="noopener noreferrer">Chỉ đường</a>
+        <a data-cafe-link href="/cafes/${encodeURIComponent(pin.slug)}">${escapeHtml(t('Xem trang'))}</a>
+        <a href="${directionsUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(t('Chỉ đường'))}</a>
       </div>
     </div>
   `;

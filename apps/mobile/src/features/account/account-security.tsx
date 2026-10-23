@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { Button, Card, Heading, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { changePassword, listProviders, startSocial } from '../auth/auth-api';
 import { Field, FormError, Note } from '../auth/auth-ui';
 import { useAuthAction } from '../auth/use-auth-action';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 export function AccountSecurity() {
+  useAppPreferences();
   const [providers, setProviders] = useState<string[] | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [changed, setChanged] = useState(false);
@@ -54,48 +57,51 @@ export function AccountSecurity() {
 
   return (
     <Card>
-      <Heading>Bảo mật</Heading>
-      <Hint>Mật khẩu và tài khoản liên kết.</Hint>
+      <Heading>{t('Bảo mật')}</Heading>
+      <Hint>{t('Mật khẩu và tài khoản liên kết.')}</Hint>
       {hasPassword ? (
         <View style={styles.form}>
           <Field
-            label="Mật khẩu hiện tại"
+            label={t('Mật khẩu hiện tại')}
             value={current}
             onChangeText={setCurrent}
             secureTextEntry
             autoComplete="current-password"
           />
           <Field
-            label="Mật khẩu mới"
+            label={t('Mật khẩu mới')}
             value={next}
             onChangeText={setNext}
             secureTextEntry
             autoComplete="new-password"
           />
           <Field
-            label="Nhập lại mật khẩu mới"
+            label={t('Nhập lại mật khẩu mới')}
             value={confirm}
             onChangeText={setConfirm}
             secureTextEntry
             autoComplete="new-password"
             onSubmitEditing={() => void onChange()}
           />
-          <Button label="Đổi mật khẩu" disabled={pending} onPress={() => void onChange()} />
-          {changed ? <Note>Đã đổi mật khẩu, các thiết bị khác đã bị đăng xuất.</Note> : null}
+          <Button label={t('Đổi mật khẩu')} disabled={pending} onPress={() => void onChange()} />
+          {changed ? <Note>{t('Đã đổi mật khẩu, các thiết bị khác đã bị đăng xuất.')}</Note> : null}
         </View>
       ) : (
         <Note>
-          Tài khoản chưa có mật khẩu (đăng nhập bằng Google hoặc mã email). Dùng &quot;Quên mật
-          khẩu&quot; ở trang đăng nhập để tạo mật khẩu.
+          {t(
+            'Tài khoản chưa có mật khẩu (đăng nhập bằng Google hoặc mã email). Dùng "Quên mật\n          khẩu" ở trang đăng nhập để tạo mật khẩu.',
+          )}
         </Note>
       )}
 
       <View style={styles.google}>
-        <Text style={styles.googleText}>Google: {hasGoogle ? 'đã liên kết' : 'chưa liên kết'}</Text>
+        <Text style={styles.googleText}>
+          Google: {hasGoogle ? t('đã liên kết') : t('chưa liên kết')}
+        </Text>
         {hasGoogle || Platform.OS !== 'web' ? null : (
           <Button
             tone="ghost"
-            label="Liên kết Google"
+            label={t('Liên kết Google')}
             disabled={pending}
             onPress={() =>
               void run(() => startSocial('link-social', `${window.location.origin}/account`))
@@ -108,16 +114,18 @@ export function AccountSecurity() {
   );
 }
 
-const styles = StyleSheet.create({
-  form: { gap: space.sm },
-  google: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space.md,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    paddingTop: space.md,
-  },
-  googleText: { fontSize: 14, color: colors.text },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    form: { gap: space.sm },
+    google: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: space.md,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      paddingTop: space.md,
+    },
+    googleText: { fontSize: 14, color: colors.text },
+  }),
+);

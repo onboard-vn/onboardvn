@@ -2,13 +2,16 @@ import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../ui/primitives';
-import { colors, radius, space } from '../../ui/theme';
+import { themeStyles, colors, radius, space } from '../../ui/theme';
 import { FormError } from '../auth/auth-ui';
 import { inviteUrl, useFriendCode } from './use-friend-code';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 const SIZE = 220;
 
 export function FriendQr() {
+  useAppPreferences();
   const { code, pending, error, setError, rotate } = useFriendCode();
   const [dataUrl, setDataUrl] = useState<string | null>(null);
 
@@ -31,10 +34,10 @@ export function FriendQr() {
           <Image
             source={{ uri: dataUrl }}
             style={styles.qr}
-            accessibilityLabel="Mã QR mời kết bạn"
+            accessibilityLabel={t('Mã QR mời kết bạn')}
           />
         ) : (
-          <Text style={styles.url}>Đang tải…</Text>
+          <Text style={styles.url}>{t('Đang tải…')}</Text>
         )}
       </View>
       {code ? (
@@ -42,24 +45,31 @@ export function FriendQr() {
           {inviteUrl(code)}
         </Text>
       ) : null}
-      <Button tone="ghost" label="Đổi mã mời" disabled={pending} onPress={() => void rotate()} />
+      <Button
+        tone="ghost"
+        label={t('Đổi mã mời')}
+        disabled={pending}
+        onPress={() => void rotate()}
+      />
       <FormError message={error} />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  wrap: { alignItems: 'center', gap: space.md },
-  box: {
-    width: SIZE + 24,
-    height: SIZE + 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  qr: { width: SIZE, height: SIZE },
-  url: { fontSize: 13, color: colors.muted, textAlign: 'center' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    wrap: { alignItems: 'center', gap: space.md },
+    box: {
+      width: SIZE + 24,
+      height: SIZE + 24,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#fff',
+      borderRadius: radius,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    qr: { width: SIZE, height: SIZE },
+    url: { fontSize: 13, color: colors.muted, textAlign: 'center' },
+  }),
+);
