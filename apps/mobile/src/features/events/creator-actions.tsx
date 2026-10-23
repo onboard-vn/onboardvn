@@ -4,6 +4,8 @@ import { api } from '../../api/client';
 import { InviteFriendsPicker } from './invite-friends-picker';
 import { InviteShare } from './invite-share';
 import { Box, Btn, FormError, LinkBtn, Row, SectionTitle, confirmAsync, useAction } from './ui';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 export function CreatorActions({
   meetupId,
@@ -16,6 +18,7 @@ export function CreatorActions({
   title: string;
   onChanged: () => void;
 }) {
+  useAppPreferences();
   const [inviting, setInviting] = useState(false);
   const [rotated, setRotated] = useState<string | null>(null);
   const { pending, error, run } = useAction();
@@ -41,28 +44,28 @@ export function CreatorActions({
 
   return (
     <Box>
-      <SectionTitle>Quản lý Kèo</SectionTitle>
+      <SectionTitle>{t('Quản lý Kèo')}</SectionTitle>
       <Row>
-        <LinkBtn small variant="outline" label="Sửa Kèo" to={`/events/${slug}/edit`} />
+        <LinkBtn small variant="outline" label={t('Sửa Kèo')} to={`/events/${slug}/edit`} />
         <Btn
           small
           variant="outline"
           disabled={pending}
-          label="Mời bạn bè"
+          label={t('Mời bạn bè')}
           onPress={() => setInviting((v) => !v)}
         />
         <Btn
           small
           variant="outline"
           disabled={pending}
-          label="Tạo lại link mời"
+          label={t('Tạo lại link mời')}
           onPress={() => void rotate()}
         />
         <Btn
           small
           variant="danger"
           disabled={pending}
-          label="Hủy Kèo"
+          label={t('Hủy Kèo')}
           onPress={() => void cancelMeetup()}
         />
       </Row>

@@ -1,7 +1,9 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import { CAFE_DAY_KEYS, type CafeHourRange, type CafeOpeningHours } from '@onboard/shared';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button, Hint } from '../../ui/primitives';
-import { colors, radius, space } from '../../ui/theme';
+import { themeStyles, colors, radius, space } from '../../ui/theme';
 import { DAY_LABELS } from '../cafes/labels';
 import { inputStyle } from '../search-input';
 import { Field } from './form-bits';
@@ -17,6 +19,7 @@ export function HoursEditor({
   value: CafeOpeningHours;
   onChange: (next: CafeOpeningHours) => void;
 }) {
+  useAppPreferences();
   const hours = value ?? {};
 
   const setRanges = (day: Day, ranges: CafeHourRange[]) => onChange({ ...hours, [day]: ranges });
@@ -41,14 +44,14 @@ export function HoursEditor({
         return (
           <View key={day} style={styles.day}>
             <View style={styles.dayHead}>
-              <Text style={styles.dayName}>{DAY_LABELS[day]}</Text>
+              <Text style={styles.dayName}>{t(DAY_LABELS[day])}</Text>
               <View style={styles.dayActions}>
                 <Text
                   accessibilityRole="button"
                   style={styles.action}
                   onPress={() => setRanges(day, [...ranges, DEFAULT_RANGE])}
                 >
-                  + Thêm khung giờ
+                  {t('+ Thêm khung giờ')}
                 </Text>
                 {ranges.length > 0 ? (
                   <Text
@@ -56,13 +59,13 @@ export function HoursEditor({
                     style={styles.action}
                     onPress={() => copyToAllDays(day)}
                   >
-                    Áp dụng cho mọi ngày
+                    {t('Áp dụng cho mọi ngày')}
                   </Text>
                 ) : null}
               </View>
             </View>
             {ranges.length === 0 ? (
-              <Hint>{hours[day] === undefined ? 'Chưa có giờ mở cửa' : 'Đóng cửa'}</Hint>
+              <Hint>{hours[day] === undefined ? t('Chưa có giờ mở cửa') : t('Đóng cửa')}</Hint>
             ) : (
               ranges.map((range, index) => (
                 <View key={index} style={styles.range}>
@@ -72,21 +75,21 @@ export function HoursEditor({
                     onChangeText={(t) => updateRange(day, index, 'open', t)}
                     placeholder="08:00"
                     placeholderTextColor={colors.muted}
-                    accessibilityLabel={`Giờ mở cửa ${DAY_LABELS[day]}`}
+                    accessibilityLabel={t('Giờ mở cửa {day}', { day: t(DAY_LABELS[day]) })}
                     maxLength={5}
                   />
-                  <Text style={styles.to}>đến</Text>
+                  <Text style={styles.to}>{t('đến')}</Text>
                   <TextInput
                     style={[inputStyle, styles.time]}
                     value={range.close}
                     onChangeText={(t) => updateRange(day, index, 'close', t)}
                     placeholder="22:00"
                     placeholderTextColor={colors.muted}
-                    accessibilityLabel={`Giờ đóng cửa ${DAY_LABELS[day]}`}
+                    accessibilityLabel={t('Giờ đóng cửa {day}', { day: t(DAY_LABELS[day]) })}
                     maxLength={5}
                   />
                   <Button
-                    label="×"
+                    label={t('×')}
                     tone="ghost"
                     onPress={() =>
                       setRanges(
@@ -102,35 +105,37 @@ export function HoursEditor({
         );
       })}
       <Field
-        label="Ghi chú giờ mở cửa"
+        label={t('Ghi chú giờ mở cửa')}
         value={hours.note ?? ''}
         onChangeText={(t) => onChange({ ...hours, note: t || undefined })}
-        placeholder="Vd: nghỉ lễ Tết, gọi trước khi tới…"
+        placeholder={t('Vd: nghỉ lễ Tết, gọi trước khi tới…')}
         autoCapitalize="sentences"
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  stack: { gap: space.md },
-  day: {
-    gap: 6,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius,
-    padding: space.md,
-  },
-  dayHead: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    gap: space.sm,
-  },
-  dayName: { fontWeight: '600', color: colors.text },
-  dayActions: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
-  action: { color: colors.primary, fontSize: 13 },
-  range: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
-  time: { width: 96, textAlign: 'center' },
-  to: { color: colors.muted, fontSize: 13 },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    stack: { gap: space.md },
+    day: {
+      gap: 6,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radius,
+      padding: space.md,
+    },
+    dayHead: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      gap: space.sm,
+    },
+    dayName: { fontWeight: '600', color: colors.text },
+    dayActions: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
+    action: { color: colors.primary, fontSize: 13 },
+    range: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+    time: { width: 96, textAlign: 'center' },
+    to: { color: colors.muted, fontSize: 13 },
+  }),
+);

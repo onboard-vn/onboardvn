@@ -1,3 +1,5 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { CafeMaintainerListResponse } from '@onboard/shared';
 import { api } from '../../api/client';
 import { ScanSession } from '../../features/admin/scan-session';
@@ -13,10 +15,11 @@ const load = async () => {
 };
 
 export default function ScanPage() {
+  useAppPreferences();
   const cafes = useLoad(load, []);
   return (
-    <AdminPage title="Quét mã vạch" width={768}>
-      <Hint>Quét liên tục nhiều hộp game, chọn quán rồi thêm vào kho bằng một lần bấm.</Hint>
+    <AdminPage title={t('Quét mã vạch')} width={768}>
+      <Hint>{t('Quét liên tục nhiều hộp game, chọn quán rồi thêm vào kho bằng một lần bấm.')}</Hint>
       <LoadState loading={!cafes.data} error={cafes.error} onRetry={cafes.reload} />
       {cafes.data ? <ScanSession cafes={cafes.data} /> : null}
     </AdminPage>

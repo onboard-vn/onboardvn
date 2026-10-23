@@ -6,6 +6,8 @@ import { space } from '../../ui/theme';
 import { updateUser } from '../auth/auth-api';
 import { Field, FormError, Note } from '../auth/auth-ui';
 import { useAuthAction } from '../auth/use-auth-action';
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 export interface ProfileValues {
   name: string;
@@ -23,6 +25,7 @@ export function ProfileForm({
   initial: ProfileValues;
   onSaved?: () => void;
 }) {
+  useAppPreferences();
   const { refresh } = useSession();
   const { error, pending, run, setError } = useAuthAction();
   const [name, setName] = useState(initial.name);
@@ -67,27 +70,27 @@ export function ProfileForm({
 
   return (
     <Card>
-      <Heading>Hồ sơ</Heading>
-      <Hint>Hiển thị công khai trên trang hồ sơ. Email không bao giờ hiển thị.</Hint>
+      <Heading>{t('Hồ sơ')}</Heading>
+      <Hint>{t('Hiển thị công khai trên trang hồ sơ. Email không bao giờ hiển thị.')}</Hint>
       <View style={styles.form}>
-        <Field label="Tên hiển thị" value={name} onChangeText={setName} maxLength={100} />
+        <Field label={t('Tên hiển thị')} value={name} onChangeText={setName} maxLength={100} />
         <Field
-          label="Tên đăng nhập"
+          label={t('Tên đăng nhập')}
           value={username}
           onChangeText={setUsername}
           maxLength={30}
-          hint="Đổi tên đăng nhập sẽ đổi luôn địa chỉ trang hồ sơ /u/…"
+          hint={t('Đổi tên đăng nhập sẽ đổi luôn địa chỉ trang hồ sơ /u/…')}
         />
         <Field
           label="Username BoardGameGeek"
           value={bgg}
           onChangeText={setBgg}
           maxLength={50}
-          hint="Dùng để nhập tủ game từ BGG sau này. Để trống để bỏ liên kết."
+          hint={t('Dùng để nhập tủ game từ BGG sau này. Để trống để bỏ liên kết.')}
         />
-        <Button label="Lưu hồ sơ" disabled={pending} onPress={() => void onSubmit()} />
+        <Button label={t('Lưu hồ sơ')} disabled={pending} onPress={() => void onSubmit()} />
         <FormError message={error} />
-        {saved ? <Note>Đã lưu.</Note> : null}
+        {saved ? <Note>{t('Đã lưu.')}</Note> : null}
       </View>
     </Card>
   );

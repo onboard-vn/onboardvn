@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Card, Heading, Hint } from '../ui/primitives';
-import { colors } from '../ui/theme';
+import { themeStyles, colors } from '../ui/theme';
 import { isCoop } from './model';
 import type { SheetApi } from './use-sheet';
-
-const fmt = (n: number) => n.toLocaleString('vi-VN');
+import { scoreFeedbackText, scoreLocale, scorePlayerName, scoreText } from './localization';
+import { useAppPreferences } from '../ui/preferences';
 
 export function SummaryCard({ sheet }: { sheet: SheetApi }) {
+  const { language } = useAppPreferences();
+  const fmt = (n: number) => n.toLocaleString(scoreLocale(language));
   const { template, summary, state } = sheet;
   const coop = isCoop(template);
   const rows = [...summary.rows].sort((a, b) => (a.rank ?? 99) - (b.rank ?? 99));
@@ -23,7 +25,7 @@ export function SummaryCard({ sheet }: { sheet: SheetApi }) {
 
   return (
     <Card>
-      <Heading>Kết quả</Heading>
+      <Heading>{scoreText('Kết quả')}</Heading>
       {coop ? (
         <View
           style={[
@@ -34,18 +36,20 @@ export function SummaryCard({ sheet }: { sheet: SheetApi }) {
         >
           <Text style={styles.bannerText}>
             {outcome === 'win'
-              ? 'Cả đội thắng'
+              ? scoreText('Cả đội thắng')
               : outcome === 'loss'
-                ? 'Cả đội thua'
-                : 'Chưa có kết quả'}
+                ? scoreText('Cả đội thua')
+                : scoreText('Chưa có kết quả')}
           </Text>
-          {derived ? <Text style={styles.derivedNote}>Tự tính từ kết quả phi vụ</Text> : null}
+          {derived ? (
+            <Text style={styles.derivedNote}>{scoreText('Tự tính từ kết quả phi vụ')}</Text>
+          ) : null}
         </View>
       ) : null}
       {state.players.length === 0 ? (
-        <Hint>Thêm người chơi để xem kết quả.</Hint>
+        <Hint>{scoreText('Thêm người chơi để xem kết quả.')}</Hint>
       ) : summary.error ? (
-        <Text style={styles.error}>{summary.error}</Text>
+        <Text style={styles.error}>{scoreFeedbackText(summary.error)}</Text>
       ) : null}
       {!coop &&
         rows.map((r) => {
@@ -54,45 +58,49 @@ export function SummaryCard({ sheet }: { sheet: SheetApi }) {
             <View key={r.id} style={[styles.row, won && styles.rowWin]}>
               <Text style={styles.rank}>{ranked && r.rank ? `#${r.rank}` : ''}</Text>
               <Text style={styles.name} numberOfLines={1}>
-                {r.name}
+                {scorePlayerName(
+                  state.players.find((player) => player.id === r.id) ?? { name: r.name },
+                )}
                 {won ? '  🏆' : ''}
               </Text>
               <Text style={styles.total}>{fmt(r.total)}</Text>
             </View>
           );
         })}
-      {summary.note ? <Text style={styles.note}>{summary.note}</Text> : null}
+      {summary.note ? <Text style={styles.note}>{scoreFeedbackText(summary.note)}</Text> : null}
     </Card>
   );
 }
 
-const styles = StyleSheet.create({
-  derivedNote: { color: colors.muted, fontSize: 12, marginTop: 4 },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-  },
-  rowWin: { backgroundColor: colors.successSoft },
-  rank: { width: 30, fontWeight: '700', color: colors.muted },
-  name: { flex: 1, fontSize: 16, color: colors.text },
-  total: { fontSize: 20, fontWeight: '800', color: colors.text },
-  note: {
-    backgroundColor: colors.warnSoft,
-    color: colors.warn,
-    padding: 10,
-    borderRadius: 10,
-    fontSize: 13,
-  },
-  error: { color: colors.danger, fontSize: 14 },
-  banner: {
-    padding: 14,
-    borderRadius: 10,
-    backgroundColor: colors.surfaceMuted,
-    alignItems: 'center',
-  },
-  bannerText: { fontSize: 18, fontWeight: '700', color: colors.text },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    derivedNote: { color: colors.muted, fontSize: 12, marginTop: 4 },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 10,
+      paddingVertical: 8,
+      paddingHorizontal: 10,
+      borderRadius: 10,
+    },
+    rowWin: { backgroundColor: colors.successSoft },
+    rank: { width: 30, fontWeight: '700', color: colors.muted },
+    name: { flex: 1, fontSize: 16, color: colors.text },
+    total: { fontSize: 20, fontWeight: '800', color: colors.text },
+    note: {
+      backgroundColor: colors.warnSoft,
+      color: colors.warn,
+      padding: 10,
+      borderRadius: 10,
+      fontSize: 13,
+    },
+    error: { color: colors.danger, fontSize: 14 },
+    banner: {
+      padding: 14,
+      borderRadius: 10,
+      backgroundColor: colors.surfaceMuted,
+      alignItems: 'center',
+    },
+    bannerText: { fontSize: 18, fontWeight: '700', color: colors.text },
+  }),
+);

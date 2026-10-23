@@ -1,3 +1,5 @@
+import { t } from '../../../../ui/i18n';
+import { useAppPreferences } from '../../../../ui/preferences';
 import type { CategoryDto, GameDetailDto, GameRevisionDto } from '@onboard/shared';
 import { useLocalSearchParams } from 'expo-router';
 import { api, ApiError } from '../../../../api/client';
@@ -31,18 +33,19 @@ async function loadGame(slug: string): Promise<Loaded | null> {
 }
 
 export default function EditGamePage() {
+  useAppPreferences();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const state = useLoad(() => loadGame(slug), [slug]);
   const data = state.data;
 
   return (
-    <AdminPage title="Sửa game" width={672}>
+    <AdminPage title={t('Sửa game')} width={672}>
       <LoadState
         loading={state.loading && data === undefined}
         error={state.error}
         onRetry={state.reload}
       />
-      {data === null ? <Hint>Không tìm thấy game.</Hint> : null}
+      {data === null ? <Hint>{t('Không tìm thấy game.')}</Hint> : null}
       {data ? (
         <>
           <GameForm categories={data.categories} initial={data.game} />

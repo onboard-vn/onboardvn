@@ -1,4 +1,5 @@
 import type { CafeLinks } from '@onboard/shared';
+import { t } from '../../ui/i18n';
 
 export interface CafeContact {
   label: string;
@@ -15,12 +16,12 @@ export function cafeContacts(links: CafeLinks | null | undefined): CafeContact[]
   if (links.zalo) {
     const zalo = links.zalo.trim();
     out.push({
-      label: 'Nhắn Zalo quán',
+      label: t('Nhắn Zalo quán'),
       url: isUrl(zalo) ? zalo : `https://zalo.me/${digitsOf(zalo).replace(/^\+?84/, '0')}`,
     });
   }
-  if (links.fanpage) out.push({ label: 'Fanpage quán', url: links.fanpage });
-  if (links.maps) out.push({ label: 'Chỉ đường', url: links.maps });
-  if (links.phone) out.push({ label: 'Gọi quán', url: `tel:${digitsOf(links.phone)}` });
+  if (links.fanpage) out.push({ label: t('Fanpage quán'), url: links.fanpage });
+  if (links.maps) out.push({ label: t('Chỉ đường'), url: links.maps });
+  if (links.phone) out.push({ label: t('Gọi quán'), url: `tel:${digitsOf(links.phone)}` });
   return out;
 }

@@ -1,4 +1,5 @@
 import type { ShelfCondition, ShelfItemDto } from '@onboard/shared';
+import { getActiveLanguage, t } from '../../ui/i18n';
 
 export const STALE_DAYS = 90;
 const DAY_MS = 86_400_000;
@@ -10,8 +11,10 @@ export const CONDITION_OPTIONS: { value: ShelfCondition; label: string }[] = [
   { value: 'worn', label: 'Cũ' },
 ];
 
-export const conditionLabel = (c: ShelfCondition | null): string =>
-  CONDITION_OPTIONS.find((o) => o.value === c)?.label ?? '—';
+export const conditionLabel = (c: ShelfCondition | null): string => {
+  const label = CONDITION_OPTIONS.find((o) => o.value === c)?.label;
+  return label ? t(label) : '—';
+};
 
 export type ShelfSort = 'name' | 'lastPlayed' | 'added';
 
@@ -47,7 +50,8 @@ export function parseColumns(raw: string | null): ShelfColumn[] {
   }
 }
 
-export const gameName = (g: { nameVi: string | null; nameEn: string }) => g.nameVi || g.nameEn;
+export const gameName = (g: { nameVi: string | null; nameEn: string }) =>
+  getActiveLanguage() === 'en' ? g.nameEn || g.nameVi || '' : g.nameVi || g.nameEn;
 
 export function daysSince(iso: string, now: number): number {
   return Math.max(0, Math.floor((now - new Date(iso).getTime()) / DAY_MS));
@@ -58,13 +62,13 @@ export function isStale(lastPlayedAt: string | null, now: number): boolean {
 }
 
 export function formatLastPlayed(lastPlayedAt: string | null, now: number): string {
-  if (lastPlayedAt === null) return 'Chưa chơi';
+  if (lastPlayedAt === null) return t('Chưa chơi');
   const d = daysSince(lastPlayedAt, now);
-  if (d === 0) return 'Hôm nay';
-  if (d < 7) return `${d} ngày trước`;
-  if (d < 30) return `${Math.floor(d / 7)} tuần trước`;
-  if (d < 365) return `${Math.floor(d / 30)} tháng trước`;
-  return `${Math.floor(d / 365)} năm trước`;
+  if (d === 0) return t('Hôm nay');
+  if (d < 7) return t('{count} ngày trước', { count: d });
+  if (d < 30) return t('{count} tuần trước', { count: Math.floor(d / 7) });
+  if (d < 365) return t('{count} tháng trước', { count: Math.floor(d / 30) });
+  return t('{count} năm trước', { count: Math.floor(d / 365) });
 }
 
 const time = (iso: string | null) => (iso ? new Date(iso).getTime() : -Infinity);
@@ -72,7 +76,8 @@ const time = (iso: string | null) => (iso ? new Date(iso).getTime() : -Infinity)
 export function sortShelf(items: ShelfItemDto[], sort: ShelfSort): ShelfItemDto[] {
   const copy = [...items];
   if (sort === 'name') {
-    return copy.sort((a, b) => gameName(a.game).localeCompare(gameName(b.game), 'vi'));
+    const locale = getActiveLanguage() === 'en' ? 'en' : 'vi';
+    return copy.sort((a, b) => gameName(a.game).localeCompare(gameName(b.game), locale));
   }
   if (sort === 'added') return copy.sort((a, b) => time(b.createdAt) - time(a.createdAt));
   return copy.sort((a, b) => time(a.lastPlayedAt) - time(b.lastPlayedAt));

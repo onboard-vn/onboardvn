@@ -1,3 +1,5 @@
+import { t, translateKnown } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { FriendSummary } from '@onboard/shared';
 import { Link, Redirect, Stack, useLocalSearchParams, type Href } from 'expo-router';
 import { useState } from 'react';
@@ -7,7 +9,7 @@ import { useSession } from '../../auth/session';
 import { Page, FormError, withNext } from '../../features/auth/auth-ui';
 import { mediaUrl } from '../../features/media';
 import { Button, Card, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { useLoad } from '../../ui/use-load';
 
 async function fetchPreview(code: string): Promise<FriendSummary | null> {
@@ -20,6 +22,7 @@ async function fetchPreview(code: string): Promise<FriendSummary | null> {
 }
 
 function ConfirmInvite({ code }: { code: string }) {
+  useAppPreferences();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
@@ -31,7 +34,7 @@ function ConfirmInvite({ code }: { code: string }) {
       await api(`/friends/invite/${encodeURIComponent(code)}`, { method: 'POST', body: {} });
       setDone(true);
     } catch {
-      setError('Không xác nhận được, thử lại sau');
+      setError(t('Không xác nhận được, thử lại sau'));
     } finally {
       setPending(false);
     }
@@ -40,22 +43,23 @@ function ConfirmInvite({ code }: { code: string }) {
   if (done) {
     return (
       <View style={styles.center}>
-        <Text style={styles.text}>Đã kết bạn.</Text>
+        <Text style={styles.text}>{t('Đã kết bạn.')}</Text>
         <Link href="/friends" style={styles.link}>
-          Xem danh sách bạn bè
+          {t('Xem danh sách bạn bè')}
         </Link>
       </View>
     );
   }
   return (
     <View style={styles.center}>
-      <Button label="Xác nhận kết bạn" disabled={pending} onPress={() => void confirm()} />
+      <Button label={t('Xác nhận kết bạn')} disabled={pending} onPress={() => void confirm()} />
       <FormError message={error} />
     </View>
   );
 }
 
 export default function InviteScreen() {
+  useAppPreferences();
   const { code = '' } = useLocalSearchParams<{ code: string }>();
   const { user, loading } = useSession();
   const preview = useLoad(() => fetchPreview(code), [code]);
@@ -70,7 +74,7 @@ export default function InviteScreen() {
   if (preview.error && preview.data === undefined) {
     return (
       <Page maxWidth={480}>
-        <Hint>{preview.error}</Hint>
+        <Hint>{translateKnown(preview.error ?? '')}</Hint>
       </Page>
     );
   }
@@ -78,10 +82,10 @@ export default function InviteScreen() {
   if (!person) {
     return (
       <Page maxWidth={480}>
-        <Stack.Screen options={{ title: 'Kết bạn' }} />
+        <Stack.Screen options={{ title: t('Kết bạn') }} />
         <Card>
-          <Text style={styles.name}>Mã mời không hợp lệ</Text>
-          <Hint>Mã mời này không tồn tại hoặc đã được đổi.</Hint>
+          <Text style={styles.name}>{t('Mã mời không hợp lệ')}</Text>
+          <Hint>{t('Mã mời này không tồn tại hoặc đã được đổi.')}</Hint>
         </Card>
       </Page>
     );
@@ -91,7 +95,7 @@ export default function InviteScreen() {
   const image = mediaUrl(person.image);
   return (
     <Page maxWidth={480}>
-      <Stack.Screen options={{ title: 'Kết bạn' }} />
+      <Stack.Screen options={{ title: t('Kết bạn') }} />
       <View style={styles.center}>
         <View style={styles.who}>
           {image ? (
@@ -103,7 +107,7 @@ export default function InviteScreen() {
           </View>
         </View>
         {user.id === person.id ? (
-          <Hint>Đây là mã mời kết bạn của chính bạn.</Hint>
+          <Hint>{t('Đây là mã mời kết bạn của chính bạn.')}</Hint>
         ) : (
           <ConfirmInvite code={code} />
         )}
@@ -112,13 +116,15 @@ export default function InviteScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  spinner: { marginTop: 48 },
-  center: { alignItems: 'center', gap: space.md },
-  who: { flexDirection: 'row', alignItems: 'center', gap: space.md },
-  avatar: { width: 56, height: 56, borderRadius: 28, backgroundColor: colors.border },
-  name: { fontSize: 20, fontWeight: '600', color: colors.text },
-  handle: { fontSize: 14, color: colors.muted },
-  text: { fontSize: 14, color: colors.text },
-  link: { color: colors.primary, textDecorationLine: 'underline', fontSize: 14 },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    spinner: { marginTop: 48 },
+    center: { alignItems: 'center', gap: space.md },
+    who: { flexDirection: 'row', alignItems: 'center', gap: space.md },
+    avatar: { width: 56, height: 56, borderRadius: 28, backgroundColor: colors.border },
+    name: { fontSize: 20, fontWeight: '600', color: colors.text },
+    handle: { fontSize: 14, color: colors.muted },
+    text: { fontSize: 14, color: colors.text },
+    link: { color: colors.primary, textDecorationLine: 'underline', fontSize: 14 },
+  }),
+);

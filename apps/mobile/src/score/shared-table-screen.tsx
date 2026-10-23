@@ -19,13 +19,15 @@ import {
 import { ApiError, api, session as apiSession } from '../api/client';
 import { useSession } from '../auth/session';
 import { Button, Card, Heading, Hint } from '../ui/primitives';
-import { colors } from '../ui/theme';
+import { themeStyles, colors } from '../ui/theme';
 import { createHttpPlaysApi } from '../api/plays-http';
 import { GuestActions } from './guest-actions';
 import { LegacyTableScoreScreen } from './legacy-table-screen';
 import { gameGuides } from './registry';
 import { usesSharedScoreSheet } from './shared-sheet-selection';
 import { SharedScoreSheet } from './shared-score-sheet';
+import { scoreFeedbackText, scoreText } from './localization';
+import { useAppPreferences } from '../ui/preferences';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -85,6 +87,7 @@ export function isRealTableId(value: string | undefined): value is string {
 }
 
 export function SharedTableScreen({ tableId }: { tableId: string }) {
+  useAppPreferences();
   const router = useRouter();
   const { user, loading: sessionLoading } = useSession();
   const session = useMemo(
@@ -296,11 +299,13 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
     return (
       <View style={styles.content}>
         <Card>
-          <Heading>Đăng nhập để mở bảng điểm chung</Heading>
-          <Hint>Điểm của mọi người được đồng bộ qua máy chủ và gắn với tài khoản thật.</Hint>
+          <Heading>{scoreText('Đăng nhập để mở bảng điểm chung')}</Heading>
+          <Hint>
+            {scoreText('Điểm của mọi người được đồng bộ qua máy chủ và gắn với tài khoản thật.')}
+          </Hint>
           <Link href="/club" asChild>
             <Pressable accessibilityRole="button" style={styles.linkButton}>
-              <Text style={styles.linkText}>Đăng nhập</Text>
+              <Text style={styles.linkText}>{scoreText('Đăng nhập')}</Text>
             </Pressable>
           </Link>
         </Card>
@@ -315,8 +320,8 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
     return (
       <View style={styles.content}>
         <Card>
-          <Text style={styles.error}>{error ?? 'Không tìm thấy bàn.'}</Text>
-          <Button label="Thử lại" tone="ghost" onPress={retryLoad} />
+          <Text style={styles.error}>{scoreFeedbackText(error ?? 'Không tìm thấy bàn.')}</Text>
+          <Button label={scoreText('Thử lại')} tone="ghost" onPress={retryLoad} />
         </Card>
       </View>
     );
@@ -325,21 +330,21 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
   if (current.play && !usesSharedScoreSheet(template, gameGuides))
     return <LegacyTableScoreScreen />;
 
-  const title = current.table.game?.name ?? current.play?.game.name ?? 'Bảng điểm chung';
+  const title = current.table.game?.name ?? current.play?.game.name ?? scoreText('Bảng điểm chung');
 
   return (
     <>
       <Stack.Screen options={{ title }} />
       {error ? (
         <View style={styles.errorBanner}>
-          <Text style={styles.error}>{error}</Text>
+          <Text style={styles.error}>{scoreFeedbackText(error)}</Text>
         </View>
       ) : null}
       {!current.table.game ? (
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.column}>
             <Card>
-              <Heading>Chọn game cho bàn</Heading>
+              <Heading>{scoreText('Chọn game cho bàn')}</Heading>
               {current.canManage ? (
                 <>
                   <TextInput
@@ -348,7 +353,7 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
                       setQuery(value);
                       if (value.trim().length < 2) setGames([]);
                     }}
-                    placeholder="Tìm game"
+                    placeholder={scoreText('Tìm game')}
                     style={styles.input}
                   />
                   {games.map((game) => (
@@ -365,7 +370,7 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
                   ))}
                 </>
               ) : (
-                <Hint>Chờ chủ bàn chọn game.</Hint>
+                <Hint>{scoreText('Chờ chủ bàn chọn game.')}</Hint>
               )}
             </Card>
           </View>
@@ -375,25 +380,34 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
           <Card>
             <Heading>{current.table.meetupTitle}</Heading>
             <Hint>
-              {current.table.game.name} · {current.table.seated.length} người đã xếp bàn
+              {current.table.game.name} ·{' '}
+              {scoreText('{count} người đã xếp bàn', { count: current.table.seated.length })}
             </Hint>
             {current.canManage ? (
               <Button
-                label={busy ? 'Đang mở bàn...' : 'Bắt đầu chấm điểm'}
+                label={busy ? scoreText('Đang mở bàn...') : scoreText('Bắt đầu chấm điểm')}
                 disabled={busy}
                 onPress={() => void startPlay()}
               />
             ) : (
-              <Hint>Chờ chủ bàn bắt đầu ván; bảng điểm sẽ xuất hiện ở đây cho mọi người.</Hint>
+              <Hint>
+                {scoreText('Chờ chủ bàn bắt đầu ván; bảng điểm sẽ xuất hiện ở đây cho mọi người.')}
+              </Hint>
             )}
           </Card>
         </View>
       ) : !template ? (
         <View style={styles.content}>
           <Card>
-            <Heading>Chưa có mẫu chấm điểm</Heading>
-            <Hint>Máy chủ chưa gắn mẫu điểm có thể dùng cho {title}.</Hint>
-            <Button label="Tải lại" tone="ghost" onPress={() => setRefreshKey((n) => n + 1)} />
+            <Heading>{scoreText('Chưa có mẫu chấm điểm')}</Heading>
+            <Hint>
+              {scoreText('Máy chủ chưa gắn mẫu điểm có thể dùng cho {title}.', { title })}
+            </Hint>
+            <Button
+              label={scoreText('Tải lại')}
+              tone="ghost"
+              onPress={() => setRefreshKey((n) => n + 1)}
+            />
           </Card>
         </View>
       ) : (
@@ -409,7 +423,7 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
           guestActions={
             current.table.seated.some((identity) => identity.kind === 'guest') ? (
               <Card>
-                <Heading>Khách ở bàn</Heading>
+                <Heading>{scoreText('Khách ở bàn')}</Heading>
                 {current.table.seated
                   .filter((identity) => identity.kind === 'guest')
                   .map((guest) => (
@@ -424,27 +438,29 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
   );
 }
 
-const styles = StyleSheet.create({
-  content: { padding: 16, alignItems: 'center' },
-  column: { width: '100%', maxWidth: 720, gap: 12 },
-  input: {
-    height: 44,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    backgroundColor: colors.card,
-    color: colors.text,
-  },
-  gameOption: { padding: 10, borderTopWidth: 1, borderTopColor: colors.border, gap: 4 },
-  gameName: { color: colors.text, fontWeight: '700', fontSize: 15 },
-  errorBanner: { padding: 12, backgroundColor: colors.dangerSoft },
-  error: { color: colors.danger, fontSize: 14 },
-  linkButton: {
-    backgroundColor: colors.primary,
-    borderRadius: 10,
-    paddingVertical: 10,
-    alignItems: 'center',
-  },
-  linkText: { color: '#fff', fontWeight: '700' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    content: { padding: 16, alignItems: 'center' },
+    column: { width: '100%', maxWidth: 720, gap: 12 },
+    input: {
+      height: 44,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 10,
+      paddingHorizontal: 12,
+      backgroundColor: colors.card,
+      color: colors.text,
+    },
+    gameOption: { padding: 10, borderTopWidth: 1, borderTopColor: colors.border, gap: 4 },
+    gameName: { color: colors.text, fontWeight: '700', fontSize: 15 },
+    errorBanner: { padding: 12, backgroundColor: colors.dangerSoft },
+    error: { color: colors.danger, fontSize: 14 },
+    linkButton: {
+      backgroundColor: colors.primary,
+      borderRadius: 10,
+      paddingVertical: 10,
+      alignItems: 'center',
+    },
+    linkText: { color: '#fff', fontWeight: '700' },
+  }),
+);

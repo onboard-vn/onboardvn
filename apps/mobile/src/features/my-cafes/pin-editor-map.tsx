@@ -1,5 +1,7 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import { StyleSheet, Text } from 'react-native';
-import { colors } from '../../ui/theme';
+import { themeStyles, colors } from '../../ui/theme';
 
 export interface RecenterTarget {
   lat: number;
@@ -15,11 +17,14 @@ export interface PinEditorMapProps {
 }
 
 export default function PinEditorMap(_props: PinEditorMapProps) {
+  useAppPreferences();
   return (
     <Text style={styles.note}>
-      Bản đồ chỉ khả dụng trên trình duyệt web — nhập vĩ độ/kinh độ trực tiếp ở ô bên dưới.
+      {t('Bản đồ chỉ khả dụng trên trình duyệt web — nhập vĩ độ/kinh độ trực tiếp ở ô bên dưới.')}
     </Text>
   );
 }
 
-const styles = StyleSheet.create({ note: { color: colors.muted, fontSize: 13 } });
+const styles = themeStyles(() =>
+  StyleSheet.create({ note: { color: colors.muted, fontSize: 13 } }),
+);

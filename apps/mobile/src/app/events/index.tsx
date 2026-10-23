@@ -1,3 +1,5 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type {
   MeetupCalendarDay,
   MeetupListResponse,
@@ -32,6 +34,7 @@ const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 
 export default function EventsPage() {
+  useAppPreferences();
   const router = useRouter();
   const sp = useLocalSearchParams();
   const spKey = JSON.stringify(sp);
@@ -123,10 +126,10 @@ export default function EventsPage() {
 
   return (
     <Page maxWidth={768}>
-      <Stack.Screen options={{ title: 'Kèo' }} />
+      <Stack.Screen options={{ title: t('Kèo') }} />
       <Row style={{ justifyContent: 'space-between' }}>
-        <Title>Kèo</Title>
-        <LinkBtn label="Tạo kèo" to="/events/new" />
+        <Title>{t('Kèo')}</Title>
+        <LinkBtn label={t('Tạo kèo')} to="/events/new" />
       </Row>
       <Segmented
         value={view}
@@ -142,8 +145,8 @@ export default function EventsPage() {
           )
         }
         options={[
-          { value: 'list', label: 'Danh sách' },
-          { value: 'calendar', label: 'Lịch tháng' },
+          { value: 'list', label: t('Danh sách') },
+          { value: 'calendar', label: t('Lịch tháng') },
         ]}
       />
       <LoadGate loading={loading} error={error} hasData={!!data}>
@@ -156,9 +159,11 @@ export default function EventsPage() {
             />
             {selectedDate ? (
               <>
-                <SectionTitle>Kèo ngày {selectedDate}</SectionTitle>
+                <SectionTitle>
+                  {t('Kèo ngày')} {selectedDate}
+                </SectionTitle>
                 {data.dayItems.length === 0 ? (
-                  <Muted>Không có Kèo nào.</Muted>
+                  <Muted>{t('Không có Kèo nào.')}</Muted>
                 ) : (
                   <EventList items={data.dayItems} />
                 )}
@@ -175,7 +180,7 @@ export default function EventsPage() {
               view={view}
             />
             {data.items.length === 0 ? (
-              <Muted>Chưa có Kèo nào sắp diễn ra.</Muted>
+              <Muted>{t('Chưa có Kèo nào sắp diễn ra.')}</Muted>
             ) : (
               <EventList items={data.items} />
             )}

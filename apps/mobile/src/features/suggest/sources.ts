@@ -1,4 +1,5 @@
 import type { SuggestPoolItemDto, SuggestQuery } from '@onboard/shared';
+import { t } from '../../ui/i18n';
 
 export type Source = SuggestQuery['source'];
 export type ActionGroup = 'cafe' | 'personal' | 'area';
@@ -62,21 +63,30 @@ export function buildSuggestQuery(c: SuggestChoice): Record<string, string | num
 export function poolLabel(c: SuggestChoice, total: number): string {
   switch (c.source) {
     case 'shelf':
-      return `Tủ game của bạn: ${total} game`;
+      return t('Tủ game của bạn: {total} game', { total });
     case 'club':
-      return `Tủ game của thành viên ${c.club?.name ?? 'club'}: ${total} game`;
+      return t('Tủ game của thành viên {name}: {total} game', {
+        name: c.club?.name ?? 'club',
+        total,
+      });
     case 'friends':
-      return `Tủ game của bạn và bạn bè: ${total} game`;
+      return t('Tủ game của bạn và bạn bè: {total} game', { total });
     case 'wishlist':
-      return `Danh sách Muốn chơi: ${total} game`;
+      return t('Danh sách Muốn chơi: {total} game', { total });
     case 'cafe':
-      return `Tủ game của ${c.cafe?.name ?? 'quán'}: ${total} game`;
+      return t('Tủ game của {name}: {total} game', { name: c.cafe?.name ?? 'quán', total });
     case 'city':
-      return `Game có ở quán và người chơi tại ${c.province?.name ?? 'thành phố này'}: ${total} game`;
+      return t('Game có ở quán và người chơi tại {place}: {total} game', {
+        place: c.province?.name ?? 'thành phố này',
+        total,
+      });
     case 'province':
-      return `Game có ở các quán tại ${c.province?.name ?? 'tỉnh/thành'}: ${total} game`;
+      return t('Game có ở các quán tại {place}: {total} game', {
+        place: c.province?.name ?? 'tỉnh/thành',
+        total,
+      });
     default:
-      return `Game có ở các quán trên toàn quốc: ${total} game`;
+      return t('Game có ở các quán trên toàn quốc: {total} game', { total });
   }
 }
 
@@ -93,26 +103,42 @@ export function whoHasIt(c: SuggestChoice, item: SuggestPoolItemDto): string {
     case 'shelf':
       return 'Game trong tủ của bạn · rủ bạn bè qua chơi hoặc mang ra quán.';
     case 'club':
-      return owners ? `Thành viên có game: ${owners}.` : 'Game này có trong tủ của bạn.';
+      return owners
+        ? t('Thành viên có game: {owners}.', { owners })
+        : t('Game này có trong tủ của bạn.');
     case 'friends':
-      return owners ? `${owners} có game này.` : 'Game này có trong tủ của bạn.';
+      return owners ? t('{owners} có game này.', { owners }) : t('Game này có trong tủ của bạn.');
     case 'wishlist':
       return item.cafeCount > 0
-        ? `Game bạn muốn chơi · ${item.cafeCount} quán đang có.`
-        : 'Game bạn muốn chơi · chưa quán nào ghi nhận có game này.';
+        ? t('Game bạn muốn chơi · {count} quán đang có.', { count: item.cafeCount })
+        : t('Game bạn muốn chơi · chưa quán nào ghi nhận có game này.');
     case 'cafe':
-      return `${c.cafe?.name ?? 'Quán'} đang có game này trong tủ.`;
+      return t('{venue} đang có game này trong tủ.', { venue: c.cafe?.name ?? 'Quán' });
     case 'city': {
       const place = c.province?.name ?? 'thành phố này';
       const people = item.ownerCount ?? 0;
       return people > 0
-        ? `${item.cafeCount} quán và ${people} người chơi tại ${place} có game này${owners ? ` (${owners})` : ''}.`
-        : `${item.cafeCount} quán tại ${place} có game này.`;
+        ? owners
+          ? t('{count} quán và {people} người chơi tại {place} có game này ({owners}).', {
+              count: item.cafeCount,
+              people,
+              place,
+              owners,
+            })
+          : t('{count} quán và {people} người chơi tại {place} có game này.', {
+              count: item.cafeCount,
+              people,
+              place,
+            })
+        : t('{count} quán tại {place} có game này.', { count: item.cafeCount, place });
     }
     case 'province':
-      return `${item.cafeCount} quán tại ${c.province?.name ?? 'tỉnh/thành này'} có game này.`;
+      return t('{count} quán tại {place} có game này.', {
+        count: item.cafeCount,
+        place: c.province?.name ?? 'tỉnh/thành này',
+      });
     default:
-      return `${item.cafeCount} quán trên toàn quốc có game này.`;
+      return t('{count} quán trên toàn quốc có game này.', { count: item.cafeCount });
   }
 }
 

@@ -1,3 +1,5 @@
+import { t } from '../../../../ui/i18n';
+import { useAppPreferences } from '../../../../ui/preferences';
 import type {
   CafeMaintainerDto,
   CafeMemberDto,
@@ -46,18 +48,19 @@ async function loadCafe(id: string): Promise<Loaded | null> {
 }
 
 export default function EditCafePage() {
+  useAppPreferences();
   const { id } = useLocalSearchParams<{ id: string }>();
   const state = useLoad(() => loadCafe(id), [id]);
   const data = state.data;
 
   return (
-    <AdminPage title="Sửa địa điểm chơi" width={672}>
+    <AdminPage title={t('Sửa địa điểm chơi')} width={672}>
       <LoadState
         loading={state.loading && data === undefined}
         error={state.error}
         onRetry={state.reload}
       />
-      {data === null ? <Hint>Không tìm thấy quán.</Hint> : null}
+      {data === null ? <Hint>{t('Không tìm thấy quán.')}</Hint> : null}
       {data ? (
         <>
           <CafeForm

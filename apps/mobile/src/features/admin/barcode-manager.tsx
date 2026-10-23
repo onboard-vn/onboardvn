@@ -1,9 +1,11 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { GameBarcodeDto } from '@onboard/shared';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { api } from '../../api/client';
 import { Button } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { errorMessage } from '../errors';
 import { ErrorText, Field, Section, SmallButton } from './ui';
 
@@ -16,6 +18,7 @@ export function BarcodeManager({
   barcodes: GameBarcodeDto[];
   onChanged: () => void;
 }) {
+  useAppPreferences();
   const [code, setCode] = useState('');
   const [edition, setEdition] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +32,7 @@ export function BarcodeManager({
       after?.();
       onChanged();
     } catch (e) {
-      setError(errorMessage(e, 'Có lỗi xảy ra, thử lại sau'));
+      setError(errorMessage(e, t('Có lỗi xảy ra, thử lại sau')));
     } finally {
       setPending(false);
     }
@@ -52,7 +55,7 @@ export function BarcodeManager({
   };
 
   return (
-    <Section title="Mã vạch">
+    <Section title={t('Mã vạch')}>
       {barcodes.map((b) => (
         <View key={b.code} style={styles.row}>
           <Text style={styles.text}>
@@ -60,7 +63,7 @@ export function BarcodeManager({
             {b.edition ? ` (${b.edition})` : ''}
           </Text>
           <SmallButton
-            label="Xóa"
+            label={t('Xóa')}
             disabled={pending}
             onPress={() =>
               void run(() =>
@@ -72,30 +75,32 @@ export function BarcodeManager({
           />
         </View>
       ))}
-      {barcodes.length === 0 ? <Text style={styles.muted}>Chưa có mã vạch nào.</Text> : null}
+      {barcodes.length === 0 ? <Text style={styles.muted}>{t('Chưa có mã vạch nào.')}</Text> : null}
       <View style={styles.form}>
         <Field
           value={code}
           onChangeText={setCode}
-          placeholder="Mã vạch (EAN/UPC)"
+          placeholder={t('Mã vạch (EAN/UPC)')}
           keyboardType="number-pad"
         />
-        <Field value={edition} onChangeText={setEdition} placeholder="Bản (tuỳ chọn)" />
-        <Button label="Thêm" disabled={pending} onPress={onAdd} />
+        <Field value={edition} onChangeText={setEdition} placeholder={t('Bản (tuỳ chọn)')} />
+        <Button label={t('Thêm')} disabled={pending} onPress={onAdd} />
       </View>
       <ErrorText message={error} />
     </Section>
   );
 }
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space.sm,
-  },
-  text: { fontSize: 15, color: colors.text, flex: 1 },
-  muted: { fontSize: 14, color: colors.muted },
-  form: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: space.sm,
+    },
+    text: { fontSize: 15, color: colors.text, flex: 1 },
+    muted: { fontSize: 14, color: colors.muted },
+    form: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm },
+  }),
+);

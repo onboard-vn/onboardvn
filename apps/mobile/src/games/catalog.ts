@@ -1,4 +1,5 @@
 import index from './game-index.json';
+import { t } from '../ui/i18n';
 
 export interface GameEntry {
   slug: string;
@@ -41,11 +42,11 @@ export function searchGames(query: string, limit = 50): GameEntry[] {
 
 export function playersLabel([min, max]: GameEntry['players']): string {
   if (min == null && max == null) return '';
-  if (min === max || max == null) return `${min} người`;
-  if (min == null) return `${max} người`;
-  return `${min}-${max} người`;
+  if (min === max || max == null) return t('{count} người', { count: min ?? max! });
+  if (min == null) return t('{count} người', { count: max });
+  return t('{min}-{max} người', { min, max });
 }
 
 export function modeLabel(mode: string | null): string {
-  return mode === 'coop' ? 'Co-op' : 'Cạnh tranh';
+  return mode === 'coop' ? 'Co-op' : t('Cạnh tranh');
 }

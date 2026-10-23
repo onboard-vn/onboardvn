@@ -1,3 +1,5 @@
+import { t, translateKnown } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import { Redirect, Stack } from 'expo-router';
 import { useState, type ReactNode } from 'react';
 import {
@@ -11,7 +13,7 @@ import {
   type KeyboardTypeOptions,
 } from 'react-native';
 import { useSession } from '../../auth/session';
-import { colors, radius, space } from '../../ui/theme';
+import { getActiveTheme, themeStyles, colors, radius, space } from '../../ui/theme';
 import { Button, Card, Heading, Hint } from '../../ui/primitives';
 import { errorMessage } from '../errors';
 import { inputStyle } from '../search-input';
@@ -31,6 +33,7 @@ export function AdminPage({
   action?: ReactNode;
   children: ReactNode;
 }) {
+  useAppPreferences();
   const { user, loading } = useSession();
   if (loading) return <ActivityIndicator style={styles.spinner} />;
   if (!user || !hasAccess(user.role, access)) return <Redirect href="/login" />;
@@ -61,29 +64,33 @@ export function LoadState({
   error: string | null;
   onRetry?: () => void;
 }) {
+  useAppPreferences();
   if (loading) return <ActivityIndicator style={styles.spinner} />;
   if (!error) return null;
   return (
     <View style={{ gap: space.sm }}>
       <ErrorText message={error} />
-      {onRetry ? <Button label="Thử lại" tone="ghost" onPress={onRetry} /> : null}
+      {onRetry ? <Button label={t('Thử lại')} tone="ghost" onPress={onRetry} /> : null}
     </View>
   );
 }
 
 export function ErrorText({ message }: { message: string | null | undefined }) {
+  useAppPreferences();
   return message ? (
     <Text accessibilityRole="alert" style={styles.error}>
-      {message}
+      {translateKnown(message)}
     </Text>
   ) : null;
 }
 
 export function SuccessText({ message }: { message: string | null }) {
+  useAppPreferences();
   return message ? <Text style={styles.success}>{message}</Text> : null;
 }
 
 export function Section({ title, children }: { title: string; children: ReactNode }) {
+  useAppPreferences();
   return (
     <Card>
       <Heading>{title}</Heading>
@@ -93,6 +100,7 @@ export function Section({ title, children }: { title: string; children: ReactNod
 }
 
 export function ListCard({ children }: { children: ReactNode }) {
+  useAppPreferences();
   return <View style={styles.list}>{children}</View>;
 }
 
@@ -105,6 +113,7 @@ export function Row({
   subtitle?: string;
   right?: ReactNode;
 }) {
+  useAppPreferences();
   return (
     <View style={styles.row}>
       <View style={styles.rowMain}>
@@ -135,6 +144,7 @@ export function Field({
   maxLength?: number;
   editable?: boolean;
 }) {
+  useAppPreferences();
   return (
     <View style={styles.field}>
       {label ? <Text style={styles.label}>{label}</Text> : null}
@@ -165,6 +175,7 @@ export function CheckRow({
   checked: boolean;
   onChange: (v: boolean) => void;
 }) {
+  useAppPreferences();
   return (
     <Pressable
       accessibilityRole="checkbox"
@@ -190,7 +201,7 @@ export function PickerField<T extends string>({
   value,
   options,
   onChange,
-  placeholder = 'Chọn',
+  placeholder = t('Chọn'),
   disabled,
 }: {
   label?: string;
@@ -200,6 +211,7 @@ export function PickerField<T extends string>({
   placeholder?: string;
   disabled?: boolean;
 }) {
+  useAppPreferences();
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState('');
   const current = options.find((o) => o.value === value);
@@ -227,7 +239,7 @@ export function PickerField<T extends string>({
             <TextInput
               value={filter}
               onChangeText={setFilter}
-              placeholder="Gõ để lọc..."
+              placeholder={t('Gõ để lọc...')}
               placeholderTextColor={colors.muted}
               autoCapitalize="none"
               autoCorrect={false}
@@ -256,7 +268,7 @@ export function PickerField<T extends string>({
                 <Text style={styles.pickerText}>{o.label}</Text>
               </Pressable>
             ))}
-            {shown.length === 0 ? <Hint>Không có kết quả khớp.</Hint> : null}
+            {shown.length === 0 ? <Hint>{t('Không có kết quả khớp.')}</Hint> : null}
           </ScrollView>
         </View>
       ) : null}
@@ -273,6 +285,7 @@ export function DangerButton({
   onPress: () => void;
   disabled?: boolean;
 }) {
+  useAppPreferences();
   return (
     <Pressable
       accessibilityRole="button"
@@ -296,6 +309,7 @@ export function SmallButton({
   disabled?: boolean;
   tone?: 'outline' | 'solid';
 }) {
+  useAppPreferences();
   return (
     <Pressable
       accessibilityRole="button"
@@ -303,7 +317,7 @@ export function SmallButton({
       onPress={onPress}
       style={[styles.small, tone === 'solid' && styles.smallSolid, disabled && styles.disabled]}
     >
-      <Text style={[styles.smallText, tone === 'solid' && { color: '#fff' }]}>{label}</Text>
+      <Text style={[styles.smallText, tone === 'solid' && styles.smallSolidText]}>{label}</Text>
     </Pressable>
   );
 }
@@ -314,7 +328,7 @@ export function ActionButton({
   confirmText,
   danger,
   small = true,
-  failure = 'Có lỗi xảy ra, thử lại sau',
+  failure = t('Có lỗi xảy ra, thử lại sau'),
 }: {
   label: string;
   run: () => Promise<void>;
@@ -323,6 +337,7 @@ export function ActionButton({
   small?: boolean;
   failure?: string;
 }) {
+  useAppPreferences();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -354,85 +369,96 @@ export function ActionButton({
   );
 }
 
-const styles = StyleSheet.create({
-  fill: { flex: 1 },
-  scroll: { alignItems: 'center', padding: space.lg, paddingBottom: 48 },
-  column: { width: '100%', gap: space.lg },
-  spinner: { marginTop: 48 },
-  titleRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space.md,
-  },
-  title: { fontSize: 24, fontWeight: '700', color: colors.text, flexShrink: 1 },
-  error: { color: colors.danger, fontSize: 14 },
-  success: { color: colors.success, fontSize: 14 },
-  list: {
-    backgroundColor: colors.card,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.border,
-    overflow: 'hidden',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: space.md,
-    paddingHorizontal: space.lg,
-    paddingVertical: space.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.border,
-  },
-  rowMain: { flex: 1, minWidth: 0, gap: 2 },
-  rowTitle: { fontSize: 16, fontWeight: '600', color: colors.text },
-  rowSub: { fontSize: 12, color: colors.muted },
-  rowRight: { flexDirection: 'row', alignItems: 'center', gap: space.sm, flexShrink: 0 },
-  field: { gap: space.xs, flex: 1, minWidth: 140 },
-  label: { fontSize: 13, fontWeight: '600', color: colors.muted },
-  multiline: { minHeight: 90, textAlignVertical: 'top' },
-  check: { flexDirection: 'row', alignItems: 'center', gap: space.sm, paddingVertical: 4 },
-  checkLabel: { flex: 1, fontSize: 15, color: colors.text },
-  box: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
-    borderWidth: 1.5,
-    borderColor: colors.muted,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.card,
-  },
-  boxOn: { backgroundColor: colors.primary, borderColor: colors.primary },
-  tick: { color: '#fff', fontSize: 14, fontWeight: '700' },
-  picker: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
-  pickerText: { fontSize: 15, color: colors.text, flexShrink: 1 },
-  disabled: { opacity: 0.4 },
-  menu: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius,
-    backgroundColor: colors.card,
-    overflow: 'hidden',
-  },
-  menuScroll: { maxHeight: 240 },
-  menuItem: { paddingHorizontal: space.lg, paddingVertical: 10 },
-  danger: {
-    backgroundColor: colors.danger,
-    paddingHorizontal: space.md,
-    paddingVertical: 8,
-    borderRadius: 10,
-  },
-  dangerText: { color: '#fff', fontWeight: '600', fontSize: 14 },
-  small: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
-    paddingHorizontal: space.md,
-    paddingVertical: 8,
-    borderRadius: 10,
-  },
-  smallSolid: { backgroundColor: colors.primary, borderColor: colors.primary },
-  smallText: { color: colors.text, fontWeight: '600', fontSize: 14 },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    fill: { flex: 1 },
+    scroll: { alignItems: 'center', padding: space.lg, paddingBottom: 48 },
+    column: { width: '100%', gap: space.lg },
+    spinner: { marginTop: 48 },
+    titleRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: space.md,
+    },
+    title: { fontSize: 24, fontWeight: '700', color: colors.text, flexShrink: 1 },
+    error: { color: colors.danger, fontSize: 14 },
+    success: { color: colors.success, fontSize: 14 },
+    list: {
+      backgroundColor: colors.card,
+      borderRadius: radius,
+      borderWidth: 1,
+      borderColor: colors.border,
+      overflow: 'hidden',
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: space.md,
+      paddingHorizontal: space.lg,
+      paddingVertical: space.md,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: colors.border,
+    },
+    rowMain: { flex: 1, minWidth: 0, gap: 2 },
+    rowTitle: { fontSize: 16, fontWeight: '600', color: colors.text },
+    rowSub: { fontSize: 12, color: colors.muted },
+    rowRight: { flexDirection: 'row', alignItems: 'center', gap: space.sm, flexShrink: 0 },
+    field: { gap: space.xs, flex: 1, minWidth: 140 },
+    label: { fontSize: 13, fontWeight: '600', color: colors.muted },
+    multiline: { minHeight: 90, textAlignVertical: 'top' },
+    check: { flexDirection: 'row', alignItems: 'center', gap: space.sm, paddingVertical: 4 },
+    checkLabel: { flex: 1, fontSize: 15, color: colors.text },
+    box: {
+      width: 22,
+      height: 22,
+      borderRadius: 6,
+      borderWidth: 1.5,
+      borderColor: colors.muted,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.card,
+    },
+    boxOn: { backgroundColor: colors.primary, borderColor: colors.primary },
+    tick: {
+      color: getActiveTheme() === 'dark' ? colors.bg : '#fff',
+      fontSize: 14,
+      fontWeight: '700',
+    },
+    picker: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
+    pickerText: { fontSize: 15, color: colors.text, flexShrink: 1 },
+    disabled: { opacity: 0.4 },
+    menu: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radius,
+      backgroundColor: colors.card,
+      overflow: 'hidden',
+    },
+    menuScroll: { maxHeight: 240 },
+    menuItem: { paddingHorizontal: space.lg, paddingVertical: 10 },
+    danger: {
+      backgroundColor: colors.danger,
+      paddingHorizontal: space.md,
+      paddingVertical: 8,
+      borderRadius: 10,
+    },
+    dangerText: { color: '#fff', fontWeight: '600', fontSize: 14 },
+    small: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      backgroundColor: colors.card,
+      paddingHorizontal: space.md,
+      paddingVertical: 8,
+      borderRadius: 10,
+    },
+    smallSolid: { backgroundColor: colors.primary, borderColor: colors.primary },
+    smallText: { color: colors.text, fontWeight: '600', fontSize: 14 },
+    smallSolidText: {
+      color: getActiveTheme() === 'dark' ? colors.bg : '#fff',
+      fontWeight: '600',
+      fontSize: 14,
+    },
+  }),
+);

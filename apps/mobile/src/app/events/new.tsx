@@ -1,3 +1,5 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { ClubListResponse, GameDetailDto, ProvinceListResponse } from '@onboard/shared';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback } from 'react';
@@ -11,6 +13,7 @@ import { useFetch } from '../../features/use-fetch';
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 
 function NewEvent() {
+  useAppPreferences();
   const sp = useLocalSearchParams();
   const cafeSlug = first(sp.cafe);
   const clubSlug = first(sp.club);
@@ -69,11 +72,12 @@ function NewEvent() {
 }
 
 export default function NewEventPage() {
+  useAppPreferences();
   return (
     <Page maxWidth={576}>
-      <Stack.Screen options={{ title: 'Tạo kèo' }} />
-      <RequireLogin reason="Đăng nhập để tạo kèo.">
-        <Title>Tạo kèo</Title>
+      <Stack.Screen options={{ title: t('Tạo kèo') }} />
+      <RequireLogin reason={t('Đăng nhập để tạo kèo.')}>
+        <Title>{t('Tạo kèo')}</Title>
         <NewEvent />
       </RequireLogin>
     </Page>

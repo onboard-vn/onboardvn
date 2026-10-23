@@ -13,7 +13,7 @@ import { ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } fr
 import { api } from '../../api/client';
 import { Button, Chip, Heading, Hint } from '../../ui/primitives';
 import { useLoad } from '../../ui/use-load';
-import { colors, radius, space } from '../../ui/theme';
+import { themeStyles, colors, radius, space } from '../../ui/theme';
 import { CafeCard } from '../cafe-card';
 import { VENUE_TYPE_LABELS } from '../cafes/labels';
 import { errorMessage } from '../errors';
@@ -34,6 +34,8 @@ import {
   parseMapSearchParams,
   type MapFilterValues,
 } from './filters';
+import { getActiveLanguage, t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 
 const PROVINCE_KEY = 'onboard.map.province';
 
@@ -50,9 +52,11 @@ const PARAM_KEYS = ['province', 'game', 'venueType', 'byog', 'food', 'free', 'op
 const VENUE_TYPES = Object.keys(VENUE_TYPE_LABELS) as VenueType[];
 const WIDE = 768;
 
-const gameName = (g: { nameVi: string | null; nameEn: string }) => g.nameVi || g.nameEn;
+const gameName = (g: { nameVi: string | null; nameEn: string }) =>
+  getActiveLanguage() === 'en' ? g.nameEn : g.nameVi || g.nameEn;
 
 function PinList({ pins }: { pins: CafeMapPinDto[] }) {
+  useAppPreferences();
   return (
     <View style={styles.pinList}>
       {pins.map((pin) => (
@@ -63,7 +67,7 @@ function PinList({ pins }: { pins: CafeMapPinDto[] }) {
           >
             {pin.name}
           </Link>
-          <Hint>{VENUE_TYPE_LABELS[pin.venueType]}</Hint>
+          <Hint>{t(VENUE_TYPE_LABELS[pin.venueType])}</Hint>
         </View>
       ))}
     </View>
@@ -71,6 +75,7 @@ function PinList({ pins }: { pins: CafeMapPinDto[] }) {
 }
 
 export function MapScreen() {
+  useAppPreferences();
   const params = useLocalSearchParams<Record<string, string>>();
   const router = useRouter();
   const { width } = useWindowDimensions();
@@ -173,12 +178,12 @@ export function MapScreen() {
 
   const panel = (
     <View style={styles.panel}>
-      <Heading>Bản đồ quán</Heading>
+      <Heading>{t('Bản đồ quán')}</Heading>
 
       {provinceOptions.length > 0 ? (
         <TypeAhead
-          label="Tỉnh/thành"
-          placeholder="Gõ để tìm tỉnh/thành..."
+          label={t('Tỉnh/thành')}
+          placeholder={t('Gõ để tìm tỉnh/thành...')}
           options={provinceOptions}
           text={provinceText}
           onTextChange={setProvinceText}
@@ -191,15 +196,18 @@ export function MapScreen() {
       ) : null}
 
       <View style={styles.field}>
-        <Text style={styles.label}>Loại địa điểm</Text>
+        <Text style={styles.label}>{t('Loại địa điểm')}</Text>
         <View style={styles.chips}>
-          {VENUE_TYPES.map((t) => (
+          {VENUE_TYPES.map((venueType) => (
             <Chip
-              key={t}
-              label={VENUE_TYPE_LABELS[t]}
-              selected={filters.venueType === t}
+              key={venueType}
+              label={t(VENUE_TYPE_LABELS[venueType])}
+              selected={filters.venueType === venueType}
               onPress={() =>
-                apply({ ...filters, venueType: filters.venueType === t ? undefined : t })
+                apply({
+                  ...filters,
+                  venueType: filters.venueType === venueType ? undefined : venueType,
+                })
               }
             />
           ))}
@@ -207,7 +215,7 @@ export function MapScreen() {
       </View>
 
       <View style={styles.field}>
-        <Text style={styles.label}>Có game</Text>
+        <Text style={styles.label}>{t('Có game')}</Text>
         {selectedGameName ? (
           <View style={styles.picked}>
             <Text style={styles.pickedName}>{selectedGameName}</Text>
@@ -219,7 +227,7 @@ export function MapScreen() {
                 apply({ ...filters, gameSlug: undefined });
               }}
             >
-              Xoá
+              {t('Xoá')}
             </Text>
           </View>
         ) : (
@@ -229,12 +237,12 @@ export function MapScreen() {
               value={gameQuery}
               onChangeText={setGameQuery}
               onSubmitEditing={() => void searchGames()}
-              placeholder="Tên game..."
+              placeholder={t('Tên game...')}
               placeholderTextColor={colors.muted}
-              accessibilityLabel="Có game"
+              accessibilityLabel={t('Có game')}
               returnKeyType="search"
             />
-            <Button label="Tìm" onPress={() => void searchGames()} />
+            <Button label={t('Tìm')} onPress={() => void searchGames()} />
           </View>
         )}
         {gameError ? <Text style={styles.error}>{gameError}</Text> : null}
@@ -259,7 +267,7 @@ export function MapScreen() {
         {CRITERIA_CHIPS.map(({ key, label }) => (
           <Chip
             key={key}
-            label={label}
+            label={t(label)}
             selected={Boolean(filters[key])}
             onPress={() => apply({ ...filters, [key]: !filters[key] || undefined })}
           />
@@ -268,41 +276,49 @@ export function MapScreen() {
 
       {!wide ? (
         <Button
-          label={showList ? 'Xem bản đồ' : 'Xem danh sách'}
+          label={showList ? t('Xem bản đồ') : t('Xem danh sách')}
           tone="ghost"
           onPress={() => setShowList((v) => !v)}
         />
       ) : null}
 
-      {pins.loading ? <Hint>Đang tải…</Hint> : null}
+      {pins.loading ? <Hint>{t('Đang tải…')}</Hint> : null}
       {pins.error ? (
         <View style={styles.field}>
-          <Text style={styles.error}>Không tải được ghim bản đồ.</Text>
-          <Button label="Thử lại" tone="ghost" onPress={pins.reload} />
+          <Text style={styles.error}>{t('Không tải được ghim bản đồ.')}</Text>
+          <Button label={t('Thử lại')} tone="ghost" onPress={pins.reload} />
         </View>
       ) : null}
       {pinItems.length === 0 && !pins.loading && !pins.error ? (
         <Hint>
-          Chưa có quán nào được ghim trên bản đồ với bộ lọc này. Đội ngũ và chủ quán đang ghim dần
-          vị trí — danh sách quán vẫn có cả quán chưa ghim.
+          {t(
+            'Chưa có quán nào được ghim trên bản đồ với bộ lọc này. Đội ngũ và chủ quán đang ghim dần\n          vị trí — danh sách quán vẫn có cả quán chưa ghim.',
+          )}
         </Hint>
       ) : null}
       {wide || showList ? (
         listQuery ? (
           <View style={styles.field}>
             <Text style={styles.label}>
-              Danh sách quán{cafes.data ? ` (${cafes.data.total})` : ''}
+              {t('Danh sách quán')}
+              {cafes.data ? ` (${cafes.data.total})` : ''}
             </Text>
-            {cafes.loading ? <Hint>Đang tải…</Hint> : null}
-            {cafes.error ? <Text style={styles.error}>Không tải được danh sách quán.</Text> : null}
-            {cafes.data?.items.length === 0 ? <Hint>Không có quán nào khớp bộ lọc.</Hint> : null}
+            {cafes.loading ? <Hint>{t('Đang tải…')}</Hint> : null}
+            {cafes.error ? (
+              <Text style={styles.error}>{t('Không tải được danh sách quán.')}</Text>
+            ) : null}
+            {cafes.data?.items.length === 0 ? (
+              <Hint>{t('Không có quán nào khớp bộ lọc.')}</Hint>
+            ) : null}
             {cafes.data?.items.map((c) => (
               <CafeCard key={c.id} cafe={c} />
             ))}
           </View>
         ) : pinItems.length > 0 ? (
           <View style={styles.field}>
-            <Text style={styles.label}>Quán có game này ({pinItems.length})</Text>
+            <Text style={styles.label}>
+              {t('Quán có game này ({count})', { count: pinItems.length })}
+            </Text>
             <PinList pins={pinItems} />
           </View>
         ) : null
@@ -336,40 +352,42 @@ export function MapScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  screen: { flex: 1 },
-  row: { flex: 1, flexDirection: 'row' },
-  sidebar: { width: 320, flexGrow: 0, borderRightWidth: 1, borderRightColor: colors.border },
-  mapBox: { flex: 1, minHeight: 320 },
-  mapBoxNarrow: { height: 420 },
-  panel: { padding: space.lg, gap: space.md },
-  field: { gap: space.xs },
-  label: { fontSize: 13, fontWeight: '600', color: colors.muted },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
-  searchRow: { flexDirection: 'row', gap: space.sm, alignItems: 'center' },
-  searchInput: { flex: 1 },
-  picked: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius,
-    paddingHorizontal: space.md,
-    paddingVertical: 8,
-    backgroundColor: colors.card,
-  },
-  pickedName: { color: colors.text, flex: 1 },
-  clear: { color: colors.muted, fontSize: 12 },
-  result: { color: colors.primary, paddingVertical: 4 },
-  error: { color: colors.danger, fontSize: 13 },
-  pinList: { gap: space.sm },
-  pin: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 8,
-    padding: space.sm,
-    backgroundColor: colors.card,
-  },
-  pinName: { fontWeight: '600', color: colors.text },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    screen: { flex: 1 },
+    row: { flex: 1, flexDirection: 'row' },
+    sidebar: { width: 320, flexGrow: 0, borderRightWidth: 1, borderRightColor: colors.border },
+    mapBox: { flex: 1, minHeight: 320 },
+    mapBoxNarrow: { height: 420 },
+    panel: { padding: space.lg, gap: space.md },
+    field: { gap: space.xs },
+    label: { fontSize: 13, fontWeight: '600', color: colors.muted },
+    chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+    searchRow: { flexDirection: 'row', gap: space.sm, alignItems: 'center' },
+    searchInput: { flex: 1 },
+    picked: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radius,
+      paddingHorizontal: space.md,
+      paddingVertical: 8,
+      backgroundColor: colors.card,
+    },
+    pickedName: { color: colors.text, flex: 1 },
+    clear: { color: colors.muted, fontSize: 12 },
+    result: { color: colors.primary, paddingVertical: 4 },
+    error: { color: colors.danger, fontSize: 13 },
+    pinList: { gap: space.sm },
+    pin: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 8,
+      padding: space.sm,
+      backgroundColor: colors.card,
+    },
+    pinName: { fontWeight: '600', color: colors.text },
+  }),
+);

@@ -1,29 +1,35 @@
 import type { SuggestPoolItemDto } from '@onboard/shared';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Collapsible, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { mediaUrl } from '../media';
 import { gameName } from '../shelf/logic';
-import { RARITY, RARITY_ORDER } from './rarity';
+import { RARITY, RARITY_ORDER, rarityForeground } from './rarity';
+import { useAppPreferences } from '../../ui/preferences';
+import { t } from '../../ui/i18n';
 
 export function PoolPreview({ items, total }: { items: SuggestPoolItemDto[]; total: number }) {
+  useAppPreferences();
   const counts = RARITY_ORDER.map((r) => ({
     rarity: r,
     count: items.filter((i) => i.rarity === r).length,
   }));
   return (
-    <Collapsible title={`Trong chồng có gì? (${total} game)`}>
+    <Collapsible title={t('Trong chồng có gì? ({total} game)', { total })}>
       <View style={styles.counts}>
         {counts.map(({ rarity, count }) => (
           <Text key={rarity} style={styles.count}>
             <Text style={{ color: RARITY[rarity].color }}>■ </Text>
-            {RARITY[rarity].label}: {count}
+            {t(RARITY[rarity].label)}: {count}
           </Text>
         ))}
       </View>
       {total > items.length ? (
         <Hint>
-          Chồng bài lấy ngẫu nhiên {items.length}/{total} game mỗi lần chọn nguồn.
+          {t('Chồng bài lấy ngẫu nhiên {count}/{total} game mỗi lần chọn nguồn.', {
+            count: items.length,
+            total,
+          })}
         </Hint>
       ) : null}
       <View style={styles.grid}>
@@ -43,7 +49,9 @@ export function PoolPreview({ items, total }: { items: SuggestPoolItemDto[]; tot
               accessibilityLabel={gameName(i.game)}
               style={[styles.thumb, styles.blank, { borderColor: color, backgroundColor: color }]}
             >
-              <Text style={styles.initial}>{gameName(i.game).trim().charAt(0).toUpperCase()}</Text>
+              <Text style={[styles.initial, { color: rarityForeground(i.rarity) }]}>
+                {gameName(i.game).trim().charAt(0).toUpperCase()}
+              </Text>
             </View>
           );
         })}
@@ -52,11 +60,13 @@ export function PoolPreview({ items, total }: { items: SuggestPoolItemDto[]; tot
   );
 }
 
-const styles = StyleSheet.create({
-  counts: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
-  count: { fontSize: 13, color: colors.muted },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  thumb: { width: 48, height: 48, borderRadius: 8, borderWidth: 2 },
-  blank: { alignItems: 'center', justifyContent: 'center' },
-  initial: { color: '#fff', fontWeight: '800' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    counts: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
+    count: { fontSize: 13, color: colors.muted },
+    grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+    thumb: { width: 48, height: 48, borderRadius: 8, borderWidth: 2 },
+    blank: { alignItems: 'center', justifyContent: 'center' },
+    initial: { color: '#fff', fontWeight: '800' },
+  }),
+);

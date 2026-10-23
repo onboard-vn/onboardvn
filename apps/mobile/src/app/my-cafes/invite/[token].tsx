@@ -1,3 +1,5 @@
+import { t, translateKnown } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import type { CafeOwnerInvitePreviewDto } from '@onboard/shared';
 import { Link, Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
@@ -8,7 +10,7 @@ import { FormError } from '../../../features/my-cafes/form-bits';
 import { PageShell } from '../../../features/static/page-shell';
 import { useFetch } from '../../../features/use-fetch';
 import { Button, Hint } from '../../../ui/primitives';
-import { colors, space } from '../../../ui/theme';
+import { themeStyles, colors, space } from '../../../ui/theme';
 import { H2 } from '../../../features/static/text';
 
 const STATUS_MESSAGE: Record<string, string> = {
@@ -18,6 +20,7 @@ const STATUS_MESSAGE: Record<string, string> = {
 };
 
 function AcceptInvite({ token }: { token: string }) {
+  useAppPreferences();
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,21 +38,22 @@ function AcceptInvite({ token }: { token: string }) {
       setPending(false);
       setError(
         e instanceof ApiError && e.status === 410
-          ? 'Link mời đã hết hạn hoặc không còn hiệu lực'
-          : 'Không xác nhận được, thử lại sau',
+          ? t('Link mời đã hết hạn hoặc không còn hiệu lực')
+          : t('Không xác nhận được, thử lại sau'),
       );
     }
   };
 
   return (
     <View style={styles.center}>
-      <Button label="Xác nhận là chủ quán" disabled={pending} onPress={() => void accept()} />
+      <Button label={t('Xác nhận là chủ quán')} disabled={pending} onPress={() => void accept()} />
       <FormError message={error} />
     </View>
   );
 }
 
 export default function OwnerInvite() {
+  useAppPreferences();
   const { token } = useLocalSearchParams<{ token: string }>();
   const { user, loading: sessionLoading } = useSession();
   const load = useCallback(
@@ -63,33 +67,33 @@ export default function OwnerInvite() {
   const next = `/my-cafes/invite/${token}`;
 
   return (
-    <PageShell maxWidth={448} footer={false}>
-      <Stack.Screen options={{ title: 'Lời mời chủ quán' }} />
+    <PageShell maxWidth={448}>
+      <Stack.Screen options={{ title: t('Lời mời chủ quán') }} />
       {loading || sessionLoading ? (
         <ActivityIndicator />
       ) : !preview ? (
         status === 404 ? (
-          <Hint>Không tìm thấy lời mời này.</Hint>
+          <Hint>{t('Không tìm thấy lời mời này.')}</Hint>
         ) : (
           <View style={styles.center}>
-            <Hint>{error}</Hint>
-            <Button label="Thử lại" tone="ghost" onPress={reload} />
+            <Hint>{translateKnown(error ?? '')}</Hint>
+            <Button label={t('Thử lại')} tone="ghost" onPress={reload} />
           </View>
         )
       ) : (
         <View style={styles.center}>
-          <H2>Lời mời làm chủ địa điểm chơi &quot;{preview.cafeName}&quot;</H2>
+          <H2>{t('Lời mời làm chủ địa điểm chơi "{name}"', { name: preview.cafeName })}</H2>
           {preview.status !== 'valid' ? (
-            <Hint>{STATUS_MESSAGE[preview.status]}</Hint>
+            <Hint>{t(STATUS_MESSAGE[preview.status])}</Hint>
           ) : !user ? (
             <View style={styles.center}>
-              <Hint>Đăng nhập hoặc đăng ký tài khoản để nhận quyền quản lý quán.</Hint>
+              <Hint>{t('Đăng nhập hoặc đăng ký tài khoản để nhận quyền quản lý quán.')}</Hint>
               <View style={styles.links}>
                 <Link href={{ pathname: '/login', params: { next } }} style={styles.link}>
-                  Đăng nhập
+                  {t('Đăng nhập')}
                 </Link>
                 <Link href={{ pathname: '/signup', params: { next } }} style={styles.link}>
-                  Đăng ký
+                  {t('Đăng ký')}
                 </Link>
               </View>
             </View>
@@ -102,8 +106,10 @@ export default function OwnerInvite() {
   );
 }
 
-const styles = StyleSheet.create({
-  center: { alignItems: 'center', gap: space.md },
-  links: { flexDirection: 'row', gap: space.lg },
-  link: { color: colors.primary, fontWeight: '600', textDecorationLine: 'underline' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    center: { alignItems: 'center', gap: space.md },
+    links: { flexDirection: 'row', gap: space.lg },
+    link: { color: colors.primary, fontWeight: '600', textDecorationLine: 'underline' },
+  }),
+);

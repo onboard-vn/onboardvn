@@ -1,3 +1,5 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type {
   CafeConsentStatus,
   CafeCreateInput,
@@ -70,6 +72,7 @@ export function CafeForm({
   initial?: CafeMaintainerDto;
   onSaved?: () => void;
 }) {
+  useAppPreferences();
   const router = useRouter();
   const [v, setV] = useState<CafeFormValues>(() =>
     initial ? valuesFrom(initial) : emptyCafeValues(),
@@ -119,7 +122,7 @@ export function CafeForm({
         router.replace({ pathname: '/admin/cafes/[id]/edit', params: { id: cafe.id } });
       }
     } catch (e) {
-      setError(errorMessage(e, 'Có lỗi xảy ra, thử lại sau'));
+      setError(errorMessage(e, t('Có lỗi xảy ra, thử lại sau')));
     } finally {
       setPending(false);
     }
@@ -127,29 +130,29 @@ export function CafeForm({
 
   return (
     <View style={{ gap: space.lg }}>
-      <Field label="Tên quán *" value={v.name} onChangeText={(name) => patch({ name })} />
+      <Field label={t('Tên quán *')} value={v.name} onChangeText={(name) => patch({ name })} />
       <PickerField
-        label="Tỉnh/thành *"
-        placeholder="Chọn tỉnh/thành"
+        label={t('Tỉnh/thành *')}
+        placeholder={t('Chọn tỉnh/thành')}
         value={v.provinceCode}
         options={provinces.map((p) => ({ value: p.code, label: p.name }))}
         onChange={(code) => void onProvinceChange(code)}
       />
       <PickerField
-        label="Phường/xã *"
-        placeholder="Chọn phường/xã"
+        label={t('Phường/xã *')}
+        placeholder={t('Chọn phường/xã')}
         value={v.wardCode}
         disabled={!v.provinceCode}
         options={wards.map((w) => ({ value: w.code, label: w.name }))}
         onChange={(wardCode) => patch({ wardCode })}
       />
       <Field
-        label="Địa chỉ *"
+        label={t('Địa chỉ *')}
         value={v.addressLine}
         onChangeText={(addressLine) => patch({ addressLine })}
       />
       <Field
-        label="Địa bàn cũ (vd: Quận 3 cũ)"
+        label={t('Địa bàn cũ (vd: Quận 3 cũ)')}
         value={v.legacyDistrict}
         onChangeText={(legacyDistrict) => patch({ legacyDistrict })}
       />
@@ -163,66 +166,70 @@ export function CafeForm({
             borderRadius: 10,
           }}
         >
-          ⚠ Quán chưa ghim vị trí nên không hiện trên bản đồ. Ghim vị trí bên dưới.
+          {t('⚠ Quán chưa ghim vị trí nên không hiện trên bản đồ. Ghim vị trí bên dưới.')}
         </Text>
       ) : null}
       <PinEditor lat={v.lat} lng={v.lng} onChange={(lat, lng) => patch({ lat, lng })} />
 
       <PickerField
-        label="Loại địa điểm"
+        label={t('Loại địa điểm')}
         value={v.venueType}
-        options={VENUE_OPTIONS}
+        options={VENUE_OPTIONS.map((option) => ({ ...option, label: t(option.label) }))}
         onChange={(venueType) => patch({ venueType })}
       />
       <Field label="Fanpage" value={v.fanpage} onChangeText={(fanpage) => patch({ fanpage })} />
-      <Field label="Số điện thoại" value={v.phone} onChangeText={(phone) => patch({ phone })} />
-      <Field label="Link chỉ đường" value={v.maps} onChangeText={(maps) => patch({ maps })} />
+      <Field
+        label={t('Số điện thoại')}
+        value={v.phone}
+        onChangeText={(phone) => patch({ phone })}
+      />
+      <Field label={t('Link chỉ đường')} value={v.maps} onChangeText={(maps) => patch({ maps })} />
 
-      <Section title="Tiêu chí">
+      <Section title={t('Tiêu chí')}>
         <AmenitiesFields value={v.amenities} onChange={(amenities) => patch({ amenities })} />
       </Section>
 
-      <Section title="Cách tính phí">
+      <Section title={t('Cách tính phí')}>
         <PickerField
-          label="Hình thức"
+          label={t('Hình thức')}
           value={v.feeModel}
-          options={FEE_OPTIONS}
+          options={FEE_OPTIONS.map((option) => ({ ...option, label: t(option.label) }))}
           onChange={(feeModel) => patch({ feeModel })}
         />
         <Field
-          label="Ghi chú giá"
+          label={t('Ghi chú giá')}
           maxLength={120}
           value={v.feeNote}
           onChangeText={(feeNote) => patch({ feeNote })}
         />
       </Section>
 
-      <Section title="Giờ mở cửa">
+      <Section title={t('Giờ mở cửa')}>
         <OpeningHoursEditor value={v.hours} onChange={(hours) => patch({ hours })} />
       </Section>
 
       <PickerField
-        label="Trạng thái đồng ý (provenance) *"
+        label={t('Trạng thái đồng ý (provenance) *')}
         value={v.consentStatus}
-        options={CONSENT_OPTIONS}
+        options={CONSENT_OPTIONS.map((option) => ({ ...option, label: t(option.label) }))}
         onChange={(consentStatus) => patch({ consentStatus })}
       />
       <Field
-        label={`Nguồn dữ liệu (sourceUrl)${v.consentStatus !== 'granted' ? ' *' : ''}`}
+        label={`${t('Nguồn dữ liệu (sourceUrl)')}${v.consentStatus !== 'granted' ? ' *' : ''}`}
         value={v.sourceUrl}
         onChangeText={(sourceUrl) => patch({ sourceUrl })}
       />
       <Field
-        label="Ghi chú nội bộ (không hiển thị công khai)"
+        label={t('Ghi chú nội bộ (không hiển thị công khai)')}
         multiline
         value={v.consentNote}
         onChangeText={(consentNote) => patch({ consentNote })}
       />
 
       <ErrorText message={error} />
-      <SuccessText message={saved ? 'Đã lưu thay đổi' : null} />
+      <SuccessText message={saved ? t('Đã lưu thay đổi') : null} />
       <Button
-        label={initial ? 'Lưu thay đổi' : 'Tạo quán'}
+        label={initial ? t('Lưu thay đổi') : t('Tạo quán')}
         disabled={pending}
         onPress={() => void onSubmit()}
       />

@@ -1,9 +1,11 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { BarcodeLookupResult, BulkAddGamesResult } from '@onboard/shared';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { api } from '../../api/client';
 import { Badge, Button, Card, Hint } from '../../ui/primitives';
-import { colors, space } from '../../ui/theme';
+import { themeStyles, colors, space } from '../../ui/theme';
 import { errorMessage } from '../errors';
 import { BarcodeScanner } from './barcode-scanner';
 import { displayName, type ResolvedGame } from './game-name';
@@ -33,7 +35,7 @@ function ScanEntryRow({
       });
       onLinked(entry.code, { id: gameId, name: gameName });
     } catch (e) {
-      setLinkError(errorMessage(e, 'Không gắn được mã vạch'));
+      setLinkError(errorMessage(e, t('Không gắn được mã vạch')));
     } finally {
       setPending(false);
     }
@@ -44,12 +46,12 @@ function ScanEntryRow({
       <View style={styles.between}>
         <Text style={styles.code}>{entry.code}</Text>
         {entry.status === 'local' || entry.status === 'linked' ? (
-          <Badge label={entry.game?.name ?? 'Đã gắn'} />
+          <Badge label={entry.game?.name ?? t('Đã gắn')} />
         ) : null}
-        {entry.status === 'loading' ? <Hint>Đang tra cứu...</Hint> : null}
+        {entry.status === 'loading' ? <Hint>{t('Đang tra cứu...')}</Hint> : null}
       </View>
 
-      {entry.status === 'error' ? <ErrorText message={entry.error ?? NETWORK_ERROR} /> : null}
+      {entry.status === 'error' ? <ErrorText message={entry.error ?? t(NETWORK_ERROR)} /> : null}
 
       {entry.status === 'candidates' && entry.candidates ? (
         <View style={{ gap: space.sm }}>
@@ -57,12 +59,12 @@ function ScanEntryRow({
             <View key={c.bggId} style={styles.between}>
               <Text style={styles.text}>
                 {c.name} <Text style={styles.muted}>({c.confidence}%)</Text>
-                {c.localGame ? <Text style={styles.ok}> – có trong danh mục</Text> : null}
+                {c.localGame ? <Text style={styles.ok}> – {t('Có trong danh mục')}</Text> : null}
               </Text>
               {c.localGame ? (
                 <SmallButton
                   tone="solid"
-                  label="Dùng gợi ý này"
+                  label={t('Dùng gợi ý này')}
                   disabled={pending}
                   onPress={() => void link(c.localGame!.id, displayName(c.localGame!), true)}
                 />
@@ -80,8 +82,8 @@ function ScanEntryRow({
         <View style={{ gap: space.sm }}>
           <Hint>
             {entry.providerError
-              ? 'Không tra cứu được từ GameUPC (lỗi tạm thời). Chọn game thủ công bên dưới.'
-              : 'Chưa có gợi ý, chọn game thủ công.'}
+              ? t('Không tra cứu được từ GameUPC (lỗi tạm thời). Chọn game thủ công bên dưới.')
+              : t('Chưa có gợi ý, chọn game thủ công.')}
           </Hint>
           <GamePicker onPick={(g) => void link(g.id, g.name, false)} />
         </View>
@@ -93,6 +95,7 @@ function ScanEntryRow({
 }
 
 export function ScanSession({ cafes }: { cafes: { id: string; name: string }[] }) {
+  useAppPreferences();
   const [entries, setEntries] = useState<ScanEntry[]>([]);
   const [cafeId, setCafeId] = useState<string>(cafes[0]?.id ?? '');
   const [bulkPending, setBulkPending] = useState(false);
@@ -111,7 +114,11 @@ export function ScanSession({ cafes }: { cafes: { id: string; name: string }[] }
       const body = await api<BarcodeLookupResult>(`/barcodes/${encodeURIComponent(code)}`);
       update(code, (e) => applyLookup(e, body));
     } catch (e) {
-      update(code, (cur) => ({ ...cur, status: 'error', error: errorMessage(e, NETWORK_ERROR) }));
+      update(code, (cur) => ({
+        ...cur,
+        status: 'error',
+        error: errorMessage(e, t(NETWORK_ERROR)),
+      }));
     }
   }
 
@@ -137,7 +144,7 @@ export function ScanSession({ cafes }: { cafes: { id: string; name: string }[] }
         }),
       );
     } catch (e) {
-      setBulkError(errorMessage(e, 'Không thêm được game vào kho'));
+      setBulkError(errorMessage(e, t('Không thêm được game vào kho')));
     } finally {
       setBulkPending(false);
     }
@@ -152,29 +159,32 @@ export function ScanSession({ cafes }: { cafes: { id: string; name: string }[] }
           <Field
             value={manualCode}
             onChangeText={setManualCode}
-            placeholder="Nhập mã vạch (EAN/UPC) khi camera kém"
+            placeholder={t('Nhập mã vạch (EAN/UPC) khi camera kém')}
             keyboardType="number-pad"
           />
         </View>
-        <Button label="Tra cứu" onPress={onManualSubmit} />
+        <Button label={t('Tra cứu')} onPress={onManualSubmit} />
       </View>
 
       <Card>
         <PickerField
-          label="Địa điểm chơi"
-          placeholder="Chọn địa điểm chơi"
+          label={t('Địa điểm chơi')}
+          placeholder={t('Chọn địa điểm chơi')}
           value={cafeId}
           options={cafes.map((c) => ({ value: c.id, label: c.name }))}
           onChange={setCafeId}
         />
         <Button
-          label={`Thêm ${ready.length} game vào kho`}
+          label={t('Thêm {count} game vào kho', { count: ready.length })}
           disabled={!cafeId || ready.length === 0 || bulkPending}
           onPress={() => void onBulkAdd()}
         />
         {bulkResult ? (
           <Hint>
-            Đã thêm {bulkResult.added}, bỏ qua {bulkResult.skipped} (đã có sẵn).
+            {t('Đã thêm {added}, bỏ qua {skipped} (đã có sẵn).', {
+              added: bulkResult.added,
+              skipped: bulkResult.skipped,
+            })}
           </Hint>
         ) : null}
         <ErrorText message={bulkError} />
@@ -188,21 +198,23 @@ export function ScanSession({ cafes }: { cafes: { id: string; name: string }[] }
             onLinked={(code, game) => update(code, (e) => ({ ...e, status: 'linked', game }))}
           />
         ))}
-        {entries.length === 0 ? <Hint>Chưa quét mã nào trong phiên này.</Hint> : null}
+        {entries.length === 0 ? <Hint>{t('Chưa quét mã nào trong phiên này.')}</Hint> : null}
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  between: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: space.sm,
-  },
-  code: { fontFamily: 'monospace', fontSize: 15, color: colors.text },
-  text: { fontSize: 14, color: colors.text, flex: 1 },
-  muted: { fontSize: 12, color: colors.muted },
-  ok: { fontSize: 12, color: colors.success },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    between: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: space.sm,
+    },
+    code: { fontFamily: 'monospace', fontSize: 15, color: colors.text },
+    text: { fontSize: 14, color: colors.text, flex: 1 },
+    muted: { fontSize: 12, color: colors.muted },
+    ok: { fontSize: 12, color: colors.success },
+  }),
+);

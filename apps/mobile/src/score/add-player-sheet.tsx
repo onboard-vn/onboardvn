@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import type { RosterApi, RosterPlayer } from '../api/plays-types';
 import { Avatar, Button, Heading, Hint } from '../ui/primitives';
-import { colors } from '../ui/theme';
+import { themeStyles, colors } from '../ui/theme';
+import { useAppPreferences } from '../ui/preferences';
 import type { Player } from './model';
-
+import { scoreFeedbackText, scoreText } from './localization';
 const normalize = (s: string) =>
   s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase();
 
@@ -21,6 +22,7 @@ export function AddPlayerSheet({
   onPick: (p: Player) => Promise<void>;
   onClose: () => void;
 }) {
+  useAppPreferences();
   const [query, setQuery] = useState('');
   const [guestMode, setGuestMode] = useState(false);
   const [guestName, setGuestName] = useState('');
@@ -87,36 +89,44 @@ export function AddPlayerSheet({
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={close}>
       <View style={styles.backdrop}>
-        <Pressable style={styles.dismiss} onPress={close} accessibilityLabel="Đóng" />
+        <Pressable style={styles.dismiss} onPress={close} accessibilityLabel={scoreText('Đóng')} />
         <View style={styles.sheet}>
-          <Heading>{guestMode ? 'Thêm khách' : 'Chọn người chơi'}</Heading>
+          <Heading>{guestMode ? scoreText('Thêm khách') : scoreText('Chọn người chơi')}</Heading>
           {guestMode ? (
             <View style={{ gap: 10 }}>
               <TextInput
                 value={guestName}
                 onChangeText={setGuestName}
-                placeholder="Tên hiển thị"
+                placeholder={scoreText('Tên hiển thị')}
                 style={styles.input}
                 autoFocus
               />
               <TextInput
                 value={birthYear}
                 onChangeText={setBirthYear}
-                placeholder="Năm sinh (không bắt buộc)"
+                placeholder={scoreText('Năm sinh (không bắt buộc)')}
                 keyboardType="number-pad"
                 maxLength={4}
                 style={styles.input}
               />
-              {!yearOk ? <Hint>Năm sinh không hợp lệ.</Hint> : null}
-              <Button label="Thêm khách" onPress={addGuest} disabled={!guestOk || busy} />
-              <Button label="Quay lại danh sách" tone="ghost" onPress={() => setGuestMode(false)} />
+              {!yearOk ? <Hint>{scoreText('Năm sinh không hợp lệ.')}</Hint> : null}
+              <Button
+                label={scoreText('Thêm khách')}
+                onPress={addGuest}
+                disabled={!guestOk || busy}
+              />
+              <Button
+                label={scoreText('Quay lại danh sách')}
+                tone="ghost"
+                onPress={() => setGuestMode(false)}
+              />
             </View>
           ) : (
             <>
               <TextInput
                 value={query}
                 onChangeText={setQuery}
-                placeholder="Tìm thành viên CLB"
+                placeholder={scoreText('Tìm thành viên CLB')}
                 style={styles.input}
               />
               <ScrollView style={styles.list} keyboardShouldPersistTaps="handled">
@@ -132,44 +142,52 @@ export function AddPlayerSheet({
                     <Text style={styles.optionName}>{m.name}</Text>
                   </Pressable>
                 ))}
-                {options.length === 0 ? <Hint>Không có thành viên phù hợp.</Hint> : null}
+                {options.length === 0 ? (
+                  <Hint>{scoreText('Không có thành viên phù hợp.')}</Hint>
+                ) : null}
               </ScrollView>
-              <Button label="Thêm khách" tone="ghost" onPress={() => setGuestMode(true)} />
+              <Button
+                label={scoreText('Thêm khách')}
+                tone="ghost"
+                onPress={() => setGuestMode(true)}
+              />
             </>
           )}
-          {error ? <Text style={styles.error}>{error}</Text> : null}
-          <Button label="Đóng" tone="ghost" onPress={close} />
+          {error ? <Text style={styles.error}>{scoreFeedbackText(error)}</Text> : null}
+          <Button label={scoreText('Đóng')} tone="ghost" onPress={close} />
         </View>
       </View>
     </Modal>
   );
 }
 
-const styles = StyleSheet.create({
-  backdrop: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.35)' },
-  dismiss: { flex: 1 },
-  sheet: {
-    backgroundColor: colors.card,
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
-    padding: 16,
-    gap: 12,
-    maxHeight: '80%',
-    width: '100%',
-    maxWidth: 720,
-    alignSelf: 'center',
-  },
-  input: {
-    height: 42,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    backgroundColor: '#fff',
-    fontSize: 15,
-  },
-  list: { maxHeight: 280 },
-  option: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 },
-  error: { color: colors.danger },
-  optionName: { fontSize: 16, color: colors.text, fontWeight: '500' },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    backdrop: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.35)' },
+    dismiss: { flex: 1 },
+    sheet: {
+      backgroundColor: colors.card,
+      borderTopLeftRadius: 18,
+      borderTopRightRadius: 18,
+      padding: 16,
+      gap: 12,
+      maxHeight: '80%',
+      width: '100%',
+      maxWidth: 720,
+      alignSelf: 'center',
+    },
+    input: {
+      height: 42,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 10,
+      paddingHorizontal: 12,
+      backgroundColor: colors.card,
+      fontSize: 15,
+    },
+    list: { maxHeight: 280 },
+    option: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 },
+    error: { color: colors.danger },
+    optionName: { fontSize: 16, color: colors.text, fontWeight: '500' },
+  }),
+);

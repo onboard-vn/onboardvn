@@ -1,3 +1,5 @@
+import { t, translateKnown } from '../ui/i18n';
+import { useAppPreferences } from '../ui/preferences';
 import type { FriendRequestDto, FriendSummary } from '@onboard/shared';
 import { Stack } from 'expo-router';
 import { useCallback, useState, type ReactNode } from 'react';
@@ -9,7 +11,7 @@ import { mediaUrl } from '../features/media';
 import { SearchInput } from '../features/search-input';
 import { useFetch } from '../features/use-fetch';
 import { Avatar, Button, Card, Heading, Hint, Segmented } from '../ui/primitives';
-import { colors, space } from '../ui/theme';
+import { themeStyles, colors, space } from '../ui/theme';
 
 type Tab = 'friends' | 'requests' | 'blocked';
 
@@ -25,6 +27,7 @@ const loadOutgoing = (signal: AbortSignal) =>
   api<{ items: FriendRequestDto[] }>('/friends/requests', { query: { dir: 'out' }, signal });
 
 function PersonRow({ person, actions }: { person: FriendSummary; actions: ReactNode }) {
+  useAppPreferences();
   const image = mediaUrl(person.image);
   return (
     <Card style={styles.person}>
@@ -49,7 +52,7 @@ function useAction(onError: (message: string | null) => void) {
         await run();
         onDone();
       } catch (e) {
-        onError(errorMessage(e, 'Thao tác thất bại, thử lại sau'));
+        onError(errorMessage(e, t('Thao tác thất bại, thử lại sau')));
       }
     },
     [onError],
@@ -69,12 +72,13 @@ function ListState({
   empty: string;
   isEmpty: boolean;
 }) {
+  useAppPreferences();
   if (loading) return <ActivityIndicator />;
   if (error) {
     return (
       <View style={styles.stack}>
-        <Text style={styles.error}>{error}</Text>
-        <Button label="Thử lại" tone="ghost" onPress={onRetry} />
+        <Text style={styles.error}>{translateKnown(error ?? '')}</Text>
+        <Button label={t('Thử lại')} tone="ghost" onPress={onRetry} />
       </View>
     );
   }
@@ -82,6 +86,7 @@ function ListState({
 }
 
 function AddFriend() {
+  useAppPreferences();
   const [username, setUsername] = useState('');
   const [message, setMessage] = useState<{ text: string; ok: boolean } | null>(null);
   const [busy, setBusy] = useState(false);
@@ -92,10 +97,10 @@ function AddFriend() {
     setBusy(true);
     try {
       await api('/friends/requests', { body: { username: name } });
-      setMessage({ text: 'Đã gửi lời mời kết bạn.', ok: true });
+      setMessage({ text: t('Đã gửi lời mời kết bạn.'), ok: true });
       setUsername('');
     } catch (e) {
-      setMessage({ text: errorMessage(e, 'Không gửi được lời mời, thử lại sau'), ok: false });
+      setMessage({ text: errorMessage(e, t('Không gửi được lời mời, thử lại sau')), ok: false });
     } finally {
       setBusy(false);
     }
@@ -103,20 +108,25 @@ function AddFriend() {
 
   return (
     <Card>
-      <Heading>Kết bạn theo username</Heading>
+      <Heading>{t('Kết bạn theo username')}</Heading>
       <SearchInput
         value={username}
         onChangeText={setUsername}
-        placeholder="Username của bạn bè"
-        label="Username"
+        placeholder={t('Username của bạn bè')}
+        label={t('Username')}
       />
-      <Button label="Gửi lời mời" disabled={busy || !username.trim()} onPress={() => void send()} />
+      <Button
+        label={t('Gửi lời mời')}
+        disabled={busy || !username.trim()}
+        onPress={() => void send()}
+      />
       {message ? <Text style={message.ok ? styles.ok : styles.error}>{message.text}</Text> : null}
     </Card>
   );
 }
 
 function FriendsTab() {
+  useAppPreferences();
   const list = useFetch(loadFriends);
   const [error, setError] = useState<string | null>(null);
   const act = useAction(setError);
@@ -124,12 +134,12 @@ function FriendsTab() {
   return (
     <View style={styles.stack}>
       <AddFriend />
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+      {error ? <Text style={styles.error}>{translateKnown(error ?? '')}</Text> : null}
       <ListState
         loading={list.loading}
         error={list.error}
         onRetry={list.reload}
-        empty="Chưa có bạn bè."
+        empty={t('Chưa có bạn bè.')}
         isEmpty={items.length === 0}
       />
       {items.map((f) => (
@@ -138,7 +148,7 @@ function FriendsTab() {
           person={f}
           actions={
             <Button
-              label="Hủy kết bạn"
+              label={t('Hủy kết bạn')}
               tone="ghost"
               onPress={() =>
                 void act(
@@ -155,6 +165,7 @@ function FriendsTab() {
 }
 
 function RequestsTab() {
+  useAppPreferences();
   const incoming = useFetch(loadIncoming);
   const outgoing = useFetch(loadOutgoing);
   const [error, setError] = useState<string | null>(null);
@@ -170,13 +181,13 @@ function RequestsTab() {
 
   return (
     <View style={styles.stack}>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-      <Heading>Đến bạn</Heading>
+      {error ? <Text style={styles.error}>{translateKnown(error ?? '')}</Text> : null}
+      <Heading>{t('Đến bạn')}</Heading>
       <ListState
         loading={incoming.loading}
         error={incoming.error}
         onRetry={incoming.reload}
-        empty="Không có lời mời nào."
+        empty={t('Không có lời mời nào.')}
         isEmpty={(incoming.data?.items.length ?? 0) === 0}
       />
       {(incoming.data?.items ?? []).map((r) => (
@@ -185,9 +196,9 @@ function RequestsTab() {
           person={r.user}
           actions={
             <>
-              <Button label="Chấp nhận" onPress={() => respond(r.fromUserId, 'accept')} />
+              <Button label={t('Chấp nhận')} onPress={() => respond(r.fromUserId, 'accept')} />
               <Button
-                label="Từ chối"
+                label={t('Từ chối')}
                 tone="ghost"
                 onPress={() => respond(r.fromUserId, 'decline')}
               />
@@ -195,12 +206,12 @@ function RequestsTab() {
           }
         />
       ))}
-      <Heading>Bạn đã gửi</Heading>
+      <Heading>{t('Bạn đã gửi')}</Heading>
       <ListState
         loading={outgoing.loading}
         error={outgoing.error}
         onRetry={outgoing.reload}
-        empty="Không có lời mời nào."
+        empty={t('Không có lời mời nào.')}
         isEmpty={(outgoing.data?.items.length ?? 0) === 0}
       />
       {(outgoing.data?.items ?? []).map((r) => (
@@ -209,7 +220,7 @@ function RequestsTab() {
           person={r.user}
           actions={
             <Button
-              label="Hủy"
+              label={t('Hủy')}
               tone="ghost"
               onPress={() =>
                 void act(
@@ -232,18 +243,19 @@ function RequestsTab() {
 }
 
 function BlockedTab() {
+  useAppPreferences();
   const list = useFetch(loadBlocked);
   const [error, setError] = useState<string | null>(null);
   const act = useAction(setError);
   const items = list.data?.items ?? [];
   return (
     <View style={styles.stack}>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+      {error ? <Text style={styles.error}>{translateKnown(error ?? '')}</Text> : null}
       <ListState
         loading={list.loading}
         error={list.error}
         onRetry={list.reload}
-        empty="Chưa chặn ai."
+        empty={t('Chưa chặn ai.')}
         isEmpty={items.length === 0}
       />
       {items.map((p) => (
@@ -252,7 +264,7 @@ function BlockedTab() {
           person={p}
           actions={
             <Button
-              label="Bỏ chặn"
+              label={t('Bỏ chặn')}
               tone="ghost"
               onPress={() =>
                 void act(
@@ -270,6 +282,7 @@ function BlockedTab() {
 }
 
 function FriendsTabs() {
+  useAppPreferences();
   const [tab, setTab] = useState<Tab>('friends');
   return (
     <View style={styles.stack}>
@@ -277,9 +290,9 @@ function FriendsTabs() {
         value={tab}
         onChange={setTab}
         options={[
-          { value: 'friends', label: 'Bạn bè' },
-          { value: 'requests', label: 'Lời mời' },
-          { value: 'blocked', label: 'Đã chặn' },
+          { value: 'friends', label: t('Bạn bè') },
+          { value: 'requests', label: t('Lời mời') },
+          { value: 'blocked', label: t('Đã chặn') },
         ]}
       />
       {tab === 'friends' ? <FriendsTab /> : null}
@@ -290,11 +303,12 @@ function FriendsTabs() {
 }
 
 export default function FriendsScreen() {
+  useAppPreferences();
   return (
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ title: 'Bạn bè' }} />
+      <Stack.Screen options={{ title: t('Bạn bè') }} />
       <View style={styles.column}>
-        <RequireLogin reason="Đăng nhập để xem bạn bè và lời mời kết bạn.">
+        <RequireLogin reason={t('Đăng nhập để xem bạn bè và lời mời kết bạn.')}>
           <FriendsTabs />
         </RequireLogin>
       </View>
@@ -302,14 +316,16 @@ export default function FriendsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  content: { padding: space.lg, alignItems: 'center' },
-  column: { width: '100%', maxWidth: 720 },
-  stack: { gap: space.md },
-  person: { flexDirection: 'row', alignItems: 'center', gap: space.md, flexWrap: 'wrap' },
-  avatar: { width: 36, height: 36, borderRadius: 18, backgroundColor: colors.border },
-  name: { flex: 1, minWidth: 100, fontSize: 15, fontWeight: '600', color: colors.text },
-  actions: { flexDirection: 'row', gap: space.sm },
-  error: { color: colors.danger },
-  ok: { color: colors.success },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    content: { padding: space.lg, alignItems: 'center' },
+    column: { width: '100%', maxWidth: 720 },
+    stack: { gap: space.md },
+    person: { flexDirection: 'row', alignItems: 'center', gap: space.md, flexWrap: 'wrap' },
+    avatar: { width: 36, height: 36, borderRadius: 18, backgroundColor: colors.border },
+    name: { flex: 1, minWidth: 100, fontSize: 15, fontWeight: '600', color: colors.text },
+    actions: { flexDirection: 'row', gap: space.sm },
+    error: { color: colors.danger },
+    ok: { color: colors.success },
+  }),
+);

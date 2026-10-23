@@ -1,3 +1,4 @@
+import { t } from '../../ui/i18n';
 import type {
   CafeAmenities,
   CafeConsentStatus,
@@ -50,12 +51,12 @@ export const emptyCafeValues = (): CafeFormValues => ({
 });
 
 export function validateCafe(v: CafeFormValues): string | null {
-  if (!v.name.trim()) return 'Nhập tên quán';
-  if (!v.provinceCode) return 'Chọn tỉnh/thành';
-  if (!v.wardCode) return 'Chọn phường/xã';
-  if (!v.addressLine.trim()) return 'Nhập địa chỉ';
+  if (!v.name.trim()) return t('Nhập tên quán');
+  if (!v.provinceCode) return t('Chọn tỉnh/thành');
+  if (!v.wardCode) return t('Chọn phường/xã');
+  if (!v.addressLine.trim()) return t('Nhập địa chỉ');
   if (v.consentStatus !== 'granted' && !v.sourceUrl.trim()) {
-    return 'Nguồn dữ liệu (sourceUrl) bắt buộc khi chưa được đồng ý';
+    return t('Nguồn dữ liệu (sourceUrl) bắt buộc khi chưa được đồng ý');
   }
   return null;
 }

@@ -1,3 +1,5 @@
+import { t, translateKnown } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import type { CafeForGameDto, GameDetailDto } from '@onboard/shared';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback } from 'react';
@@ -20,9 +22,10 @@ import { getGame } from '../../../games/catalog';
 import { gameModules } from '../../../games/modules';
 import { scoreTemplates } from '../../../score/templates';
 import { Badge, Button, Card, Collapsible, Heading, Hint } from '../../../ui/primitives';
-import { colors, space } from '../../../ui/theme';
+import { themeStyles, colors, space } from '../../../ui/theme';
 
 function MetaGrid({ meta }: { meta: GameView['meta'] }) {
+  useAppPreferences();
   return (
     <View style={styles.grid}>
       {meta.map((m) => (
@@ -36,6 +39,7 @@ function MetaGrid({ meta }: { meta: GameView['meta'] }) {
 }
 
 function TagRow({ title, items }: { title: string; items: string[] }) {
+  useAppPreferences();
   if (items.length === 0) return null;
   return (
     <View style={styles.tags}>
@@ -52,6 +56,7 @@ function TagRow({ title, items }: { title: string; items: string[] }) {
 }
 
 function Description({ description }: { description: NonNullable<GameView['description']> }) {
+  useAppPreferences();
   const body = (
     <>
       <Text style={styles.body}>{description.text}</Text>
@@ -59,20 +64,21 @@ function Description({ description }: { description: NonNullable<GameView['descr
     </>
   );
   return description.foreign ? (
-    <Collapsible title="Mô tả gốc (EN) — bấm để xem">{body}</Collapsible>
+    <Collapsible title={t('Mô tả gốc (EN) — bấm để xem')}>{body}</Collapsible>
   ) : (
     <Card>
-      <Heading>Giới thiệu</Heading>
+      <Heading>{t('Giới thiệu')}</Heading>
       {body}
     </Card>
   );
 }
 
 function PlaceList({ cafes }: { cafes: CafeForGameDto[] }) {
+  useAppPreferences();
   if (cafes.length === 0) return null;
   return (
     <View style={styles.section}>
-      <Heading>Nơi chơi</Heading>
+      <Heading>{t('Nơi chơi')}</Heading>
       {cafes.map((c) => (
         <Link key={c.id} href={{ pathname: '/cafes/[slug]', params: { slug: c.slug } }} asChild>
           <Pressable accessibilityRole="button">
@@ -90,6 +96,7 @@ function PlaceList({ cafes }: { cafes: CafeForGameDto[] }) {
 }
 
 export default function GameDetail() {
+  useAppPreferences();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const local = slug ? getGame(slug) : undefined;
 
@@ -112,7 +119,7 @@ export default function GameDetail() {
     return (
       <View style={styles.content}>
         <Stack.Screen options={{ title: 'Game' }} />
-        {detail.loading ? <ActivityIndicator /> : <Hint>Không tìm thấy game.</Hint>}
+        {detail.loading ? <ActivityIndicator /> : <Hint>{t('Không tìm thấy game.')}</Hint>}
       </View>
     );
   }
@@ -130,8 +137,12 @@ export default function GameDetail() {
         <Card>
           <Text style={styles.title}>{view.name}</Text>
           {view.subName ? <Text style={styles.meta}>{view.subName}</Text> : null}
-          {view.isVietnamese ? <Badge label="Việt hóa" /> : null}
-          {view.ownersCount > 0 ? <Hint>{view.ownersCount} người có game này</Hint> : null}
+          {view.isVietnamese ? <Badge label={t('Việt hóa')} /> : null}
+          {view.ownersCount > 0 ? (
+            <Hint>
+              {view.ownersCount} {t('người có game này')}
+            </Hint>
+          ) : null}
           {image ? (
             <Image
               source={{ uri: image }}
@@ -140,22 +151,31 @@ export default function GameDetail() {
               accessibilityIgnoresInvertColors
             />
           ) : null}
-          {view.imageCredit ? <Hint>Ảnh: {view.imageCredit}</Hint> : null}
+          {view.imageCredit ? (
+            <Hint>
+              {t('Ảnh:')} {view.imageCredit}
+            </Hint>
+          ) : null}
           {detail.data ? (
             <WishlistButton gameId={detail.data.id} nextPath={`/games/${gameSlug}`} />
           ) : null}
           <MetaGrid meta={view.meta} />
-          <TagRow title="Thể loại" items={view.categories} />
-          <TagRow title="Cơ chế" items={view.mechanics} />
-          {apiFailed ? <Hint>{detail.error}. Đang hiển thị thông tin offline.</Hint> : null}
+          <TagRow title={t('Thể loại')} items={view.categories} />
+          <TagRow title={t('Cơ chế')} items={view.mechanics} />
+          {apiFailed ? (
+            <Hint>
+              {translateKnown(detail.error ?? '')}
+              {t('. Đang hiển thị thông tin offline.')}
+            </Hint>
+          ) : null}
         </Card>
 
-        {modules.length > 0 ? <Heading>Công cụ</Heading> : null}
+        {modules.length > 0 ? <Heading>{t('Công cụ')}</Heading> : null}
         {modules.map((m) => (
           <Link key={m.key} href={m.href} asChild>
             <Pressable accessibilityRole="button">
               <Card>
-                <Heading>{m.title}</Heading>
+                <Heading>{t(m.title)}</Heading>
                 <Text style={styles.meta}>{m.description}</Text>
               </Card>
             </Pressable>
@@ -166,15 +186,15 @@ export default function GameDetail() {
           <Link href={{ pathname: '/score/[slug]', params: { slug: gameSlug } }} asChild>
             <Pressable accessibilityRole="button">
               <Card>
-                <Heading>Tính điểm</Heading>
-                <Text style={styles.meta}>Mở bảng điểm cho game này.</Text>
+                <Heading>{t('Tính điểm')}</Heading>
+                <Text style={styles.meta}>{t('Mở bảng điểm cho game này.')}</Text>
               </Card>
             </Pressable>
           </Link>
         ) : (
           <Card style={styles.disabled}>
-            <Heading>Tính điểm</Heading>
-            <Hint>Chưa có bảng điểm</Hint>
+            <Heading>{t('Tính điểm')}</Heading>
+            <Hint>{t('Chưa có bảng điểm')}</Hint>
           </Card>
         )}
 
@@ -182,7 +202,7 @@ export default function GameDetail() {
         {view.bggUrl ? (
           <Button
             tone="ghost"
-            label="Xem trên BoardGameGeek"
+            label={t('Xem trên BoardGameGeek')}
             onPress={() => void Linking.openURL(view.bggUrl as string)}
           />
         ) : null}
@@ -192,27 +212,29 @@ export default function GameDetail() {
   );
 }
 
-const styles = StyleSheet.create({
-  content: { padding: space.lg, alignItems: 'center' },
-  column: { width: '100%', maxWidth: 720, gap: space.md },
-  title: { fontSize: 22, fontWeight: '700', color: colors.text },
-  meta: { color: colors.muted },
-  body: { color: colors.text, lineHeight: 21 },
-  disabled: { opacity: 0.5 },
-  image: { width: '100%', height: 240, borderRadius: 8 },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
-  cell: { minWidth: 120, gap: 2 },
-  cellLabel: { fontSize: 12, color: colors.muted },
-  cellValue: { fontSize: 15, fontWeight: '600', color: colors.text },
-  tags: { gap: space.xs },
-  tag: {
-    paddingHorizontal: space.md,
-    paddingVertical: 4,
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  tagText: { color: colors.text, fontSize: 13 },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
-  section: { gap: space.md },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    content: { padding: space.lg, alignItems: 'center' },
+    column: { width: '100%', maxWidth: 720, gap: space.md },
+    title: { fontSize: 22, fontWeight: '700', color: colors.text },
+    meta: { color: colors.muted },
+    body: { color: colors.text, lineHeight: 21 },
+    disabled: { opacity: 0.5 },
+    image: { width: '100%', height: 240, borderRadius: 8 },
+    grid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
+    cell: { minWidth: 120, gap: 2 },
+    cellLabel: { fontSize: 12, color: colors.muted },
+    cellValue: { fontSize: 15, fontWeight: '600', color: colors.text },
+    tags: { gap: space.xs },
+    tag: {
+      paddingHorizontal: space.md,
+      paddingVertical: 4,
+      borderRadius: 999,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    tagText: { color: colors.text, fontSize: 13 },
+    chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+    section: { gap: space.md },
+  }),
+);

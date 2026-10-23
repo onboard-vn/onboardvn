@@ -1,3 +1,5 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import type { CategoryDto, CategoryKind } from '@onboard/shared';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -14,6 +16,7 @@ const KIND_OPTIONS: { value: CategoryKind; label: string }[] = [
 ];
 
 export function CategoryForm({ initial }: { initial?: CategoryDto }) {
+  useAppPreferences();
   const router = useRouter();
   const [name, setName] = useState(initial?.name ?? '');
   const [nameVi, setNameVi] = useState(initial?.nameVi ?? '');
@@ -24,7 +27,7 @@ export function CategoryForm({ initial }: { initial?: CategoryDto }) {
 
   async function onSubmit() {
     if (!name.trim()) {
-      setError('Nhập tên tiếng Anh');
+      setError(t('Nhập tên tiếng Anh'));
       return;
     }
     setPending(true);
@@ -40,23 +43,27 @@ export function CategoryForm({ initial }: { initial?: CategoryDto }) {
       else await api('/categories', { method: 'POST', body });
       router.replace('/admin/categories');
     } catch (e) {
-      setError(errorMessage(e, 'Có lỗi xảy ra, thử lại sau'));
+      setError(errorMessage(e, t('Có lỗi xảy ra, thử lại sau')));
       setPending(false);
     }
   }
 
   return (
     <View style={{ gap: space.lg }}>
-      <Field label="Tên tiếng Anh *" value={name} onChangeText={setName} />
-      <Field label="Tên tiếng Việt" value={nameVi} onChangeText={setNameVi} />
+      <Field label={t('Tên tiếng Anh *')} value={name} onChangeText={setName} />
+      <Field label={t('Tên tiếng Việt')} value={nameVi} onChangeText={setNameVi} />
       <View style={{ gap: space.xs }}>
-        <Text style={{ fontSize: 13, fontWeight: '600', color: colors.muted }}>Loại</Text>
-        <Segmented options={KIND_OPTIONS} value={kind} onChange={setKind} />
+        <Text style={{ fontSize: 13, fontWeight: '600', color: colors.muted }}>{t('Loại')}</Text>
+        <Segmented
+          options={KIND_OPTIONS.map((option) => ({ ...option, label: t(option.label) }))}
+          value={kind}
+          onChange={setKind}
+        />
       </View>
-      <Field label="BGG ID" keyboardType="number-pad" value={bggId} onChangeText={setBggId} />
+      <Field label={t('BGG ID')} keyboardType="number-pad" value={bggId} onChangeText={setBggId} />
       <ErrorText message={error} />
       <Button
-        label={initial ? 'Lưu thay đổi' : 'Tạo thể loại'}
+        label={initial ? t('Lưu thay đổi') : t('Tạo thể loại')}
         disabled={pending}
         onPress={() => void onSubmit()}
       />

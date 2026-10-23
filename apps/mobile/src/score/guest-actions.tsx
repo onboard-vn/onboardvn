@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { clubsApi } from '../api/clubs';
 import { Button } from '../ui/primitives';
-import { colors } from '../ui/theme';
+import { themeStyles, colors } from '../ui/theme';
+import { scoreFeedbackText, scoreText } from './localization';
 export function GuestActions({ guest, tableId }: { guest: IdentityDto; tableId: string }) {
   const [note, setNote] = useState<string | null>(null);
   const run = (fn: () => Promise<string>) =>
@@ -12,11 +13,13 @@ export function GuestActions({ guest, tableId }: { guest: IdentityDto; tableId: 
     );
   return (
     <View style={styles.guest}>
-      <Text style={styles.name}>{guest.displayName} (khách)</Text>
+      <Text style={styles.name}>
+        {guest.displayName} {scoreText('(khách)')}
+      </Text>
       <View style={styles.actions}>
         <Button
           tone="ghost"
-          label="Đây là tôi"
+          label={scoreText('Đây là tôi')}
           onPress={() =>
             run(async () => {
               await clubsApi.requestClaim(guest.id, tableId);
@@ -26,7 +29,7 @@ export function GuestActions({ guest, tableId }: { guest: IdentityDto; tableId: 
         />
         <Button
           tone="ghost"
-          label="Tạo link nhận"
+          label={scoreText('Tạo link nhận')}
           onPress={() =>
             run(async () => `Gửi link này cho khách: ${(await clubsApi.claimLink(guest.id)).url}`)
           }
@@ -34,16 +37,18 @@ export function GuestActions({ guest, tableId }: { guest: IdentityDto; tableId: 
       </View>
       {note ? (
         <Text selectable style={styles.meta}>
-          {note}
+          {scoreFeedbackText(note)}
         </Text>
       ) : null}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  guest: { gap: 4, paddingVertical: 4 },
-  name: { flex: 1, fontSize: 16, color: colors.text },
-  actions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  meta: { color: colors.muted },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    guest: { gap: 4, paddingVertical: 4 },
+    name: { flex: 1, fontSize: 16, color: colors.text },
+    actions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+    meta: { color: colors.muted },
+  }),
+);

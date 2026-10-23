@@ -1,3 +1,5 @@
+import { t } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import type { GameListResponse } from '@onboard/shared';
 import { useRouter } from 'expo-router';
 import { api } from '../../../api/client';
@@ -15,14 +17,15 @@ import { useLoad } from '../../../ui/use-load';
 const load = () => api<GameListResponse>('/games', { query: { pageSize: 50 } });
 
 export default function AdminGamesPage() {
+  useAppPreferences();
   const router = useRouter();
   const list = useLoad(load, []);
   const { data } = list;
 
   return (
     <AdminPage
-      title={`Quản lý game${data ? ` (${data.total})` : ''}`}
-      action={<Button label="Thêm game" onPress={() => router.push('/admin/games/new')} />}
+      title={data ? t('Quản lý game ({count})', { count: data.total }) : t('Quản lý game')}
+      action={<Button label={t('Thêm game')} onPress={() => router.push('/admin/games/new')} />}
     >
       <LoadState loading={list.loading && !data} error={list.error} onRetry={list.reload} />
       {data ? (
@@ -37,7 +40,7 @@ export default function AdminGamesPage() {
                 right={
                   <>
                     <SmallButton
-                      label="Sửa"
+                      label={t('Sửa')}
                       onPress={() =>
                         router.push({
                           pathname: '/admin/games/[slug]/edit',
@@ -47,8 +50,8 @@ export default function AdminGamesPage() {
                     />
                     <ActionButton
                       danger
-                      label="Xóa"
-                      confirmText={`Xóa game "${name}"?`}
+                      label={t('Xóa')}
+                      confirmText={t('Xóa game "{name}"?', { name })}
                       run={async () => {
                         await api(`/games/${game.id}`, { method: 'DELETE' });
                         list.reload();

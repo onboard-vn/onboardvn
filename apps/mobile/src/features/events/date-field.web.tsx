@@ -1,6 +1,7 @@
 import { createElement } from 'react';
 import { colors, radius, space } from '../../ui/theme';
 import { Field } from './ui';
+import { useAppPreferences } from '../../ui/preferences';
 
 export function DateField({
   label,
@@ -13,6 +14,7 @@ export function DateField({
   onChange: (value: string) => void;
   kind: 'date' | 'datetime-local';
 }) {
+  useAppPreferences();
   return (
     <Field label={label}>
       {createElement('input', {

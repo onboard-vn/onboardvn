@@ -6,7 +6,7 @@ import { playsApi as defaultPlaysApi, type PlaysApi } from '../api/plays';
 import { CURRENT_IDENTITY_ID } from '../mock/club';
 import { NumberField } from '../ui/number-field';
 import { Badge, Button, Card, Chip, Heading, Hint, Segmented } from '../ui/primitives';
-import { colors } from '../ui/theme';
+import { themeStyles, colors } from '../ui/theme';
 import { Flash, PresenceLabel } from './cell-flash';
 import { clearDraft, saveDraft, saveResult } from './draft-storage';
 import { FinishDialog } from './finish-dialog';
@@ -31,6 +31,8 @@ import { SummaryCard } from './summary-card';
 import { usePlaySync } from './use-play-sync';
 import { useSheet } from './use-sheet';
 import { QUICK_KEY } from '../api/plays-types';
+import { scoreFeedbackText, scorePlayerName, scoreText } from './localization';
+import { useAppPreferences } from '../ui/preferences';
 
 export interface ScoreSheetProps {
   template: ScoreTemplate;
@@ -55,6 +57,7 @@ export function ScoreSheet({
   actorId = CURRENT_IDENTITY_ID,
   restoredFromDraft = !!saved,
 }: ScoreSheetProps) {
+  useAppPreferences();
   const sheet = useSheet(template, players, {
     actorId,
     saved,
@@ -105,21 +108,21 @@ export function ScoreSheet({
         <View style={styles.column}>
           <Hint>
             {template.mode === 'coop'
-              ? 'Co-op'
+              ? scoreText('Co-op')
               : template.winRule === 'lowest'
-                ? 'Điểm thấp nhất thắng'
-                : 'Điểm cao nhất thắng'}
+                ? scoreText('Điểm thấp nhất thắng')
+                : scoreText('Điểm cao nhất thắng')}
             {' · '}
-            {template.playerCount?.min}-{template.playerCount?.max} người
+            {template.playerCount?.min}-{template.playerCount?.max} {scoreText('người')}
           </Hint>
-          {template.needsReview ? <Badge label="Mẫu chưa duyệt" /> : null}
+          {template.needsReview ? <Badge label={scoreText('Mẫu chưa duyệt')} /> : null}
 
           <Segmented<SheetMode>
             value={state.mode}
             onChange={sheet.setMode}
             options={[
-              { value: 'quick', label: 'Nhanh (chỉ tổng)' },
-              { value: 'detailed', label: 'Chi tiết' },
+              { value: 'quick', label: scoreText('Nhanh (chỉ tổng)') },
+              { value: 'detailed', label: scoreText('Chi tiết') },
             ]}
           />
 
@@ -136,16 +139,16 @@ export function ScoreSheet({
             template.categories.some((c) => c.key === 'sessionEnded')
           ) ? (
             <Card>
-              <Heading>Kết quả ván</Heading>
+              <Heading>{scoreText('Kết quả ván')}</Heading>
               <View style={styles.wrap}>
                 <Chip
-                  label="Thắng"
+                  label={scoreText('Thắng')}
                   tint={colors.success}
                   selected={state.outcome === 'win'}
                   onPress={() => sheet.setOutcome('win')}
                 />
                 <Chip
-                  label="Thua"
+                  label={scoreText('Thua')}
                   tint={colors.danger}
                   selected={state.outcome === 'loss'}
                   onPress={() => sheet.setOutcome('loss')}
@@ -158,12 +161,17 @@ export function ScoreSheet({
 
           {!detailed && isRankable(template) ? (
             <Card>
-              <Heading>Tổng điểm mỗi người</Heading>
+              <Heading>{scoreText('Tổng điểm mỗi người')}</Heading>
               {state.players.map((p) => (
                 <View key={p.id} style={styles.quickRow}>
                   <View style={{ flex: 1 }}>
-                    <Text style={styles.quickName}>{p.name}</Text>
-                    <PresenceLabel sheet={sheet} id={p.id} name={p.name} />
+                    <Text style={styles.quickName}>{scorePlayerName(p)}</Text>
+                    <PresenceLabel
+                      sheet={sheet}
+                      id={p.id}
+                      name={p.name}
+                      fallbackSeat={p.fallbackSeat}
+                    />
                   </View>
                   <Flash sheet={sheet} id={p.id} cat={QUICK_KEY}>
                     <NumberField
@@ -181,10 +189,10 @@ export function ScoreSheet({
             <>
               {expansions.length > 0 ? (
                 <Card>
-                  <Heading>Bản mở rộng</Heading>
+                  <Heading>{scoreText('Bản mở rộng')}</Heading>
                   {expansions.map((e) => (
                     <View key={e} style={styles.quickRow}>
-                      <Text style={styles.quickName}>{e}</Text>
+                      <Text style={styles.quickName}>{scoreText(e)}</Text>
                       <Switch
                         value={state.expansions.includes(e)}
                         onValueChange={() => sheet.toggleExpansion(e)}
@@ -203,7 +211,9 @@ export function ScoreSheet({
               )}
             </>
           ) : isCoop(template) ? (
-            <Hint>Chuyển sang chế độ Chi tiết để ghi số phi vụ thành công/thất bại.</Hint>
+            <Hint>
+              {scoreText('Chuyển sang chế độ Chi tiết để ghi số phi vụ thành công/thất bại.')}
+            </Hint>
           ) : null}
 
           <RuleNotes notes={tiebreakerNotes(template)} />
@@ -212,18 +222,18 @@ export function ScoreSheet({
             <Card>
               <Text style={styles.sync}>
                 {sync.unsynced > 0
-                  ? `Đang đồng bộ ${sync.unsynced} thay đổi...`
-                  : 'Đã đồng bộ với bàn chơi'}
+                  ? scoreText('Đang đồng bộ {unsynced} thay đổi...', { unsynced: sync.unsynced })
+                  : scoreText('Đã đồng bộ với bàn chơi')}
               </Text>
-              {notice ? <Hint>{notice}</Hint> : null}
+              {notice ? <Hint>{scoreFeedbackText(notice)}</Hint> : null}
               <View style={styles.wrap}>
-                <Button label="Lưu nháp" tone="ghost" onPress={saveNow} />
-                <Button label="Kết thúc ván" onPress={() => setFinishing(true)} />
+                <Button label={scoreText('Lưu nháp')} tone="ghost" onPress={saveNow} />
+                <Button label={scoreText('Kết thúc ván')} onPress={() => setFinishing(true)} />
               </View>
             </Card>
           ) : null}
 
-          <Button label="Làm lại từ đầu" tone="ghost" onPress={sheet.reset} />
+          <Button label={scoreText('Làm lại từ đầu')} tone="ghost" onPress={sheet.reset} />
         </View>
       </ScrollView>
       {playId ? (
@@ -242,12 +252,19 @@ export function ScoreSheet({
   );
 }
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.bg },
-  content: { padding: 16, alignItems: 'center' },
-  column: { width: '100%', maxWidth: 720, gap: 12 },
-  wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  quickRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
-  quickName: { fontSize: 15, fontWeight: '600', color: colors.text },
-  sync: { fontSize: 13, color: colors.muted },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    screen: { flex: 1, backgroundColor: colors.bg },
+    content: { padding: 16, alignItems: 'center' },
+    column: { width: '100%', maxWidth: 720, gap: 12 },
+    wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+    quickRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 8,
+    },
+    quickName: { fontSize: 15, fontWeight: '600', color: colors.text },
+    sync: { fontSize: 13, color: colors.muted },
+  }),
+);

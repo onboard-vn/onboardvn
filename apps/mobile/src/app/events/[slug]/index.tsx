@@ -1,3 +1,5 @@
+import { t } from '../../../ui/i18n';
+import { useAppPreferences } from '../../../ui/preferences';
 import type { MeetupDetailDto } from '@onboard/shared';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback } from 'react';
@@ -19,9 +21,10 @@ import {
   Title,
 } from '../../../features/events/ui';
 import { useFetch } from '../../../features/use-fetch';
-import { colors, space } from '../../../ui/theme';
+import { themeStyles, colors, space } from '../../../ui/theme';
 
 export default function EventDetailPage() {
+  useAppPreferences();
   const params = useLocalSearchParams<{ slug: string; code?: string | string[] }>();
   const slug = params.slug;
   const code = Array.isArray(params.code) ? params.code[0] : params.code;
@@ -48,22 +51,23 @@ export default function EventDetailPage() {
 
   return (
     <Page>
-      <Stack.Screen options={{ title: meetup?.title ?? 'Kèo' }} />
+      <Stack.Screen options={{ title: meetup?.title ?? t('Kèo') }} />
       <LoadGate
         loading={loading}
-        error={status === 404 ? 'Không tìm thấy Kèo' : error}
+        error={status === 404 ? t('Không tìm thấy Kèo') : error}
         hasData={!!meetup}
       >
         {meetup ? (
           <>
             <View style={{ gap: space.sm }}>
               {meetup.status === 'cancelled' ? (
-                <Text style={styles.cancelled}>Kèo này đã bị hủy</Text>
+                <Text style={styles.cancelled}>{t('Kèo này đã bị hủy')}</Text>
               ) : null}
               <Title>{meetup.title}</Title>
               {meetup.club ? (
                 <Body>
-                  Club: <TextLink to={`/clubs/${meetup.club.slug}`}>{meetup.club.name}</TextLink>
+                  {t('Club:')}
+                  <TextLink to={`/clubs/${meetup.club.slug}`}>{meetup.club.name}</TextLink>
                 </Body>
               ) : null}
               <Muted>{formatVnDateTime(meetup.startsAt)}</Muted>
@@ -75,8 +79,8 @@ export default function EventDetailPage() {
               {meetup.description ? <Body>{meetup.description}</Body> : null}
               <Muted small>
                 {meetup.goingCount}
-                {meetup.capacity ? `/${meetup.capacity}` : ''} người đi
-                {meetup.viewerStatus === 'waitlist' ? ' · bạn đang trong danh sách chờ' : ''}
+                {meetup.capacity ? `/${meetup.capacity}` : ''} {t('người đi')}
+                {meetup.viewerStatus === 'waitlist' ? t(' · bạn đang trong danh sách chờ') : ''}
               </Muted>
             </View>
 
@@ -89,7 +93,7 @@ export default function EventDetailPage() {
                 onChanged={reload}
               />
             ) : !user && !sessionLoading ? (
-              <TextLink to={`/login?next=${loginNext}`}>Đăng nhập để tham gia</TextLink>
+              <TextLink to={`/login?next=${loginNext}`}>{t('Đăng nhập để tham gia')}</TextLink>
             ) : null}
 
             {isCreator ? (
@@ -103,13 +107,16 @@ export default function EventDetailPage() {
 
             <View style={{ gap: space.md }}>
               <View style={styles.tablesHead}>
-                <SectionTitle>Bàn ({meetup.tables.length})</SectionTitle>
+                <SectionTitle>
+                  {t('Bàn (')}
+                  {meetup.tables.length})
+                </SectionTitle>
                 {viewerGoing && meetup.status === 'scheduled' ? (
                   <CreateTableForm meetupId={meetup.id} onCreated={reload} />
                 ) : null}
               </View>
               {meetup.tables.length === 0 ? (
-                <Muted>Chưa có bàn nào.</Muted>
+                <Muted>{t('Chưa có bàn nào.')}</Muted>
               ) : (
                 meetup.tables.map((table) => (
                   <SessionTableCard
@@ -134,20 +141,22 @@ export default function EventDetailPage() {
   );
 }
 
-const styles = StyleSheet.create({
-  cancelled: {
-    backgroundColor: colors.dangerSoft,
-    color: colors.danger,
-    fontSize: 14,
-    fontWeight: '600',
-    padding: space.md,
-    borderRadius: 8,
-  },
-  tablesHead: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap',
-    gap: space.sm,
-  },
-});
+const styles = themeStyles(() =>
+  StyleSheet.create({
+    cancelled: {
+      backgroundColor: colors.dangerSoft,
+      color: colors.danger,
+      fontSize: 14,
+      fontWeight: '600',
+      padding: space.md,
+      borderRadius: 8,
+    },
+    tablesHead: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      flexWrap: 'wrap',
+      gap: space.sm,
+    },
+  }),
+);

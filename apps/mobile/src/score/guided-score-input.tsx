@@ -7,7 +7,8 @@ import { TEAM_ID } from '../api/plays-types';
 import { categoryApplies, visibleCategories } from './model';
 import type { GameGuide, GuideField, GuideGroup } from './guides/types';
 import type { SheetApi } from './use-sheet';
-
+import { scorePlayerName, scoreText, templateScoreText } from './localization';
+import { useAppPreferences } from '../ui/preferences';
 export function guideMatches(sheet: SheetApi, guide: GameGuide): boolean {
   return (
     sheet.template.templateVersion >= (guide.minTemplateVersion ?? 1) &&
@@ -16,15 +17,23 @@ export function guideMatches(sheet: SheetApi, guide: GameGuide): boolean {
 }
 
 function Field({ sheet, field, cat }: { sheet: SheetApi; field: GuideField; cat: ScoreCategory }) {
+  const { language } = useAppPreferences();
   const shared = cat.scope === 'team';
-  const participants = shared ? [{ id: '__shared', name: 'Cả bàn' }] : sheet.state.players;
+  const participants = shared
+    ? [{ id: '__shared', name: scoreText('Cả bàn') }]
+    : sheet.state.players;
   return (
     <View style={{ gap: 10 }}>
       <Text style={{ fontWeight: '600', fontSize: 16 }}>
-        {field.icon ?? '•'} {field.label ?? cat.labelVi ?? cat.label}
+        {field.icon ?? '•'}{' '}
+        {field.label
+          ? scoreText(field.label)
+          : templateScoreText(cat.labelVi ?? cat.label, cat.label, language)}
       </Text>
-      {field.hint || cat.hint ? <Hint>{field.hint ?? cat.hint}</Hint> : null}
-      {field.manualPoints ? <Hint>Nhập VP đã tính theo thẻ/luật, không nhập số lượng.</Hint> : null}
+      {field.hint || cat.hint ? <Hint>{scoreText(field.hint ?? cat.hint ?? '')}</Hint> : null}
+      {field.manualPoints ? (
+        <Hint>{scoreText('Nhập VP đã tính theo thẻ/luật, không nhập số lượng.')}</Hint>
+      ) : null}
       {participants.map((p) => {
         if (!shared && !categoryApplies(cat, p.id, sheet.summary, sheet.state.players.length))
           return null;
@@ -45,7 +54,7 @@ function Field({ sheet, field, cat }: { sheet: SheetApi; field: GuideField; cat:
             {items.map((c) => (
               <Chip
                 key={c.value}
-                label={c.label}
+                label={scoreText(c.label)}
                 selected={value === c.value}
                 disabled={!editable}
                 onPress={() => update(c.value)}
@@ -56,13 +65,13 @@ function Field({ sheet, field, cat }: { sheet: SheetApi; field: GuideField; cat:
         return (
           <View key={p.id} style={{ gap: 6 }}>
             <Text>
-              {p.name}
+              {scorePlayerName(p)}
               {points !== undefined && !(cat.input === 'bool' && !cat.countsToTotal)
-                ? ` · ${points} ${cat.countsToTotal ? 'VP' : '(tham chiếu)'}`
+                ? ` · ${points} ${cat.countsToTotal ? 'VP' : scoreText('(tham chiếu)')}`
                 : ''}
             </Text>
             {field.readOnly ? (
-              <Hint>Tự tính từ các mục đã nhập.</Hint>
+              <Hint>{scoreText('Tự tính từ các mục đã nhập.')}</Hint>
             ) : field.choices ? (
               choices(scalar(raw), field.choices, write)
             ) : cat.input === 'counts' ? (
@@ -74,7 +83,7 @@ function Field({ sheet, field, cat }: { sheet: SheetApi; field: GuideField; cat:
                 };
                 return (
                   <View key={key} style={{ gap: 4 }}>
-                    <Text>{field.inputs?.[key] ?? key}</Text>
+                    <Text>{scoreText(field.inputs?.[key] ?? key)}</Text>
                     {field.inputChoices?.[key] ? (
                       choices(record[key] ?? 0, field.inputChoices[key], update)
                     ) : (
@@ -109,6 +118,7 @@ function Field({ sheet, field, cat }: { sheet: SheetApi; field: GuideField; cat:
 }
 
 export function GuidedScoreInput({ sheet, guide }: { sheet: SheetApi; guide: GameGuide }) {
+  useAppPreferences();
   const visible = visibleCategories(sheet.template, sheet.state);
   const declared = new Set(guide.groups.flatMap((g) => g.fields.map((f) => f.key)));
   const groups: GuideGroup[] = [
@@ -121,16 +131,16 @@ export function GuidedScoreInput({ sheet, guide }: { sheet: SheetApi; guide: Gam
   return (
     <>
       <Card>
-        <Heading>{guide.edition}</Heading>
-        <Hint>{guide.summary}</Hint>
+        <Heading>{scoreText(guide.edition)}</Heading>
+        <Hint>{scoreText(guide.summary)}</Hint>
         {guide.limitations?.map((line) => (
-          <Hint key={line}>{line}</Hint>
+          <Hint key={line}>{scoreText(line)}</Hint>
         ))}
         {guide.companion ? (
           <>
-            <Hint>{guide.companion.hint ?? 'Mở công cụ bên ngoài để tham khảo.'}</Hint>
+            <Hint>{scoreText(guide.companion.hint ?? 'Mở công cụ bên ngoài để tham khảo.')}</Hint>
             <Button
-              label={guide.companion.label}
+              label={scoreText(guide.companion.label)}
               tone="ghost"
               onPress={() => {
                 if (guide.companion) void Linking.openURL(guide.companion.url);
@@ -147,9 +157,9 @@ export function GuidedScoreInput({ sheet, guide }: { sheet: SheetApi; guide: Gam
         return fields.length ? (
           <Card key={group.title}>
             <Heading>
-              {group.icon ?? ''} {group.title}
+              {group.icon ?? ''} {scoreText(group.title)}
             </Heading>
-            {group.hint ? <Hint>{group.hint}</Hint> : null}
+            {group.hint ? <Hint>{scoreText(group.hint)}</Hint> : null}
             {fields.map(({ field, cat }) => (
               <Field key={field.key} sheet={sheet} field={field} cat={cat} />
             ))}

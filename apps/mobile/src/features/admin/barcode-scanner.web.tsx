@@ -1,4 +1,7 @@
+import { t } from '../../ui/i18n';
+import { useAppPreferences } from '../../ui/preferences';
 import { useEffect, useRef, useState } from 'react';
+import { colors } from '../../ui/theme';
 import { ErrorText } from './ui';
 
 const SCAN_FORMATS = ['ean_13', 'upc_a', 'ean_8'] as const;
@@ -47,11 +50,13 @@ const unsupportedReason = (): string | null =>
       : null;
 
 export function BarcodeScanner({ onDetect }: { onDetect: (code: string) => void }) {
+  useAppPreferences();
   const videoRef = useRef<HTMLVideoElement>(null);
   const lastRef = useRef<{ code: string; at: number } | null>(null);
   const onDetectRef = useRef(onDetect);
-  const [error, setError] = useState<string | null>(unsupportedReason);
+  const [error, setError] = useState<string | null>(null);
   const [running, setRunning] = useState(false);
+  const reason = unsupportedReason();
   useEffect(() => {
     onDetectRef.current = onDetect;
   });
@@ -104,7 +109,9 @@ export function BarcodeScanner({ onDetect }: { onDetect: (code: string) => void 
         setError(
           err instanceof DOMException && err.name === 'NotAllowedError'
             ? 'Bạn đã từ chối quyền truy cập camera. Vui lòng cấp quyền trong cài đặt trình duyệt.'
-            : 'Không mở được camera. Bạn có thể nhập mã tay bên dưới.',
+            : err instanceof Error && err.message === 'Không khởi tạo được BarcodeDetector'
+              ? err.message
+              : 'Không mở được camera. Bạn có thể nhập mã tay bên dưới.',
         );
       }
     }
@@ -126,7 +133,7 @@ export function BarcodeScanner({ onDetect }: { onDetect: (code: string) => void 
           aspectRatio: '16 / 9',
           overflow: 'hidden',
           borderRadius: 12,
-          border: '1px solid #e2e5ea',
+          border: `1px solid ${colors.border}`,
           background: '#000',
         }}
       >
@@ -150,7 +157,7 @@ export function BarcodeScanner({ onDetect }: { onDetect: (code: string) => void 
           />
         ) : null}
       </div>
-      <ErrorText message={error} />
+      <ErrorText message={reason ? t(reason) : error ? t(error) : null} />
     </div>
   );
 }

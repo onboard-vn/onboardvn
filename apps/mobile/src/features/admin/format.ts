@@ -1,13 +1,32 @@
-const VN_OFFSET_MS = 7 * 60 * 60 * 1000;
-const WEEKDAYS_VI = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+import { getActiveLanguage } from '../../ui/i18n';
 
-const pad = (n: number): string => String(n).padStart(2, '0');
-
-export function formatVnDateTime(iso: string): string {
-  const vn = new Date(new Date(iso).getTime() + VN_OFFSET_MS);
-  return `${pad(vn.getUTCHours())}:${pad(vn.getUTCMinutes())}, ${WEEKDAYS_VI[vn.getUTCDay()]} ${pad(vn.getUTCDate())}/${pad(vn.getUTCMonth() + 1)}/${vn.getUTCFullYear()}`;
+function locale(): string {
+  return getActiveLanguage() === 'en' ? 'en-GB' : 'vi-VN';
 }
 
-export const formatLocalDateTime = (iso: string): string => new Date(iso).toLocaleString('vi-VN');
+export function formatVnDateTime(iso: string): string {
+  const date = new Date(iso);
+  const parts = new Intl.DateTimeFormat(locale(), {
+    timeZone: 'Asia/Ho_Chi_Minh',
+    hour: '2-digit',
+    minute: '2-digit',
+    weekday: 'long',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hourCycle: 'h23',
+  }).formatToParts(date);
+  const part = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((item) => item.type === type)?.value ?? '';
+  const rawWeekday = part('weekday');
+  const weekday =
+    getActiveLanguage() === 'vi'
+      ? rawWeekday.charAt(0).toLocaleUpperCase('vi-VN') +
+        rawWeekday.slice(1).toLocaleLowerCase('vi-VN')
+      : rawWeekday;
+  return `${part('hour')}:${part('minute')}, ${weekday} ${part('day')}/${part('month')}/${part('year')}`;
+}
 
-export const formatLocalDate = (iso: string): string => new Date(iso).toLocaleDateString('vi-VN');
+export const formatLocalDateTime = (iso: string): string => new Date(iso).toLocaleString(locale());
+
+export const formatLocalDate = (iso: string): string => new Date(iso).toLocaleDateString(locale());

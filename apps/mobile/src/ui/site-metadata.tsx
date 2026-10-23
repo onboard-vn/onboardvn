@@ -31,7 +31,6 @@ export function SiteMetadata() {
         if (controller.signal.aborted) return;
         document.querySelectorAll('[data-site-seo]').forEach((node) => node.remove());
         document.title = page.title;
-        document.documentElement.lang = 'vi';
         const values: Record<string, string> = {
           description: page.description,
           robots: page.indexable ? 'index,follow,max-image-preview:large' : 'noindex,nofollow',
