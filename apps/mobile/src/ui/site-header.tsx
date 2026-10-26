@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSession, type MeUser } from '../auth/session';
 import { t } from './i18n';
 import { useAppPreferences } from './preferences';
+import type { ThemePreference } from './preferences-model';
 import { colors, space, themeStyles } from './theme';
 
 interface NavItem {
@@ -124,7 +125,10 @@ export function SiteHeader() {
         </Link>
         {wide ? <View style={styles.links}>{links}</View> : null}
         {wide ? account : null}
-        <MenuButton open={open} setOpen={setOpen} />
+        <View style={styles.headerActions}>
+          <LanguageButton />
+          <MenuButton open={open} setOpen={setOpen} />
+        </View>
       </View>
       <MenuModal
         open={open}
@@ -186,7 +190,10 @@ export function SiteHeaderMenu() {
 
   return (
     <>
-      <MenuButton open={open} setOpen={setOpen} />
+      <View style={styles.headerActions}>
+        <LanguageButton />
+        <MenuButton open={open} setOpen={setOpen} />
+      </View>
       <MenuModal
         open={open}
         onClose={() => setOpen(false)}
@@ -195,6 +202,22 @@ export function SiteHeaderMenu() {
         account={account}
       />
     </>
+  );
+}
+
+function LanguageButton() {
+  const { language, setLanguage } = useAppPreferences();
+  const label = language === 'vi' ? t('Đổi sang tiếng Anh') : t('Đổi sang tiếng Việt');
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityHint={t('Đổi ngôn ngữ ngay, giữ nguyên dữ liệu đang nhập')}
+      onPress={() => setLanguage(language === 'vi' ? 'en' : 'vi')}
+      style={({ pressed }) => [styles.languageButton, pressed && styles.pressed]}
+    >
+      <Text style={styles.languageText}>{language === 'vi' ? '🇻🇳 VI' : '🇬🇧 EN'}</Text>
+    </Pressable>
   );
 }
 
@@ -226,7 +249,7 @@ function MenuModal({
   links: React.ReactNode[];
   account: React.ReactNode;
 }) {
-  const { language, theme, setLanguage, setTheme } = useAppPreferences();
+  useAppPreferences();
   return (
     <Modal visible={open} transparent animationType="fade" onRequestClose={onClose}>
       <SafeAreaView style={styles.modalRoot}>
@@ -247,36 +270,6 @@ function MenuModal({
                 {account}
               </>
             ) : null}
-            <View style={styles.preferenceGroup}>
-              <Text style={styles.groupLabel}>{t('Giao diện')}</Text>
-              <View style={styles.choices}>
-                <PreferenceChoice
-                  label={t('Sáng')}
-                  selected={theme === 'light'}
-                  onPress={() => setTheme('light')}
-                />
-                <PreferenceChoice
-                  label={t('Tối')}
-                  selected={theme === 'dark'}
-                  onPress={() => setTheme('dark')}
-                />
-              </View>
-            </View>
-            <View style={styles.preferenceGroup}>
-              <Text style={styles.groupLabel}>{t('Ngôn ngữ')}</Text>
-              <View style={styles.choices}>
-                <PreferenceChoice
-                  label={t('Tiếng Việt')}
-                  selected={language === 'vi'}
-                  onPress={() => setLanguage('vi')}
-                />
-                <PreferenceChoice
-                  label={t('English')}
-                  selected={language === 'en'}
-                  onPress={() => setLanguage('en')}
-                />
-              </View>
-            </View>
             <View style={styles.divider} />
             <Text style={styles.groupLabel}>{t('Thông tin & giấy phép')}</Text>
             <Link
@@ -303,31 +296,85 @@ function MenuModal({
               {t('Nguồn dữ liệu & yêu cầu sửa/gỡ')}
             </Link>
           </ScrollView>
+          <ThemeControls />
         </View>
       </SafeAreaView>
     </Modal>
   );
 }
 
-function PreferenceChoice({
-  label,
-  selected,
-  onPress,
-}: {
-  label: string;
-  selected: boolean;
-  onPress: () => void;
-}) {
-  useAppPreferences();
+function ThemeControls() {
+  const { themePreference, setTheme } = useAppPreferences();
+  const choices: { mode: ThemePreference; label: string }[] = [
+    { mode: 'system', label: t('Theo thiết bị') },
+    { mode: 'light', label: t('Sáng') },
+    { mode: 'dark', label: t('Tối') },
+  ];
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityState={{ selected }}
-      onPress={onPress}
-      style={[styles.choice, selected && styles.choiceSelected]}
-    >
-      <Text style={[styles.choiceText, selected && styles.choiceTextSelected]}>{label}</Text>
-    </Pressable>
+    <View style={styles.themeFooter}>
+      <Text style={styles.groupLabel}>{t('Giao diện')}</Text>
+      <View style={styles.choices}>
+        {choices.map(({ mode, label }) => {
+          const selected = themePreference === mode;
+          return (
+            <Pressable
+              key={mode}
+              accessibilityRole="button"
+              accessibilityLabel={`${t('Giao diện')}: ${label}`}
+              accessibilityState={{ selected }}
+              onPress={() => setTheme(mode)}
+              style={({ pressed }) => [
+                styles.choice,
+                selected && styles.choiceSelected,
+                pressed && styles.pressed,
+              ]}
+            >
+              <ThemeIcon mode={mode} selected={selected} />
+              <Text style={[styles.choiceText, selected && styles.choiceTextSelected]}>
+                {label}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
+
+function ThemeIcon({ mode, selected }: { mode: ThemePreference; selected: boolean }) {
+  const ink = selected ? colors.primary : colors.text;
+  const background = selected ? colors.primarySoft : colors.bg;
+  return (
+    <View style={styles.themeIcon} accessibilityElementsHidden importantForAccessibility="no">
+      {mode === 'system' ? (
+        <>
+          <View style={[styles.monitorScreen, { borderColor: ink }]} />
+          <View style={[styles.monitorStem, { backgroundColor: ink }]} />
+          <View style={[styles.monitorBase, { backgroundColor: ink }]} />
+        </>
+      ) : mode === 'light' ? (
+        <>
+          <View style={[styles.sunCenter, { borderColor: ink }]} />
+          {[0, 45, 90, 135, 180, 225, 270, 315].map((rotation) => (
+            <View
+              key={rotation}
+              style={[
+                styles.sunRay,
+                {
+                  backgroundColor: ink,
+                  transform: [{ rotate: `${rotation}deg` }, { translateY: -10 }],
+                },
+              ]}
+            />
+          ))}
+        </>
+      ) : (
+        <>
+          <View style={[styles.moon, { borderColor: ink }]} />
+          <View style={[styles.moonCutout, { backgroundColor: background }]} />
+        </>
+      )}
+    </View>
   );
 }
 
@@ -375,6 +422,20 @@ const styles = themeStyles(() =>
     },
     account: { flexDirection: 'row', alignItems: 'center', gap: space.md, flexWrap: 'wrap' },
     accountName: { fontSize: 14, color: colors.text },
+    headerActions: { flexDirection: 'row', alignItems: 'center', gap: space.sm, flexShrink: 0 },
+    languageButton: {
+      minHeight: 48,
+      minWidth: 64,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: space.sm,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: colors.border,
+      backgroundColor: colors.bg,
+    },
+    languageText: { fontSize: 15, fontWeight: '700', color: colors.text },
+    pressed: { opacity: 0.65 },
     role: {
       fontSize: 12,
       backgroundColor: colors.bg,
@@ -385,18 +446,24 @@ const styles = themeStyles(() =>
     },
     menuButton: {
       padding: space.sm,
-      minWidth: 44,
-      minHeight: 44,
+      minWidth: 48,
+      minHeight: 48,
       alignItems: 'center',
       justifyContent: 'center',
     },
     icon: { width: 22, height: 16, justifyContent: 'space-between' },
     bar: { height: 2, borderRadius: 1, backgroundColor: colors.text },
-    modalRoot: { flex: 1, alignItems: 'flex-end', backgroundColor: 'rgba(0,0,0,0.28)' },
+    modalRoot: {
+      flex: 1,
+      alignItems: 'flex-end',
+      paddingHorizontal: 12,
+      backgroundColor: 'rgba(0,0,0,0.28)',
+    },
     menuFrame: {
+      flexShrink: 1,
       width: 380,
       maxWidth: '100%',
-      margin: 12,
+      marginVertical: 12,
       borderWidth: 1,
       borderColor: colors.border,
       borderRadius: 12,
@@ -423,20 +490,57 @@ const styles = themeStyles(() =>
       paddingTop: space.sm,
     },
     divider: { height: 1, backgroundColor: colors.border, marginVertical: space.xs },
-    preferenceGroup: { gap: space.xs },
+    themeFooter: {
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      padding: space.md,
+      gap: space.sm,
+    },
     groupLabel: { fontSize: 13, fontWeight: '700', color: colors.muted },
     choices: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
     choice: {
-      minHeight: 40,
+      flex: 1,
+      minHeight: 64,
+      alignItems: 'center',
       justifyContent: 'center',
+      gap: space.xs,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: 999,
-      paddingHorizontal: space.md,
+      borderRadius: 10,
+      paddingHorizontal: space.sm,
+      paddingVertical: space.sm,
       backgroundColor: colors.bg,
     },
     choiceSelected: { backgroundColor: colors.primarySoft, borderColor: colors.primary },
     choiceText: { fontSize: 14, fontWeight: '600', color: colors.text },
     choiceTextSelected: { color: colors.primary },
+    themeIcon: {
+      width: 24,
+      height: 24,
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+    },
+    monitorScreen: {
+      width: 22,
+      height: 15,
+      borderWidth: 2,
+      borderRadius: 3,
+      position: 'absolute',
+      top: 1,
+    },
+    monitorStem: { width: 2, height: 5, position: 'absolute', top: 16 },
+    monitorBase: { width: 12, height: 2, position: 'absolute', bottom: 1, borderRadius: 1 },
+    sunCenter: { width: 12, height: 12, borderRadius: 6, borderWidth: 2 },
+    sunRay: { width: 2, height: 4, borderRadius: 1, position: 'absolute' },
+    moon: { width: 21, height: 21, borderRadius: 11, borderWidth: 2 },
+    moonCutout: {
+      width: 18,
+      height: 18,
+      borderRadius: 9,
+      position: 'absolute',
+      right: -3,
+      top: -2,
+    },
   }),
 );
