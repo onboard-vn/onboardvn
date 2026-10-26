@@ -39,6 +39,13 @@ const coreMessages: TranslationMap = {
   'Thu gọn': { vi: 'Thu gọn', en: 'Collapse' },
   'Mở rộng': { vi: 'Mở rộng', en: 'Expand' },
   'Giao diện': { vi: 'Giao diện', en: 'Theme' },
+  'Theo thiết bị': { vi: 'Theo thiết bị', en: 'System' },
+  'Đổi sang tiếng Anh': { vi: 'Đổi sang tiếng Anh', en: 'Switch to English' },
+  'Đổi sang tiếng Việt': { vi: 'Đổi sang tiếng Việt', en: 'Switch to Vietnamese' },
+  'Đổi ngôn ngữ ngay, giữ nguyên dữ liệu đang nhập': {
+    vi: 'Đổi ngôn ngữ ngay, giữ nguyên dữ liệu đang nhập',
+    en: 'Switch language immediately and keep your current inputs',
+  },
   Sáng: { vi: 'Sáng', en: 'Light' },
   Tối: { vi: 'Tối', en: 'Dark' },
   'Ngôn ngữ': { vi: 'Ngôn ngữ', en: 'Language' },

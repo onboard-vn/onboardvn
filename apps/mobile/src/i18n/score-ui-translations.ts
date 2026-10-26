@@ -1594,10 +1594,101 @@ const vietnameseSourceCopy: ScoreTranslationMap = Object.fromEntries(
   Object.entries(vietnameseCopy).map(([vi, en]) => [vi, { vi, en }]),
 );
 
+const applejackHarmoniesCopy: ScoreTranslationMap = {
+  'Count only this variety. Subtract 3 separately from each connected area, minimum 0, then add the honey from those areas. Enter honey BEFORE doubling, not the number of apples; doubled automatically.':
+    {
+      vi: 'Chỉ tính giống táo này. Trừ 3 riêng mỗi vùng liên thông, lấy tối thiểu 0 rồi cộng mật ong từ các vùng. Nhập mật ong TRƯỚC nhân đôi, không nhập số táo; app tự nhân đôi.',
+      en: 'Count only this variety. Subtract 3 separately from each connected area, minimum 0, then add the honey from those areas. Enter honey BEFORE doubling, not the number of apples; doubled automatically.',
+    },
+  'Automatically counts varieties whose final harvest yields at least 1 honey before doubling. Each variety counts once, even with multiple areas.':
+    {
+      vi: 'Tự đếm các giống thu hoạch được ít nhất 1 mật ong trước nhân đôi. Mỗi giống chỉ tính một lần, dù có nhiều vùng.',
+      en: 'Automatically counts varieties whose final harvest yields at least 1 honey before doubling. Each variety counts once, even with multiple areas.',
+    },
+  'Automatically scores 4/5/6/7 profitable varieties as 4/11/21/35 honey; 0–3 varieties score 0. This bonus is not doubled.':
+    {
+      vi: 'Tự tính thưởng 4/5/6/7 giống có lãi thành 4/11/21/35 mật ong; 0–3 giống được 0. Phần thưởng này không nhân đôi.',
+      en: 'Automatically scores 4/5/6/7 profitable varieties as 4/11/21/35 honey; 0–3 varieties score 0. This bonus is not doubled.',
+    },
+  '1 honey per blossom on your tree tiles (last blossom scoring).': {
+    vi: 'Mỗi hoa trên các ô cây của bạn được 1 mật ong ở lần tính hoa cuối.',
+    en: '1 honey per blossom on your tree tiles (last blossom scoring).',
+  },
+  'Add all honey you still hold.': {
+    vi: 'Cộng toàn bộ mật ong còn trong kho của bạn.',
+    en: 'Add all honey you still hold.',
+  },
+  'No tiebreaker: tied players all win.': {
+    vi: 'Không phân định hòa: những người bằng điểm cao nhất cùng thắng.',
+    en: 'No tiebreaker: tied players all win.',
+  },
+  'Everyone must use the same side. 0 = side A (river, default); 1 = side B (islands). This choice does not add points.':
+    {
+      vi: 'Tất cả người chơi dùng cùng một mặt. 0 = mặt A (sông, mặc định); 1 = mặt B (đảo). Lựa chọn này không cộng điểm.',
+      en: 'Everyone must use the same side. 0 = side A (river, default); 1 = side B (islands). This choice does not add points.',
+    },
+  'Count trees by height: green on 0 brown = 1, on 1 brown = 3, on 2 brown = 7. Brown-only stacks score 0.':
+    {
+      vi: 'Đếm cây theo độ cao: xanh trên 0/1/2 nâu lần lượt được 1/3/7 điểm. Cọc chỉ có nâu được 0.',
+      en: 'Count trees by height: green on 0 brown = 1, on 1 brown = 3, on 2 brown = 7. Brown-only stacks score 0.',
+    },
+  'Gray stacks adjacent to another mountain: height 1 = 1, height 2 = 3, height 3 = 7. Isolated mountain = 0.':
+    {
+      vi: 'Núi xám kề ít nhất một núi khác: cao 1/2/3 lần lượt được 1/3/7 điểm. Núi cô lập được 0.',
+      en: 'Gray stacks adjacent to another mountain: height 1 = 1, height 2 = 3, height 3 = 7. Isolated mountain = 0.',
+    },
+  "Each contiguous group of 2+ yellow tokens = 5 points (size doesn't matter).": {
+    vi: 'Mỗi nhóm vàng liên thông từ 2 ô trở lên được 5 điểm, không phụ thuộc kích thước nhóm.',
+    en: "Each contiguous group of 2+ yellow tokens = 5 points (size doesn't matter).",
+  },
+  '5 points per building (red on top of brown/grey/red) with top tokens of at least 3 different colours around it, else 0.':
+    {
+      vi: 'Mỗi nhà (đỏ trên nâu/xám/đỏ) được 5 điểm nếu token trên cùng của các ô kề có ít nhất 3 màu khác nhau; nếu không được 0.',
+      en: '5 points per building (red on top of brown/grey/red) with top tokens of at least 3 different colours around it, else 0.',
+    },
+  'Side A only. Count both ends of the best river along its shortest path: 1 token = 0 points; 2/3/4/5/6 = 2/5/8/11/15, then +4 for each token beyond 6.':
+    {
+      vi: 'Chỉ mặt A. Đếm sông tốt nhất theo đường ngắn nhất, tính cả hai đầu: 1 ô = 0 điểm; 2/3/4/5/6 ô = 2/5/8/11/15 điểm; sau ô thứ 6 mỗi ô thêm 4 điểm.',
+      en: 'Side A only. Count both ends of the best river along its shortest path: 1 token = 0 points; 2/3/4/5/6 = 2/5/8/11/15, then +4 for each token beyond 6.',
+    },
+  'Side B only. 5 points per island; there is always at least 1, even with no blue tokens. Defaults to 1 island until entered.':
+    {
+      vi: 'Chỉ mặt B. Mỗi đảo được 5 điểm; luôn có ít nhất 1 đảo, kể cả không có token xanh nước. Mặc định 1 đảo khi chưa nhập.',
+      en: 'Side B only. 5 points per island; there is always at least 1, even with no blue tokens. Defaults to 1 island until entered.',
+    },
+  'Per card (completed or not): value of the topmost space not covered by a cube; a card with all cubes still on it = 0.':
+    {
+      vi: 'Mỗi thẻ, kể cả đã hoàn thành: đọc giá trị ô điểm trên cùng chưa bị khối che. Thẻ còn nguyên tất cả khối được 0.',
+      en: 'Per card (completed or not): value of the topmost space not covered by a cube; a card with all cubes still on it = 0.',
+    },
+  'Only if used and its cube was placed; value per card text, in addition to normal landscape points.':
+    {
+      vi: 'Chỉ khi có dùng và đã đặt khối theo luật: nhập điểm theo thẻ, cộng thêm vào điểm cảnh quan thông thường.',
+      en: 'Only if used and its cube was placed; value per card text, in addition to normal landscape points.',
+    },
+  'Only Animal cubes placed on your Personal board; exclude the Nature’s Spirit cube. Used to break equal totals and never added to points.':
+    {
+      vi: 'Chỉ đếm khối động vật đã đặt trên bàn cá nhân, không tính khối Nature’s Spirit. Chỉ phân định hòa tổng điểm, không cộng vào điểm.',
+      en: 'Only Animal cubes placed on your Personal board; exclude the Nature’s Spirit cube. Used to break equal totals and never added to points.',
+    },
+  'Most Animal cubes placed on the Personal board': {
+    vi: 'Hòa tổng điểm: người đặt nhiều khối động vật trên bàn cá nhân hơn thắng.',
+    en: 'Most Animal cubes placed on the Personal board',
+  },
+  'If still tied, players share the victory.': {
+    vi: 'Nếu vẫn hòa, các người chơi cùng thắng.',
+    en: 'If still tied, players share the victory.',
+  },
+  height1: { vi: 'Cao 1', en: 'Height 1' },
+  height2: { vi: 'Cao 2', en: 'Height 2' },
+  height3: { vi: 'Cao 3', en: 'Height 3' },
+};
+
 export const scoreUiTranslations: ScoreTranslationMap = {
   ...vietnameseSourceCopy,
   ...englishSourceCopy,
   ...templateInputCopy,
+  ...applejackHarmoniesCopy,
   '· {points} {unit}': {
     vi: '· {points} {unit}',
     en: '· {points} {unit}',

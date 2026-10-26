@@ -4,6 +4,7 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { Text, View } from 'react-native';
 import { ScoreSheet } from '../../score/score-sheet';
 import { scoreTemplates } from '../../score/templates';
+import { hasStandaloneDraft, StandaloneScoreSession } from '../../score/standalone-score-session';
 
 export default function ScoreScreen() {
   useAppPreferences();
@@ -20,13 +21,20 @@ export default function ScoreScreen() {
   return (
     <>
       <Stack.Screen options={{ title: template.name }} />
-      <ScoreSheet
-        key={template.slug}
-        template={template}
-        players={[]}
-        localPlayers
-        actorId="local"
-      />
+      {hasStandaloneDraft(template.slug) ? (
+        <StandaloneScoreSession
+          key={`${template.slug}:${template.templateVersion}`}
+          template={template}
+        />
+      ) : (
+        <ScoreSheet
+          key={template.slug}
+          template={template}
+          players={[]}
+          localPlayers
+          actorId="local"
+        />
+      )}
     </>
   );
 }

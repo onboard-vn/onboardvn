@@ -3,10 +3,10 @@
   "name": "Harmonies",
   "year": 2024,
   "bggId": 414317,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base (Personal board side A or B)",
   "playerCount": {
-    "min": 1,
+    "min": 2,
     "max": 4
   },
   "mode": "competitive",
@@ -14,6 +14,20 @@
   "scoringStyle": "end-game-categories",
   "rounds": null,
   "categories": [
+    {
+      "key": "boardSide",
+      "label": "Personal board side (shared by all players)",
+      "labelVi": "Mặt bàn cá nhân (chung cả bàn)",
+      "hint": "Everyone must use the same side. 0 = side A (river, default); 1 = side B (islands). This choice does not add points.",
+      "scope": "team",
+      "input": "count",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
     {
       "key": "trees",
       "label": "Trees",
@@ -88,47 +102,33 @@
       "key": "riverSideA",
       "label": "Water - River (side A)",
       "labelVi": "Nước - Sông (mặt A)",
-      "hint": "Length of best river by shortest path. 1:0, 2:2, 3:5, 4:8, 5:11, 6:15, +4 per token beyond 6. Skip if playing side B.",
-      "scope": "player",
-      "input": "count",
-      "min": 0,
-      "max": 14,
-      "formula": {
-        "type": "table",
-        "table": {
-          "0": 0,
-          "1": 0,
-          "2": 2,
-          "3": 5,
-          "4": 8,
-          "5": 11,
-          "6": 15,
-          "7": 19,
-          "8": 23,
-          "9": 27,
-          "10": 31,
-          "11": 35,
-          "12": 39,
-          "13": 43,
-          "14": 47
-        }
-      },
-      "countsToTotal": true
-    },
-    {
-      "key": "islandsSideB",
-      "label": "Water - Islands (side B)",
-      "labelVi": "Nước - Đảo (mặt B)",
-      "hint": "5 points per island; you always have at least 1. Skip if playing side A.",
+      "hint": "Side A only. Count both ends of the best river along its shortest path: 1 token = 0 points; 2/3/4/5/6 = 2/5/8/11/15, then +4 for each token beyond 6.",
       "scope": "player",
       "input": "count",
       "min": 0,
       "max": null,
       "formula": {
-        "type": "multiply",
-        "points": 5
+        "type": "expr",
+        "expr": "if(value <= 1, 0, if(value == 2, 2, if(value == 3, 5, if(value == 4, 8, if(value == 5, 11, 15 + 4 * (value - 6))))))"
       },
-      "countsToTotal": true
+      "countsToTotal": true,
+      "appliesWhen": "cat_boardSide == 0"
+    },
+    {
+      "key": "islandsSideB",
+      "label": "Water - Islands (side B)",
+      "labelVi": "Nước - Đảo (mặt B)",
+      "hint": "Side B only. 5 points per island; there is always at least 1, even with no blue tokens. Defaults to 1 island until entered.",
+      "scope": "player",
+      "input": "count",
+      "min": 1,
+      "max": null,
+      "formula": {
+        "type": "expr",
+        "expr": "max(1, value) * 5"
+      },
+      "countsToTotal": true,
+      "appliesWhen": "cat_boardSide == 1"
     },
     {
       "key": "animalCards",
@@ -169,7 +169,8 @@
       "formula": {
         "type": "sum"
       },
-      "countsToTotal": false
+      "countsToTotal": false,
+      "hint": "Only Animal cubes placed on your Personal board; exclude the Nature’s Spirit cube. Used to break equal totals and never added to points."
     }
   ],
   "tiebreakers": [
@@ -183,7 +184,7 @@
     }
   ],
   "sharedVictoryOnTie": true,
-  "notes": "family: end-game-categories. Game ends when the pouch cannot refill the Central board or a player ends their turn with 2 or fewer empty spaces; finish the round so turns are equal. Tree, mountain and river point values verified visually in the official rulebook p.8 (Tallying Points); river: 1:0, 2:2, 3:5, 4:8, 5:11, 6:15, +4 per token beyond 6 (table capped at 14 tokens). Nature's Spirit cards (optional) vary per card; their points are scored like Animal cards, in addition to all others. Pokemon Harmonies and solo mode not modelled.",
+  "notes": "family: end-game-categories. Game ends when the pouch cannot refill the Central board or a player ends their turn with 2 or fewer empty spaces; finish the round so turns are equal. Tree, mountain and river point values verified visually in the official rulebook p.8 (Tallying Points); river: 1:0, 2:2, 3:5, 4:8, 5:11, 6:15, +4 per token beyond 6. All players share one board side; only that side’s water scores, and side B always has at least one island. Nature's Spirit cards (optional) vary per card; their points are scored like Animal cards, in addition to all others. Pokemon Harmonies and solo mode not modelled.",
   "sources": [
     {
       "url": "https://cdn.svc.asmodee.net/production-libellud/uploads/2024/03/LIBELLUD_HARMONIES_RULES_EN-1.pdf",

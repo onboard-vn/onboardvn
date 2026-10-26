@@ -9,6 +9,8 @@ import type { ComponentType } from 'react';
 import type { SheetApi } from './use-sheet';
 import { AcquireInput } from './custom/acquire-input';
 import { GrandAustriaInput } from './custom/grand-austria-input';
+import { ApplejackInput } from './custom/applejack-input';
+import { HarmoniesInput } from './custom/harmonies-input';
 
 export type ScoreInputComponent = ComponentType<{ sheet: SheetApi }>;
 
@@ -86,3 +88,5 @@ for (const [slug, guide] of Object.entries(gameGuides)) {
 
 // Keep the game's compact chain grid while storing quantities in synced categories.
 scoreInputRegistry['acquire-1963'] = AcquireInput;
+scoreInputRegistry['applejack-2022'] = ApplejackInput;
+scoreInputRegistry.harmonies = HarmoniesInput;

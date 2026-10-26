@@ -1,5 +1,5 @@
 import type { ScoreTemplate } from '@onboard/shared';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { playsApi as defaultPlaysApi, type PlaysApi } from '../api/plays';
@@ -37,6 +37,7 @@ import { useAppPreferences } from '../ui/preferences';
 export interface ScoreSheetProps {
   template: ScoreTemplate;
   localPlayers?: boolean;
+  detailedOnly?: boolean;
   players: Player[];
   playId?: string;
   saved?: SheetState | null;
@@ -44,18 +45,21 @@ export interface ScoreSheetProps {
   api?: PlaysApi;
   actorId?: string;
   restoredFromDraft?: boolean;
+  onStateChange?: (state: SheetState) => void;
 }
 
 export function ScoreSheet({
   template,
   players,
   localPlayers = false,
+  detailedOnly = false,
   playId,
   saved,
   onExit,
   api: playsApi = defaultPlaysApi,
   actorId = CURRENT_IDENTITY_ID,
   restoredFromDraft = !!saved,
+  onStateChange,
 }: ScoreSheetProps) {
   useAppPreferences();
   const sheet = useSheet(template, players, {
@@ -66,8 +70,11 @@ export function ScoreSheet({
   const sync = usePlaySync(playId, sheet, playsApi);
   const Custom = scoreInputRegistry[template.slug];
   const { state } = sheet;
+  useEffect(() => {
+    onStateChange?.(state);
+  }, [onStateChange, state]);
   const expansions = expansionsOf(template);
-  const detailed = state.mode === 'detailed';
+  const detailed = detailedOnly || state.mode === 'detailed';
   const [finishing, setFinishing] = useState(false);
   const [notice, setNotice] = useState<string | null>(
     restoredFromDraft ? 'Đã khôi phục bản nháp.' : null,
@@ -117,14 +124,16 @@ export function ScoreSheet({
           </Hint>
           {template.needsReview ? <Badge label={scoreText('Mẫu chưa duyệt')} /> : null}
 
-          <Segmented<SheetMode>
-            value={state.mode}
-            onChange={sheet.setMode}
-            options={[
-              { value: 'quick', label: scoreText('Nhanh (chỉ tổng)') },
-              { value: 'detailed', label: scoreText('Chi tiết') },
-            ]}
-          />
+          {!detailedOnly ? (
+            <Segmented<SheetMode>
+              value={state.mode}
+              onChange={sheet.setMode}
+              options={[
+                { value: 'quick', label: scoreText('Nhanh (chỉ tổng)') },
+                { value: 'detailed', label: scoreText('Chi tiết') },
+              ]}
+            />
+          ) : null}
 
           {localPlayers ? (
             <LocalPlayerEditor sheet={sheet} />

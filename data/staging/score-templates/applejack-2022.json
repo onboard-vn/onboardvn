@@ -1,5 +1,5 @@
 {
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base",
   "mode": "competitive",
   "winRule": "highest",
@@ -11,47 +11,139 @@
   "year": 2022,
   "bggId": 367662,
   "playerCount": {
-    "min": 1,
+    "min": 2,
     "max": 4
   },
   "scoringStyle": "end-game-categories",
   "categories": [
     {
-      "key": "finalHarvest",
-      "label": "Final harvest (all 7 varieties, die = 3)",
-      "labelVi": "Thu hoạch cuối (7 loại táo, xúc xắc = 3)",
-      "hint": "Sum honey from every area of every variety after subtracting 3 per area; enter the total BEFORE doubling (doubled automatically). Areas of 3 or fewer apples give nothing.",
+      "key": "honeyBrown",
+      "label": "Brown: honey before doubling",
+      "labelVi": "Nâu: mật ong trước nhân đôi",
+      "hint": "Count only this variety. Subtract 3 separately from each connected area, minimum 0, then add the honey from those areas. Enter honey BEFORE doubling, not the number of apples; doubled automatically.",
       "scope": "player",
-      "input": "number",
+      "input": "count",
       "min": 0,
       "max": null,
       "formula": {
-        "type": "expr",
-        "expr": "value * 2"
+        "type": "multiply",
+        "points": 2
       },
       "countsToTotal": true
     },
     {
-      "key": "varietyBonus",
-      "label": "Profitable varieties in final harvest",
-      "labelVi": "Số loại táo có lãi ở vụ cuối",
-      "hint": "Varieties that yielded at least 1 honey in the final harvest (needs 4+ contiguous apples): 4/5/6/7 varieties = 4/11/21/35 honey.",
+      "key": "honeyDarkGreen",
+      "label": "Dark green: honey before doubling",
+      "labelVi": "Xanh đậm: mật ong trước nhân đôi",
+      "hint": "Count only this variety. Subtract 3 separately from each connected area, minimum 0, then add the honey from those areas. Enter honey BEFORE doubling, not the number of apples; doubled automatically.",
       "scope": "player",
       "input": "count",
       "min": 0,
-      "max": 7,
+      "max": null,
       "formula": {
-        "type": "table",
-        "table": {
-          "0": 0,
-          "1": 0,
-          "2": 0,
-          "3": 0,
-          "4": 4,
-          "5": 11,
-          "6": 21,
-          "7": 35
-        }
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "honeyLightGreen",
+      "label": "Light green: honey before doubling",
+      "labelVi": "Xanh nhạt: mật ong trước nhân đôi",
+      "hint": "Count only this variety. Subtract 3 separately from each connected area, minimum 0, then add the honey from those areas. Enter honey BEFORE doubling, not the number of apples; doubled automatically.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "honeyRed",
+      "label": "Red: honey before doubling",
+      "labelVi": "Đỏ: mật ong trước nhân đôi",
+      "hint": "Count only this variety. Subtract 3 separately from each connected area, minimum 0, then add the honey from those areas. Enter honey BEFORE doubling, not the number of apples; doubled automatically.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "honeyPink",
+      "label": "Pink: honey before doubling",
+      "labelVi": "Hồng: mật ong trước nhân đôi",
+      "hint": "Count only this variety. Subtract 3 separately from each connected area, minimum 0, then add the honey from those areas. Enter honey BEFORE doubling, not the number of apples; doubled automatically.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "honeyOrange",
+      "label": "Orange: honey before doubling",
+      "labelVi": "Cam: mật ong trước nhân đôi",
+      "hint": "Count only this variety. Subtract 3 separately from each connected area, minimum 0, then add the honey from those areas. Enter honey BEFORE doubling, not the number of apples; doubled automatically.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "honeyYellow",
+      "label": "Yellow: honey before doubling",
+      "labelVi": "Vàng: mật ong trước nhân đôi",
+      "hint": "Count only this variety. Subtract 3 separately from each connected area, minimum 0, then add the honey from those areas. Enter honey BEFORE doubling, not the number of apples; doubled automatically.",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "profitableVarieties",
+      "label": "Profitable varieties",
+      "labelVi": "Số giống táo có lãi",
+      "hint": "Automatically counts varieties whose final harvest yields at least 1 honey before doubling. Each variety counts once, even with multiple areas.",
+      "scope": "player",
+      "input": "derived",
+      "formula": {
+        "type": "expr",
+        "expr": "countTrue(cat_honeyBrown > 0, cat_honeyDarkGreen > 0, cat_honeyLightGreen > 0, cat_honeyRed > 0, cat_honeyPink > 0, cat_honeyOrange > 0, cat_honeyYellow > 0)"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "varietyBonus",
+      "label": "Variety bonus",
+      "labelVi": "Thưởng số giống táo",
+      "hint": "Automatically scores 4/5/6/7 profitable varieties as 4/11/21/35 honey; 0–3 varieties score 0. This bonus is not doubled.",
+      "scope": "player",
+      "input": "derived",
+      "formula": {
+        "type": "expr",
+        "expr": "if(cat_profitableVarieties == 7, 35, if(cat_profitableVarieties == 6, 21, if(cat_profitableVarieties == 5, 11, if(cat_profitableVarieties == 4, 4, 0))))"
       },
       "countsToTotal": true
     },

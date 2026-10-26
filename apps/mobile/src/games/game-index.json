@@ -201,7 +201,7 @@
     "slug": "applejack-2022",
     "name": "Applejack",
     "year": 2022,
-    "players": [1, 4],
+    "players": [2, 4],
     "mode": "competitive"
   },
   {
@@ -1406,7 +1406,7 @@
     "slug": "harmonies",
     "name": "Harmonies",
     "year": 2024,
-    "players": [1, 4],
+    "players": [2, 4],
     "mode": "competitive"
   },
   {

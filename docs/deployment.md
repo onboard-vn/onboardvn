@@ -110,9 +110,15 @@ Build không chạy trong Docker:
 ```bash
 pnpm --filter @onboard/shared build
 pnpm --filter @onboard/mobile export:web
-rsync -a --delete apps/mobile/dist/ vps:Code/onboardvn/deploy/mobile-web/
-ssh vps 'cd ~/Code/onboardvn && docker compose -p onboard --env-file .env.prod -f compose.prod.yml -f compose.vps.yml restart caddy'
+# Keep existing hashed assets and back up the currently served entry point.
+ssh vps 'cd ~/Code/onboardvn && cp deploy/mobile-web/index.html deploy/mobile-web/index.html.previous'
+rsync -a --exclude='/index.html' apps/mobile/dist/ vps:Code/onboardvn/deploy/mobile-web/
+scp apps/mobile/dist/index.html vps:Code/onboardvn/deploy/mobile-web/index.html.next
+ssh vps 'cd ~/Code/onboardvn
+mv deploy/mobile-web/index.html.next deploy/mobile-web/index.html'
 ```
+
+The new assets arrive before the entry point switches, so open tabs can finish using old hashed assets. A static-file update does not need a Caddy restart. To roll back, atomically move `index.html.previous` back to `index.html`; the previous assets remain available.
 
 **Bản đồ:** `/map` dùng MapLibre + OpenFreeMap (miễn phí, không cần key). Google Maps Platform không dùng được với tài khoản thanh toán Việt Nam (Việt Nam nằm trong danh sách vùng bị cấm của Google từ 03/2022); nút "Chỉ đường" mở Google Maps bằng link thường nên không bị ảnh hưởng. Chi tiết: [location-and-map/decisions.md](location-and-map/decisions.md).
 
@@ -216,10 +222,10 @@ Kiểm chứng 2026-10-16: `vps:/home/j2teamnnl/Code/onboardvn`, Compose project
 Build thư viện dùng chung bằng `pnpm --filter @onboard/shared build`, sau đó
 build frontend bằng `pnpm --filter @onboard/mobile export:web` từ đúng commit cần
 phát hành, với cấu hình `EXPO_PUBLIC_*` production. Đầu ra mặc định ở
-`apps/mobile/dist`. Giữ bản index/assets cũ để rollback; chép assets mới trước,
-thay `index.html` cuối cùng bằng rename nguyên tử. Giữ hashed assets cũ để tab
-đang mở tiếp tục chạy. Không đổi thư mục bind mount mà chưa kiểm tra Caddy nhìn
-thấy nội dung mới.
+`apps/mobile/dist`. Dùng lệnh ở mục Website = app Expo để sao lưu index hiện tại,
+chép assets mới mà không xóa bản cũ, rồi thay `index.html` cuối cùng bằng rename
+nguyên tử. Không đổi thư mục bind mount mà chưa kiểm tra Caddy nhìn thấy nội dung
+mới.
 
 Workflow [release.yml](../.github/workflows/release.yml) chỉ build/push image khi
 push `main`; không tự deploy VPS và không export Expo. Frontend-only chỉ cần phát
