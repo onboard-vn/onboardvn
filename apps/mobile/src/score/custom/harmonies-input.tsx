@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { RawValue } from '@onboard/shared';
 import { TEAM_ID } from '../../api/plays-types';
@@ -10,6 +10,8 @@ import { GenericCategories } from '../generic-categories';
 import { scorePlayerName } from '../localization';
 import type { SheetApi } from '../use-sheet';
 import {
+  deleteAnimalCardById,
+  editAnimalCardById,
   editAnimalCards,
   heightCounter,
   readyAnimalCardPoints,
@@ -70,34 +72,64 @@ function AnimalCardsInput({
   const text = (vi: string, en: string) => (language === 'en' ? en : vi);
   const [nextPoints, setNextPoints] = useState(0);
   const cards = readyAnimalCardPoints(value);
-  const add = (points: number) => onChange(editAnimalCards(cards, { type: 'add', points }));
+  const idPrefix = useId();
+  const [rowIds, setRowIds] = useState(() => cards.map((_, index) => `${idPrefix}-card-${index}`));
+  const nextId = useRef(cards.length);
+  const displayIds = cards.map((_, index) => rowIds[index] ?? `${idPrefix}-pending-${index}`);
+  const rowsRef = useRef({ ids: displayIds, points: cards });
+
+  useEffect(() => {
+    rowsRef.current = { ids: displayIds, points: cards };
+  }, [cards, displayIds]);
+
+  const editCard = (id: string, points: number) => {
+    const next = editAnimalCardById(rowsRef.current, id, points);
+    rowsRef.current = next;
+    onChange(next.points);
+  };
+  const deleteCard = (id: string) => {
+    const next = deleteAnimalCardById(rowsRef.current, id);
+    rowsRef.current = next;
+    setRowIds(next.ids);
+    onChange(next.points);
+  };
+  const add = (points: number) => {
+    const next = {
+      ids: [...rowsRef.current.ids, `${idPrefix}-card-${nextId.current++}`],
+      points: editAnimalCards(rowsRef.current.points, { type: 'add', points }),
+    };
+    rowsRef.current = next;
+    setRowIds(next.ids);
+    onChange(next.points);
+  };
   return (
     <View style={styles.group}>
       {cards.length ? (
-        cards.map((points, index) => (
-          <View key={index} style={styles.cardRow}>
-            <View style={styles.cardCounter}>
-              <LandscapeCounter
-                label={`${text('Thẻ', 'Card')} ${index + 1}`}
-                hint="VP"
-                value={points}
+        cards.map((points, index) => {
+          const id = displayIds[index];
+          return (
+            <View key={id} style={styles.cardRow}>
+              <View style={styles.cardCounter}>
+                <LandscapeCounter
+                  label={`${text('Thẻ', 'Card')} ${index + 1}`}
+                  hint="VP"
+                  value={points}
+                  disabled={disabled}
+                  onChange={(next) => editCard(id, next)}
+                />
+              </View>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={text(`Xóa thẻ ${index + 1}`, `Delete card ${index + 1}`)}
                 disabled={disabled}
-                onChange={(next) =>
-                  onChange(editAnimalCards(cards, { type: 'edit', index, points: next }))
-                }
-              />
+                onPress={() => deleteCard(id)}
+                style={[styles.delete, disabled && styles.disabled]}
+              >
+                <Text style={styles.deleteText}>×</Text>
+              </Pressable>
             </View>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={text(`Xóa thẻ ${index + 1}`, `Delete card ${index + 1}`)}
-              disabled={disabled}
-              onPress={() => onChange(editAnimalCards(cards, { type: 'delete', index }))}
-              style={[styles.delete, disabled && styles.disabled]}
-            >
-              <Text style={styles.deleteText}>×</Text>
-            </Pressable>
-          </View>
-        ))
+          );
+        })
       ) : (
         <Hint>
           {text(

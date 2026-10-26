@@ -94,3 +94,28 @@ export function editAnimalCards(cards: readonly number[], edit: AnimalCardEdit):
     ? cards.filter((_, index) => index !== edit.index)
     : cards.map((points, index) => (index === edit.index ? wholeCounter(edit.points) : points));
 }
+
+export interface AnimalCardRows {
+  ids: string[];
+  points: number[];
+}
+
+/** Resolve delayed input events by row identity after cards are inserted or removed. */
+export function editAnimalCardById(
+  rows: AnimalCardRows,
+  id: string,
+  points: number,
+): AnimalCardRows {
+  const index = rows.ids.indexOf(id);
+  if (index < 0 || index >= rows.points.length) return rows;
+  return { ...rows, points: editAnimalCards(rows.points, { type: 'edit', index, points }) };
+}
+
+export function deleteAnimalCardById(rows: AnimalCardRows, id: string): AnimalCardRows {
+  const index = rows.ids.indexOf(id);
+  if (index < 0 || index >= rows.points.length) return rows;
+  return {
+    ids: rows.ids.filter((rowId) => rowId !== id),
+    points: editAnimalCards(rows.points, { type: 'delete', index }),
+  };
+}

@@ -4,6 +4,8 @@ import { applyOp, buildInput, initialState, summarize } from '../model';
 import { scoreTemplates } from '../templates';
 import {
   animalCardPoints,
+  deleteAnimalCardById,
+  editAnimalCardById,
   editAnimalCards,
   heightCounter,
   readyAnimalCardPoints,
@@ -82,6 +84,19 @@ describe('Applejack and Harmonies counter contracts', () => {
     expect(original).toEqual([3, 0, 3]);
     expect(animalCardPoints(0)).toEqual([0]);
     expect(animalCardPoints(undefined)).toEqual([]);
+  });
+
+  it('keeps a delayed edit attached to its card after deleting an earlier card', () => {
+    const afterDelete = deleteAnimalCardById(
+      { ids: ['card-1', 'card-2', 'card-3'], points: [0, 0, 0] },
+      'card-1',
+    );
+    expect(afterDelete).toEqual({ ids: ['card-2', 'card-3'], points: [0, 0] });
+    expect(editAnimalCardById(afterDelete, 'card-2', 6)).toEqual({
+      ids: ['card-2', 'card-3'],
+      points: [6, 0],
+    });
+    expect(editAnimalCardById(afterDelete, 'card-1', 9)).toBe(afterDelete);
   });
 
   it('shows eight ready cards for missing lists without writing sheet state', () => {
