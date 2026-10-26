@@ -67,6 +67,7 @@ export function ScoreSheet({
     saved,
     allowIncompleteRoster: localPlayers,
   });
+  const [customInputGeneration, setCustomInputGeneration] = useState(0);
   const sync = usePlaySync(playId, sheet, playsApi);
   const Custom = scoreInputRegistry[template.slug];
   const { state } = sheet;
@@ -88,6 +89,12 @@ export function ScoreSheet({
     } catch {
       setNotice('Không lưu được bản nháp.');
     }
+  };
+
+  const resetScoreSheet = () => {
+    if (!sheet.canManage) return;
+    sheet.reset();
+    setCustomInputGeneration((generation) => generation + 1);
   };
 
   const confirmFinish = async () => {
@@ -212,7 +219,7 @@ export function ScoreSheet({
               ) : null}
 
               {Custom ? (
-                <Custom sheet={sheet} />
+                <Custom key={customInputGeneration} sheet={sheet} />
               ) : isRoundsGame(template) ? (
                 <RoundsTable sheet={sheet} />
               ) : (
@@ -242,7 +249,7 @@ export function ScoreSheet({
             </Card>
           ) : null}
 
-          <Button label={scoreText('Làm lại từ đầu')} tone="ghost" onPress={sheet.reset} />
+          <Button label={scoreText('Làm lại từ đầu')} tone="ghost" onPress={resetScoreSheet} />
         </View>
       </ScrollView>
       {playId ? (

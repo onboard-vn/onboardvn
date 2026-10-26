@@ -3,11 +3,13 @@ import { TEAM_ID } from '../../api/plays-types';
 import { applyOp, buildInput, initialState, summarize } from '../model';
 import { scoreTemplates } from '../templates';
 import {
+  animalCardRowIds,
   animalCardPoints,
   deleteAnimalCardById,
   editAnimalCardById,
   editAnimalCards,
   heightCounter,
+  reconcileAnimalCardIdentity,
   readyAnimalCardPoints,
   supportsApplejackCounters,
   supportsHarmoniesCounters,
@@ -97,6 +99,26 @@ describe('Applejack and Harmonies counter contracts', () => {
       points: [6, 0],
     });
     expect(editAnimalCardById(afterDelete, 'card-1', 9)).toBe(afterDelete);
+  });
+
+  it('replaces row identities when an external value replaces the card list', () => {
+    const saved = [0, 4, 0];
+    const initial = {
+      source: saved,
+      generation: 0,
+      ids: animalCardRowIds('harmonies', 0, saved.length),
+    };
+    const reset = reconcileAnimalCardIdentity(initial, undefined, 8, 'harmonies');
+
+    expect(reset.generation).toBe(1);
+    expect(reset.ids).toEqual(animalCardRowIds('harmonies', 1, 8));
+    expect(reset.ids.some((id) => initial.ids.includes(id))).toBe(false);
+    expect(reconcileAnimalCardIdentity(reset, undefined, 8, 'harmonies')).toBe(reset);
+
+    const snapshot = [7, 0];
+    const replaced = reconcileAnimalCardIdentity(reset, snapshot, snapshot.length, 'harmonies');
+    expect(replaced.generation).toBe(2);
+    expect(replaced.ids).toEqual(animalCardRowIds('harmonies', 2, snapshot.length));
   });
 
   it('shows eight ready cards for missing lists without writing sheet state', () => {

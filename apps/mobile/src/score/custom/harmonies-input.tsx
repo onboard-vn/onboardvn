@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useLayoutEffect, useId, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { RawValue } from '@onboard/shared';
 import { TEAM_ID } from '../../api/plays-types';
@@ -11,9 +11,11 @@ import { scorePlayerName } from '../localization';
 import type { SheetApi } from '../use-sheet';
 import {
   deleteAnimalCardById,
+  animalCardRowIds,
   editAnimalCardById,
   editAnimalCards,
   heightCounter,
+  reconcileAnimalCardIdentity,
   readyAnimalCardPoints,
   supportsHarmoniesCounters,
   wholeCounter,
@@ -73,34 +75,50 @@ function AnimalCardsInput({
   const [nextPoints, setNextPoints] = useState(0);
   const cards = readyAnimalCardPoints(value);
   const idPrefix = useId();
-  const [rowIds, setRowIds] = useState(() => cards.map((_, index) => `${idPrefix}-card-${index}`));
-  const nextId = useRef(cards.length);
-  const displayIds = cards.map((_, index) => rowIds[index] ?? `${idPrefix}-pending-${index}`);
-  const rowsRef = useRef({ ids: displayIds, points: cards });
+  const [rowIdentity, setRowIdentity] = useState(() => ({
+    source: value,
+    generation: 0,
+    ids: animalCardRowIds(idPrefix, 0, cards.length),
+  }));
+  const activeIdentity = reconcileAnimalCardIdentity(rowIdentity, value, cards.length, idPrefix);
+  if (activeIdentity !== rowIdentity) setRowIdentity(activeIdentity);
+  const displayIds = activeIdentity.ids;
+  const nextId = useRef(0);
+  const rowsRef = useRef({
+    ids: displayIds,
+    points: cards,
+    generation: activeIdentity.generation,
+  });
 
-  useEffect(() => {
-    rowsRef.current = { ids: displayIds, points: cards };
-  }, [cards, displayIds]);
+  useLayoutEffect(() => {
+    rowsRef.current = { ids: displayIds, points: cards, generation: activeIdentity.generation };
+  }, [activeIdentity, cards, displayIds]);
+
+  const commitCards = (next: ReturnType<typeof editAnimalCardById>) => {
+    if (next === rowsRef.current) return;
+    const generation = rowsRef.current.generation;
+    rowsRef.current = { ...next, generation };
+    setRowIdentity({ source: next.points, generation, ids: next.ids });
+    onChange(next.points);
+  };
 
   const editCard = (id: string, points: number) => {
     const next = editAnimalCardById(rowsRef.current, id, points);
-    rowsRef.current = next;
-    onChange(next.points);
+    commitCards(next);
   };
   const deleteCard = (id: string) => {
     const next = deleteAnimalCardById(rowsRef.current, id);
-    rowsRef.current = next;
-    setRowIds(next.ids);
-    onChange(next.points);
+    commitCards(next);
   };
   const add = (points: number) => {
     const next = {
-      ids: [...rowsRef.current.ids, `${idPrefix}-card-${nextId.current++}`],
+      ids: [
+        ...rowsRef.current.ids,
+        `${idPrefix}-g${rowsRef.current.generation}-added-${nextId.current++}`,
+      ],
       points: editAnimalCards(rowsRef.current.points, { type: 'add', points }),
     };
-    rowsRef.current = next;
-    setRowIds(next.ids);
-    onChange(next.points);
+    commitCards(next);
   };
   return (
     <View style={styles.group}>

@@ -100,6 +100,31 @@ export interface AnimalCardRows {
   points: number[];
 }
 
+export interface AnimalCardIdentity<T = unknown> {
+  source: T;
+  generation: number;
+  ids: string[];
+}
+
+export function animalCardRowIds(prefix: string, generation: number, count: number): string[] {
+  return Array.from({ length: count }, (_, index) => `${prefix}-g${generation}-card-${index}`);
+}
+
+export function reconcileAnimalCardIdentity<T>(
+  identity: AnimalCardIdentity<T>,
+  source: T,
+  count: number,
+  prefix: string,
+): AnimalCardIdentity<T> {
+  if (identity.source === source && identity.ids.length === count) return identity;
+  const generation = identity.generation + 1;
+  return {
+    source,
+    generation,
+    ids: animalCardRowIds(prefix, generation, count),
+  };
+}
+
 /** Resolve delayed input events by row identity after cards are inserted or removed. */
 export function editAnimalCardById(
   rows: AnimalCardRows,
