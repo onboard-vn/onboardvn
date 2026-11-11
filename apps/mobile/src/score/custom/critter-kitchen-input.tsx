@@ -1098,9 +1098,10 @@ function EngineBreakdown({
           {scoreFeedbackText(error.message)}
         </Text>
       ))}
-      {result.warnings.map((warning) => (
-        <Hint key={warning}>{scoreFeedbackText(warning)}</Hint>
-      ))}
+      {result.warnings.map((warning) => {
+        const message = scoreFeedbackText(warning, '');
+        return message ? <Hint key={warning}>{message}</Hint> : null;
+      })}
       {result.players.map((player) => (
         <View key={player.identityId} style={styles.resultPlayer}>
           <Text style={styles.playerName}>

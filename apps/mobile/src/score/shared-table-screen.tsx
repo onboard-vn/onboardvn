@@ -365,7 +365,6 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
                       style={styles.gameOption}
                     >
                       <Text style={styles.gameName}>{game.nameVi ?? game.nameEn}</Text>
-                      <Hint>{game.slug}</Hint>
                     </Pressable>
                   ))}
                 </>
@@ -399,10 +398,7 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
       ) : !template ? (
         <View style={styles.content}>
           <Card>
-            <Heading>{scoreText('Chưa có mẫu chấm điểm')}</Heading>
-            <Hint>
-              {scoreText('Máy chủ chưa gắn mẫu điểm có thể dùng cho {title}.', { title })}
-            </Hint>
+            <Heading>{scoreText('Game này chưa có bảng tính điểm.')}</Heading>
             <Button
               label={scoreText('Tải lại')}
               tone="ghost"

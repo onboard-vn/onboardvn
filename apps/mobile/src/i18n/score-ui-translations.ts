@@ -3,6 +3,15 @@ type ScoreTranslation = { vi: string; en: string };
 type ScoreTranslationMap = Record<string, ScoreTranslation>;
 
 const vietnameseCopy: Record<string, string> = {
+  'Game này chưa có bảng tính điểm.': 'This game does not have a score sheet yet.',
+  'Chưa tính được điểm. Kiểm tra số đã nhập rồi thử lại.':
+    'Could not calculate the score. Check your entries and try again.',
+  'Đã chốt kết quả': 'Results finalized',
+  'Điểm đã được lưu.': 'Scores saved.',
+  'Một số điểm chưa được lưu.': 'Some scores have not been saved.',
+  'Thử lưu lại': 'Try saving again',
+  'Bỏ điểm chưa lưu': 'Discard unsaved scores',
+  'Đang lưu điểm…': 'Saving scores…',
   'Nếu hòa ở mốc 200 điểm trở lên, cả bàn chơi tiếp đến khi có một người dẫn đầu.':
     'If tied for the lead after reaching 200 points, all players play additional rounds until one player leads.',
   'Thẻ Công dân thưởng tự động': 'Automatic Citizen bonus',

@@ -65,11 +65,14 @@ function FinalResult({ play, template }: { play: PlayDto; template: ScoreTemplat
           </View>
         ))
       )}
-      {play.warnings.map((w) => (
-        <Text key={w} style={styles.meta}>
-          {scoreFeedbackText(w)}
-        </Text>
-      ))}
+      {play.warnings.map((warning) => {
+        const message = scoreFeedbackText(warning, '');
+        return message ? (
+          <Text key={warning} style={styles.meta}>
+            {message}
+          </Text>
+        ) : null;
+      })}
     </Card>
   );
 }
@@ -190,7 +193,7 @@ function TablePlay({ bundle, reload }: { bundle: TableBundle; reload: () => void
                 {table.meetupTitle} ·{' '}
                 {table.seated.map((s) => s.displayName).join(', ') || scoreText('chưa có ai')}
               </Hint>
-              {!template ? <Hint>{scoreText('Game này chưa có mẫu tính điểm.')}</Hint> : null}
+              {!template ? <Hint>{scoreText('Game này chưa có bảng tính điểm.')}</Hint> : null}
               {template && !play ? (
                 <Button
                   label={starting ? scoreText('Đang tạo…') : scoreText('Bắt đầu tính điểm')}
