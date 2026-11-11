@@ -3,13 +3,13 @@
   "name": "A Game of Thrones: The Board Game (Second Edition)",
   "year": 2011,
   "bggId": 103343,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base",
   "playerCount": { "min": 3, "max": 6 },
   "mode": "competitive",
   "winRule": "highest",
   "scoringStyle": "end-game-categories",
-  "rounds": { "count": 10, "aggregate": "best", "endCondition": "Immediate win on controlling 7 areas with a Castle or Stronghold" },
+  "rounds": null,
   "categories": [
     {
       "key": "castleAreas",
@@ -24,15 +24,15 @@
       "countsToTotal": true
     },
     {
-      "key": "strongholds",
-      "label": "Strongholds controlled (tiebreak)",
-      "labelVi": "Số Stronghold (hòa thì xét)",
-      "hint": "1st tiebreaker: more Strongholds wins.",
+      "key": "landAreas",
+      "label": "Total land areas controlled (tiebreak)",
+      "labelVi": "Tổng số vùng đất kiểm soát (hòa thì xét)",
+      "hint": "1st tiebreaker: most total land areas controlled.",
       "scope": "player",
       "input": "count",
       "min": 0,
       "max": null,
-      "formula": { "type": "multiply", "points": 0 },
+      "formula": { "type": "sum" },
       "countsToTotal": false
     },
     {
@@ -45,18 +45,6 @@
       "min": 0,
       "max": 6,
       "formula": { "type": "sum" },
-      "countsToTotal": false
-    },
-    {
-      "key": "availablePower",
-      "label": "Available Power tokens (tiebreak)",
-      "labelVi": "Power token khả dụng (hòa thì xét)",
-      "hint": "3rd tiebreaker: most available power wins.",
-      "scope": "player",
-      "input": "count",
-      "min": 0,
-      "max": null,
-      "formula": { "type": "multiply", "points": 0 },
       "countsToTotal": false
     },
     {
@@ -73,9 +61,8 @@
     }
   ],
   "tiebreakers": [
-    { "categoryKey": "strongholds", "dir": "highest", "description": "Greater number of Strongholds" },
+    { "categoryKey": "landAreas", "dir": "highest", "description": "Most total land areas controlled" },
     { "categoryKey": "supplyPosition", "dir": "highest", "description": "Higher position on the Supply track" },
-    { "categoryKey": "availablePower", "dir": "highest", "description": "Most available Power tokens" },
     { "categoryKey": "ironThronePlace", "dir": "lowest", "description": "Higher position on the Iron Throne track (place 1 is best)" }
   ],
   "sharedVictoryOnTie": false,
@@ -88,6 +75,12 @@
       "title": "A Game of Thrones: The Board Game 2nd Edition rulebook (Fantasy Flight Games, via 1jour-1jeu)",
       "type": "official-rulebook",
       "section": "p.4 Object of the Game / game round; p.16 Winning the Game"
+    },
+    {
+      "url": "https://images-cdn.fantasyflightgames.com/filer_public/cf/06/cf06eb26-48e3-46b9-b57c-f053beb2518d/agotbg_faq_v2_forweb.pdf",
+      "title": "Fantasy Flight Games FAQ and errata v2",
+      "type": "official-rulebook",
+      "section": "Tiebreakers"
     }
   ],
   "confidence": "high",

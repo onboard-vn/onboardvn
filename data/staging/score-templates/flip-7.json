@@ -3,7 +3,7 @@
   "name": "Flip 7",
   "year": 2024,
   "bggId": 420087,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base",
   "playerCount": {
     "min": 3,
@@ -15,7 +15,7 @@
   "rounds": {
     "count": null,
     "aggregate": "sum",
-    "endCondition": "Round in which at least one player reaches 200 points; highest total then wins"
+    "endCondition": "At least 200 points and a sole leader at the end of a round."
   },
   "categories": [
     {
@@ -79,12 +79,12 @@
   ],
   "tiebreakers": [
     {
-      "description": "Rulebook text read does not define a tie at 200+; play another round if tied for most points (common ruling, unverified).",
-      "descriptionVi": "Chưa có luật hòa ở mốc 200+; hòa điểm cao nhất thì chơi thêm 1 vòng."
+      "description": "If tied for the lead after reaching 200 points, all players play additional rounds until one player leads.",
+      "descriptionVi": "Nếu hòa ở mốc 200 điểm trở lên, cả bàn chơi tiếp đến khi có một người dẫn đầu."
     }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "family: rounds (press-your-luck; round scores accumulate). Score a player's round: Number sum, x2 first, then add modifiers, then +15 for Flip 7; a busted player scores 0 that round. Enter one scoring per round. Game ends at end of round where anyone has >=200; most points wins. Tie handling not found in rulebook text.",
+  "notes": "family: rounds (press-your-luck; round scores accumulate). Score a player's round: Number sum, x2 first, then add modifiers, then +15 for Flip 7; a busted player scores 0 that round. Enter one scoring per round. At the end of a round with at least 200 points, a sole leader wins. If the lead is tied, all players continue until one player leads.",
   "sources": [
     {
       "url": "https://bghub.org/r/flip7.pdf",
@@ -97,6 +97,12 @@
       "title": "Flip 7 Rules (flip7scoreboard)",
       "type": "other",
       "section": "Scoring"
+    },
+    {
+      "url": "https://theop.games/pages/flip-7-faqs",
+      "title": "The Op official Flip 7 FAQ",
+      "type": "publisher-page",
+      "section": "Tied scores above 200"
     }
   ],
   "confidence": "high",

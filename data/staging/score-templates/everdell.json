@@ -3,7 +3,7 @@
   "name": "Everdell",
   "year": 2018,
   "bggId": 199792,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base",
   "playerCount": {
     "min": 1,
@@ -83,14 +83,44 @@
         "type": "sum"
       },
       "countsToTotal": true
+    },
+    {
+      "key": "eventCount",
+      "label": "Events achieved",
+      "labelVi": "Số Event hoàn thành",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "leftoverResources",
+      "label": "Leftover resources",
+      "labelVi": "Tài nguyên còn lại",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "sum"
+      },
+      "countsToTotal": false
     }
   ],
   "tiebreakers": [
     {
-      "description": "Most achieved Events (count)."
+      "description": "Most achieved Events (count).",
+      "categoryKey": "eventCount",
+      "dir": "highest"
     },
     {
-      "description": "Most leftover resources."
+      "description": "Most leftover resources.",
+      "categoryKey": "leftoverResources",
+      "dir": "highest"
     }
   ],
   "sharedVictoryOnTie": false,
