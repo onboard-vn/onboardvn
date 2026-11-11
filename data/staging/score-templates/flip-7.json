@@ -84,7 +84,7 @@
     }
   ],
   "sharedVictoryOnTie": false,
-  "notes": "family: rounds (press-your-luck; round scores accumulate). Score a player's round: Number sum, x2 first, then add modifiers, then +15 for Flip 7; a busted player scores 0 that round. Enter one scoring per round. Game ends at end of round where anyone has >=200; most points wins. Tie handling not found in rulebook text.",
+  "notes": "family: rounds (press-your-luck; round scores accumulate). Score a player's round: Number sum, x2 first, then add modifiers, then +15 for Flip 7; a busted player scores 0 that round. Enter one scoring per round. At the end of a round with at least 200 points, a sole leader wins. If the lead is tied, all players continue until one player leads.",
   "sources": [
     {
       "url": "https://bghub.org/r/flip7.pdf",
