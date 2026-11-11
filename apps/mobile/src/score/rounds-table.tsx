@@ -22,7 +22,8 @@ export function RoundsTable({ sheet }: { sheet: SheetApi }) {
   const { target, aggregate, roundLimit } = roundsConfig(template);
   const reached = targetReached(template, summary.rows);
   const winners = summary.rows.filter((r) => summary.winners.includes(r.id));
-  const winnerText = winners
+  const leaders = summary.rows.filter((r) => r.rank === 1);
+  const winnerText = (reached ? winners : leaders)
     .map((winner) => {
       const player = state.players.find((candidate) => candidate.id === winner.id);
       return player ? scorePlayerName(player) : winner.name;
@@ -39,7 +40,7 @@ export function RoundsTable({ sheet }: { sheet: SheetApi }) {
         {roundLimit ? ` ${scoreText('· {roundLimit} vòng', { roundLimit })}` : ''}
       </Hint>
 
-      {reached ? (
+      {reached && winners.length ? (
         <View style={[styles.banner, { backgroundColor: colors.successSoft }]}>
           <Text style={styles.bannerText}>
             {scoreText('Đã đạt mốc {target} · Người thắng: {winnerText}', {
@@ -48,6 +49,12 @@ export function RoundsTable({ sheet }: { sheet: SheetApi }) {
             })}
           </Text>
         </View>
+      ) : reached && template.slug === 'flip-7' && leaders.length > 1 ? (
+        <Hint>
+          {scoreText(
+            'Nếu hòa ở mốc 200 điểm trở lên, cả bàn chơi tiếp đến khi có một người dẫn đầu.',
+          )}
+        </Hint>
       ) : winnerText && summary.rows.some((r) => r.total !== 0) ? (
         <Hint>{scoreText('Đang dẫn: {names}', { names: winnerText })}</Hint>
       ) : null}

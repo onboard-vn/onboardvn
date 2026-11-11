@@ -3,6 +3,8 @@ type ScoreTranslation = { vi: string; en: string };
 type ScoreTranslationMap = Record<string, ScoreTranslation>;
 
 const vietnameseCopy: Record<string, string> = {
+  'Nếu hòa ở mốc 200 điểm trở lên, cả bàn chơi tiếp đến khi có một người dẫn đầu.':
+    'If tied for the lead after reaching 200 points, all players play additional rounds until one player leads.',
   'Thẻ Công dân thưởng tự động': 'Automatic Citizen bonus',
   'Tự động tính thẻ Công dân thưởng': 'Calculate the Citizen bonus automatically',
   'Nhập số thẻ Công dân đã bao gồm thẻ thưởng thực tế.':
@@ -1880,4 +1882,9 @@ export const scoreUiTranslations: ScoreTranslationMap = {
     vi: 'Nếu bằng điểm, người đi xa hơn trên đường phát triển thắng.',
     en: 'Further ahead on the Development Track wins tied scores.',
   },
+  'If tied for the lead after reaching 200 points, all players play additional rounds until one player leads.':
+    {
+      vi: 'Nếu hòa ở mốc 200 điểm trở lên, cả bàn chơi tiếp đến khi có một người dẫn đầu.',
+      en: 'If tied for the lead after reaching 200 points, all players play additional rounds until one player leads.',
+    },
 };

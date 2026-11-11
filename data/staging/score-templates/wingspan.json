@@ -3,7 +3,7 @@
   "name": "Wingspan",
   "year": 2019,
   "bggId": 266192,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base",
   "playerCount": {
     "min": 1,
@@ -111,8 +111,7 @@
       "min": 0,
       "max": null,
       "formula": {
-        "type": "multiply",
-        "points": 0
+        "type": "sum"
       },
       "countsToTotal": false
     }

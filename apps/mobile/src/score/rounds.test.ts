@@ -42,6 +42,30 @@ describe('rounds scoring', () => {
     expect(targetReached(flip7, sum.rows)).toBe(true);
   });
 
+  it('keeps every Flip 7 player in play when leaders tie above the target', () => {
+    if (!flip7) throw new Error('Missing Flip 7 template');
+    const initial = initialState(players);
+    const tied = {
+      ...initial,
+      roundCount: 2,
+      rounds: { a: [105, 105], b: [105, 105], c: [90, 90] },
+    };
+    expect(summarize(flip7, tied).winners).toEqual([]);
+    expect(
+      summarize(flip7, { ...tied, mode: 'quick', quickTotals: { a: 210, b: 210, c: 180 } }).winners,
+    ).toEqual([]);
+    expect(
+      summarize(flip7, {
+        ...tied,
+        roundCount: 3,
+        rounds: { a: [105, 105, 0], b: [105, 105, 0], c: [90, 90, 31] },
+      }).winners,
+    ).toEqual(['c']);
+    expect(
+      summarize(flip7, { ...initial, rounds: { a: [105], b: [90], c: [60] } }).winners,
+    ).toEqual([]);
+  });
+
   it('ignores remote ops for unseated players', () => {
     const s = initialState(players);
     const next = applyOp(s, {

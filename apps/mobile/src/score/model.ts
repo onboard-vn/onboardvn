@@ -272,8 +272,13 @@ function totalsSummary(t: ScoreTemplate, s: SheetState, totalOf: (id: string) =>
     const better = cmp(t);
     for (const r of rows) r.rank = 1 + rows.filter((o) => better(o.total, r.total) < 0).length;
   }
-  const winners = rows.filter((r) => r.rank === 1).map((r) => r.id);
-  return { rows, winners, note: tieNote(t, s, winners), error: null, result: null };
+  const leaders = rows.filter((r) => r.rank === 1).map((r) => r.id);
+  const winners =
+    t.slug === 'flip-7' &&
+    (rows.length < playerBounds(t).min || !targetReached(t, rows) || leaders.length !== 1)
+      ? []
+      : leaders;
+  return { rows, winners, note: tieNote(t, s, leaders), error: null, result: null };
 }
 
 function tieNote(t: ScoreTemplate, s: SheetState, leaders: string[]): string | null {
