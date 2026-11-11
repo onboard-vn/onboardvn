@@ -184,7 +184,7 @@ describe('score localization completeness', () => {
       }
     }
 
-    expect(templateList).toHaveLength(32);
+    expect(templateList).toHaveLength(33);
     expect(checkedValues).toBeGreaterThan(400);
   });
 

@@ -49,7 +49,7 @@ export interface SheetApi {
   addRound: () => void;
   removeLastRound: () => void;
   setExtra: <T>(key: string, value: T) => void;
-  reset: () => void;
+  reset: (options?: { keepExtras?: boolean }) => void;
   applyRemote: (op: PlayOp) => void;
   setPresence: (identityId: string, typing: boolean) => void;
   ackOps: (opIds: string[]) => void;
@@ -217,7 +217,13 @@ export function useSheet(
         canEdit && canManage
           ? setState((s) => ({ ...s, extras: { ...s.extras, [key]: value } }))
           : undefined,
-      reset: () => (canEdit && canManage ? setState((s) => initialState(s.players)) : undefined),
+      reset: (options?: { keepExtras?: boolean }) => {
+        if (!canEdit || !canManage) return;
+        setState((s) => {
+          const next = initialState(s.players);
+          return options?.keepExtras ? { ...next, extras: s.extras } : next;
+        });
+      },
       applyRemote: (op: PlayOp) => {
         const cell = opCell(op);
         setState((s) => (s.pendingOps.some((o) => opCell(o) === cell) ? s : applyOp(s, op)));

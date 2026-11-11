@@ -111,10 +111,10 @@ Build không chạy trong Docker:
 pnpm --filter @onboard/shared build
 pnpm --filter @onboard/mobile export:web
 # Keep existing hashed assets and back up the currently served entry point.
-ssh vps 'cd ~/Code/onboardvn && cp deploy/mobile-web/index.html deploy/mobile-web/index.html.previous'
-rsync -a --exclude='/index.html' apps/mobile/dist/ vps:Code/onboardvn/deploy/mobile-web/
-scp apps/mobile/dist/index.html vps:Code/onboardvn/deploy/mobile-web/index.html.next
-ssh vps 'cd ~/Code/onboardvn
+ssh vps 'cd ~/Code/projects/onboardvn && cp deploy/mobile-web/index.html deploy/mobile-web/index.html.previous'
+rsync -a --exclude='/index.html' apps/mobile/dist/ vps:Code/projects/onboardvn/deploy/mobile-web/
+scp apps/mobile/dist/index.html vps:Code/projects/onboardvn/deploy/mobile-web/index.html.next
+ssh vps 'cd ~/Code/projects/onboardvn
 mv deploy/mobile-web/index.html.next deploy/mobile-web/index.html'
 ```
 
@@ -214,7 +214,7 @@ Admin seed không có mật khẩu: đăng nhập bằng email OTP (đọc OTP t
 
 ## Public site hiện tại: Expo web trên VPS
 
-Kiểm chứng 2026-10-16: `vps:/home/j2teamnnl/Code/onboardvn`, Compose project
+Kiểm chứng 2026-11-11: `vps:/home/j2teamnnl/Code/projects/onboardvn`, Compose project
 `onboard`. Caddy phục vụ bản export Expo từ `deploy/mobile-web` (mount vào
 `/srv/mobile-web`); container Next.js không phải frontend công khai. Xem cấu hình
 [compose.vps.yml](../compose.vps.yml) và [Caddyfile](../deploy/Caddyfile).

@@ -32,6 +32,8 @@ import theGang from '../../../../data/staging/score-templates/the-gang-2024.json
 import applejack from '../../../../data/staging/score-templates/applejack-2022.json';
 import harmonies from '../../../../data/staging/score-templates/harmonies.json';
 
+import orleans from '../../../../data/staging/score-templates/orleans.json';
+
 export const scoreTemplates: Record<string, ScoreTemplate> = Object.fromEntries(
   [
     acquire,
@@ -66,6 +68,7 @@ export const scoreTemplates: Record<string, ScoreTemplate> = Object.fromEntries(
     club24,
     applejack,
     harmonies,
+    orleans,
   ].map((raw) => {
     const t = scoreTemplateSchema.parse(raw);
     return [t.slug, t];
