@@ -1,5 +1,15 @@
+import { scoreTemplateSchema } from '@onboard/shared';
+import thronesTemplate from '../../../../data/staging/score-templates/a-game-of-thrones-the-board-game-second-edition-2011.json';
 import { describe, expect, it } from 'vitest';
-import { applyOp, initialState, roundsConfig, roundTotal, summarize, targetReached } from './model';
+import {
+  applyOp,
+  initialState,
+  isRoundsGame,
+  roundsConfig,
+  roundTotal,
+  summarize,
+  targetReached,
+} from './model';
 import { scoreTemplates } from './templates';
 
 const flip7 = scoreTemplates['flip-7'];
@@ -64,6 +74,10 @@ describe('rounds scoring', () => {
     expect(
       summarize(flip7, { ...initial, rounds: { a: [105], b: [90], c: [60] } }).winners,
     ).toEqual([]);
+  });
+
+  it('keeps Game of Thrones in end-game scoring despite its immediate win threshold', () => {
+    expect(isRoundsGame(scoreTemplateSchema.parse(thronesTemplate))).toBe(false);
   });
 
   it('ignores remote ops for unseated players', () => {

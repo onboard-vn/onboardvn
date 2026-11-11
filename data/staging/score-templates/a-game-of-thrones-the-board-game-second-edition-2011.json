@@ -9,7 +9,7 @@
   "mode": "competitive",
   "winRule": "highest",
   "scoringStyle": "end-game-categories",
-  "rounds": { "count": 10, "aggregate": "best", "endCondition": "Immediate win on controlling 7 areas with a Castle or Stronghold" },
+  "rounds": null,
   "categories": [
     {
       "key": "castleAreas",
