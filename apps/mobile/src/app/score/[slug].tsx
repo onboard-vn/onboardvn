@@ -14,7 +14,7 @@ export default function ScoreScreen() {
   if (!template) {
     return (
       <View style={{ padding: 24 }}>
-        <Text>{t('Chưa có mẫu chấm điểm cho game này.')}</Text>
+        <Text>{t('Game này chưa có bảng tính điểm.')}</Text>
       </View>
     );
   }

@@ -3,6 +3,21 @@ type ScoreTranslation = { vi: string; en: string };
 type ScoreTranslationMap = Record<string, ScoreTranslation>;
 
 const vietnameseCopy: Record<string, string> = {
+  'Nhập điểm để xem tổng điểm và thứ hạng.': 'Enter scores to see totals and rankings.',
+  'Đang hòa điểm. Xem cách phân thắng trong ghi chú luật.':
+    'Scores are tied. See the rules note for the tiebreaker.',
+  'Chưa lưu được điểm.': 'Could not save scores.',
+  'Không cập nhật được bàn.': 'Could not update the table.',
+  'Chưa chốt được ván. Thử lại.': 'Could not finish the game. Try again.',
+  'Game này chưa có bảng tính điểm.': 'This game does not have a score sheet yet.',
+  'Chưa tính được điểm. Kiểm tra số đã nhập rồi thử lại.':
+    'Could not calculate the score. Check your entries and try again.',
+  'Đã chốt kết quả': 'Results finalized',
+  'Điểm đã được lưu.': 'Scores saved.',
+  'Một số điểm chưa được lưu.': 'Some scores have not been saved.',
+  'Thử lưu lại': 'Try saving again',
+  'Bỏ điểm chưa lưu': 'Discard unsaved scores',
+  'Đang lưu điểm…': 'Saving scores…',
   'Nếu hòa ở mốc 200 điểm trở lên, cả bàn chơi tiếp đến khi có một người dẫn đầu.':
     'If tied for the lead after reaching 200 points, all players play additional rounds until one player leads.',
   'Thẻ Công dân thưởng tự động': 'Automatic Citizen bonus',
@@ -297,7 +312,6 @@ const vietnameseCopy: Record<string, string> = {
   'Lưu xong thiết lập chung trước khi chốt ván.':
     'Save the shared setup before finalizing the game.',
   'Máy chủ chưa gắn mẫu điểm có thể dùng cho': 'The server has no scoring template available for',
-  'Máy chủ từ chối các chỉnh sửa đang chờ.': 'The server rejected the pending edits.',
   'Mất kết nối với bàn.': 'Connection to the table was lost.',
   'Mẫu chấm điểm cần xem lại': 'Scoring template needs review',
   'Mẫu chưa duyệt': 'Unreviewed template',
@@ -315,8 +329,6 @@ const vietnameseCopy: Record<string, string> = {
   'Mỗi nhân vật chỉ được chọn cho một người.': 'Each character can be assigned to only one player.',
   'Mỗi token rượu không dùng trong món cuối được 1 sao.':
     'Earn 1 star for each wine token not used in the final dish.',
-  'Một số thay đổi chưa được máy chủ áp dụng. Các chỉnh sửa vẫn được giữ trên thiết bị.':
-    'The server did not apply some changes. Your edits are still saved on this device.',
   'Mở công cụ bên ngoài để tham khảo.': 'Open the external tool for reference.',
   'Mở Vantage Rulepop ↗': 'Open Vantage Rulepop ↗',
   'Mục bổ sung': 'Additional items',
@@ -1887,4 +1899,12 @@ export const scoreUiTranslations: ScoreTranslationMap = {
       vi: 'Nếu hòa ở mốc 200 điểm trở lên, cả bàn chơi tiếp đến khi có một người dẫn đầu.',
       en: 'If tied for the lead after reaching 200 points, all players play additional rounds until one player leads.',
     },
+  'Một số thay đổi chưa được máy chủ áp dụng. Các chỉnh sửa vẫn được giữ trên thiết bị.': {
+    vi: 'Một số điểm chưa được lưu vào bảng chung. Các điểm này vẫn còn trên thiết bị.',
+    en: 'Some scores were not saved to the shared sheet. They are still on this device.',
+  },
+  'Máy chủ từ chối các chỉnh sửa đang chờ.': {
+    vi: 'Chưa lưu được các điểm vừa nhập.',
+    en: 'Could not save the scores you just entered.',
+  },
 };

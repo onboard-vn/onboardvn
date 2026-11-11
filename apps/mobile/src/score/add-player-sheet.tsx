@@ -153,7 +153,11 @@ export function AddPlayerSheet({
               />
             </>
           )}
-          {error ? <Text style={styles.error}>{scoreFeedbackText(error)}</Text> : null}
+          {error ? (
+            <Text style={styles.error}>
+              {scoreFeedbackText(error, scoreText('Không thêm được người chơi'))}
+            </Text>
+          ) : null}
           <Button label={scoreText('Đóng')} tone="ghost" onPress={close} />
         </View>
       </View>

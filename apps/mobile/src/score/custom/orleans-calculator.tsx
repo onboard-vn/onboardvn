@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Platform, ScrollView, Share, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppPreferences } from '../../ui/preferences';
-import { scoreText } from '../localization';
+import { scoreFeedbackText, scoreText } from '../localization';
 import { NumberField } from '../../ui/number-field';
 import { Button, Card, Chip, Heading, Hint } from '../../ui/primitives';
 import { colors, themeStyles } from '../../ui/theme';
@@ -150,7 +150,9 @@ export function OrleansCalculator({ sheet }: { sheet: SheetApi }) {
                   </Card>
                 );
               })}
-              {summary.error && state.players.length > 0 ? <Hint>{summary.error}</Hint> : null}
+              {summary.error && state.players.length > 0 ? (
+                <Hint>{scoreFeedbackText(summary.error)}</Hint>
+              ) : null}
               <Button
                 label={scoreText('Tổng kết ván')}
                 disabled={!ready}

@@ -11,7 +11,7 @@ import { FinishDialog } from './finish-dialog';
 import { GenericCategories } from './generic-categories';
 import { isRoundsGame, needsOutcome, type Player, type Summary } from './model';
 import { RuleNotes } from './rule-notes';
-import { isRankable, tiebreakerNotes } from './model';
+import { tiebreakerNotes } from './model';
 import { sheetStateFromPlay } from './shared-play-state';
 import { useSharedPlaySync } from './use-shared-play-sync';
 import { useSheet } from './use-sheet';
@@ -99,7 +99,9 @@ export function SharedScoreSheet({
         winners: current.players
           .filter((row) => row.computed?.isWinner)
           .map((row) => row.identity.id),
-        note: current.tieUnresolved ? 'Hòa chưa được phân định theo luật.' : null,
+        note: current.tieUnresolved
+          ? 'Đang hòa điểm. Xem cách phân thắng trong ghi chú luật.'
+          : null,
         error: setupMustWait
           ? 'Lưu xong thiết lập chung trước khi chốt ván.'
           : current.status === 'draft' && current.players.some((row) => row.computed === null)
@@ -138,9 +140,6 @@ export function SharedScoreSheet({
             </Hint>
             <Button label={scoreText('Về kèo')} tone="ghost" onPress={onExit} />
           </View>
-          {current.template?.needsReview ? (
-            <Badge label={scoreText('Mẫu chấm điểm cần xem lại')} />
-          ) : null}
 
           {roster && current.canManage && current.status === 'draft' ? (
             <PlayerEditor sheet={sheet} roster={roster} />
@@ -232,41 +231,38 @@ export function SharedScoreSheet({
             <GenericCategories sheet={sheet} />
           )}
 
-          {!roundsGame && isRankable(template) && template.slug !== 'critter-kitchen' ? (
-            <Hint>{scoreText('Điểm mỗi hàng được tính lại trên máy chủ sau khi đồng bộ.')}</Hint>
-          ) : null}
-
           {guestActions}
           <RuleNotes notes={tiebreakerNotes(template)} />
 
           <Card>
             <Text style={styles.sync}>
               {sync.error
-                ? scoreText('Có thay đổi chưa đồng bộ.')
+                ? scoreText('Một số điểm chưa được lưu.')
                 : sync.unsynced > 0
-                  ? scoreText('Đang đồng bộ {unsynced} thay đổi...', { unsynced: sync.unsynced })
+                  ? scoreText('Đang lưu điểm…')
                   : sync.connected
-                    ? scoreText('Đã đồng bộ với máy chủ.')
+                    ? scoreText('Điểm đã được lưu.')
                     : scoreText('Đang kết nối với bàn...')}
             </Text>
-            {sync.error ? <Text style={styles.error}>{scoreFeedbackText(sync.error)}</Text> : null}
+            {sync.error ? (
+              <Text style={styles.error}>
+                {scoreFeedbackText(sync.error, scoreText('Chưa lưu được điểm.'))}
+              </Text>
+            ) : null}
             {sync.blocked && sync.unsynced > 0 ? (
               <View style={styles.wrap}>
+                <Button label={scoreText('Thử lưu lại')} tone="ghost" onPress={sync.retrySync} />
                 <Button
-                  label={scoreText('Thử đồng bộ lại')}
-                  tone="ghost"
-                  onPress={sync.retrySync}
-                />
-                <Button
-                  label={scoreText('Bỏ các thay đổi chưa đồng bộ')}
+                  label={scoreText('Bỏ điểm chưa lưu')}
                   tone="ghost"
                   onPress={sync.discardPending}
                 />
               </View>
             ) : null}
-            {current.warnings.map((warning) => (
-              <Hint key={warning}>{scoreFeedbackText(warning)}</Hint>
-            ))}
+            {current.warnings.map((warning) => {
+              const message = scoreFeedbackText(warning, '');
+              return message ? <Hint key={warning}>{message}</Hint> : null;
+            })}
             {current.status === 'draft' && current.canManage ? (
               <Button
                 label={scoreText('Chốt ván')}
@@ -276,7 +272,7 @@ export function SharedScoreSheet({
             ) : null}
             {current.status === 'final' ? (
               <>
-                <Badge label={scoreText('Kết quả đã được máy chủ chốt')} />
+                <Badge label={scoreText('Đã chốt kết quả')} />
                 {current.canManage && onStartNewPlay ? (
                   <Button label={scoreText('Bắt đầu ván mới')} onPress={onStartNewPlay} />
                 ) : null}
@@ -306,9 +302,9 @@ function ServerResults({ play, template }: { play: PlayDto; template: ScoreTempl
     .sort((a, b) => (a.computed?.rank ?? 99) - (b.computed?.rank ?? 99) || a.seat - b.seat);
   return (
     <Card>
-      <Heading>{scoreText('Kết quả từ máy chủ')}</Heading>
+      <Heading>{scoreText('Kết quả')}</Heading>
       {rows.every((row) => row.computed === null) ? (
-        <Hint>{scoreText('Nhập điểm để máy chủ tính tổng và thứ hạng.')}</Hint>
+        <Hint>{scoreText('Nhập điểm để xem tổng điểm và thứ hạng.')}</Hint>
       ) : null}
       {rows.map((row) => (
         <View key={row.identity.id} style={styles.resultRow}>
@@ -342,7 +338,9 @@ function ServerResults({ play, template }: { play: PlayDto; template: ScoreTempl
           </View>
         </View>
       ))}
-      {play.tieUnresolved ? <Hint>{scoreText('Hòa chưa được phân định theo luật.')}</Hint> : null}
+      {play.tieUnresolved ? (
+        <Hint>{scoreText('Đang hòa điểm. Xem cách phân thắng trong ghi chú luật.')}</Hint>
+      ) : null}
     </Card>
   );
 }

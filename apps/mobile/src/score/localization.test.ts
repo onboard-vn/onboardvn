@@ -102,11 +102,19 @@ function visibleStringsFromRegistry(): string[] {
 }
 
 describe('score localization completeness', () => {
-  it('localizes known feedback and preserves unknown runtime details', () => {
+  it('localizes known feedback and keeps runtime details out of player messages', () => {
     const unknownWarning = 'Rule evaluator rejected this score: maximum is 12.';
 
     setActiveLanguage('en');
-    expect(scoreFeedbackText(unknownWarning)).toBe(unknownWarning);
+    expect(scoreFeedbackText(unknownWarning)).toBe(
+      'Could not calculate the score. Check your entries and try again.',
+    );
+    expect(scoreFeedbackText(unknownWarning, '')).toBe('');
+    setActiveLanguage('vi');
+    expect(scoreFeedbackText(unknownWarning)).toBe(
+      'Chưa tính được điểm. Kiểm tra số đã nhập rồi thử lại.',
+    );
+    setActiveLanguage('en');
     expect(scoreFeedbackText('Chọn ít nhất một người thắng.')).toBe('Select at least one winner.');
     expect(scoreFeedbackText('Hòa điểm cao nhất: Linh, Mai cùng thắng.')).toBe(
       'Tie for highest score: Linh, Mai share the win.',

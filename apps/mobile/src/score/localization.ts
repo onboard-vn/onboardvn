@@ -23,7 +23,10 @@ export function scoreText(source: string, values?: MessageValues): string {
 }
 
 /** Resolve score feedback that may be a fixed message or a model-generated message. */
-export function scoreFeedbackText(source: string): string {
+export function scoreFeedbackText(
+  source: string,
+  fallback = scoreText('Chưa tính được điểm. Kiểm tra số đã nhập rồi thử lại.'),
+): string {
   const normalized = normalize(source);
   const wholeText =
     Object.hasOwn(scoreUiTranslations, normalized) ||
@@ -46,7 +49,7 @@ export function scoreFeedbackText(source: string): string {
     if (match?.[1]) return scoreText(key, { [field]: match[1] });
   }
 
-  return translateKnown(source);
+  return translateKnown(source, fallback);
 }
 
 export function scorePlayerName(player: { name: string; fallbackSeat?: number }): string {

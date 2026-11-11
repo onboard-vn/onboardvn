@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { playsApi as defaultPlaysApi, type PlaysApi } from '../api/plays';
 import { CURRENT_IDENTITY_ID } from '../mock/club';
 import { NumberField } from '../ui/number-field';
-import { Badge, Button, Card, Chip, Heading, Hint, Segmented } from '../ui/primitives';
+import { Button, Card, Chip, Heading, Hint, Segmented } from '../ui/primitives';
 import { themeStyles, colors } from '../ui/theme';
 import { Flash, PresenceLabel } from './cell-flash';
 import { clearDraft, saveDraft, saveResult } from './draft-storage';
@@ -134,7 +134,6 @@ export function ScoreSheet({
             {' · '}
             {template.playerCount?.min}-{template.playerCount?.max} {scoreText('người')}
           </Hint>
-          {template.needsReview ? <Badge label={scoreText('Mẫu chưa duyệt')} /> : null}
 
           {!detailedOnly ? (
             <Segmented<SheetMode>
@@ -242,9 +241,7 @@ export function ScoreSheet({
           {playId ? (
             <Card>
               <Text style={styles.sync}>
-                {sync.unsynced > 0
-                  ? scoreText('Đang đồng bộ {unsynced} thay đổi...', { unsynced: sync.unsynced })
-                  : scoreText('Đã đồng bộ với bàn chơi')}
+                {sync.unsynced > 0 ? scoreText('Đang lưu điểm…') : scoreText('Điểm đã được lưu.')}
               </Text>
               {notice ? <Hint>{scoreFeedbackText(notice)}</Hint> : null}
               <View style={styles.wrap}>

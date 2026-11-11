@@ -37,7 +37,7 @@ export function GuestActions({ guest, tableId }: { guest: IdentityDto; tableId: 
       </View>
       {note ? (
         <Text selectable style={styles.meta}>
-          {scoreFeedbackText(note)}
+          {scoreFeedbackText(note, scoreText('Không thực hiện được'))}
         </Text>
       ) : null}
     </View>

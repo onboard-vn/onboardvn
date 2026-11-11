@@ -300,9 +300,6 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
       <View style={styles.content}>
         <Card>
           <Heading>{scoreText('Đăng nhập để mở bảng điểm chung')}</Heading>
-          <Hint>
-            {scoreText('Điểm của mọi người được đồng bộ qua máy chủ và gắn với tài khoản thật.')}
-          </Hint>
           <Link href="/club" asChild>
             <Pressable accessibilityRole="button" style={styles.linkButton}>
               <Text style={styles.linkText}>{scoreText('Đăng nhập')}</Text>
@@ -320,7 +317,9 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
     return (
       <View style={styles.content}>
         <Card>
-          <Text style={styles.error}>{scoreFeedbackText(error ?? 'Không tìm thấy bàn.')}</Text>
+          <Text style={styles.error}>
+            {scoreFeedbackText(error ?? 'Không tìm thấy bàn.', scoreText('Không tải được bàn.'))}
+          </Text>
           <Button label={scoreText('Thử lại')} tone="ghost" onPress={retryLoad} />
         </Card>
       </View>
@@ -337,7 +336,9 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
       <Stack.Screen options={{ title }} />
       {error ? (
         <View style={styles.errorBanner}>
-          <Text style={styles.error}>{scoreFeedbackText(error)}</Text>
+          <Text style={styles.error}>
+            {scoreFeedbackText(error, scoreText('Không cập nhật được bàn.'))}
+          </Text>
         </View>
       ) : null}
       {!current.table.game ? (
@@ -365,7 +366,6 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
                       style={styles.gameOption}
                     >
                       <Text style={styles.gameName}>{game.nameVi ?? game.nameEn}</Text>
-                      <Hint>{game.slug}</Hint>
                     </Pressable>
                   ))}
                 </>
@@ -399,10 +399,7 @@ export function SharedTableScreen({ tableId }: { tableId: string }) {
       ) : !template ? (
         <View style={styles.content}>
           <Card>
-            <Heading>{scoreText('Chưa có mẫu chấm điểm')}</Heading>
-            <Hint>
-              {scoreText('Máy chủ chưa gắn mẫu điểm có thể dùng cho {title}.', { title })}
-            </Hint>
+            <Heading>{scoreText('Game này chưa có bảng tính điểm.')}</Heading>
             <Button
               label={scoreText('Tải lại')}
               tone="ghost"

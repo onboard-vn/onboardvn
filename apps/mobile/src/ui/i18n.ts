@@ -156,7 +156,7 @@ function matchTemplate(template: string, value: string): MessageValues | null {
 }
 
 /** Translate a known authored message in either locale without throwing for unknown text. */
-export function translateKnown(message: string): string {
+export function translateKnown(message: string, fallback = message): string {
   const normalized = normalizeMessage(message);
   const entries = Object.entries(messages);
 
@@ -193,7 +193,7 @@ export function translateKnown(message: string): string {
       matchTemplate(translation.en, normalized);
     if (values) return applyValues(translation[activeLanguage], values);
   }
-  return message;
+  return fallback;
 }
 
 export function containsVietnameseText(message: string): boolean {

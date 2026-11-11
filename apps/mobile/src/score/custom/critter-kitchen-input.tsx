@@ -458,7 +458,11 @@ export function CritterKitchenInput({
         {!hasSavedSetup && !setupEditable ? (
           <Hint>{scoreText('Chờ chủ bàn lưu thiết lập trước khi nhập món.')}</Hint>
         ) : null}
-        {setupError ? <Text style={styles.error}>{scoreFeedbackText(setupError)}</Text> : null}
+        {setupError ? (
+          <Text style={styles.error}>
+            {scoreFeedbackText(setupError, scoreText('Không lưu được thiết lập chung.'))}
+          </Text>
+        ) : null}
         {setupDirty ? (
           <Hint>{scoreText('Thiết lập đang ở thiết bị này, chưa lưu lên bàn.')}</Hint>
         ) : null}
@@ -1098,9 +1102,10 @@ function EngineBreakdown({
           {scoreFeedbackText(error.message)}
         </Text>
       ))}
-      {result.warnings.map((warning) => (
-        <Hint key={warning}>{scoreFeedbackText(warning)}</Hint>
-      ))}
+      {result.warnings.map((warning) => {
+        const message = scoreFeedbackText(warning, '');
+        return message ? <Hint key={warning}>{message}</Hint> : null;
+      })}
       {result.players.map((player) => (
         <View key={player.identityId} style={styles.resultPlayer}>
           <Text style={styles.playerName}>
