@@ -3,7 +3,7 @@
   "name": "Orléans",
   "year": 2014,
   "bggId": 164928,
-  "templateVersion": 1,
+  "templateVersion": 2,
   "variant": "base",
   "playerCount": {
     "min": 2,
@@ -18,7 +18,6 @@
       "key": "coins",
       "label": "Coins",
       "labelVi": "Đồng xu",
-      "hint": "1 VP per coin.",
       "scope": "player",
       "input": "count",
       "min": 0,
@@ -30,55 +29,151 @@
       "countsToTotal": true
     },
     {
-      "key": "goods",
-      "label": "Goods tiles",
-      "labelVi": "Hàng hóa",
-      "hint": "Brocade 5, Wool 4, Wine 3, Cheese 2, Grain 1 VP each.",
+      "key": "grain",
+      "label": "Grain",
+      "labelVi": "Lúa mì",
       "scope": "player",
-      "input": "counts",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 1
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "cheese",
+      "label": "Cheese",
+      "labelVi": "Phô mai",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 2
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wine",
+      "label": "Wine",
+      "labelVi": "Rượu vang",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 3
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "wool",
+      "label": "Wool",
+      "labelVi": "Len",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 4
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "brocade",
+      "label": "Brocade",
+      "labelVi": "Vải gấm",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": null,
+      "formula": {
+        "type": "multiply",
+        "points": 5
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "developmentStatus",
+      "label": "Development Status",
+      "labelVi": "Cấp phát triển",
+      "scope": "player",
+      "input": "count",
+      "min": 1,
+      "max": 6,
+      "formula": {
+        "type": "expr",
+        "expr": "max(1, value)"
+      },
+      "countsToTotal": false
+    },
+    {
+      "key": "tradingStations",
+      "label": "Trading Stations",
+      "labelVi": "Trạm giao thương",
+      "scope": "player",
+      "input": "count",
+      "min": 0,
+      "max": 10,
+      "formula": {
+        "type": "expr",
+        "expr": "value * cat_developmentStatus"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "citizens",
+      "label": "Citizen Tiles",
+      "labelVi": "Thẻ Công dân",
+      "scope": "player",
+      "input": "count",
       "min": 0,
       "max": null,
       "formula": {
         "type": "expr",
-        "expr": "brocade*5+wool*4+wine*3+cheese*2+grain*1"
+        "expr": "value * cat_developmentStatus"
       },
-      "countsToTotal": true,
-      "inputs": [
-        "brocade",
-        "wool",
-        "wine",
-        "cheese",
-        "grain"
-      ]
+      "countsToTotal": true
     },
     {
-      "key": "stationsCitizens",
-      "label": "Trading stations + citizen tiles",
-      "labelVi": "Trạm giao thương + thẻ công dân",
-      "hint": "Each is worth VP equal to your Development Status.",
+      "key": "bonusCitizen",
+      "label": "Bonus Citizen",
+      "labelVi": "Thẻ Công dân thưởng",
       "scope": "player",
-      "input": "counts",
+      "input": "count",
+      "min": 0,
+      "max": 1,
+      "formula": {
+        "type": "expr",
+        "expr": "value * cat_developmentStatus"
+      },
+      "countsToTotal": true
+    },
+    {
+      "key": "developmentTrackPosition",
+      "label": "Development Track position",
+      "labelVi": "Vị trí trên đường phát triển",
+      "scope": "player",
+      "input": "count",
       "min": 0,
       "max": null,
       "formula": {
-        "type": "expr",
-        "expr": "(stations+citizens)*devStatus"
+        "type": "sum"
       },
-      "countsToTotal": true,
-      "inputs": [
-        "stations",
-        "citizens",
-        "devStatus"
-      ]
+      "countsToTotal": false
     },
     {
-      "key": "devTrack",
-      "label": "Development track position (tiebreak)",
-      "labelVi": "Vị trí track phát triển (phân định hòa)",
-      "hint": "Further ahead on the Development Track wins ties.",
-      "scope": "player",
-      "input": "number",
-      "min": 0,
+      "key": "manualCitizenBonus",
+      "label": "Bonus already counted",
+      "labelVi": "Đã nhập thẻ thưởng",
+      "scope": "team",
+      "input": "bool",
+      "min": null,
       "max": null,
       "formula": {
         "type": "sum"
@@ -88,30 +183,22 @@
   ],
   "tiebreakers": [
     {
-      "categoryKey": "devTrack",
+      "categoryKey": "developmentTrackPosition",
       "dir": "highest",
-      "description": "Player further ahead on the Development Track"
-    },
-    {
-      "description": "If still tied, multiple winners."
+      "description": "Further ahead on the Development Track wins tied scores.",
+      "descriptionVi": "Nếu bằng điểm, người đi xa hơn trên đường phát triển thắng. Cùng vị trí thì đồng thắng."
     }
   ],
   "sharedVictoryOnTie": true,
-  "notes": "family: point-salad-euro. Before scoring, the player with the most Trading Stations takes the last Citizen Tile (nobody on a tie); include it in citizens. Only two secondary rule summaries were reachable (official rulebook PDF not retrieved), so confidence is medium.",
+  "notes": "Orléans (2014) base game. The last Citizen Tile goes to the sole Trading Station leader unless already included in the entered counts.",
   "sources": [
     {
-      "url": "https://www.ultraboardgames.com/orleans/game-rules.php",
-      "title": "Orleans rules (Ultra BoardGames)",
-      "type": "other",
-      "section": "End of the Game"
-    },
-    {
-      "url": "https://www.rulespal.com/orleans/rulebook",
-      "title": "Orleans rulebook summary (RulesPal)",
-      "type": "other",
+      "url": "https://cdn.1j1ju.com/medias/ca/06/cc-orleans-rulebook.pdf",
+      "title": "Orléans rulebook (dlp games, 2014)",
+      "type": "official-rulebook",
       "section": "End of the Game and Scoring"
     }
   ],
-  "confidence": "medium",
-  "needsReview": true
+  "confidence": "high",
+  "needsReview": false
 }

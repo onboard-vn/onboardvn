@@ -10,6 +10,7 @@ import { themeStyles, colors } from '../ui/theme';
 import { Flash, PresenceLabel } from './cell-flash';
 import { clearDraft, saveDraft, saveResult } from './draft-storage';
 import { FinishDialog } from './finish-dialog';
+import { OrleansCalculator } from './custom/orleans-calculator';
 import { GenericCategories } from './generic-categories';
 import {
   expansionsOf,
@@ -115,6 +116,10 @@ export function ScoreSheet({
     await clearDraft(playId);
     return receipt;
   };
+
+  if (localPlayers && !playId && template.slug === 'orleans' && template.templateVersion === 2) {
+    return <OrleansCalculator sheet={sheet} />;
+  }
 
   return (
     <SafeAreaView edges={['bottom']} style={styles.screen}>

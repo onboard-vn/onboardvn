@@ -25,3 +25,17 @@ pnpm --filter @onboard/mobile test
 ```
 
 Điện thoại và máy tính cần cùng mạng Wi-Fi. `@onboard/shared` phải được build trước (`pnpm --filter @onboard/shared build`; `pnpm dev` ở root tự làm qua turbo).
+
+### Orléans (2014)
+
+Mở `/score/orleans` và thêm 2–4 người chơi. Nhập số xu, hàng hóa, trạm giao thương,
+thẻ Công dân, cấp phát triển theo số sao và vị trí trên đường phát triển. Mỗi xu
+được 1 VP. Lúa mì, phô mai, rượu vang, len và vải gấm lần lượt được 1–5 VP.
+Mỗi trạm và mỗi thẻ Công dân được số VP bằng cấp phát triển hiện tại.
+
+Giữ thưởng tự động nếu chưa nhập thẻ Công dân thưởng. Người duy nhất có nhiều trạm
+nhất được thêm một thẻ. Tắt tùy chọn nếu đã nhập thẻ thưởng vào số thẻ thực tế.
+Khi bằng VP, người đi xa hơn trên đường phát triển thắng. Cùng vị trí thì đồng thắng.
+
+Bản nháp tự lưu trên thiết bị. Chọn **Tổng kết ván** để xem chi tiết và sao chép
+kết quả trên web hoặc chia sẻ qua menu của điện thoại. Bộ tính áp dụng cho bản gốc.

@@ -3,6 +3,7 @@ import { prepareStrategyScoring } from './club-strategy/prepare.js';
 import { prepareEuroScoring } from './club-euro/prepare.js';
 import { prepareMixedScoring } from './club-mixed/prepare.js';
 import { z } from 'zod';
+import { prepareOrleansScoring } from './orleans.js';
 import { evaluateExpr, type CompiledExpr, type ExprValue } from './expr.js';
 import { err, ok, type Result, type ScoreError } from './result.js';
 import type {
@@ -563,6 +564,8 @@ export function computeScores(template: ScoreTemplate, input: ScoreInput): Resul
     const parsed = scoreInputSchema.safeParse(input);
     if (!parsed.success)
       return err('INPUT_INVALID', parsed.error.issues[0]?.message ?? 'Invalid input');
+    const orleans = prepareOrleansScoring(template, parsed.data);
+    if (orleans?.error) return err('INPUT_INVALID', orleans.error);
     const prepared =
       prepareClassicScoring(template, parsed.data) ??
       prepareStrategyScoring(template, parsed.data) ??
@@ -570,7 +573,7 @@ export function computeScores(template: ScoreTemplate, input: ScoreInput): Resul
       prepareMixedScoring(template, parsed.data);
     if (prepared?.error) return err('INPUT_INVALID', prepared.error);
     const selected = prepared?.template ?? template;
-    const result = compute(selected, prepared?.input ?? parsed.data);
+    const result = compute(selected, prepared?.input ?? orleans?.input ?? parsed.data);
     if (
       selected.slug === 'cloudspire' &&
       selected.templateVersion >= 2 &&

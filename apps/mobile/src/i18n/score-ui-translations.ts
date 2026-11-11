@@ -3,6 +3,41 @@ type ScoreTranslation = { vi: string; en: string };
 type ScoreTranslationMap = Record<string, ScoreTranslation>;
 
 const vietnameseCopy: Record<string, string> = {
+  'Thẻ Công dân thưởng tự động': 'Automatic Citizen bonus',
+  'Tự động tính thẻ Công dân thưởng': 'Calculate the Citizen bonus automatically',
+  'Nhập số thẻ Công dân đã bao gồm thẻ thưởng thực tế.':
+    'Include the physical bonus tile in the Citizen count.',
+  'Nhập số thẻ Công dân trước thưởng. Một người dẫn đầu về số trạm nhận thêm 1 thẻ.':
+    'Enter Citizen Tiles before the bonus. The sole Trading Station leader receives one extra tile.',
+  'Số ngôi sao hiện tại': 'Current star value',
+  'Dùng khi bằng VP': 'Used to break a VP tie',
+  'Tổng kết ván': 'Show final scores',
+  'Xóa toàn bộ điểm của ván hiện tại và giữ danh sách người chơi?':
+    'Clear all scores and keep the player list?',
+  Hủy: 'Cancel',
+  'Tạo ván mới': 'Start a new game',
+  'Kết quả Orléans': 'Orléans results',
+  'Đã sao chép kết quả.': 'Results copied.',
+  'Chọn văn bản bên dưới để sao chép kết quả.': 'Select the text below to copy the results.',
+  'Chỉnh sửa điểm': 'Edit scores',
+  'Ẩn chi tiết': 'Hide details',
+  'Xem chi tiết điểm': 'Show score breakdown',
+  'Sao chép kết quả': 'Copy results',
+  'Chia sẻ kết quả': 'Share results',
+  'Đồng chiến thắng vì bằng điểm và cùng vị trí trên đường phát triển.':
+    'Joint winners with equal VP and Development Track positions.',
+  Đỏ: 'Red',
+  'Xanh dương': 'Blue',
+  'Xanh lá': 'Green',
+  Vàng: 'Yellow',
+  'Màu của {name}': 'Color for {name}',
+  '{label} của {name}': '{label} for {name}',
+  '{name} thắng vì đi xa hơn trên đường phát triển (vị trí {position}).':
+    '{name} wins by advancing further on the Development Track (position {position}).',
+  'Thẻ Công dân thưởng': 'Bonus Citizen Tile',
+  'Vị trí trên đường phát triển': 'Development Track position',
+  'Nếu bằng điểm, người đi xa hơn trên đường phát triển thắng. Cùng vị trí thì đồng thắng.':
+    'The player further ahead on the Development Track wins tied scores. Players at the same position share the win.',
   '· chưa nhập': '· not entered',
   '· cổ phiếu nắm giữ': '· shares held',
   '· món giám khảo': '· judge meal',
@@ -1841,4 +1876,8 @@ export const scoreUiTranslations: ScoreTranslationMap = {
   'Julia Wild': { vi: 'Julia Wild', en: 'Julia Wild' },
   'Marcus Roostersson': { vi: 'Marcus Roostersson', en: 'Marcus Roostersson' },
   'Martha Shrewart': { vi: 'Martha Shrewart', en: 'Martha Shrewart' },
+  'Further ahead on the Development Track wins tied scores.': {
+    vi: 'Nếu bằng điểm, người đi xa hơn trên đường phát triển thắng.',
+    en: 'Further ahead on the Development Track wins tied scores.',
+  },
 };

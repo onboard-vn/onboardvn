@@ -16,7 +16,7 @@ import {
 } from './standalone-draft';
 
 export const hasStandaloneDraft = (slug: string) =>
-  slug === 'applejack-2022' || slug === 'harmonies';
+  slug === 'applejack-2022' || slug === 'harmonies' || slug === 'orleans';
 
 export function StandaloneScoreSession({ template }: { template: ScoreTemplate }) {
   const { language } = useAppPreferences();

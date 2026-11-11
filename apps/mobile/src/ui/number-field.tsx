@@ -13,6 +13,8 @@ export interface NumberFieldProps {
   width?: number;
   prefix?: string;
   disabled?: boolean;
+  wholeNumbers?: boolean;
+  accessibilityLabel?: string;
 }
 
 const clamp = (n: number, min?: number | null, max?: number | null): number => {
@@ -31,13 +33,22 @@ export function NumberField({
   width = 72,
   prefix,
   disabled = false,
+  wholeNumbers = false,
+  accessibilityLabel,
 }: NumberFieldProps) {
   useAppPreferences();
   const [draft, setDraft] = useState<string | null>(null);
 
+  const validWhole = (raw: string) => {
+    const next = Number(raw);
+    return /^\d+$/.test(raw) && Number.isSafeInteger(next) && next === clamp(next, min, max);
+  };
+  const invalidDraft = wholeNumbers && draft !== null && draft !== '' && !validWhole(draft);
+
   const commit = (raw: string) => {
-    const n = Number(raw.replace(',', '.'));
     setDraft(null);
+    if (wholeNumbers) return;
+    const n = Number(raw.replace(',', '.'));
     if (raw.trim() === '' || !Number.isFinite(n)) return;
     onChange(clamp(n, min, max));
   };
@@ -54,18 +65,26 @@ export function NumberField({
         accessibilityRole="button"
         onPress={() => bump(-1)}
         disabled={disabled || (min != null && value <= min)}
-        style={[styles.btn, (disabled || (min != null && value <= min)) && styles.off]}
+        style={[
+          styles.btn,
+          wholeNumbers && styles.largeButton,
+          (disabled || (min != null && value <= min)) && styles.off,
+        ]}
       >
         <Text style={styles.btnText}>−</Text>
       </Pressable>
-      <View style={[styles.inputWrap, { width }]}>
+      <View style={[styles.inputWrap, invalidDraft && styles.invalid, { width }]}>
         {prefix ? <Text style={styles.prefix}>{prefix}</Text> : null}
         <TextInput
           value={draft ?? String(value)}
-          onChangeText={setDraft}
+          accessibilityLabel={accessibilityLabel}
+          onChangeText={(raw) => {
+            setDraft(raw);
+            if (wholeNumbers && validWhole(raw)) onChange(Number(raw));
+          }}
           onBlur={() => draft !== null && commit(draft)}
           onSubmitEditing={() => draft !== null && commit(draft)}
-          keyboardType="numbers-and-punctuation"
+          keyboardType={wholeNumbers ? 'number-pad' : 'numbers-and-punctuation'}
           selectTextOnFocus
           editable={!disabled}
           style={styles.input}
@@ -76,7 +95,11 @@ export function NumberField({
         accessibilityRole="button"
         onPress={() => bump(1)}
         disabled={disabled || (max != null && value >= max)}
-        style={[styles.btn, (disabled || (max != null && value >= max)) && styles.off]}
+        style={[
+          styles.btn,
+          wholeNumbers && styles.largeButton,
+          (disabled || (max != null && value >= max)) && styles.off,
+        ]}
       >
         <Text style={styles.btnText}>+</Text>
       </Pressable>
@@ -95,6 +118,7 @@ const styles = themeStyles(() =>
       alignItems: 'center',
       justifyContent: 'center',
     },
+    largeButton: { width: 44, height: 44 },
     off: { opacity: 0.35 },
     btnText: { fontSize: 22, lineHeight: 24, fontWeight: '700', color: colors.primary },
     inputWrap: {
@@ -107,6 +131,7 @@ const styles = themeStyles(() =>
       borderColor: colors.border,
       backgroundColor: colors.card,
     },
+    invalid: { borderColor: colors.danger },
     prefix: { color: colors.muted, marginLeft: 6 },
     input: {
       flex: 1,
