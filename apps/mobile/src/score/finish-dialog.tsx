@@ -90,7 +90,11 @@ export function FinishDialog({
                 })}
               </ScrollView>
               {summary.note ? <Hint>{scoreFeedbackText(summary.note)}</Hint> : null}
-              {error ? <Text style={styles.error}>{scoreFeedbackText(error)}</Text> : null}
+              {error ? (
+                <Text style={styles.error}>
+                  {scoreFeedbackText(error, scoreText('Chưa chốt được ván. Thử lại.'))}
+                </Text>
+              ) : null}
               <Button
                 label={busy ? scoreText('Đang lưu...') : scoreText('Xác nhận kết thúc')}
                 onPress={confirm}

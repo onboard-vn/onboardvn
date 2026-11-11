@@ -109,7 +109,7 @@ function GuestActions({ guest, tableId }: { guest: IdentityDto; tableId: string 
       </View>
       {note ? (
         <Text selectable style={styles.meta}>
-          {scoreFeedbackText(note)}
+          {scoreFeedbackText(note, scoreText('Không thực hiện được'))}
         </Text>
       ) : null}
     </View>
@@ -201,7 +201,11 @@ function TablePlay({ bundle, reload }: { bundle: TableBundle; reload: () => void
                   onPress={() => void start()}
                 />
               ) : null}
-              {error ? <Text style={styles.error}>{scoreFeedbackText(error)}</Text> : null}
+              {error ? (
+                <Text style={styles.error}>
+                  {scoreFeedbackText(error, scoreText('Không tạo được ván'))}
+                </Text>
+              ) : null}
             </Card>
           </View>
         </ScrollView>
@@ -230,7 +234,8 @@ function TablePlay({ bundle, reload }: { bundle: TableBundle; reload: () => void
 function TableScreenBody({ tableId }: { tableId: string }) {
   const bundle = useLoad(() => loadTableBundle(tableId), [tableId]);
   if (bundle.loading && !bundle.data) return <ActivityIndicator style={{ marginTop: 48 }} />;
-  if (bundle.error) return <Hint>{bundle.error}</Hint>;
+  if (bundle.error)
+    return <Hint>{scoreFeedbackText(bundle.error, scoreText('Không tải được bàn.'))}</Hint>;
   if (!bundle.data) return null;
   return <TablePlay bundle={bundle.data} reload={bundle.reload} />;
 }

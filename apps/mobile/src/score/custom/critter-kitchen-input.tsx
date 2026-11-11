@@ -458,7 +458,11 @@ export function CritterKitchenInput({
         {!hasSavedSetup && !setupEditable ? (
           <Hint>{scoreText('Chờ chủ bàn lưu thiết lập trước khi nhập món.')}</Hint>
         ) : null}
-        {setupError ? <Text style={styles.error}>{scoreFeedbackText(setupError)}</Text> : null}
+        {setupError ? (
+          <Text style={styles.error}>
+            {scoreFeedbackText(setupError, scoreText('Không lưu được thiết lập chung.'))}
+          </Text>
+        ) : null}
         {setupDirty ? (
           <Hint>{scoreText('Thiết lập đang ở thiết bị này, chưa lưu lên bàn.')}</Hint>
         ) : null}

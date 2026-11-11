@@ -11,7 +11,7 @@ import { FinishDialog } from './finish-dialog';
 import { GenericCategories } from './generic-categories';
 import { isRoundsGame, needsOutcome, type Player, type Summary } from './model';
 import { RuleNotes } from './rule-notes';
-import { isRankable, tiebreakerNotes } from './model';
+import { tiebreakerNotes } from './model';
 import { sheetStateFromPlay } from './shared-play-state';
 import { useSharedPlaySync } from './use-shared-play-sync';
 import { useSheet } from './use-sheet';
@@ -99,7 +99,9 @@ export function SharedScoreSheet({
         winners: current.players
           .filter((row) => row.computed?.isWinner)
           .map((row) => row.identity.id),
-        note: current.tieUnresolved ? 'Hòa chưa được phân định theo luật.' : null,
+        note: current.tieUnresolved
+          ? 'Đang hòa điểm. Xem cách phân thắng trong ghi chú luật.'
+          : null,
         error: setupMustWait
           ? 'Lưu xong thiết lập chung trước khi chốt ván.'
           : current.status === 'draft' && current.players.some((row) => row.computed === null)
@@ -229,10 +231,6 @@ export function SharedScoreSheet({
             <GenericCategories sheet={sheet} />
           )}
 
-          {!roundsGame && isRankable(template) && template.slug !== 'critter-kitchen' ? (
-            <Hint>{scoreText('Điểm mỗi hàng được tính lại trên máy chủ sau khi đồng bộ.')}</Hint>
-          ) : null}
-
           {guestActions}
           <RuleNotes notes={tiebreakerNotes(template)} />
 
@@ -246,7 +244,11 @@ export function SharedScoreSheet({
                     ? scoreText('Điểm đã được lưu.')
                     : scoreText('Đang kết nối với bàn...')}
             </Text>
-            {sync.error ? <Text style={styles.error}>{scoreFeedbackText(sync.error)}</Text> : null}
+            {sync.error ? (
+              <Text style={styles.error}>
+                {scoreFeedbackText(sync.error, scoreText('Chưa lưu được điểm.'))}
+              </Text>
+            ) : null}
             {sync.blocked && sync.unsynced > 0 ? (
               <View style={styles.wrap}>
                 <Button label={scoreText('Thử lưu lại')} tone="ghost" onPress={sync.retrySync} />
@@ -300,9 +302,9 @@ function ServerResults({ play, template }: { play: PlayDto; template: ScoreTempl
     .sort((a, b) => (a.computed?.rank ?? 99) - (b.computed?.rank ?? 99) || a.seat - b.seat);
   return (
     <Card>
-      <Heading>{scoreText('Kết quả từ máy chủ')}</Heading>
+      <Heading>{scoreText('Kết quả')}</Heading>
       {rows.every((row) => row.computed === null) ? (
-        <Hint>{scoreText('Nhập điểm để máy chủ tính tổng và thứ hạng.')}</Hint>
+        <Hint>{scoreText('Nhập điểm để xem tổng điểm và thứ hạng.')}</Hint>
       ) : null}
       {rows.map((row) => (
         <View key={row.identity.id} style={styles.resultRow}>
@@ -336,7 +338,9 @@ function ServerResults({ play, template }: { play: PlayDto; template: ScoreTempl
           </View>
         </View>
       ))}
-      {play.tieUnresolved ? <Hint>{scoreText('Hòa chưa được phân định theo luật.')}</Hint> : null}
+      {play.tieUnresolved ? (
+        <Hint>{scoreText('Đang hòa điểm. Xem cách phân thắng trong ghi chú luật.')}</Hint>
+      ) : null}
     </Card>
   );
 }

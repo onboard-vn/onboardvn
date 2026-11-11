@@ -23,8 +23,8 @@ export default function ScoreIndex() {
             <Card>
               <Heading>{template.name}</Heading>
               <Text style={styles.meta}>
-                {template.mode === 'coop' ? 'Co-op' : t('Cạnh tranh')} · {template.playerCount?.min}
-                -{template.playerCount?.max} {t('người')}
+                {template.mode === 'coop' ? t('Co-op') : t('Cạnh tranh')} ·{' '}
+                {template.playerCount?.min}-{template.playerCount?.max} {t('người')}
               </Text>
             </Card>
           </Pressable>
